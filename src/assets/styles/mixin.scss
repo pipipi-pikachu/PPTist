@@ -1,0 +1,30 @@
+// 单行文字行末省略
+@mixin ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// 多行文字尾行行末省略
+@mixin multi-ellipsis($line: 2) {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+}
+
+// 表格式布局
+@mixin grid-layout-wrapper() {
+  display: flex;
+  flex-wrap: wrap;
+}
+@mixin grid-layout-item($col, $colWidth) {
+  width: $colWidth;
+  margin-bottom: calc(#{100 - $col * $colWidth} / #{$col - 1});
+
+  &:not(:nth-child(#{$col}n)) {
+    margin-right: calc(#{100 - $col * $colWidth} / #{$col - 1});
+  }
+}

@@ -1,0 +1,18 @@
+export const KEYCODE = {
+  S: 83,
+  C: 67,
+  X: 88,
+  Z: 90,
+  Y: 89,
+  A: 65,
+  G: 71,
+  L: 76,
+  DELETE: 46,
+  UP: 38,
+  DOWN: 40,
+  LEFT: 37,
+  RIGHT: 39,
+  ENTER: 13,
+  SPACE: 32,
+  TAB: 9,
+}
