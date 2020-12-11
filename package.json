@@ -24,6 +24,7 @@
     "@types/clipboard": "^2.0.1",
     "@types/crypto-js": "^4.0.1",
     "@types/jest": "^24.0.19",
+    "@types/resize-observer-browser": "^0.1.4",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -36,17 +37,17 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^2.0.0-0",
+    "babel-plugin-import": "^1.13.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
-    "babel-plugin-import": "^1.13.3",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue-jest": "^5.0.0-0",
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
-    "stylelint-webpack-plugin": "^2.1.1"
+    "stylelint-webpack-plugin": "^2.1.1",
+    "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-0"
   }
 }

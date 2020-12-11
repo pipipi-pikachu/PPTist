@@ -9,15 +9,15 @@ export type State = {
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
   availableFonts: string[];
-  slides: Slide[],
-  slideIndex: number,
+  slides: Slide[];
+  slideIndex: number;
 }
 
 export const state: State = {
   activeElementIdList: [],
   handleElementId: '',
   isShowGridLines: false,
-  editorAreaShowScale: 80,
+  editorAreaShowScale: 85,
   canvasScale: 1,
   thumbnailsFocus: false,
   editorAreaFocus: false,

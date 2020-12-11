@@ -3,9 +3,9 @@
     <EditorHeader class="layout-header" />
     <div class="layout-content">
       <Thumbnails class="layout-content-left" />
-      <div class="layout-content-body">
-        <CanvasTool />
-        <Canvas />
+      <div class="layout-content-center">
+        <CanvasTool class="center-top" />
+        <Canvas class="center-body" />
       </div>
       <Toolbar class="layout-content-right" />
     </div>
@@ -36,22 +36,28 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editor {
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 .layout-header {
   height: 40px;
 }
 .layout-content {
-  flex: 1;
+  height: calc(100% - 40px);
   display: flex;
 }
 .layout-content-left {
-  width: 180px;
+  width: 160px;
   height: 100%;
+  flex-shrink: 0;
 }
-.layout-content-body {
-  flex: 1;
+.layout-content-center {
+  width: calc(100% - 160px - 260px);
+
+  .center-top {
+    height: 40px;
+  }
+  .center-body {
+    height: calc(100% - 40px);
+  }
 }
 .layout-content-right {
   width: 260px;
