@@ -1,65 +1,65 @@
-interface PPTElementBaseProps {
-  id: string;
+export interface PPTElementBaseProps {
+  elId: string;
   isLock: boolean;
   groupId: string;
   left: number;
   top: number;
 }
 
-interface PPTElementSizeProps {
+export interface PPTElementSizeProps {
   width: number;
   height: number;
 }
 
-interface PPTElementBorderProps {
-  borderStyle: string;
-  borderWidth: number;
-  borderColor: string;
+export interface PPTElementBorderProps {
+  borderStyle?: string;
+  borderWidth?: number;
+  borderColor?: string;
 }
 
-interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
-  rotate: number;
-  fill: string;
-  opactity: number;
-  lineHeight: number;
-  segmentSapcing: number;
-  letterSpacing: number;
-  shadow: string;
-  padding: number;
+export interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   textType: string;
   content: string;
+  rotate?: number;
+  fill?: string;
+  opactity?: number;
+  lineHeight?: number;
+  segmentSapcing?: number;
+  letterSpacing?: number;
+  shadow?: string;
+  padding?: number;
 }
 
-interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
-  rotate: number;
-  filter: string;
-  clip: string;
-  flip: string;
-  shadow: string;
+export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   lockRatio: boolean;
   imgUrl: string;
+  rotate?: number;
+  filter?: string;
+  clip?: string;
+  flip?: string;
+  shadow?: string;
 }
 
-interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
-  rotate: number;
+export interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  svgCode: string;
+  lockRatio: boolean;
   fill: string;
-  opactity: number;
-  shadow: string;
-  lockRatio: boolean;
-  svgCode: string;
-  text: string;
-  textAlign: string;
+  rotate?: number;
+  opactity?: number;
+  shadow?: string;
+  text?: string;
+  textAlign?: string;
 }
 
-interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps {
-  rotate: number;
+export interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps {
   color: string;
-  shadow: string;
   lockRatio: boolean;
   svgCode: string;
+  rotate?: number;
+  shadow?: string;
 }
 
-interface PPTLineElement extends PPTElementBaseProps {
+export interface PPTLineElement extends PPTElementBaseProps {
   start: number[];
   end: number[];
   width: number;
@@ -69,57 +69,57 @@ interface PPTLineElement extends PPTElementBaseProps {
   lineType: string;
 }
 
-interface BarChartSeries {
+export interface BarChartSeries {
   name: string;
   data: number[];
 }
-interface BarChartData {
+export interface BarChartData {
   axisData: string[];
   series: BarChartSeries[];
 }
-interface PieChartData {
+export interface PieChartData {
   name: string;
   value: number
 }
-interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   chartType: string;
   theme: string;
   data: PieChartData[] | BarChartData;
 }
 
-interface TableCell {
+export interface TableCell {
   colspan: number;
   rowspan: number;
   content: string;
   bgColor: string;
 }
-interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProps {
+export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProps {
   borderTheme: string;
   theme: string;
   rowSizes: number[];
   colSizes: number[];
   data: TableCell[][];
 }
-interface PPTIframeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+export interface PPTIframeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   src: string;
 }
 
-type PPTElement = PPTTextElement | 
-                  PPTImageElement | 
-                  PPTShapeElement | 
-                  PPTIconElement | 
-                  PPTLineElement | 
-                  PPTChartElement |
-                  PPTTableElement |
-                  PPTIframeElement
+export type PPTElement = PPTTextElement | 
+                         PPTImageElement | 
+                         PPTShapeElement | 
+                         PPTIconElement | 
+                         PPTLineElement | 
+                         PPTChartElement |
+                         PPTTableElement |
+                         PPTIframeElement
 
-interface PPTAnimation {
+export interface PPTAnimation {
   elId: string;
   type: string;
   duration: number;
 }
 
-interface Slide {
+export interface Slide {
   id: string;
   elements: PPTElement[];
   animations: PPTAnimation[];

@@ -34,7 +34,7 @@ module.exports = {
         failOnError: false,
         cache: false,
         fix: false,
-      })
+      }),
     ],
   },
 }

@@ -29,5 +29,5 @@ module.exports = {
     'declaration-block-semicolon-newline-after': 'always',
     'declaration-block-trailing-semicolon': 'always',
     'selector-pseudo-element-colon-notation': 'double',
-  }
+  },
 }
