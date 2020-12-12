@@ -1,9 +1,9 @@
 export interface PPTElementBaseProps {
   elId: string;
   isLock: boolean;
-  groupId: string;
   left: number;
   top: number;
+  groupId?: string;
 }
 
 export interface PPTElementSizeProps {
@@ -18,40 +18,48 @@ export interface PPTElementBorderProps {
 }
 
 export interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  type: 'text';
   textType: string;
   content: string;
   rotate?: number;
   fill?: string;
-  opactity?: number;
+  opacity?: number;
   lineHeight?: number;
-  segmentSapcing?: number;
+  segmentSpacing?: number;
   letterSpacing?: number;
   shadow?: string;
   padding?: number;
 }
 
+interface ImageClip {
+  range: [[number, number], [number, number]];
+  shape: string;
+}
 export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  type: 'image';
   lockRatio: boolean;
   imgUrl: string;
   rotate?: number;
   filter?: string;
-  clip?: string;
+  clip?: ImageClip;
   flip?: string;
   shadow?: string;
 }
 
 export interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  type: 'shape';
   svgCode: string;
   lockRatio: boolean;
   fill: string;
   rotate?: number;
-  opactity?: number;
+  opacity?: number;
   shadow?: string;
   text?: string;
   textAlign?: string;
 }
 
 export interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps {
+  type: 'icon';
   color: string;
   lockRatio: boolean;
   svgCode: string;
@@ -60,6 +68,7 @@ export interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps
 }
 
 export interface PPTLineElement extends PPTElementBaseProps {
+  type: 'line';
   start: [number, number];
   end: [number, number];
   width: number;
@@ -82,6 +91,7 @@ export interface PieChartData {
   value: number
 }
 export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  type: 'chart';
   chartType: string;
   theme: string;
   data: PieChartData[] | BarChartData;
@@ -94,6 +104,7 @@ export interface TableCell {
   bgColor: string;
 }
 export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProps {
+  type: 'table';
   borderTheme: string;
   theme: string;
   rowSizes: number[];
@@ -101,6 +112,7 @@ export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProp
   data: TableCell[][];
 }
 export interface PPTIframeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+  type: 'iframe';
   src: string;
 }
 
@@ -121,7 +133,7 @@ export interface PPTAnimation {
 
 export interface Slide {
   id: string;
-  background: [string, string];
   elements: PPTElement[];
-  animations: PPTAnimation[];
+  background?: [string, string];
+  animations?: PPTAnimation[];
 }
