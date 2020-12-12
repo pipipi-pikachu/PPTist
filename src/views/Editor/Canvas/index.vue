@@ -3,6 +3,7 @@
     class="canvas" 
     ref="canvasRef"
     @mousedown="$event => handleClickBlankArea($event)"
+    v-contextmenu="contextmenus"
   >
     <div 
       class="viewport" 
@@ -31,6 +32,7 @@
 import { computed, defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
+import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 import MouseSelection from './MouseSelection.vue'
@@ -151,12 +153,45 @@ export default defineComponent({
       updateMouseSelection(e)
     }
 
+    const contextmenus = (): ContextmenuItem[] => {
+      return [
+        {
+          text: '全选',
+          subText: 'Ctrl + A',
+        },
+        {
+          text: '粘贴',
+          subText: 'Ctrl + V',
+        },
+        { divider: true },
+        {
+          text: '参考线',
+          children: [
+            {
+              text: '打开',
+            },
+            {
+              text: '关闭',
+            },
+          ],
+        },
+        {
+          text: '背景设置',
+        },
+        { divider: true },
+        {
+          text: '清空页面',
+        },
+      ]
+    }
+
     return {
       canvasRef,
       viewportRef,
       viewportStyles,
       mouseSelectionState,
       handleClickBlankArea,
+      contextmenus,
     }
   },
 })
