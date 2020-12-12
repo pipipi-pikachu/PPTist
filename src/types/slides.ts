@@ -60,12 +60,12 @@ export interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps
 }
 
 export interface PPTLineElement extends PPTElementBaseProps {
-  start: number[];
-  end: number[];
+  start: [number, number];
+  end: [number, number];
   width: number;
   style: string;
   color: string;
-  marker: string[];
+  marker: [string, string];
   lineType: string;
 }
 
@@ -121,6 +121,7 @@ export interface PPTAnimation {
 
 export interface Slide {
   id: string;
+  background: [string, string];
   elements: PPTElement[];
   animations: PPTAnimation[];
 }
