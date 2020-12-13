@@ -42,6 +42,7 @@ export default defineComponent({
     const store = useStore<State>()
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
+    const disableHotkeys = computed(() => store.state.disableHotkeys)
 
     const save = () => {
       message.success('save')
@@ -112,15 +113,49 @@ export default defineComponent({
       if(shiftKeyDown.value) shiftKeyDown.value = false
     }
 
+    const pasteImageFile = (imageFile: File) => {
+      console.log(imageFile)
+    }
+
+    const pasteText = (text: string) => {
+      console.log(text)
+    }
+
+    const pasteListener = (e: ClipboardEvent) => {
+      if(!editorAreaFocus.value && !thumbnailsFocus.value) return
+      if(disableHotkeys.value) return
+
+      if(!e.clipboardData) return
+
+      const clipboardDataItems = e.clipboardData.items
+      const clipboardDataFirstItem = clipboardDataItems[0]
+
+      if(!clipboardDataFirstItem) return
+
+      for(const item of clipboardDataItems) {
+        if(item.kind === 'file' && item.type.indexOf('image') !== -1) {
+          const imageFile = item.getAsFile()
+          if(imageFile) pasteImageFile(imageFile)
+          return
+        }
+      }
+
+      if( clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain' ) {
+        clipboardDataFirstItem.getAsString(text => pasteText(text))
+      }
+    }
+
     onMounted(() => {
       document.addEventListener('keydown', keydownListener)
       document.addEventListener('keyup', keyupListener)
       window.addEventListener('blur', keyupListener)
+      document.addEventListener('paste', pasteListener)
     })
     onUnmounted(() => {
       document.removeEventListener('keydown', keydownListener)
       document.removeEventListener('keyup', keyupListener)
       window.removeEventListener('blur', keyupListener)
+      document.removeEventListener('paste', pasteListener)
     })
   },
 })

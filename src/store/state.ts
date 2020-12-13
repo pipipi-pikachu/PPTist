@@ -7,11 +7,11 @@ export type SaveState = 'complete' | 'pending'
 export type State = {
   activeElementIdList: string[];
   handleElementId: string;
-  isShowGridLines: boolean;
   editorAreaShowScale: number;
   canvasScale: number;
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
+  disableHotkeys: boolean;
   availableFonts: FontName[];
   saveState: SaveState;
   slides: Slide[];
@@ -23,11 +23,11 @@ export type State = {
 export const state: State = {
   activeElementIdList: [],
   handleElementId: '',
-  isShowGridLines: false,
   editorAreaShowScale: 85,
   canvasScale: 1,
   thumbnailsFocus: false,
   editorAreaFocus: false,
+  disableHotkeys: false,
   availableFonts: [],
   saveState: 'complete',
   slides: slides,

@@ -32,9 +32,9 @@ export type Mutations = {
   [MutationTypes.SET_HANDLE_ELEMENT_ID](state: State, handleElementId: string): void;
   [MutationTypes.SET_EDITOR_AREA_SHOW_SCALE](state: State, scale: number): void;
   [MutationTypes.SET_CANVAS_SCALE](state: State, scale: number): void;
-  [MutationTypes.TOGGLE_SHOW_GRID_LINES](state: State): void;
   [MutationTypes.SET_THUMBNAILS_FOCUS](state: State, isFocus: boolean): void;
   [MutationTypes.SET_EDITORAREA_FOCUS](state: State, isFocus: boolean): void;
+  [MutationTypes.SET_DISABLE_HOTKEYS_STATE](state: State, disable: boolean): void;
   [MutationTypes.SET_AVAILABLE_FONTS](state: State): void;
   [MutationTypes.SET_SAVE_STATE](state: State, saveState: SaveState ): void;
   [MutationTypes.SET_SLIDES](state: State, slides: Slide[]): void;
@@ -75,16 +75,16 @@ export const mutations: Mutations = {
     state.canvasScale = scale
   },
 
-  [MutationTypes.TOGGLE_SHOW_GRID_LINES](state) {
-    state.isShowGridLines = !state.isShowGridLines
-  },
-
   [MutationTypes.SET_THUMBNAILS_FOCUS](state, isFocus) {
     state.thumbnailsFocus = isFocus
   },
 
   [MutationTypes.SET_EDITORAREA_FOCUS](state, isFocus) {
     state.editorAreaFocus = isFocus
+  },
+
+  [MutationTypes.SET_DISABLE_HOTKEYS_STATE](state, disable) {
+    state.disableHotkeys = disable
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {

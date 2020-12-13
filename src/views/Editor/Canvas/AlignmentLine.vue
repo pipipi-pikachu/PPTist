@@ -23,6 +23,12 @@ interface Axis {
   y: number;
 }
 
+export interface AlignmentLineProps {
+  type: AlignmentLineType;
+  axis: Axis;
+  length: number;
+}
+
 export default {
   name: 'alignment-line',
   props: {

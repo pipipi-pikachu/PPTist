@@ -19,4 +19,10 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach((to, from) => {
+  if(to.name === 'Player' && from.name !== 'Editor') {
+    return router.push({ path: '/' })
+  }
+})
+
 export default router

@@ -25,6 +25,16 @@
         :height="mouseSelectionState.height" 
         :quadrant="mouseSelectionState.quadrant"
       />
+
+      <SlideBackground 
+        :background="currentSlide?.background"
+        :isShowGridLines="isShowGridLines"
+      />
+
+      <AlignmentLine 
+        v-for="(line, index) in alignmentLines" :key="index" 
+        :type="line.type" :axis="line.axis" :length="line.length"
+      />
     </div>
   </div>
 </template>
@@ -38,13 +48,20 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 import MouseSelection from './MouseSelection.vue'
+import SlideBackground from './SlideBackground.vue'
+import AlignmentLine, { AlignmentLineProps } from './AlignmentLine.vue'
 
 export default defineComponent({
   name: 'v-canvas',
   components: {
     MouseSelection,
+    SlideBackground,
+    AlignmentLine,
   },
   setup() {
+    const isShowGridLines = ref(false)
+    const alignmentLines = ref<AlignmentLineProps[]>([])
+
     const viewportStyles = reactive({
       width: VIEWPORT_SIZE,
       height: VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO,
@@ -57,6 +74,8 @@ export default defineComponent({
     const canvasScale = ref(1)
 
     const store = useStore<State>()
+    const currentSlide = computed(() => store.getters.currentSlide)
+
     const editorAreaShowScale = computed(() => store.state.editorAreaShowScale)
     const setViewportSize = () => {
       if(!canvasRef.value) return
@@ -179,9 +198,17 @@ export default defineComponent({
           children: [
             {
               text: '打开',
+              disable: isShowGridLines.value,
+              icon: isShowGridLines.value ? 'icon-check' : '',
+              iconPlacehoder: true,
+              action: () => isShowGridLines.value = true,
             },
             {
               text: '关闭',
+              disable: !isShowGridLines.value,
+              icon: !isShowGridLines.value ? 'icon-check' : '',
+              iconPlacehoder: true,
+              action: () => isShowGridLines.value = false,
             },
           ],
         },
@@ -202,6 +229,9 @@ export default defineComponent({
       mouseSelectionState,
       handleClickBlankArea,
       removeEditorAreaFocus,
+      currentSlide,
+      isShowGridLines,
+      alignmentLines,
       contextmenus,
     }
   },
