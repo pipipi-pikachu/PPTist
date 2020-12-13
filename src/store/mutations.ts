@@ -1,6 +1,8 @@
 import { MutationTypes } from './constants'
 import { State, SaveState } from './state'
 import { Slide, PPTElement } from '@/types/slides'
+import { FONT_NAMES } from '@/configs/fontName'
+import { isSupportFontFamily } from '@/utils/index'
 
 interface AddSlidesData {
   index?: number;
@@ -33,7 +35,7 @@ export type Mutations = {
   [MutationTypes.TOGGLE_SHOW_GRID_LINES](state: State): void;
   [MutationTypes.SET_THUMBNAILS_FOCUS](state: State, isFocus: boolean): void;
   [MutationTypes.SET_EDITORAREA_FOCUS](state: State, isFocus: boolean): void;
-  [MutationTypes.SET_AVAILABLE_FONTS](state: State, fonts: string[]): void;
+  [MutationTypes.SET_AVAILABLE_FONTS](state: State): void;
   [MutationTypes.SET_SAVE_STATE](state: State, saveState: SaveState ): void;
   [MutationTypes.SET_SLIDES](state: State, slides: Slide[]): void;
   [MutationTypes.ADD_SLIDES](state: State, data: AddSlidesData): void;
@@ -44,6 +46,10 @@ export type Mutations = {
   [MutationTypes.UPDATE_SLIDE_INDEX](state: State, index: number): void;
   [MutationTypes.ADD_ELEMENTS](state: State, elements: PPTElement[]): void;
   [MutationTypes.UPDATE_ELEMENT](state: State, data: UpdateElementData): void;
+  [MutationTypes.SET_CURSOR](state: State, cursor: number): void;
+  [MutationTypes.UNDO](state: State): void;
+  [MutationTypes.REDO](state: State): void;
+  [MutationTypes.SET_HISTORY_RECORD_LENGTH](state: State, length: number): void;
 }
 
 export const mutations: Mutations = {
@@ -81,8 +87,8 @@ export const mutations: Mutations = {
     state.editorAreaFocus = isFocus
   },
 
-  [MutationTypes.SET_AVAILABLE_FONTS](state, fonts) {
-    state.availableFonts = fonts
+  [MutationTypes.SET_AVAILABLE_FONTS](state) {
+    state.availableFonts = FONT_NAMES.filter(font => isSupportFontFamily(font.en))
   },
 
   [MutationTypes.SET_SAVE_STATE](state, saveState) {
@@ -145,5 +151,23 @@ export const mutations: Mutations = {
       return elId.includes(el.elId) ? { ...el, ...props } : el
     })
     state.slides[slideIndex].elements = (elements as PPTElement[])
+  },
+
+  // history
+
+  [MutationTypes.SET_CURSOR](state, cursor) {
+    state.cursor = cursor
+  },
+
+  [MutationTypes.UNDO](state) {
+    state.cursor -= 1
+  },
+  
+  [MutationTypes.REDO](state) {
+    state.cursor += 1
+  },
+
+  [MutationTypes.SET_HISTORY_RECORD_LENGTH](state, length) {
+    state.historyRecordLength = length
   },
 }

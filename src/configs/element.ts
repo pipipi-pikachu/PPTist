@@ -19,24 +19,24 @@ export const ELEMENT_TYPE_TABS = {
   table: { key: 'element-table', label: '表格属性' },
 }
 
-export const ELEMENTS = {
-  text: '文本',
-  image: '图片',
-  shape: '形状',
-  icon: '图标',
-  line: '线条',
-  chart: '图表',
-  iframe: 'Iframe',
-  table: '表格',
+export enum ELEMENTS {
+  text = '文本',
+  image = '图片',
+  shape = '形状',
+  icon = '图标',
+  line = '线条',
+  chart = '图表',
+  iframe = 'Iframe',
+  table = '表格',
 }
 
-export const OPERATE_KEYS = {
-  LEFT_TOP: 1,
-  TOP: 2,
-  RIGHT_TOP: 3,
-  LEFT: 4,
-  RIGHT: 5,
-  LEFT_BOTTOM: 6,
-  BOTTOM: 7,
-  RIGHT_BOTTOM: 8,
+export enum OPERATE_KEYS {
+  LEFT_TOP = 1,
+  TOP = 2,
+  RIGHT_TOP = 3,
+  LEFT = 4,
+  RIGHT = 5,
+  LEFT_BOTTOM = 6,
+  BOTTOM = 7,
+  RIGHT_BOTTOM = 8,
 }

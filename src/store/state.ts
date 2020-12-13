@@ -1,5 +1,6 @@
 import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/index'
+import { FontName } from '@/configs/fontName'
 
 export type SaveState = 'complete' | 'pending'
 
@@ -11,7 +12,7 @@ export type State = {
   canvasScale: number;
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
-  availableFonts: string[];
+  availableFonts: FontName[];
   saveState: SaveState;
   slides: Slide[];
   slideIndex: number;

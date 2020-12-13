@@ -1,4 +1,10 @@
-export const FONT_FAMILYS = [
+export interface FontName {
+  source: string;
+  zh: string;
+  en: string;
+}
+
+export const FONT_NAMES = [
   { source: 'windows', zh: '微软雅黑', en: 'Microsoft Yahei' },
   { source: 'windows', zh: '宋体', en: 'SimSun' },
   { source: 'windows', zh: '黑体', en: 'SimHei' },

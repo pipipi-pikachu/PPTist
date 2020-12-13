@@ -4,6 +4,7 @@
     ref="canvasRef"
     @mousedown="$event => handleClickBlankArea($event)"
     v-contextmenu="contextmenus"
+    v-click-outside="removeEditorAreaFocus"
   >
     <div 
       class="viewport" 
@@ -32,6 +33,7 @@
 import { computed, defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
+import { MutationTypes } from '@/store/constants'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
@@ -149,8 +151,16 @@ export default defineComponent({
         mouseSelectionState.isShow = false
       }
     }
+
+    const editorAreaFocus = computed(() => store.state.editorAreaFocus)
+
     const handleClickBlankArea = (e: MouseEvent) => {
       updateMouseSelection(e)
+      if(!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+    }
+
+    const removeEditorAreaFocus = () => {
+      if(editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
 
     const contextmenus = (): ContextmenuItem[] => {
@@ -191,6 +201,7 @@ export default defineComponent({
       viewportStyles,
       mouseSelectionState,
       handleClickBlankArea,
+      removeEditorAreaFocus,
       contextmenus,
     }
   },

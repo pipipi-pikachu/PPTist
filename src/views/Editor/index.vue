@@ -13,7 +13,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store/state'
+import { KEYCODE } from '@/configs/keyCode'
+
+import { message } from 'ant-design-vue'
 
 import EditorHeader from './EditorHeader/index.vue'
 import Canvas from './Canvas/index.vue'
@@ -29,6 +34,94 @@ export default defineComponent({
     CanvasTool,
     Thumbnails,
     Toolbar,
+  },
+  setup() {
+    const ctrlKeyDown = ref(false)
+    const shiftKeyDown = ref(false)
+
+    const store = useStore<State>()
+    const editorAreaFocus = computed(() => store.state.editorAreaFocus)
+    const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
+
+    const save = () => {
+      message.success('save')
+    }
+    const copy = () => {
+      message.success('copy')
+    }
+    const cut = () => {
+      message.success('cut')
+    }
+    const undo = () => {
+      message.success('undo')
+    }
+    const redo = () => {
+      message.success('redo')
+    }
+    const selectAll = () => {
+      message.success('selectAll')
+    }
+    const lock = () => {
+      message.success('lock')
+    }
+    const combine = () => {
+      message.success('combine')
+    }
+    const uncombine = () => {
+      message.success('uncombine')
+    }
+    const remove = () => {
+      message.success('remove')
+    }
+    const move = (key: number) => {
+      message.success(`move: ${key}`)
+    }
+    const create = () => {
+      message.success('create')
+    }
+
+    const keydownListener = (e: KeyboardEvent) => {
+      const { keyCode, ctrlKey, shiftKey } = e
+
+      if(ctrlKey && !ctrlKeyDown.value) ctrlKeyDown.value = true
+      if(shiftKey && !shiftKeyDown.value) shiftKeyDown.value = true
+      
+      if(!editorAreaFocus.value && !thumbnailsFocus.value) return
+
+      e.preventDefault()
+      
+      if(ctrlKey && keyCode === KEYCODE.S) save()
+      if(ctrlKey && keyCode === KEYCODE.C) copy()
+      if(ctrlKey && keyCode === KEYCODE.X) cut()
+      if(ctrlKey && keyCode === KEYCODE.Z) undo()
+      if(ctrlKey && keyCode === KEYCODE.Y) redo()
+      if(ctrlKey && keyCode === KEYCODE.A) selectAll()
+      if(ctrlKey && keyCode === KEYCODE.L) lock()
+      if(!shiftKey && ctrlKey && keyCode === KEYCODE.G) combine()
+      if(shiftKey && ctrlKey && keyCode === KEYCODE.G) uncombine()
+      if(keyCode === KEYCODE.DELETE) remove()
+      if(keyCode === KEYCODE.UP) move(KEYCODE.UP)
+      if(keyCode === KEYCODE.DOWN) move(KEYCODE.DOWN)
+      if(keyCode === KEYCODE.LEFT) move(KEYCODE.LEFT)
+      if(keyCode === KEYCODE.RIGHT) move(KEYCODE.RIGHT)
+      if(keyCode === KEYCODE.ENTER) create()
+    }
+    
+    const keyupListener = () => {
+      if(ctrlKeyDown.value) ctrlKeyDown.value = false
+      if(shiftKeyDown.value) shiftKeyDown.value = false
+    }
+
+    onMounted(() => {
+      document.addEventListener('keydown', keydownListener)
+      document.addEventListener('keyup', keyupListener)
+      window.addEventListener('blur', keyupListener)
+    })
+    onUnmounted(() => {
+      document.removeEventListener('keydown', keydownListener)
+      document.removeEventListener('keyup', keyupListener)
+      window.removeEventListener('blur', keyupListener)
+    })
   },
 })
 </script>

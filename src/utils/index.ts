@@ -10,7 +10,7 @@ export const createRandomNumber = (min: number, max: number) => {
 }
 
 // 生成随机码
-export const createRandomCode = (len: number = 6) => {
+export const createRandomCode = (len = 6) => {
   const charset = `_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
   const maxLen = charset.length
   let ret = ''
@@ -30,7 +30,7 @@ export const createUUID = () => {
 }
 
 // 获取当前日期字符串
-export const getDateTime = (format: string = 'yyyy-MM-dd hh:mm:ss') => {
+export const getDateTime = (format = 'yyyy-MM-dd hh:mm:ss') => {
   const date = new Date()
 
   const formatMap = {
@@ -176,7 +176,7 @@ export const encrypt = (msg: string) => {
 
 // 解密函数
 export const decrypt = (ciphertext: string) => {
-  const bytes  = CryptoJS.AES.decrypt(ciphertext, CRYPTO_KEY)
+  const bytes = CryptoJS.AES.decrypt(ciphertext, CRYPTO_KEY)
   return bytes.toString(CryptoJS.enc.Utf8)
 }
 
