@@ -1,6 +1,8 @@
 import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/index'
 
+export type SaveState = 'complete' | 'pending'
+
 export type State = {
   activeElementIdList: string[];
   handleElementId: string;
@@ -10,6 +12,7 @@ export type State = {
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
   availableFonts: string[];
+  saveState: SaveState;
   slides: Slide[];
   slideIndex: number;
   cursor: number;
@@ -25,6 +28,7 @@ export const state: State = {
   thumbnailsFocus: false,
   editorAreaFocus: false,
   availableFonts: [],
+  saveState: 'complete',
   slides: slides,
   slideIndex: 0,
   cursor: -1,
