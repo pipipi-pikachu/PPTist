@@ -17,6 +17,7 @@ import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
 import { KEYCODE } from '@/configs/keyCode'
+import { decrypt } from '@/utils/index'
 
 import { message } from 'ant-design-vue'
 
@@ -87,25 +88,68 @@ export default defineComponent({
       if(ctrlKey && !ctrlKeyDown.value) ctrlKeyDown.value = true
       if(shiftKey && !shiftKeyDown.value) shiftKeyDown.value = true
       
-      if(!editorAreaFocus.value && !thumbnailsFocus.value) return
-
-      e.preventDefault()
+      if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
       
-      if(ctrlKey && keyCode === KEYCODE.S) save()
-      if(ctrlKey && keyCode === KEYCODE.C) copy()
-      if(ctrlKey && keyCode === KEYCODE.X) cut()
-      if(ctrlKey && keyCode === KEYCODE.Z) undo()
-      if(ctrlKey && keyCode === KEYCODE.Y) redo()
-      if(ctrlKey && keyCode === KEYCODE.A) selectAll()
-      if(ctrlKey && keyCode === KEYCODE.L) lock()
-      if(!shiftKey && ctrlKey && keyCode === KEYCODE.G) combine()
-      if(shiftKey && ctrlKey && keyCode === KEYCODE.G) uncombine()
-      if(keyCode === KEYCODE.DELETE) remove()
-      if(keyCode === KEYCODE.UP) move(KEYCODE.UP)
-      if(keyCode === KEYCODE.DOWN) move(KEYCODE.DOWN)
-      if(keyCode === KEYCODE.LEFT) move(KEYCODE.LEFT)
-      if(keyCode === KEYCODE.RIGHT) move(KEYCODE.RIGHT)
-      if(keyCode === KEYCODE.ENTER) create()
+      if(ctrlKey && keyCode === KEYCODE.S) {
+        e.preventDefault()
+        save()
+      }
+      if(ctrlKey && keyCode === KEYCODE.C) {
+        e.preventDefault()
+        copy()
+      }
+      if(ctrlKey && keyCode === KEYCODE.X) {
+        e.preventDefault()
+        cut()
+      }
+      if(ctrlKey && keyCode === KEYCODE.Z) {
+        e.preventDefault()
+        undo()
+      }
+      if(ctrlKey && keyCode === KEYCODE.Y) {
+        e.preventDefault()
+        redo()
+      }
+      if(ctrlKey && keyCode === KEYCODE.A) {
+        e.preventDefault()
+        selectAll()
+      }
+      if(ctrlKey && keyCode === KEYCODE.L) {
+        e.preventDefault()
+        lock()
+      }
+      if(!shiftKey && ctrlKey && keyCode === KEYCODE.G) {
+        e.preventDefault()
+        combine()
+      }
+      if(shiftKey && ctrlKey && keyCode === KEYCODE.G) {
+        e.preventDefault()
+        uncombine()
+      }
+      if(keyCode === KEYCODE.DELETE) {
+        e.preventDefault()
+        remove()
+      }
+      if(keyCode === KEYCODE.UP) {
+        e.preventDefault()
+        move(KEYCODE.UP)
+      }
+      if(keyCode === KEYCODE.DOWN) {
+        e.preventDefault()
+        move(KEYCODE.DOWN)
+      }
+      if(keyCode === KEYCODE.LEFT) {
+        e.preventDefault()
+        move(KEYCODE.LEFT)
+      }
+      if(keyCode === KEYCODE.RIGHT) {
+        e.preventDefault()
+        move(KEYCODE.RIGHT)
+      }
+      if(keyCode === KEYCODE.ENTER) {
+        e.preventDefault()
+        create()
+      }
     }
     
     const keyupListener = () => {
@@ -118,7 +162,14 @@ export default defineComponent({
     }
 
     const pasteText = (text: string) => {
-      console.log(text)
+      let content
+      try {
+        content = JSON.parse(decrypt(text))
+      }
+      catch {
+        content = text
+      }
+      console.log(content)
     }
 
     const pasteListener = (e: ClipboardEvent) => {

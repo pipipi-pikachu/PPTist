@@ -40,12 +40,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
 import { MutationTypes } from '@/store/constants'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+
+import useDropImage from '@/hooks/useDropImage'
 
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
@@ -59,8 +61,14 @@ export default defineComponent({
     AlignmentLine,
   },
   setup() {
+    const viewportRef = ref<HTMLElement | null>(null)
     const isShowGridLines = ref(false)
     const alignmentLines = ref<AlignmentLineProps[]>([])
+
+    const dropImageFile = useDropImage(viewportRef)
+    watch(dropImageFile, () => {
+      console.log(dropImageFile.value)
+    })
 
     const viewportStyles = reactive({
       width: VIEWPORT_SIZE,
@@ -99,14 +107,14 @@ export default defineComponent({
     }
 
     const resizeObserver = new ResizeObserver(setViewportSize)
+
     onMounted(() => {
       if(canvasRef.value) resizeObserver.observe(canvasRef.value)
     })
     onUnmounted(() => {
       if(canvasRef.value) resizeObserver.unobserve(canvasRef.value)
     })
-
-    const viewportRef = ref<Element | null>(null)
+    
     const mouseSelectionState = reactive({
       isShow: false,
       top: 0,
@@ -212,10 +220,6 @@ export default defineComponent({
             },
           ],
         },
-        {
-          text: '背景设置',
-        },
-        { divider: true },
         {
           text: '清空页面',
         },
