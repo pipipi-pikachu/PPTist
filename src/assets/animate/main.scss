@@ -1,0 +1,103 @@
+@import './bounce.scss';
+@import './fade.scss';
+@import './flip.scss';
+@import './rotate.scss';
+@import './slide.scss';
+@import './zoom.scss';
+
+.animate {
+  animation-duration: 0ms;
+
+  &.duration-500 {
+    animation-duration: 500ms;
+  }
+  &.duration-1000 {
+    animation-duration: 1000ms;
+  }
+  &.duration-1500 {
+    animation-duration: 1500ms;
+  }
+  &.duration-2000 {
+    animation-duration: 2000ms;
+  }
+
+  &.bounceIn {
+    animation-name: bounceIn;
+  }
+  &.bounceInDown {
+    animation-name: bounceInDown;
+  }
+  &.bounceInLeft {
+    animation-name: bounceInLeft;
+  }
+  &.bounceInRight {
+    animation-name: bounceInRight;
+  }
+  &.bounceInUp {
+    animation-name: bounceInUp;
+  }
+  &.fadeIn {
+    animation-name: fadeIn;
+  }
+  &.fadeInDown {
+    animation-name: fadeInDown;
+  }
+  &.fadeInLeft {
+    animation-name: fadeInLeft;
+  }
+  &.fadeInRight {
+    animation-name: fadeInRight;
+  }
+  &.fadeInUp {
+    animation-name: fadeInUp;
+  }
+  &.flipInX {
+    animation-name: flipInX;
+  }
+  &.flipInY {
+    animation-name: flipInY;
+  }
+  &.rotateIn {
+    animation-name: rotateIn;
+  }
+  &.rotateInDownLeft {
+    animation-name: rotateInDownLeft;
+  }
+  &.rotateInDownRight {
+    animation-name: rotateInDownRight;
+  }
+  &.rotateInUpLeft {
+    animation-name: rotateInUpLeft;
+  }
+  &.rotateInUpRight {
+    animation-name: rotateInUpRight;
+  }
+  &.slideInDown {
+    animation-name: slideInDown;
+  }
+  &.slideInLeft {
+    animation-name: slideInLeft;
+  }
+  &.slideInRight {
+    animation-name: slideInRight;
+  }
+  &.slideInUp {
+    animation-name: slideInUp;
+  }
+  &.zoomIn {
+    animation-name: zoomIn;
+  }
+  &.zoomInDown {
+    animation-name: zoomInDown;
+  }
+  &.zoomInLeft {
+    animation-name: zoomInLeft;
+  }
+  &.zoomInRight {
+    animation-name: zoomInRight;
+  }
+  &.zoomInUp {
+    animation-name: zoomInUp;
+  }
+}
+
