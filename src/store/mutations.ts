@@ -1,5 +1,5 @@
 import { MutationTypes } from './constants'
-import { State, SaveState } from './state'
+import { State } from './state'
 import { Slide, PPTElement } from '@/types/slides'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/index'
@@ -36,7 +36,6 @@ export type Mutations = {
   [MutationTypes.SET_EDITORAREA_FOCUS](state: State, isFocus: boolean): void;
   [MutationTypes.SET_DISABLE_HOTKEYS_STATE](state: State, disable: boolean): void;
   [MutationTypes.SET_AVAILABLE_FONTS](state: State): void;
-  [MutationTypes.SET_SAVE_STATE](state: State, saveState: SaveState ): void;
   [MutationTypes.SET_SLIDES](state: State, slides: Slide[]): void;
   [MutationTypes.ADD_SLIDES](state: State, data: AddSlidesData): void;
   [MutationTypes.SET_SLIDE](state: State, data: SetSlideData): void;
@@ -89,10 +88,6 @@ export const mutations: Mutations = {
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {
     state.availableFonts = FONT_NAMES.filter(font => isSupportFontFamily(font.en))
-  },
-
-  [MutationTypes.SET_SAVE_STATE](state, saveState) {
-    state.saveState = saveState
   },
 
   // slides

@@ -1,5 +1,4 @@
 export enum KEYCODE {
-  S = 83,
   C = 67,
   X = 88,
   Z = 90,

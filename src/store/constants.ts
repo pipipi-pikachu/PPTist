@@ -9,7 +9,6 @@ export enum MutationTypes {
   SET_EDITORAREA_FOCUS = 'setEditorAreaFocus',
   SET_DISABLE_HOTKEYS_STATE = 'setDisableHotkeysState',
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
-  SET_SAVE_STATE = 'setSaveState',
 
   // slides
   SET_SLIDES = 'setSlides',

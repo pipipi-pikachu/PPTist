@@ -23,6 +23,16 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { PPTElement } from '@/types/slides'
 
+import {
+  ElementOrderCommand,
+  ElementOrderCommands,
+  ElementAlignCommand,
+  ElementAlignCommands,
+  ElementScaleHandler,
+  ElementLockCommand,
+  ElementLockCommands,
+} from '@/types/edit'
+
 import ImageElement from './ImageElement.index.vue'
 import TextElement from './TextElement.index.vue'
 
@@ -62,11 +72,11 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, direction: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: ElementScaleHandler) => void>,
       required: true,
     },
-    updateZIndex: {
-      type: Function as PropType<(element: PPTElement, operation: 'up' | 'down' | 'top' | 'bottom') => void>,
+    orderElement: {
+      type: Function as PropType<(element: PPTElement, command: ElementOrderCommand) => void>,
       required: true,
     },
     combineElements: {
@@ -78,7 +88,7 @@ export default defineComponent({
       required: true,
     },
     alignElement: {
-      type: Function as PropType<(direction: 'top' | 'verticalCenter' | 'bottom' | 'left' | 'horizontalCenter' | 'right') => void>,
+      type: Function as PropType<(command: ElementAlignCommand) => void>,
       required: true,
     },
     deleteElement: {
@@ -86,7 +96,7 @@ export default defineComponent({
       required: true,
     },
     lockElement: {
-      type: Function as PropType<(element: PPTElement, handle: 'lock' | 'unlock') => void>,
+      type: Function as PropType<(element: PPTElement, command: ElementLockCommand) => void>,
       required: true,
     },
     copyElement: {
@@ -112,7 +122,7 @@ export default defineComponent({
         return [{
           text: '解锁', 
           icon: 'icon-unlock',
-          action: () => props.lockElement(props.elementInfo, 'unlock'),
+          action: () => props.lockElement(props.elementInfo, ElementLockCommands.UNLOCK),
         }]
       }
 
@@ -135,29 +145,29 @@ export default defineComponent({
           icon: 'icon-top-layer',
           disable: props.isMultiSelect && !props.elementInfo.groupId,
           children: [
-            { text: '置顶层', action: () => props.updateZIndex(props.elementInfo, 'top') },
-            { text: '置底层', action: () => props.updateZIndex(props.elementInfo, 'bottom') },
+            { text: '置顶层', action: () => props.orderElement(props.elementInfo, ElementOrderCommands.TOP) },
+            { text: '置底层', action: () => props.orderElement(props.elementInfo, ElementOrderCommands.BOTTOM) },
             { divider: true },
-            { text: '上移一层', action: () => props.updateZIndex(props.elementInfo, 'up') },
-            { text: '下移一层', action: () => props.updateZIndex(props.elementInfo, 'down') },
+            { text: '上移一层', action: () => props.orderElement(props.elementInfo, ElementOrderCommands.UP) },
+            { text: '下移一层', action: () => props.orderElement(props.elementInfo, ElementOrderCommands.DOWN) },
           ],
         },
         {
           text: '水平对齐',
           icon: 'icon-align-left',
           children: [
-            { text: '水平居中', action: () => props.alignElement('horizontalCenter') },
-            { text: '左对齐', action: () => props.alignElement('left') },
-            { text: '右对齐', action: () => props.alignElement('right') },
+            { text: '水平居中', action: () => props.alignElement(ElementAlignCommands.HORIZONTAL) },
+            { text: '左对齐', action: () => props.alignElement(ElementAlignCommands.LEFT) },
+            { text: '右对齐', action: () => props.alignElement(ElementAlignCommands.RIGHT) },
           ],
         },
         {
           text: '垂直对齐',
           icon: 'icon-align-bottom',
           children: [
-            { text: '垂直居中', action: () => props.alignElement('verticalCenter') },
-            { text: '上对齐', action: () => props.alignElement('top') },
-            { text: '下对齐', action: () => props.alignElement('bottom') },
+            { text: '垂直居中', action: () => props.alignElement(ElementAlignCommands.VERTICAL) },
+            { text: '上对齐', action: () => props.alignElement(ElementAlignCommands.TOP) },
+            { text: '下对齐', action: () => props.alignElement(ElementAlignCommands.BOTTOM) },
           ],
         },
         { divider: true },
@@ -172,7 +182,7 @@ export default defineComponent({
           text: '锁定',
           subText: 'Ctrl + L',
           icon: 'icon-lock',
-          action: () => props.lockElement(props.elementInfo, 'lock'),
+          action: () => props.lockElement(props.elementInfo, ElementLockCommands.LOCK),
         },
         {
           text: '删除',

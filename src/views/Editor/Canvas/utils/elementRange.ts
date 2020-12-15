@@ -1,7 +1,7 @@
-import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement, PPTIconElement } from '@/types/slides'
+import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
 
 // 获取矩形旋转后在画布中的位置范围
-export const getRectRotatedRange = (element: PPTTextElement | PPTImageElement | PPTShapeElement | PPTIconElement) => {
+export const getRectRotatedRange = (element: PPTTextElement | PPTImageElement | PPTShapeElement) => {
   const { left, top, width, height, rotate = 0 } = element
 
   const radius = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) ) / 2

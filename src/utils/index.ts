@@ -169,6 +169,17 @@ export const copyText = (text: string) => {
   })
 }
 
+// 读取剪贴板
+export const readClipboard = () => {
+  if(navigator.clipboard) {
+    navigator.clipboard.readText().then(text => {
+      if(!text) return { err: '剪贴板为空或者不包含文本' }
+      return { text }
+    })
+  }
+  return { err: '浏览器不支持或禁止访问剪贴板' }
+}
+
 // 加密函数
 export const encrypt = (msg: string) => {
   return CryptoJS.AES.encrypt(msg, CRYPTO_KEY).toString()

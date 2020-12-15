@@ -19,7 +19,6 @@ export interface PPTElementBorderProps {
 
 export interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   type: 'text';
-  textType: string;
   content: string;
   rotate?: number;
   fill?: string;
@@ -28,20 +27,18 @@ export interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps
   segmentSpacing?: number;
   letterSpacing?: number;
   shadow?: string;
-  padding?: number;
 }
 
-interface ImageClip {
-  range: [[number, number], [number, number]];
-  shape: string;
-}
 export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   type: 'image';
   lockRatio: boolean;
   imgUrl: string;
   rotate?: number;
   filter?: string;
-  clip?: ImageClip;
+  clip?: {
+    range: [[number, number], [number, number]];
+    shape: string;
+  };
   flip?: string;
   shadow?: string;
 }
@@ -58,15 +55,6 @@ export interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProp
   textAlign?: string;
 }
 
-export interface PPTIconElement extends PPTElementBaseProps, PPTElementSizeProps {
-  type: 'icon';
-  color: string;
-  lockRatio: boolean;
-  svgCode: string;
-  rotate?: number;
-  shadow?: string;
-}
-
 export interface PPTLineElement extends PPTElementBaseProps {
   type: 'line';
   start: [number, number];
@@ -78,23 +66,11 @@ export interface PPTLineElement extends PPTElementBaseProps {
   lineType: string;
 }
 
-export interface BarChartSeries {
-  name: string;
-  data: number[];
-}
-export interface BarChartData {
-  axisData: string[];
-  series: BarChartSeries[];
-}
-export interface PieChartData {
-  name: string;
-  value: number
-}
 export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   type: 'chart';
   chartType: string;
   theme: string;
-  data: PieChartData[] | BarChartData;
+  data: Object;
 }
 
 export interface TableCell {
@@ -111,19 +87,13 @@ export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProp
   colSizes: number[];
   data: TableCell[][];
 }
-export interface PPTIframeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
-  type: 'iframe';
-  src: string;
-}
 
 export type PPTElement = PPTTextElement | 
                          PPTImageElement | 
                          PPTShapeElement | 
-                         PPTIconElement | 
                          PPTLineElement | 
                          PPTChartElement |
-                         PPTTableElement |
-                         PPTIframeElement
+                         PPTTableElement
 
 export interface PPTAnimation {
   elId: string;

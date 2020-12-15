@@ -1,4 +1,4 @@
-import { PPTTextElement, PPTImageElement, PPTShapeElement, PPTIconElement } from '@/types/slides'
+import { PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
 import { OPERATE_KEYS } from '@/configs/element'
 
 // 给定一个坐标，计算该坐标到(0, 0)点连线的弧度值
@@ -11,7 +11,7 @@ export const getAngleFromCoordinate = (x: number, y: number) => {
 }
 
 // 计算元素被旋转一定角度后，八个操作点的新坐标
-export const getRotateElementPoints = (element: PPTTextElement | PPTImageElement | PPTShapeElement | PPTIconElement, angle: number) => {
+export const getRotateElementPoints = (element: PPTTextElement | PPTImageElement | PPTShapeElement, angle: number) => {
   const { left, top, width, height } = element
 
   const radius = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) ) / 2

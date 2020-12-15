@@ -45,9 +45,6 @@ export default defineComponent({
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
     const disableHotkeys = computed(() => store.state.disableHotkeys)
 
-    const save = () => {
-      message.success('save')
-    }
     const copy = () => {
       message.success('copy')
     }
@@ -89,11 +86,7 @@ export default defineComponent({
       if(shiftKey && !shiftKeyDown.value) shiftKeyDown.value = true
       
       if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
-      
-      if(ctrlKey && keyCode === KEYCODE.S) {
-        e.preventDefault()
-        save()
-      }
+
       if(ctrlKey && keyCode === KEYCODE.C) {
         e.preventDefault()
         copy()
