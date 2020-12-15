@@ -1,3 +1,5 @@
+export type ElementType = 'text' | 'image' | 'shape' | 'line' | 'chart' | 'table'
+
 export interface PPTElementBaseProps {
   elId: string;
   isLock: boolean;
@@ -51,8 +53,6 @@ export interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProp
   rotate?: number;
   opacity?: number;
   shadow?: string;
-  text?: string;
-  textAlign?: string;
 }
 
 export interface PPTLineElement extends PPTElementBaseProps {
@@ -73,7 +73,7 @@ export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProp
   data: Object;
 }
 
-export interface TableCell {
+export interface TableElementCell {
   colspan: number;
   rowspan: number;
   content: string;
@@ -85,7 +85,7 @@ export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProp
   theme: string;
   rowSizes: number[];
   colSizes: number[];
-  data: TableCell[][];
+  data: TableElementCell[][];
 }
 
 export type PPTElement = PPTTextElement | 

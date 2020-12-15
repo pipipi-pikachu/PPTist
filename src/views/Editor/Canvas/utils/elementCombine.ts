@@ -1,4 +1,4 @@
-import { createRandomCode } from '@/utils/index'
+import { createRandomCode } from '@/utils/common'
 import { PPTElement } from '@/types/slides'
 
 // 组合元素（为当前所有激活元素添加一个相同的groupId）

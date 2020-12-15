@@ -17,7 +17,8 @@ import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
 import { KEYCODE } from '@/configs/keyCode'
-import { decrypt } from '@/utils/index'
+import { decrypt } from '@/utils/crypto'
+import { getImageDataURL } from '@/utils/image'
 
 import { message } from 'ant-design-vue'
 
@@ -151,7 +152,9 @@ export default defineComponent({
     }
 
     const pasteImageFile = (imageFile: File) => {
-      console.log(imageFile)
+      getImageDataURL(imageFile).then(dataURL => {
+        console.log(dataURL)
+      })
     }
 
     const pasteText = (text: string) => {

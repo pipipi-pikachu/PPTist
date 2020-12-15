@@ -2,7 +2,7 @@ import { MutationTypes } from './constants'
 import { State } from './state'
 import { Slide, PPTElement } from '@/types/slides'
 import { FONT_NAMES } from '@/configs/fontName'
-import { isSupportFontFamily } from '@/utils/index'
+import { isSupportFontFamily } from '@/utils/fontFamily'
 
 interface AddSlidesData {
   index?: number;

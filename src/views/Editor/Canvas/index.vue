@@ -46,6 +46,7 @@ import { State } from '@/store/state'
 import { MutationTypes } from '@/store/constants'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { getImageDataURL } from '@/utils/image'
 
 import useDropImage from '@/hooks/useDropImage'
 
@@ -67,7 +68,11 @@ export default defineComponent({
 
     const dropImageFile = useDropImage(viewportRef)
     watch(dropImageFile, () => {
-      console.log(dropImageFile.value)
+      if(dropImageFile.value) {
+        getImageDataURL(dropImageFile.value).then(dataURL => {
+          console.log(dataURL)
+        })
+      }
     })
 
     const viewportStyles = reactive({

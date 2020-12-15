@@ -1,4 +1,4 @@
-const DEFAULT_COLOR = '#888'
+const DEFAULT_COLOR = '#41464b'
 
 export const DEFAULT_TEXT = {
   type: 'text',
@@ -6,12 +6,10 @@ export const DEFAULT_TEXT = {
   top: 0,
   width: 300,
   height: 0,
-  padding: 5,
   opacity: 1,
   lineHeight: 1.5,
   segmentSpacing: 5,
-  textType: 'content',
-  content: '<div>“单击此处添加文本”</div>',
+  content: '请输入内容',
 }
 
 export const DEFAULT_IMAGE = {
@@ -25,25 +23,6 @@ export const DEFAULT_SHAPE = {
   type: 'shape',
   fill: DEFAULT_COLOR,
   lockRatio: false,
-}
-
-export const DEFAULT_SHAPE_LINE = {
-  type: 'shape',
-  borderStyle: 'solid',
-  borderWidth: 2,
-  borderColor: DEFAULT_COLOR,
-  fill: 'rgba(0, 0, 0, 0)',
-  lockRatio: false,
-}
-
-export const DEFAULT_ICON = {
-  type: 'icon',
-  left: 0,
-  top: 0,
-  width: 80,
-  height: 80,
-  color: DEFAULT_COLOR,
-  lockRatio: true,
 }
 
 export const DEFAULT_LINE = {
@@ -60,14 +39,6 @@ export const DEFAULT_CHART = {
   top: 0,
   width: 500,
   height: 500,
-}
-
-export const DEFAULT_IFRAME = {
-  type: 'iframe',
-  left: 0,
-  top: 0,
-  width: 800,
-  height: 480,
 }
 
 export const DEFAULT_TABLE = {
