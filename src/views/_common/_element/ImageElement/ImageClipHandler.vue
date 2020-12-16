@@ -58,6 +58,16 @@ interface ClipData {
   path: string;
 }
 
+export interface ClipedEmitData {
+  range: ClipDataRange;
+  position: {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  };
+}
+
 type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
 
 export default defineComponent({
@@ -193,10 +203,12 @@ export default defineComponent({
         width: (topImgWrapperPosition.width - 100) / 100 * props.width,
         height: (topImgWrapperPosition.height - 100) / 100 * props.height,
       }
-      emit('clip', {
+
+      const clipedEmitData: ClipedEmitData = {
         range: currentRange.value,
         position,
-      })
+      }
+      emit('clip', clipedEmitData)
     }
 
     const keyboardClip = (e: KeyboardEvent) => {

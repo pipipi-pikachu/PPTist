@@ -4,14 +4,13 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-
-type ResizablePointType = 't-l' | 't-c' | 't-r' | 'm-l' | 'm-r' | 'b-l' | 'b-c' | 'b-r' | 'any'
+import { OperateResizablePointType } from '@/types/edit'
 
 export default {
   name: 'resizable-point',
   props: {
     type: {
-      type: String as PropType<ResizablePointType>,
+      type: String as PropType<OperateResizablePointType>,
       required: true,
     },
   },

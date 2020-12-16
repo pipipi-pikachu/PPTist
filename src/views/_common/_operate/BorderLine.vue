@@ -4,14 +4,13 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-
-type BorderLineType = 't' | 'b' | 'l' | 'r'
+import { OperateBorderLineType } from '@/types/edit'
 
 export default {
   name: 'border-line',
   props: {
     type: {
-      type: String as PropType<BorderLineType>,
+      type: String as PropType<OperateBorderLineType>,
       required: true,
     },
     isWide: {

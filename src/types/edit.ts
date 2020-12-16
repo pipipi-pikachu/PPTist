@@ -26,3 +26,26 @@ export enum ElementLockCommands {
   LOCK = 'lock',
   UNLOCK = 'unlock',
 }
+
+export type OperateBorderLineType = 't' | 'b' | 'l' | 'r'
+
+export enum OperateBorderLineTypes {
+  T = 't',
+  B = 'b',
+  L = 'l',
+  R = 'r',
+}
+
+export type OperateResizablePointType = 't-l' | 't-c' | 't-r' | 'm-l' | 'm-r' | 'b-l' | 'b-c' | 'b-r' | 'any'
+
+export enum OperateResizablePointTypes {
+  TL = 't-l',
+  TC = 't-c',
+  TR = 't-r',
+  ML = 'm-l',
+  MR = 'm-r',
+  BL = 'b-l',
+  BC = 'b-c',
+  BR = 'b-r',
+  ANY = 'any',
+}

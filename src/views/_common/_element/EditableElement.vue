@@ -1,6 +1,7 @@
 <template>
   <div 
     class="editable-element"
+    ref="elementRef"
     :id="'editable-element-' + elementInfo.elId"
     :style="{ zIndex: elementIndex }"
   >
@@ -10,7 +11,9 @@
       :canvasScale="canvasScale"
       :isActive="isActive"
       :isHandleEl="isHandleEl"
+      :isActiveGroupElement="isActiveGroupElement"
       :isMultiSelect="isMultiSelect"
+      :animationIndex="-1"
       :selectElement="selectElement"
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
@@ -59,12 +62,16 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    isActiveGroupElement: {
+      type: Boolean,
+      required: true,
+    },
     isMultiSelect: {
       type: Boolean,
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, canMove: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTElement, canMove?: boolean) => void>,
       required: true,
     },
     rotateElement: {
