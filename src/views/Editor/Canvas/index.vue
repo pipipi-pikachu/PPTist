@@ -14,7 +14,7 @@
         height: viewportStyles.height + 'px',
         left: viewportStyles.left + 'px',
         top: viewportStyles.top + 'px',
-        transform: `scale(${viewportStyles.scale})`,
+        transform: `scale(${canvasScale})`,
       }"
     >
       <MouseSelection 
@@ -49,6 +49,7 @@ import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { getImageDataURL } from '@/utils/image'
 
 import useDropImage from '@/hooks/useDropImage'
+import useSetViewportSize from './hooks/useSetViewportSize'
 
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
@@ -62,9 +63,11 @@ export default defineComponent({
     AlignmentLine,
   },
   setup() {
+    const store = useStore<State>()
     const viewportRef = ref<HTMLElement | null>(null)
     const isShowGridLines = ref(false)
     const alignmentLines = ref<AlignmentLineProps[]>([])
+    const currentSlide = computed(() => store.getters.currentSlide)
 
     const dropImageFile = useDropImage(viewportRef)
     watch(dropImageFile, () => {
@@ -75,51 +78,15 @@ export default defineComponent({
       }
     })
 
-    const viewportStyles = reactive({
+    const canvasRef = ref<HTMLElement | null>(null)
+    const { canvasScale, viewportLeft, viewportTop } = useSetViewportSize(canvasRef)
+    const viewportStyles = computed(() => ({
       width: VIEWPORT_SIZE,
       height: VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO,
-      left: 0,
-      top: 0,
-      scale: 1,
-    })
+      left: viewportLeft.value,
+      top: viewportTop.value,
+    }))
 
-    const canvasRef = ref<Element | null>(null)
-    const canvasScale = ref(1)
-
-    const store = useStore<State>()
-    const currentSlide = computed(() => store.getters.currentSlide)
-
-    const editorAreaShowScale = computed(() => store.state.editorAreaShowScale)
-    const setViewportSize = () => {
-      if(!canvasRef.value) return
-      const canvasWidth = canvasRef.value.clientWidth
-      const canvasHeight = canvasRef.value.clientHeight
-
-      if(canvasHeight / canvasWidth > VIEWPORT_ASPECT_RATIO) {
-        const viewportActualWidth = canvasWidth * (editorAreaShowScale.value / 100)
-        canvasScale.value = viewportActualWidth / VIEWPORT_SIZE
-        viewportStyles.scale = canvasScale.value
-        viewportStyles.left = (canvasWidth - viewportActualWidth) / 2
-        viewportStyles.top = (canvasHeight - viewportActualWidth * VIEWPORT_ASPECT_RATIO) / 2
-      }
-      else {
-        const viewportActualHeight = canvasHeight * (editorAreaShowScale.value / 100)
-        canvasScale.value = viewportActualHeight / (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO)
-        viewportStyles.scale = canvasScale.value
-        viewportStyles.left = (canvasWidth - viewportActualHeight / VIEWPORT_ASPECT_RATIO) / 2
-        viewportStyles.top = (canvasHeight - viewportActualHeight) / 2
-      }
-    }
-
-    const resizeObserver = new ResizeObserver(setViewportSize)
-
-    onMounted(() => {
-      if(canvasRef.value) resizeObserver.observe(canvasRef.value)
-    })
-    onUnmounted(() => {
-      if(canvasRef.value) resizeObserver.unobserve(canvasRef.value)
-    })
-    
     const mouseSelectionState = reactive({
       isShow: false,
       top: 0,
@@ -205,26 +172,6 @@ export default defineComponent({
           text: '粘贴',
           subText: 'Ctrl + V',
         },
-        { divider: true },
-        {
-          text: '参考线',
-          children: [
-            {
-              text: '打开',
-              disable: isShowGridLines.value,
-              icon: isShowGridLines.value ? 'icon-check' : '',
-              iconPlacehoder: true,
-              action: () => isShowGridLines.value = true,
-            },
-            {
-              text: '关闭',
-              disable: !isShowGridLines.value,
-              icon: !isShowGridLines.value ? 'icon-check' : '',
-              iconPlacehoder: true,
-              action: () => isShowGridLines.value = false,
-            },
-          ],
-        },
         {
           text: '清空页面',
         },
@@ -235,6 +182,7 @@ export default defineComponent({
       canvasRef,
       viewportRef,
       viewportStyles,
+      canvasScale,
       mouseSelectionState,
       handleClickBlankArea,
       removeEditorAreaFocus,
