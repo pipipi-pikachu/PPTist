@@ -73,12 +73,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 import { PPTTextElement } from '@/types/slides'
 import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
 
-import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 import { OPERATE_KEYS } from '@/configs/element'
 
 import ElementBorder from '@/views/_common/_element/ElementBorder.vue'
@@ -211,7 +210,7 @@ export default defineComponent({
   }
 }
 
-::v-deep .text-content {
+::v-deep(.text-content) {
   word-break: break-word;
   font-family: '微软雅黑';
   outline: 0;

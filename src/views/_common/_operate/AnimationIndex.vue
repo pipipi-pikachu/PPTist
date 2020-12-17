@@ -5,9 +5,6 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
-import { PPTAnimation } from '@/types/slides'
-
 export default {
   name: 'animation-index',
   props: {
