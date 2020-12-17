@@ -35,12 +35,35 @@
         v-for="(line, index) in alignmentLines" :key="index" 
         :type="line.type" :axis="line.axis" :length="line.length"
       />
+
+      <EditableElement 
+        v-for="(element, index) in elementList" 
+        :key="element.elId"
+        :elementInfo="element"
+        :elementIndex="index + 1"
+        :isActive="activeElementIdList.includes(element.elId)"
+        :isHandleEl="element.elId === handleElementId"
+        :isActiveGroupElement="activeGroupElementId === element.elId"
+        :isMultiSelect="activeElementIdList.length > 1"
+        :canvasScale="canvasScale"
+        :selectElement="selectElement"
+        :rotateElement="rotateElement"
+        :scaleElement="scaleElement"
+        :orderElement="orderElement"
+        :combineElements="combineElements"
+        :uncombineElements="uncombineElements"
+        :alignElement="alignElement"
+        :deleteElement="deleteElement"
+        :lockElement="lockElement"
+        :copyElement="copyElement"
+        :cutElement="cutElement"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { computed, defineComponent, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
 import { MutationTypes } from '@/store/constants'
@@ -51,6 +74,7 @@ import { getImageDataURL } from '@/utils/image'
 import useDropImage from '@/hooks/useDropImage'
 import useSetViewportSize from './hooks/useSetViewportSize'
 
+import EditableElement from '@/views/_common/_element/EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
 import AlignmentLine, { AlignmentLineProps } from './AlignmentLine.vue'
@@ -58,12 +82,21 @@ import AlignmentLine, { AlignmentLineProps } from './AlignmentLine.vue'
 export default defineComponent({
   name: 'v-canvas',
   components: {
+    EditableElement,
     MouseSelection,
     SlideBackground,
     AlignmentLine,
   },
   setup() {
     const store = useStore<State>()
+    const elementList = computed(() => {
+      const currentSlide = store.getters.currentSlide
+      return currentSlide ? JSON.parse(JSON.stringify(currentSlide.elements)) : []
+    })
+    const activeElementIdList = computed(() => store.state.activeElementIdList)
+    const handleElementId = computed(() => store.state.handleElementId)
+    const activeGroupElementId = ref('')
+
     const viewportRef = ref<HTMLElement | null>(null)
     const isShowGridLines = ref(false)
     const alignmentLines = ref<AlignmentLineProps[]>([])
@@ -162,6 +195,40 @@ export default defineComponent({
       if(editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
 
+    const selectElement = () => {
+      console.log('selectElement')
+    }
+    const rotateElement = () => {
+      console.log('rotateElement')
+    }
+    const scaleElement = () => {
+      console.log('scaleElement')
+    }
+    const orderElement = () => {
+      console.log('orderElement')
+    }
+    const combineElements = () => {
+      console.log('combineElements')
+    }
+    const uncombineElements = () => {
+      console.log('uncombineElements')
+    }
+    const alignElement = () => {
+      console.log('alignElement')
+    }
+    const deleteElement = () => {
+      console.log('deleteElement')
+    }
+    const lockElement = () => {
+      console.log('lockElement')
+    }
+    const copyElement = () => {
+      console.log('copyElement')
+    }
+    const cutElement = () => {
+      console.log('cutElement')
+    }
+
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
@@ -179,6 +246,10 @@ export default defineComponent({
     }
 
     return {
+      elementList,
+      activeElementIdList,
+      handleElementId,
+      activeGroupElementId,
       canvasRef,
       viewportRef,
       viewportStyles,
@@ -189,6 +260,17 @@ export default defineComponent({
       currentSlide,
       isShowGridLines,
       alignmentLines,
+      selectElement,
+      rotateElement,
+      scaleElement,
+      orderElement,
+      combineElements,
+      uncombineElements,
+      alignElement,
+      deleteElement,
+      lockElement,
+      copyElement,
+      cutElement,
       contextmenus,
     }
   },

@@ -39,7 +39,7 @@ export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProp
   filter?: string;
   clip?: {
     range: [[number, number], [number, number]];
-    shape: 'rect' | 'ellipse' | 'polygon';
+    shape: 'rect' | 'roundRect' | 'ellipse' | 'triangle' | 'pentagon' | 'rhombus' | 'star';
   };
   flip?: { x?: number, y?: number };
   shadow?: string;

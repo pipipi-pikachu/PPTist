@@ -101,7 +101,7 @@ $subMenuWidth: 120px;
 }
 .contextmenu-item {
   padding: 0 20px;
-  color: #666;
+  color: #555;
   font-size: 12px;
   transition: all 0.3s;
   white-space: nowrap;

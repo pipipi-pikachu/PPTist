@@ -23,8 +23,13 @@
 </template>
 
 <script lang="ts">
+import SvgWrapper from '@/components/SvgWrapper.vue'
+
 export default {
   name: 'image-ellipse-border',
+  components: {
+    SvgWrapper,
+  },
   props: {
     width: {
       type: Number,

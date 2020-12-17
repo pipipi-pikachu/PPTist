@@ -20,8 +20,13 @@
 </template>
 
 <script lang="ts">
+import SvgWrapper from '@/components/SvgWrapper.vue'
+
 export default {
-  name: 'element-border',
+  name: 'element-border', 
+  components: {
+    SvgWrapper,
+  },
   props: {
     width: {
       type: Number,

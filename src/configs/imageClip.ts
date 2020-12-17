@@ -4,6 +4,16 @@ export enum ClipPathTypes {
   POLYGON = 'polygon',
 }
 
+export enum ClipPaths {
+  RECT = 'rect',
+  ROUNDRECT = 'roundRect',
+  ELLIPSE = 'ellipse',
+  TRIANGLE = 'triangle',
+  PENTAGON = 'pentagon',
+  RHOMBUS = 'rhombus',
+  STAR = 'star',
+}
+
 export const CLIPPATHS = {
   rect: {
     name: '矩形',

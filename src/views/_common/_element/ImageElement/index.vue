@@ -1,7 +1,7 @@
 <template>
   <div 
     class="editable-element image"
-    :class="{'lock': elementInfo.isLock}"
+    :class="{ 'lock': elementInfo.isLock }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -33,7 +33,7 @@
         transform: flip,
       }"
     >
-      <RectBorder
+      <ImageRectBorder
         v-if="clipShape.type === 'rect'"
         :width="elementInfo.width"
         :height="elementInfo.height"
@@ -42,7 +42,7 @@
         :borderWidth="elementInfo.borderWidth"
         :borderStyle="elementInfo.borderStyle"
       />
-      <EllipseBorder
+      <ImageEllipseBorder
         v-else-if="clipShape.type === 'ellipse'"
         :width="elementInfo.width"
         :height="elementInfo.height"
@@ -50,7 +50,7 @@
         :borderWidth="elementInfo.borderWidth"
         :borderStyle="elementInfo.borderStyle"
       />
-      <PolygonBorder
+      <ImagePolygonBorder
         v-else-if="clipShape.type === 'polygon'"
         :width="elementInfo.width"
         :height="elementInfo.height"
@@ -83,7 +83,7 @@
         'multi-select': isMultiSelect && isActive,
         'selected': isHandleEl,
       }" 
-      :style="{transform: `scale(${1 / canvasScale})`}"
+      :style="{ transform: `scale(${1 / canvasScale})` }"
       v-if="!isCliping"
     >
       <BorderLine 
@@ -102,7 +102,7 @@
           :style="point.style"
           @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
         />
-        <RotateHandle 
+        <RotateHandler
           class="el-rotate-handle" 
           :style="{left: scaleWidth / 2 + 'px'}"
           @mousedown.stop="rotateElement(elementInfo)"
@@ -185,6 +185,9 @@ export default defineComponent({
     scaleElement: {
       type: Function as PropType<(e: MouseEvent, element: PPTImageElement, command: ElementScaleHandler) => void>,
       required: true,
+    },
+    contextmenus: {
+      type: Function,
     },
   },
   setup(props) {
@@ -291,6 +294,7 @@ export default defineComponent({
     }
 
     return {
+      scaleWidth,
       isCliping,
       imgPosition,
       clipShape,

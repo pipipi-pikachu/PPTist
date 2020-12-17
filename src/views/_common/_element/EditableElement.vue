@@ -13,7 +13,7 @@
       :isHandleEl="isHandleEl"
       :isActiveGroupElement="isActiveGroupElement"
       :isMultiSelect="isMultiSelect"
-      :animationIndex="-1"
+      :animationIndex="animationIndex"
       :selectElement="selectElement"
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
@@ -36,8 +36,8 @@ import {
   ElementLockCommands,
 } from '@/types/edit'
 
-import ImageElement from './ImageElement.index.vue'
-import TextElement from './TextElement.index.vue'
+import ImageElement from './ImageElement/index.vue'
+import TextElement from './TextElement/index.vue'
 
 export default defineComponent({
   name: 'editable-element',
@@ -69,6 +69,10 @@ export default defineComponent({
     isMultiSelect: {
       type: Boolean,
       required: true,
+    },
+    animationIndex: {
+      type: Number,
+      default: -1,
     },
     selectElement: {
       type: Function as PropType<(e: MouseEvent, element: PPTElement, canMove?: boolean) => void>,

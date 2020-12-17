@@ -51,6 +51,8 @@
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
 import { KEYCODE } from '@/configs/keyCode'
 
+import SvgWrapper from '@/components/SvgWrapper.vue'
+
 type ClipDataRange = [[number, number], [number, number]]
 
 interface ClipData {
@@ -72,6 +74,9 @@ type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
 
 export default defineComponent({
   name: 'image-clip-handler',
+  components: {
+    SvgWrapper,
+  },
   props: {
     imgUrl: {
       type: String,
