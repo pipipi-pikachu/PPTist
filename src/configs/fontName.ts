@@ -4,7 +4,7 @@ export interface FontName {
   en: string;
 }
 
-export const FONT_NAMES = [
+export const FONT_NAMES: FontName[] = [
   { source: 'windows', zh: '微软雅黑', en: 'Microsoft Yahei' },
   { source: 'windows', zh: '宋体', en: 'SimSun' },
   { source: 'windows', zh: '黑体', en: 'SimHei' },

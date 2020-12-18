@@ -4,25 +4,12 @@ import { Slide, PPTElement } from '@/types/slides'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
 
-interface AddSlidesData {
+interface AddSlideData {
   index?: number;
-  slides: Slide[];
-}
-
-interface SetSlideData {
-  index?: number;
-  slide: Slide;
-}
-
-type AddSlideData = SetSlideData
-
-interface UpdateSlideData {
-  index?: number;
-  props: Partial<Slide>;
+  slide: Slide | Slide[];
 }
 
 interface UpdateElementData {
-  index?: number;
   elId: string | string[];
   props: Partial<PPTElement>;
 }
@@ -36,15 +23,15 @@ export type Mutations = {
   [MutationTypes.SET_EDITORAREA_FOCUS](state: State, isFocus: boolean): void;
   [MutationTypes.SET_DISABLE_HOTKEYS_STATE](state: State, disable: boolean): void;
   [MutationTypes.SET_AVAILABLE_FONTS](state: State): void;
+
   [MutationTypes.SET_SLIDES](state: State, slides: Slide[]): void;
-  [MutationTypes.ADD_SLIDES](state: State, data: AddSlidesData): void;
-  [MutationTypes.SET_SLIDE](state: State, data: SetSlideData): void;
   [MutationTypes.ADD_SLIDE](state: State, data: AddSlideData): void;
-  [MutationTypes.UPDATE_SLIDE](state: State, data: UpdateSlideData): void;
+  [MutationTypes.UPDATE_SLIDE](state: State, data: Partial<Slide>): void;
   [MutationTypes.DELETE_SLIDE](state: State, slideId: string): void;
   [MutationTypes.UPDATE_SLIDE_INDEX](state: State, index: number): void;
-  [MutationTypes.ADD_ELEMENTS](state: State, elements: PPTElement[]): void;
+  [MutationTypes.ADD_ELEMENT](state: State, element: PPTElement | PPTElement[]): void;
   [MutationTypes.UPDATE_ELEMENT](state: State, data: UpdateElementData): void;
+  
   [MutationTypes.SET_CURSOR](state: State, cursor: number): void;
   [MutationTypes.UNDO](state: State): void;
   [MutationTypes.REDO](state: State): void;
@@ -96,25 +83,15 @@ export const mutations: Mutations = {
     state.slides = slides
   },
 
-  [MutationTypes.ADD_SLIDES](state, {index, slides}) {
+  [MutationTypes.ADD_SLIDE](state, { index, slide }) {
+    const slides = Array.isArray(slide) ? slide : [slide]
     const addIndex = index !== undefined ? index : (state.slideIndex + 1)
     state.slides.splice(addIndex, 0, ...slides)
     state.slideIndex = addIndex
   },
 
-  [MutationTypes.SET_SLIDE](state, {index, slide}) {
-    const slideIndex = index !== undefined ? index : state.slideIndex
-    state.slides[slideIndex] = slide
-  },
-
-  [MutationTypes.ADD_SLIDE](state, {index, slide}) {
-    const addIndex = index !== undefined ? index : (state.slideIndex + 1)
-    state.slides.splice(addIndex, 0, slide)
-    state.slideIndex = addIndex
-  },
-
-  [MutationTypes.UPDATE_SLIDE](state, {index, props}) {
-    const slideIndex = index !== undefined ? index : state.slideIndex
+  [MutationTypes.UPDATE_SLIDE](state, props) {
+    const slideIndex = state.slideIndex
     state.slides[slideIndex] = { ...state.slides[slideIndex], ...props }
   },
 
@@ -131,19 +108,20 @@ export const mutations: Mutations = {
     state.slideIndex = index
   },
 
-  [MutationTypes.ADD_ELEMENTS](state, elements) {
+  [MutationTypes.ADD_ELEMENT](state, element) {
+    const elements = Array.isArray(element) ? element : [element]
     const currentSlideEls = state.slides[state.slideIndex].elements
     const newEls = [...currentSlideEls, ...elements]
     state.slides[state.slideIndex].elements = newEls
   },
 
-  [MutationTypes.UPDATE_ELEMENT](state, {index, elId, props}) {
-    if(typeof elId === 'string') elId = [elId]
+  [MutationTypes.UPDATE_ELEMENT](state, { elId, props }) {
+    const elIdList = typeof elId === 'string' ? [elId] : elId
 
-    const slideIndex = index !== undefined ? index : state.slideIndex
+    const slideIndex = state.slideIndex
     const slide = state.slides[slideIndex]
     const elements = slide.elements.map(el => {
-      return elId.includes(el.elId) ? { ...el, ...props } : el
+      return elIdList.includes(el.elId) ? { ...el, ...props } : el
     })
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },

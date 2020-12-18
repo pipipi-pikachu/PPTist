@@ -12,13 +12,11 @@ export enum MutationTypes {
 
   // slides
   SET_SLIDES = 'setSlides',
-  ADD_SLIDES = 'addSlides',
-  SET_SLIDE = 'setSlide',
   ADD_SLIDE = 'addSlide',
   UPDATE_SLIDE = 'updateSlide',
   DELETE_SLIDE = 'deleteSlide',
   UPDATE_SLIDE_INDEX = 'updateSlideIndex',
-  ADD_ELEMENTS = 'addElements',
+  ADD_ELEMENT = 'addElement',
   UPDATE_ELEMENT = 'updateElement',
 
   // history
