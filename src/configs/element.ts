@@ -1,12 +1,12 @@
 const DEFAULT_COLOR = '#41464b'
 
-export enum ELEMENTS {
-  text = '文本',
-  image = '图片',
-  shape = '形状',
-  line = '线条',
-  chart = '图表',
-  table = '表格',
+export enum ElementTypes {
+  TEXT = '文本',
+  IMAGE = '图片',
+  SHAPE = '形状',
+  LINE = '线条',
+  CHART = '图表',
+  TABLE = '表格',
 }
 
 export const DEFAULT_TEXT = {

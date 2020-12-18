@@ -1,5 +1,14 @@
 export type ElementType = 'text' | 'image' | 'shape' | 'line' | 'chart' | 'table'
 
+export enum ElementTypes {
+  TEXT = 'text',
+  IMAGE = 'image',
+  SHAPE = 'shape',
+  LINE = 'line',
+  CHART = 'chart',
+  TABLE = 'table',
+}
+
 export interface PPTElementBaseProps {
   elId: string;
   isLock: boolean;
@@ -41,7 +50,7 @@ export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProp
     range: [[number, number], [number, number]];
     shape: 'rect' | 'roundRect' | 'ellipse' | 'triangle' | 'pentagon' | 'rhombus' | 'star';
   };
-  flip?: { x?: number, y?: number };
+  flip?: { x?: number; y?: number };
   shadow?: string;
 }
 
@@ -70,7 +79,7 @@ export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProp
   type: 'chart';
   chartType: string;
   theme: string;
-  data: Object;
+  data: string;
 }
 
 export interface TableElementCell {

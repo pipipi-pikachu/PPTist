@@ -3,7 +3,7 @@ import { Slide } from '@/types/slides'
 export const slides: Slide[] = [
   {
     id: 'xxx1',
-    background: ['solid', '#323f4f'],
+    background: ['solid', '#fff'],
     elements: [
       {
         elId: 'xxx1',

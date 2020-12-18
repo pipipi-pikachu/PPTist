@@ -36,7 +36,7 @@
     <div 
       class="operate" 
       :class="{
-        'show': isActive,
+        'active': isActive,
         'multi-select': isMultiSelect && isActive,
         'selected': isHandleEl
       }" 

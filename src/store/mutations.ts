@@ -36,6 +36,9 @@ export type Mutations = {
   [MutationTypes.UNDO](state: State): void;
   [MutationTypes.REDO](state: State): void;
   [MutationTypes.SET_HISTORY_RECORD_LENGTH](state: State, length: number): void;
+
+  [MutationTypes.SET_CTRL_KEY_STATE](state: State, isActive: boolean): void;
+  [MutationTypes.SET_SHIFT_KEY_STATE](state: State, isActive: boolean): void;
 }
 
 export const mutations: Mutations = {
@@ -142,5 +145,14 @@ export const mutations: Mutations = {
 
   [MutationTypes.SET_HISTORY_RECORD_LENGTH](state, length) {
     state.historyRecordLength = length
+  },
+
+  // keyBoard
+
+  [MutationTypes.SET_CTRL_KEY_STATE](state, isActive) {
+    state.ctrlKeyState = isActive
+  },
+  [MutationTypes.SET_SHIFT_KEY_STATE](state, isActive) {
+    state.shiftKeyState = isActive
   },
 }

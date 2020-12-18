@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store/state'
 import { KEYCODE } from '@/configs/keyCode'
@@ -27,6 +27,7 @@ import Canvas from './Canvas/index.vue'
 import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
+import { MutationTypes } from '@/store/constants'
 
 export default defineComponent({
   name: 'editor',
@@ -38,10 +39,11 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const ctrlKeyDown = ref(false)
-    const shiftKeyDown = ref(false)
-
     const store = useStore<State>()
+
+    const ctrlKeyActive = computed(() => store.state.ctrlKeyState)
+    const shiftKeyActive = computed(() => store.state.shiftKeyState)
+
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
     const disableHotkeys = computed(() => store.state.disableHotkeys)
@@ -83,8 +85,8 @@ export default defineComponent({
     const keydownListener = (e: KeyboardEvent) => {
       const { keyCode, ctrlKey, shiftKey } = e
 
-      if(ctrlKey && !ctrlKeyDown.value) ctrlKeyDown.value = true
-      if(shiftKey && !shiftKeyDown.value) shiftKeyDown.value = true
+      if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
+      if(shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
       
       if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
@@ -147,8 +149,8 @@ export default defineComponent({
     }
     
     const keyupListener = () => {
-      if(ctrlKeyDown.value) ctrlKeyDown.value = false
-      if(shiftKeyDown.value) shiftKeyDown.value = false
+      if(ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
+      if(shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, false)
     }
 
     const pasteImageFile = (imageFile: File) => {

@@ -24,4 +24,8 @@ export enum MutationTypes {
   UNDO = 'undo',
   REDO = 'redo',
   SET_HISTORY_RECORD_LENGTH = 'setHistoryRecordLength',
+
+  // keyboard
+  SET_CTRL_KEY_STATE = 'setCtrlKeyState',
+  SET_SHIFT_KEY_STATE = 'setShiftKeyState',
 }

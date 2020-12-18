@@ -15,6 +15,8 @@ export type State = {
   slideIndex: number;
   cursor: number;
   historyRecordLength: number;
+  ctrlKeyState: boolean;
+  shiftKeyState: boolean;
 }
 
 export const state: State = {
@@ -30,4 +32,6 @@ export const state: State = {
   slideIndex: 0,
   cursor: -1,
   historyRecordLength: 0,
+  ctrlKeyState: false,
+  shiftKeyState: false,
 }

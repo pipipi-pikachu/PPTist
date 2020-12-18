@@ -8,6 +8,7 @@ export type Getters = {
   handleElement(state: State): PPTElement | null;
   canUndo(state: State): boolean;
   canRedo(state: State): boolean;
+  ctrlOrShiftKeyActive(state: State): boolean;
 }
 
 export const getters: Getters = {
@@ -44,5 +45,9 @@ export const getters: Getters = {
 
   canRedo(state) {
     return state.cursor < state.historyRecordLength - 1
+  },
+
+  ctrlOrShiftKeyActive(state) {
+    return state.ctrlKeyState || state.shiftKeyState
   },
 }
