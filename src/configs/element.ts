@@ -59,14 +59,3 @@ export const DEFAULT_TABLE = {
   borderWidth: 2,
   borderColor: DEFAULT_COLOR,
 }
-
-export enum OPERATE_KEYS {
-  LEFT_TOP = 1,
-  TOP = 2,
-  RIGHT_TOP = 3,
-  LEFT = 4,
-  RIGHT = 5,
-  LEFT_BOTTOM = 6,
-  BOTTOM = 7,
-  RIGHT_BOTTOM = 8,
-}

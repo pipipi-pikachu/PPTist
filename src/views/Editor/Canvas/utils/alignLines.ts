@@ -1,4 +1,4 @@
-interface AlignLine {
+export interface AlignLine {
   value: number;
   range: [number, number];
 }

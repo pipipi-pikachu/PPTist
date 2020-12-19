@@ -158,7 +158,7 @@ const moveBottomElement = (elementList: PPTElement[], element: PPTElement) => {
   return copyOfElementList
 }
 
-export const setElementOrder = (elementList: PPTElement[], element: PPTElement, command: ElementOrderCommand) => {
+export const orderElement = (elementList: PPTElement[], element: PPTElement, command: ElementOrderCommand) => {
   let newElementList = null
   
   if(command === ElementOrderCommands.UP) newElementList = moveUpElement(elementList, element)

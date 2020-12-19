@@ -118,10 +118,9 @@
 import { computed, defineComponent, ref, PropType } from 'vue'
 
 import { PPTImageElement } from '@/types/slides'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
+import { OPERATE_KEYS, ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
 
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
-import { OPERATE_KEYS } from '@/configs/element'
 
 import RotateHandler from '@/views/_common/_operate/RotateHandler.vue'
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'

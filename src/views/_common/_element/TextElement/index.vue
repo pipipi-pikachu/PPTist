@@ -76,9 +76,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 
 import { PPTTextElement } from '@/types/slides'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
-
-import { OPERATE_KEYS } from '@/configs/element'
+import { OPERATE_KEYS, ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
 
 import ElementBorder from '@/views/_common/_element/ElementBorder.vue'
 import RotateHandler from '@/views/_common/_operate/RotateHandler.vue'

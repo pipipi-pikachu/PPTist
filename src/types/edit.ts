@@ -20,13 +20,6 @@ export enum ElementAlignCommands {
 
 export type ElementScaleHandler = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export type ElementLockCommand = 'lock' | 'unlock'
-
-export enum ElementLockCommands {
-  LOCK = 'lock',
-  UNLOCK = 'unlock',
-}
-
 export type OperateBorderLineType = 't' | 'b' | 'l' | 'r'
 
 export enum OperateBorderLineTypes {
@@ -48,4 +41,15 @@ export enum OperateResizablePointTypes {
   BC = 'b-c',
   BR = 'b-r',
   ANY = 'any',
+}
+
+export enum OPERATE_KEYS {
+  LEFT_TOP = 1,
+  TOP = 2,
+  RIGHT_TOP = 3,
+  LEFT = 4,
+  RIGHT = 5,
+  LEFT_BOTTOM = 6,
+  BOTTOM = 7,
+  RIGHT_BOTTOM = 8,
 }

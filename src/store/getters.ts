@@ -1,17 +1,7 @@
-import { PPTElement, Slide, PPTAnimation } from '@/types/slides'
-import { State } from './state'
+import { GetterTree } from 'vuex'
+import { State } from './index'
 
-export type Getters = {
-  currentSlide(state: State): Slide | null;
-  currentSlideAnimations(state: State): PPTAnimation[] | null;
-  activeElementList(state: State): PPTElement[];
-  handleElement(state: State): PPTElement | null;
-  canUndo(state: State): boolean;
-  canRedo(state: State): boolean;
-  ctrlOrShiftKeyActive(state: State): boolean;
-}
-
-export const getters: Getters = {
+export const getters: GetterTree<State, State> = {
   currentSlide(state) {
     return state.slides[state.slideIndex] || null
   },

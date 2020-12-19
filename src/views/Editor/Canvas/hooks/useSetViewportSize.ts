@@ -1,6 +1,6 @@
 import { ref, computed, onMounted, onUnmounted, Ref } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store/state'
+import { State } from '@/store'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 export default (canvasRef: Ref<HTMLElement | null>) => {

@@ -1,13 +1,17 @@
 <template>
-  <div class="contextmenu" 
-    ref="contextmenuRef"
-    v-show="visible" 
+  <div 
+    class="mask"
+    @contextmenu.prevent="removeContextMenu()"
+    @mousedown="removeContextMenu()"
+  ></div>
+
+  <div 
+    class="contextmenu"
     :style="{
       left: style.left,
       top: style.top,
     }"
     @contextmenu.prevent
-    v-click-outside="removeContextMenu"
   >
     <ContextmenuContent 
       :menus="menus" 
@@ -19,11 +23,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { ContextmenuItem, Axis } from './types'
 
 import ContextmenuContent from './ContextmenuContent.vue'
-import clickOutside from '@/plugins/clickOutside'
 
 const MENU_WIDTH = 160
 const MENU_HEIGHT = 32
@@ -34,9 +37,6 @@ export default defineComponent({
   name: 'contextmenu',
   components: {
     ContextmenuContent,
-  },
-  directives: {
-    'click-outside': clickOutside.directive,
   },
   props: {
     axis: {
@@ -61,9 +61,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const contextmenuRef = ref<Element | null>(null)
-    const visible = ref(false)
-
     const style = computed(() => {
       const { x, y } = props.axis
       const normalMenuCount = props.menus.filter(menu => !menu.divider && !menu.hide).length
@@ -91,24 +88,12 @@ export default defineComponent({
 
     const handleClickMenuItem = (item: ContextmenuItem) => {
       if(item.disable || item.children) return
-
-      visible.value = false
-      item.action && item.action(props.el)
-
+      if(item.handler) item.handler(props.el)
       props.removeContextMenu()
     }
 
-    onMounted(() => {
-      nextTick(() => visible.value = true)
-    })
-    onUnmounted(() => {
-      if(contextmenuRef.value) document.body.removeChild(contextmenuRef.value)
-    })
-
     return {
-      visible,
       style,
-      contextmenuRef,
       handleClickMenuItem,
     }
   },
@@ -116,6 +101,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+}
 .contextmenu {
   position: fixed;
   z-index: 9999;

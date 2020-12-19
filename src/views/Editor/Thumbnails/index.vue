@@ -32,9 +32,9 @@
 import { computed, defineComponent } from 'vue'
 import draggable from 'vuedraggable'
 import { useStore } from 'vuex'
-import { State } from '@/store/state'
-import { MutationTypes } from '@/store/constants'
+import { State, MutationTypes } from '@/store'
 import { fillDigit } from '@/utils/common'
+import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 export default defineComponent({
   name: 'thumbnails',
@@ -91,43 +91,43 @@ export default defineComponent({
       console.log('deleteSlide')
     }
 
-    const contextmenus = () => {
+    const contextmenus = (): ContextmenuItem[] => {
       return [
         {
           text: '剪切',
           subText: 'Ctrl + X',
           icon: 'icon-scissor',
-          action: cutSlide,
+          handler: cutSlide,
         },
         {
           text: '复制',
           subText: 'Ctrl + C',
           icon: 'icon-copy',
-          action: copySlide,
+          handler: copySlide,
         },
         {
           text: '粘贴',
           subText: 'Ctrl + V',
           icon: 'icon-paste',
-          action: pasteSlide,
+          handler: pasteSlide,
         },
         { divider: true },
         {
           text: '新建页面',
           subText: 'Enter',
           icon: 'icon-add-page',
-          action: createSlide,
+          handler: createSlide,
         },
         {
           text: '复制页面',
           icon: 'icon-copy',
-          action: copyAndPasteSlide,
+          handler: copyAndPasteSlide,
         },
         {
           text: '删除页面',
           subText: 'Delete',
           icon: 'icon-delete',
-          action: deleteSlide,
+          handler: deleteSlide,
         },
       ]
     }

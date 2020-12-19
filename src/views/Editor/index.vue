@@ -15,7 +15,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store/state'
+import { State, MutationTypes } from '@/store'
 import { KEYCODE } from '@/configs/keyCode'
 import { decrypt } from '@/utils/crypto'
 import { getImageDataURL } from '@/utils/image'
@@ -27,7 +27,6 @@ import Canvas from './Canvas/index.vue'
 import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
-import { MutationTypes } from '@/store/constants'
 
 export default defineComponent({
   name: 'editor',

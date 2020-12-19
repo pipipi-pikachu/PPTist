@@ -5,7 +5,7 @@
 <script>
 import { defineComponent, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { MutationTypes } from '@/store/constants'
+import { MutationTypes } from '@/store'
 
 export default defineComponent({
   name: 'app',

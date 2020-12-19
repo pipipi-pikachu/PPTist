@@ -19,7 +19,7 @@ const ClickOutsideDirective: Directive = {
   },
   
   unmounted(el: HTMLElement) {
-    if(el && el[CTX_CLICK_OUTSIDE_HANDLER]) {
+    if(el[CTX_CLICK_OUTSIDE_HANDLER]) {
       document.removeEventListener('mousedown', el[CTX_CLICK_OUTSIDE_HANDLER])
       delete el[CTX_CLICK_OUTSIDE_HANDLER]
     }

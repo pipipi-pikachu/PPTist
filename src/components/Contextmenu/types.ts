@@ -7,7 +7,7 @@ export interface ContextmenuItem {
   hide?: boolean;
   iconPlacehoder?: boolean;
   children?: ContextmenuItem[];
-  action?: (el: HTMLElement) => void;
+  handler?: (el: HTMLElement) => void;
 }
 
 export interface Axis {

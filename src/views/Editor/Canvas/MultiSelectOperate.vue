@@ -22,16 +22,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, PropType, watch, toRefs, onMounted } from 'vue'
-import { OPERATE_KEYS } from '@/configs/element'
+import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import { getElementListRange } from './utils/elementRange'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes } from '@/types/edit'
+import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, OPERATE_KEYS } from '@/types/edit'
 
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 
-interface Range {
+export interface MultiSelectRange {
   minX: number;
   maxX: number;
   minY: number;
@@ -45,20 +46,21 @@ export default defineComponent({
     BorderLine,
   },
   props: {
-    canvasScale: {
-      type: Number,
-      required: true,
-    },
-    activeElementList: {
+    elementList: {
       type: Array as PropType<PPTElement[]>,
       required: true,
     },
     scaleMultiElement: {
-      type: Function as PropType<(e: MouseEvent, range: Range, command: ElementScaleHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, range: MultiSelectRange, command: ElementScaleHandler) => void>,
       required: true,
     },
   },
   setup(props) {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+    const activeElementIdList = computed(() => store.state.activeElementIdList)
+    const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.elId)))
+
     const range = reactive({
       minX: 0,
       maxX: 0,
@@ -66,8 +68,8 @@ export default defineComponent({
       maxY: 0,
     })
 
-    const width = computed(() => (range.maxX - range.minX) * props.canvasScale)
-    const height = computed(() => (range.maxY - range.minY) * props.canvasScale)
+    const width = computed(() => (range.maxX - range.minX) * canvasScale.value)
+    const height = computed(() => (range.maxY - range.minY) * canvasScale.value)
 
     const resizablePoints = computed(() => {
       return [
@@ -92,7 +94,7 @@ export default defineComponent({
     })
 
     const disableResizablePoint = computed(() => {
-      return props.activeElementList.some(item => {
+      return localActiveElementList.value.some(item => {
         if(
           (item.type === ElementTypes.IMAGE || item.type === ElementTypes.SHAPE) && 
           !item.rotate
@@ -102,18 +104,18 @@ export default defineComponent({
     })
 
     const setRange = () => {
-      const { minX, maxX, minY, maxY } = getElementListRange(props.activeElementList)
+      const { minX, maxX, minY, maxY } = getElementListRange(localActiveElementList.value)
       range.minX = minX
       range.maxX = maxX
       range.minY = minY
       range.maxY = maxY
     }
 
-    onMounted(setRange)
-    watch(props.activeElementList, setRange)
+    watchEffect(setRange)
 
     return {
       ...toRefs(range),
+      canvasScale,
       borderLines,
       disableResizablePoint,
       resizablePoints,
