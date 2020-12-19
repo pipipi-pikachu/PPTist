@@ -203,7 +203,7 @@ export default defineComponent({
           text: '删除',
           subText: 'Delete',
           icon: 'icon-delete',
-          handler: () => props.deleteElement(),
+          handler: props.deleteElement,
         },
       ]
     }

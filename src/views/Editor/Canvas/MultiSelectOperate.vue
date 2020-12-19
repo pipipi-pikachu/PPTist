@@ -32,12 +32,7 @@ import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 
-export interface MultiSelectRange {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+import { MultiSelectRange } from './types/index'
 
 export default defineComponent({
   name: 'multi-select-operate',

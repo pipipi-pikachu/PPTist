@@ -15,17 +15,7 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-
-interface Axis {
-  x: number; 
-  y: number;
-}
-
-export interface AlignmentLineProps {
-  type: 'vertical' | 'horizontal';
-  axis: Axis;
-  length: number;
-}
+import { AlignmentLineAxis } from './types/index'
 
 export default {
   name: 'alignment-line',
@@ -35,7 +25,7 @@ export default {
       required: true,
     },
     axis: {
-      type: Object as PropType<Axis>,
+      type: Object as PropType<AlignmentLineAxis>,
       required: true,
     },
     length: {
