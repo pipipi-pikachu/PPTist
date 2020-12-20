@@ -4,6 +4,9 @@
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
   >
+    <div class="add-slide">
+      <span>+ 添加幻灯片</span>
+    </div>
     <draggable 
       class="thumbnail-list"
       :modelValue="slides"
@@ -22,7 +25,7 @@
         >
           <div class="slide-index">{{ fillDigit(index + 1) }}</div>
           <div class="thumbnail"></div>
-        </div>        
+        </div>
       </template>
     </draggable>
   </div>
@@ -152,8 +155,25 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   overflow: auto;
-  padding: 5px 0;
   user-select: none;
+}
+.add-slide {
+  height: 40px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    cursor: pointer;
+    padding: 5px;
+    &:hover {
+      border: 1px solid #eee;
+    }
+  }
+}
+.thumbnail-list {
+  padding: 5px 0;
 }
 .thumbnail-wrapper {
   display: flex;
