@@ -2,17 +2,19 @@
   <router-view/>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import { MutationTypes } from '@/store'
+import { MutationTypes, ActionTypes, State } from '@/store'
 
 export default defineComponent({
   name: 'app',
   setup() {
-    const store = useStore()
+    const store = useStore<State>()
+
     onMounted(() => {
       store.commit(MutationTypes.SET_AVAILABLE_FONTS)
+      store.dispatch(ActionTypes.INIT_SNAPSHOT_DATABASE)
     })
   },
 })

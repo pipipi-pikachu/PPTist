@@ -101,22 +101,14 @@ export const mutations: MutationTree<State> = {
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },
 
-  // history
+  // snapshot
 
-  [MutationTypes.SET_CURSOR](state, cursor: number) {
-    state.cursor = cursor
+  [MutationTypes.SET_SNAPSHOT_CURSOR](state, cursor: number) {
+    state.snapshotCursor = cursor
   },
 
-  [MutationTypes.UNDO](state) {
-    state.cursor -= 1
-  },
-  
-  [MutationTypes.REDO](state) {
-    state.cursor += 1
-  },
-
-  [MutationTypes.SET_HISTORY_RECORD_LENGTH](state, length: number) {
-    state.historyRecordLength = length
+  [MutationTypes.SET_SNAPSHOT_LENGTH](state, length: number) {
+    state.snapshotLength = length
   },
 
   // keyBoard

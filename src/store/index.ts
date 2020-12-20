@@ -1,13 +1,14 @@
 import { createStore } from 'vuex'
-import { mutations } from './mutations'
 import { getters } from './getters'
-import { MutationTypes } from './constants'
+import { actions } from './actions'
+import { mutations } from './mutations'
+import { MutationTypes, ActionTypes } from './constants'
 
 import { Slide } from '@/types/slides'
 import { slides } from '@/mocks/index'
 import { FontName } from '@/configs/fontName'
 
-export { MutationTypes }
+export { MutationTypes, ActionTypes }
 
 export interface State {
   activeElementIdList: string[];
@@ -19,8 +20,8 @@ export interface State {
   availableFonts: FontName[];
   slides: Slide[];
   slideIndex: number;
-  cursor: number;
-  historyRecordLength: number;
+  snapshotCursor: number;
+  snapshotLength: number;
   ctrlKeyState: boolean;
   shiftKeyState: boolean;
 }
@@ -35,8 +36,8 @@ const state: State = {
   availableFonts: [],
   slides: slides,
   slideIndex: 0,
-  cursor: -1,
-  historyRecordLength: 0,
+  snapshotCursor: -1,
+  snapshotLength: 0,
   ctrlKeyState: false,
   shiftKeyState: false,
 }
@@ -45,4 +46,5 @@ export default createStore({
   state,
   getters,
   mutations,
+  actions,
 })

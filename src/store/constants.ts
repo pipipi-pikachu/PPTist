@@ -18,13 +18,18 @@ export enum MutationTypes {
   ADD_ELEMENT = 'addElement',
   UPDATE_ELEMENT = 'updateElement',
 
-  // history
-  SET_CURSOR = 'setCursor',
-  UNDO = 'undo',
-  REDO = 'redo',
-  SET_HISTORY_RECORD_LENGTH = 'setHistoryRecordLength',
+  // snapshot
+  SET_SNAPSHOT_CURSOR = 'setSnapshotCursor',
+  SET_SNAPSHOT_LENGTH = 'setSnapshotLength',
 
   // keyboard
   SET_CTRL_KEY_STATE = 'setCtrlKeyState',
   SET_SHIFT_KEY_STATE = 'setShiftKeyState',
+}
+
+export enum ActionTypes {
+  INIT_SNAPSHOT_DATABASE = 'initSnapshotDatabase',
+  ADD_SNAPSHOT = 'addSnapshot',
+  UN_DO = 'undo',
+  RE_DO = 'redo',
 }

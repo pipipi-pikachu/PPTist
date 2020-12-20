@@ -30,11 +30,11 @@ export const getters: GetterTree<State, State> = {
   },
 
   canUndo(state) {
-    return state.cursor > 0
+    return state.snapshotCursor > 0
   },
 
   canRedo(state) {
-    return state.cursor < state.historyRecordLength - 1
+    return state.snapshotCursor < state.snapshotLength - 1
   },
 
   ctrlOrShiftKeyActive(state) {
