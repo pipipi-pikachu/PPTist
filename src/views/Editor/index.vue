@@ -13,14 +13,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
-import { KEYCODE } from '@/configs/keyCode'
-import { decrypt } from '@/utils/crypto'
-import { getImageDataURL } from '@/utils/image'
+import { defineComponent } from 'vue'
 
-import { message } from 'ant-design-vue'
+import useHotkey from './useHotkey'
+import usePasteEvent from './usePasteEvent'
 
 import EditorHeader from './EditorHeader/index.vue'
 import Canvas from './Canvas/index.vue'
@@ -38,173 +34,8 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    const store = useStore<State>()
-
-    const ctrlKeyActive = computed(() => store.state.ctrlKeyState)
-    const shiftKeyActive = computed(() => store.state.shiftKeyState)
-
-    const editorAreaFocus = computed(() => store.state.editorAreaFocus)
-    const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
-    const disableHotkeys = computed(() => store.state.disableHotkeys)
-
-    const copy = () => {
-      message.success('copy')
-    }
-    const cut = () => {
-      message.success('cut')
-    }
-    const undo = () => {
-      message.success('undo')
-    }
-    const redo = () => {
-      message.success('redo')
-    }
-    const selectAll = () => {
-      message.success('selectAll')
-    }
-    const lock = () => {
-      message.success('lock')
-    }
-    const combine = () => {
-      message.success('combine')
-    }
-    const uncombine = () => {
-      message.success('uncombine')
-    }
-    const remove = () => {
-      message.success('remove')
-    }
-    const move = (key: number) => {
-      message.success(`move: ${key}`)
-    }
-    const create = () => {
-      message.success('create')
-    }
-
-    const keydownListener = (e: KeyboardEvent) => {
-      const { keyCode, ctrlKey, shiftKey } = e
-
-      if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
-      if(shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
-      
-      if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
-
-      if(ctrlKey && keyCode === KEYCODE.C) {
-        e.preventDefault()
-        copy()
-      }
-      if(ctrlKey && keyCode === KEYCODE.X) {
-        e.preventDefault()
-        cut()
-      }
-      if(ctrlKey && keyCode === KEYCODE.Z) {
-        e.preventDefault()
-        undo()
-      }
-      if(ctrlKey && keyCode === KEYCODE.Y) {
-        e.preventDefault()
-        redo()
-      }
-      if(ctrlKey && keyCode === KEYCODE.A) {
-        e.preventDefault()
-        selectAll()
-      }
-      if(ctrlKey && keyCode === KEYCODE.L) {
-        e.preventDefault()
-        lock()
-      }
-      if(!shiftKey && ctrlKey && keyCode === KEYCODE.G) {
-        e.preventDefault()
-        combine()
-      }
-      if(shiftKey && ctrlKey && keyCode === KEYCODE.G) {
-        e.preventDefault()
-        uncombine()
-      }
-      if(keyCode === KEYCODE.DELETE) {
-        e.preventDefault()
-        remove()
-      }
-      if(keyCode === KEYCODE.UP) {
-        e.preventDefault()
-        move(KEYCODE.UP)
-      }
-      if(keyCode === KEYCODE.DOWN) {
-        e.preventDefault()
-        move(KEYCODE.DOWN)
-      }
-      if(keyCode === KEYCODE.LEFT) {
-        e.preventDefault()
-        move(KEYCODE.LEFT)
-      }
-      if(keyCode === KEYCODE.RIGHT) {
-        e.preventDefault()
-        move(KEYCODE.RIGHT)
-      }
-      if(keyCode === KEYCODE.ENTER) {
-        e.preventDefault()
-        create()
-      }
-    }
-    
-    const keyupListener = () => {
-      if(ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
-      if(shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, false)
-    }
-
-    const pasteImageFile = (imageFile: File) => {
-      getImageDataURL(imageFile).then(dataURL => {
-        console.log(dataURL)
-      })
-    }
-
-    const pasteText = (text: string) => {
-      let content
-      try {
-        content = JSON.parse(decrypt(text))
-      }
-      catch {
-        content = text
-      }
-      console.log(content)
-    }
-
-    const pasteListener = (e: ClipboardEvent) => {
-      if(!editorAreaFocus.value && !thumbnailsFocus.value) return
-      if(disableHotkeys.value) return
-
-      if(!e.clipboardData) return
-
-      const clipboardDataItems = e.clipboardData.items
-      const clipboardDataFirstItem = clipboardDataItems[0]
-
-      if(!clipboardDataFirstItem) return
-
-      for(const item of clipboardDataItems) {
-        if(item.kind === 'file' && item.type.indexOf('image') !== -1) {
-          const imageFile = item.getAsFile()
-          if(imageFile) pasteImageFile(imageFile)
-          return
-        }
-      }
-
-      if( clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain' ) {
-        clipboardDataFirstItem.getAsString(text => pasteText(text))
-      }
-    }
-
-    onMounted(() => {
-      document.addEventListener('keydown', keydownListener)
-      document.addEventListener('keyup', keyupListener)
-      window.addEventListener('blur', keyupListener)
-      document.addEventListener('paste', pasteListener)
-    })
-    onUnmounted(() => {
-      document.removeEventListener('keydown', keydownListener)
-      document.removeEventListener('keyup', keyupListener)
-      window.removeEventListener('blur', keyupListener)
-      document.removeEventListener('paste', pasteListener)
-    })
+    useHotkey()
+    usePasteEvent()
   },
 })
 </script>

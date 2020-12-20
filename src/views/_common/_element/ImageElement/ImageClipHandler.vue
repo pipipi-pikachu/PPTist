@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
-import { KEYCODE } from '@/configs/keyCode'
+import { KEYS } from '@/configs/hotkey'
 
 import SvgWrapper from '@/components/SvgWrapper.vue'
 
@@ -217,7 +217,8 @@ export default defineComponent({
     }
 
     const keyboardClip = (e: KeyboardEvent) => {
-      if(e.keyCode === KEYCODE.ENTER) clip()
+      const key = e.key.toUpperCase()
+      if(key === KEYS.ENTER) clip()
     }
 
     onMounted(() => {
