@@ -1,14 +1,17 @@
-import { ref, onMounted, onUnmounted, Ref } from 'vue'
+import { onMounted, onUnmounted, Ref } from 'vue'
+import { getImageDataURL } from '@/utils/image'
 
 export default (elementRef: Ref<HTMLElement | null>) => {
-  const imageFile = ref<File | null>(null)
-
   const handleDrop = (e: DragEvent) => {
     if(!e.dataTransfer) return
     const file = e.dataTransfer.items[0]
     if( file.kind === 'file' && file.type.indexOf('image') !== -1 ) {
-      const _imageFile = file.getAsFile()
-      if(_imageFile) imageFile.value = _imageFile
+      const imageFile = file.getAsFile()
+      if(imageFile) {
+        getImageDataURL(imageFile).then(dataURL => {
+          console.log(dataURL)
+        })
+      }
     }
   }
 
@@ -28,6 +31,4 @@ export default (elementRef: Ref<HTMLElement | null>) => {
     document.ondragenter = null
     document.ondragover = null
   })
-
-  return imageFile
 }

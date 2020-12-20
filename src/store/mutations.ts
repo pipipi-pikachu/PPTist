@@ -34,10 +34,6 @@ export const mutations: MutationTree<State> = {
     state.editorAreaShowScale = scale
   },
 
-  [MutationTypes.SET_CANVAS_SCALE](state, scale: number) {
-    state.canvasScale = scale
-  },
-
   [MutationTypes.SET_THUMBNAILS_FOCUS](state, isFocus: boolean) {
     state.thumbnailsFocus = isFocus
   },

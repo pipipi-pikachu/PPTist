@@ -30,6 +30,13 @@ export default (canvasRef: Ref<HTMLElement | null>) => {
     }
   }
 
+  const viewportStyles = computed(() => ({
+    width: VIEWPORT_SIZE,
+    height: VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO,
+    left: viewportLeft.value,
+    top: viewportTop.value,
+  }))
+
   const resizeObserver = new ResizeObserver(setViewportSize)
 
   onMounted(() => {
@@ -41,7 +48,6 @@ export default (canvasRef: Ref<HTMLElement | null>) => {
 
   return {
     canvasScale,
-    viewportLeft,
-    viewportTop,
+    viewportStyles,
   }
 }

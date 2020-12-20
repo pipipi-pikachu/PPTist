@@ -13,7 +13,6 @@ export interface State {
   activeElementIdList: string[];
   handleElementId: string;
   editorAreaShowScale: number;
-  canvasScale: number;
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
@@ -30,7 +29,6 @@ const state: State = {
   activeElementIdList: [],
   handleElementId: '',
   editorAreaShowScale: 85,
-  canvasScale: 1,
   thumbnailsFocus: false,
   editorAreaFocus: false,
   disableHotkeys: false,

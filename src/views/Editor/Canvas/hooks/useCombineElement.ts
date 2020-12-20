@@ -1,11 +1,13 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 
-export default (elementList: Ref<PPTElement[]>, activeElementList: Ref<PPTElement[]>, activeElementIdList: Ref<string[]>) => {
+export default (elementList: Ref<PPTElement[]>) => {
   const store = useStore<State>()
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
 
   // 组合元素（为当前所有激活元素添加一个相同的groupId）
   const combineElements = () => {

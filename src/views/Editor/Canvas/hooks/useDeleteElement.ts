@@ -1,10 +1,11 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 
-export default (elementList: Ref<PPTElement[]>, activeElementIdList: Ref<string[]>) => {
+export default (elementList: Ref<PPTElement[]>) => {
   const store = useStore<State>()
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
 
   const deleteElement = () => {
     if(!activeElementIdList.value.length) return

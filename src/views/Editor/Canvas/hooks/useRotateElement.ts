@@ -2,7 +2,15 @@ import { Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
-import { getAngleFromCoordinate } from '../utils/elementRotate'
+
+// 给定一个坐标，计算该坐标到(0, 0)点连线的弧度值
+// 注意，Math.atan2的一般用法是Math.atan2(y, x)返回的是原点(0,0)到(x,y)点的线段与X轴正方向之间的弧度值
+// 这里将使用时将x与y的传入顺序交换了，为的是获取原点(0,0)到(x,y)点的线段与Y轴正方向之间的弧度值
+export const getAngleFromCoordinate = (x: number, y: number) => {
+  const radian = Math.atan2(x, y)
+  const angle = 180 / Math.PI * radian
+  return angle
+}
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>, canvasScale: Ref<number>) => {
   const store = useStore<State>()

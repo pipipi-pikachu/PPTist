@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -6,8 +6,10 @@ import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt, decrypt } from '@/utils/crypto'
 import { message } from 'ant-design-vue'
 
-export default (deleteElement: () => void, activeElementList: Ref<PPTElement[]>, activeElementIdList: Ref<string[]>) => {
+export default (deleteElement: () => void) => {
   const store = useStore<State>()
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
 
   const copyElement = () => {
     if(!activeElementIdList.value.length) return

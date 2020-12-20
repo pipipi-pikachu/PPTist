@@ -41,6 +41,10 @@ export default defineComponent({
     BorderLine,
   },
   props: {
+    canvasScale: {
+      type: Number,
+      required: true,
+    },
     elementList: {
       type: Array as PropType<PPTElement[]>,
       required: true,
@@ -52,7 +56,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore<State>()
-    const canvasScale = computed(() => store.state.canvasScale)
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.elId)))
 
@@ -63,8 +66,8 @@ export default defineComponent({
       maxY: 0,
     })
 
-    const width = computed(() => (range.maxX - range.minX) * canvasScale.value)
-    const height = computed(() => (range.maxY - range.minY) * canvasScale.value)
+    const width = computed(() => (range.maxX - range.minX) * props.canvasScale)
+    const height = computed(() => (range.maxY - range.minY) * props.canvasScale)
 
     const resizablePoints = computed(() => {
       return [
@@ -110,7 +113,6 @@ export default defineComponent({
 
     return {
       ...toRefs(range),
-      canvasScale,
       borderLines,
       disableResizablePoint,
       resizablePoints,

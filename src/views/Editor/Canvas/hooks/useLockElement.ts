@@ -1,10 +1,11 @@
 import { useStore } from 'vuex'
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 
-export default (elementList: Ref<PPTElement[]>, activeElementIdList: Ref<string[]>) => {
+export default (elementList: Ref<PPTElement[]>) => {
   const store = useStore<State>()
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
 
   const lockElement = (handleElement: PPTElement) => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))

@@ -6,14 +6,14 @@ import { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeElementIdList: Ref<string[]>,
   activeGroupElementId: Ref<string>,
-  editorAreaFocus: Ref<boolean>,
-  handleElementId: Ref<string>,
   moveElement: (e: MouseEvent, element: PPTElement) => void,
 ) => {
   const store = useStore<State>()
-  const ctrlOrShiftKeyActive = computed(() => store.getters.ctrlOrShiftKeyActive)
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const handleElementId = computed(() => store.state.handleElementId)
+  const editorAreaFocus = computed(() => store.state.editorAreaFocus)
+  const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
 
   const selectElement = (e: MouseEvent, element: PPTElement, canMove = true) => {
     if(!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)

@@ -4,19 +4,93 @@ import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement, PPTLineElement } from '@/types/slides'
 import { OPERATE_KEYS, ElementScaleHandler } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { getRotateElementPoints, getOppositePoint } from '../utils/elementRotate'
 import { AlignLine, uniqAlignLines } from '../utils/alignLines'
 import { AlignmentLineProps, MultiSelectRange } from '../types/index'
+
+// 计算元素被旋转一定角度后，八个操作点的新坐标
+interface RotateElementData {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+export const getRotateElementPoints = (element: RotateElementData, angle: number) => {
+  const { left, top, width, height } = element
+
+  const radius = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) ) / 2
+  const auxiliaryAngle = Math.atan(height / width) * 180 / Math.PI
+
+  const tlbraRadian = (180 - angle - auxiliaryAngle) * Math.PI / 180
+  const trblaRadian = (auxiliaryAngle - angle) * Math.PI / 180
+  const taRadian = (90 - angle) * Math.PI / 180
+  const raRadian = angle * Math.PI / 180
+
+  const halfWidth = width / 2
+  const halfHeight = height / 2
+
+  const middleLeft = left + halfWidth
+  const middleTop = top + halfHeight
+
+  const leftTopPoint = {
+    left: middleLeft + radius * Math.cos(tlbraRadian),
+    top: middleTop - radius * Math.sin(tlbraRadian),
+  }
+  const topPoint = {
+    left: middleLeft + halfHeight * Math.cos(taRadian),
+    top: middleTop - halfHeight * Math.sin(taRadian),
+  }
+  const rightTopPoint = {
+    left: middleLeft + radius * Math.cos(trblaRadian),
+    top: middleTop - radius * Math.sin(trblaRadian),
+  }
+  const rightPoint = {
+    left: middleLeft + halfWidth * Math.cos(raRadian),
+    top: middleTop + halfWidth * Math.sin(raRadian),
+  }
+  const rightBottomPoint = {
+    left: middleLeft - radius * Math.cos(tlbraRadian),
+    top: middleTop + radius * Math.sin(tlbraRadian),
+  }
+  const bottomPoint = {
+    left: middleLeft - halfHeight * Math.sin(raRadian),
+    top: middleTop + halfHeight * Math.cos(raRadian),
+  }
+  const leftBottomPoint = {
+    left: middleLeft - radius * Math.cos(trblaRadian),
+    top: middleTop + radius * Math.sin(trblaRadian),
+  }
+  const leftPoint = {
+    left: middleLeft - halfWidth * Math.cos(raRadian),
+    top: middleTop - halfWidth * Math.sin(raRadian),
+  }
+
+  return { leftTopPoint, topPoint, rightTopPoint, rightPoint, rightBottomPoint, bottomPoint, leftBottomPoint, leftPoint }
+}
+
+// 获取元素某个操作点对角线上另一端的操作点坐标（例如：左上 <-> 右下）
+export const getOppositePoint = (direction: number, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
+  const oppositeMap = {
+    [OPERATE_KEYS.RIGHT_BOTTOM]: points.leftTopPoint,
+    [OPERATE_KEYS.LEFT_BOTTOM]: points.rightTopPoint,
+    [OPERATE_KEYS.LEFT_TOP]: points.rightBottomPoint,
+    [OPERATE_KEYS.RIGHT_TOP]: points.leftBottomPoint,
+    [OPERATE_KEYS.TOP]: points.bottomPoint,
+    [OPERATE_KEYS.BOTTOM]: points.topPoint,
+    [OPERATE_KEYS.LEFT]: points.rightPoint,
+    [OPERATE_KEYS.RIGHT]: points.leftPoint,
+  }
+  return oppositeMap[direction]
+}
 
 export default (
   elementList: Ref<PPTElement[]>,
   canvasScale: Ref<number>,
   activeGroupElementId: Ref<string>,
-  activeElementIdList: Ref<string[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore<State>()
-  const ctrlOrShiftKeyActive = computed(() => store.getters.ctrlOrShiftKeyActive)
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
 
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: ElementScaleHandler) => {
     let isMouseDown = true

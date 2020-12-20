@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -6,8 +6,11 @@ import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '../utils/elementRange'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
-export default (elementList: Ref<PPTElement[]>, activeElementList: Ref<PPTElement[]>, activeElementIdList: Ref<string[]>) => {
+export default (elementList: Ref<PPTElement[]>) => {
   const store = useStore<State>()
+
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
 
   const alignElementToCanvas = (command: ElementAlignCommand) => {
     const viewportWidth = VIEWPORT_SIZE

@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
@@ -9,12 +9,12 @@ import { AlignLine, uniqAlignLines } from '../utils/alignLines'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeElementIdList: Ref<string[]>,
   activeGroupElementId: Ref<string>,
   canvasScale: Ref<number>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore<State>()
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
 
   const moveElement = (e: MouseEvent, element: PPTElement) => {
     if(!activeElementIdList.value.includes(element.elId)) return

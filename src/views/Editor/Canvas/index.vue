@@ -40,11 +40,13 @@
         v-if="activeElementIdList.length > 1"
         :elementList="elementList"
         :scaleMultiElement="scaleMultiElement"
+        :canvasScale="canvasScale"
       />
 
       <EditableElement 
         v-for="(element, index) in elementList" 
         :key="element.elId"
+        :canvasScale="canvasScale"
         :elementInfo="element"
         :elementIndex="index + 1"
         :isActive="activeElementIdList.includes(element.elId)"
@@ -69,17 +71,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch, watchEffect } from 'vue'
+import { computed, defineComponent, Ref, ref, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from './types/index'
 
-import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { getImageDataURL } from '@/utils/image'
-
-import useDropImage from '@/hooks/useDropImage'
 import useViewportSize from './hooks/useViewportSize'
 import useLockElement from './hooks/useLockElement'
 import useDeleteElement from './hooks/useDeleteElement'
@@ -92,6 +90,7 @@ import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
 import useMoveElement from './hooks/useMoveElement'
 import useMouseSelection from './hooks/useMouseSelection'
+import useDropImageElement from './hooks/useDropImageElement'
 
 import EditableElement from '@/views/_common/_element/EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -112,10 +111,9 @@ export default defineComponent({
     const store = useStore<State>()
 
     const activeElementIdList = computed(() => store.state.activeElementIdList)
-    const activeElementList = computed(() => store.getters.activeElementList)
     const handleElementId = computed(() => store.state.handleElementId)
-    const ctrlOrShiftKeyActive = computed(() => store.getters.ctrlOrShiftKeyActive)
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
+    const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
 
     const viewportRef = ref<HTMLElement | null>(null)
     const isShowGridLines = ref(false)
@@ -131,25 +129,23 @@ export default defineComponent({
     }
     watchEffect(setLocalElementList)
 
-    const dropImageFile = useDropImage(viewportRef)
-    watch(dropImageFile, () => {
-      if(dropImageFile.value) {
-        getImageDataURL(dropImageFile.value).then(dataURL => {
-          console.log(dataURL)
-        })
-      }
-    })
+    useDropImageElement(viewportRef)
 
     const canvasRef = ref<HTMLElement | null>(null)
-    const { canvasScale, viewportLeft, viewportTop } = useViewportSize(canvasRef)
-    const viewportStyles = computed(() => ({
-      width: VIEWPORT_SIZE,
-      height: VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO,
-      left: viewportLeft.value,
-      top: viewportTop.value,
-    }))
+    const { canvasScale, viewportStyles } = useViewportSize(canvasRef)
 
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef, canvasScale)
+
+    const { moveElement } = useMoveElement(elementList, activeGroupElementId, canvasScale, alignmentLines)
+    const { selectElement, selectAllElement } = useSelectElement(elementList, activeGroupElementId, moveElement)
+    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, canvasScale, activeGroupElementId, alignmentLines)
+    const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)  
+    const { orderElement } = useOrderElement(elementList)
+    const { alignElementToCanvas } = useAlignElementToCanvas(elementList)
+    const { combineElements, uncombineElements } = useCombineElement(elementList)
+    const { deleteElement, deleteAllElements } = useDeleteElement(elementList)
+    const { lockElement, unlockElement } = useLockElement(elementList)
+    const { copyElement, cutElement, pasteElement } = useCopyAndPasteElement(deleteElement)
 
     const handleClickBlankArea = (e: MouseEvent) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
@@ -160,17 +156,6 @@ export default defineComponent({
     const removeEditorAreaFocus = () => {
       if(editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
-
-    const { moveElement } = useMoveElement(elementList, activeElementIdList, activeGroupElementId, canvasScale, alignmentLines)
-    const { selectElement, selectAllElement } = useSelectElement(elementList, activeElementIdList, activeGroupElementId, editorAreaFocus, handleElementId, moveElement)
-    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, canvasScale, activeGroupElementId, activeElementIdList, alignmentLines)
-    const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)  
-    const { orderElement } = useOrderElement(elementList)
-    const { alignElementToCanvas } = useAlignElementToCanvas(elementList, activeElementList, activeElementIdList)
-    const { combineElements, uncombineElements } = useCombineElement(elementList, activeElementList, activeElementIdList)
-    const { deleteElement, deleteAllElements } = useDeleteElement(elementList, activeElementIdList)
-    const { lockElement, unlockElement } = useLockElement(elementList, activeElementIdList)
-    const { copyElement, cutElement, pasteElement } = useCopyAndPasteElement(deleteElement, activeElementList, activeElementIdList)
 
     const contextmenus = (): ContextmenuItem[] => {
       return [
@@ -194,7 +179,6 @@ export default defineComponent({
     return {
       elementList,
       activeElementIdList,
-      activeElementList,
       handleElementId,
       activeGroupElementId,
       canvasRef,
