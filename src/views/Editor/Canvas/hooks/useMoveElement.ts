@@ -1,4 +1,4 @@
-import { Ref, computed } from 'vue'
+import { Ref, computed, callWithErrorHandling } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
@@ -114,7 +114,7 @@ export default (
         isMisoperation = Math.abs(startPageX - currentPageX) < sorptionRange && 
                          Math.abs(startPageY - currentPageY) < sorptionRange
       }
-      if( !isMouseDown || isMisoperation ) return
+      if(!isMouseDown || isMisoperation) return
 
       // 鼠标按下后移动的距离
       const moveX = (currentPageX - startPageX) / canvasScale.value
@@ -274,19 +274,21 @@ export default (
         if(!handleElement) return
 
         elementList.value = elementList.value.map(el => {
-          const newEl = el
-          activeElementIdList.value.includes(el.elId) ? { ...el, left: targetLeft, top: targetTop } : el
           if(activeElementIdList.value.includes(el.elId)) {
             if(el.elId === element.elId) {
-              newEl.left = targetLeft
-              newEl.top = targetTop
+              return {
+                ...el,
+                left: targetLeft,
+                top: targetTop,
+              }
             }
-            else {
-              newEl.left = newEl.left + (targetLeft - handleElement.left)
-              newEl.top = newEl.top + (targetTop - handleElement.top)
+            return {
+              ...el,
+              left: el.left + (targetLeft - handleElement.left),
+              top: el.top + (targetTop - handleElement.top),
             }
           }
-          return newEl
+          return el
         })
       }
     }

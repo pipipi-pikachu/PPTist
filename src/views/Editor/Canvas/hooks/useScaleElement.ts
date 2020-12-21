@@ -1,7 +1,7 @@
 import { computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
-import { ElementTypes, PPTElement, PPTLineElement } from '@/types/slides'
+import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OPERATE_KEYS, ElementScaleHandler } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { AlignLine, uniqAlignLines } from '../utils/alignLines'
@@ -465,17 +465,17 @@ export default (
       // 根据上面计算的比例，修改所有被激活元素的位置大小
       // 宽高通过乘以对应的比例得到，位置通过将被操作元素在所有元素整体中的相对位置乘以对应比例获得
       elementList.value = elementList.value.map(el => {
-        const newEl = el
-        if((newEl.type === ElementTypes.IMAGE || newEl.type === ElementTypes.SHAPE) && activeElementIdList.value.includes(newEl.elId)) {
-          const originElement = originElementList.find(originEl => originEl.elId === el.elId)
-          if(originElement && (originElement.type === ElementTypes.IMAGE || originElement.type === ElementTypes.SHAPE)) {
-            newEl.width = originElement.width * widthScale
-            newEl.height = originElement.height * heightScale
-            newEl.left = currentMinX + (originElement.left - minX) * widthScale
-            newEl.top = currentMinY + (originElement.top - minY) * heightScale
+        if((el.type === ElementTypes.IMAGE || el.type === ElementTypes.SHAPE) && activeElementIdList.value.includes(el.elId)) {
+          const originElement = originElementList.find(originEl => originEl.elId === el.elId) as PPTImageElement | PPTShapeElement
+          return {
+            ...el,
+            width: originElement.width * widthScale,
+            height: originElement.height * heightScale,
+            left: currentMinX + (originElement.left - minX) * widthScale,
+            top: currentMinY + (originElement.top - minY) * heightScale,
           }
         }
-        return newEl
+        return el
       })
     }
 
