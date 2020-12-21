@@ -1,16 +1,17 @@
 import { onMounted, onUnmounted, Ref } from 'vue'
 import { getImageDataURL } from '@/utils/image'
+import useCreateElement from '@/hooks/useCreateElement'
 
 export default (elementRef: Ref<HTMLElement | null>) => {
+  const { createImageElement } = useCreateElement()
+
   const handleDrop = (e: DragEvent) => {
     if(!e.dataTransfer) return
     const file = e.dataTransfer.items[0]
     if( file.kind === 'file' && file.type.indexOf('image') !== -1 ) {
       const imageFile = file.getAsFile()
       if(imageFile) {
-        getImageDataURL(imageFile).then(dataURL => {
-          console.log(dataURL)
-        })
+        getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
       }
     }
   }

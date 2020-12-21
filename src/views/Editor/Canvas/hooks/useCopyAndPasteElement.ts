@@ -3,13 +3,16 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { copyText, readClipboard } from '@/utils/clipboard'
-import { encrypt, decrypt } from '@/utils/crypto'
+import { encrypt } from '@/utils/crypto'
 import { message } from 'ant-design-vue'
+import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 
 export default (deleteElement: () => void) => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
+
+  const { pasteTextClipboardData } = usePasteTextClipboardData()
 
   const copyElement = () => {
     if(!activeElementIdList.value.length) return
@@ -32,14 +35,7 @@ export default (deleteElement: () => void) => {
 
   const pasteElement = () => {
     readClipboard().then(text => {
-      let clipboardData
-      try {
-        clipboardData = JSON.parse(decrypt(text))
-      }
-      catch {
-        clipboardData = text
-      }
-      console.log(clipboardData)
+      pasteTextClipboardData(text)
     }).catch(err => message.warning(err))
   }
 

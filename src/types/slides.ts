@@ -11,9 +11,9 @@ export enum ElementTypes {
 
 export interface PPTElementBaseProps {
   elId: string;
-  isLock: boolean;
   left: number;
   top: number;
+  isLock?: boolean;
   groupId?: string;
 }
 
@@ -78,8 +78,8 @@ export interface PPTLineElement extends PPTElementBaseProps {
 export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
   type: 'chart';
   chartType: string;
-  theme: string;
   data: string;
+  theme?: string;
 }
 
 export interface TableElementCell {
@@ -90,8 +90,8 @@ export interface TableElementCell {
 }
 export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProps {
   type: 'table';
-  borderTheme: string;
-  theme: string;
+  borderTheme?: string;
+  theme?: string;
   rowSizes: number[];
   colSizes: number[];
   data: TableElementCell[][];

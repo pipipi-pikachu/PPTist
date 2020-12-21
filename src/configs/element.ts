@@ -10,7 +10,6 @@ export enum ElementTypes {
 }
 
 export const DEFAULT_TEXT = {
-  type: 'text',
   left: 0,
   top: 0,
   width: 300,
@@ -22,20 +21,17 @@ export const DEFAULT_TEXT = {
 }
 
 export const DEFAULT_IMAGE = {
-  type: 'image',
   left: 0,
   top: 0,
   lockRatio: true,
 }
 
 export const DEFAULT_SHAPE = {
-  type: 'shape',
   fill: DEFAULT_COLOR,
   lockRatio: false,
 }
 
 export const DEFAULT_LINE = {
-  type: 'line',
   style: 'solid',
   marker: ['', ''],
   width: 4,
@@ -43,7 +39,6 @@ export const DEFAULT_LINE = {
 }
 
 export const DEFAULT_CHART = {
-  type: 'chart',
   left: 0,
   top: 0,
   width: 500,
@@ -51,7 +46,6 @@ export const DEFAULT_CHART = {
 }
 
 export const DEFAULT_TABLE = {
-  type: 'table',
   left: 0,
   top: 0,
   isLock: false,

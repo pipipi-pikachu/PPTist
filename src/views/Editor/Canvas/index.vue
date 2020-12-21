@@ -75,7 +75,7 @@ import { computed, defineComponent, Ref, ref, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { AlignmentLineProps } from './types/index'
 
 import useViewportSize from './hooks/useViewportSize'
@@ -122,7 +122,7 @@ export default defineComponent({
     const activeGroupElementId = ref('')
     watch(handleElementId, () => activeGroupElementId.value = '')
 
-    const currentSlide = computed(() => store.getters.currentSlide)
+    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
     const elementList = ref<PPTElement[]>([])
     const setLocalElementList = () => {
       elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []

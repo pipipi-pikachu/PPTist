@@ -1,8 +1,9 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
-import { decrypt } from '@/utils/crypto'
 import { getImageDataURL } from '@/utils/image'
+import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
+import useCreateElement from '@/hooks/useCreateElement'
 
 export default () => {
   const store = useStore<State>()
@@ -10,21 +11,11 @@ export default () => {
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
   const disableHotkeys = computed(() => store.state.disableHotkeys)
 
-  const pasteImageFile = (imageFile: File) => {
-    getImageDataURL(imageFile).then(dataURL => {
-      console.log(dataURL)
-    })
-  }
+  const { pasteTextClipboardData } = usePasteTextClipboardData()
+  const { createImageElement } = useCreateElement()
 
-  const pasteText = (text: string) => {
-    let content
-    try {
-      content = JSON.parse(decrypt(text))
-    }
-    catch {
-      content = text
-    }
-    console.log(content)
+  const pasteImageFile = (imageFile: File) => {
+    getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
   }
 
   const pasteListener = (e: ClipboardEvent) => {
@@ -47,7 +38,7 @@ export default () => {
     }
 
     if( clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain' ) {
-      clipboardDataFirstItem.getAsString(text => pasteText(text))
+      clipboardDataFirstItem.getAsString(text => pasteTextClipboardData(text))
     }
   }
 

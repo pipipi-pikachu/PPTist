@@ -10,7 +10,7 @@
     <draggable 
       class="thumbnail-list"
       :modelValue="slides"
-      :animation="80"
+      :animation="300"
       :scroll="true"
       :scrollSensitivity="50"
       @end="handleDragEnd"
