@@ -40,7 +40,7 @@ module.exports = {
     'no-with': 'error',
     'max-depth': ['error', 5],
     'consistent-this': ['error', 'self'],
-    'max-lines': ['error', 1500],
+    'max-lines': ['error', 1000],
     'no-multi-str': 'error',
     'space-infix-ops': 'error',
     'space-before-blocks': ['error', 'always'],

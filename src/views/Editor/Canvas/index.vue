@@ -88,7 +88,7 @@ import useCopyAndPasteElement from './hooks/useCopyAndPasteElement'
 import useRotateElement from './hooks/useRotateElement'
 import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
-import useMoveElement from './hooks/useMoveElement'
+import useDragElement from './hooks/useDragElement'
 import useMouseSelection from './hooks/useMouseSelection'
 import useDropImageElement from './hooks/useDropImageElement'
 
@@ -136,8 +136,8 @@ export default defineComponent({
 
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef, canvasScale)
 
-    const { moveElement } = useMoveElement(elementList, activeGroupElementId, canvasScale, alignmentLines)
-    const { selectElement, selectAllElement } = useSelectElement(elementList, activeGroupElementId, moveElement)
+    const { dragElement } = useDragElement(elementList, activeGroupElementId, canvasScale, alignmentLines)
+    const { selectElement, selectAllElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
     const { scaleElement, scaleMultiElement } = useScaleElement(elementList, canvasScale, activeGroupElementId, alignmentLines)
     const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)  
     const { orderElement } = useOrderElement(elementList)

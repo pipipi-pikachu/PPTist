@@ -1,6 +1,6 @@
 {
-  "name": "ppt_online_editor",
-  "version": "0.1.0",
+  "name": "hamster_ppt",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

@@ -11,7 +11,7 @@ export default (elementList: Ref<PPTElement[]>) => {
 
   // 组合元素（为当前所有激活元素添加一个相同的groupId）
   const combineElements = () => {
-    if(!activeElementList.value.length) return null
+    if(!activeElementList.value.length) return
 
     let newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList))
     const groupId = createRandomCode()
@@ -37,9 +37,9 @@ export default (elementList: Ref<PPTElement[]>) => {
 
   // 取消组合元素（移除所有被激活元素的groupId）
   const uncombineElements = () => {
-    if(!activeElementList.value.length) return null
+    if(!activeElementList.value.length) return
     const hasElementInGroup = activeElementList.value.some(item => item.groupId)
-    if(!hasElementInGroup) return null
+    if(!hasElementInGroup) return
     
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList))
     for(const element of newElementList) {
