@@ -1,23 +1,24 @@
 import { useStore } from 'vuex'
 import { Ref, computed } from 'vue'
 import { State, MutationTypes } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 
-export default (elementList: Ref<PPTElement[]>) => {
+export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
-  const lockElement = (handleElement: PPTElement) => {
-    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
+  const lockElement = () => {
+    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
   
     for(const element of newElementList) {
-      if(activeElementIdList.value.includes(handleElement.elId)) element.isLock = true
+      if(activeElementIdList.value.includes(element.elId)) element.isLock = true
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
   }
 
   const unlockElement = (handleElement: PPTElement) => {
-    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
+    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
     if(handleElement.groupId) {
       for(const element of newElementList) {

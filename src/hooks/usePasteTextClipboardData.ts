@@ -5,6 +5,11 @@ import { decrypt } from '@/utils/crypto'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 
+interface PasteTextClipboardDataOptions {
+  onlySlide?: boolean;
+  onlyElements?: boolean;
+}
+
 export default () => {
   const store = useStore<State>()
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
@@ -37,15 +42,18 @@ export default () => {
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, Object.values(elIdMap))
   }
 
-  const pasteSlide = (slides: Slide[]) => {
-    console.log(slides)
+  const pasteSlide = (slide: Slide) => {
+    store.commit(MutationTypes.ADD_SLIDE, slide)
   }
 
   const pasteText = (text: string) => {
     console.log(text)
   }
 
-  const pasteTextClipboardData = (text: string) => {
+  const pasteTextClipboardData = (text: string, options?: PasteTextClipboardDataOptions) => {
+    const onlySlide = options?.onlySlide || false
+    const onlyElements = options?.onlyElements || false
+
     let clipboardData
     try {
       clipboardData = JSON.parse(decrypt(text))
@@ -58,12 +66,12 @@ export default () => {
     if(typeof clipboardData === 'object') {
       const { type, data } = clipboardData
 
-      if(type === 'elements') pasteElement(data)
-      else if(type === 'slide') pasteSlide(data)
+      if(type === 'elements' && !onlySlide) pasteElement(data)
+      else if(type === 'slide' && !onlyElements) pasteSlide(data)
     }
 
     // 粘贴普通文本
-    else pasteText(clipboardData)
+    else if(!onlyElements && !onlySlide) pasteText(clipboardData)
   }
 
   return {

@@ -1,19 +1,20 @@
 import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 
-export default (elementList: Ref<PPTElement[]>) => {
+export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
+  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   // 组合元素（为当前所有激活元素添加一个相同的groupId）
   const combineElements = () => {
     if(!activeElementList.value.length) return
 
-    let newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList))
+    let newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     const groupId = createRandomCode()
 
     const combineElementList: PPTElement[] = []
@@ -41,7 +42,7 @@ export default (elementList: Ref<PPTElement[]>) => {
     const hasElementInGroup = activeElementList.value.some(item => item.groupId)
     if(!hasElementInGroup) return
     
-    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList))
+    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     for(const element of newElementList) {
       if(activeElementIdList.value.includes(element.elId) && element.groupId) delete element.groupId
     }

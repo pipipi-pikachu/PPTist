@@ -2,10 +2,9 @@ import { computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
-import { OPERATE_KEYS, ElementScaleHandler } from '@/types/edit'
+import { OPERATE_KEYS, ElementScaleHandler, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { AlignLine, uniqAlignLines } from '../utils/alignLines'
-import { AlignmentLineProps, MultiSelectRange } from '../types/index'
+import { AlignLine, uniqAlignLines } from '@/utils/element'
 
 // 计算元素被旋转一定角度后，八个操作点的新坐标
 interface RotateElementData {

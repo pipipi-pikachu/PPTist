@@ -2,10 +2,9 @@ import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
-import { AlignmentLineProps } from '../types/index'
+import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { getRectRotatedRange } from '../utils/elementRange'
-import { AlignLine, uniqAlignLines } from '../utils/alignLines'
+import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
 
 export default (
   elementList: Ref<PPTElement[]>,

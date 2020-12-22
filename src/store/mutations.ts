@@ -56,11 +56,9 @@ export const mutations: MutationTree<State> = {
     state.slides = slides
   },
 
-  [MutationTypes.ADD_SLIDE](state, data: AddSlideData) {
-    const { index, slide } = data
-    const slides = Array.isArray(slide) ? slide : [slide]
-    const addIndex = index !== undefined ? index : (state.slideIndex + 1)
-    state.slides.splice(addIndex, 0, ...slides)
+  [MutationTypes.ADD_SLIDE](state, slide: Slide) {
+    const addIndex = state.slideIndex + 1
+    state.slides.splice(addIndex, 0, slide)
     state.slideIndex = addIndex
   },
 

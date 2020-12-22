@@ -2,7 +2,7 @@ import { Ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
-import { getElementRange } from '../utils/elementRange'
+import { getElementRange } from '@/utils/element'
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>, canvasScale: Ref<number>) => {
   const store = useStore<State>()

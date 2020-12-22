@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-import { AlignmentLineAxis } from './types/index'
+import { AlignmentLineAxis } from '@/types/edit'
 
 export default {
   name: 'alignment-line',

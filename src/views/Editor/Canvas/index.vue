@@ -56,15 +56,6 @@
         :selectElement="selectElement"
         :rotateElement="rotateElement"
         :scaleElement="scaleElement"
-        :orderElement="orderElement"
-        :combineElements="combineElements"
-        :uncombineElements="uncombineElements"
-        :alignElementToCanvas="alignElementToCanvas"
-        :deleteElement="deleteElement"
-        :lockElement="lockElement"
-        :unlockElement="unlockElement"
-        :copyElement="copyElement"
-        :cutElement="cutElement"
       />
     </div>
   </div>
@@ -76,21 +67,19 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
-import { AlignmentLineProps } from './types/index'
+import { AlignmentLineProps } from '@/types/edit'
 
 import useViewportSize from './hooks/useViewportSize'
-import useLockElement from './hooks/useLockElement'
-import useDeleteElement from './hooks/useDeleteElement'
-import useCombineElement from './hooks/useCombineElement'
-import useOrderElement from './hooks/useOrderElement'
-import useAlignElementToCanvas from './hooks/useAlignElementToCanvas'
-import useCopyAndPasteElement from './hooks/useCopyAndPasteElement'
+import useMouseSelection from './hooks/useMouseSelection'
+import useDropImageElement from './hooks/useDropImageElement'
 import useRotateElement from './hooks/useRotateElement'
 import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
-import useMouseSelection from './hooks/useMouseSelection'
-import useDropImageElement from './hooks/useDropImageElement'
+
+import useDeleteElement from '@/hooks/useDeleteElement'
+import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
+import useSelectAllElement from '@/hooks/useSelectAllElement'
 
 import EditableElement from '@/views/_common/_element/EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -137,15 +126,13 @@ export default defineComponent({
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef, canvasScale)
 
     const { dragElement } = useDragElement(elementList, activeGroupElementId, canvasScale, alignmentLines)
-    const { selectElement, selectAllElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
+    const { selectElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
     const { scaleElement, scaleMultiElement } = useScaleElement(elementList, canvasScale, activeGroupElementId, alignmentLines)
-    const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)  
-    const { orderElement } = useOrderElement(elementList)
-    const { alignElementToCanvas } = useAlignElementToCanvas(elementList)
-    const { combineElements, uncombineElements } = useCombineElement(elementList)
-    const { deleteElement, deleteAllElements } = useDeleteElement(elementList)
-    const { lockElement, unlockElement } = useLockElement(elementList)
-    const { copyElement, cutElement, pasteElement } = useCopyAndPasteElement(deleteElement)
+    const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)
+
+    const { selectAllElement } = useSelectAllElement()
+    const { deleteAllElements } = useDeleteElement()
+    const { pasteElement } = useCopyAndPasteElement()
 
     const handleClickBlankArea = (e: MouseEvent) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
@@ -195,15 +182,6 @@ export default defineComponent({
       rotateElement,
       scaleElement,
       scaleMultiElement,
-      orderElement,
-      combineElements,
-      uncombineElements,
-      alignElementToCanvas,
-      deleteElement,
-      lockElement,
-      unlockElement,
-      copyElement,
-      cutElement,
       contextmenus,
     }
   },

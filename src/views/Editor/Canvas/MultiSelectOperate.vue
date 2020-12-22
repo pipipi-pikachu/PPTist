@@ -26,13 +26,11 @@ import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } fr
 import { useStore } from 'vuex'
 import { State } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
-import { getElementListRange } from './utils/elementRange'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, OPERATE_KEYS } from '@/types/edit'
+import { getElementListRange } from '@/utils/element'
+import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, MultiSelectRange, OPERATE_KEYS } from '@/types/edit'
 
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
-
-import { MultiSelectRange } from './types/index'
 
 export default defineComponent({
   name: 'multi-select-operate',

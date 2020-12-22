@@ -1,11 +1,12 @@
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
-import { Ref } from 'vue'
 import { State, MutationTypes } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
 
-export default (elementList: Ref<PPTElement[]>) => {
+export default () => {
   const store = useStore<State>()
+  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   // 获取组合元素层级范围（组合成员中的最大层级和最小层级）
   const getCombineElementIndexRange = (elementList: PPTElement[], combineElementList: PPTElement[]) => {
@@ -167,10 +168,10 @@ export default (elementList: Ref<PPTElement[]>) => {
   const orderElement = (element: PPTElement, command: ElementOrderCommand) => {
     let newElementList = null
     
-    if(command === ElementOrderCommands.UP) newElementList = moveUpElement(elementList.value, element)
-    else if(command === ElementOrderCommands.DOWN) newElementList = moveDownElement(elementList.value, element)
-    else if(command === ElementOrderCommands.TOP) newElementList = moveTopElement(elementList.value, element)
-    else if(command === ElementOrderCommands.BOTTOM) newElementList = moveBottomElement(elementList.value, element)
+    if(command === ElementOrderCommands.UP) newElementList = moveUpElement(currentSlide.value.elements, element)
+    else if(command === ElementOrderCommands.DOWN) newElementList = moveDownElement(currentSlide.value.elements, element)
+    else if(command === ElementOrderCommands.TOP) newElementList = moveTopElement(currentSlide.value.elements, element)
+    else if(command === ElementOrderCommands.BOTTOM) newElementList = moveBottomElement(currentSlide.value.elements, element)
 
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
   }

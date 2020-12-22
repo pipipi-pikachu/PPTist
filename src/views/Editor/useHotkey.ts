@@ -2,50 +2,98 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-
 import { message } from 'ant-design-vue'
+
+import useSlideHandler from '@/hooks/useSlideHandler'
+import useLockElement from '@/hooks/useLockElement'
+import useDeleteElement from '@/hooks/useDeleteElement'
+import useCombineElement from '@/hooks/useCombineElement'
+import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
+import useSelectAllElement from '@/hooks/useSelectAllElement'
+import useMoveElement from '@/hooks/useMoveElement'
 
 export default () => {
   const store = useStore<State>()
 
   const ctrlKeyActive = computed(() => store.state.ctrlKeyState)
   const shiftKeyActive = computed(() => store.state.shiftKeyState)
+  const disableHotkeys = computed(() => store.state.disableHotkeys)
+  const activeElementIdList = computed(() => store.state.activeElementIdList)
 
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
 
+  const {
+    updateSlideIndex,
+    copySlide,
+    createSlide,
+    deleteSlide,
+    cutSlide,
+  } = useSlideHandler()
+
+  const { combineElements, uncombineElements } = useCombineElement()
+  const { deleteElement } = useDeleteElement()
+  const { lockElement } = useLockElement()
+  const { copyElement, cutElement } = useCopyAndPasteElement()
+  const { selectAllElement } = useSelectAllElement()
+  const { moveElement } = useMoveElement()
+
   const copy = () => {
-    message.success('copy')
+    if(disableHotkeys.value) return
+    if(thumbnailsFocus.value) copySlide()
+    else if(activeElementIdList.value.length) copyElement()
   }
+
   const cut = () => {
-    message.success('cut')
+    if(disableHotkeys.value) return
+    if(thumbnailsFocus.value) cutSlide()
+    else if(activeElementIdList.value.length) cutElement()
   }
+
   const undo = () => {
     message.success('undo')
   }
+
   const redo = () => {
     message.success('redo')
   }
+
   const selectAll = () => {
-    message.success('selectAll')
+    if(!editorAreaFocus.value && disableHotkeys.value) return
+    selectAllElement()
   }
+
   const lock = () => {
-    message.success('lock')
+    if(!editorAreaFocus.value && disableHotkeys.value) return
+    lockElement()
   }
   const combine = () => {
-    message.success('combine')
+    if(!editorAreaFocus.value && disableHotkeys.value) return
+    combineElements()
   }
+
   const uncombine = () => {
-    message.success('uncombine')
+    if(!editorAreaFocus.value && disableHotkeys.value) return
+    uncombineElements()
   }
+
   const remove = () => {
-    message.success('remove')
+    if(disableHotkeys.value) return
+    if(thumbnailsFocus.value) deleteSlide()
+    else if(activeElementIdList.value.length) deleteElement()
   }
+
   const move = (key: string) => {
-    message.success(`move: ${key}`)
+    if(disableHotkeys.value) return
+    if(thumbnailsFocus.value && (key === KEYS.UP || key === KEYS.DOWN)) {
+      updateSlideIndex(key)
+    }
+    else if(activeElementIdList.value.length) moveElement(key)
   }
+
   const create = () => {
-    message.success('create')
+    if(!thumbnailsFocus.value || disableHotkeys.value) return
+    createSlide()
   }
 
   const keydownListener = (e: KeyboardEvent) => {

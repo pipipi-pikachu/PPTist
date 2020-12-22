@@ -1,23 +1,24 @@
 import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
-import { getElementListRange } from '../utils/elementRange'
+import { getElementListRange } from '@/utils/element'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
-export default (elementList: Ref<PPTElement[]>) => {
+export default () => {
   const store = useStore<State>()
 
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
+  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   const alignElementToCanvas = (command: ElementAlignCommand) => {
     const viewportWidth = VIEWPORT_SIZE
     const viewportHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
     const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)
   
-    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
+    const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     for(const element of newElementList) {
       if(!activeElementIdList.value.includes(element.elId)) continue
       

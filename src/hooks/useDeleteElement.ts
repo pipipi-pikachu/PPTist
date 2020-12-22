@@ -1,21 +1,22 @@
 import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { Slide } from '@/types/slides'
 
-export default (elementList: Ref<PPTElement[]>) => {
+export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   const deleteElement = () => {
     if(!activeElementIdList.value.length) return
-    const newElementList = elementList.value.filter(el => !activeElementIdList.value.includes(el.elId))
+    const newElementList = currentSlide.value.elements.filter(el => !activeElementIdList.value.includes(el.elId))
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
   }
 
   const deleteAllElements = () => {
-    if(!elementList.value.length) return
+    if(!currentSlide.value.elements.length) return
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: [] })
   }

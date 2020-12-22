@@ -23,7 +23,7 @@
           @mousedown="changSlideIndex(index)"
           v-contextmenu="contextmenus"
         >
-          <div class="slide-index">{{ fillDigit(index + 1) }}</div>
+          <div class="slide-index">{{ fillDigit(index + 1, 2) }}</div>
           <div class="thumbnail"></div>
         </div>
       </template>
@@ -38,6 +38,7 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
+import useSlideHandler from '@/hooks/useSlideHandler'
 
 export default defineComponent({
   name: 'thumbnails',
@@ -48,6 +49,15 @@ export default defineComponent({
     const store = useStore<State>()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
+
+    const {
+      copySlide,
+      pasteSlide,
+      createSlide,
+      copyAndPasteSlide,
+      deleteSlide,
+      cutSlide,
+    } = useSlideHandler()
 
     const changSlideIndex = (index: number) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
@@ -73,25 +83,6 @@ export default defineComponent({
       _slides.splice(newIndex, 0, _slide)
       store.commit(MutationTypes.SET_SLIDES, _slides)
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, newIndex)
-    }
-
-    const cutSlide = () => {
-      console.log('cutSlide')
-    }
-    const copySlide = () => {
-      console.log('copySlide')
-    }
-    const pasteSlide = () => {
-      console.log('pasteSlide')
-    }
-    const createSlide = () => {
-      console.log('createSlide')
-    }
-    const copyAndPasteSlide = () => {
-      console.log('copyAndPasteSlide')
-    }
-    const deleteSlide = () => {
-      console.log('deleteSlide')
     }
 
     const contextmenus = (): ContextmenuItem[] => {

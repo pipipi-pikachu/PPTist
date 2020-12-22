@@ -6,13 +6,15 @@ import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
 import { message } from 'ant-design-vue'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
+import useDeleteElement from './useDeleteElement'
 
-export default (deleteElement: () => void) => {
+export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
+  const { deleteElement } = useDeleteElement()
 
   const copyElement = () => {
     if(!activeElementIdList.value.length) return
@@ -24,7 +26,6 @@ export default (deleteElement: () => void) => {
 
     copyText(text).then(() => {
       store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
-      message.success('元素已复制到剪贴板', 0.8)
     })
   }
 

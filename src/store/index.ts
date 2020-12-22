@@ -29,7 +29,7 @@ export interface State {
 const state: State = {
   activeElementIdList: [],
   handleElementId: '',
-  editorAreaShowScale: 85,
+  editorAreaShowScale: 90,
   thumbnailsFocus: false,
   editorAreaFocus: false,
   disableHotkeys: false,
