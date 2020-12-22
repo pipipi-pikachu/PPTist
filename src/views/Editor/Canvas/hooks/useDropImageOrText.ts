@@ -7,12 +7,18 @@ export default (elementRef: Ref<HTMLElement | null>) => {
 
   const handleDrop = (e: DragEvent) => {
     if(!e.dataTransfer) return
-    const file = e.dataTransfer.items[0]
-    if( file.kind === 'file' && file.type.indexOf('image') !== -1 ) {
-      const imageFile = file.getAsFile()
+    const dataTransferItem = e.dataTransfer.items[0]
+
+    if(dataTransferItem.kind === 'file' && dataTransferItem.type.indexOf('image') !== -1) {
+      const imageFile = dataTransferItem.getAsFile()
       if(imageFile) {
         getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
       }
+    }
+    else if(dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
+      dataTransferItem.getAsString(text => {
+        console.log(text)
+      })
     }
   }
 

@@ -37,7 +37,7 @@ export default () => {
       }
     }
 
-    if( clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain' ) {
+    if(clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
       clipboardDataFirstItem.getAsString(text => pasteTextClipboardData(text))
     }
   }

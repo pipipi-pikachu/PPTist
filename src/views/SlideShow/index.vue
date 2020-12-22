@@ -1,6 +1,6 @@
 <template>
-  <div class="player">
-    player
+  <div class="slide-show">
+    slide-show
   </div>
 </template>
 
@@ -8,6 +8,6 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'player',
+  name: 'slide-show',
 })
 </script>

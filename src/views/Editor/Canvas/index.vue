@@ -68,7 +68,7 @@ import { AlignmentLineProps } from '@/types/edit'
 
 import useViewportSize from './hooks/useViewportSize'
 import useMouseSelection from './hooks/useMouseSelection'
-import useDropImageElement from './hooks/useDropImageElement'
+import useDropImageOrText from './hooks/useDropImageOrText'
 import useRotateElement from './hooks/useRotateElement'
 import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
@@ -117,7 +117,7 @@ export default defineComponent({
     }
     watchEffect(setLocalElementList)
 
-    useDropImageElement(viewportRef)
+    useDropImageOrText(viewportRef)
 
     const canvasRef = ref<HTMLElement | null>(null)
     const canvasScale = computed(() => store.state.canvasScale)
