@@ -13,10 +13,12 @@ export { MutationTypes, ActionTypes }
 export interface State {
   activeElementIdList: string[];
   handleElementId: string;
-  editorAreaShowScale: number;
+  canvasPercentage: number;
+  canvasScale: number;
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
+  showGridLines: boolean;
   availableFonts: FontName[];
   slides: Slide[];
   slideIndex: number;
@@ -29,10 +31,12 @@ export interface State {
 const state: State = {
   activeElementIdList: [],
   handleElementId: '',
-  editorAreaShowScale: 90,
+  canvasPercentage: 90,
+  canvasScale: 1,
   thumbnailsFocus: false,
   editorAreaFocus: false,
   disableHotkeys: false,
+  showGridLines: false,
   availableFonts: [],
   slides: slides,
   slideIndex: 0,

@@ -9,11 +9,11 @@ import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
 export default (
   elementList: Ref<PPTElement[]>,
   activeGroupElementId: Ref<string>,
-  canvasScale: Ref<number>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const canvasScale = computed(() => store.state.canvasScale)
 
   const dragElement = (e: MouseEvent, element: PPTElement) => {
     if(!activeElementIdList.value.includes(element.elId)) return

@@ -5,7 +5,7 @@
     v-click-outside="() => setThumbnailsFocus(false)"
   >
     <div class="add-slide">
-      <span>+ 添加幻灯片</span>
+      <span @click="createSlide()">+ 添加幻灯片</span>
     </div>
     <draggable 
       class="thumbnail-list"
@@ -130,6 +130,7 @@ export default defineComponent({
       setThumbnailsFocus,
       slides,
       slideIndex,
+      createSlide,
       changSlideIndex,
       contextmenus,
       fillDigit,

@@ -24,6 +24,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement, PPTLineElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
@@ -42,10 +44,6 @@ import TextElement from './TextElement/index.vue'
 export default defineComponent({
   name: 'editable-element',
   props: {
-    canvasScale: {
-      type: Number,
-      required: true,
-    },
     elementInfo: {
       type: Object as PropType<PPTElement>,
       required: true,
@@ -88,6 +86,9 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
         'image': ImageElement,
@@ -180,6 +181,7 @@ export default defineComponent({
     }
 
     return {
+      canvasScale,
       currentElementComponent,
       contextmenus,
     }

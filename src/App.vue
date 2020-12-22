@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <Editor />
 </template>
 
 <script lang="ts">
@@ -7,8 +7,13 @@ import { defineComponent, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, ActionTypes, State } from '@/store'
 
+import Editor from './views/Editor/index.vue'
+
 export default defineComponent({
   name: 'app',
+  components: {
+    Editor,
+  },
   setup() {
     const store = useStore<State>()
 

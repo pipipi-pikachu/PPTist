@@ -2,6 +2,7 @@
   <div 
     class="canvas" 
     ref="canvasRef"
+    @mousewheel="$event => mousewheelScaleCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
@@ -26,11 +27,6 @@
         :quadrant="mouseSelectionState.quadrant"
       />
 
-      <SlideBackground 
-        :background="currentSlide?.background"
-        :isShowGridLines="isShowGridLines"
-      />
-
       <AlignmentLine 
         v-for="(line, index) in alignmentLines" :key="index" 
         :type="line.type" :axis="line.axis" :length="line.length"
@@ -40,13 +36,13 @@
         v-if="activeElementIdList.length > 1"
         :elementList="elementList"
         :scaleMultiElement="scaleMultiElement"
-        :canvasScale="canvasScale"
       />
+
+      <SlideBackground />
 
       <EditableElement 
         v-for="(element, index) in elementList" 
         :key="element.elId"
-        :canvasScale="canvasScale"
         :elementInfo="element"
         :elementIndex="index + 1"
         :isActive="activeElementIdList.includes(element.elId)"
@@ -64,6 +60,7 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex'
+import throttle from 'lodash/throttle'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
@@ -80,6 +77,7 @@ import useDragElement from './hooks/useDragElement'
 import useDeleteElement from '@/hooks/useDeleteElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
+import useScaleCanvas from '@/hooks/useScaleCanvas'
 
 import EditableElement from '@/views/_common/_element/EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -102,6 +100,7 @@ export default defineComponent({
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const handleElementId = computed(() => store.state.handleElementId)
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
+    const ctrlKeyState = computed(() => store.state.ctrlKeyState)
     const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
 
     const viewportRef = ref<HTMLElement | null>(null)
@@ -121,14 +120,15 @@ export default defineComponent({
     useDropImageElement(viewportRef)
 
     const canvasRef = ref<HTMLElement | null>(null)
-    const { canvasScale, viewportStyles } = useViewportSize(canvasRef)
+    const canvasScale = computed(() => store.state.canvasScale)
+    const { viewportStyles } = useViewportSize(canvasRef)
 
-    const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef, canvasScale)
+    const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 
-    const { dragElement } = useDragElement(elementList, activeGroupElementId, canvasScale, alignmentLines)
+    const { dragElement } = useDragElement(elementList, activeGroupElementId, alignmentLines)
     const { selectElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
-    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, canvasScale, activeGroupElementId, alignmentLines)
-    const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)
+    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, activeGroupElementId, alignmentLines)
+    const { rotateElement } = useRotateElement(elementList, viewportRef)
 
     const { selectAllElement } = useSelectAllElement()
     const { deleteAllElements } = useDeleteElement()
@@ -142,6 +142,17 @@ export default defineComponent({
 
     const removeEditorAreaFocus = () => {
       if(editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
+    }
+
+    const { scaleCanvas } = useScaleCanvas()
+    const throttleScaleCanvas = throttle(scaleCanvas, 100, { leading: true, trailing: false })
+
+    const mousewheelScaleCanvas = (e: WheelEvent) => {
+      if(!ctrlKeyState.value) return
+
+      e.preventDefault()
+      if(e.deltaY > 0) throttleScaleCanvas('-')
+      else if(e.deltaY < 0) throttleScaleCanvas('+')
     }
 
     const contextmenus = (): ContextmenuItem[] => {
@@ -182,6 +193,7 @@ export default defineComponent({
       rotateElement,
       scaleElement,
       scaleMultiElement,
+      mousewheelScaleCanvas,
       contextmenus,
     }
   },

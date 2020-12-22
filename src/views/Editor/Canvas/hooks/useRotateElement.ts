@@ -1,4 +1,4 @@
-import { Ref } from 'vue'
+import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
@@ -12,8 +12,9 @@ export const getAngleFromCoordinate = (x: number, y: number) => {
   return angle
 }
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>, canvasScale: Ref<number>) => {
+export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>) => {
   const store = useStore<State>()
+  const canvasScale = computed(() => store.state.canvasScale)
 
   const rotateElement = (element: PPTTextElement | PPTImageElement | PPTShapeElement) => {
     let isMouseDown = true

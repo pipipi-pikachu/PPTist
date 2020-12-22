@@ -3,36 +3,34 @@
     class="slide-background"
     :style="backgroundStyle"
   >
-    <template v-if="isShowGridLines">
+    <template v-if="showGridLines">
       <GridLines />
       <GridLines :gridSize="100" gridColor="rgba(100, 100, 100, 0.3)" />
     </template>
   </div>
 </template>
 
-<script>
-import { computed, defineComponent } from 'vue'
-import GridLines from './GridLines'
+<script lang="ts">
+import { Ref, computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
+import { Slide } from '@/types/slides'
+import GridLines from './GridLines.vue'
 
 export default defineComponent({
   name: 'slide-background',
   components: {
     GridLines,
   },
-  props: {
-    background: {
-      type: Array,
-    },
-    isShowGridLines: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const backgroundStyle = computed(() => {
-      if(!props.background) return { backgroundColor: '#fff' }
+  setup() {
+    const store = useStore<State>()
+    const showGridLines = computed(() => store.state.showGridLines)
+    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
-      const [type, value] = props.background
+    const backgroundStyle = computed(() => {
+      if(!currentSlide.value.background) return { backgroundColor: '#fff' }
+
+      const [type, value] = currentSlide.value.background
       if(type === 'solid') return { backgroundColor: value }
       else if(type === 'image') return { backgroundImage: `url(${value}` }
 
@@ -40,6 +38,7 @@ export default defineComponent({
     })
 
     return {
+      showGridLines,
       backgroundStyle,
     }
   },

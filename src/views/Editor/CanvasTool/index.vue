@@ -15,19 +15,41 @@
     </div>
 
     <div class="right-handler">
-      <IconFont class="handler-item viewport-size" type="icon-minus" />
-      <span class="text">100%</span>
-      <IconFont class="handler-item viewport-size" type="icon-plus" />
-      <IconFont class="handler-item viewport-size" type="icon-number" />
+      <IconFont class="handler-item viewport-size" type="icon-minus" @click="scaleCanvas('-')" />
+      <span class="text">{{canvasScalePercentage}}</span>
+      <IconFont class="handler-item viewport-size" type="icon-plus" @click="scaleCanvas('+')" />
+      <IconFont class="handler-item viewport-size" type="icon-number" @click="toggleGridLines()" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
+import { MutationTypes, State } from '@/store'
+import useScaleCanvas from '@/hooks/useScaleCanvas'
 
 export default defineComponent({
   name: 'canvas-tool',
+  setup() {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+    const showGridLines = computed(() => store.state.showGridLines)
+
+    const canvasScalePercentage = computed(() => parseInt(canvasScale.value * 100 + '') + '%')
+
+    const { scaleCanvas } = useScaleCanvas()
+
+    const toggleGridLines = () => {
+      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
+    }
+
+    return {
+      scaleCanvas,
+      canvasScalePercentage,
+      toggleGridLines,
+    }
+  },
 })
 </script>
 
@@ -40,6 +62,7 @@ export default defineComponent({
   justify-content: space-between;
   padding: 0 10px;
   font-size: 13px;
+  user-select: none;
 }
 .left-handler {
   display: flex;
@@ -58,6 +81,11 @@ export default defineComponent({
 .right-handler {
   display: flex;
   align-items: center;
+
+  .text {
+    width: 40px;
+    text-align: center;
+  }
 
   .viewport-size {
     font-size: 12px;

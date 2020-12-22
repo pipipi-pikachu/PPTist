@@ -83,13 +83,13 @@ export const getOppositePoint = (direction: number, points: ReturnType<typeof ge
 
 export default (
   elementList: Ref<PPTElement[]>,
-  canvasScale: Ref<number>,
   activeGroupElementId: Ref<string>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
+  const canvasScale = computed(() => store.state.canvasScale)
 
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: ElementScaleHandler) => {
     let isMouseDown = true

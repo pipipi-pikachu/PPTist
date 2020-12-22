@@ -5,11 +5,6 @@ import { Slide, PPTElement } from '@/types/slides'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
 
-interface AddSlideData {
-  index?: number;
-  slide: Slide | Slide[];
-}
-
 interface UpdateElementData {
   elId: string | string[];
   props: Partial<PPTElement>;
@@ -30,8 +25,12 @@ export const mutations: MutationTree<State> = {
     state.handleElementId = handleElementId
   },
 
-  [MutationTypes.SET_EDITOR_AREA_SHOW_SCALE](state, scale: number) {
-    state.editorAreaShowScale = scale
+  [MutationTypes.SET_CANVAS_PERCENTAGE](state, percentage: number) {
+    state.canvasPercentage = percentage
+  },
+
+  [MutationTypes.SET_CANVAS_SCALE](state, scale: number) {
+    state.canvasScale = scale
   },
 
   [MutationTypes.SET_THUMBNAILS_FOCUS](state, isFocus: boolean) {
@@ -44,6 +43,10 @@ export const mutations: MutationTree<State> = {
 
   [MutationTypes.SET_DISABLE_HOTKEYS_STATE](state, disable: boolean) {
     state.disableHotkeys = disable
+  },
+
+  [MutationTypes.SET_GRID_LINES_STATE](state, show: boolean) {
+    state.showGridLines = show
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {

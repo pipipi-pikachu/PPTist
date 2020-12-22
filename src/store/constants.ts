@@ -3,10 +3,12 @@ export enum MutationTypes {
   // editor
   SET_ACTIVE_ELEMENT_ID_LIST = 'setActiveElementIdList',
   SET_HANDLE_ELEMENT_ID = 'setHandleElementId',
-  SET_EDITOR_AREA_SHOW_SCALE = 'setEditorAreaShowScale',
+  SET_CANVAS_PERCENTAGE = 'setCanvasPercentage',
+  SET_CANVAS_SCALE = 'setCanvasScale',
   SET_THUMBNAILS_FOCUS = 'setThumbnailsFocus',
   SET_EDITORAREA_FOCUS = 'setEditorAreaFocus',
   SET_DISABLE_HOTKEYS_STATE = 'setDisableHotkeysState',
+  SET_GRID_LINES_STATE = 'setGridLinesState',
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
 
   // slides

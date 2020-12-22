@@ -1,11 +1,12 @@
-import { Ref, reactive } from 'vue'
+import { Ref, reactive, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>, canvasScale: Ref<number>) => {
+export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>) => {
   const store = useStore<State>()
+  const canvasScale = computed(() => store.state.canvasScale)
 
   const mouseSelectionState = reactive({
     isShow: false,

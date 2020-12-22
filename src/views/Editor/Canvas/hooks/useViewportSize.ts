@@ -1,15 +1,14 @@
-import { ref, computed, onMounted, onUnmounted, Ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, Ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { State, MutationTypes } from '@/store'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 export default (canvasRef: Ref<HTMLElement | null>) => {
-  const canvasScale = ref(1)
   const viewportLeft = ref(0)
   const viewportTop = ref(0)
 
   const store = useStore<State>()
-  const editorAreaShowScale = computed(() => store.state.editorAreaShowScale)
+  const canvasPercentage = computed(() => store.state.canvasPercentage)
 
   const setViewportSize = () => {
     if(!canvasRef.value) return
@@ -17,18 +16,20 @@ export default (canvasRef: Ref<HTMLElement | null>) => {
     const canvasHeight = canvasRef.value.clientHeight
 
     if(canvasHeight / canvasWidth > VIEWPORT_ASPECT_RATIO) {
-      const viewportActualWidth = canvasWidth * (editorAreaShowScale.value / 100)
-      canvasScale.value = viewportActualWidth / VIEWPORT_SIZE
+      const viewportActualWidth = canvasWidth * (canvasPercentage.value / 100)
+      store.commit(MutationTypes.SET_CANVAS_SCALE, viewportActualWidth / VIEWPORT_SIZE)
       viewportLeft.value = (canvasWidth - viewportActualWidth) / 2
       viewportTop.value = (canvasHeight - viewportActualWidth * VIEWPORT_ASPECT_RATIO) / 2
     }
     else {
-      const viewportActualHeight = canvasHeight * (editorAreaShowScale.value / 100)
-      canvasScale.value = viewportActualHeight / (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO)
+      const viewportActualHeight = canvasHeight * (canvasPercentage.value / 100)
+      store.commit(MutationTypes.SET_CANVAS_SCALE, viewportActualHeight / (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO))
       viewportLeft.value = (canvasWidth - viewportActualHeight / VIEWPORT_ASPECT_RATIO) / 2
       viewportTop.value = (canvasHeight - viewportActualHeight) / 2
     }
   }
+
+  watch(canvasPercentage, setViewportSize)
 
   const viewportStyles = computed(() => ({
     width: VIEWPORT_SIZE,
@@ -47,7 +48,6 @@ export default (canvasRef: Ref<HTMLElement | null>) => {
   })
 
   return {
-    canvasScale,
     viewportStyles,
   }
 }
