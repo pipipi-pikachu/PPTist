@@ -1,0 +1,46 @@
+<template>
+  <div 
+    class="base-element"
+    :style="{ zIndex: elementIndex }"
+  >
+    <component
+      :is="currentElementComponent"
+      :elementInfo="elementInfo"
+    ></component>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
+import { PPTElement } from '@/types/slides'
+
+import BaseImageElement from './ImageElement/BaseImageElement.vue'
+import BaseTextElement from './TextElement/BaseTextElement.vue'
+
+export default defineComponent({
+  name: 'editable-element',
+  props: {
+    elementInfo: {
+      type: Object as PropType<PPTElement>,
+      required: true,
+    },
+    elementIndex: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props) {
+    const currentElementComponent = computed(() => {
+      const elementTypeMap = {
+        'image': BaseImageElement,
+        'text': BaseTextElement,
+      }
+      return elementTypeMap[props.elementInfo.type] || null
+    })
+
+    return {
+      currentElementComponent,
+    }
+  },
+})
+</script>

@@ -86,7 +86,7 @@ import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 import AnimationIndex from '@/views/_common/_operate/AnimationIndex.vue'
 
 export default defineComponent({
-  name: 'slide-element-text',
+  name: 'editable-element-text',
   components: {
     ElementBorder,
     RotateHandler,

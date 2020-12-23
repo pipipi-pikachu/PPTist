@@ -16,7 +16,7 @@
       @end="handleDragEnd"
       itemKey="id"
     >
-      <template #item="{ index }">
+      <template #item="{ element, index }">
         <div
           class="thumbnail-wrapper"
           :class="{ 'active': slideIndex === index }"
@@ -24,7 +24,9 @@
           v-contextmenu="contextmenus"
         >
           <div class="slide-index">{{ fillDigit(index + 1, 2) }}</div>
-          <div class="thumbnail"></div>
+          <div class="thumbnail">
+            <ThumbnailSlide :slide="element" :size="120" />
+          </div>
         </div>
       </template>
     </draggable>
@@ -40,10 +42,13 @@ import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
 
+import ThumbnailSlide from '@/views/_common/ThumbnailSlide.vue'
+
 export default defineComponent({
   name: 'thumbnails',
   components: {
     draggable,
+    ThumbnailSlide,
   },
   setup() {
     const store = useStore<State>()
