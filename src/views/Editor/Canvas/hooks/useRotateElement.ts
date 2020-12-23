@@ -2,11 +2,12 @@ import { Ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 // 给定一个坐标，计算该坐标到(0, 0)点连线的弧度值
 // 注意，Math.atan2的一般用法是Math.atan2(y, x)返回的是原点(0,0)到(x,y)点的线段与X轴正方向之间的弧度值
 // 这里将使用时将x与y的传入顺序交换了，为的是获取原点(0,0)到(x,y)点的线段与Y轴正方向之间的弧度值
-export const getAngleFromCoordinate = (x: number, y: number) => {
+const getAngleFromCoordinate = (x: number, y: number) => {
   const radian = Math.atan2(x, y)
   const angle = 180 / Math.PI * radian
   return angle
@@ -15,6 +16,8 @@ export const getAngleFromCoordinate = (x: number, y: number) => {
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>) => {
   const store = useStore<State>()
   const canvasScale = computed(() => store.state.canvasScale)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const rotateElement = (element: PPTTextElement | PPTImageElement | PPTShapeElement) => {
     let isMouseDown = true
@@ -67,6 +70,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | n
       if(elOriginRotate === angle) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      addHistorySnapshot()
     }
   }
 

@@ -4,6 +4,7 @@ import { MutationTypes, State } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface PasteTextClipboardDataOptions {
   onlySlide?: boolean;
@@ -13,6 +14,8 @@ interface PasteTextClipboardDataOptions {
 export default () => {
   const store = useStore<State>()
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const pasteElement = (elements: PPTElement[]) => {
     const groupIdMap = {}
@@ -40,10 +43,12 @@ export default () => {
     }
     store.commit(MutationTypes.ADD_ELEMENT, elements)
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, Object.values(elIdMap))
+    addHistorySnapshot()
   }
 
   const pasteSlide = (slide: Slide) => {
     store.commit(MutationTypes.ADD_SLIDE, slide)
+    addHistorySnapshot()
   }
 
   const pasteText = (text: string) => {

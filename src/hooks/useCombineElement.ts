@@ -3,12 +3,15 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   // 组合元素（为当前所有激活元素添加一个相同的groupId）
   const combineElements = () => {
@@ -34,6 +37,7 @@ export default () => {
     newElementList.splice(insertIndex, 0, ...combineElementList)
 
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    addHistorySnapshot()
   }
 
   // 取消组合元素（移除所有被激活元素的groupId）
@@ -47,6 +51,7 @@ export default () => {
       if(activeElementIdList.value.includes(element.elId) && element.groupId) delete element.groupId
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    addHistorySnapshot()
   }
 
   return {

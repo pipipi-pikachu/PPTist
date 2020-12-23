@@ -1,8 +1,8 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <IconFont class="handler-item" type="icon-undo" />
-      <IconFont class="handler-item" type="icon-redo" />
+      <IconFont class="handler-item" :class="{ 'disable': !canUndo }" type="icon-undo" @click="undo()" />
+      <IconFont class="handler-item" :class="{ 'disable': !canRedo }" type="icon-redo" @click="redo()" />
     </div>
 
     <div class="add-element-handler">
@@ -28,6 +28,7 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default defineComponent({
   name: 'canvas-tool',
@@ -35,10 +36,13 @@ export default defineComponent({
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
     const showGridLines = computed(() => store.state.showGridLines)
+    const canUndo = computed(() => store.getters.canUndo)
+    const canRedo = computed(() => store.getters.canRedo)
 
     const canvasScalePercentage = computed(() => parseInt(canvasScale.value * 100 + '') + '%')
 
     const { scaleCanvas } = useScaleCanvas()
+    const { redo, undo } = useHistorySnapshot()
 
     const toggleGridLines = () => {
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
@@ -48,6 +52,10 @@ export default defineComponent({
       scaleCanvas,
       canvasScalePercentage,
       toggleGridLines,
+      canUndo,
+      canRedo,
+      redo,
+      undo,
     }
   },
 })
@@ -77,6 +85,10 @@ export default defineComponent({
 .handler-item {
   margin: 0 10px;
   cursor: pointer;
+
+  &.disable {
+    opacity: .5;
+  }
 }
 .right-handler {
   display: flex;

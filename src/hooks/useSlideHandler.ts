@@ -8,6 +8,7 @@ import { encrypt } from '@/utils/crypto'
 import { KEYS } from '@/configs/hotkey'
 import { message } from 'ant-design-vue'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
   const store = useStore<State>()
@@ -16,6 +17,7 @@ export default () => {
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const updateSlideIndex = (command: string) => {
     let targetIndex = 0
@@ -51,14 +53,17 @@ export default () => {
       elements: [],
     }
     store.commit(MutationTypes.ADD_SLIDE, emptySlide)
+    addHistorySnapshot()
   }
 
   const copyAndPasteSlide = () => {
     store.commit(MutationTypes.ADD_SLIDE, currentSlide.value)
+    addHistorySnapshot()
   }
 
   const deleteSlide = () => {
     store.commit(MutationTypes.DELETE_SLIDE, currentSlide.value.id)
+    addHistorySnapshot()
   }
 
   const cutSlide = () => {

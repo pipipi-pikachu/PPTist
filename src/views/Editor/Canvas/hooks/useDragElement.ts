@@ -5,6 +5,7 @@ import { ElementTypes, PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default (
   elementList: Ref<PPTElement[]>,
@@ -14,6 +15,8 @@ export default (
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const canvasScale = computed(() => store.state.canvasScale)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const dragElement = (e: MouseEvent, element: PPTElement) => {
     if(!activeElementIdList.value.includes(element.elId)) return
@@ -305,6 +308,7 @@ export default (
       if(startPageX === currentPageX && startPageY === currentPageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      addHistorySnapshot()
     }
   }
 

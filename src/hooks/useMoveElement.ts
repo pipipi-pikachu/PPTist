@@ -3,11 +3,14 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { Slide } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const moveElement = (command: string) => {
     const newElementList = currentSlide.value.elements.map(el => {
@@ -33,6 +36,7 @@ export default () => {
       return el
     })
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    addHistorySnapshot()
   }
 
   return {

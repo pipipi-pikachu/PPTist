@@ -3,10 +3,13 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
   const store = useStore<State>()
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   // 获取组合元素层级范围（组合成员中的最大层级和最小层级）
   const getCombineElementIndexRange = (elementList: PPTElement[], combineElementList: PPTElement[]) => {
@@ -174,6 +177,7 @@ export default () => {
     else if(command === ElementOrderCommands.BOTTOM) newElementList = moveBottomElement(currentSlide.value.elements, element)
 
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    addHistorySnapshot()
   }
 
   return {

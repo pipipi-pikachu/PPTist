@@ -2,7 +2,6 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { message } from 'ant-design-vue'
 
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useLockElement from '@/hooks/useLockElement'
@@ -11,6 +10,7 @@ import useCombineElement from '@/hooks/useCombineElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useMoveElement from '@/hooks/useMoveElement'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
   const store = useStore<State>()
@@ -37,6 +37,7 @@ export default () => {
   const { copyElement, cutElement } = useCopyAndPasteElement()
   const { selectAllElement } = useSelectAllElement()
   const { moveElement } = useMoveElement()
+  const { redo, undo } = useHistorySnapshot()
 
   const copy = () => {
     if(disableHotkeys.value) return
@@ -48,14 +49,6 @@ export default () => {
     if(disableHotkeys.value) return
     if(thumbnailsFocus.value) cutSlide()
     else if(activeElementIdList.value.length) cutElement()
-  }
-
-  const undo = () => {
-    message.success('undo')
-  }
-
-  const redo = () => {
-    message.success('redo')
   }
 
   const selectAll = () => {

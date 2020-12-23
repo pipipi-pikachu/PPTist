@@ -5,14 +5,22 @@ import { ActionTypes, MutationTypes } from './constants'
 import db, { Snapshot } from '@/utils/database'
 
 export const actions: ActionTree<State, State> = {
-  async [ActionTypes.INIT_SNAPSHOT_DATABASE]({ commit }) {
+  async [ActionTypes.INIT_SNAPSHOT_DATABASE]({ commit, state }) {
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
-    const snapshot = snapshots.slice(-1)[0]
+    const lastSnapshot = snapshots.slice(-1)[0]
 
-    if(snapshot) {
+    if(lastSnapshot) {
       db.snapshots.clear()
-      commit(MutationTypes.SET_SLIDES, snapshot.slides)
+      // commit(MutationTypes.SET_SLIDES, lastSnapshot.slides)
     }
+
+    const newFirstSnapshot = {
+      index: state.slideIndex,
+      slides: state.slides,
+    }
+    await db.snapshots.add(newFirstSnapshot)
+    commit(MutationTypes.SET_SNAPSHOT_CURSOR, 0)
+    commit(MutationTypes.SET_SNAPSHOT_LENGTH, 1)
   },
 
   async [ActionTypes.ADD_SNAPSHOT]({ state, commit }) {
@@ -44,7 +52,7 @@ export const actions: ActionTree<State, State> = {
   },
 
   async [ActionTypes.UN_DO]({ state, commit }) {
-    if(state.snapshotCursor > 0) return
+    if(state.snapshotCursor <= 0) return
 
     const snapshotCursor = state.snapshotCursor - 1
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
@@ -58,7 +66,7 @@ export const actions: ActionTree<State, State> = {
   },
 
   async [ActionTypes.RE_DO]({ state, commit }) {
-    if(state.snapshotCursor < state.snapshotLength - 1) return
+    if(state.snapshotCursor >= state.snapshotLength - 1) return
 
     const snapshotCursor = state.snapshotCursor + 1
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()

@@ -12,6 +12,7 @@ import {
   DEFAULT_CHART,
   DEFAULT_TABLE,
 } from '@/configs/element'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface CommonElementPosition {
   top: number;
@@ -30,9 +31,12 @@ interface LineElementPosition {
 export default () => {
   const store = useStore()
 
+  const { addHistorySnapshot } = useHistorySnapshot()
+
   const createElement = (element: PPTElement) => {
     store.commit(MutationTypes.ADD_ELEMENT, element)
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.elId])
+    addHistorySnapshot()
   }
 
   const createImageElement = (imgUrl: string) => {

@@ -5,6 +5,7 @@ import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElem
 import { OperatePoints, ElementScaleHandler, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 // 计算元素被旋转一定角度后，八个操作点的新坐标
 interface RotateElementData {
@@ -13,7 +14,7 @@ interface RotateElementData {
   width: number;
   height: number;
 }
-export const getRotateElementPoints = (element: RotateElementData, angle: number) => {
+const getRotateElementPoints = (element: RotateElementData, angle: number) => {
   const { left, top, width, height } = element
 
   const radius = Math.sqrt( Math.pow(width, 2) + Math.pow(height, 2) ) / 2
@@ -67,7 +68,7 @@ export const getRotateElementPoints = (element: RotateElementData, angle: number
 }
 
 // 获取元素某个操作点对角线上另一端的操作点坐标（例如：左上 <-> 右下）
-export const getOppositePoint = (direction: number, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
+const getOppositePoint = (direction: number, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
   const oppositeMap = {
     [OperatePoints.RIGHT_BOTTOM]: points.leftTopPoint,
     [OperatePoints.LEFT_BOTTOM]: points.rightTopPoint,
@@ -90,6 +91,8 @@ export default (
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
   const canvasScale = computed(() => store.state.canvasScale)
+
+  const { addHistorySnapshot } = useHistorySnapshot()
 
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: ElementScaleHandler) => {
     let isMouseDown = true
@@ -383,6 +386,7 @@ export default (
       if(startPageX === e.pageX && startPageY === e.pageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      addHistorySnapshot()
     }
   }
 
@@ -486,6 +490,7 @@ export default (
       if(startPageX === e.pageX && startPageY === e.pageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      addHistorySnapshot()
     }
   }
 
