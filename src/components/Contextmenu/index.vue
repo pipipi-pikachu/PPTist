@@ -65,9 +65,10 @@ export default defineComponent({
       const { x, y } = props.axis
       const normalMenuCount = props.menus.filter(menu => !menu.divider && !menu.hide).length
       const dividerMenuCount = props.menus.filter(menu => menu.divider).length
+      const padding = 10
 
       const menuWidth = MENU_WIDTH
-      const menuHeight = normalMenuCount * MENU_HEIGHT + dividerMenuCount * DIVIDER_HEIGHT
+      const menuHeight = normalMenuCount * MENU_HEIGHT + dividerMenuCount * DIVIDER_HEIGHT + padding
 
       const maxMenuWidth = MENU_WIDTH + SUB_MENU_WIDTH - 10
 
