@@ -15,12 +15,12 @@ const clickListener = (el: HTMLElement, event: MouseEvent, binding: DirectiveBin
 const ClickOutsideDirective: Directive = {
   mounted(el: HTMLElement, binding) {
     el[CTX_CLICK_OUTSIDE_HANDLER] = (event: MouseEvent) => clickListener(el, event, binding)
-    document.addEventListener('mousedown', el[CTX_CLICK_OUTSIDE_HANDLER])
+    document.addEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
   },
   
   unmounted(el: HTMLElement) {
     if(el[CTX_CLICK_OUTSIDE_HANDLER]) {
-      document.removeEventListener('mousedown', el[CTX_CLICK_OUTSIDE_HANDLER])
+      document.removeEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
       delete el[CTX_CLICK_OUTSIDE_HANDLER]
     }
   },
