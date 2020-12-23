@@ -27,7 +27,7 @@ import { useStore } from 'vuex'
 import { State } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, MultiSelectRange, OPERATE_KEYS } from '@/types/edit'
+import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, MultiSelectRange, OperatePoints } from '@/types/edit'
 
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
@@ -66,14 +66,14 @@ export default defineComponent({
 
     const resizablePoints = computed(() => {
       return [
-        { type: OperateResizablePointTypes.TL, direction: OPERATE_KEYS.LEFT_TOP, style: {} },
-        { type: OperateResizablePointTypes.TC, direction: OPERATE_KEYS.TOP, style: {left: width.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.TR, direction: OPERATE_KEYS.RIGHT_TOP, style: {left: width.value + 'px'} },
-        { type: OperateResizablePointTypes.ML, direction: OPERATE_KEYS.LEFT, style: {top: height.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.MR, direction: OPERATE_KEYS.RIGHT, style: {left: width.value + 'px', top: height.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.BL, direction: OPERATE_KEYS.LEFT_BOTTOM, style: {top: height.value + 'px'} },
-        { type: OperateResizablePointTypes.BC, direction: OPERATE_KEYS.BOTTOM, style: {left: width.value / 2 + 'px', top: height.value + 'px'} },
-        { type: OperateResizablePointTypes.BR, direction: OPERATE_KEYS.RIGHT_BOTTOM, style: {left: width.value + 'px', top: height.value + 'px'} },
+        { type: OperateResizablePointTypes.TL, direction: OperatePoints.LEFT_TOP, style: {} },
+        { type: OperateResizablePointTypes.TC, direction: OperatePoints.TOP, style: {left: width.value / 2 + 'px'} },
+        { type: OperateResizablePointTypes.TR, direction: OperatePoints.RIGHT_TOP, style: {left: width.value + 'px'} },
+        { type: OperateResizablePointTypes.ML, direction: OperatePoints.LEFT, style: {top: height.value / 2 + 'px'} },
+        { type: OperateResizablePointTypes.MR, direction: OperatePoints.RIGHT, style: {left: width.value + 'px', top: height.value / 2 + 'px'} },
+        { type: OperateResizablePointTypes.BL, direction: OperatePoints.LEFT_BOTTOM, style: {top: height.value + 'px'} },
+        { type: OperateResizablePointTypes.BC, direction: OperatePoints.BOTTOM, style: {left: width.value / 2 + 'px', top: height.value + 'px'} },
+        { type: OperateResizablePointTypes.BR, direction: OperatePoints.RIGHT_BOTTOM, style: {left: width.value + 'px', top: height.value + 'px'} },
       ]
     })
 

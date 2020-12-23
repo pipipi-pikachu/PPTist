@@ -43,7 +43,7 @@ export enum OperateResizablePointTypes {
   ANY = 'any',
 }
 
-export enum OPERATE_KEYS {
+export enum OperatePoints {
   LEFT_TOP = 1,
   TOP = 2,
   RIGHT_TOP = 3,
