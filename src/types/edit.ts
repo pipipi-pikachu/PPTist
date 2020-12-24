@@ -18,40 +18,33 @@ export enum ElementAlignCommands {
   HORIZONTAL = 'horizontal',
 }
 
-export type ElementScaleHandler = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+export type OperateBorderLine = 'top' | 'bottom' | 'left' | 'right'
 
-export type OperateBorderLineType = 't' | 'b' | 'l' | 'r'
-
-export enum OperateBorderLineTypes {
-  T = 't',
-  B = 'b',
-  L = 'l',
-  R = 'r',
+export enum OperateBorderLines {
+  T = 'top',
+  B = 'bottom',
+  L = 'left',
+  R = 'right',
 }
 
-export type OperateResizablePointType = 't-l' | 't-c' | 't-r' | 'm-l' | 'm-r' | 'b-l' | 'b-c' | 'b-r' | 'any'
+export type OperateResizeHandler = 'left-top' |
+                                       'top' |
+                                       'right-top' |
+                                       'left' |
+                                       'right' |
+                                       'left-bottom' |
+                                       'bottom' |
+                                       'right-bottom'
 
-export enum OperateResizablePointTypes {
-  TL = 't-l',
-  TC = 't-c',
-  TR = 't-r',
-  ML = 'm-l',
-  MR = 'm-r',
-  BL = 'b-l',
-  BC = 'b-c',
-  BR = 'b-r',
-  ANY = 'any',
-}
-
-export enum OperatePoints {
-  LEFT_TOP = 1,
-  TOP = 2,
-  RIGHT_TOP = 3,
-  LEFT = 4,
-  RIGHT = 5,
-  LEFT_BOTTOM = 6,
-  BOTTOM = 7,
-  RIGHT_BOTTOM = 8,
+export enum OperateResizeHandlers {
+  LEFT_TOP = 'left-top',
+  TOP = 'top',
+  RIGHT_TOP = 'right-top',
+  LEFT = 'left',
+  RIGHT = 'right',
+  LEFT_BOTTOM = 'left-bottom',
+  BOTTOM = 'bottom',
+  RIGHT_BOTTOM = 'right-bottom',
 }
 
 export interface AlignmentLineAxis {

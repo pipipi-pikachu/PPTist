@@ -2,7 +2,7 @@ import { computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
-import { OperatePoints, ElementScaleHandler, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
+import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -68,16 +68,16 @@ const getRotateElementPoints = (element: RotateElementData, angle: number) => {
 }
 
 // 获取元素某个操作点对角线上另一端的操作点坐标（例如：左上 <-> 右下）
-const getOppositePoint = (direction: number, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
+const getOppositePoint = (direction: string, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
   const oppositeMap = {
-    [OperatePoints.RIGHT_BOTTOM]: points.leftTopPoint,
-    [OperatePoints.LEFT_BOTTOM]: points.rightTopPoint,
-    [OperatePoints.LEFT_TOP]: points.rightBottomPoint,
-    [OperatePoints.RIGHT_TOP]: points.leftBottomPoint,
-    [OperatePoints.TOP]: points.bottomPoint,
-    [OperatePoints.BOTTOM]: points.topPoint,
-    [OperatePoints.LEFT]: points.rightPoint,
-    [OperatePoints.RIGHT]: points.leftPoint,
+    [OperateResizeHandlers.RIGHT_BOTTOM]: points.leftTopPoint,
+    [OperateResizeHandlers.LEFT_BOTTOM]: points.rightTopPoint,
+    [OperateResizeHandlers.LEFT_TOP]: points.rightBottomPoint,
+    [OperateResizeHandlers.RIGHT_TOP]: points.leftBottomPoint,
+    [OperateResizeHandlers.TOP]: points.bottomPoint,
+    [OperateResizeHandlers.BOTTOM]: points.topPoint,
+    [OperateResizeHandlers.LEFT]: points.rightPoint,
+    [OperateResizeHandlers.RIGHT]: points.leftPoint,
   }
   return oppositeMap[direction]
 }
@@ -94,7 +94,7 @@ export default (
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: ElementScaleHandler) => {
+  const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
     let isMouseDown = true
 
     const elOriginLeft = element.left
@@ -237,45 +237,45 @@ export default (
 
         // 锁定宽高比例
         if(fixedRatio) {
-          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) revisedY = revisedX / aspectRatio
-          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) revisedY = -revisedX / aspectRatio
+          if(command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP) revisedY = revisedX / aspectRatio
+          if(command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) revisedY = -revisedX / aspectRatio
         }
 
         // 根据不同的操作点分别计算元素缩放后的大小和位置
         // 这里计算的位置是错误的，因为旋转后缩放实际上也改变了元素的位置，需要在后面进行矫正
         // 这里计算的大小是正确的，因为上面修正鼠标按下后移动的距离时其实已经进行过了矫正
-        if(command === OperatePoints.RIGHT_BOTTOM) {
+        if(command === OperateResizeHandlers.RIGHT_BOTTOM) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
           height = getSizeWithinRange(elOriginHeight + revisedY)
         }
-        else if(command === OperatePoints.LEFT_BOTTOM) {
+        else if(command === OperateResizeHandlers.LEFT_BOTTOM) {
           width = getSizeWithinRange(elOriginWidth - revisedX)
           height = getSizeWithinRange(elOriginHeight + revisedY)
           left = elOriginLeft - (width - elOriginWidth)
         }
-        else if(command === OperatePoints.LEFT_TOP) {
+        else if(command === OperateResizeHandlers.LEFT_TOP) {
           width = getSizeWithinRange(elOriginWidth - revisedX)
           height = getSizeWithinRange(elOriginHeight - revisedY)
           left = elOriginLeft - (width - elOriginWidth)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.RIGHT_TOP) {
+        else if(command === OperateResizeHandlers.RIGHT_TOP) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
           height = getSizeWithinRange(elOriginHeight - revisedY)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.TOP) {
+        else if(command === OperateResizeHandlers.TOP) {
           height = getSizeWithinRange(elOriginHeight - revisedY)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.BOTTOM) {
+        else if(command === OperateResizeHandlers.BOTTOM) {
           height = getSizeWithinRange(elOriginHeight + revisedY)
         }
-        else if(command === OperatePoints.LEFT) {
+        else if(command === OperateResizeHandlers.LEFT) {
           width = getSizeWithinRange(elOriginWidth - revisedX)
           left = elOriginLeft - (width - elOriginWidth)
         }
-        else if(command === OperatePoints.RIGHT) {
+        else if(command === OperateResizeHandlers.RIGHT) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
         }
 
@@ -298,11 +298,11 @@ export default (
         let moveY = y / canvasScale.value
 
         if(fixedRatio) {
-          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) moveY = moveX / aspectRatio
-          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) moveY = -moveX / aspectRatio
+          if(command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP) moveY = moveX / aspectRatio
+          if(command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) moveY = -moveX / aspectRatio
         }
 
-        if(command === OperatePoints.RIGHT_BOTTOM) {
+        if(command === OperateResizeHandlers.RIGHT_BOTTOM) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + elOriginWidth + moveX, elOriginTop + elOriginHeight + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
@@ -313,7 +313,7 @@ export default (
           width = getSizeWithinRange(elOriginWidth + moveX)
           height = getSizeWithinRange(elOriginHeight + moveY)
         }
-        else if(command === OperatePoints.LEFT_BOTTOM) {
+        else if(command === OperateResizeHandlers.LEFT_BOTTOM) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + moveX, elOriginTop + elOriginHeight + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
@@ -325,7 +325,7 @@ export default (
           height = getSizeWithinRange(elOriginHeight + moveY)
           left = elOriginLeft - (width - elOriginWidth)
         }
-        else if(command === OperatePoints.LEFT_TOP) {
+        else if(command === OperateResizeHandlers.LEFT_TOP) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + moveX, elOriginTop + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
@@ -338,7 +338,7 @@ export default (
           left = elOriginLeft - (width - elOriginWidth)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.RIGHT_TOP) {
+        else if(command === OperateResizeHandlers.RIGHT_TOP) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + elOriginWidth + moveX, elOriginTop + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
@@ -350,24 +350,24 @@ export default (
           height = getSizeWithinRange(elOriginHeight - moveY)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.LEFT) {
+        else if(command === OperateResizeHandlers.LEFT) {
           const { offsetX } = alignedAdsorption(elOriginLeft + moveX, null)
           moveX = moveX - offsetX
           width = getSizeWithinRange(elOriginWidth - moveX)
           left = elOriginLeft - (width - elOriginWidth)
         }
-        else if(command === OperatePoints.RIGHT) {
+        else if(command === OperateResizeHandlers.RIGHT) {
           const { offsetX } = alignedAdsorption(elOriginLeft + elOriginWidth + moveX, null)
           moveX = moveX - offsetX
           width = getSizeWithinRange(elOriginWidth + moveX)
         }
-        else if(command === OperatePoints.TOP) {
+        else if(command === OperateResizeHandlers.TOP) {
           const { offsetY } = alignedAdsorption(null, elOriginTop + moveY)
           moveY = moveY - offsetY
           height = getSizeWithinRange(elOriginHeight - moveY)
           top = elOriginTop - (height - elOriginHeight)
         }
-        else if(command === OperatePoints.BOTTOM) {
+        else if(command === OperateResizeHandlers.BOTTOM) {
           const { offsetY } = alignedAdsorption(null, elOriginTop + elOriginHeight + moveY)
           moveY = moveY - offsetY
           height = getSizeWithinRange(elOriginHeight + moveY)
@@ -390,7 +390,7 @@ export default (
     }
   }
 
-  const scaleMultiElement = (e: MouseEvent, range: MultiSelectRange, command: ElementScaleHandler) => {
+  const scaleMultiElement = (e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandlers) => {
     let isMouseDown = true
     
     const { minX, maxX, minY, maxY } = range
@@ -415,8 +415,8 @@ export default (
 
       // 锁定宽高比例
       if(ctrlOrShiftKeyActive.value) {
-        if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) y = x / aspectRatio
-        if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) y = -x / aspectRatio
+        if(command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP) y = x / aspectRatio
+        if(command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) y = -x / aspectRatio
       }
 
       // 获取鼠标缩放时当前所有激活元素的范围
@@ -425,32 +425,32 @@ export default (
       let currentMinY = minY
       let currentMaxY = maxY
 
-      if(command === OperatePoints.RIGHT_BOTTOM) {
+      if(command === OperateResizeHandlers.RIGHT_BOTTOM) {
         currentMaxX = maxX + x
         currentMaxY = maxY + y
       }
-      else if(command === OperatePoints.LEFT_BOTTOM) {
+      else if(command === OperateResizeHandlers.LEFT_BOTTOM) {
         currentMinX = minX + x
         currentMaxY = maxY + y
       }
-      else if(command === OperatePoints.LEFT_TOP) {
+      else if(command === OperateResizeHandlers.LEFT_TOP) {
         currentMinX = minX + x
         currentMinY = minY + y
       }
-      else if(command === OperatePoints.RIGHT_TOP) {
+      else if(command === OperateResizeHandlers.RIGHT_TOP) {
         currentMaxX = maxX + x
         currentMinY = minY + y
       }
-      else if(command === OperatePoints.TOP) {
+      else if(command === OperateResizeHandlers.TOP) {
         currentMinY = minY + y
       }
-      else if(command === OperatePoints.BOTTOM) {
+      else if(command === OperateResizeHandlers.BOTTOM) {
         currentMaxY = maxY + y
       }
-      else if(command === OperatePoints.LEFT) {
+      else if(command === OperateResizeHandlers.LEFT) {
         currentMinX = minX + x
       }
-      else if(command === OperatePoints.RIGHT) {
+      else if(command === OperateResizeHandlers.RIGHT) {
         currentMaxX = maxX + x
       }
 

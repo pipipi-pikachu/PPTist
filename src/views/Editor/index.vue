@@ -1,5 +1,5 @@
 <template>
-  <div class="editor">
+  <div class="hamster-ppt-editor">
     <EditorHeader class="layout-header" />
     <div class="layout-content">
       <Thumbnails class="layout-content-left" />
@@ -41,7 +41,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.editor {
+.hamster-ppt-editor {
   height: 100%;
 }
 .layout-header {

@@ -4,13 +4,13 @@
 
 <script lang="ts">
 import { PropType } from 'vue'
-import { OperateBorderLineType } from '@/types/edit'
+import { OperateBorderLine } from '@/types/edit'
 
 export default {
   name: 'border-line',
   props: {
     type: {
-      type: String as PropType<OperateBorderLineType>,
+      type: String as PropType<OperateBorderLine>,
       required: true,
     },
     isWide: {
@@ -30,16 +30,16 @@ export default {
   top: 0;
   border: 0 dashed $themeColor;
 
-  &.t {
+  &.top {
     border-top-width: 1px;
   }
-  &.b {
+  &.bottom {
     border-bottom-width: 1px;
   }
-  &.l {
+  &.left {
     border-left-width: 1px;
   }
-  &.r {
+  &.right {
     border-right-width: 1px;
   }
 
@@ -51,25 +51,25 @@ export default {
       cursor: move;
     }
 
-    &.t::before {
+    &.top::before {
       top: -8px;
       left: -8px;
       width: calc(100% + 16px);
       height: 16px;
     }
-    &.b::before {
+    &.bottom::before {
       bottom: -8px;
       left: -8px;
       width: calc(100% + 16px);
       height: 16px;
     }
-    &.l::before {
+    &.left::before {
       top: -8px;
       left: -8px;
       width: 16px;
       height: calc(100% + 16px);
     }
-    &.r::before {
+    &.right::before {
       top: -8px;
       right: -8px;
       width: 16px;

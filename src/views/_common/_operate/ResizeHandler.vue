@@ -1,16 +1,16 @@
 <template>
-  <div :class="['resizable-point', type]"></div>
+  <div :class="['resize-handler', type]"></div>
 </template>
 
 <script lang="ts">
 import { PropType } from 'vue'
-import { OperateResizablePointType } from '@/types/edit'
+import { OperateResizeHandler } from '@/types/edit'
 
 export default {
-  name: 'resizable-point',
+  name: 'resize-handler',
   props: {
     type: {
-      type: String as PropType<OperateResizablePointType>,
+      type: String as PropType<OperateResizeHandler>,
       required: true,
     },
   },
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.resizable-point {
+.resize-handler {
   position: absolute;
   width: 10px;
   height: 10px;
@@ -29,32 +29,29 @@ export default {
   background-color: #fff;
   border-radius: 50%;
 
-  &.t-l {
+  &.left-top {
     cursor: nwse-resize;
   }
-  &.t-c {
+  &.top {
     cursor: ns-resize;
   }
-  &.t-r {
+  &.right-top {
     cursor: nesw-resize;
   }
-  &.m-l {
+  &.left {
     cursor: ew-resize;
   }
-  &.m-r {
+  &.right {
     cursor: ew-resize;
   }
-  &.b-l {
+  &.left-bottom {
     cursor: nesw-resize;
   }
-  &.b-c {
+  &.bottom {
     cursor: ns-resize;
   }
-  &.b-r {
+  &.right-bottom {
     cursor: nwse-resize;
-  }
-  &.any {
-    cursor: pointer;
   }
 }
 </style>

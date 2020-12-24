@@ -1,17 +1,17 @@
 <template>
-  <div class="rotate-handle">
+  <div class="rotate-handler">
     <div class="rotate-icon"><IconFont type="icon-rotate" /></div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'rotate-handle',
+  name: 'rotate-handler',
 }
 </script>
 
 <style lang="scss" scoped>
-.rotate-handle {
+.rotate-handler {
   position: absolute;
   top: -24px;
   margin: -12px 0 0 -12px;

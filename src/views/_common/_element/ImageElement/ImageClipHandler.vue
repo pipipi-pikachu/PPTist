@@ -13,7 +13,7 @@
     />
 
     <div 
-      class="top-img-wrapper" 
+      class="top-image-content" 
       :style="{
         ...topImgWrapperPositionStyle,
         clipPath: clipPath,
@@ -456,7 +456,7 @@ export default defineComponent({
     height: 100%;
   }
 
-  .top-img-wrapper {
+  .top-image-content {
     position: absolute;
     overflow: hidden;
 

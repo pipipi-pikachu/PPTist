@@ -9,11 +9,11 @@
   >
     <BorderLine v-for="line in borderLines" :key="line.type" :type="line.type" :style="line.style" />
 
-    <template v-if="!disableResizablePoint">
-      <ResizablePoint
-        v-for="point in resizablePoints"
-        :key="point.type"
-        :type="point.type"
+    <template v-if="!disableResize">
+      <ResizeHandler
+        v-for="point in resizeHandlers"
+        :key="point.direction"
+        :type="point.direction"
         :style="point.style"
         @mousedown.stop="scaleMultiElement($event, { minX, maxX, minY, maxY }, point.direction)"
       />
@@ -27,15 +27,16 @@ import { useStore } from 'vuex'
 import { State } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
-import { ElementScaleHandler, OperateResizablePointTypes, OperateBorderLineTypes, MultiSelectRange, OperatePoints } from '@/types/edit'
+import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
+import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
 
-import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
+import ResizeHandler from '@/views/_common/_operate/ResizeHandler.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 
 export default defineComponent({
   name: 'multi-select-operate',
   components: {
-    ResizablePoint,
+    ResizeHandler,
     BorderLine,
   },
   props: {
@@ -44,7 +45,7 @@ export default defineComponent({
       required: true,
     },
     scaleMultiElement: {
-      type: Function as PropType<(e: MouseEvent, range: MultiSelectRange, command: ElementScaleHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandler) => void>,
       required: true,
     },
   },
@@ -63,30 +64,9 @@ export default defineComponent({
 
     const width = computed(() => (range.maxX - range.minX) * canvasScale.value)
     const height = computed(() => (range.maxY - range.minY) * canvasScale.value)
+    const { resizeHandlers, borderLines } = useCommonOperate(width, height)
 
-    const resizablePoints = computed(() => {
-      return [
-        { type: OperateResizablePointTypes.TL, direction: OperatePoints.LEFT_TOP, style: {} },
-        { type: OperateResizablePointTypes.TC, direction: OperatePoints.TOP, style: {left: width.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.TR, direction: OperatePoints.RIGHT_TOP, style: {left: width.value + 'px'} },
-        { type: OperateResizablePointTypes.ML, direction: OperatePoints.LEFT, style: {top: height.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.MR, direction: OperatePoints.RIGHT, style: {left: width.value + 'px', top: height.value / 2 + 'px'} },
-        { type: OperateResizablePointTypes.BL, direction: OperatePoints.LEFT_BOTTOM, style: {top: height.value + 'px'} },
-        { type: OperateResizablePointTypes.BC, direction: OperatePoints.BOTTOM, style: {left: width.value / 2 + 'px', top: height.value + 'px'} },
-        { type: OperateResizablePointTypes.BR, direction: OperatePoints.RIGHT_BOTTOM, style: {left: width.value + 'px', top: height.value + 'px'} },
-      ]
-    })
-
-    const borderLines = computed(() => {
-      return [
-        { type: OperateBorderLineTypes.T, style: {width: width.value + 'px'} },
-        { type: OperateBorderLineTypes.B, style: {top: height.value + 'px', width: width.value + 'px'} },
-        { type: OperateBorderLineTypes.L, style: {height: height.value + 'px'} },
-        { type: OperateBorderLineTypes.R, style: {left: width.value + 'px', height: height.value + 'px'} },
-      ]
-    })
-
-    const disableResizablePoint = computed(() => {
+    const disableResize = computed(() => {
       return localActiveElementList.value.some(item => {
         if(
           (item.type === ElementTypes.IMAGE || item.type === ElementTypes.SHAPE) && 
@@ -110,8 +90,8 @@ export default defineComponent({
       ...toRefs(range),
       canvasScale,
       borderLines,
-      disableResizablePoint,
-      resizablePoints,
+      disableResize,
+      resizeHandlers,
     }
   },
 })

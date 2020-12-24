@@ -36,7 +36,7 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 
-import { ElementOrderCommands, ElementAlignCommands, ElementScaleHandler } from '@/types/edit'
+import { ElementOrderCommands, ElementAlignCommands, OperateResizeHandler } from '@/types/edit'
 
 import ImageElement from './ImageElement/index.vue'
 import TextElement from './TextElement/index.vue'
@@ -81,7 +81,7 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: ElementScaleHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandler) => void>,
       required: true,
     },
   },

@@ -37,7 +37,7 @@
         :outline="elementInfo.outline"
       />
 
-      <div class="img-wrapper" :style="{ clipPath: clipShape.style }">
+      <div class="image-content" :style="{ clipPath: clipShape.style }">
         <img 
           :src="elementInfo.src" 
           :draggable="false" 
@@ -155,7 +155,7 @@ export default defineComponent({
   height: 100%;
   position: relative;
 
-  .img-wrapper {
+  .image-content {
     width: 100%;
     height: 100%;
     overflow: hidden;

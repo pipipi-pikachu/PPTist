@@ -54,7 +54,7 @@
         :createPath="clipShape.createPath"
       />
 
-      <div class="img-wrapper" :style="{clipPath: clipShape.style}">
+      <div class="image-content" :style="{clipPath: clipShape.style}">
         <img 
           :src="elementInfo.src" 
           :draggable="false" 
@@ -88,16 +88,16 @@
         :style="line.style" 
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
-        <ResizablePoint 
-          class="operate-resizable-point" 
-          v-for="point in resizablePoints"
-          :key="point.type"
-          :type="point.type"
+        <ResizeHandler 
+          class="operate-resize-handler" 
+          v-for="point in resizeHandlers"
+          :key="point.direction"
+          :type="point.direction"
           :style="point.style"
           @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
-          class="operate-rotate-handle" 
+          class="operate-rotate-handler" 
           :style="{left: scaleWidth / 2 + 'px'}"
           @mousedown.stop="rotateElement(elementInfo)"
         />
@@ -112,13 +112,13 @@
 import { computed, defineComponent, ref, PropType } from 'vue'
 
 import { PPTImageElement } from '@/types/slides'
-import { ElementScaleHandler } from '@/types/edit'
+import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
 
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 
 import RotateHandler from '@/views/_common/_operate/RotateHandler.vue'
-import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
+import ResizeHandler from '@/views/_common/_operate/ResizeHandler.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 import AnimationIndex from '@/views/_common/_operate/AnimationIndex.vue'
 
@@ -133,7 +133,7 @@ export default defineComponent({
   name: 'editable-element-image',
   components: {
     RotateHandler,
-    ResizablePoint,
+    ResizeHandler,
     BorderLine,
     AnimationIndex,
     ImageClip,
@@ -179,7 +179,7 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTImageElement, command: ElementScaleHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTImageElement, command: OperateResizeHandler) => void>,
       required: true,
     },
     contextmenus: {
@@ -192,7 +192,7 @@ export default defineComponent({
     const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
     const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
 
-    const { resizablePoints, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+    const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
     const isCliping = computed(() => clipingImageElId.value === props.elementInfo.id)
 
@@ -278,7 +278,7 @@ export default defineComponent({
       isCliping,
       imgPosition,
       clipShape,
-      resizablePoints,
+      resizeHandlers,
       borderLines,
       filter,
       flip,
@@ -313,7 +313,7 @@ export default defineComponent({
   position: relative;
   cursor: move;
 
-  .img-wrapper {
+  .image-content {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -334,8 +334,8 @@ export default defineComponent({
 
   &.active {
     .operate-border-line,
-    .operate-resizable-point,
-    .operate-rotate-handle {
+    .operate-resize-handler,
+    .operate-rotate-handler {
       display: block;
     }
   }
@@ -345,8 +345,8 @@ export default defineComponent({
   }
 
   .operate-border-line,
-  .operate-resizable-point,
-  .operate-rotate-handle {
+  .operate-resize-handler,
+  .operate-rotate-handler {
     display: none;
   }
 }

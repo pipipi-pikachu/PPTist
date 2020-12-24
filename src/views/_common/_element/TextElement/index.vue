@@ -49,15 +49,15 @@
         @mousedown="handleSelectElement($event)"
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
-        <ResizablePoint class="operate-resizable-point" 
-          v-for="point in resizablePoints"
-          :key="point.type"
-          :type="point.type"
+        <ResizeHandler class="operate-resize-handler" 
+          v-for="point in resizeHandlers"
+          :key="point.direction"
+          :type="point.direction"
           :style="point.style"
           @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
-          class="operate-rotate-handle" 
+          class="operate-rotate-handler" 
           :style="{ left: scaleWidth / 2 + 'px' }"
           @mousedown.stop="rotateElement(elementInfo)"
         />
@@ -72,12 +72,12 @@
 import { computed, defineComponent, PropType } from 'vue'
 
 import { PPTTextElement } from '@/types/slides'
-import { ElementScaleHandler } from '@/types/edit'
+import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
 
 import ElementOutline from '@/views/_common/_element/ElementOutline.vue'
 import RotateHandler from '@/views/_common/_operate/RotateHandler.vue'
-import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
+import ResizeHandler from '@/views/_common/_operate/ResizeHandler.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 import AnimationIndex from '@/views/_common/_operate/AnimationIndex.vue'
 
@@ -88,7 +88,7 @@ export default defineComponent({
   components: {
     ElementOutline,
     RotateHandler,
-    ResizablePoint,
+    ResizeHandler,
     BorderLine,
     AnimationIndex,
   },
@@ -130,7 +130,7 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTTextElement, command: ElementScaleHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTTextElement, command: OperateResizeHandler) => void>,
       required: true,
     },
     contextmenus: {
@@ -141,7 +141,7 @@ export default defineComponent({
     const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
     const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
 
-    const { resizablePoints, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+    const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
     const handleSelectElement = (e: MouseEvent, canMove = true) => {
       if(props.elementInfo.lock) return
@@ -155,7 +155,7 @@ export default defineComponent({
 
     return {
       scaleWidth,
-      resizablePoints,
+      resizeHandlers,
       borderLines,
       handleSelectElement,
       shadowStyle,
@@ -212,8 +212,8 @@ export default defineComponent({
 
   &.active {
     .operate-border-line,
-    .operate-resizable-point,
-    .operate-rotate-handle {
+    .operate-resize-handler,
+    .operate-rotate-handles {
       display: block;
     }
   }
@@ -223,8 +223,8 @@ export default defineComponent({
   }
 
   .operate-border-line,
-  .operate-resizable-point,
-  .operate-rotate-handle {
+  .operate-resize-handler,
+  .operate-rotate-handles {
     display: none;
   }
 }

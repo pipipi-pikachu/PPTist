@@ -1,5 +1,5 @@
 <template>
-  <div class="slide-show">
+  <div class="hamster-ppt-slide-show">
     slide-show
   </div>
 </template>
