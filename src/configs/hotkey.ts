@@ -6,6 +6,7 @@ export enum KEYS {
   A = 'A',
   G = 'G',
   L = 'L',
+  F = 'F',
   DELETE = 'DELETE',
   UP = 'ARROWUP',
   DOWN = 'ARROWDOWN',

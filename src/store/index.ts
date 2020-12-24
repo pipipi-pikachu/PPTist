@@ -26,6 +26,7 @@ export interface State {
   snapshotLength: number;
   ctrlKeyState: boolean;
   shiftKeyState: boolean;
+  screening: boolean;
 }
 
 const state: State = {
@@ -44,6 +45,7 @@ const state: State = {
   snapshotLength: 0,
   ctrlKeyState: false,
   shiftKeyState: false,
+  screening: false,
 }
 
 export default createStore({

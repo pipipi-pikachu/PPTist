@@ -120,4 +120,10 @@ export const mutations: MutationTree<State> = {
   [MutationTypes.SET_SHIFT_KEY_STATE](state, isActive: boolean) {
     state.shiftKeyState = isActive
   },
+
+  // screen
+
+  [MutationTypes.SET_SCREENING](state, screening) {
+    state.screening = screening
+  },
 }

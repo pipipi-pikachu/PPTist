@@ -27,6 +27,9 @@ export enum MutationTypes {
   // keyboard
   SET_CTRL_KEY_STATE = 'setCtrlKeyState',
   SET_SHIFT_KEY_STATE = 'setShiftKeyState',
+
+  // screen
+  SET_SCREENING = 'SET_SCREENING'
 }
 
 export enum ActionTypes {

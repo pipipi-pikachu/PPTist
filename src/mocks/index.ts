@@ -16,7 +16,6 @@ export const slides: Slide[] = [
         width: 320,
         height: 104,
         rotate: 0,
-        fill: 'rgba(220, 220, 220, 0.8)',
         shadow: {
           h: 1,
           v: 1,
@@ -56,15 +55,6 @@ export const slides: Slide[] = [
         width: 150,
         height: 150,
         rotate: 0,
-        outline: {
-          width: 6,
-          style: 'solid',
-          color: '#333'
-        },
-        clip: {
-          range: [[0, 0], [100, 100]],
-          shape: 'roundRect'
-        },
         fixedRatio: true,
         lock: false,
         src: 'https://img.lessonplan.cn/IMG/Show/ppt/3ab74e91-c34f-499d-9711-166e423d4dd6/62d9adb3-e7a6-4dc4-a352-095cffb49f08/b1be1a2f-f893-47d3-a8a3-eac7d04d395f/1596159381259v2-b2c69096d25ae16bf6ca09e30add3e65_hd.jpg',

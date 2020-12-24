@@ -2,6 +2,7 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { KEYS } from '@/configs/hotkey'
+import { enterFullscreen } from '@/utils/fullscreen'
 
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useLockElement from '@/hooks/useLockElement'
@@ -89,9 +90,19 @@ export default () => {
     createSlide()
   }
 
+  const enterScreening = () => {
+    enterFullscreen()
+    store.commit(MutationTypes.SET_SCREENING, true)
+  }
+
   const keydownListener = (e: KeyboardEvent) => {
     const { ctrlKey, shiftKey } = e
     const key = e.key.toUpperCase()
+
+    if(ctrlKey && key === KEYS.F) {
+      e.preventDefault()
+      enterScreening()
+    }
 
     if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
     if(shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
