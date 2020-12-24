@@ -14,13 +14,12 @@
       }"
     >
       <div class="background" :style="{ ...backgroundStyle }"></div>
-
-      <template v-for="(element, index) in slide.elements" :key="element.elId">
-        <BaseElement
-          :elementInfo="element"
-          :elementIndex="index + 1"
-        />
-      </template>
+      <BaseElement
+        v-for="(element, index) in slide.elements"
+        :key="element.elId"
+        :elementInfo="element"
+        :elementIndex="index + 1"
+      />
     </div>
   </div>
 </template>

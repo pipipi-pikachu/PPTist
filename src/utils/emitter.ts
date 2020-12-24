@@ -1,8 +1,6 @@
 import mitt, { Emitter } from 'mitt'
 
-export enum EMITTER_EVENTS {
-  
-}
+export enum EMITTER_EVENTS {}
 
 const emitter: Emitter = mitt()
 

@@ -73,21 +73,5 @@ export default defineComponent({
     background-color: rgba(27, 110, 232, 0.3);
     color: inherit;
   }
-
-  ul {
-    list-style-type: disc;
-    padding-inline-start: 30px;
-    li {
-      list-style-type: disc;
-    }
-  }
-
-  ol {
-    list-style-type: decimal;
-    padding-inline-start: 30px;
-    li {
-      list-style-type: decimal;
-    }
-  }
 }
 </style>

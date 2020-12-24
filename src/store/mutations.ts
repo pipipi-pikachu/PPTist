@@ -112,7 +112,7 @@ export const mutations: MutationTree<State> = {
     state.snapshotLength = length
   },
 
-  // keyBoard
+  // keyboard
 
   [MutationTypes.SET_CTRL_KEY_STATE](state, isActive: boolean) {
     state.ctrlKeyState = isActive
