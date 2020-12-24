@@ -14,16 +14,18 @@ export default {
 .rotate-handler {
   position: absolute;
   top: -24px;
-  margin: -12px 0 0 -12px;
-  width: 24px;
-  height: 24px;
-  background-color: #333;
+  margin: -10px 0 0 -10px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  color: #fff;
+  background-color: #fff;
+  box-shadow: 1px 1px 2px #888;
 
   .rotate-icon {
     width: 100%;
     height: 100%;
+    font-size: 12px;
+    color: #666;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -25,9 +25,9 @@ export default {
   left: 0;
   top: 0;
   margin: -5px 0 0 -5px;
-  border: 1px solid #666;
+  border: 1px solid $themeColor;
   background-color: #fff;
-  border-radius: 50%;
+  border-radius: 1px;
 
   &.left-top {
     cursor: nwse-resize;

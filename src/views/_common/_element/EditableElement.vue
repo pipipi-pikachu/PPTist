@@ -9,8 +9,8 @@
       :is="currentElementComponent"
       :canvasScale="canvasScale"
       :elementInfo="elementInfo"
+      :isSelected="isSelected"
       :isActive="isActive"
-      :isHandleEl="isHandleEl"
       :isActiveGroupElement="isActiveGroupElement"
       :isMultiSelect="isMultiSelect"
       :animationIndex="animationIndex"
@@ -52,11 +52,11 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    isActive: {
+    isSelected: {
       type: Boolean,
       required: true,
     },
-    isHandleEl: {
+    isActive: {
       type: Boolean,
       required: true,
     },

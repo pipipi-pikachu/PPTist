@@ -32,9 +32,9 @@
     <div 
       class="operate" 
       :class="{
+        'selected': isSelected,
+        'multi-select': isMultiSelect && isSelected,
         'active': isActive,
-        'multi-select': isMultiSelect && isActive,
-        'selected': isHandleEl
       }" 
       :style="{ transform: `scale(${1 / canvasScale})` }"
       v-contextmenu="contextmenus"
@@ -49,7 +49,8 @@
         @mousedown="handleSelectElement($event)"
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
-        <ResizeHandler class="operate-resize-handler" 
+        <ResizeHandler
+          class="operate-resize-handler" 
           v-for="point in resizeHandlers"
           :key="point.direction"
           :type="point.direction"
@@ -101,11 +102,11 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    isActive: {
+    isSelected: {
       type: Boolean,
       required: true,
     },
-    isHandleEl: {
+    isActive: {
       type: Boolean,
       required: true,
     },
@@ -210,10 +211,10 @@ export default defineComponent({
   z-index: 100;
   user-select: none;
 
-  &.active {
+  &.selected {
     .operate-border-line,
     .operate-resize-handler,
-    .operate-rotate-handles {
+    .operate-rotate-handler {
       display: block;
     }
   }
@@ -224,7 +225,7 @@ export default defineComponent({
 
   .operate-border-line,
   .operate-resize-handler,
-  .operate-rotate-handles {
+  .operate-rotate-handler {
     display: none;
   }
 }
