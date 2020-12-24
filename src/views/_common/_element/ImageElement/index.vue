@@ -1,7 +1,7 @@
 <template>
   <div 
     class="editable-element image"
-    :class="{ 'lock': elementInfo.isLock }"
+    :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -13,7 +13,7 @@
   >
     <ImageClip
       v-if="isCliping"
-      :imgUrl="elementInfo.imgUrl"
+      :src="elementInfo.src"
       :clipData="elementInfo.clip"
       :canvasScale="canvasScale"
       :width="elementInfo.width"
@@ -29,40 +29,34 @@
       v-if="!isCliping"
       v-contextmenu="contextmenus"
       :style="{
-        filter: elementInfo.shadow ? `drop-shadow(${elementInfo.shadow})` : '',
+        filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
         transform: flip,
       }"
     >
-      <ImageRectBorder
+      <ImageRectOutline
         v-if="clipShape.type === 'rect'"
         :width="elementInfo.width"
         :height="elementInfo.height"
         :radius="clipShape.radius"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
-      <ImageEllipseBorder
+      <ImageEllipseOutline
         v-else-if="clipShape.type === 'ellipse'"
         :width="elementInfo.width"
         :height="elementInfo.height"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
-      <ImagePolygonBorder
+      <ImagePolygonOutline
         v-else-if="clipShape.type === 'polygon'"
         :width="elementInfo.width"
         :height="elementInfo.height"
+        :outline="elementInfo.outline"
         :createPath="clipShape.createPath"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
       />
 
       <div class="img-wrapper" :style="{clipPath: clipShape.style}">
         <img 
-          :src="elementInfo.imgUrl" 
+          :src="elementInfo.src" 
           :draggable="false" 
           :style="{
             top: imgPosition.top,
@@ -93,7 +87,7 @@
         :type="line.type" 
         :style="line.style" 
       />
-      <template v-if="!elementInfo.isLock && (isActiveGroupElement || !isMultiSelect)">
+      <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
         <ResizablePoint 
           class="el-resizable-point" 
           v-for="point in resizablePoints"
@@ -119,7 +113,7 @@ import { computed, defineComponent, ref, PropType } from 'vue'
 
 import { PPTImageElement } from '@/types/slides'
 import { ElementScaleHandler } from '@/types/edit'
-import useCommonOperate from '@/views/_common/_element/useCommonOperate'
+import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
 
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 
@@ -129,9 +123,11 @@ import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 import AnimationIndex from '@/views/_common/_operate/AnimationIndex.vue'
 
 import ImageClip, { ClipedEmitData } from './ImageClipHandler.vue'
-import ImageRectBorder from './ImageRectBorder.vue'
-import ImageEllipseBorder from './ImageEllipseBorder.vue'
-import ImagePolygonBorder from './ImagePolygonBorder.vue'
+import ImageRectOutline from './ImageRectOutline.vue'
+import ImageEllipseOutline from './ImageEllipseOutline.vue'
+import ImagePolygonOutline from './ImagePolygonOutline.vue'
+
+import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
 
 export default defineComponent({
   name: 'editable-element-image',
@@ -141,9 +137,9 @@ export default defineComponent({
     BorderLine,
     AnimationIndex,
     ImageClip,
-    ImageRectBorder,
-    ImageEllipseBorder,
-    ImagePolygonBorder,
+    ImageRectOutline,
+    ImageEllipseOutline,
+    ImagePolygonOutline,
   },
   props: {
     elementInfo: {
@@ -198,7 +194,7 @@ export default defineComponent({
 
     const { resizablePoints, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
-    const isCliping = computed(() => clipingImageElId.value === props.elementInfo.elId)
+    const isCliping = computed(() => clipingImageElId.value === props.elementInfo.id)
 
     const imgPosition = computed(() => {
       if(!props.elementInfo || !props.elementInfo.clip) {
@@ -233,10 +229,10 @@ export default defineComponent({
     })
 
     const filter = computed(() => {
-      if(!props.elementInfo.filter) return ''
+      if(!props.elementInfo.filters) return ''
       let filter = ''
-      for(const key of Object.keys(props.elementInfo.filter)) {
-        filter += `${key}(${props.elementInfo.filter[key]}) `
+      for(const key of Object.keys(props.elementInfo.filters)) {
+        filter += `${key}(${props.elementInfo.filters[key]}) `
       }
       return filter
     })
@@ -250,8 +246,11 @@ export default defineComponent({
       return ''
     })
 
+    const shadow = computed(() => props.elementInfo.shadow)
+    const { shadowStyle } = useElementShadow(shadow)
+
     const handleSelectElement = (e: MouseEvent) => {
-      if(isCliping.value || props.elementInfo.isLock) return
+      if(isCliping.value || props.elementInfo.lock) return
       e.stopPropagation()
       props.selectElement(e, props.elementInfo)
     }
@@ -283,6 +282,7 @@ export default defineComponent({
       borderLines,
       filter,
       flip,
+      shadowStyle,
       handleSelectElement,
       clip,
     }

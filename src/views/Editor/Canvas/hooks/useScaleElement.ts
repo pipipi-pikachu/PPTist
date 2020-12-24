@@ -102,8 +102,8 @@ export default (
     const elOriginWidth = element.width
     const elOriginHeight = element.height
 
-    const isLockRatio = ctrlOrShiftKeyActive.value || ('lockRatio' in element && element.lockRatio)
-    const lockRatio = elOriginWidth / elOriginHeight
+    const fixedRatio = ctrlOrShiftKeyActive.value || ('fixedRatio' in element && element.fixedRatio)
+    const aspectRatio = elOriginWidth / elOriginHeight
     
     const elRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
     const rotateRadian = Math.PI * elRotate / 180
@@ -133,13 +133,13 @@ export default (
     else {
       const edgeWidth = VIEWPORT_SIZE
       const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
-      const isActiveGroupElement = element.elId === activeGroupElementId.value
+      const isActiveGroupElement = element.id === activeGroupElementId.value
       
       for(const el of elementList.value) {
         if('rotate' in el && el.rotate) continue
         if(el.type === ElementTypes.LINE) continue
-        if(isActiveGroupElement && el.elId === element.elId) continue
-        if(!isActiveGroupElement && activeElementIdList.value.includes(el.elId)) continue
+        if(isActiveGroupElement && el.id === element.id) continue
+        if(!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
 
         const left = el.left
         const top = el.top
@@ -236,9 +236,9 @@ export default (
         let revisedY = (Math.cos(rotateRadian) * y - Math.sin(rotateRadian) * x) / canvasScale.value
 
         // 锁定宽高比例
-        if(isLockRatio) {
-          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) revisedY = revisedX / lockRatio
-          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) revisedY = -revisedX / lockRatio
+        if(fixedRatio) {
+          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) revisedY = revisedX / aspectRatio
+          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) revisedY = -revisedX / aspectRatio
         }
 
         // 根据不同的操作点分别计算元素缩放后的大小和位置
@@ -297,18 +297,18 @@ export default (
         let moveX = x / canvasScale.value
         let moveY = y / canvasScale.value
 
-        if(isLockRatio) {
-          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) moveY = moveX / lockRatio
-          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) moveY = -moveX / lockRatio
+        if(fixedRatio) {
+          if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) moveY = moveX / aspectRatio
+          if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) moveY = -moveX / aspectRatio
         }
 
         if(command === OperatePoints.RIGHT_BOTTOM) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + elOriginWidth + moveX, elOriginTop + elOriginHeight + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
-          if(isLockRatio) {
-            if(offsetY) moveX = moveY * lockRatio
-            else moveY = moveX / lockRatio
+          if(fixedRatio) {
+            if(offsetY) moveX = moveY * aspectRatio
+            else moveY = moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth + moveX)
           height = getSizeWithinRange(elOriginHeight + moveY)
@@ -317,9 +317,9 @@ export default (
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + moveX, elOriginTop + elOriginHeight + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
-          if(isLockRatio) {
-            if(offsetY) moveX = -moveY * lockRatio
-            else moveY = -moveX / lockRatio
+          if(fixedRatio) {
+            if(offsetY) moveX = -moveY * aspectRatio
+            else moveY = -moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth - moveX)
           height = getSizeWithinRange(elOriginHeight + moveY)
@@ -329,9 +329,9 @@ export default (
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + moveX, elOriginTop + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
-          if(isLockRatio) {
-            if(offsetY) moveX = moveY * lockRatio
-            else moveY = moveX / lockRatio
+          if(fixedRatio) {
+            if(offsetY) moveX = moveY * aspectRatio
+            else moveY = moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth - moveX)
           height = getSizeWithinRange(elOriginHeight - moveY)
@@ -342,9 +342,9 @@ export default (
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + elOriginWidth + moveX, elOriginTop + moveY)
           moveX = moveX - offsetX
           moveY = moveY - offsetY
-          if(isLockRatio) {
-            if(offsetY) moveX = -moveY * lockRatio
-            else moveY = -moveX / lockRatio
+          if(fixedRatio) {
+            if(offsetY) moveX = -moveY * aspectRatio
+            else moveY = -moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth + moveX)
           height = getSizeWithinRange(elOriginHeight - moveY)
@@ -374,7 +374,7 @@ export default (
         }
       }
       
-      elementList.value = elementList.value.map(el => element.elId === el.elId ? { ...el, left, top, width, height } : el)
+      elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, left, top, width, height } : el)
     }
 
     document.onmouseup = e => {
@@ -396,7 +396,7 @@ export default (
     const { minX, maxX, minY, maxY } = range
     const operateWidth = maxX - minX
     const operateHeight = maxY - minY
-    const lockRatio = operateWidth / operateHeight
+    const aspectRatio = operateWidth / operateHeight
 
     const startPageX = e.pageX
     const startPageY = e.pageY
@@ -415,8 +415,8 @@ export default (
 
       // 锁定宽高比例
       if(ctrlOrShiftKeyActive.value) {
-        if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) y = x / lockRatio
-        if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) y = -x / lockRatio
+        if(command === OperatePoints.RIGHT_BOTTOM || command === OperatePoints.LEFT_TOP) y = x / aspectRatio
+        if(command === OperatePoints.LEFT_BOTTOM || command === OperatePoints.RIGHT_TOP) y = -x / aspectRatio
       }
 
       // 获取鼠标缩放时当前所有激活元素的范围
@@ -468,8 +468,8 @@ export default (
       // 根据上面计算的比例，修改所有被激活元素的位置大小
       // 宽高通过乘以对应的比例得到，位置通过将被操作元素在所有元素整体中的相对位置乘以对应比例获得
       elementList.value = elementList.value.map(el => {
-        if((el.type === ElementTypes.IMAGE || el.type === ElementTypes.SHAPE) && activeElementIdList.value.includes(el.elId)) {
-          const originElement = originElementList.find(originEl => originEl.elId === el.elId) as PPTImageElement | PPTShapeElement
+        if((el.type === ElementTypes.IMAGE || el.type === ElementTypes.SHAPE) && activeElementIdList.value.includes(el.id)) {
+          const originElement = originElementList.find(originEl => originEl.id === el.id) as PPTImageElement | PPTShapeElement
           return {
             ...el,
             width: originElement.width * widthScale,

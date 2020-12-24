@@ -12,17 +12,13 @@
       :style="{
         backgroundColor: elementInfo.fill,
         opacity: elementInfo.opacity,
-        textShadow: elementInfo.shadow,
-        lineHeight: elementInfo.lineHeight,
-        letterSpacing: (elementInfo.letterSpacing || 0) + 'px',
+        textShadow: shadowStyle,
       }"
     >
-      <ElementBorder
+      <ElementOutline
         :width="elementInfo.width"
         :height="elementInfo.height"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
       <div class="text-content"
         v-html="elementInfo.content" 
@@ -32,20 +28,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import { PPTTextElement } from '@/types/slides'
-import ElementBorder from '@/views/_common/_element/ElementBorder.vue'
+import ElementOutline from '@/views/_common/_element/ElementOutline.vue'
+
+import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
 
 export default defineComponent({
   name: 'base-element-text',
   components: {
-    ElementBorder,
+    ElementOutline,
   },
   props: {
     elementInfo: {
       type: Object as PropType<PPTTextElement>,
       required: true,
     },
+  },
+  setup(props) {
+    const shadow = computed(() => props.elementInfo.shadow)
+    const { shadowStyle } = useElementShadow(shadow)
+
+    return {
+      shadowStyle,
+    }
   },
 })
 </script>
@@ -58,6 +64,7 @@ export default defineComponent({
 .element-content {
   position: relative;
   padding: 10px;
+  line-height: 1.5;
 
   .text-content {
     position: relative;

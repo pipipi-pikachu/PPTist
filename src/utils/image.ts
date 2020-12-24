@@ -4,10 +4,10 @@ interface ImageSize {
 }
 
 // 获取图片的原始宽高
-export const getImageSize = (imgUrl: string): Promise<ImageSize> => {
+export const getImageSize = (src: string): Promise<ImageSize> => {
   return new Promise(resolve => {
     const img = document.createElement('img')
-    img.src = imgUrl
+    img.src = src
     img.style.opacity = '0'
     document.body.appendChild(img)
 

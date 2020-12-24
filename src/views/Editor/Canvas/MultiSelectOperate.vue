@@ -52,7 +52,7 @@ export default defineComponent({
     const store = useStore<State>()
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const canvasScale = computed(() => store.state.canvasScale)
-    const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.elId)))
+    const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.id)))
 
     const range = reactive({
       minX: 0,

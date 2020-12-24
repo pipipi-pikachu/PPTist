@@ -19,7 +19,7 @@ export default (
   const { addHistorySnapshot } = useHistorySnapshot()
 
   const dragElement = (e: MouseEvent, element: PPTElement) => {
-    if(!activeElementIdList.value.includes(element.elId)) return
+    if(!activeElementIdList.value.includes(element.id)) return
     let isMouseDown = true
 
     // 可视范围宽高，用于边缘对齐吸附
@@ -27,7 +27,7 @@ export default (
     const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
 
     const originElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
-    const originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.elId))
+    const originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.id))
 
     const sorptionRange = 3
     const elOriginLeft = element.left
@@ -40,7 +40,7 @@ export default (
 
     let isMisoperation: boolean | null = null
 
-    const isActiveGroupElement = element.elId === activeGroupElementId.value
+    const isActiveGroupElement = element.id === activeGroupElementId.value
 
     // 收集对齐参考线
     // 包括页面内出被操作元素以外的所有元素在页面内水平和垂直方向的范围和中心位置、页面边界和水平和垂直的中心位置
@@ -50,8 +50,8 @@ export default (
     // 元素在页面内水平和垂直方向的范围和中心位置（需要特殊计算线条和被旋转的元素）
     for(const el of elementList.value) {
       if(el.type === ElementTypes.LINE) continue
-      if(isActiveGroupElement && el.elId === element.elId) continue
-      if(!isActiveGroupElement && activeElementIdList.value.includes(el.elId)) continue
+      if(isActiveGroupElement && el.id === element.id) continue
+      if(!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
 
       let left, top, width, height
       if('rotate' in el && el.rotate) {
@@ -145,7 +145,7 @@ export default (
           targetMinY = yRange[0]
           targetMaxY = yRange[1]
         }
-        else if(element.type === 'line') {
+        else if(element.type === ElementTypes.LINE) {
           targetMinX = targetLeft
           targetMaxX = targetLeft + Math.max(element.start[0], element.end[0])
           targetMinY = targetTop
@@ -179,7 +179,7 @@ export default (
             rightValues.push(xRange[1])
             bottomValues.push(yRange[1])
           }
-          else if(element.type === 'line') {
+          else if(element.type === ElementTypes.LINE) {
             leftValues.push(left)
             topValues.push(top)
             rightValues.push(left + Math.max(element.start[0], element.end[0]))
@@ -265,19 +265,19 @@ export default (
       // 非多选，或者当前操作的元素时激活的组合元素
       if(activeElementIdList.value.length === 1 || isActiveGroupElement) {
         elementList.value = elementList.value.map(el => {
-          return el.elId === element.elId ? { ...el, left: targetLeft, top: targetTop } : el
+          return el.id === element.id ? { ...el, left: targetLeft, top: targetTop } : el
         })
       }
 
       // 修改元素位置，如果需要修改位置的元素不是被操作的元素（例如多选下的操作）
       // 那么其他非操作元素要移动的位置通过操作元素的移动偏移量计算
       else {
-        const handleElement = elementList.value.find(el => el.elId === element.elId)
+        const handleElement = elementList.value.find(el => el.id === element.id)
         if(!handleElement) return
 
         elementList.value = elementList.value.map(el => {
-          if(activeElementIdList.value.includes(el.elId)) {
-            if(el.elId === element.elId) {
+          if(activeElementIdList.value.includes(el.id)) {
+            if(el.id === element.id) {
               return {
                 ...el,
                 left: targetLeft,

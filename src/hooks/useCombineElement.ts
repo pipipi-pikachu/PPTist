@@ -22,16 +22,16 @@ export default () => {
 
     const combineElementList: PPTElement[] = []
     for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.elId)) {
+      if(activeElementIdList.value.includes(element.id)) {
         element.groupId = groupId
         combineElementList.push(element)
       }
     }
 
     // 注意，组合元素的层级应该是连续的，所以需要获取该组元素中最顶层的元素，将组内其他成员从原位置移动到最顶层的元素的下面
-    const combineElementMaxIndex = newElementList.findIndex(_element => _element.elId === combineElementList[combineElementList.length - 1].elId)
-    const combineElementIdList = combineElementList.map(_element => _element.elId)
-    newElementList = newElementList.filter(_element => !combineElementIdList.includes(_element.elId))
+    const combineElementMaxIndex = newElementList.findIndex(_element => _element.id === combineElementList[combineElementList.length - 1].id)
+    const combineElementIdList = combineElementList.map(_element => _element.id)
+    newElementList = newElementList.filter(_element => !combineElementIdList.includes(_element.id))
 
     const insertIndex = combineElementMaxIndex - combineElementList.length + 1
     newElementList.splice(insertIndex, 0, ...combineElementList)
@@ -48,7 +48,7 @@ export default () => {
     
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.elId) && element.groupId) delete element.groupId
+      if(activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     addHistorySnapshot()

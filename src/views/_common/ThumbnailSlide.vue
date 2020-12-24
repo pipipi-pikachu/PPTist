@@ -16,7 +16,7 @@
       <div class="background" :style="{ ...backgroundStyle }"></div>
       <BaseElement
         v-for="(element, index) in slide.elements"
-        :key="element.elId"
+        :key="element.id"
         :elementInfo="element"
         :elementIndex="index + 1"
       />

@@ -2,7 +2,7 @@
   <div 
     class="editable-element"
     ref="elementRef"
-    :id="'editable-element-' + elementInfo.elId"
+    :id="'editable-element-' + elementInfo.id"
     :style="{ zIndex: elementIndex }"
   >
     <component
@@ -105,7 +105,7 @@ export default defineComponent({
     const { copyElement, cutElement } = useCopyAndPasteElement()
 
     const contextmenus = (): ContextmenuItem[] => {
-      if(props.elementInfo.isLock) {
+      if(props.elementInfo.lock) {
         return [{
           text: '解锁', 
           icon: 'icon-unlock',

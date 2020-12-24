@@ -35,12 +35,12 @@ export default () => {
 
   const createElement = (element: PPTElement) => {
     store.commit(MutationTypes.ADD_ELEMENT, element)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.elId])
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.id])
     addHistorySnapshot()
   }
 
-  const createImageElement = (imgUrl: string) => {
-    getImageSize(imgUrl).then(({ width, height }) => {
+  const createImageElement = (src: string) => {
+    getImageSize(src).then(({ width, height }) => {
       const scale = width / height
   
       if(scale < VIEWPORT_ASPECT_RATIO && width > VIEWPORT_SIZE) {
@@ -55,8 +55,8 @@ export default () => {
       createElement({
         ...DEFAULT_IMAGE,
         type: 'image',
-        elId: createRandomCode(),
-        imgUrl,
+        id: createRandomCode(),
+        src,
         width,
         height,
       })
@@ -67,7 +67,7 @@ export default () => {
     createElement({
       ...DEFAULT_CHART,
       type: 'chart',
-      elId: createRandomCode(),
+      id: createRandomCode(),
       chartType,
       data,
     })
@@ -87,7 +87,7 @@ export default () => {
     createElement({
       ...DEFAULT_TABLE,
       type: 'table',
-      elId: createRandomCode(),
+      id: createRandomCode(),
       width: colCount * DEFAULT_CELL_WIDTH + DEFAULT_BORDER_WIDTH,
       height: rowCount * DEFAULT_CELL_HEIGHT + DEFAULT_BORDER_WIDTH,
       colSizes,
@@ -101,7 +101,7 @@ export default () => {
     createElement({
       ...DEFAULT_TEXT,
       type: 'text',
-      elId: createRandomCode(),
+      id: createRandomCode(),
       left, 
       top, 
       width, 
@@ -114,7 +114,7 @@ export default () => {
     createElement({
       ...DEFAULT_SHAPE,
       type: 'shape',
-      elId: createRandomCode(),
+      id: createRandomCode(),
       left, 
       top, 
       width, 
@@ -123,17 +123,17 @@ export default () => {
     })
   }
   
-  const createLineElement = (position: LineElementPosition, marker: [string, string], lineType: string) => {
+  const createLineElement = (position: LineElementPosition, points: [string, string], lineType: string) => {
     const { left, top, start, end } = position
     createElement({
       ...DEFAULT_LINE,
       type: 'line',
-      elId: createRandomCode(),
+      id: createRandomCode(),
       left, 
       top, 
       start,
       end,
-      marker,
+      points,
       lineType,
     })
   }

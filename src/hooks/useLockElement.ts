@@ -15,7 +15,7 @@ export default () => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
   
     for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.elId)) element.isLock = true
+      if(activeElementIdList.value.includes(element.id)) element.lock = true
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     addHistorySnapshot()
@@ -26,14 +26,14 @@ export default () => {
 
     if(handleElement.groupId) {
       for(const element of newElementList) {
-        if(element.groupId === handleElement.groupId) element.isLock = false
+        if(element.groupId === handleElement.groupId) element.lock = false
       }
       return newElementList
     }
     
     for(const element of newElementList) {
-      if(element.elId === handleElement.elId) {
-        element.isLock = false
+      if(element.id === handleElement.id) {
+        element.lock = false
         break
       }
     }

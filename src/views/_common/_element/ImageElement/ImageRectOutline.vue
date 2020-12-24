@@ -1,6 +1,6 @@
 <template>
   <SvgWrapper 
-    class="image-rect-border" 
+    class="image-rect-outline" 
     overflow="visible" 
     :width="width"
     :height="height"
@@ -15,18 +15,21 @@
       :ry="radius"
       :width="width"
       :height="height"
-      :stroke="borderColor"
-      :stroke-width="borderWidth" 
-      :stroke-dasharray="borderStyle === 'dashed' ? '12 9' : '0 0'" 
+      :stroke="outlineColor"
+      :stroke-width="outlineWidth" 
+      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
     ></rect>
 	</SvgWrapper>
 </template>
 
 <script lang="ts">
+import { PropType, defineComponent, toRef } from 'vue'
+import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
+import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
 
-export default {
-  name: 'image-rect-border',
+export default defineComponent({
+  name: 'image-rect-outline',
   components: {
     SvgWrapper,
   },
@@ -39,24 +42,28 @@ export default {
       type: Number,
       required: true,
     },
-    borderColor: {
-      type: String,
-      default: '',
-    },
-    borderWidth: {
-      type: Number,
-      default: 0,
-    },
-    borderStyle: {
-      type: String,
-      default: '',
+    outline: {
+      type: Object as PropType<PPTElementOutline>
     },
     radius: {
       type: String,
       default: '0',
     },
   },
-}
+  setup(props) {
+    const {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    } = useElementOutline(toRef(props, 'outline'))
+
+    return {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -42,12 +42,12 @@
 
       <EditableElement 
         v-for="(element, index) in elementList" 
-        :key="element.elId"
+        :key="element.id"
         :elementInfo="element"
         :elementIndex="index + 1"
-        :isActive="activeElementIdList.includes(element.elId)"
-        :isHandleEl="element.elId === handleElementId"
-        :isActiveGroupElement="activeGroupElementId === element.elId"
+        :isActive="activeElementIdList.includes(element.id)"
+        :isHandleEl="element.id === handleElementId"
+        :isActiveGroupElement="activeGroupElementId === element.id"
         :isMultiSelect="activeElementIdList.length > 1"
         :selectElement="selectElement"
         :rotateElement="rotateElement"

@@ -1,4 +1,9 @@
-export type ElementType = 'text' | 'image' | 'shape' | 'line' | 'chart' | 'table'
+export interface PPTElementShadow {
+  h: number;
+  v: number;
+  blur: number;
+  color: string;
+}
 
 export enum ElementTypes {
   TEXT = 'text',
@@ -10,58 +15,68 @@ export enum ElementTypes {
 }
 
 export interface PPTElementBaseProps {
-  elId: string;
+  id: string;
   left: number;
   top: number;
-  isLock?: boolean;
+  lock?: boolean;
   groupId?: string;
 }
 
-export interface PPTElementSizeProps {
+export interface PPTElementOutline {
+  style?: 'dashed' | 'solid';
+  width?: number;
+  color?: string;
+}
+
+export interface PPTTextElement extends PPTElementBaseProps {
+  type: 'text';
   width: number;
   height: number;
-}
-
-export interface PPTElementBorderProps {
-  borderStyle?: string;
-  borderWidth?: number;
-  borderColor?: string;
-}
-
-export interface PPTTextElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
-  type: 'text';
   content: string;
   rotate?: number;
+  outline?: PPTElementOutline;
   fill?: string;
   opacity?: number;
-  lineHeight?: number;
-  segmentSpacing?: number;
-  letterSpacing?: number;
-  shadow?: string;
+  shadow?: PPTElementShadow;
 }
 
-export interface PPTImageElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+export interface ImageElementFilters {
+  'blur': string;
+  'brightness': string;
+  'contrast': string;
+  'grayscale': string;
+  'saturate': string;
+  'hue-rotate': string;
+  'opacity': string;
+}
+export interface PPTImageElement extends PPTElementBaseProps {
   type: 'image';
-  lockRatio: boolean;
-  imgUrl: string;
+  width: number;
+  height: number;
+  fixedRatio: boolean;
+  src: string;
   rotate?: number;
-  filter?: string;
+  outline?: PPTElementOutline;
+  filters?: ImageElementFilters;
   clip?: {
     range: [[number, number], [number, number]];
     shape: 'rect' | 'roundRect' | 'ellipse' | 'triangle' | 'pentagon' | 'rhombus' | 'star';
   };
   flip?: { x?: number; y?: number };
-  shadow?: string;
+  shadow?: PPTElementShadow;
 }
 
-export interface PPTShapeElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+export interface PPTShapeElement extends PPTElementBaseProps {
   type: 'shape';
+  width: number;
+  height: number;
   svgCode: string;
-  lockRatio: boolean;
+  fixedRatio: boolean;
   fill: string;
   rotate?: number;
+  outline?: PPTElementOutline;
   opacity?: number;
-  shadow?: string;
+  shadow?: PPTElementShadow;
 }
 
 export interface PPTLineElement extends PPTElementBaseProps {
@@ -71,14 +86,17 @@ export interface PPTLineElement extends PPTElementBaseProps {
   width: number;
   style: string;
   color: string;
-  marker: [string, string];
+  points: [string, string];
   lineType: string;
 }
 
-export interface PPTChartElement extends PPTElementBaseProps, PPTElementSizeProps, PPTElementBorderProps {
+export interface PPTChartElement extends PPTElementBaseProps {
   type: 'chart';
+  width: number;
+  height: number;
   chartType: string;
   data: string;
+  outline?: PPTElementOutline;
   theme?: string;
 }
 
@@ -88,8 +106,10 @@ export interface TableElementCell {
   content: string;
   bgColor: string;
 }
-export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProps {
+export interface PPTTableElement extends PPTElementBaseProps {
   type: 'table';
+  width: number;
+  height: number;
   borderTheme?: string;
   theme?: string;
   rowSizes: number[];
@@ -97,12 +117,7 @@ export interface PPTTableElement extends PPTElementBaseProps, PPTElementSizeProp
   data: TableElementCell[][];
 }
 
-export type PPTElement = PPTTextElement | 
-                         PPTImageElement | 
-                         PPTShapeElement | 
-                         PPTLineElement | 
-                         PPTChartElement |
-                         PPTTableElement
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement
 
 export interface PPTAnimation {
   elId: string;
@@ -110,9 +125,14 @@ export interface PPTAnimation {
   duration: number;
 }
 
+export interface SlideBackground {
+  type: 'solid' | 'image';
+  value: string;
+}
+
 export interface Slide {
   id: string;
   elements: PPTElement[];
-  background?: [string, string];
+  background?: SlideBackground;
   animations?: PPTAnimation[];
 }

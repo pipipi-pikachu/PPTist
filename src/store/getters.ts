@@ -13,20 +13,20 @@ export const getters: GetterTree<State, State> = {
     if(!animations) return null
 
     const els = currentSlide.elements
-    const elIds = els.map(el => el.elId)
+    const elIds = els.map(el => el.id)
     return animations.filter(animation => elIds.includes(animation.elId))
   },
 
   activeElementList(state) {
     const currentSlide = state.slides[state.slideIndex]
     if(!currentSlide || !currentSlide.elements) return []
-    return currentSlide.elements.filter(element => state.activeElementIdList.includes(element.elId))
+    return currentSlide.elements.filter(element => state.activeElementIdList.includes(element.id))
   },
 
   handleElement(state) {
     const currentSlide = state.slides[state.slideIndex]
     if(!currentSlide || !currentSlide.elements) return null
-    return currentSlide.elements.find(element => state.handleElementId === element.elId) || null
+    return currentSlide.elements.find(element => state.handleElementId === element.id) || null
   },
 
   canUndo(state) {

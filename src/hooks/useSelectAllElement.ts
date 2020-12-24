@@ -8,8 +8,8 @@ export default () => {
   const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
   const selectAllElement = () => {
-    const unlockedElements = currentSlide.value.elements.filter(el => !el.isLock)
-    const newActiveElementIdList = unlockedElements.map(el => el.elId)
+    const unlockedElements = currentSlide.value.elements.filter(el => !el.lock)
+    const newActiveElementIdList = unlockedElements.map(el => el.id)
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, newActiveElementIdList)
   }
 

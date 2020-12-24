@@ -6,7 +6,7 @@ import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
 
 interface UpdateElementData {
-  elId: string | string[];
+  id: string | string[];
   props: Partial<PPTElement>;
 }
 
@@ -91,13 +91,13 @@ export const mutations: MutationTree<State> = {
   },
 
   [MutationTypes.UPDATE_ELEMENT](state, data: UpdateElementData) {
-    const { elId, props } = data
-    const elIdList = typeof elId === 'string' ? [elId] : elId
+    const { id, props } = data
+    const elIdList = typeof id === 'string' ? [id] : id
 
     const slideIndex = state.slideIndex
     const slide = state.slides[slideIndex]
     const elements = slide.elements.map(el => {
-      return elIdList.includes(el.elId) ? { ...el, ...props } : el
+      return elIdList.includes(el.id) ? { ...el, ...props } : el
     })
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },

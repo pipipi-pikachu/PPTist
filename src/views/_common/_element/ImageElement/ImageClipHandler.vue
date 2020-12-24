@@ -6,7 +6,7 @@
   >
     <img 
       class="bottom-img" 
-      :src="imgUrl" 
+      :src="src" 
       :draggable="false" 
       alt="" 
       :style="bottomImgPositionStyle" 
@@ -21,7 +21,7 @@
     >
       <img 
         class="top-img" 
-        :src="imgUrl" 
+        :src="src" 
         :draggable="false" 
         alt="" 
         :style="topImgPositionStyle" 
@@ -78,7 +78,7 @@ export default defineComponent({
     SvgWrapper,
   },
   props: {
-    imgUrl: {
+    src: {
       type: String,
       required: true,
     },

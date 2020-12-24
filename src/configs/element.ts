@@ -1,14 +1,5 @@
 const DEFAULT_COLOR = '#41464b'
 
-export enum ElementTypes {
-  TEXT = '文本',
-  IMAGE = '图片',
-  SHAPE = '形状',
-  LINE = '线条',
-  CHART = '图表',
-  TABLE = '表格',
-}
-
 export const DEFAULT_TEXT = {
   left: 0,
   top: 0,
@@ -23,17 +14,17 @@ export const DEFAULT_TEXT = {
 export const DEFAULT_IMAGE = {
   left: 0,
   top: 0,
-  lockRatio: true,
+  fixedRatio: true,
 }
 
 export const DEFAULT_SHAPE = {
   fill: DEFAULT_COLOR,
-  lockRatio: false,
+  fixedRatio: false,
 }
 
 export const DEFAULT_LINE = {
   style: 'solid',
-  marker: ['', ''],
+  points: ['', ''],
   width: 4,
   color: DEFAULT_COLOR,
 }
@@ -48,8 +39,9 @@ export const DEFAULT_CHART = {
 export const DEFAULT_TABLE = {
   left: 0,
   top: 0,
-  isLock: false,
-  borderStyle: 'solid',
-  borderWidth: 2,
-  borderColor: DEFAULT_COLOR,
+  outline: {
+    width: 2,
+    style: 'solid',
+    color: DEFAULT_COLOR
+  },
 }

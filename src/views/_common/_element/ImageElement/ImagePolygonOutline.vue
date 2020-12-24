@@ -1,6 +1,6 @@
 <template>
   <SvgWrapper 
-    class="image-polygon-border" 
+    class="image-polygon-outline" 
     overflow="visible" 
     :width="width"
     :height="height"
@@ -12,18 +12,21 @@
       stroke-linejoin
       fill="transparent"
       :d="createPath(width, height)"
-      :stroke="borderColor"
-      :stroke-width="borderWidth" 
-      :stroke-dasharray="borderStyle === 'dashed' ? '12 9' : '0 0'" 
+      :stroke="outlineColor"
+      :stroke-width="outlineWidth" 
+      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
     ></path>
 	</SvgWrapper>
 </template>
 
 <script lang="ts">
+import { PropType, defineComponent, toRef } from 'vue'
+import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
+import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
 
-export default {
-  name: 'image-polygon-border',
+export default defineComponent({
+  name: 'image-polygon-outline',
   components: {
     SvgWrapper,
   },
@@ -36,24 +39,28 @@ export default {
       type: Number,
       required: true,
     },
-    borderColor: {
-      type: String,
-      default: '',
-    },
-    borderWidth: {
-      type: Number,
-      default: 0,
-    },
-    borderStyle: {
-      type: String,
-      default: '',
+    outline: {
+      type: Object as PropType<PPTElementOutline>
     },
     createPath: {
       type: Function,
       required: true,
     },
   },
-}
+  setup(props) {
+    const {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    } = useElementOutline(toRef(props, 'outline'))
+
+    return {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

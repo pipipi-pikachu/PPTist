@@ -1,7 +1,7 @@
 <template>
   <div 
     class="editable-element text" 
-    :class="{ 'lock': elementInfo.isLock }"
+    :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -14,22 +14,18 @@
       :style="{
         backgroundColor: elementInfo.fill,
         opacity: elementInfo.opacity,
-        textShadow: elementInfo.shadow,
-        lineHeight: elementInfo.lineHeight,
-        letterSpacing: (elementInfo.letterSpacing || 0) + 'px',
+        textShadow: shadowStyle,
       }"
       v-contextmenu="contextmenus"
     >
-      <ElementBorder
+      <ElementOutline
         :width="elementInfo.width"
         :height="elementInfo.height"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
       <div class="text-content"
         v-html="elementInfo.content" 
-        :contenteditable="isActive && !elementInfo.isLock"
+        :contenteditable="isActive && !elementInfo.lock"
       ></div>
     </div>
 
@@ -52,7 +48,7 @@
         :isWide="true"
         @mousedown="handleSelectElement($event)"
       />
-      <template v-if="!elementInfo.isLock && (isActiveGroupElement || !isMultiSelect)">
+      <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
         <ResizablePoint class="el-resizable-point" 
           v-for="point in resizablePoints"
           :key="point.type"
@@ -77,18 +73,20 @@ import { computed, defineComponent, PropType } from 'vue'
 
 import { PPTTextElement } from '@/types/slides'
 import { ElementScaleHandler } from '@/types/edit'
-import useCommonOperate from '@/views/_common/_element/useCommonOperate'
+import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
 
-import ElementBorder from '@/views/_common/_element/ElementBorder.vue'
+import ElementOutline from '@/views/_common/_element/ElementOutline.vue'
 import RotateHandler from '@/views/_common/_operate/RotateHandler.vue'
 import ResizablePoint from '@/views/_common/_operate/ResizablePoint.vue'
 import BorderLine from '@/views/_common/_operate/BorderLine.vue'
 import AnimationIndex from '@/views/_common/_operate/AnimationIndex.vue'
 
+import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
+
 export default defineComponent({
   name: 'editable-element-text',
   components: {
-    ElementBorder,
+    ElementOutline,
     RotateHandler,
     ResizablePoint,
     BorderLine,
@@ -146,17 +144,21 @@ export default defineComponent({
     const { resizablePoints, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
     const handleSelectElement = (e: MouseEvent, canMove = true) => {
-      if(props.elementInfo.isLock) return
+      if(props.elementInfo.lock) return
       e.stopPropagation()
 
       props.selectElement(e, props.elementInfo, canMove)
     }
+    
+    const shadow = computed(() => props.elementInfo.shadow)
+    const { shadowStyle } = useElementShadow(shadow)
 
     return {
       scaleWidth,
       resizablePoints,
       borderLines,
       handleSelectElement,
+      shadowStyle,
     }
   },
 })
@@ -182,6 +184,7 @@ export default defineComponent({
 .element-content {
   position: relative;
   padding: 10px;
+  line-height: 1.5;
 
   .text-content {
     position: relative;

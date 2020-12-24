@@ -12,40 +12,34 @@
     <div 
       class="element-content"
       :style="{
-        filter: elementInfo.shadow ? `drop-shadow(${elementInfo.shadow})` : '',
+        filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
         transform: flip,
       }"
     >
-      <ImageRectBorder
+      <ImageRectOutline
         v-if="clipShape.type === 'rect'"
         :width="elementInfo.width"
         :height="elementInfo.height"
         :radius="clipShape.radius"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
-      <ImageEllipseBorder
+      <ImageEllipseOutline
         v-else-if="clipShape.type === 'ellipse'"
         :width="elementInfo.width"
         :height="elementInfo.height"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
-      <ImagePolygonBorder
+      <ImagePolygonOutline
         v-else-if="clipShape.type === 'polygon'"
         :width="elementInfo.width"
         :height="elementInfo.height"
         :createPath="clipShape.createPath"
-        :borderColor="elementInfo.borderColor"
-        :borderWidth="elementInfo.borderWidth"
-        :borderStyle="elementInfo.borderStyle"
+        :outline="elementInfo.outline"
       />
 
       <div class="img-wrapper" :style="{ clipPath: clipShape.style }">
         <img 
-          :src="elementInfo.imgUrl" 
+          :src="elementInfo.src" 
           :draggable="false" 
           :style="{
             top: imgPosition.top,
@@ -67,16 +61,18 @@ import { computed, defineComponent, PropType } from 'vue'
 import { PPTImageElement } from '@/types/slides'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 
-import ImageRectBorder from './ImageRectBorder.vue'
-import ImageEllipseBorder from './ImageEllipseBorder.vue'
-import ImagePolygonBorder from './ImagePolygonBorder.vue'
+import ImageRectOutline from './ImageRectOutline.vue'
+import ImageEllipseOutline from './ImageEllipseOutline.vue'
+import ImagePolygonOutline from './ImagePolygonOutline.vue'
+
+import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
 
 export default defineComponent({
   name: 'base-element-image',
   components: {
-    ImageRectBorder,
-    ImageEllipseBorder,
-    ImagePolygonBorder,
+    ImageRectOutline,
+    ImageEllipseOutline,
+    ImagePolygonOutline,
   },
   props: {
     elementInfo: {
@@ -118,10 +114,10 @@ export default defineComponent({
     })
 
     const filter = computed(() => {
-      if(!props.elementInfo.filter) return ''
+      if(!props.elementInfo.filters) return ''
       let filter = ''
-      for(const key of Object.keys(props.elementInfo.filter)) {
-        filter += `${key}(${props.elementInfo.filter[key]}) `
+      for(const key of Object.keys(props.elementInfo.filters)) {
+        filter += `${key}(${props.elementInfo.filters[key]}) `
       }
       return filter
     })
@@ -135,11 +131,15 @@ export default defineComponent({
       return ''
     })
 
+    const shadow = computed(() => props.elementInfo.shadow)
+    const { shadowStyle } = useElementShadow(shadow)
+
     return {
       imgPosition,
       clipShape,
       filter,
       flip,
+      shadowStyle,
     }
   },
 })

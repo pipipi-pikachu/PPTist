@@ -13,8 +13,8 @@ export default () => {
 
   // 获取组合元素层级范围（组合成员中的最大层级和最小层级）
   const getCombineElementIndexRange = (elementList: PPTElement[], combineElementList: PPTElement[]) => {
-    const minIndex = elementList.findIndex(_element => _element.elId === combineElementList[0].elId)
-    const maxIndex = elementList.findIndex(_element => _element.elId === combineElementList[combineElementList.length - 1].elId)
+    const minIndex = elementList.findIndex(_element => _element.id === combineElementList[0].id)
+    const maxIndex = elementList.findIndex(_element => _element.id === combineElementList[combineElementList.length - 1].id)
     return { minIndex, maxIndex }
   }
 
@@ -53,7 +53,7 @@ export default () => {
     else {
 
       // 元素在元素列表中的层级
-      const elementIndex = elementList.findIndex(item => item.elId === element.elId)
+      const elementIndex = elementList.findIndex(item => item.id === element.id)
 
       // 无法移动（已经处在顶层）
       if(elementIndex === elementList.length - 1) return null
@@ -96,7 +96,7 @@ export default () => {
     }
 
     else {
-      const elementIndex = elementList.findIndex(item => item.elId === element.elId)
+      const elementIndex = elementList.findIndex(item => item.id === element.id)
       if(elementIndex === 0) return null
       const prevElement = copyOfElementList[elementIndex - 1]
       const movedElement = copyOfElementList.splice(elementIndex, 1)[0]
@@ -133,7 +133,7 @@ export default () => {
     else {
 
       // 元素在元素列表中的层级
-      const elementIndex = elementList.findIndex(item => item.elId === element.elId)
+      const elementIndex = elementList.findIndex(item => item.id === element.id)
 
       // 无法移动（已经处在顶层）
       if(elementIndex === elementList.length - 1) return null
@@ -159,7 +159,7 @@ export default () => {
     }
 
     else {
-      const elementIndex = elementList.findIndex(item => item.elId === element.elId)
+      const elementIndex = elementList.findIndex(item => item.id === element.id)
       if(elementIndex === 0) return null
       copyOfElementList.splice(elementIndex, 1)
       copyOfElementList.unshift(element)

@@ -25,14 +25,14 @@ export default () => {
       if(groupId && !groupIdMap[groupId]) {
         groupIdMap[groupId] = createRandomCode()
       }
-      elIdMap[element.elId] = createRandomCode()
+      elIdMap[element.id] = createRandomCode()
     }
-    const currentSlideElementIdList = currentSlide.value.elements.map(el => el.elId)
+    const currentSlideElementIdList = currentSlide.value.elements.map(el => el.id)
     
     for(const element of elements) {
-      const inCurrentSlide = currentSlideElementIdList.includes(element.elId)
+      const inCurrentSlide = currentSlideElementIdList.includes(element.id)
       
-      element.elId = elIdMap[element.elId]
+      element.id = elIdMap[element.id]
 
       if(inCurrentSlide) {
         element.left = element.left + 10

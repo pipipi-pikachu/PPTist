@@ -59,7 +59,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | n
       else if( angle < 0 && Math.abs(angle + 180) <= sorptionRange ) angle -= (angle + 180)
 
       // 修改元素角度
-      elementList.value = elementList.value.map(el => element.elId === el.elId ? { ...el, rotate: angle } : el)
+      elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, rotate: angle } : el)
     }
 
     document.onmouseup = () => {

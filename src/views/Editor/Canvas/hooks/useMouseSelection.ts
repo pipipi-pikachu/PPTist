@@ -110,19 +110,19 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | n
         }
 
         // 被锁定的元素除外
-        if(isInclude && !element.isLock) inRangeElementList.push(element)
+        if(isInclude && !element.lock) inRangeElementList.push(element)
       }
 
       // 对于组合元素成员，必须所有成员都在选择范围中才算被选中
       inRangeElementList = inRangeElementList.filter(inRangeElement => {
         if(inRangeElement.groupId) {
-          const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.elId)
+          const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
           const groupElementList = elementList.value.filter(element => element.groupId === inRangeElement.groupId)
-          return groupElementList.every(groupElement => inRangeElementIdList.includes(groupElement.elId))
+          return groupElementList.every(groupElement => inRangeElementIdList.includes(groupElement.id))
         }
         return true
       })
-      const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.elId)
+      const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
       if(inRangeElementIdList.length) store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, inRangeElementIdList)
 
       mouseSelectionState.isShow = false

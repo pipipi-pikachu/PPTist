@@ -20,7 +20,7 @@ export default () => {
   
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     for(const element of newElementList) {
-      if(!activeElementIdList.value.includes(element.elId)) continue
+      if(!activeElementIdList.value.includes(element.id)) continue
       
       if(command === ElementAlignCommands.TOP) {
         const offsetY = minY - 0

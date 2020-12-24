@@ -1,6 +1,6 @@
 <template>
   <SvgWrapper 
-    class="element-border"
+    class="element-outline"
     overflow="visible" 
     :width="width"
     :height="height"
@@ -12,18 +12,21 @@
       stroke-linejoin
       fill="transparent"
       :d="`M0,0 L${width},0 L${width},${height} L0,${height} Z`" 
-      :stroke="borderColor"
-      :stroke-width="borderWidth" 
-      :stroke-dasharray="borderStyle === 'dashed' ? '12 9' : '0 0'" 
+      :stroke="outlineColor"
+      :stroke-width="outlineWidth" 
+      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
     ></path>
 	</SvgWrapper>
 </template>
 
 <script lang="ts">
+import { PropType, defineComponent, toRef } from 'vue'
+import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
+import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
 
-export default {
-  name: 'element-border', 
+export default defineComponent({
+  name: 'element-outline', 
   components: {
     SvgWrapper,
   },
@@ -36,17 +39,24 @@ export default {
       type: Number,
       required: true,
     },
-    borderColor: {
-      type: String,
-    },
-    borderWidth: {
-      type: Number,
-    },
-    borderStyle: {
-      type: String,
+    outline: {
+      type: Object as PropType<PPTElementOutline>
     },
   },
-}
+  setup(props) {
+    const {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    } = useElementOutline(toRef(props, 'outline'))
+
+    return {
+      outlineWidth,
+      outlineStyle,
+      outlineColor,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

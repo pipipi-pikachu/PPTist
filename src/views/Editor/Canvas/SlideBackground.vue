@@ -14,6 +14,7 @@
 import { Ref, computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
+import { SlideBackground } from '@/types/slides'
 import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
@@ -25,7 +26,7 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const showGridLines = computed(() => store.state.showGridLines)
-    const background: Ref<[string, string] | undefined> = computed(() => store.getters.currentSlide.background)
+    const background: Ref<SlideBackground | undefined> = computed(() => store.getters.currentSlide.background)
 
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 
