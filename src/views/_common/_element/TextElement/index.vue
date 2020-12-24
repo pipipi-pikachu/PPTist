@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="editable-element text" 
+    class="editable-element-text" 
     :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
@@ -23,7 +23,7 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      <div class="text-content"
+      <div class="text"
         v-html="elementInfo.content" 
         :contenteditable="isActive && !elementInfo.lock"
       ></div>
@@ -40,7 +40,7 @@
       v-contextmenu="contextmenus"
     >
       <BorderLine 
-        class="el-border-line"
+        class="operate-border-line"
         v-for="line in borderLines" 
         :key="line.type" 
         :type="line.type" 
@@ -49,7 +49,7 @@
         @mousedown="handleSelectElement($event)"
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
-        <ResizablePoint class="el-resizable-point" 
+        <ResizablePoint class="operate-resizable-point" 
           v-for="point in resizablePoints"
           :key="point.type"
           :type="point.type"
@@ -57,7 +57,7 @@
           @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
-          class="el-rotate-handle" 
+          class="operate-rotate-handle" 
           :style="{ left: scaleWidth / 2 + 'px' }"
           @mousedown.stop="rotateElement(elementInfo)"
         />
@@ -165,14 +165,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.editable-element {
+.editable-element-text {
   position: absolute;
 
-  &.lock .el-border-line {
+  &.lock .operate-border-line {
     border-color: #888;
   }
 
-  &:hover .el-border-line {
+  &:hover .operate-border-line {
     display: block;
   }
 
@@ -186,13 +186,13 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.5;
 
-  .text-content {
+  .text {
     position: relative;
     cursor: text;
   }
 }
 
-::v-deep(.text-content) {
+::v-deep(.text) {
   word-break: break-word;
   font-family: '微软雅黑';
   outline: 0;
@@ -211,20 +211,20 @@ export default defineComponent({
   user-select: none;
 
   &.active {
-    .el-border-line,
-    .el-resizable-point,
-    .el-rotate-handle {
+    .operate-border-line,
+    .operate-resizable-point,
+    .operate-rotate-handle {
       display: block;
     }
   }
 
-  &.multi-select:not(.selected) .el-border-line {
+  &.multi-select:not(.selected) .operate-border-line {
     border-color: rgba($color: $themeColor, $alpha: .3);
   }
 
-  .el-border-line,
-  .el-resizable-point,
-  .el-rotate-handle {
+  .operate-border-line,
+  .operate-resizable-point,
+  .operate-rotate-handle {
     display: none;
   }
 }

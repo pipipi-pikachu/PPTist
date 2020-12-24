@@ -1,6 +1,7 @@
 <template>
   <SvgWrapper 
-    class="image-ellipse-outline" 
+    class="image-ellipse-outline"
+    v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"

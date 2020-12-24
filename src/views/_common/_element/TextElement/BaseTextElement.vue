@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="base-element text"
+    class="base-element-text"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -20,9 +20,7 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      <div class="text-content"
-        v-html="elementInfo.content" 
-      ></div>
+      <div class="text" v-html="elementInfo.content"></div>
     </div>
   </div>
 </template>
@@ -57,7 +55,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.base-element {
+.base-element-text {
   position: absolute;
 }
 
@@ -66,12 +64,12 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.5;
 
-  .text-content {
+  .text {
     position: relative;
   }
 }
 
-::v-deep(.text-content) {
+::v-deep(.text) {
   word-break: break-word;
   font-family: '微软雅黑';
   outline: 0;

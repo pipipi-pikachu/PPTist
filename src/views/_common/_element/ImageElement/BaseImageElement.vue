@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="base-element image"
+    class="base-element-image"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -146,7 +146,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.base-element {
+.base-element-image {
   position: absolute;
 }
 

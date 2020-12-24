@@ -108,6 +108,7 @@ export default defineComponent({
 
     return {
       ...toRefs(range),
+      canvasScale,
       borderLines,
       disableResizablePoint,
       resizablePoints,

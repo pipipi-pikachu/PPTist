@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="editable-element image"
+    class="editable-element-image"
     :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
@@ -81,7 +81,7 @@
       v-if="!isCliping"
     >
       <BorderLine 
-        class="el-border-line" 
+        class="operate-border-line" 
         v-for="line in borderLines" 
         :key="line.type" 
         :type="line.type" 
@@ -89,7 +89,7 @@
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
         <ResizablePoint 
-          class="el-resizable-point" 
+          class="operate-resizable-point" 
           v-for="point in resizablePoints"
           :key="point.type"
           :type="point.type"
@@ -97,7 +97,7 @@
           @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
-          class="el-rotate-handle" 
+          class="operate-rotate-handle" 
           :style="{left: scaleWidth / 2 + 'px'}"
           @mousedown.stop="rotateElement(elementInfo)"
         />
@@ -291,14 +291,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.editable-element {
+.editable-element-image {
   position: absolute;
 
-  &.lock .el-border-line {
+  &.lock .operate-border-line {
     border-color: #888;
   }
 
-  &:hover .el-border-line {
+  &:hover .operate-border-line {
     display: block;
   }
 
@@ -333,20 +333,20 @@ export default defineComponent({
   user-select: none;
 
   &.active {
-    .el-border-line,
-    .el-resizable-point,
-    .el-rotate-handle {
+    .operate-border-line,
+    .operate-resizable-point,
+    .operate-rotate-handle {
       display: block;
     }
   }
 
-  &.multi-select:not(.selected) .el-border-line {
+  &.multi-select:not(.selected) .operate-border-line {
     border-color: rgba($color: $themeColor, $alpha: .3);
   }
 
-  .el-border-line,
-  .el-resizable-point,
-  .el-rotate-handle {
+  .operate-border-line,
+  .operate-resizable-point,
+  .operate-rotate-handle {
     display: none;
   }
 }

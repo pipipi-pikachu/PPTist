@@ -1,6 +1,7 @@
 <template>
   <SvgWrapper 
     class="element-outline"
+    v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"
