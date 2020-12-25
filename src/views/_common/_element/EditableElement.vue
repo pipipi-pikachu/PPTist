@@ -108,7 +108,6 @@ export default defineComponent({
       if(props.elementInfo.lock) {
         return [{
           text: '解锁', 
-          icon: 'icon-unlock',
           handler: () => unlockElement(props.elementInfo),
         }]
       }
@@ -117,19 +116,16 @@ export default defineComponent({
         {
           text: '剪切',
           subText: 'Ctrl + X',
-          icon: 'icon-scissor',
           handler: cutElement,
         },
         {
           text: '复制',
           subText: 'Ctrl + C',
-          icon: 'icon-copy',
           handler: copyElement,
         },
         { divider: true },
         {
           text: '层级排序',
-          icon: 'icon-top-layer',
           disable: props.isMultiSelect && !props.elementInfo.groupId,
           children: [
             { text: '置顶层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.TOP) },
@@ -141,7 +137,6 @@ export default defineComponent({
         },
         {
           text: '水平对齐',
-          icon: 'icon-align-left',
           children: [
             { text: '水平居中', handler: () => alignElementToCanvas(ElementAlignCommands.HORIZONTAL) },
             { text: '左对齐', handler: () => alignElementToCanvas(ElementAlignCommands.LEFT) },
@@ -150,7 +145,6 @@ export default defineComponent({
         },
         {
           text: '垂直对齐',
-          icon: 'icon-align-bottom',
           children: [
             { text: '垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.VERTICAL) },
             { text: '上对齐', handler: () => alignElementToCanvas(ElementAlignCommands.TOP) },
@@ -161,20 +155,17 @@ export default defineComponent({
         {
           text: props.elementInfo.groupId ? '取消组合' : '组合',
           subText: 'Ctrl + G',
-          icon: 'icon-block',
           handler: props.elementInfo.groupId ? uncombineElements : combineElements,
           hide: !props.isMultiSelect,
         },
         {
           text: '锁定',
           subText: 'Ctrl + L',
-          icon: 'icon-lock',
           handler: lockElement,
         },
         {
           text: '删除',
           subText: 'Delete',
-          icon: 'icon-delete',
           handler: deleteElement,
         },
       ]

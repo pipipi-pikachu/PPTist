@@ -9,11 +9,7 @@
         :class="{'divider': menu.divider, 'disable': menu.disable}"
       >
         <div class="contextmenu-item-content" :class="{'has-sub-menu': menu.children}" v-if="!menu.divider">
-          <span class="text">
-            <IconFont class="icon" v-if="menu.icon" :type="menu.icon" />
-            <div v-else-if="menu.iconPlacehoder" class="icon-placehoder"></div>
-            <span>{{menu.text}}</span>
-          </span>
+          <span class="text">{{menu.text}}</span>
           <span class="sub-text" v-if="menu.subText && !menu.children">{{menu.subText}}</span>
 
           <contextmenu-content 
@@ -35,13 +31,8 @@
 import { PropType } from 'vue'
 import { ContextmenuItem } from './types'
 
-import IconFont from '@/components/IconFont.vue'
-
 export default {
   name: 'contextmenu-content',
-  components: {
-    IconFont,
-  },
   props: {
     menus: {
       type: Array as PropType<ContextmenuItem[]>,
@@ -126,22 +117,8 @@ $subMenuWidth: 120px;
     top: 50%;
     transform: translateY(-50%);
   }
-
-  .icon {
-    margin-right: 7px;
-    vertical-align: middle;
-  }
-  .text span {
-    vertical-align: middle;
-  }
-  .icon-placehoder {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin-right: 7px;
-  }
   .sub-text {
-    opacity: 0.3;
+    opacity: 0.6;
   }
   .sub-menu {
     position: absolute;

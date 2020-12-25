@@ -95,37 +95,31 @@ export default defineComponent({
         {
           text: '剪切',
           subText: 'Ctrl + X',
-          icon: 'icon-scissor',
           handler: cutSlide,
         },
         {
           text: '复制',
           subText: 'Ctrl + C',
-          icon: 'icon-copy',
           handler: copySlide,
         },
         {
           text: '粘贴',
           subText: 'Ctrl + V',
-          icon: 'icon-paste',
           handler: pasteSlide,
         },
         { divider: true },
         {
           text: '新建页面',
           subText: 'Enter',
-          icon: 'icon-add-page',
           handler: createSlide,
         },
         {
           text: '复制页面',
-          icon: 'icon-copy',
           handler: copyAndPasteSlide,
         },
         {
           text: '删除页面',
           subText: 'Delete',
-          icon: 'icon-delete',
           handler: deleteSlide,
         },
       ]
