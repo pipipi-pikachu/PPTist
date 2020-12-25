@@ -9,7 +9,7 @@
       height: elementInfo.height + 'px',
       transform: `rotate(${elementInfo.rotate}deg)`,
     }"
-    @mousedown="handleSelectElement($event)" 
+    @mousedown="$event => handleSelectElement($event)" 
   >
     <ImageClip
       v-if="isCliping"
@@ -94,7 +94,7 @@
           :key="point.direction"
           :type="point.direction"
           :style="point.style"
-          @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
+          @mousedown.stop="$event => scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
           class="operate-rotate-handler" 
@@ -293,14 +293,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-image {
   position: absolute;
-
-  &.lock .operate-border-line {
-    border-color: #888;
-  }
-
-  &:hover .operate-border-line {
-    display: block;
-  }
 
   &.lock .element-content {
     cursor: default;

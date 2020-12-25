@@ -8,7 +8,7 @@
       width: elementInfo.width + 'px',
       transform: `rotate(${elementInfo.rotate}deg)`,
     }"
-    @mousedown="handleSelectElement($event, false)" 
+    @mousedown="$event => handleSelectElement($event)"
   >
     <div class="element-content"
       :style="{
@@ -26,6 +26,7 @@
       <div class="text"
         v-html="elementInfo.content" 
         :contenteditable="isActive && !elementInfo.lock"
+        @mousedown="$event => handleSelectElement($event, false)"
       ></div>
     </div>
 
@@ -37,7 +38,6 @@
         'active': isActive,
       }" 
       :style="{ transform: `scale(${1 / canvasScale})` }"
-      v-contextmenu="contextmenus"
     >
       <BorderLine 
         class="operate-border-line"
@@ -45,8 +45,6 @@
         :key="line.type" 
         :type="line.type" 
         :style="line.style"
-        :isWide="true"
-        @mousedown="handleSelectElement($event)"
       />
       <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
         <ResizeHandler
@@ -55,7 +53,7 @@
           :key="point.direction"
           :type="point.direction"
           :style="point.style"
-          @mousedown.stop="scaleElement($event, elementInfo, point.direction)"
+          @mousedown.stop="$event => scaleElement($event, elementInfo, point.direction)"
         />
         <RotateHandler
           class="operate-rotate-handler" 
@@ -168,14 +166,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-text {
   position: absolute;
-
-  &.lock .operate-border-line {
-    border-color: #888;
-  }
-
-  &:hover .operate-border-line {
-    display: block;
-  }
+  cursor: move;
 
   &.lock .element-content {
     cursor: default;
