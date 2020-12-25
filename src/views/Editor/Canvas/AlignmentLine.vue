@@ -1,23 +1,16 @@
 <template>
-  <div 
-    class="alignment-line"
-    :style="{
-      left: axis.x + 'px',
-      top: axis.y + 'px',
-    }"
-  >
-    <div 
-      :class="['line', type]" 
-      :style="type === 'vertical' ? { height: length + 'px' } : { width: length + 'px' }"
-    ></div>
+  <div class="alignment-line" :style="{ left, top }">
+    <div :class="['line', type]" :style="sizeStyle"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { computed, PropType, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
 import { AlignmentLineAxis } from '@/types/edit'
 
-export default {
+export default defineComponent({
   name: 'alignment-line',
   props: {
     type: {
@@ -32,8 +25,34 @@ export default {
       type: Number,
       required: true,
     },
+    offsetX: {
+      type: Number,
+      required: true,
+    },
+    offsetY: {
+      type: Number,
+      required: true,
+    },
   },
-}
+  setup(props) {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+
+    const left = computed(() => props.axis.x * canvasScale.value + props.offsetX + 'px')
+    const top = computed(() => props.axis.y * canvasScale.value + props.offsetY + 'px')
+
+    const sizeStyle = computed(() => {
+      if(props.type === 'vertical') return { height: props.length * canvasScale.value + 'px' }
+      return { width: props.length * canvasScale.value + 'px' }
+    })
+
+    return {
+      left,
+      top,
+      sizeStyle,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

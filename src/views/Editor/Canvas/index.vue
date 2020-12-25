@@ -7,6 +7,15 @@
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
   >
+    <AlignmentLine 
+      v-for="(line, index) in alignmentLines" 
+      :key="index" 
+      :type="line.type" 
+      :axis="line.axis" 
+      :length="line.length"
+      :offsetX="viewportStyles.left"
+      :offsetY="viewportStyles.top"
+    />
     <div 
       class="viewport" 
       ref="viewportRef"
@@ -25,11 +34,6 @@
         :width="mouseSelectionState.width" 
         :height="mouseSelectionState.height" 
         :quadrant="mouseSelectionState.quadrant"
-      />
-
-      <AlignmentLine 
-        v-for="(line, index) in alignmentLines" :key="index" 
-        :type="line.type" :axis="line.axis" :length="line.length"
       />
 
       <MultiSelectOperate 
