@@ -1,5 +1,5 @@
 <template>
-  <ul :class="['contextmenu-content', { 'dark': isDark }]">
+  <ul class="contextmenu-content">
     <template v-for="(menu, index) in menus">
       <li
         v-if="!menu.hide"
@@ -47,10 +47,6 @@ export default {
       type: Array as PropType<ContextmenuItem[]>,
       required: true,
     },
-    isDark: {
-      type: Boolean,
-      default: false,
-    },
     subMenuPosition: {
       type: String,
       default: 'left',
@@ -72,42 +68,20 @@ $subMenuWidth: 120px;
   width: $menuWidth;
   padding: 5px 0;
   background: #fff;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  box-shadow: 3px 3px 3px rgba(#000, 0.3);
   border-radius: 2px;
   list-style: none;
   margin: 0;
-
-  &.dark {
-    background-color: #393939;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
-    .contextmenu-content {
-      background-color: #393939;
-      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
-    }
-    .contextmenu-item {
-      color: #f1f1f1;
-      background-color: #393939;
-      &:hover:not(.disable) {
-        background-color: #555;
-      }
-      &.divider {
-        background-color: #999;
-      }
-      &.disable {
-        color: #999;
-      }
-    }
-  }
 }
 .contextmenu-item {
   padding: 0 20px;
   color: #555;
   font-size: 12px;
-  transition: all 0.3s;
+  transition: all 0.2s;
   white-space: nowrap;
   height: $menuHeight;
   line-height: $menuHeight;
-  border-radius: 4px;
   background-color: #fff;
   cursor: pointer;
 
@@ -116,13 +90,13 @@ $subMenuWidth: 120px;
   }
 
   &:hover:not(.disable) {
-    background-color: #f7f7f7;
+    background-color: #e1e1e1;
   }
 
   &.divider {
     height: 1px;
     overflow: hidden;
-    margin: 5px 15px;
+    margin: 5px;
     background-color: #e5e5e5;
     line-height: 0;
     padding: 0;
@@ -145,7 +119,7 @@ $subMenuWidth: 120px;
     width: 0;
     height: 0;
     border-top: 4px solid transparent;
-    border-left: 4px solid #676b6f;
+    border-left: 6px solid rgba($color: $themeColor, $alpha: .8);
     border-bottom: 4px solid transparent;
     position: absolute;
     right: 0;

@@ -14,8 +14,7 @@
     @contextmenu.prevent
   >
     <ContextmenuContent 
-      :menus="menus" 
-      :isDark="isDark"
+      :menus="menus"
       :subMenuPosition="style.subMenuPosition" 
       :handleClickMenuItem="handleClickMenuItem" 
     />
@@ -50,10 +49,6 @@ export default defineComponent({
     menus: {
       type: Array as PropType<ContextmenuItem[]>,
       required: true,
-    },
-    isDark: {
-      type: Boolean,
-      default: false,
     },
     removeContextMenu: {
       type: Function,

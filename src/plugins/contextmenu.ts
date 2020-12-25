@@ -9,7 +9,6 @@ const contextmenuListener = (el: HTMLElement, event: MouseEvent, binding: Direct
 
   const menus = binding.value(el)
   if(!menus) return
-  const isDark = binding.modifiers.dark
 
   let container: HTMLDivElement | null = null
 
@@ -27,7 +26,6 @@ const contextmenuListener = (el: HTMLElement, event: MouseEvent, binding: Direct
     axis: { x: event.x, y: event.y },
     el,
     menus,
-    isDark,
     removeContextMenu,
   }
   container = document.createElement('div')
