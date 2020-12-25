@@ -24,7 +24,11 @@
             height: slideHeight + 'px',
           }"
         >
-          <ScreenSlide :scale="scale" :slide="slide" />
+          <ScreenSlide 
+            :scale="scale" 
+            :slide="slide" 
+            :animationIndex="animationIndex"
+          />
         </div>
       </div>
     </div>
@@ -32,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { MutationTypes, State } from '@/store'
@@ -42,6 +46,7 @@ import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ScreenSlide from './ScreenSlide.vue'
+import { Slide } from '@/types/slides'
 
 export default defineComponent({
   name: 'screen',
@@ -52,6 +57,7 @@ export default defineComponent({
     const store = useStore<State>()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
+    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
     const slideWidth = ref(0)
     const slideHeight = ref(0)
@@ -83,24 +89,55 @@ export default defineComponent({
       if(!isFullscreen()) store.commit(MutationTypes.SET_SCREENING, false)
     }
 
-    const turnPrevSlide = () => {
-      if(slideIndex.value <= 0) return
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+    const prefix = 'animate__'
+    const animationIndex = ref(0)
+    const animations = computed(() => currentSlide.value.animations || [])
+
+    const runAnimation = () => {
+      const animation = animations.value[animationIndex.value]
+      animationIndex.value += 1
+
+      const elRef = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
+      if(elRef) {
+        const animationName = `${prefix}${animation.type}`
+        elRef.classList.add(`${prefix}animated`, animationName)
+
+        const handleAnimationEnd = () => {
+          elRef.classList.remove(`${prefix}animated`, animationName)
+        }
+        elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
+      }
     }
-    const turnNextSlide = () => {
-      if(slideIndex.value >= slides.value.length - 1) return
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+
+    const execPrev = () => {
+      if(animations.value.length && animationIndex.value > 0) {
+        animationIndex.value -= 1
+      }
+      else if(slideIndex.value > 0) {
+        store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+        const lastIndex = animations.value ? animations.value.length : 0
+        animationIndex.value = lastIndex
+      }
+    }
+    const execNext = () => {
+      if(animations.value.length && animationIndex.value < animations.value.length) {
+        runAnimation()
+      }
+      else if(slideIndex.value < slides.value.length - 1) {
+        store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+        animationIndex.value = 0
+      }
     }
 
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
-      if(key === KEYS.UP || key === KEYS.LEFT) turnPrevSlide()
-      else if(key === KEYS.DOWN || key === KEYS.RIGHT) turnNextSlide()
+      if(key === KEYS.UP || key === KEYS.LEFT) execPrev()
+      else if(key === KEYS.DOWN || key === KEYS.RIGHT) execNext()
     }
 
     const mousewheelListener = throttle(function(e: WheelEvent) {
-      if(e.deltaY > 0) turnNextSlide()
-      else if(e.deltaY < 0) turnPrevSlide()
+      if(e.deltaY < 0) execPrev()
+      else if(e.deltaY > 0) execNext()
     }, 500, { leading: true, trailing: false })
 
     onMounted(() => {
@@ -111,6 +148,15 @@ export default defineComponent({
       window.removeEventListener('resize', windowResizeListener)
       document.removeEventListener('keydown', keydownListener)
     })
+
+    const turnPrevSlide = () => {
+      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+      animationIndex.value = 0
+    }
+    const turnNextSlide = () => {
+      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+      animationIndex.value = 0
+    }
 
     const contextmenus = (): ContextmenuItem[] => {
       return [
@@ -140,6 +186,7 @@ export default defineComponent({
       slideHeight,
       scale,
       mousewheelListener,
+      animationIndex,
       contextmenus,
     }
   },

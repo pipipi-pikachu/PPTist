@@ -15,22 +15,29 @@
       :isActive="isActive"
       :isActiveGroupElement="isActiveGroupElement"
       :isMultiSelect="isMultiSelect"
-      :animationIndex="animationIndex"
+      :animationIndex="elementIndexInAnimation"
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
     ></component>
+
+    <div 
+      class="animation-index"
+      v-if="toolbarState === 'animation' && elementIndexInAnimation !== -1"
+    >
+      {{elementIndexInAnimation + 1}}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
-import { PPTElement } from '@/types/slides'
+import { defineComponent, PropType, computed, Ref } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
+import { PPTElement, Slide } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
 
 export default defineComponent({
   name: 'operate',
@@ -55,10 +62,6 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
-    animationIndex: {
-      type: Number,
-      default: -1,
-    },
     rotateElement: {
       type: Function as PropType<(element: PPTElement) => void>,
       required: true,
@@ -71,6 +74,8 @@ export default defineComponent({
   setup(props) {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
+    const toolbarState = computed(() => store.state.toolbarState)
+    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
     const currentOperateComponent = computed(() => {
       const elementTypeMap = {
@@ -80,9 +85,16 @@ export default defineComponent({
       return elementTypeMap[props.elementInfo.type] || null
     })
 
+    const elementIndexInAnimation = computed(() => {
+      const animations = currentSlide.value.animations || []
+      return animations.findIndex(animation => animation.elId === props.elementInfo.id)
+    })
+
     return {
       currentOperateComponent,
       canvasScale,
+      toolbarState,
+      elementIndexInAnimation,
     }
   },
 })
@@ -93,5 +105,20 @@ export default defineComponent({
   position: absolute;
   z-index: 100;
   user-select: none;
+}
+.animation-index {
+  position: absolute;
+  top: 0;
+  left: -24px;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  color: $themeColor;
+  border: 1px solid $themeColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3px;
 }
 </style>

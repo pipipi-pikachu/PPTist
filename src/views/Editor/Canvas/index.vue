@@ -58,7 +58,9 @@
         :height="mouseSelectionState.height" 
         :quadrant="mouseSelectionState.quadrant"
       />
+
       <SlideBackground />
+      
       <EditableElement 
         v-for="(element, index) in elementList" 
         :key="element.id"

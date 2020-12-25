@@ -8,11 +8,13 @@
     }"
   >
     <div class="background" :style="{ ...backgroundStyle }"></div>
-    <BaseElement
+    <ScreenElement
+      :id="`screen-element-${element.id}`"
       v-for="(element, index) in slide.elements"
       :key="element.id"
       :elementInfo="element"
       :elementIndex="index + 1"
+      :animationIndex="animationIndex"
     />
   </div>
 </template>
@@ -23,12 +25,12 @@ import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
-import BaseElement from '@/views/_element/BaseElement.vue'
+import ScreenElement from '@/views/_element/ScreenElement.vue'
 
 export default defineComponent({
   name: 'screen-slide',
   components: {
-    BaseElement,
+    ScreenElement,
   },
   props: {
     slide: {
@@ -38,6 +40,10 @@ export default defineComponent({
     scale: {
       type: Number,
       required: true,
+    },
+    animationIndex: {
+      type: Number,
+      default: -1,
     },
   },
   setup(props) {

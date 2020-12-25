@@ -18,7 +18,7 @@ import BaseImageElement from './ImageElement/BaseImageElement.vue'
 import BaseTextElement from './TextElement/BaseTextElement.vue'
 
 export default defineComponent({
-  name: 'editable-element',
+  name: 'base-element',
   props: {
     elementInfo: {
       type: Object as PropType<PPTElement>,

@@ -53,6 +53,10 @@ export const mutations: MutationTree<State> = {
     state.availableFonts = FONT_NAMES.filter(font => isSupportFontFamily(font.en))
   },
 
+  [MutationTypes.SET_TOOLBAR_STATE](state, type) {
+    state.toolbarState = type
+  },
+
   // slides
 
   [MutationTypes.SET_SLIDES](state, slides: Slide[]) {

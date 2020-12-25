@@ -68,7 +68,7 @@ export const slides: Slide[] = [
       },
       {
         elId: 'xxx2',
-        type: 'zoomInDown',
+        type: 'zoomIn',
         duration: 1000,
       },
     ],
@@ -87,6 +87,13 @@ export const slides: Slide[] = [
         opacity: 1,
         lock: false,
         content: '<div>😀 😐 😶 😜 🔔 ⭐ ⚡ 🔥 👍 💡 🔰 🎀 🎁 🥇 🏅 🏆 🎈 🎉 💎 🚧 ⛔ 📢 ⌛ ⏰ 🕒 🧩 🎵 📎 🔒 🔑 ⛳ 📌 📍 💬 📅 📈 📋 📜 📁 📱 💻 💾 🌏 🚚 🚡 🚢💧 🌐 🧭 💰 💳 🛒</div>',
+      },
+    ],
+    animations: [
+      {
+        elId: 'yyx1',
+        type: 'flipInX',
+        duration: 1000,
       },
     ],
   },

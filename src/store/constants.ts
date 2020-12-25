@@ -10,6 +10,7 @@ export enum MutationTypes {
   SET_DISABLE_HOTKEYS_STATE = 'setDisableHotkeysState',
   SET_GRID_LINES_STATE = 'setGridLinesState',
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
+  SET_TOOLBAR_STATE = 'setToolbarState',
 
   // slides
   SET_SLIDES = 'setSlides',
@@ -29,7 +30,7 @@ export enum MutationTypes {
   SET_SHIFT_KEY_STATE = 'setShiftKeyState',
 
   // screen
-  SET_SCREENING = 'SET_SCREENING'
+  SET_SCREENING = 'setScreening',
 }
 
 export enum ActionTypes {

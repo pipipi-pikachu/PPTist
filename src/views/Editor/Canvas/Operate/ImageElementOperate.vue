@@ -42,8 +42,6 @@
         @mousedown.stop="rotateElement(elementInfo)"
       />
     </template>
-
-    <AnimationIndex v-if="animationIndex !== -1" :animationIndex="animationIndex" />
   </div>
 </template>
 
@@ -59,7 +57,6 @@ import useCommonOperate from '../hooks/useCommonOperate'
 import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
-import AnimationIndex from './AnimationIndex.vue'
 import ImageClipHandler from './ImageClipHandler.vue'
 
 export default defineComponent({
@@ -68,7 +65,6 @@ export default defineComponent({
     RotateHandler,
     ResizeHandler,
     BorderLine,
-    AnimationIndex,
     ImageClipHandler,
   },
   props: {
@@ -90,10 +86,6 @@ export default defineComponent({
     },
     isMultiSelect: {
       type: Boolean,
-      required: true,
-    },
-    animationIndex: {
-      type: Number,
       required: true,
     },
     rotateElement: {

@@ -20,6 +20,7 @@ export interface State {
   disableHotkeys: boolean;
   showGridLines: boolean;
   availableFonts: FontName[];
+  toolbarState: string;
   slides: Slide[];
   slideIndex: number;
   snapshotCursor: number;
@@ -39,6 +40,7 @@ const state: State = {
   disableHotkeys: false,
   showGridLines: false,
   availableFonts: [],
+  toolbarState: '',
   slides: slides,
   slideIndex: 0,
   snapshotCursor: -1,
