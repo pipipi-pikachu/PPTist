@@ -118,7 +118,7 @@ export default defineComponent({
     }
   }
 
-  &.multi-select:not(.selected) .operate-border-line {
+  &.multi-select:not(.active) .operate-border-line {
     border-color: rgba($color: $themeColor, $alpha: .3);
   }
 

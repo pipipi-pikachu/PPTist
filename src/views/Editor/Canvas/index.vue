@@ -31,6 +31,7 @@
         :key="element.id"
         :elementInfo="element"
         :isSelected="activeElementIdList.includes(element.id)"
+        :isActive="handleElementId === element.id"
         :isActiveGroupElement="activeGroupElementId === element.id"
         :isMultiSelect="activeElementIdList.length > 1"
         :rotateElement="rotateElement"

@@ -60,6 +60,18 @@ export const slides: Slide[] = [
         src: 'https://img.lessonplan.cn/IMG/Show/ppt/3ab74e91-c34f-499d-9711-166e423d4dd6/62d9adb3-e7a6-4dc4-a352-095cffb49f08/b1be1a2f-f893-47d3-a8a3-eac7d04d395f/1596159381259v2-b2c69096d25ae16bf6ca09e30add3e65_hd.jpg',
       },
     ],
+    animations: [
+      {
+        elId: 'xxx1',
+        type: 'rotateIn',
+        duration: 1000,
+      },
+      {
+        elId: 'xxx2',
+        type: 'zoomInDown',
+        duration: 1000,
+      },
+    ],
   },
   {
     id: 'sajd172',

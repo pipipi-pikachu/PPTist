@@ -1,6 +1,22 @@
 <template>
   <div class="editor-header">
-    
+    <div class="left">
+      <div class="menu-item">文件</div>
+      <div class="menu-item">编辑</div>
+      <div class="menu-item">设置</div>
+      <div class="menu-item">素材</div>
+      <div class="menu-item">演示</div>
+      <div class="menu-item">帮助</div>
+    </div>
+
+    <div class="right">
+      <div class="menu-item">
+        <IconFont class="icon" type="icon-play-circle" />
+      </div>
+      <div class="menu-item icon">
+        <IconFont class="icon" type="icon-github-fill" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,7 +32,24 @@ export default defineComponent({
 .editor-header {
   background-color: #fff;
   user-select: none;
-  overflow: hidden;
   border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+.left, .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menu-item {
+  font-size: 13px;
+  color: $themeColor;
+  margin: 0 10px;
+  cursor: pointer;
+
+  .icon {
+    font-size: 20px;
+  }
 }
 </style>

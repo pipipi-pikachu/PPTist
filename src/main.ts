@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 
 import '@/assets/styles/global.scss'
+import 'animate.css'
 
 import IconFont from '@/components/IconFont.vue'
 import contextmenu from './plugins/contextmenu'
