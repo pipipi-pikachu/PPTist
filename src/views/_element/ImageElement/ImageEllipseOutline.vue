@@ -1,22 +1,25 @@
 <template>
   <SvgWrapper 
-    class="element-outline"
+    class="image-ellipse-outline"
     v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"
   >
-    <path 
+    <ellipse 
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
       stroke-linejoin
       fill="transparent"
-      :d="`M0,0 L${width},0 L${width},${height} L0,${height} Z`" 
+      :cx="width / 2" 
+      :cy="height / 2"
+      :rx="width / 2" 
+      :ry="height / 2"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
       :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
-    ></path>
+    ></ellipse>
 	</SvgWrapper>
 </template>
 
@@ -24,10 +27,10 @@
 import { PropType, defineComponent, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
-import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
+import useElementOutline from '@/views/_element/hooks/useElementOutline'
 
 export default defineComponent({
-  name: 'element-outline', 
+  name: 'image-ellipse-outline',
   components: {
     SvgWrapper,
   },
@@ -64,6 +67,7 @@ export default defineComponent({
 svg {
   overflow: visible;
   position: absolute;
+  z-index: 2;
   top: 0;
   left: 0;
 }

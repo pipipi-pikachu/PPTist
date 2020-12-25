@@ -65,7 +65,7 @@ import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'
 import ImagePolygonOutline from './ImagePolygonOutline.vue'
 
-import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
+import useElementShadow from '@/views/_element/hooks/useElementShadow'
 
 export default defineComponent({
   name: 'base-element-image',

@@ -1,25 +1,22 @@
 <template>
   <SvgWrapper 
-    class="image-rect-outline" 
+    class="element-outline"
     v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"
   >
-    <rect 
+    <path 
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
       stroke-linejoin
       fill="transparent"
-      :rx="radius" 
-      :ry="radius"
-      :width="width"
-      :height="height"
+      :d="`M0,0 L${width},0 L${width},${height} L0,${height} Z`" 
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
       :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
-    ></rect>
+    ></path>
 	</SvgWrapper>
 </template>
 
@@ -27,10 +24,10 @@
 import { PropType, defineComponent, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
-import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
+import useElementOutline from '@/views/_element/hooks/useElementOutline'
 
 export default defineComponent({
-  name: 'image-rect-outline',
+  name: 'element-outline', 
   components: {
     SvgWrapper,
   },
@@ -45,10 +42,6 @@ export default defineComponent({
     },
     outline: {
       type: Object as PropType<PPTElementOutline>
-    },
-    radius: {
-      type: String,
-      default: '0',
     },
   },
   setup(props) {
@@ -71,7 +64,6 @@ export default defineComponent({
 svg {
   overflow: visible;
   position: absolute;
-  z-index: 2;
   top: 0;
   left: 0;
 }

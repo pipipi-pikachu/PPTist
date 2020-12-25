@@ -50,25 +50,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
 import { KEYS } from '@/configs/hotkey'
+import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
 
 import SvgWrapper from '@/components/SvgWrapper.vue'
-
-type ClipDataRange = [[number, number], [number, number]]
-
-interface ClipData {
-  range: ClipDataRange;
-  path: string;
-}
-
-export interface ClipedEmitData {
-  range: ClipDataRange;
-  position: {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  };
-}
 
 type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
 
@@ -83,7 +67,7 @@ export default defineComponent({
       required: true,
     },
     clipData: {
-      type: Object as PropType<ClipData>,
+      type: Object as PropType<ImageClipData>,
       required: true,
     },
     clipPath: {
@@ -123,7 +107,7 @@ export default defineComponent({
       left: '0',
     })
     const isSettingClipRange = ref(false)
-    const currentRange = ref<ClipDataRange | null>(null)
+    const currentRange = ref<ImageClipDataRange | null>(null)
 
     const getClipDataTransformInfo = () => {
       const [start, end] = props.clipData ? props.clipData.range : [[0, 0], [100, 100]]
@@ -209,7 +193,7 @@ export default defineComponent({
         height: (topImgWrapperPosition.height - 100) / 100 * props.height,
       }
 
-      const clipedEmitData: ClipedEmitData = {
+      const clipedEmitData: ImageClipedEmitData = {
         range: currentRange.value,
         position,
       }

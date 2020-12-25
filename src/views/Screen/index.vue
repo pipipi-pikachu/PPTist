@@ -172,10 +172,10 @@ export default defineComponent({
     z-index: 2;
   }
   &.prev {
-    transform: translateX(-100%);
+    transform: translateY(-100%);
   }
   &.next {
-    transform: translateX(100%);
+    transform: translateY(100%);
   }
 }
 .slide-content {

@@ -25,21 +25,13 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    offsetX: {
-      type: Number,
-      required: true,
-    },
-    offsetY: {
-      type: Number,
-      required: true,
-    },
   },
   setup(props) {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
 
-    const left = computed(() => props.axis.x * canvasScale.value + props.offsetX + 'px')
-    const top = computed(() => props.axis.y * canvasScale.value + props.offsetY + 'px')
+    const left = computed(() => props.axis.x * canvasScale.value + 'px')
+    const top = computed(() => props.axis.y * canvasScale.value + 'px')
 
     const sizeStyle = computed(() => {
       if(props.type === 'vertical') return { height: props.length * canvasScale.value + 'px' }
@@ -66,11 +58,11 @@ export default defineComponent({
     border: 0 dashed $themeColor;
 
     &.vertical {
-      margin-left: -0.5px;
+      transform: translateY(-0.5px);
       border-left-width: 1px;
     }
     &.horizontal {
-      margin-top: -0.5px;
+      transform: translateX(-0.5px);
       border-top-width: 1px;
     }
   }

@@ -24,7 +24,7 @@
 import { PropType, defineComponent, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
-import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
+import useElementOutline from '@/views/_element/hooks/useElementOutline'
 
 export default defineComponent({
   name: 'image-polygon-outline',

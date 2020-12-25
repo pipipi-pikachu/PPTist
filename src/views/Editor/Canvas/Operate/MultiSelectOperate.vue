@@ -2,9 +2,8 @@
   <div 
     class="multi-select-operate"
     :style="{
-      left: minX + 'px',
-      top: minY + 'px',
-      transform: `scale(${1 / canvasScale})`,
+      left: minX * canvasScale + 'px',
+      top: minY * canvasScale + 'px',
     }"
   >
     <BorderLine v-for="line in borderLines" :key="line.type" :type="line.type" :style="line.style" />
@@ -28,10 +27,10 @@ import { State } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
 import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
-import useCommonOperate from '@/views/_common/_element/hooks/useCommonOperate'
+import useCommonOperate from '../hooks/useCommonOperate'
 
-import ResizeHandler from '@/views/_common/_operate/ResizeHandler.vue'
-import BorderLine from '@/views/_common/_operate/BorderLine.vue'
+import ResizeHandler from './ResizeHandler.vue'
+import BorderLine from './BorderLine.vue'
 
 export default defineComponent({
   name: 'multi-select-operate',
@@ -102,6 +101,6 @@ export default defineComponent({
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 101;
 }
 </style>

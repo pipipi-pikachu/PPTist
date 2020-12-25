@@ -7,16 +7,8 @@
   >
     <component
       :is="currentElementComponent"
-      :canvasScale="canvasScale"
       :elementInfo="elementInfo"
-      :isSelected="isSelected"
-      :isActive="isActive"
-      :isActiveGroupElement="isActiveGroupElement"
-      :isMultiSelect="isMultiSelect"
-      :animationIndex="animationIndex"
       :selectElement="selectElement"
-      :rotateElement="rotateElement"
-      :scaleElement="scaleElement"
       :contextmenus="contextmenus"
     ></component>
   </div>
@@ -24,9 +16,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
-import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement, PPTLineElement } from '@/types/slides'
+import { PPTElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import useLockElement from '@/hooks/useLockElement'
@@ -36,7 +26,7 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 
-import { ElementOrderCommands, ElementAlignCommands, OperateResizeHandler } from '@/types/edit'
+import { ElementOrderCommands, ElementAlignCommands } from '@/types/edit'
 
 import ImageElement from './ImageElement/index.vue'
 import TextElement from './TextElement/index.vue'
@@ -52,43 +42,16 @@ export default defineComponent({
       type: Number,
       required: true,
     },
-    isSelected: {
-      type: Boolean,
-      required: true,
-    },
-    isActive: {
-      type: Boolean,
-      required: true,
-    },
-    isActiveGroupElement: {
-      type: Boolean,
-      required: true,
-    },
     isMultiSelect: {
       type: Boolean,
       required: true,
-    },
-    animationIndex: {
-      type: Number,
-      default: -1,
     },
     selectElement: {
       type: Function as PropType<(e: MouseEvent, element: PPTElement, canMove?: boolean) => void>,
       required: true,
     },
-    rotateElement: {
-      type: Function as PropType<(element: PPTTextElement | PPTImageElement | PPTShapeElement) => void>,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandler) => void>,
-      required: true,
-    },
   },
   setup(props) {
-    const store = useStore<State>()
-    const canvasScale = computed(() => store.state.canvasScale)
-
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
         'image': ImageElement,
@@ -172,7 +135,6 @@ export default defineComponent({
     }
 
     return {
-      canvasScale,
       currentElementComponent,
       contextmenus,
     }

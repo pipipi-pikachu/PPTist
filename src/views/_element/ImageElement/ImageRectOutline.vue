@@ -1,25 +1,25 @@
 <template>
   <SvgWrapper 
-    class="image-ellipse-outline"
+    class="image-rect-outline" 
     v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"
   >
-    <ellipse 
+    <rect 
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
       stroke-linejoin
       fill="transparent"
-      :cx="width / 2" 
-      :cy="height / 2"
-      :rx="width / 2" 
-      :ry="height / 2"
+      :rx="radius" 
+      :ry="radius"
+      :width="width"
+      :height="height"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
       :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
-    ></ellipse>
+    ></rect>
 	</SvgWrapper>
 </template>
 
@@ -27,10 +27,10 @@
 import { PropType, defineComponent, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
 import SvgWrapper from '@/components/SvgWrapper.vue'
-import useElementOutline from '@/views/_common/_element/hooks/useElementOutline'
+import useElementOutline from '@/views/_element/hooks/useElementOutline'
 
 export default defineComponent({
-  name: 'image-ellipse-outline',
+  name: 'image-rect-outline',
   components: {
     SvgWrapper,
   },
@@ -45,6 +45,10 @@ export default defineComponent({
     },
     outline: {
       type: Object as PropType<PPTElementOutline>
+    },
+    radius: {
+      type: String,
+      default: '0',
     },
   },
   setup(props) {

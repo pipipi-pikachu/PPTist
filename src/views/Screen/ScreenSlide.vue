@@ -23,7 +23,7 @@ import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
-import BaseElement from '@/views/_common/_element/BaseElement.vue'
+import BaseElement from '@/views/_element/BaseElement.vue'
 
 export default defineComponent({
   name: 'screen-slide',

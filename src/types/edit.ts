@@ -64,3 +64,20 @@ export interface MultiSelectRange {
   minY: number;
   maxY: number;
 }
+
+export type ImageClipDataRange = [[number, number], [number, number]]
+
+export interface ImageClipData {
+  range: ImageClipDataRange;
+  path: string;
+}
+
+export interface ImageClipedEmitData {
+  range: ImageClipDataRange;
+  position: {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  };
+}

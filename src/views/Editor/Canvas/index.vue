@@ -7,15 +7,37 @@
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
   >
-    <AlignmentLine 
-      v-for="(line, index) in alignmentLines" 
-      :key="index" 
-      :type="line.type" 
-      :axis="line.axis" 
-      :length="line.length"
-      :offsetX="viewportStyles.left"
-      :offsetY="viewportStyles.top"
-    />
+    <div 
+      class="operates"
+      :style="{
+        left: viewportStyles.left + 'px',
+        top: viewportStyles.top + 'px',
+      }"
+    >
+      <AlignmentLine 
+        v-for="(line, index) in alignmentLines" 
+        :key="index" 
+        :type="line.type" 
+        :axis="line.axis" 
+        :length="line.length"
+      />
+      <MultiSelectOperate 
+        v-if="activeElementIdList.length > 1"
+        :elementList="elementList"
+        :scaleMultiElement="scaleMultiElement"
+      />
+      <Operate
+        v-for="element in elementList" 
+        :key="element.id"
+        :elementInfo="element"
+        :isSelected="activeElementIdList.includes(element.id)"
+        :isActiveGroupElement="activeGroupElementId === element.id"
+        :isMultiSelect="activeElementIdList.length > 1"
+        :rotateElement="rotateElement"
+        :scaleElement="scaleElement"
+      />
+    </div>
+
     <div 
       class="viewport" 
       ref="viewportRef"
@@ -35,27 +57,14 @@
         :height="mouseSelectionState.height" 
         :quadrant="mouseSelectionState.quadrant"
       />
-
-      <MultiSelectOperate 
-        v-if="activeElementIdList.length > 1"
-        :elementList="elementList"
-        :scaleMultiElement="scaleMultiElement"
-      />
-
       <SlideBackground />
-
       <EditableElement 
         v-for="(element, index) in elementList" 
         :key="element.id"
         :elementInfo="element"
         :elementIndex="index + 1"
-        :isSelected="activeElementIdList.includes(element.id)"
-        :isActive="element.id === handleElementId"
-        :isActiveGroupElement="activeGroupElementId === element.id"
         :isMultiSelect="activeElementIdList.length > 1"
         :selectElement="selectElement"
-        :rotateElement="rotateElement"
-        :scaleElement="scaleElement"
       />
     </div>
   </div>
@@ -83,11 +92,12 @@ import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 
-import EditableElement from '@/views/_common/_element/EditableElement.vue'
+import EditableElement from '@/views/_element/EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
-import MultiSelectOperate from './MultiSelectOperate.vue'
 import AlignmentLine from './AlignmentLine.vue'
+import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
+import Operate from './Operate/index.vue'
 
 export default defineComponent({
   name: 'editor-canvas',
@@ -95,8 +105,9 @@ export default defineComponent({
     EditableElement,
     MouseSelection,
     SlideBackground,
-    MultiSelectOperate,
     AlignmentLine,
+    MultiSelectOperate,
+    Operate,
   },
   setup() {
     const store = useStore<State>()
@@ -217,5 +228,8 @@ export default defineComponent({
   transform-origin: 0 0;
   background-color: #fff;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, .1);
+}
+.operates {
+  position: absolute;
 }
 </style>

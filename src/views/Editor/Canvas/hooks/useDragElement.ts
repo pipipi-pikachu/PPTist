@@ -216,21 +216,21 @@ export default (
             targetTop = targetTop - (targetMinY - value)
             isHorizontalAdsorbed = true
           }
-          _alignmentLines.push({type: 'horizontal', axis: {x: min - 20, y: value}, length: max - min + 40})
+          _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
         if(Math.abs(targetMaxY - value) < sorptionRange) {
           if(!isHorizontalAdsorbed) {
             targetTop = targetTop - (targetMaxY - value)
             isHorizontalAdsorbed = true
           }
-          _alignmentLines.push({type: 'horizontal', axis: {x: min - 20, y: value}, length: max - min + 40})
+          _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
         if(Math.abs(targetCenterY - value) < sorptionRange) {
           if(!isHorizontalAdsorbed) {
             targetTop = targetTop - (targetCenterY - value)
             isHorizontalAdsorbed = true
           }
-          _alignmentLines.push({type: 'horizontal', axis: {x: min - 20, y: value}, length: max - min + 40})
+          _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
       }
       for(let i = 0; i < verticalLines.length; i++) {
@@ -243,21 +243,21 @@ export default (
             targetLeft = targetLeft - (targetMinX - value)
             isVerticalAdsorbed = true
           }
-          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 20}, length: max - min + 40})
+          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
         if(Math.abs(targetMaxX - value) < sorptionRange) {
           if(!isVerticalAdsorbed) {
             targetLeft = targetLeft - (targetMaxX - value)
             isVerticalAdsorbed = true
           }
-          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 20}, length: max - min + 40})
+          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
         if(Math.abs(targetCenterX - value) < sorptionRange) {
           if(!isVerticalAdsorbed) {
             targetLeft = targetLeft - (targetCenterX - value)
             isVerticalAdsorbed = true
           }
-          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 20}, length: max - min + 40})
+          _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
       }
       alignmentLines.value = _alignmentLines

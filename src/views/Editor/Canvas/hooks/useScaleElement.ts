@@ -192,7 +192,7 @@ export default (
               correctionVal.offsetY = currentY - value
               isHorizontalAdsorbed = true
             }
-            _alignmentLines.push({type: 'horizontal', axis: {x: min - 20, y: value}, length: max - min + 40})
+            _alignmentLines.push({ type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100 })
           }
         }
       }
@@ -207,7 +207,7 @@ export default (
               correctionVal.offsetX = currentX - value
               isVerticalAdsorbed = true
             }
-            _alignmentLines.push({ type: 'vertical', axis: {x: value, y: min - 20}, length: max - min + 40 })
+            _alignmentLines.push({ type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100 })
           }
         }
       }

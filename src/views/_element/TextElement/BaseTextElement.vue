@@ -28,9 +28,9 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import { PPTTextElement } from '@/types/slides'
-import ElementOutline from '@/views/_common/_element/ElementOutline.vue'
+import ElementOutline from '@/views/_element/ElementOutline.vue'
 
-import useElementShadow from '@/views/_common/_element/hooks/useElementShadow'
+import useElementShadow from '@/views/_element/hooks/useElementShadow'
 
 export default defineComponent({
   name: 'base-element-text',
