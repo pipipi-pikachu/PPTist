@@ -10,9 +10,6 @@
     </div>
 
     <div class="right">
-      <div class="menu-item">
-        <IconFont class="icon" type="icon-play-circle" />
-      </div>
       <div class="menu-item icon">
         <IconFont class="icon" type="icon-github-fill" />
       </div>
@@ -50,6 +47,7 @@ export default defineComponent({
 
   .icon {
     font-size: 20px;
+    color: #666;
   }
 }
 </style>

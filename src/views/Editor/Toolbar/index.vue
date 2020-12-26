@@ -1,14 +1,70 @@
 <template>
   <div class="toolbar">
-    
+    <div class="tabs">
+      <div 
+        class="tab" 
+        :class="{ 'active': tab.value === toolbarState }"
+        v-for="tab in currentTabs" 
+        :key="tab.value"
+        @click="setToolbarState(tab.value)"
+      >{{tab.label}}</div>
+    </div>
+    <div class="content">
+
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent, watch } from 'vue'
+import { useStore } from 'vuex'
+import { MutationTypes, State } from '@/store'
+import { ToolbarState, ToolbarStates } from '@/types/toolbar'
 
 export default defineComponent({
   name: 'toolbar',
+  setup() {
+    const store = useStore<State>()
+    const toolbarState = computed(() => store.state.toolbarState)
+
+    const elementTabs = [
+      { label: '样式', value: ToolbarStates.EL_STYLE },
+      { label: '位置', value: ToolbarStates.EL_POSITION },
+      { label: '动画', value: ToolbarStates.EL_ANIMATION },
+    ]
+    const slideTabs = [
+      { label: '页面样式', value: ToolbarStates.SLIDE_STYLE },
+      { label: '翻页动画', value: ToolbarStates.SLIDE_ANIMATION },
+    ]
+    const multiSelectTabs = [
+      { label: '位置', value: ToolbarStates.MULTI_POSITION },
+      { label: '操作', value: ToolbarStates.MULTI_COMMAND },
+    ]
+
+    const setToolbarState = (value: ToolbarState) => {
+      store.commit(MutationTypes.SET_TOOLBAR_STATE, value)
+    }
+
+    const activeElementIdList = computed(() => store.state.activeElementIdList)
+    const currentTabs = computed(() => {
+      if(!activeElementIdList.value.length) return slideTabs
+      else if(activeElementIdList.value.length > 1) return multiSelectTabs
+      return elementTabs
+    })
+
+    watch(currentTabs, () => {
+      const currentTabsValue = currentTabs.value.map(tab => tab.value)
+      if(!currentTabsValue.includes(toolbarState.value)) {
+        store.commit(MutationTypes.SET_TOOLBAR_STATE, currentTabsValue[0])
+      }
+    })
+
+    return {
+      toolbarState,
+      currentTabs,
+      setToolbarState,
+    }
+  },
 })
 </script>
 
@@ -16,7 +72,35 @@ export default defineComponent({
 .toolbar {
   border-left: solid 1px #eee;
   background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.tabs {
+  height: 40px;
+  font-size: 12px;
+  flex-shrink: 0;
+  display: flex;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+
+  &.active {
+    background-color: #fff;
+    border-bottom-color: #fff;
+  }
+
+  & + .tab {
+    border-left: 1px solid #eee;
+  }
+}
+.content {
+  padding: 5px;
   overflow: auto;
-  padding: 5px 0;
 }
 </style>

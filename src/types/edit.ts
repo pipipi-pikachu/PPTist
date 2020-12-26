@@ -27,14 +27,7 @@ export enum OperateBorderLines {
   R = 'right',
 }
 
-export type OperateResizeHandler = 'left-top' |
-                                       'top' |
-                                       'right-top' |
-                                       'left' |
-                                       'right' |
-                                       'left-bottom' |
-                                       'bottom' |
-                                       'right-bottom'
+export type OperateResizeHandler = 'left-top' | 'top' | 'right-top' | 'left' | 'right' | 'left-bottom' | 'bottom' | 'right-bottom'
 
 export enum OperateResizeHandlers {
   LEFT_TOP = 'left-top',

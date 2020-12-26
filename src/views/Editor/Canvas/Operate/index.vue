@@ -22,7 +22,7 @@
 
     <div 
       class="animation-index"
-      v-if="toolbarState === 'animation' && elementIndexInAnimation !== -1"
+      v-if="toolbarState === 'elAnimation' && elementIndexInAnimation !== -1"
     >
       {{elementIndexInAnimation + 1}}
     </div>

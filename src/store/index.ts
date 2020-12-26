@@ -5,6 +5,7 @@ import { mutations } from './mutations'
 import { MutationTypes, ActionTypes } from './constants'
 
 import { Slide } from '@/types/slides'
+import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/index'
 import { FontName } from '@/configs/fontName'
 
@@ -20,7 +21,7 @@ export interface State {
   disableHotkeys: boolean;
   showGridLines: boolean;
   availableFonts: FontName[];
-  toolbarState: string;
+  toolbarState: ToolbarState;
   slides: Slide[];
   slideIndex: number;
   snapshotCursor: number;
@@ -40,7 +41,7 @@ const state: State = {
   disableHotkeys: false,
   showGridLines: false,
   availableFonts: [],
-  toolbarState: '',
+  toolbarState: 'slideStyle',
   slides: slides,
   slideIndex: 0,
   snapshotCursor: -1,

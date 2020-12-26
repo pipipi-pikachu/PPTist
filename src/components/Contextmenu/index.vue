@@ -28,7 +28,7 @@ import { ContextmenuItem, Axis } from './types'
 import ContextmenuContent from './ContextmenuContent.vue'
 
 const MENU_WIDTH = 160
-const MENU_HEIGHT = 32
+const MENU_HEIGHT = 30
 const DIVIDER_HEIGHT = 11
 const SUB_MENU_WIDTH = 120
 

@@ -52,7 +52,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 $menuWidth: 160px;
-$menuHeight: 32px;
+$menuHeight: 30px;
 $subMenuWidth: 120px;
 
 .contextmenu-content {
@@ -107,22 +107,22 @@ $subMenuWidth: 120px;
   &.has-sub-menu::before {
     content: '';
     display: inline-block;
-    width: 0;
-    height: 0;
-    border-top: 4px solid transparent;
-    border-left: 6px solid rgba($color: $themeColor, $alpha: .8);
-    border-bottom: 4px solid transparent;
+    width: 8px;
+    height: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666 #666 transparent transparent;
     position: absolute;
     right: 0;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) rotate(45deg);
   }
   .sub-text {
     opacity: 0.6;
   }
   .sub-menu {
     position: absolute;
-    top: -5px;
+    top: -6px;
     display: none;
     width: $subMenuWidth;
   }

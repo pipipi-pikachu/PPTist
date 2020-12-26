@@ -4,9 +4,7 @@
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
   >
-    <div class="add-slide">
-      <span @click="createSlide()">+ 添加幻灯片</span>
-    </div>
+    <div class="add-slide" @click="createSlide()">+ 添加幻灯片</div>
     <draggable 
       class="thumbnail-list"
       :modelValue="slides"
@@ -145,7 +143,6 @@ export default defineComponent({
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  overflow: auto;
   user-select: none;
 }
 .add-slide {
@@ -154,17 +151,14 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-
-  span {
-    cursor: pointer;
-    padding: 5px;
-    &:hover {
-      border: 1px solid #eee;
-    }
-  }
+  flex-shrink: 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 .thumbnail-list {
   padding: 5px 0;
+  flex: 1;
+  overflow: auto;
 }
 .thumbnail-wrapper {
   display: flex;
@@ -173,7 +167,7 @@ export default defineComponent({
   padding: 5px 0;
 
   .thumbnail {
-    outline: 2px solid rgba($color: $themeColor, $alpha: .1);
+    outline: 1px solid rgba($color: $themeColor, $alpha: .1);
   }
 
   &.active {

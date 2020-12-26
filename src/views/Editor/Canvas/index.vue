@@ -10,8 +10,8 @@
     <div 
       class="viewport-wrapper"
       :style="{
-        width: viewportStyles.width + 'px',
-        height: viewportStyles.height + 'px',
+        width: viewportStyles.width * canvasScale + 'px',
+        height: viewportStyles.height * canvasScale + 'px',
         left: viewportStyles.left + 'px',
         top: viewportStyles.top + 'px',
       }"
@@ -40,12 +40,7 @@
           :rotateElement="rotateElement"
           :scaleElement="scaleElement"
         />
-        <SlideBackground
-          :style="{
-            width: viewportStyles.width * canvasScale + 'px',
-            height: viewportStyles.height * canvasScale + 'px',
-          }"
-        />
+        <SlideBackground />
       </div>
 
       <div 
