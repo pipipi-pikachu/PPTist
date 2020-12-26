@@ -70,7 +70,8 @@ export interface PPTShapeElement extends PPTElementBaseProps {
   type: 'shape';
   width: number;
   height: number;
-  svgCode: string;
+  viewBox: number;
+  path: string;
   fixedRatio: boolean;
   fill: string;
   rotate?: number;

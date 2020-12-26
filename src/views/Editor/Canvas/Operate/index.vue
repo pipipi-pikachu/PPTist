@@ -1,21 +1,20 @@
 <template>
   <div
     class="operate"
+    :class="{ 'multi-select': isMultiSelect && !isActive }"
+    v-if="isSelected"
     :style="{
       top: elementInfo.top * canvasScale + 'px',
       left: elementInfo.left * canvasScale + 'px',
       transform: `rotate(${elementInfo.rotate}deg)`,
-      'transform-origin': `${elementInfo.width * canvasScale / 2}px ${elementInfo.height * canvasScale / 2}px`,
+      transformOrigin: `${elementInfo.width * canvasScale / 2}px ${elementInfo.height * canvasScale / 2}px`,
     }"
   >
     <component
       :is="currentOperateComponent"
       :elementInfo="elementInfo"
-      :isSelected="isSelected"
-      :isActive="isActive"
       :isActiveGroupElement="isActiveGroupElement"
       :isMultiSelect="isMultiSelect"
-      :animationIndex="elementIndexInAnimation"
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
     ></component>
@@ -38,6 +37,7 @@ import { OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
+import ShapeElementOperate from './ShapeElementOperate.vue'
 
 export default defineComponent({
   name: 'operate',
@@ -81,6 +81,7 @@ export default defineComponent({
       const elementTypeMap = {
         'image': ImageElementOperate,
         'text': TextElementOperate,
+        'shape': ShapeElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })
@@ -105,6 +106,10 @@ export default defineComponent({
   position: absolute;
   z-index: 100;
   user-select: none;
+
+  &.multi-select {
+    opacity: .3;
+  }
 }
 .animation-index {
   position: absolute;

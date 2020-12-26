@@ -11,15 +11,7 @@
     :clipPath="clipShape.style"
     @clip="range => clip(range)"
   />
-  <div 
-    class="image-element-operate" 
-    v-else
-    :class="{
-      'selected': isSelected,
-      'multi-select': isMultiSelect && isSelected,
-      'active': isActive,
-    }"
-  >
+  <div class="image-element-operate" v-else>
     <BorderLine 
       class="operate-border-line"
       v-for="line in borderLines" 
@@ -70,14 +62,6 @@ export default defineComponent({
   props: {
     elementInfo: {
       type: Object as PropType<PPTImageElement>,
-      required: true,
-    },
-    isSelected: {
-      type: Boolean,
-      required: true,
-    },
-    isActive: {
-      type: Boolean,
       required: true,
     },
     isActiveGroupElement: {
@@ -137,25 +121,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss" scoped>
-.image-element-operate {
-  &.selected {
-    .operate-border-line,
-    .operate-resize-handler,
-    .operate-rotate-handler {
-      display: block;
-    }
-  }
-
-  &.multi-select:not(.active) .operate-border-line {
-    border-color: rgba($color: $themeColor, $alpha: .3);
-  }
-
-  .operate-border-line,
-  .operate-resize-handler,
-  .operate-rotate-handler {
-    display: none;
-  }
-}
-</style>

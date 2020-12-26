@@ -109,7 +109,7 @@ export default () => {
     })
   }
   
-  const createShapeElement = (position: CommonElementPosition, svgCode: string) => {
+  const createShapeElement = (position: CommonElementPosition, path: string, viewBox: number) => {
     const { left, top, width, height } = position
     createElement({
       ...DEFAULT_SHAPE,
@@ -119,7 +119,8 @@ export default () => {
       top, 
       width, 
       height,
-      svgCode,
+      viewBox,
+      path,
     })
   }
   
