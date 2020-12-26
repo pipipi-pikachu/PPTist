@@ -42,14 +42,14 @@ export default () => {
 
   const copy = () => {
     if(disableHotkeys.value) return
-    if(thumbnailsFocus.value) copySlide()
-    else if(activeElementIdList.value.length) copyElement()
+    if(activeElementIdList.value.length) copyElement()
+    else if(thumbnailsFocus.value) copySlide()
   }
 
   const cut = () => {
     if(disableHotkeys.value) return
-    if(thumbnailsFocus.value) cutSlide()
-    else if(activeElementIdList.value.length) cutElement()
+    if(activeElementIdList.value.length) cutElement()
+    else if(thumbnailsFocus.value) cutSlide()
   }
 
   const selectAll = () => {
@@ -73,16 +73,14 @@ export default () => {
 
   const remove = () => {
     if(disableHotkeys.value) return
-    if(thumbnailsFocus.value) deleteSlide()
-    else if(activeElementIdList.value.length) deleteElement()
+    if(activeElementIdList.value.length) deleteElement()
+    else if(thumbnailsFocus.value) deleteSlide()
   }
 
   const move = (key: string) => {
     if(disableHotkeys.value) return
-    if(thumbnailsFocus.value && (key === KEYS.UP || key === KEYS.DOWN)) {
-      updateSlideIndex(key)
-    }
-    else if(activeElementIdList.value.length) moveElement(key)
+    if(activeElementIdList.value.length) moveElement(key)
+    else if(key === KEYS.UP || key === KEYS.DOWN) updateSlideIndex(key)
   }
 
   const create = () => {
