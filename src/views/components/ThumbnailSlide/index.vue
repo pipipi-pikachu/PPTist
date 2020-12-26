@@ -14,7 +14,7 @@
       }"
     >
       <div class="background" :style="{ ...backgroundStyle }"></div>
-      <BaseElement
+      <ThumbnailElement
         v-for="(element, index) in slide.elements"
         :key="element.id"
         :elementInfo="element"
@@ -30,12 +30,12 @@ import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
-import BaseElement from '@/views/_element/BaseElement.vue'
+import ThumbnailElement from './ThumbnailElement.vue'
 
 export default defineComponent({
   name: 'thumbnail-slide',
   components: {
-    BaseElement,
+    ThumbnailElement,
   },
   props: {
     slide: {

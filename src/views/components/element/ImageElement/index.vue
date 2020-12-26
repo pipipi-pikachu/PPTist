@@ -64,7 +64,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { PPTImageElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
-import useElementShadow from '@/views/_element/hooks/useElementShadow'
+import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'

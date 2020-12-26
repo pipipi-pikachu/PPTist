@@ -95,7 +95,7 @@ import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 
-import EditableElement from '@/views/_element/EditableElement.vue'
+import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
 import AlignmentLine from './AlignmentLine.vue'

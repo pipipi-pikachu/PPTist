@@ -14,8 +14,8 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { PPTElement } from '@/types/slides'
 
-import BaseImageElement from './ImageElement/BaseImageElement.vue'
-import BaseTextElement from './TextElement/BaseTextElement.vue'
+import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
+import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
 
 export default defineComponent({
   name: 'base-element',

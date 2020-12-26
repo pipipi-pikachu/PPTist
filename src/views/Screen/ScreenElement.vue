@@ -19,8 +19,8 @@ import { useStore } from 'vuex'
 import { State } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 
-import BaseImageElement from './ImageElement/BaseImageElement.vue'
-import BaseTextElement from './TextElement/BaseTextElement.vue'
+import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
+import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
 
 export default defineComponent({
   name: 'screen-element',

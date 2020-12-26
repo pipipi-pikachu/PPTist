@@ -42,7 +42,7 @@ import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
 
-import ThumbnailSlide from '@/views/ThumbnailSlide.vue'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
   name: 'thumbnails',
