@@ -5,7 +5,7 @@
   >
     <template v-if="showGridLines">
       <GridLines />
-      <GridLines :gridSize="100" gridColor="rgba(100, 100, 100, 0.3)" />
+      <GridLines :gridSize="100" gridColor="rgba(100, 100, 100, 0.35)" />
     </template>
   </div>
 </template>

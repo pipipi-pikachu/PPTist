@@ -8,67 +8,68 @@
     v-click-outside="removeEditorAreaFocus"
   >
     <div 
-      class="operates"
-      :style="{
-        left: viewportStyles.left + 'px',
-        top: viewportStyles.top + 'px',
-      }"
-    >
-      <AlignmentLine 
-        v-for="(line, index) in alignmentLines" 
-        :key="index" 
-        :type="line.type" 
-        :axis="line.axis" 
-        :length="line.length"
-      />
-      <MultiSelectOperate 
-        v-if="activeElementIdList.length > 1"
-        :elementList="elementList"
-        :scaleMultiElement="scaleMultiElement"
-      />
-      <Operate
-        v-for="element in elementList" 
-        :key="element.id"
-        :elementInfo="element"
-        :isSelected="activeElementIdList.includes(element.id)"
-        :isActive="handleElementId === element.id"
-        :isActiveGroupElement="activeGroupElementId === element.id"
-        :isMultiSelect="activeElementIdList.length > 1"
-        :rotateElement="rotateElement"
-        :scaleElement="scaleElement"
-      />
-    </div>
-
-    <div 
-      class="viewport" 
-      ref="viewportRef"
+      class="viewport-wrapper"
       :style="{
         width: viewportStyles.width + 'px',
         height: viewportStyles.height + 'px',
         left: viewportStyles.left + 'px',
         top: viewportStyles.top + 'px',
-        transform: `scale(${canvasScale})`,
       }"
     >
-      <MouseSelection 
-        v-if="mouseSelectionState.isShow"
-        :top="mouseSelectionState.top" 
-        :left="mouseSelectionState.left" 
-        :width="mouseSelectionState.width" 
-        :height="mouseSelectionState.height" 
-        :quadrant="mouseSelectionState.quadrant"
-      />
+      <div class="operates">
+        <AlignmentLine 
+          v-for="(line, index) in alignmentLines" 
+          :key="index" 
+          :type="line.type" 
+          :axis="line.axis" 
+          :length="line.length"
+        />
+        <MultiSelectOperate 
+          v-if="activeElementIdList.length > 1"
+          :elementList="elementList"
+          :scaleMultiElement="scaleMultiElement"
+        />
+        <Operate
+          v-for="element in elementList" 
+          :key="element.id"
+          :elementInfo="element"
+          :isSelected="activeElementIdList.includes(element.id)"
+          :isActive="handleElementId === element.id"
+          :isActiveGroupElement="activeGroupElementId === element.id"
+          :isMultiSelect="activeElementIdList.length > 1"
+          :rotateElement="rotateElement"
+          :scaleElement="scaleElement"
+        />
+        <SlideBackground
+          :style="{
+            width: viewportStyles.width * canvasScale + 'px',
+            height: viewportStyles.height * canvasScale + 'px',
+          }"
+        />
+      </div>
 
-      <SlideBackground />
-      
-      <EditableElement 
-        v-for="(element, index) in elementList" 
-        :key="element.id"
-        :elementInfo="element"
-        :elementIndex="index + 1"
-        :isMultiSelect="activeElementIdList.length > 1"
-        :selectElement="selectElement"
-      />
+      <div 
+        class="viewport" 
+        ref="viewportRef"
+        :style="{ transform: `scale(${canvasScale})` }"
+      >
+        <MouseSelection 
+          v-if="mouseSelectionState.isShow"
+          :top="mouseSelectionState.top" 
+          :left="mouseSelectionState.left" 
+          :width="mouseSelectionState.width" 
+          :height="mouseSelectionState.height" 
+          :quadrant="mouseSelectionState.quadrant"
+        />      
+        <EditableElement 
+          v-for="(element, index) in elementList" 
+          :key="element.id"
+          :elementInfo="element"
+          :elementIndex="index + 1"
+          :isMultiSelect="activeElementIdList.length > 1"
+          :selectElement="selectElement"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -173,6 +174,11 @@ export default defineComponent({
       else if(e.deltaY < 0) throttleScaleCanvas('+')
     }
 
+    const showGridLines = computed(() => store.state.showGridLines)
+    const toggleGridLines = () => {
+      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
+    }
+
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
@@ -184,6 +190,13 @@ export default defineComponent({
           text: '粘贴',
           subText: 'Ctrl + V',
           handler: pasteElement,
+        },
+        {
+          text: '网格参考线',
+          children: [
+            { text: '网格线', handler: toggleGridLines },
+            { text: '参考线' },
+          ],
         },
         {
           text: '清空本页',
@@ -226,13 +239,14 @@ export default defineComponent({
   background-color: #f9f9f9;
   position: relative;
 }
-.viewport {
+.viewport-wrapper {
   position: absolute;
-  transform-origin: 0 0;
-  background-color: #fff;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, .1);
 }
-.operates {
+.viewport {
   position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
 }
 </style>

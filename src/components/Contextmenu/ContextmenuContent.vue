@@ -28,10 +28,10 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { PropType, defineComponent } from 'vue'
 import { ContextmenuItem } from './types'
 
-export default {
+export default defineComponent({
   name: 'contextmenu-content',
   props: {
     menus: {
@@ -47,7 +47,7 @@ export default {
       required: true,
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -59,8 +59,8 @@ $subMenuWidth: 120px;
   width: $menuWidth;
   padding: 5px 0;
   background: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 3px 3px 3px rgba(#000, 0.3);
+  border: 1px solid #eee;
+  box-shadow: 3px 3px 3px rgba(#000, 0.15);
   border-radius: 2px;
   list-style: none;
   margin: 0;
@@ -69,7 +69,7 @@ $subMenuWidth: 120px;
   padding: 0 20px;
   color: #555;
   font-size: 12px;
-  transition: all 0.2s;
+  transition: all .1s;
   white-space: nowrap;
   height: $menuHeight;
   line-height: $menuHeight;

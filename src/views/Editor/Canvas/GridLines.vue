@@ -17,7 +17,7 @@ export default defineComponent({
     },
     gridColor: {
       type: String,
-      default: 'rgba(100, 100, 100, 0.2)',
+      default: 'rgba(100, 100, 100, 0.1)',
     },
   },
   setup(props) {

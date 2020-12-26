@@ -18,7 +18,6 @@
       <IconFont class="handler-item viewport-size" type="icon-minus" @click="scaleCanvas('-')" />
       <span class="text">{{canvasScalePercentage}}</span>
       <IconFont class="handler-item viewport-size" type="icon-plus" @click="scaleCanvas('+')" />
-      <IconFont class="handler-item viewport-size" type="icon-number" @click="toggleGridLines()" />
     </div>
   </div>
 </template>
@@ -26,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { State } from '@/store'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -35,7 +34,6 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
-    const showGridLines = computed(() => store.state.showGridLines)
     const canUndo = computed(() => store.getters.canUndo)
     const canRedo = computed(() => store.getters.canRedo)
 
@@ -44,14 +42,9 @@ export default defineComponent({
     const { scaleCanvas } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const toggleGridLines = () => {
-      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
-    }
-
     return {
       scaleCanvas,
       canvasScalePercentage,
-      toggleGridLines,
       canUndo,
       canRedo,
       redo,
