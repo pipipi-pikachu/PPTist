@@ -7,7 +7,9 @@
 
     <div class="add-element-handler">
       <IconFont class="handler-item" type="icon-font-size" />
-      <IconFont class="handler-item" type="icon-image" />
+      <UploadInput @change="files => insertImageElement(files)">
+        <IconFont class="handler-item" type="icon-image" />
+      </UploadInput>
       <IconFont class="handler-item" type="icon-star" />
       <IconFont class="handler-item" type="icon-line" />
       <IconFont class="handler-item" type="icon-table" />
@@ -26,11 +28,18 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
+import { getImageDataURL } from '@/utils/image'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useCreateElement from '@/hooks/useCreateElement'
+
+import UploadInput from '@/components/UploadInput.vue'
 
 export default defineComponent({
   name: 'canvas-tool',
+  components: {
+    UploadInput,
+  },
   setup() {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
@@ -42,6 +51,14 @@ export default defineComponent({
     const { scaleCanvas } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
+    const { createImageElement } = useCreateElement()
+
+    const insertImageElement = (files: File[]) => {
+      const imageFile = files[0]
+      if(!imageFile) return
+      getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
+    }
+
     return {
       scaleCanvas,
       canvasScalePercentage,
@@ -49,6 +66,7 @@ export default defineComponent({
       canRedo,
       redo,
       undo,
+      insertImageElement,
     }
   },
 })
@@ -74,6 +92,7 @@ export default defineComponent({
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
 }
 .handler-item {
   margin: 0 10px;

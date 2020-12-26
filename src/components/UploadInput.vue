@@ -39,6 +39,7 @@ export default defineComponent({
     return {
       handleClick,
       handleChange,
+      inputRef,
     }
   },
 })
