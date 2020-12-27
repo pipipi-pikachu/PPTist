@@ -20,6 +20,7 @@ export interface State {
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
   showGridLines: boolean;
+  creatingElementType: string;
   availableFonts: FontName[];
   toolbarState: ToolbarState;
   slides: Slide[];
@@ -40,6 +41,7 @@ const state: State = {
   editorAreaFocus: false,
   disableHotkeys: false,
   showGridLines: false,
+  creatingElementType: '',
   availableFonts: [],
   toolbarState: 'slideStyle',
   slides: slides,

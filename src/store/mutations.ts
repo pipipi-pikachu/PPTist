@@ -49,6 +49,10 @@ export const mutations: MutationTree<State> = {
     state.showGridLines = show
   },
 
+  [MutationTypes.SET_CREATING_ELEMENT_TYPE](state, type: string) {
+    state.creatingElementType = type
+  },
+
   [MutationTypes.SET_AVAILABLE_FONTS](state) {
     state.availableFonts = FONT_NAMES.filter(font => isSupportFontFamily(font.en))
   },

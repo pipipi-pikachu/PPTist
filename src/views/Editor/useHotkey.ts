@@ -97,13 +97,14 @@ export default () => {
     const { ctrlKey, shiftKey } = e
     const key = e.key.toUpperCase()
 
+    if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
+    if(shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
+
     if(ctrlKey && key === KEYS.F) {
       e.preventDefault()
       enterScreening()
+      store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
     }
-
-    if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
-    if(shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
     
     if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
 

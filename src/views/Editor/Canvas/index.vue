@@ -7,6 +7,10 @@
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
   >
+    <ElementCreateSelection
+      v-if="creatingElementType"
+      @created="data => createElement(data)"
+    />
     <div 
       class="viewport-wrapper"
       :style="{
@@ -77,7 +81,7 @@ import throttle from 'lodash/throttle'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
-import { AlignmentLineProps } from '@/types/edit'
+import { AlignmentLineProps, CreateElementSelectionData } from '@/types/edit'
 
 import useViewportSize from './hooks/useViewportSize'
 import useMouseSelection from './hooks/useMouseSelection'
@@ -97,6 +101,7 @@ import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import SlideBackground from './SlideBackground.vue'
 import AlignmentLine from './AlignmentLine.vue'
+import ElementCreateSelection from './ElementCreateSelection.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 
@@ -107,6 +112,7 @@ export default defineComponent({
     MouseSelection,
     SlideBackground,
     AlignmentLine,
+    ElementCreateSelection,
     MultiSelectOperate,
     Operate,
   },
@@ -177,6 +183,11 @@ export default defineComponent({
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
+    const creatingElementType = computed(() => store.state.creatingElementType)
+    const createElement = (data: CreateElementSelectionData) => {
+      console.log(data)
+    }
+
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
@@ -217,6 +228,8 @@ export default defineComponent({
       removeEditorAreaFocus,
       currentSlide,
       isShowGridLines,
+      creatingElementType,
+      createElement,
       alignmentLines,
       selectElement,
       rotateElement,

@@ -81,3 +81,8 @@ export interface ImageClipedEmitData {
     height: number;
   };
 }
+
+export interface CreateElementSelectionData {
+  start: [number, number];
+  end: [number, number];
+}

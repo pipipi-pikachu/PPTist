@@ -6,12 +6,12 @@
     </div>
 
     <div class="add-element-handler">
-      <IconFont class="handler-item" type="icon-font-size" />
+      <IconFont class="handler-item" type="icon-font-size" @click="createElement('text')" />
       <UploadInput @change="files => insertImageElement(files)">
         <IconFont class="handler-item" type="icon-image" />
       </UploadInput>
-      <IconFont class="handler-item" type="icon-star" />
-      <IconFont class="handler-item" type="icon-line" />
+      <IconFont class="handler-item" type="icon-star" @click="createElement('shape')" />
+      <IconFont class="handler-item" type="icon-line" @click="createElement('line')" />
       <IconFont class="handler-item" type="icon-table" />
       <IconFont class="handler-item" type="icon-piechart" />
     </div>
@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -59,6 +59,10 @@ export default defineComponent({
       getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
     }
 
+    const createElement = (type: string) => {
+      store.commit(MutationTypes.SET_CREATING_ELEMENT_TYPE, type)
+    }
+
     return {
       scaleCanvas,
       canvasScalePercentage,
@@ -67,6 +71,7 @@ export default defineComponent({
       redo,
       undo,
       insertImageElement,
+      createElement,
     }
   },
 })
