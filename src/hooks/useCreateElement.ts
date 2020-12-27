@@ -124,7 +124,7 @@ export default () => {
     })
   }
   
-  const createLineElement = (position: LineElementPosition, points: [string, string], lineType: string) => {
+  const createLineElement = (position: LineElementPosition, points: [string, string]) => {
     const { left, top, start, end } = position
     createElement({
       ...DEFAULT_LINE,
@@ -135,7 +135,6 @@ export default () => {
       start,
       end,
       points,
-      lineType,
     })
   }
 

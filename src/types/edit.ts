@@ -27,7 +27,7 @@ export enum OperateBorderLines {
   R = 'right',
 }
 
-export type OperateResizeHandler = 'left-top' | 'top' | 'right-top' | 'left' | 'right' | 'left-bottom' | 'bottom' | 'right-bottom'
+export type OperateResizeHandler = '' | 'left-top' | 'top' | 'right-top' | 'left' | 'right' | 'left-bottom' | 'bottom' | 'right-bottom'
 
 export enum OperateResizeHandlers {
   LEFT_TOP = 'left-top',
@@ -38,6 +38,13 @@ export enum OperateResizeHandlers {
   LEFT_BOTTOM = 'left-bottom',
   BOTTOM = 'bottom',
   RIGHT_BOTTOM = 'right-bottom',
+}
+
+export type OperateLineHandler = 'start' | 'end'
+
+export enum OperateLineHandlers {
+  START = 'start',
+  END = 'end,'
 }
 
 export interface AlignmentLineAxis {

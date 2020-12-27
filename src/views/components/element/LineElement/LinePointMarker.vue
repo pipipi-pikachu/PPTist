@@ -1,0 +1,66 @@
+<template>
+  <marker 
+    :id="`${id}-${type}-${position}`" 
+    markerUnits="userSpaceOnUse" 
+    orient="auto" 
+    :markerWidth="size * 3" 
+    :markerHeight="size * 3" 
+    :refX="size * 1.5" 
+    :refY="size * 1.5"
+  >
+		<path 
+      :d="path" 
+      :fill="color"
+      :transform="`scale(${size * 0.3}, ${size * 0.3}) rotate(${rotate}, 5, 5)`"
+    ></path>
+	</marker>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
+
+const pathMap = {
+  dot: 'm0 5a5 5 0 1 0 10 0a5 5 0 1 0 -10 0z',
+  arrow: 'M0,0 L10,5 0,10 Z',
+}
+const rotateMap = {
+  'arrow-start': 180,
+  'arrow-end': 0,
+}
+
+export default defineComponent({
+  name: 'line-point-marker',
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+    position: {
+      type: String as PropType<'start' | 'end'>,
+      required: true,
+    },
+    type: {
+      type: String as PropType<'dot' | 'arrow'>,
+      required: true,
+    },
+    color: {
+      type: String,
+    },
+    baseSize: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props) {
+    const path = computed(() => pathMap[props.type])
+    const rotate = computed(() => rotateMap[`${props.type}-${props.position}`] || 0)
+    const size = computed(() => props.baseSize < 2 ? 2 : props.baseSize)
+
+    return {
+      path,
+      rotate,
+      size,
+    }
+  },
+})
+</script>

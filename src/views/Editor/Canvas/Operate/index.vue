@@ -17,6 +17,7 @@
       :isMultiSelect="isMultiSelect"
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
+      :dragLineElement="dragLineElement"
     ></component>
 
     <div 
@@ -33,11 +34,12 @@ import { defineComponent, PropType, computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
-import { OperateResizeHandler } from '@/types/edit'
+import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
 import ShapeElementOperate from './ShapeElementOperate.vue'
+import LineElementOperate from './LineElementOperate.vue'
 
 export default defineComponent({
   name: 'operate',
@@ -70,6 +72,10 @@ export default defineComponent({
       type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandler) => void>,
       required: true,
     },
+    dragLineElement: {
+      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateLineHandler) => void>,
+      required: true,
+    },
   },
   setup(props) {
     const store = useStore<State>()
@@ -82,6 +88,7 @@ export default defineComponent({
         'image': ImageElementOperate,
         'text': TextElementOperate,
         'shape': ShapeElementOperate,
+        'line': LineElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

@@ -14,22 +14,19 @@ export enum ElementTypes {
   TABLE = 'table',
 }
 
-export interface PPTElementBaseProps {
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-}
-
 export interface PPTElementOutline {
   style?: 'dashed' | 'solid';
   width?: number;
   color?: string;
 }
 
-export interface PPTTextElement extends PPTElementBaseProps {
+export interface PPTTextElement {
   type: 'text';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   width: number;
   height: number;
   content: string;
@@ -49,8 +46,13 @@ export interface ImageElementFilters {
   'hue-rotate': string;
   'opacity': string;
 }
-export interface PPTImageElement extends PPTElementBaseProps {
+export interface PPTImageElement {
   type: 'image';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   width: number;
   height: number;
   fixedRatio: boolean;
@@ -66,8 +68,13 @@ export interface PPTImageElement extends PPTElementBaseProps {
   shadow?: PPTElementShadow;
 }
 
-export interface PPTShapeElement extends PPTElementBaseProps {
+export interface PPTShapeElement {
   type: 'shape';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   width: number;
   height: number;
   viewBox: number;
@@ -80,19 +87,29 @@ export interface PPTShapeElement extends PPTElementBaseProps {
   shadow?: PPTElementShadow;
 }
 
-export interface PPTLineElement extends PPTElementBaseProps {
+export interface PPTLineElement {
   type: 'line';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   start: [number, number];
   end: [number, number];
   width: number;
   style: string;
   color: string;
   points: [string, string];
-  lineType: string;
+  shadow?: PPTElementShadow;
 }
 
-export interface PPTChartElement extends PPTElementBaseProps {
+export interface PPTChartElement {
   type: 'chart';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   width: number;
   height: number;
   chartType: string;
@@ -107,8 +124,13 @@ export interface TableElementCell {
   content: string;
   bgColor: string;
 }
-export interface PPTTableElement extends PPTElementBaseProps {
+export interface PPTTableElement {
   type: 'table';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
   width: number;
   height: number;
   borderTheme?: string;

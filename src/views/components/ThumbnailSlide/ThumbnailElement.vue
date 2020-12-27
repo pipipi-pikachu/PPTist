@@ -17,6 +17,7 @@ import { PPTElement } from '@/types/slides'
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
+import BaseLineElement from '@/views/components/element/LineElement/BaseLineElement.vue'
 
 export default defineComponent({
   name: 'base-element',
@@ -36,6 +37,7 @@ export default defineComponent({
         'image': BaseImageElement,
         'text': BaseTextElement,
         'shape': BaseShapeElement,
+        'line': BaseLineElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

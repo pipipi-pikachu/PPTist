@@ -11,7 +11,7 @@ export default {
   props: {
     type: {
       type: String as PropType<OperateResizeHandler>,
-      required: true,
+      default: '',
     },
   },
 }

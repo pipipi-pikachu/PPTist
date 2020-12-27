@@ -31,6 +31,7 @@ import { ElementOrderCommands, ElementAlignCommands } from '@/types/edit'
 import ImageElement from '@/views/components/element/ImageElement/index.vue'
 import TextElement from '@/views/components/element/TextElement/index.vue'
 import ShapeElement from '@/views/components/element/ShapeElement/index.vue'
+import LineElement from '@/views/components/element/LineElement/index.vue'
 
 export default defineComponent({
   name: 'editable-element',
@@ -58,6 +59,7 @@ export default defineComponent({
         'image': ImageElement,
         'text': TextElement,
         'shape': ShapeElement,
+        'line': LineElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

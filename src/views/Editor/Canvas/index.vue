@@ -39,6 +39,7 @@
           :isMultiSelect="activeElementIdList.length > 1"
           :rotateElement="rotateElement"
           :scaleElement="scaleElement"
+          :dragLineElement="dragLineElement"
         />
         <SlideBackground />
       </div>
@@ -85,6 +86,7 @@ import useRotateElement from './hooks/useRotateElement'
 import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
+import useDragLineElement from './hooks/useDragLineElement'
 
 import useDeleteElement from '@/hooks/useDeleteElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
@@ -140,6 +142,7 @@ export default defineComponent({
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 
     const { dragElement } = useDragElement(elementList, activeGroupElementId, alignmentLines)
+    const { dragLineElement } = useDragLineElement(elementList)
     const { selectElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
     const { scaleElement, scaleMultiElement } = useScaleElement(elementList, activeGroupElementId, alignmentLines)
     const { rotateElement } = useRotateElement(elementList, viewportRef)
@@ -218,6 +221,7 @@ export default defineComponent({
       selectElement,
       rotateElement,
       scaleElement,
+      dragLineElement,
       scaleMultiElement,
       mousewheelScaleCanvas,
       contextmenus,
