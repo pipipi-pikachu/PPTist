@@ -21,7 +21,9 @@ const listNodes = {
 
   paragraph: {
     attrs: {
-      align: {default: null},
+      align: {
+        default: '',
+      },
     },
     content: 'inline*',
     group: 'block',
