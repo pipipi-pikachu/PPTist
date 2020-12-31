@@ -1,5 +1,5 @@
 import { MarkType } from 'prosemirror-model'
-import { SelectionRange, Transaction } from 'prosemirror-state'
+import { SelectionRange, Transaction, TextSelection } from 'prosemirror-state'
 
 const markApplies = (tr: Transaction, ranges: SelectionRange[], type: MarkType) => {
   for (let i = 0; i < ranges.length; i++) {
@@ -17,10 +17,13 @@ const markApplies = (tr: Transaction, ranges: SelectionRange[], type: MarkType) 
 export const applyMark = (tr: Transaction, markType: MarkType, attrs: { [key: string]: string; } | undefined) => {
   if(!tr.selection || !tr.doc || !markType) return tr
   
-  const { empty, $anchor, ranges } = tr.selection
-  if(empty && !$anchor || !markApplies(tr, ranges, markType)) return tr
+  const empty = tr.selection.empty
+  const ranges = tr.selection.ranges
+  const $cursor = (tr.selection as TextSelection).$cursor
 
-  if($anchor) {
+  if(empty && !$cursor || !markApplies(tr, ranges, markType)) return tr
+
+  if($cursor) {
     tr = tr.removeStoredMark(markType)
     return attrs ? tr.addStoredMark(markType.create(attrs)) : tr
   }
