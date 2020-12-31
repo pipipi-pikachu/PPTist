@@ -11,7 +11,6 @@ export const actions: ActionTree<State, State> = {
 
     if(lastSnapshot) {
       db.snapshots.clear()
-      // commit(MutationTypes.SET_SLIDES, lastSnapshot.slides)
     }
 
     const newFirstSnapshot = {
