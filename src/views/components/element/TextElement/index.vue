@@ -120,6 +120,11 @@ export default defineComponent({
       editorView.dom.innerHTML = textContent.value
     })
 
+    const editable = computed(() => !props.elementInfo.lock)
+    watch(editable, () => {
+      editorView.setProps({ editable: () => editable.value })
+    })
+
     onMounted(() => {
       editorView = initProsemirrorEditor((editorViewRef.value as Element), textContent.value, {
         handleDOMEvents: {
@@ -127,6 +132,7 @@ export default defineComponent({
           blur: handleBlur,
           keydown: handleInput,
         },
+        editable: () => editable.value,
       })
     })
     onUnmounted(() => {
