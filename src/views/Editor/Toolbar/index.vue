@@ -10,7 +10,7 @@
       >{{tab.label}}</div>
     </div>
     <div class="content">
-
+      <component :is="currentPanelComponent"></component>
     </div>
   </div>
 </template>
@@ -20,6 +20,13 @@ import { computed, defineComponent, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { ToolbarState, ToolbarStates } from '@/types/toolbar'
+
+import ElementStylePanel from './ElementStylePanel/index.vue'
+import ElementPositionPanel from './ElementPositionPanel.vue'
+import ElementAnimationPanel from './ElementAnimationPanel.vue'
+import SlideStylePanel from './SlideStylePanel.vue'
+import SlideAnimationPanel from './SlideAnimationPanel.vue'
+import MultiPositionPanel from './MultiPositionPanel.vue'
 
 export default defineComponent({
   name: 'toolbar',
@@ -38,7 +45,7 @@ export default defineComponent({
     ]
     const multiSelectTabs = [
       { label: '位置', value: ToolbarStates.MULTI_POSITION },
-      { label: '操作', value: ToolbarStates.MULTI_COMMAND },
+      { label: '样式', value: ToolbarStates.EL_STYLE },
     ]
 
     const setToolbarState = (value: ToolbarState) => {
@@ -59,10 +66,23 @@ export default defineComponent({
       }
     })
 
+    const currentPanelComponent = computed(() => {
+      const panelMap = {
+        [ToolbarStates.EL_STYLE]: ElementStylePanel,
+        [ToolbarStates.EL_POSITION]: ElementPositionPanel,
+        [ToolbarStates.EL_ANIMATION]: ElementAnimationPanel,
+        [ToolbarStates.SLIDE_STYLE]: SlideStylePanel,
+        [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
+        [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
+      }
+      return panelMap[toolbarState.value] || null
+    })
+
     return {
       toolbarState,
       currentTabs,
       setToolbarState,
+      currentPanelComponent,
     }
   },
 })

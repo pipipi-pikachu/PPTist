@@ -1,0 +1,39 @@
+<template>
+  <div class="element-style-panel">
+    <component :is="currentPanelComponent"></component>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, Ref } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
+import { ElementTypes, PPTElement } from '@/types/slides'
+
+import TextStylePanel from './TextStylePanel.vue'
+import ImageStylePanel from './ImageStylePanel.vue'
+import ShapeStylePanel from './ShapeStylePanel.vue'
+import LineStylePanel from './LineStylePanel.vue'
+
+export default defineComponent({
+  name: 'element-style-panel',
+  setup() {
+    const store = useStore<State>()
+    const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
+
+    const currentPanelComponent = computed(() => {
+      const panelMap = {
+        [ElementTypes.TEXT]: TextStylePanel,
+        [ElementTypes.IMAGE]: ImageStylePanel,
+        [ElementTypes.SHAPE]: ShapeStylePanel,
+        [ElementTypes.LINE]: LineStylePanel,
+      }
+      return panelMap[handleElement.value.type] || null
+    })
+
+    return {
+      currentPanelComponent,
+    }
+  },
+})
+</script>

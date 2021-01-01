@@ -1,6 +1,6 @@
 <template>
-  <div class="slide-animation-panel">
-    slide-animation-panel
+  <div class="image-style-panel">
+    image-style-panel
   </div>
 </template>
 
@@ -8,6 +8,6 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'slide-animation-panel',
+  name: 'image-style-panel',
 })
 </script>

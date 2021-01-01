@@ -2,7 +2,6 @@
   <div
     class="operate"
     :class="{ 'multi-select': isMultiSelect && !isActive }"
-    v-if="isSelected"
     :style="{
       top: elementInfo.top * canvasScale + 'px',
       left: elementInfo.left * canvasScale + 'px',
@@ -11,6 +10,7 @@
     }"
   >
     <component
+      v-if="isSelected"
       :is="currentOperateComponent"
       :elementInfo="elementInfo"
       :isActiveGroupElement="isActiveGroupElement"

@@ -1,4 +1,4 @@
-export type ToolbarState = 'elAnimation' | 'elStyle' | 'elPosition' | 'slideStyle' | 'slideAnimation' | 'multiPosition' | 'multiCommand'
+export type ToolbarState = 'elAnimation' | 'elStyle' | 'elPosition' | 'slideStyle' | 'slideAnimation' | 'multiPosition'
 
 export const ToolbarStates = {
   EL_ANIMATION: 'elAnimation',
@@ -7,5 +7,4 @@ export const ToolbarStates = {
   SLIDE_STYLE: 'slideStyle',
   SLIDE_ANIMATION: 'slideAnimation',
   MULTI_POSITION: 'multiPosition',
-  MULTI_COMMAND: 'multiCommand',
 }
