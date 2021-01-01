@@ -42,7 +42,7 @@ import { MutationTypes, State } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { initProsemirrorEditor, createDocument } from '@/prosemirror/'
+import { initProsemirrorEditor } from '@/prosemirror/'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
