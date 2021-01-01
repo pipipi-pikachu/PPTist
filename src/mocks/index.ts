@@ -24,7 +24,7 @@ export const slides: Slide[] = [
         },
         opacity: 1,
         lock: false,
-        content: '<div style=\'text-align: center;\'><span style=\'font-size: 28px;\'><span style=\'color: rgb(232, 107, 153); font-weight: bold;\'>一段测试文字</span>，字号固定为<span style=\'font-weight: bold; font-style: italic; text-decoration-line: underline;\'>28px</span></span></div>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 28px;\'><span style=\'color: rgb(232, 107, 153); font-weight: bold;\'>一段测试文字</span>，字号固定为<span style=\'font-weight: bold; font-style: italic; text-decoration-line: underline;\'>28px</span></span></p>',
       },
       {
         id: 'xxx3',

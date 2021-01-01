@@ -1,0 +1,53 @@
+.ProseMirror, .ProseMirror-static {
+  outline: 0;
+  border: 0;
+  font-size: 20px;
+  line-height: 1.5;
+  word-break: break-word;
+  font-family: '微软雅黑';
+
+  ::selection {
+    background-color: rgba(27, 110, 232, 0.3);
+    color: inherit;
+  }
+
+  p + p {
+    margin-top: 5px;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-inline-start: 20px;
+
+    li {
+      list-style-type: disc;
+    }
+  }
+
+  ol {
+    list-style-type: decimal;
+    padding-inline-start: 20px;
+
+    li {
+      list-style-type: decimal;
+    }
+  }
+
+  code {
+    background-color: #eee;
+    padding: 1px 3px;
+    margin: 0 1px;
+    border-radius: 2px;
+    font-family: inherit;
+  }
+
+  blockquote {
+    overflow: hidden;
+    padding-right: 1.2em;
+    padding-left: 1.2em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: 5px solid #ccc;
+  }
+}

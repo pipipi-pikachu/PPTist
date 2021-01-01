@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 
+import 'prosemirror-view/style/prosemirror.css'
+import '@/assets/styles/prosemirror.scss'
 import '@/assets/styles/global.scss'
 import 'animate.css'
 

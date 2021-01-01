@@ -1,79 +1,79 @@
 import { marks } from 'prosemirror-schema-basic'
-import { Node } from 'prosemirror-model'
+import { MarkSpec } from 'prosemirror-model'
 
-const subscript = {
+const subscript: MarkSpec = {
   excludes: 'subscript',
   parseDOM: [
     { tag: 'sub' },
     {
       style: 'vertical-align',
-      getAttrs: (value: string) => value === 'sub' && null
+      getAttrs: value => value === 'sub' && null
     },
   ],
   toDOM: () => ['sub', 0],
 }
 
-const superscript = {
+const superscript: MarkSpec = {
   excludes: 'superscript',
   parseDOM: [
     { tag: 'sup' },
     {
       style: 'vertical-align',
-      getAttrs: (value: string) => value === 'super' && null
+      getAttrs: value => value === 'super' && null
     },
   ],
   toDOM: () => ['sup', 0],
 }
 
-const strikethrough = {
+const strikethrough: MarkSpec = {
   parseDOM: [
     { tag: 'strike' },
     {
       style: 'text-decoration',
-      getAttrs: (value: string) => value === 'line-through' && null
+      getAttrs: value => value === 'line-through' && null
     },
     {
       style: 'text-decoration-line',
-      getAttrs: (value: string) => value === 'line-through' && null
+      getAttrs: value => value === 'line-through' && null
     },
   ],
   toDOM: () => ['span', { style: 'text-decoration-line: line-through' }, 0],
 }
 
-const underline = {
+const underline: MarkSpec = {
   parseDOM: [
     { tag: 'u' },
     {
       style: 'text-decoration',
-      getAttrs: (value: string) => value === 'underline' && null
+      getAttrs: value => value === 'underline' && null
     },
     {
       style: 'text-decoration-line',
-      getAttrs: (value: string) => value === 'underline' && null
+      getAttrs: value => value === 'underline' && null
     },
   ],
   toDOM: () => ['span', { style: 'text-decoration: underline' }, 0],
 }
 
-const forecolor = {
+const forecolor: MarkSpec = {
   attrs: {
     color: {},
   },
   parseDOM: [
     {
       style: 'color',
-      getAttrs: (color: string) => color ? { color } : {}
+      getAttrs: color => color ? { color } : {}
     },
   ],
-  toDOM: (node: Node) => {
-    const { color } = node.attrs
+  toDOM: mark => {
+    const { color } = mark.attrs
     let style = ''
     if(color) style += `color: ${color};`
     return ['span', { style }, 0]
   },
 }
 
-const backcolor = {
+const backcolor: MarkSpec = {
   attrs: {
     backcolor: {},
   },
@@ -82,18 +82,18 @@ const backcolor = {
   parseDOM: [
     {
       tag: 'span[style*=background-color]',
-      getAttrs: (backcolor: string) => backcolor ? { backcolor } : {}
+      getAttrs: backcolor => backcolor ? { backcolor } : {}
     },
   ],
-  toDOM: (node: Node) => {
-    const { backcolor } = node.attrs
+  toDOM: mark => {
+    const { backcolor } = mark.attrs
     let style = ''
     if(backcolor) style += `background-color: ${backcolor};`
     return ['span', { style }, 0]
   },
 }
 
-const fontsize = {
+const fontsize: MarkSpec = {
   attrs: {
     fontsize: {},
   },
@@ -102,31 +102,33 @@ const fontsize = {
   parseDOM: [
     {
       style: 'font-size',
-      getAttrs: (fontsize: string) => fontsize ? { fontsize } : {}
+      getAttrs: fontsize => fontsize ? { fontsize } : {}
     },
   ],
-  toDOM: (node: Node) => {
-    const { fontsize } = node.attrs
+  toDOM: mark => {
+    const { fontsize } = mark.attrs
     let style = ''
     if(fontsize) style += `font-size: ${fontsize}`
     return ['span', { style }, 0]
   },
 }
 
-const fontname = {
+const fontname: MarkSpec = {
   attrs: {
-    fontname: '',
+    fontname: {},
   },
   inline: true,
   group: 'inline',
   parseDOM: [
     {
       style: 'font-family',
-      getAttrs: (fontname: string) => ({ fontname: fontname ? fontname.replace(/[\"\']/g, '') : '' })
+      getAttrs: fontname => {
+        return { fontname: fontname && typeof fontname === 'string' ? fontname.replace(/[\"\']/g, '') : '' }
+      }
     },
   ],
-  toDOM: (node: Node) => {
-    const { fontname } = node.attrs
+  toDOM: mark => {
+    const { fontname } = mark.attrs
     let style = ''
     if(fontname) style += `font-family: ${fontname}`
     return ['span', { style }, 0]

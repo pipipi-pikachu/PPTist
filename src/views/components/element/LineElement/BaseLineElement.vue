@@ -1,5 +1,6 @@
 <template>
-  <div class="editable-element-shape"
+  <div 
+    class="editable-element-shape"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',

@@ -1,5 +1,6 @@
 <template>
-  <div class="editable-element-shape"
+  <div 
+    class="editable-element-shape"
     :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',

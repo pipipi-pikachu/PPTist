@@ -41,7 +41,6 @@ export default () => {
   const { redo, undo } = useHistorySnapshot()
 
   const copy = () => {
-    if(disableHotkeys.value) return
     if(activeElementIdList.value.length) copyElement()
     else if(thumbnailsFocus.value) copySlide()
   }
@@ -53,38 +52,36 @@ export default () => {
   }
 
   const selectAll = () => {
-    if(!editorAreaFocus.value && disableHotkeys.value) return
+    if(!editorAreaFocus.value) return
     selectAllElement()
   }
 
   const lock = () => {
-    if(!editorAreaFocus.value && disableHotkeys.value) return
+    if(!editorAreaFocus.value) return
     lockElement()
   }
   const combine = () => {
-    if(!editorAreaFocus.value && disableHotkeys.value) return
+    if(!editorAreaFocus.value) return
     combineElements()
   }
 
   const uncombine = () => {
-    if(!editorAreaFocus.value && disableHotkeys.value) return
+    if(!editorAreaFocus.value) return
     uncombineElements()
   }
 
   const remove = () => {
-    if(disableHotkeys.value) return
     if(activeElementIdList.value.length) deleteElement()
     else if(thumbnailsFocus.value) deleteSlide()
   }
 
   const move = (key: string) => {
-    if(disableHotkeys.value) return
     if(activeElementIdList.value.length) moveElement(key)
     else if(key === KEYS.UP || key === KEYS.DOWN) updateSlideIndex(key)
   }
 
   const create = () => {
-    if(!thumbnailsFocus.value || disableHotkeys.value) return
+    if(!thumbnailsFocus.value) return
     createSlide()
   }
 
@@ -109,58 +106,72 @@ export default () => {
     if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
     if(ctrlKey && key === KEYS.C) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       copy()
     }
     if(ctrlKey && key === KEYS.X) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       cut()
     }
     if(ctrlKey && key === KEYS.Z) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       undo()
     }
     if(ctrlKey && key === KEYS.Y) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       redo()
     }
     if(ctrlKey && key === KEYS.A) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       selectAll()
     }
     if(ctrlKey && key === KEYS.L) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       lock()
     }
     if(!shiftKey && ctrlKey && key === KEYS.G) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       combine()
     }
     if(shiftKey && ctrlKey && key === KEYS.G) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       uncombine()
     }
     if(key === KEYS.DELETE) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       remove()
     }
     if(key === KEYS.UP) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       move(KEYS.UP)
     }
     if(key === KEYS.DOWN) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       move(KEYS.DOWN)
     }
     if(key === KEYS.LEFT) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       move(KEYS.LEFT)
     }
     if(key === KEYS.RIGHT) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       move(KEYS.RIGHT)
     }
     if(key === KEYS.ENTER) {
+      if(disableHotkeys.value) return
       e.preventDefault()
       create()
     }

@@ -14,7 +14,8 @@
         filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
       }"
     >
-      <SvgWrapper overflow="visible" 
+      <SvgWrapper 
+        overflow="visible" 
         :width="elementInfo.width"
         :height="elementInfo.height"
       >

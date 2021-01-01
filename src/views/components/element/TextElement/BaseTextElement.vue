@@ -8,7 +8,8 @@
       transform: `rotate(${elementInfo.rotate}deg)`,
     }"
   >
-    <div class="element-content"
+    <div 
+      class="element-content"
       :style="{
         backgroundColor: elementInfo.fill,
         opacity: elementInfo.opacity,
@@ -20,7 +21,7 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      <div class="text" v-html="elementInfo.content"></div>
+      <div class="text ProseMirror-static" v-html="elementInfo.content"></div>
     </div>
   </div>
 </template>
@@ -66,17 +67,6 @@ export default defineComponent({
 
   .text {
     position: relative;
-  }
-}
-
-::v-deep(.text) {
-  word-break: break-word;
-  font-family: '微软雅黑';
-  outline: 0;
-
-  ::selection {
-    background-color: rgba(27, 110, 232, 0.3);
-    color: inherit;
   }
 }
 </style>

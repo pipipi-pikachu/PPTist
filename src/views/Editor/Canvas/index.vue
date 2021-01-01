@@ -82,6 +82,7 @@ import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
 import { AlignmentLineProps, CreateElementSelectionData } from '@/types/edit'
+import { removeAllRanges } from '@/utils/selection'
 
 import useViewportSize from './hooks/useViewportSize'
 import useMouseSelection from './hooks/useMouseSelection'
@@ -161,6 +162,7 @@ export default defineComponent({
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
       if(!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
       if(!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+      removeAllRanges()
     }
 
     const removeEditorAreaFocus = () => {
