@@ -160,6 +160,7 @@ export default defineComponent({
   width: 240px;
   background: #fff;
   user-select: none;
+  margin-bottom: -10px;
 }
 .picker-saturation-wrap {
   width: 100%;

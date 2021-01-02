@@ -120,7 +120,7 @@ export default defineComponent({
   }
 }
 .content {
-  padding: 5px;
+  padding: 12px;
   overflow: auto;
 }
 </style>
