@@ -11,7 +11,7 @@
 
     <div class="right">
       <div class="menu-item icon">
-        <IconFont class="icon" type="icon-github-fill" />
+        <GithubOutlined />
       </div>
     </div>
   </div>
@@ -19,9 +19,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { GithubOutlined } from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: 'editor-header',
+  components: {
+    GithubOutlined,
+  },
 })
 </script>
 
@@ -45,7 +49,7 @@ export default defineComponent({
   margin: 0 10px;
   cursor: pointer;
 
-  .icon {
+  &.icon {
     font-size: 20px;
     color: #666;
   }

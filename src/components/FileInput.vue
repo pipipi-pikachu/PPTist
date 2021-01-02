@@ -1,5 +1,5 @@
 <template>
-  <div class="upload-input" @click="handleClick()">
+  <div class="file-input" @click="handleClick()">
     <slot></slot>
     <input 
       class="file-input"
@@ -16,7 +16,7 @@
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: 'upload-input',
+  name: 'file-input',
   props: {
     accept: {
       type: String,

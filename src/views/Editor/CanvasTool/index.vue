@@ -1,25 +1,25 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <IconFont class="handler-item" :class="{ 'disable': !canUndo }" type="icon-undo" @click="undo()" />
-      <IconFont class="handler-item" :class="{ 'disable': !canRedo }" type="icon-redo" @click="redo()" />
+      <UndoOutlined class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
+      <RedoOutlined class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
     </div>
 
     <div class="add-element-handler">
-      <IconFont class="handler-item" type="icon-font-size" @click="createElement('text')" />
-      <UploadInput @change="files => insertImageElement(files)">
-        <IconFont class="handler-item" type="icon-image" />
-      </UploadInput>
-      <IconFont class="handler-item" type="icon-star" @click="createElement('shape')" />
-      <IconFont class="handler-item" type="icon-line" @click="createElement('line')" />
-      <IconFont class="handler-item" type="icon-table" />
-      <IconFont class="handler-item" type="icon-piechart" />
+      <FontSizeOutlined class="handler-item" @click="createElement('text')" />
+      <FileInput @change="files => insertImageElement(files)">
+        <PictureOutlined class="handler-item" />
+      </FileInput>
+      <StarOutlined class="handler-item" @click="createElement('shape')" />
+      <LineOutlined class="handler-item" @click="createElement('line')" />
+      <TableOutlined class="handler-item" />
+      <PieChartOutlined class="handler-item" />
     </div>
 
     <div class="right-handler">
-      <IconFont class="handler-item viewport-size" type="icon-minus" @click="scaleCanvas('-')" />
+      <MinusOutlined class="handler-item viewport-size" @click="scaleCanvas('-')" />
       <span class="text">{{canvasScalePercentage}}</span>
-      <IconFont class="handler-item viewport-size" type="icon-plus" @click="scaleCanvas('+')" />
+      <PlusOutlined class="handler-item viewport-size" @click="scaleCanvas('+')" />
     </div>
   </div>
 </template>
@@ -33,12 +33,34 @@ import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCreateElement from '@/hooks/useCreateElement'
 
-import UploadInput from '@/components/UploadInput.vue'
+import FileInput from '@/components/FileInput.vue'
+import {
+  UndoOutlined,
+  RedoOutlined,
+  FontSizeOutlined,
+  PictureOutlined,
+  StarOutlined,
+  LineOutlined,
+  TableOutlined,
+  PieChartOutlined,
+  MinusOutlined,
+  PlusOutlined,
+} from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: 'canvas-tool',
   components: {
-    UploadInput,
+    FileInput,
+    UndoOutlined,
+    RedoOutlined,
+    FontSizeOutlined,
+    PictureOutlined,
+    StarOutlined,
+    LineOutlined,
+    TableOutlined,
+    PieChartOutlined,
+    MinusOutlined,
+    PlusOutlined,
   },
   setup() {
     const store = useStore<State>()
