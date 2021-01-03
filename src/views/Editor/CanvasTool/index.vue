@@ -10,13 +10,13 @@
       <FileInput @change="files => insertImageElement(files)">
         <PictureOutlined class="handler-item" />
       </FileInput>
-      <Popover trigger="click">
+      <Popover trigger="click" v-model:visible="isOpenShapePool">
         <template v-slot:content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <StarOutlined class="handler-item" />
       </Popover>
-      <Popover trigger="click">
+      <Popover trigger="click" v-model:visible="isOpenlinePool">
         <template v-slot:content>
           <LinePool @select="line => drawLine(line)" />
         </template>
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { getImageDataURL } from '@/utils/image'
@@ -99,25 +99,27 @@ export default defineComponent({
       getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
     }
 
+    const isOpenShapePool = ref(false)
+    const isOpenlinePool = ref(false)
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'text',
         data: null,
       })
     }
-
     const drawShape = (shape: ShapePoolItem) => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'shape',
         data: shape,
       })
+      isOpenShapePool.value = false
     }
-
     const drawLine = (line: LinePoolItem) => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'line',
         data: line,
       })
+      isOpenShapePool.value = false
     }
 
     return {
@@ -128,6 +130,8 @@ export default defineComponent({
       redo,
       undo,
       insertImageElement,
+      isOpenShapePool,
+      isOpenlinePool,
       drawText,
       drawShape,
       drawLine,

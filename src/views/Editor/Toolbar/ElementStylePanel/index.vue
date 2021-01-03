@@ -22,6 +22,8 @@ export default defineComponent({
     const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
 
     const currentPanelComponent = computed(() => {
+      if(!handleElement.value) return null
+      
       const panelMap = {
         [ElementTypes.TEXT]: TextStylePanel,
         [ElementTypes.IMAGE]: ImageStylePanel,
