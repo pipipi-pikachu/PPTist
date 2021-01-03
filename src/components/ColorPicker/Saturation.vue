@@ -27,20 +27,28 @@ import clamp from 'lodash/clamp'
 export default defineComponent({
   name: 'saturation',
   props: {
-    modelValue: {
+    value: {
       type: Object as PropType<ColorFormats.RGBA>,
+      required: true,
+    },
+    hue: {
+      type: Number,
       required: true,
     },
   },
   setup(props, { emit }) {
-    const color = computed(() => tinycolor(props.modelValue).toHsv())
+    const color = computed(() => {
+      const hsva = tinycolor(props.value).toHsv()
+      if(hsva.s === 0) hsva.h = props.hue
+      return hsva
+    })
 
     const bgColor = computed(() => `hsl(${color.value.h}, 100%, 50%)`)
     const pointerTop = computed(() => (-(color.value.v * 100) + 1) + 100 + '%')
     const pointerLeft = computed(() => color.value.s * 100 + '%')
 
     const emitChangeEvent = throttle(function(param) {
-      emit('update:modelValue', param)
+      emit('change', param)
     }, 20, { leading: true, trailing: false })
 
     const saturationRef = ref<HTMLElement | null>(null)
@@ -57,14 +65,12 @@ export default defineComponent({
       const saturation = left / containerWidth
       const bright = clamp(-(top / containerHeight) + 1, 0, 1)
 
-      const rgba = tinycolor({
+      emitChangeEvent({
         h: color.value.h,
         s: saturation,
         v: bright,
         a: color.value.a,
-      }).toRgb()
-
-      emitChangeEvent(rgba)
+      })
     }
 
     

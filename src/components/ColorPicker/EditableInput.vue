@@ -15,7 +15,7 @@ import tinycolor, { ColorFormats } from 'tinycolor2'
 export default defineComponent({
   name: 'editable-input',
   props: {
-    modelValue: {
+    value: {
       type: Object as PropType<ColorFormats.RGBA>,
       required: true,
     },
@@ -23,14 +23,14 @@ export default defineComponent({
   setup(props, { emit }) {
     const val = computed(() => {
       let _hex = ''
-      if(props.modelValue.a < 1) _hex = tinycolor(props.modelValue).toHex8String().toUpperCase()
-      else _hex = tinycolor(props.modelValue).toHexString().toUpperCase()
+      if(props.value.a < 1) _hex = tinycolor(props.value).toHex8String().toUpperCase()
+      else _hex = tinycolor(props.value).toHexString().toUpperCase()
       return _hex.replace('#', '')
     })
 
     const handleInput = (e: InputEvent) => {
       const value = (e.target as HTMLInputElement).value
-      if(value.length >= 6) emit('update:modelValue', tinycolor(value).toRgb())
+      if(value.length >= 6) emit('change', tinycolor(value).toRgb())
     }
 
     return {

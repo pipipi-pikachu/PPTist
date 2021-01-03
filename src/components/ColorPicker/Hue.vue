@@ -22,8 +22,12 @@ import tinycolor, { ColorFormats } from 'tinycolor2'
 export default defineComponent({
   name: 'hue',
   props: {
-    modelValue: {
+    value: {
       type: Object as PropType<ColorFormats.RGBA>,
+      required: true,
+    },
+    hue: {
+      type: Number,
       required: true,
     },
   },
@@ -31,16 +35,20 @@ export default defineComponent({
     const oldHue = ref(0)
     const pullDirection = ref('')
     
-    const color = computed(() => tinycolor(props.modelValue).toHsl())
+    const color = computed(() => {
+      const hsla = tinycolor(props.value).toHsl()
+      if(hsla.s === 0) hsla.h = props.hue
+      return hsla
+    })
 
     const pointerLeft = computed(() => {
       if(color.value.h === 0 && pullDirection.value === 'right') return '100%'
       return color.value.h * 100 / 360 + '%'
     })
 
-    watch(() => props.modelValue, () => {
-      const hsl = tinycolor(props.modelValue).toHsl()
-      const h = hsl.h
+    watch(() => props.value, () => {
+      const hsla = tinycolor(props.value).toHsl()
+      const h = hsla.s === 0 ? props.hue : hsla.h
       if(h !== 0 && h - oldHue.value > 0) pullDirection.value = 'right'
       if(h !== 0 && h - oldHue.value < 0) pullDirection.value = 'left'
       oldHue.value = h
@@ -63,14 +71,12 @@ export default defineComponent({
         h = (360 * percent / 100)
       }
       if(color.value.h !== h) {
-        const rgba = tinycolor({
+        emit('change', {
           h,
           l: color.value.l,
           s: color.value.s,
           a: color.value.a,
-        }).toRgb()
-
-        emit('update:modelValue', rgba)
+        })
       }
     }
 

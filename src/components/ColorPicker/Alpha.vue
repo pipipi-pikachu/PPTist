@@ -28,13 +28,13 @@ export default defineComponent({
     Checkboard,
   },
   props: {
-    modelValue: {
+    value: {
       type: Object as PropType<ColorFormats.RGBA>,
       required: true,
     },
   },
   setup(props, { emit }) {
-    const color = computed(() => props.modelValue)
+    const color = computed(() => props.value)
     const gradientColor = computed(() => {
       const rgbaStr = [color.value.r, color.value.g, color.value.b].join(',')
       return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`
@@ -54,7 +54,7 @@ export default defineComponent({
       else a = Math.round(left * 100 / containerWidth) / 100
 
       if(color.value.a !== a) {
-        emit('update:modelValue', {
+        emit('change', {
           r: color.value.r,
           g: color.value.g,
           b: color.value.b,

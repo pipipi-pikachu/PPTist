@@ -1,7 +1,7 @@
 <template>
   <div class="color-picker" @contextmenu.prevent>
     <div class="picker-saturation-wrap">
-      <Saturation v-model="color" />
+      <Saturation :value="color" :hue="hue" @change="value => changeColor(value)" />
     </div>
     <div class="picker-controls">
       <div class="picker-color-wrap">
@@ -9,12 +9,18 @@
         <Checkboard />
       </div>
       <div class="picker-sliders">
-        <div class="picker-hue-wrap"><Hue v-model="color" /></div>
-        <div class="picker-alpha-wrap"><Alpha v-model="color" /></div>
+        <div class="picker-hue-wrap">
+          <Hue :value="color" :hue="hue" @change="value => changeColor(value)" />
+        </div>
+        <div class="picker-alpha-wrap">
+          <Alpha :value="color" @change="value => changeColor(value)" />
+        </div>
       </div>
-    </div>    
+    </div>
 
-    <div class="picker-field"><EditableInput v-model="color" /></div>
+    <div class="picker-field">
+      <EditableInput :value="color" @change="value => changeColor(value)" />
+    </div>
 
     <div class="picker-presets">
       <div
@@ -54,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 
 import Alpha from './Alpha.vue'
@@ -120,6 +126,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const hue = ref(0)
+
     const color = computed({
       get() {
         return tinycolor(props.modelValue).toRgb()
@@ -142,12 +150,22 @@ export default defineComponent({
       emit('update:modelValue', colorString)
     }
 
+    const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
+      if('h' in value) {
+        hue.value = value.h
+        color.value = tinycolor(value).toRgb()
+      }
+      else color.value = value
+    }
+
     return {
       themeColors,
       standardColors,
       presetColors,
       color,
+      hue,
       currentColor,
+      changeColor,
       selectPresetColor,
     }
   },
