@@ -33,6 +33,8 @@ export interface PPTTextElement {
   rotate?: number;
   outline?: PPTElementOutline;
   fill?: string;
+  lineHeight?: number;
+  wordSpace?: number;
   opacity?: number;
   shadow?: PPTElementShadow;
 }

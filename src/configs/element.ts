@@ -1,13 +1,6 @@
 const DEFAULT_COLOR = '#41464b'
 
 export const DEFAULT_TEXT = {
-  left: 0,
-  top: 0,
-  width: 300,
-  height: 0,
-  opacity: 1,
-  lineHeight: 1.5,
-  segmentSpacing: 5,
   content: '请输入内容',
 }
 
@@ -24,7 +17,6 @@ export const DEFAULT_SHAPE = {
 
 export const DEFAULT_LINE = {
   style: 'solid',
-  points: ['', ''],
   width: 4,
   color: DEFAULT_COLOR,
 }

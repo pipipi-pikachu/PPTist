@@ -4,11 +4,11 @@
     ref="selectionRef"
     @mousedown.stop="$event => createSelection($event)"
   >
-    <div :class="['selection', elementType]" v-if="start && end" :style="position">
+    <div :class="['selection', creatingElement.type]" v-if="start && end" :style="position">
 
       <!-- 绘制线条专用 -->
       <SvgWrapper
-        v-if="elementType === 'line' && lineData"
+        v-if="creatingElement.type === 'line' && lineData"
         overflow="visible" 
         :width="lineData.svgWidth"
         :height="lineData.svgHeight"
@@ -42,7 +42,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore<State>()
     const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
-    const elementType = computed(() => store.state.creatingElementType)
+    const creatingElement = computed(() => store.state.creatingElement)
 
     const start = ref<[number, number] | null>(null)
     const end = ref<[number, number] | null>(null)
@@ -67,7 +67,7 @@ export default defineComponent({
       start.value = [startPageX, startPageY]
 
       document.onmousemove = e => {
-        if(!isMouseDown) return
+        if(!creatingElement.value || !isMouseDown) return
 
         let currentPageX = e.pageX
         let currentPageY = e.pageY
@@ -79,7 +79,7 @@ export default defineComponent({
           const absX = Math.abs(moveX)
           const absY = Math.abs(moveY)
 
-          if(elementType.value === 'shape') {
+          if(creatingElement.value.type === 'shape') {
             // moveX和moveY一正一负
             const isOpposite = (moveY > 0 && moveX < 0) || (moveY < 0 && moveX > 0)
 
@@ -91,7 +91,7 @@ export default defineComponent({
             }
           }
 
-          else if(elementType.value === 'line') {
+          else if(creatingElement.value.type === 'line') {
             if(absX > absY) currentPageY = startPageY
             else currentPageX = startPageX
           }
@@ -115,13 +115,14 @@ export default defineComponent({
             start: start.value,
             end: end.value,
           })
-          store.commit(MutationTypes.SET_CREATING_ELEMENT_TYPE, '')
         }
+        else store.commit(MutationTypes.SET_CREATING_ELEMENT, null)
       }
     }
 
     const lineData = computed(() => {
-      if(!start.value || !end.value || elementType.value !== 'line') return null
+      if(!start.value || !end.value) return null
+      if(!creatingElement.value || creatingElement.value.type !== 'line') return null
 
       const [_startX, _startY] = start.value
       const [_endX, _endY] = end.value
@@ -176,7 +177,7 @@ export default defineComponent({
       selectionRef,
       start,
       end,
-      elementType,
+      creatingElement,
       createSelection,
       lineData,
       position,

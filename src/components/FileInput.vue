@@ -2,7 +2,7 @@
   <div class="file-input" @click="handleClick()">
     <slot></slot>
     <input 
-      class="file-input"
+      class="input"
       type="file" 
       name="upload" 
       ref="inputRef" 
@@ -46,7 +46,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.file-input {
+.input {
   display: none;
 }
 </style>

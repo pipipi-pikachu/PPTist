@@ -1,3 +1,6 @@
+import { ShapePoolItem } from '@/configs/shapes'
+import { LinePoolItem } from '@/configs/lines'
+
 export type ElementOrderCommand = 'up' | 'down' | 'top' | 'bottom'
 
 export enum ElementOrderCommands {
@@ -86,3 +89,16 @@ export interface CreateElementSelectionData {
   start: [number, number];
   end: [number, number];
 }
+
+export interface CreatingTextElement {
+  type: 'text';
+}
+export interface CreatingShapeElement {
+  type: 'shape';
+  data: ShapePoolItem;
+}
+export interface CreatingLineElement {
+  type: 'line';
+  data: LinePoolItem;
+}
+export type CreatingElement = CreatingTextElement | CreatingShapeElement | CreatingLineElement

@@ -9,7 +9,7 @@ export enum MutationTypes {
   SET_EDITORAREA_FOCUS = 'setEditorAreaFocus',
   SET_DISABLE_HOTKEYS_STATE = 'setDisableHotkeysState',
   SET_GRID_LINES_STATE = 'setGridLinesState',
-  SET_CREATING_ELEMENT_TYPE = 'setCreatingElementType',
+  SET_CREATING_ELEMENT = 'setCreatingElement',
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
   SET_TOOLBAR_STATE = 'setToolbarState',
 

@@ -8,8 +8,8 @@
     v-click-outside="removeEditorAreaFocus"
   >
     <ElementCreateSelection
-      v-if="creatingElementType"
-      @created="data => createElement(data)"
+      v-if="creatingElement"
+      @created="data => insertElementFromCreateSelection(data)"
     />
     <div 
       class="viewport-wrapper"
@@ -81,7 +81,7 @@ import throttle from 'lodash/throttle'
 import { State, MutationTypes } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
-import { AlignmentLineProps, CreateElementSelectionData } from '@/types/edit'
+import { AlignmentLineProps } from '@/types/edit'
 import { removeAllRanges } from '@/utils/selection'
 
 import useViewportSize from './hooks/useViewportSize'
@@ -92,6 +92,7 @@ import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
 import useDragLineElement from './hooks/useDragLineElement'
+import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection'
 
 import useDeleteElement from '@/hooks/useDeleteElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
@@ -185,10 +186,8 @@ export default defineComponent({
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
-    const creatingElementType = computed(() => store.state.creatingElementType)
-    const createElement = (data: CreateElementSelectionData) => {
-      console.log(data)
-    }
+    const creatingElement = computed(() => store.state.creatingElement)
+    const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewportRef)
 
     const contextmenus = (): ContextmenuItem[] => {
       return [
@@ -230,8 +229,8 @@ export default defineComponent({
       removeEditorAreaFocus,
       currentSlide,
       isShowGridLines,
-      creatingElementType,
-      createElement,
+      creatingElement,
+      insertElementFromCreateSelection,
       alignmentLines,
       selectElement,
       rotateElement,

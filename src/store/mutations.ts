@@ -2,6 +2,7 @@ import { MutationTree } from 'vuex'
 import { MutationTypes } from './constants'
 import { State } from './index'
 import { Slide, PPTElement } from '@/types/slides'
+import { CreatingElement } from '@/types/edit'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
 
@@ -49,8 +50,8 @@ export const mutations: MutationTree<State> = {
     state.showGridLines = show
   },
 
-  [MutationTypes.SET_CREATING_ELEMENT_TYPE](state, type: string) {
-    state.creatingElementType = type
+  [MutationTypes.SET_CREATING_ELEMENT](state, element: CreatingElement | null) {
+    state.creatingElement = element
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {

@@ -4,6 +4,8 @@ import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { PPTElement, TableElementCell } from '@/types/slides'
+import { ShapePoolItem } from '@/configs/shapes'
+import { LinePoolItem } from '@/configs/lines'
 import {
   DEFAULT_IMAGE,
   DEFAULT_TEXT,
@@ -32,6 +34,8 @@ export default () => {
   const store = useStore()
 
   const { addHistorySnapshot } = useHistorySnapshot()
+
+  
 
   const createElement = (element: PPTElement) => {
     store.commit(MutationTypes.ADD_ELEMENT, element)
@@ -109,7 +113,7 @@ export default () => {
     })
   }
   
-  const createShapeElement = (position: CommonElementPosition, path: string, viewBox: number) => {
+  const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem) => {
     const { left, top, width, height } = position
     createElement({
       ...DEFAULT_SHAPE,
@@ -119,12 +123,12 @@ export default () => {
       top, 
       width, 
       height,
-      viewBox,
-      path,
+      viewBox: data.viewBox,
+      path: data.path,
     })
   }
   
-  const createLineElement = (position: LineElementPosition, points: [string, string]) => {
+  const createLineElement = (position: LineElementPosition, data: LinePoolItem) => {
     const { left, top, start, end } = position
     createElement({
       ...DEFAULT_LINE,
@@ -134,7 +138,7 @@ export default () => {
       top, 
       start,
       end,
-      points,
+      points: data.points,
     })
   }
 

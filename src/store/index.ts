@@ -5,6 +5,7 @@ import { mutations } from './mutations'
 import { MutationTypes, ActionTypes } from './constants'
 
 import { Slide } from '@/types/slides'
+import { CreatingElement } from '@/types/edit'
 import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/index'
 import { FontName } from '@/configs/fontName'
@@ -20,7 +21,7 @@ export interface State {
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
   showGridLines: boolean;
-  creatingElementType: string;
+  creatingElement: CreatingElement | null;
   availableFonts: FontName[];
   toolbarState: ToolbarState;
   slides: Slide[];
@@ -41,7 +42,7 @@ const state: State = {
   editorAreaFocus: false,
   disableHotkeys: false,
   showGridLines: false,
-  creatingElementType: '',
+  creatingElement: null,
   availableFonts: [],
   toolbarState: 'slideStyle',
   slides: slides,

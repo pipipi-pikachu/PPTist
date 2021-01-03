@@ -6,12 +6,22 @@
     </div>
 
     <div class="add-element-handler">
-      <FontSizeOutlined class="handler-item" @click="createElement('text')" />
+      <FontSizeOutlined class="handler-item" @click="drawText()" />
       <FileInput @change="files => insertImageElement(files)">
         <PictureOutlined class="handler-item" />
       </FileInput>
-      <StarOutlined class="handler-item" @click="createElement('shape')" />
-      <LineOutlined class="handler-item" @click="createElement('line')" />
+      <Popover trigger="click">
+        <template v-slot:content>
+          <ShapePool @select="shape => drawShape(shape)" />
+        </template>
+        <StarOutlined class="handler-item" />
+      </Popover>
+      <Popover trigger="click">
+        <template v-slot:content>
+          <LinePool @select="line => drawLine(line)" />
+        </template>
+        <LineOutlined class="handler-item" />
+      </Popover>
       <TableOutlined class="handler-item" />
       <PieChartOutlined class="handler-item" />
     </div>
@@ -29,11 +39,16 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { getImageDataURL } from '@/utils/image'
+import { ShapePoolItem } from '@/configs/shapes'
+import { LinePoolItem } from '@/configs/lines'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCreateElement from '@/hooks/useCreateElement'
 
+import ShapePool from './ShapePool.vue'
+import LinePool from './LinePool.vue'
 import FileInput from '@/components/FileInput.vue'
+import { Popover } from 'ant-design-vue'
 import {
   UndoOutlined,
   RedoOutlined,
@@ -50,6 +65,8 @@ import {
 export default defineComponent({
   name: 'canvas-tool',
   components: {
+    ShapePool,
+    LinePool,
     FileInput,
     UndoOutlined,
     RedoOutlined,
@@ -61,6 +78,7 @@ export default defineComponent({
     PieChartOutlined,
     MinusOutlined,
     PlusOutlined,
+    Popover,
   },
   setup() {
     const store = useStore<State>()
@@ -81,8 +99,25 @@ export default defineComponent({
       getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
     }
 
-    const createElement = (type: string) => {
-      store.commit(MutationTypes.SET_CREATING_ELEMENT_TYPE, type)
+    const drawText = () => {
+      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+        type: 'text',
+        data: null,
+      })
+    }
+
+    const drawShape = (shape: ShapePoolItem) => {
+      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+        type: 'shape',
+        data: shape,
+      })
+    }
+
+    const drawLine = (line: LinePoolItem) => {
+      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+        type: 'line',
+        data: line,
+      })
     }
 
     return {
@@ -93,7 +128,9 @@ export default defineComponent({
       redo,
       undo,
       insertImageElement,
-      createElement,
+      drawText,
+      drawShape,
+      drawLine,
     }
   },
 })
