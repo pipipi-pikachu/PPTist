@@ -127,6 +127,8 @@ export default defineComponent({
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 12px;
+  margin-right: -12px;
+  padding-right: 12px;
 }
 .pool-type {
   @include grid-layout-wrapper();
