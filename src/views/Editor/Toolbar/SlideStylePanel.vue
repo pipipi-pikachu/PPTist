@@ -1,7 +1,7 @@
 <template>
   <div class="slide-style-panel">
     <Popover trigger="click">
-      <template v-slot:content>
+      <template #content>
         <ColorPicker v-model="color" />
       </template>
       <button>Hover me</button>

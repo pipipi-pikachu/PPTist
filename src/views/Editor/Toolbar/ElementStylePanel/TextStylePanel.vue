@@ -50,6 +50,7 @@
     <div class="row">
       <div style="flex: 2;">行间距：</div>
       <Select style="flex: 3;">
+        <template #suffixIcon><ColumnHeightOutlined /></template>
         <SelectOption value="jack">Jack</SelectOption>
         <SelectOption value="lucy">Lucy</SelectOption>
         <SelectOption value="disabled">Disabled</SelectOption>
@@ -59,6 +60,7 @@
     <div class="row">
       <div style="flex: 2;">字间距：</div>
       <Select style="flex: 3;">
+        <template #suffixIcon><ColumnWidthOutlined /></template>
         <SelectOption value="jack">Jack</SelectOption>
         <SelectOption value="lucy">Lucy</SelectOption>
         <SelectOption value="disabled">Disabled</SelectOption>
@@ -96,6 +98,8 @@ import {
   AlignRightOutlined,
   OrderedListOutlined,
   UnorderedListOutlined,
+  ColumnHeightOutlined,
+  ColumnWidthOutlined,
 } from '@ant-design/icons-vue'
 
 export default defineComponent({
@@ -120,6 +124,8 @@ export default defineComponent({
     AlignRightOutlined,
     OrderedListOutlined,
     UnorderedListOutlined,
+    ColumnHeightOutlined,
+    ColumnWidthOutlined,
   },
 })
 </script>

@@ -11,13 +11,13 @@
         <PictureOutlined class="handler-item" />
       </FileInput>
       <Popover trigger="click" v-model:visible="isOpenShapePool">
-        <template v-slot:content>
+        <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <StarOutlined class="handler-item" />
       </Popover>
       <Popover trigger="click" v-model:visible="isOpenlinePool">
-        <template v-slot:content>
+        <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
         <LineOutlined class="handler-item" />

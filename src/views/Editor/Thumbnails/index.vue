@@ -5,7 +5,7 @@
     v-click-outside="() => setThumbnailsFocus(false)"
   >
     <div class="add-slide" @click="createSlide()">+ 添加幻灯片</div>
-    <draggable 
+    <Draggable 
       class="thumbnail-list"
       :modelValue="slides"
       :animation="300"
@@ -27,25 +27,25 @@
           </div>
         </div>
       </template>
-    </draggable>
+    </Draggable>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import draggable from 'vuedraggable'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
 
+import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
   name: 'thumbnails',
   components: {
-    draggable,
+    Draggable,
     ThumbnailSlide,
   },
   setup() {

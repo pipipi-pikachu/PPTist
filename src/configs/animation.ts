@@ -34,10 +34,10 @@ export const ANIMATIONS = [
     name: '旋转',
     children: [
       { name: '旋转进入', value: 'rotateIn' },
-      { name: '基于左下旋转进入', value: 'rotateInDownLeft' },
-      { name: '基于右下旋转进入', value: 'rotateInDownRight' },
-      { name: '基于左上旋转进入', value: 'rotateInUpLeft' },
-      { name: '基于右上旋转进入', value: 'rotateInUpRight' },
+      { name: '绕左下旋转进入', value: 'rotateInDownLeft' },
+      { name: '绕右下旋转进入', value: 'rotateInDownRight' },
+      { name: '绕左上旋转进入', value: 'rotateInUpLeft' },
+      { name: '绕右上旋转进入', value: 'rotateInUpRight' },
     ],
   },
   {
