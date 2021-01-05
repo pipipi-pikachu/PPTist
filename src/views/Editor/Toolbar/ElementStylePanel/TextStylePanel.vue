@@ -24,27 +24,27 @@
         <template #content>
           <ColorPicker v-model="richTextAttrs.color" />
         </template>
-        <Button class="color-btn" style="flex: 1;">
+        <Button class="text-color-btn" style="flex: 1;">
           <FontColorsOutlined />
-          <div class="color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
+          <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
         </Button>
       </Popover>
       <Popover trigger="click">
         <template #content>
           <ColorPicker v-model="richTextAttrs.backcolor" />
         </template>
-        <Button class="color-btn" style="flex: 1;">
+        <Button class="text-color-btn" style="flex: 1;">
           <HighlightOutlined />
-          <div class="color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
+          <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
         </Button>
       </Popover>
       <Popover trigger="click">
         <template #content>
           <ColorPicker v-model="fill" />
         </template>
-        <Button class="color-btn" style="flex: 1;">
+        <Button class="text-color-btn" style="flex: 1;">
           <BgColorsOutlined />
-          <div class="color-block" :style="{ backgroundColor: fill }"></div>
+          <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
         </Button>
       </Popover>
     </ButtonGroup>
@@ -105,48 +105,46 @@
     </div>
     <div class="row">
       <div style="flex: 2;">描边颜色：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker v-model="fill" />
+        </template>
+        <Button class="color-btn" style="flex: 3;">
+          <div class="color-block"></div>
+          <DownOutlined class="color-btn-icon" />
+        </Button>
+      </Popover>
     </div>
     <div class="row">
       <div style="flex: 2;">描边粗细：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <InputNumber style="flex: 3;" />
     </div>
 
     <Divider />
 
     <div class="row">
       <div style="flex: 2;">水平阴影：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
     </div>
     <div class="row">
       <div style="flex: 2;">垂直阴影：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
     </div>
     <div class="row">
       <div style="flex: 2;">模糊距离：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
     </div>
     <div class="row">
       <div style="flex: 2;">阴影颜色：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker v-model="fill" />
+        </template>
+        <Button class="color-btn" style="flex: 3;">
+          <div class="color-block"></div>
+          <DownOutlined class="color-btn-icon" />
+        </Button>
+      </Popover>
     </div>
 
     <Divider />
@@ -167,7 +165,7 @@ import emitter, { EmitterEvents } from '@/utils/emitter'
 import { TextAttrs } from '@/prosemirror/utils'
 
 import ColorPicker from '@/components/ColorPicker/index.vue'
-import { Select, Input, Button, Divider, Slider, Popover } from 'ant-design-vue'
+import { Select, Input, Button, Divider, Slider, Popover, InputNumber } from 'ant-design-vue'
 import {
   FontColorsOutlined,
   HighlightOutlined,
@@ -183,6 +181,7 @@ import {
   UnorderedListOutlined,
   ColumnHeightOutlined,
   ColumnWidthOutlined,
+  DownOutlined,
 } from '@ant-design/icons-vue'
 
 export default defineComponent({
@@ -197,6 +196,7 @@ export default defineComponent({
     Divider,
     Slider,
     Popover,
+    InputNumber,
     FontColorsOutlined,
     HighlightOutlined,
     BgColorsOutlined,
@@ -211,6 +211,7 @@ export default defineComponent({
     UnorderedListOutlined,
     ColumnHeightOutlined,
     ColumnWidthOutlined,
+    DownOutlined,
   },
   setup() {
     const store = useStore<State>()
@@ -279,15 +280,30 @@ export default defineComponent({
   align-items: center;
   margin-bottom: 10px;
 }
-.color-btn {
+.text-color-btn {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.color-block {
+.text-color-block {
   width: 16px;
   height: 3px;
   margin-top: 1px;
+}
+.color-btn {
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+}
+.color-block {
+  width: 100px;
+  height: 20px;
+  background-color: #777;
+  margin: 0 8px;
+}
+.color-btn-icon {
+  font-size: 12px;
+  margin-top: 2px;
 }
 </style>
