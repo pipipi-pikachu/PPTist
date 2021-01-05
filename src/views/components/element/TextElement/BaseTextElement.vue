@@ -14,6 +14,8 @@
         backgroundColor: elementInfo.fill,
         opacity: elementInfo.opacity,
         textShadow: shadowStyle,
+        lineHeight: elementInfo.lineHeight,
+        letterSpacing: (elementInfo.wordSpace || 0) + 'px',
       }"
     >
       <ElementOutline

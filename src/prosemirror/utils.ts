@@ -75,3 +75,41 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
   })
   return value
 }
+
+export const getTextAttrs = (view: EditorView) => {
+  const isBold = isActiveMark(view, 'strong')
+  const isEm = isActiveMark(view, 'em')
+  const isUnderline = isActiveMark(view, 'underline')
+  const isStrikethrough = isActiveMark(view, 'strikethrough')
+  const isSuperscript = isActiveMark(view, 'superscript')
+  const isSubscript = isActiveMark(view, 'subscript')
+  const isCode = isActiveMark(view, 'code')
+  const color = getAttrValue(view, 'forecolor', 'color') || '#000'
+  const backcolor = getAttrValue(view, 'backcolor', 'backcolor') || '#000'
+  const fontsize = getAttrValue(view, 'fontsize', 'fontsize') || '12px'
+  const fontname = getAttrValue(view, 'fontname', 'fontname') || '微软雅黑'
+  const align = getAttrValueInSelection(view, 'align')
+  const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)
+  const isOrderedList = isActiveOfParentNodeType('ordered_list', view.state)
+  const isBlockquote = isActiveOfParentNodeType('blockquote', view.state)
+
+  return {
+    bold: isBold,
+    em: isEm,
+    underline: isUnderline,
+    strikethrough: isStrikethrough,
+    superscript: isSuperscript,
+    subscript: isSubscript,
+    code: isCode,
+    color: color,
+    backcolor: backcolor,
+    fontsize: fontsize,
+    fontname: fontname,
+    align: align,
+    bulletList: isBulletList,
+    orderedList: isOrderedList,
+    blockquote: isBlockquote,
+  }
+}
+
+export type TextAttrs = ReturnType<typeof getTextAttrs>

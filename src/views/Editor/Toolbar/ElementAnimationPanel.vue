@@ -6,16 +6,18 @@
           <div class="animation-pool">
             <div class="pool-type" v-for="type in animations" :key="type.name">
               <div class="type-title">{{type.name}}：</div>
-              <div class="pool-item" v-for="item in type.children" :key="item.name">
+              <div class="pool-item-wrapper">
                 <div 
+                  class="pool-item" 
+                  v-for="item in type.children" :key="item.name"
                   :class="[
-                    'box',
                     'animate__animated',
                     hoverPreviewAnimation === item.value && `animate__${item.value}`,
                   ]"
                   @mouseover="hoverPreviewAnimation = item.value"
-                ></div>
-                <div class="label">{{item.name}}</div>
+                >
+                  {{item.name}}
+                </div>
               </div>
             </div>
           </div>
@@ -130,9 +132,6 @@ export default defineComponent({
   margin-right: -12px;
   padding-right: 12px;
 }
-.pool-type {
-  @include grid-layout-wrapper();
-}
 .type-title {
   width: 100%;
   font-size: 13px;
@@ -141,25 +140,18 @@ export default defineComponent({
   background-color: #eee;
   padding-left: 10px;
 }
+.pool-item-wrapper {
+  @include grid-layout-wrapper();
+}
 .pool-item {
   @include grid-layout-item(4, 24%);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 10px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #f5f5f5;
   cursor: pointer;
-
-  .box {
-    width: 30px;
-    height: 30px;
-    background-color: #eee;
-    margin-bottom: 5px;
-  }
-  .label {
-    text-align: center;
-  }
 }
 
 .sequence-item {

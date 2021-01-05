@@ -17,6 +17,8 @@
         backgroundColor: elementInfo.fill,
         opacity: elementInfo.opacity,
         textShadow: shadowStyle,
+        lineHeight: elementInfo.lineHeight,
+        letterSpacing: (elementInfo.wordSpace || 0) + 'px',
       }"
       v-contextmenu="contextmenus"
     >
@@ -43,6 +45,8 @@ import { EditorView } from 'prosemirror-view'
 import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { initProsemirrorEditor } from '@/prosemirror/'
+import { getTextAttrs } from '@/prosemirror/utils'
+import emitter, { EmitterEvents } from '@/utils/emitter'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -113,6 +117,16 @@ export default defineComponent({
       addHistorySnapshot()
     }, 500, { trailing: true })
 
+    const handleClick = debounce(function() {
+      const attr = getTextAttrs(editorView)
+      emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
+    }, 50, { trailing: true })
+
+    const handleKeydown = () => {
+      handleInput()
+      handleClick()
+    }
+
     const textContent = computed(() => props.elementInfo.content)
     watch(textContent, () => {
       if(!editorView) return
@@ -130,7 +144,8 @@ export default defineComponent({
         handleDOMEvents: {
           focus: handleFocus,
           blur: handleBlur,
-          keydown: handleInput,
+          keydown: handleKeydown,
+          click: handleClick,
         },
         editable: () => editable.value,
       })
