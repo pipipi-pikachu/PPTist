@@ -9,21 +9,45 @@
     <template v-if="hasShadow">
       <div class="row">
         <div style="flex: 2;">水平阴影：</div>
-        <Slider :min="1" :max="10" :step="1" :value="shadow.h" style="flex: 3;" />
+        <Slider 
+          :min="1" 
+          :max="10" 
+          :step="1" 
+          :value="shadow.h" 
+          @change="value => updateShadow({ h: value })" 
+          style="flex: 3;" 
+        />
       </div>
       <div class="row">
         <div style="flex: 2;">垂直阴影：</div>
-        <Slider :min="1" :max="10" :step="1" :value="shadow.v" style="flex: 3;" />
+        <Slider
+          :min="1"
+          :max="10"
+          :step="1"
+          :value="shadow.v"
+          @change="value => updateShadow({ v: value })" 
+          style="flex: 3;"
+        />
       </div>
       <div class="row">
         <div style="flex: 2;">模糊距离：</div>
-        <Slider :min="1" :max="20" :step="1" :value="shadow.blur" style="flex: 3;" />
+        <Slider
+          :min="1"
+          :max="20"
+          :step="1"
+          :value="shadow.blur"
+          @change="value => updateShadow({ blur: value })" 
+          style="flex: 3;"
+        />
       </div>
       <div class="row">
         <div style="flex: 2;">阴影颜色：</div>
         <Popover trigger="click">
           <template #content>
-            <ColorPicker v-model="shadow.color" />
+            <ColorPicker
+              :modelValue="shadow.color"
+              @update:modelValue="value => updateShadow({ color: value })"
+            />
           </template>
           <Button class="color-btn" style="flex: 3;">
             <div class="color-block"></div>
@@ -38,8 +62,9 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { PPTElement, PPTElementShadow } from '@/types/slides'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import { Slider, Button, Popover, Switch } from 'ant-design-vue'
@@ -68,21 +93,28 @@ export default defineComponent({
       hasShadow.value = !!shadow.value
     }, { deep: true, immediate: true })
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
+    const updateShadow = (shadowProps: Partial<PPTElementShadow>) => {
+      const props = { shadow: { ...shadow.value, ...shadowProps } }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     const toggleShadow = (checked: boolean) => {
-      if(!checked) {
-        shadow.value = undefined
-        hasShadow.value = false
+      let props: { shadow?: PPTElementShadow } = { shadow: undefined }
+      if(checked) {
+        props = { shadow: { h: 1, v: 1, blur: 2, color: '#000' } }
       }
-      else {
-        shadow.value = { h: 1, v: 1, blur: 2, color: '#000' }
-        hasShadow.value = true
-      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
     }
 
     return {
       shadow,
       hasShadow,
       toggleShadow,
+      updateShadow,
     }
   },
 })

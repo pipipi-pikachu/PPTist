@@ -3,13 +3,20 @@
     <div class="row">
       <div style="flex: 2;">启用边框：</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch :checked="hasOutline" @change="checked => toggleOutline(checked)" />
+        <Switch 
+          :checked="hasOutline" 
+          @change="checked => toggleOutline(checked)" 
+        />
       </div>
     </div>
     <template v-if="hasOutline">
       <div class="row">
         <div style="flex: 2;">边框样式：</div>
-        <Select style="flex: 3;" :value="outline.style">
+        <Select 
+          style="flex: 3;" 
+          :value="outline.style" 
+          @change="value => updateOutline({ style: value })"
+        >
           <SelectOption value="solid">实线边框</SelectOption>
           <SelectOption value="dashed">虚线边框</SelectOption>
         </Select>
@@ -18,7 +25,10 @@
         <div style="flex: 2;">边框颜色：</div>
         <Popover trigger="click">
           <template #content>
-            <ColorPicker v-model="outline.color" />
+            <ColorPicker
+              :modelValue="outline.color"
+              @update:modelValue="value => updateOutline({ color: value })"
+            />
           </template>
           <Button class="color-btn" style="flex: 3;">
             <div class="color-block" :style="{ backgroundColor: outline.color }"></div>
@@ -28,7 +38,11 @@
       </div>
       <div class="row">
         <div style="flex: 2;">边框粗细：</div>
-        <InputNumber :value="outline.width" style="flex: 3;" />
+        <InputNumber 
+          :value="outline.width" 
+          @change="value => updateOutline({ width: value })" 
+          style="flex: 3;" 
+        />
       </div>
     </template>
   </div>
@@ -37,8 +51,9 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { PPTElement, PPTElementOutline } from '@/types/slides'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import { Select, Button, Popover, InputNumber, Switch } from 'ant-design-vue'
@@ -69,21 +84,28 @@ export default defineComponent({
       hasOutline.value = !!outline.value
     }, { deep: true, immediate: true })
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
+    const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
+      const props = { outline: { ...outline.value, ...outlineProps } }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     const toggleOutline = (checked: boolean) => {
-      if(!checked) {
-        outline.value = undefined
-        hasOutline.value = false
+      let props: { outline?: PPTElementOutline } = { outline: undefined }
+      if(checked) {
+        props = { outline: { width: 2, color: '#000', style: 'solid' } }
       }
-      else {
-        outline.value = { width: 2, color: '#000', style: 'solid' }
-        hasOutline.value = true
-      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
     }
 
     return {
       outline,
       hasOutline,
       toggleOutline,
+      updateOutline,
     }
   },
 })

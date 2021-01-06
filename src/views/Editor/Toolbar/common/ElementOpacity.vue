@@ -2,7 +2,14 @@
   <div class="element-opacity">
     <div class="row">
       <div style="flex: 2;">不透明度：</div>
-      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
+      <Slider
+        :min="0"
+        :max="1"
+        :step="0.1"
+        :value="opacity"
+        style="flex: 3;"
+        @change="value => updateOpacity(value)" 
+      />
     </div>
   </div>
 </template>
@@ -10,8 +17,9 @@
 <script lang="ts">
 import { computed, defineComponent, Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { PPTElement } from '@/types/slides'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Slider } from 'ant-design-vue'
 
@@ -31,8 +39,17 @@ export default defineComponent({
       opacity.value = 'opacity' in handleElement.value && handleElement.value.opacity || 1
     }, { deep: true, immediate: true })
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
+    const updateOpacity = (value: number) => {
+      const props = { opacity: value }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     return {
       opacity,
+      updateOpacity,
     }
   },
 })

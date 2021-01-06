@@ -81,14 +81,14 @@
 
     <div class="row">
       <div style="flex: 2;">行间距：</div>
-      <Select style="flex: 3;" :value="lineHeight">
+      <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value)">
         <template #suffixIcon><ColumnHeightOutlined /></template>
         <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">字间距：</div>
-      <Select style="flex: 3;" :value="wordSpace">
+      <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
         <template #suffixIcon><ColumnWidthOutlined /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
       </Select>
@@ -111,10 +111,11 @@
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { TextAttrs } from '@/prosemirror/utils'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
@@ -215,6 +216,20 @@ export default defineComponent({
       emitter.off(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
     })
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
+    const updateLineHeight = (value: number) => {
+      const props = { lineHeight: value }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    const updateWordSpace = (value: number) => {
+      const props = { wordSpace: value }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     return {
       fill,
       lineHeight,
@@ -224,6 +239,8 @@ export default defineComponent({
       fontSizeOptions,
       lineHeightOptions,
       wordSpaceOptions,
+      updateLineHeight,
+      updateWordSpace,
     }
   },
 })

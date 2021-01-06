@@ -25,6 +25,7 @@ import ResizeHandler from './ResizeHandler.vue'
 
 export default defineComponent({
   name: 'text-element-operate',
+  inheritAttrs: false,
   components: {
     ResizeHandler,
   },

@@ -53,6 +53,7 @@ import ImageClipHandler from './ImageClipHandler.vue'
 
 export default defineComponent({
   name: 'image-element-operate',
+  inheritAttrs: false,
   components: {
     RotateHandler,
     ResizeHandler,
