@@ -1,4 +1,4 @@
-const DEFAULT_COLOR = '#41464b'
+const DEFAULT_COLOR = '#d14424'
 
 export const ELEMENT_TYPE = {
   'text': '文本',

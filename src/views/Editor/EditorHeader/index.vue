@@ -45,7 +45,7 @@ export default defineComponent({
 }
 .menu-item {
   font-size: 13px;
-  color: $themeColor;
+  color: $textColor;
   margin: 0 10px;
   cursor: pointer;
 

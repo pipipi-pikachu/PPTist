@@ -16,7 +16,7 @@
         </template>
         <StarOutlined class="handler-item" />
       </Popover>
-      <Popover trigger="click" v-model:visible="isOpenlinePool">
+      <Popover trigger="click" v-model:visible="isOpenLinePool">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
@@ -100,7 +100,7 @@ export default defineComponent({
     }
 
     const isOpenShapePool = ref(false)
-    const isOpenlinePool = ref(false)
+    const isOpenLinePool = ref(false)
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'text',
@@ -119,7 +119,7 @@ export default defineComponent({
         type: 'line',
         data: line,
       })
-      isOpenShapePool.value = false
+      isOpenLinePool.value = false
     }
 
     return {
@@ -131,7 +131,7 @@ export default defineComponent({
       undo,
       insertImageElement,
       isOpenShapePool,
-      isOpenlinePool,
+      isOpenLinePool,
       drawText,
       drawShape,
       drawLine,

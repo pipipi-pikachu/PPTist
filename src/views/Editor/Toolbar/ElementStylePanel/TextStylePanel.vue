@@ -96,76 +96,31 @@
 
     <Divider />
 
-    <div class="row">
-      <div style="flex: 2;">描边样式：</div>
-      <Select style="flex: 3;" :value="wordSpace">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
-      </Select>
-    </div>
-    <div class="row">
-      <div style="flex: 2;">描边颜色：</div>
-      <Popover trigger="click">
-        <template #content>
-          <ColorPicker v-model="fill" />
-        </template>
-        <Button class="color-btn" style="flex: 3;">
-          <div class="color-block"></div>
-          <DownOutlined class="color-btn-icon" />
-        </Button>
-      </Popover>
-    </div>
-    <div class="row">
-      <div style="flex: 2;">描边粗细：</div>
-      <InputNumber style="flex: 3;" />
-    </div>
+    <ElementOutline />
 
     <Divider />
 
-    <div class="row">
-      <div style="flex: 2;">水平阴影：</div>
-      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
-    </div>
-    <div class="row">
-      <div style="flex: 2;">垂直阴影：</div>
-      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
-    </div>
-    <div class="row">
-      <div style="flex: 2;">模糊距离：</div>
-      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
-    </div>
-    <div class="row">
-      <div style="flex: 2;">阴影颜色：</div>
-      <Popover trigger="click">
-        <template #content>
-          <ColorPicker v-model="fill" />
-        </template>
-        <Button class="color-btn" style="flex: 3;">
-          <div class="color-block"></div>
-          <DownOutlined class="color-btn-icon" />
-        </Button>
-      </Popover>
-    </div>
+    <ElementShadow />
 
     <Divider />
 
-    <div class="row">
-      <div style="flex: 2;">透明度：</div>
-      <Slider :min="0" :max="1" :step="0.1" :value="opacity" style="flex: 3;" />
-    </div>
+    <ElementOpacity />
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
-import { PPTElementOutline, PPTElementShadow } from '@/types/slides'
+import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { TextAttrs } from '@/prosemirror/utils'
 
+import ElementOpacity from '../common/ElementOpacity.vue'
+import ElementOutline from '../common/ElementOutline.vue'
+import ElementShadow from '../common/ElementShadow.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
-import { Select, Input, Button, Divider, Slider, Popover, InputNumber } from 'ant-design-vue'
+import { Select, Input, Button, Divider, Popover } from 'ant-design-vue'
 import {
   FontColorsOutlined,
   HighlightOutlined,
@@ -181,7 +136,6 @@ import {
   UnorderedListOutlined,
   ColumnHeightOutlined,
   ColumnWidthOutlined,
-  DownOutlined,
 } from '@ant-design/icons-vue'
 
 export default defineComponent({
@@ -194,9 +148,7 @@ export default defineComponent({
     Button,
     ButtonGroup: Button.Group,
     Divider,
-    Slider,
     Popover,
-    InputNumber,
     FontColorsOutlined,
     HighlightOutlined,
     BgColorsOutlined,
@@ -211,17 +163,24 @@ export default defineComponent({
     UnorderedListOutlined,
     ColumnHeightOutlined,
     ColumnWidthOutlined,
-    DownOutlined,
+    ElementOpacity,
+    ElementOutline,
+    ElementShadow,
   },
   setup() {
     const store = useStore<State>()
+    const handleElement: Ref<PPTTextElement> = computed(() => store.getters.handleElement)
 
-    const fill = ref('#000')
-    const lineHeight = ref(1.5)
-    const wordSpace = ref(0)
-    const opacity = ref(1)
-    const shadow = ref<PPTElementShadow>()
-    const outline = ref<PPTElementOutline>()
+    const fill = ref<string>()
+    const lineHeight = ref<number>()
+    const wordSpace = ref<number>()
+
+    watch(handleElement, () => {
+      if(!handleElement.value) return
+      fill.value = handleElement.value.fill || '#000'
+      lineHeight.value = handleElement.value.lineHeight || 1.5
+      wordSpace.value = handleElement.value.wordSpace || 0
+    }, { deep: true, immediate: true })
 
     const richTextAttrs = ref<TextAttrs>({
       bold: false,
@@ -260,9 +219,6 @@ export default defineComponent({
       fill,
       lineHeight,
       wordSpace,
-      opacity,
-      shadow,
-      outline,
       richTextAttrs,
       availableFonts,
       fontSizeOptions,
@@ -290,20 +246,5 @@ export default defineComponent({
   width: 16px;
   height: 3px;
   margin-top: 1px;
-}
-.color-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 !important;
-}
-.color-block {
-  width: 100px;
-  height: 20px;
-  background-color: #777;
-  margin: 0 8px;
-}
-.color-btn-icon {
-  font-size: 12px;
-  margin-top: 2px;
 }
 </style>

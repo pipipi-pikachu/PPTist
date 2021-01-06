@@ -12,8 +12,8 @@ module.exports = {
       less: {
         lessOptions: {
           modifyVars: {
-            'primary-color': '#41464b',
-            'link-color': '#41464b',
+            'primary-color': '#d14424',
+            'link-color': '#d14424',
           },
           javascriptEnabled: true,
         },
