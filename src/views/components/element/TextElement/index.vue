@@ -51,6 +51,14 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
+import { toggleMark, wrapIn } from 'prosemirror-commands'
+import { alignmentCommand } from '@/prosemirror/commands/setTextAlign'
+import { toggleList } from '@/prosemirror/commands/toggleList'
+
+interface CommandPayload {
+  command: string;
+  value?: string;
+}
 
 export default defineComponent({
   name: 'editable-element-text',
@@ -81,7 +89,7 @@ export default defineComponent({
         id: props.elementInfo.id,
         props: { height: realHeight },
       })
-    }, 500, { trailing: true })
+    }, 300, { trailing: true })
 
     const updateTextElementHeight = () => {
       if(!elementRef.value) return
@@ -115,12 +123,12 @@ export default defineComponent({
         props: { content: editorView.dom.innerHTML },
       })
       addHistorySnapshot()
-    }, 500, { trailing: true })
+    }, 300, { trailing: true })
 
     const handleClick = debounce(function() {
       const attr = getTextAttrs(editorView)
       emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
-    }, 50, { trailing: true })
+    }, 30, { trailing: true })
 
     const handleKeydown = () => {
       handleInput()
@@ -164,6 +172,81 @@ export default defineComponent({
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
+    const handleElementId = computed(() => store.state.handleElementId)
+    
+    const execCommand = (payload: CommandPayload) => {
+      if(handleElementId.value !== props.elementInfo.id) return
+
+      if(payload.command === 'fontname' && payload.value) {
+        const mark = editorView.state.schema.marks.fontname.create({ fontname: payload.value })
+        const { $from, $to } = editorView.state.selection
+        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+      }
+      else if(payload.command === 'fontsize' && payload.value) {
+        const mark = editorView.state.schema.marks.fontsize.create({ fontsize: payload.value })
+        const { $from, $to } = editorView.state.selection
+        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+      }
+      else if(payload.command === 'color' && payload.value) {
+        const mark = editorView.state.schema.marks.forecolor.create({ color: payload.value })
+        const { $from, $to } = editorView.state.selection
+        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+      }
+      else if(payload.command === 'backcolor' && payload.value) {
+        const mark = editorView.state.schema.marks.backcolor.create({ backcolor: payload.value })
+        const { $from, $to } = editorView.state.selection
+        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+      }
+      else if(payload.command === 'bold') {
+        toggleMark(editorView.state.schema.marks.strong)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'em') {
+        toggleMark(editorView.state.schema.marks.em)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'underline') {
+        toggleMark(editorView.state.schema.marks.underline)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'strikethrough') {
+        toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'subscript') {
+        toggleMark(editorView.state.schema.marks.subscript)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'superscript') {
+        toggleMark(editorView.state.schema.marks.superscript)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'blockquote') {
+        wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'code') {
+        toggleMark(editorView.state.schema.marks.code)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'align' && payload.value) {
+        alignmentCommand(editorView, payload.value)
+      }
+      else if(payload.command === 'bulletList') {
+        const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
+        toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'orderedList') {
+        const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
+        toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
+      }
+      else if(payload.command === 'clear') {
+        if(editorView.state.selection.empty) return false
+        const { $from, $to } = editorView.state.selection
+        editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
+      }
+      editorView.focus()
+      handleInput()
+      handleClick()
+    }
+
+    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+    onUnmounted(() => {
+      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+    })
+
     return {
       elementRef,
       editorViewRef,
@@ -188,6 +271,8 @@ export default defineComponent({
   position: relative;
   padding: 10px;
   line-height: 1.5;
+  word-break: break-word;
+  font-family: '微软雅黑';
 
   .text {
     position: relative;

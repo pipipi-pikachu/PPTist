@@ -44,7 +44,7 @@ export const setTextAlign = (tr: Transaction, schema: Schema, alignment: string)
     let { attrs } = node
     if(alignment) attrs = { ...attrs, align: alignment }
     else attrs = { ...attrs, align: null }
-    tr = tr.setNodeMarkup(pos, nodeType, attrs, node.marks);
+    tr = tr.setNodeMarkup(pos, nodeType, attrs, node.marks)
   })
 
   return tr

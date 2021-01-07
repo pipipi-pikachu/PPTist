@@ -20,3 +20,12 @@
 .ant-radio-button-wrapper {
   text-align: center;
 }
+.ant-slider-track {
+  background-color: $themeColor;
+}
+.ant-slider-handle {
+  border-color: $themeColor;
+}
+.ant-select {
+  user-select: none;
+}

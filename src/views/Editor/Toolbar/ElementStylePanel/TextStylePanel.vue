@@ -4,6 +4,7 @@
       <Select
         style="flex: 3;"
         :value="richTextAttrs.fontname"
+        @change="value => emitRichTextCommand('fontname', value)"
       >
         <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
           <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
@@ -12,6 +13,7 @@
       <Select
         style="flex: 2;"
         :value="richTextAttrs.fontsize"
+        @change="value => emitRichTextCommand('fontsize', value)"
       >
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
           {{fontsize}}
@@ -22,7 +24,10 @@
     <ButtonGroup class="row">
       <Popover trigger="click">
         <template #content>
-          <ColorPicker v-model="richTextAttrs.color" />
+          <ColorPicker
+            :modelValue="richTextAttrs.color"
+            @update:modelValue="value => emitRichTextCommand('color', value)"
+          />
         </template>
         <Button class="text-color-btn" style="flex: 1;">
           <FontColorsOutlined />
@@ -31,7 +36,10 @@
       </Popover>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker v-model="richTextAttrs.backcolor" />
+          <ColorPicker
+            :modelValue="richTextAttrs.backcolor"
+            @update:modelValue="value => emitRichTextCommand('backcolor', value)"
+          />
         </template>
         <Button class="text-color-btn" style="flex: 1;">
           <HighlightOutlined />
@@ -40,7 +48,10 @@
       </Popover>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker v-model="fill" />
+          <ColorPicker
+            :modelValue="fill"
+            @update:modelValue="value => updateFill(value)"
+          />
         </template>
         <Button class="text-color-btn" style="flex: 1;">
           <BgColorsOutlined />
@@ -50,31 +61,79 @@
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bold"><BoldOutlined /></CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.em"><ItalicOutlined /></CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.underline"><UnderlineOutlined /></CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.strikethrough"><StrikethroughOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="richTextAttrs.bold"
+        @click="emitRichTextCommand('bold')"
+      ><BoldOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="richTextAttrs.em"
+        @click="emitRichTextCommand('em')"
+      ><ItalicOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="richTextAttrs.underline"
+        @click="emitRichTextCommand('underline')"
+      ><UnderlineOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="richTextAttrs.strikethrough"
+        @click="emitRichTextCommand('strikethrough')"
+      ><StrikethroughOutlined /></CheckboxButton>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.superscript">上</CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.subscript">下</CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.code">码</CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.blockquote">引</CheckboxButton>
-      <CheckboxButton style="flex: 1;">清</CheckboxButton>
+      <CheckboxButton
+        style="flex: 1;"
+        :checked="richTextAttrs.superscript"
+        @click="emitRichTextCommand('superscript')"
+      >上</CheckboxButton>
+      <CheckboxButton
+        style="flex: 1;"
+        :checked="richTextAttrs.subscript"
+        @click="emitRichTextCommand('subscript')"
+      >下</CheckboxButton>
+      <CheckboxButton
+        style="flex: 1;"
+        :checked="richTextAttrs.code"
+        @click="emitRichTextCommand('code')"
+      >码</CheckboxButton>
+      <CheckboxButton
+        style="flex: 1;"
+        :checked="richTextAttrs.blockquote"
+        @click="emitRichTextCommand('blockquote')"
+      >引</CheckboxButton>
+      <CheckboxButton
+        style="flex: 1;"
+        @click="emitRichTextCommand('clear')"
+      >清</CheckboxButton>
     </CheckboxButtonGroup>
 
     <Divider />
 
-    <RadioGroup class="row" button-style="solid" :value="richTextAttrs.align">
+    <RadioGroup 
+      class="row" 
+      button-style="solid" 
+      :value="richTextAttrs.align"
+      @change="e => emitRichTextCommand('align', e.target.value)"
+    >
       <RadioButton value="left" style="flex: 1;"><AlignLeftOutlined /></RadioButton>
       <RadioButton value="center" style="flex: 1;"><AlignCenterOutlined /></RadioButton>
       <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
     </RadioGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bulletList"><UnorderedListOutlined /></CheckboxButton>
-      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.orderedList"><OrderedListOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;" 
+        :checked="richTextAttrs.bulletList"
+        @click="emitRichTextCommand('bulletList')"
+      ><UnorderedListOutlined /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;" 
+        :checked="richTextAttrs.orderedList"
+        @click="emitRichTextCommand('orderedList')"
+      ><OrderedListOutlined /></CheckboxButton>
     </CheckboxButtonGroup>
 
     <Divider />
@@ -95,15 +154,10 @@
     </div>
 
     <Divider />
-
     <ElementOutline />
-
     <Divider />
-
     <ElementShadow />
-
     <Divider />
-
     <ElementOpacity />
   </div>
 </template>
@@ -222,6 +276,10 @@ export default defineComponent({
       emitter.off(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
     })
 
+    const emitRichTextCommand = (command: string, value?: string) => {
+      emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, { command, value })
+    }
+
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateLineHeight = (value: number) => {
@@ -232,6 +290,12 @@ export default defineComponent({
 
     const updateWordSpace = (value: number) => {
       const props = { wordSpace: value }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    const updateFill = (value: string) => {
+      const props = { fill: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
@@ -247,12 +311,17 @@ export default defineComponent({
       wordSpaceOptions,
       updateLineHeight,
       updateWordSpace,
+      updateFill,
+      emitRichTextCommand,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
+.text-style-panel {
+  user-select: none;
+}
 .row {
   width: 100%;
   display: flex;
