@@ -49,20 +49,20 @@
       </Popover>
     </ButtonGroup>
 
-    <ButtonGroup class="row">
-      <Button style="flex: 1;" :type="richTextAttrs.bold ? 'primary' : 'default'"><BoldOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.em ? 'primary' : 'default'"><ItalicOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.underline ? 'primary' : 'default'"><UnderlineOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.strikethrough ? 'primary' : 'default'"><StrikethroughOutlined /></Button>
-    </ButtonGroup>
+    <CheckboxButtonGroup class="row">
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bold"><BoldOutlined /></CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.em"><ItalicOutlined /></CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.underline"><UnderlineOutlined /></CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.strikethrough"><StrikethroughOutlined /></CheckboxButton>
+    </CheckboxButtonGroup>
 
-    <ButtonGroup class="row">
-      <Button style="flex: 1;" :type="richTextAttrs.superscript ? 'primary' : 'default'">上</Button>
-      <Button style="flex: 1;" :type="richTextAttrs.subscript ? 'primary' : 'default'">下</Button>
-      <Button style="flex: 1;" :type="richTextAttrs.code ? 'primary' : 'default'">码</Button>
-      <Button style="flex: 1;" :type="richTextAttrs.blockquote ? 'primary' : 'default'">引</Button>
-      <Button style="flex: 1;">清</Button>
-    </ButtonGroup>
+    <CheckboxButtonGroup class="row">
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.superscript">上</CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.subscript">下</CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.code">码</CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.blockquote">引</CheckboxButton>
+      <CheckboxButton style="flex: 1;">清</CheckboxButton>
+    </CheckboxButtonGroup>
 
     <Divider />
 
@@ -72,10 +72,10 @@
       <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
     </RadioGroup>
 
-    <ButtonGroup class="row">
-      <Button style="flex: 1;" :type="richTextAttrs.bulletList ? 'primary' : 'default'"><UnorderedListOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.orderedList ? 'primary' : 'default'"><OrderedListOutlined /></Button>
-    </ButtonGroup>
+    <CheckboxButtonGroup class="row">
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bulletList"><UnorderedListOutlined /></CheckboxButton>
+      <CheckboxButton style="flex: 1;" :checked="richTextAttrs.orderedList"><OrderedListOutlined /></CheckboxButton>
+    </CheckboxButtonGroup>
 
     <Divider />
 
@@ -121,6 +121,8 @@ import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import { Select, Input, Button, Divider, Popover, Radio } from 'ant-design-vue'
 import {
   FontColorsOutlined,
@@ -142,7 +144,12 @@ import {
 export default defineComponent({
   name: 'text-style-panel',
   components: {
+    ElementOpacity,
+    ElementOutline,
+    ElementShadow,
     ColorPicker,
+    CheckboxButton,
+    CheckboxButtonGroup,
     Select,
     SelectOption: Select.Option,
     InputGroup: Input.Group,
@@ -166,9 +173,6 @@ export default defineComponent({
     UnorderedListOutlined,
     ColumnHeightOutlined,
     ColumnWidthOutlined,
-    ElementOpacity,
-    ElementOutline,
-    ElementShadow,
   },
   setup() {
     const store = useStore<State>()
