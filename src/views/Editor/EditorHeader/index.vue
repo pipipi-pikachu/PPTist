@@ -33,7 +33,7 @@ export default defineComponent({
 .editor-header {
   background-color: #fff;
   user-select: none;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $borderColor;
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
@@ -45,7 +45,6 @@ export default defineComponent({
 }
 .menu-item {
   font-size: 13px;
-  color: $textColor;
   margin: 0 10px;
   cursor: pointer;
 

@@ -139,7 +139,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .thumbnails {
-  border-right: solid 1px #eee;
+  border-right: solid 1px $borderColor;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -152,7 +152,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $borderColor;
   cursor: pointer;
 }
 .thumbnail-list {

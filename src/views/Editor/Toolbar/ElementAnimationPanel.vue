@@ -138,7 +138,7 @@ export default defineComponent({
   margin-bottom: 10px;
   border-left: 4px solid #aaa;
   background-color: #eee;
-  padding-left: 10px;
+  padding: 2px 0 3px 10px;
 }
 .pool-item-wrapper {
   @include grid-layout-wrapper();
@@ -150,7 +150,7 @@ export default defineComponent({
   height: 40px;
   line-height: 40px;
   text-align: center;
-  background-color: #f5f5f5;
+  background-color: $lightGray;
   cursor: pointer;
 }
 
@@ -158,7 +158,7 @@ export default defineComponent({
   height: 32px;
   display: flex;
   align-items: center;
-  border: 1px solid #eee;
+  border: 1px solid $borderColor;
   padding: 6px;
   border-radius: $borderRadius;
   margin-bottom: 5px;

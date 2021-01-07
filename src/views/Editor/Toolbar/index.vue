@@ -90,7 +90,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .toolbar {
-  border-left: solid 1px #eee;
+  border-left: solid 1px $borderColor;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -106,8 +106,8 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #eee;
+  background-color: $lightGray;
+  border-bottom: 1px solid $borderColor;
   cursor: pointer;
 
   &.active {
@@ -116,7 +116,7 @@ export default defineComponent({
   }
 
   & + .tab {
-    border-left: 1px solid #eee;
+    border-left: 1px solid $borderColor;
   }
 }
 .content {

@@ -5,8 +5,8 @@
   display: none;
 }
 .ant-popover-inner {
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15);
-  border: 1px solid #eee;
+  box-shadow: $boxShadow;
+  border: 1px solid $borderColor;
 }
 .ant-popover-inner-content {
   padding: 12px !important;

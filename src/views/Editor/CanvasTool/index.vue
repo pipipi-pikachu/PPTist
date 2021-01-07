@@ -143,7 +143,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .canvas-tool {
   position: relative;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $borderColor;
   background-color: #fff;
   display: flex;
   justify-content: space-between;

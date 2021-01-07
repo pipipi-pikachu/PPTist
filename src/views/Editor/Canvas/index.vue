@@ -249,7 +249,7 @@ export default defineComponent({
   height: 100%;
   user-select: none;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: $lightGray;
   position: relative;
 }
 .viewport-wrapper {
