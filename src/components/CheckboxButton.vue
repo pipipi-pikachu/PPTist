@@ -24,7 +24,6 @@ export default {
   font-size: 12px;
   padding: 0 15px;
   height: 32px;
-  transition: all 0.3s;
   text-align: center;
   cursor: pointer;
 

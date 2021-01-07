@@ -39,11 +39,10 @@
       <template #item="{ element, index }">
         <div class="sequence-item">
           <div class="index">{{index + 1}}</div>
-          <div class="el-type">{{element.elType}}</div>
-          <div class="animation-type">{{element.animationType}}</div>
+          <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
             <PlayCircleOutlined class="handler-btn" />
-            <DeleteOutlined class="handler-btn" />
+            <CloseOutlined class="handler-btn" />
           </div>
         </div>
       </template>
@@ -63,7 +62,7 @@ import Draggable from 'vuedraggable'
 import { Button, Divider, Popover } from 'ant-design-vue'
 import {
   PlayCircleOutlined,
-  DeleteOutlined,
+  CloseOutlined,
 } from '@ant-design/icons-vue'
 
 const animationTypes: { [key: string]: string } = {}
@@ -80,7 +79,7 @@ export default defineComponent({
     Button,
     Divider,
     PlayCircleOutlined,
-    DeleteOutlined,
+    CloseOutlined,
     Popover,
   },
   setup() {
@@ -163,32 +162,19 @@ export default defineComponent({
   border-radius: $borderRadius;
   margin-bottom: 5px;
 
-  &:hover {
-    .animation-type {
-      display: none;
-    }
-    .handler {
-      display: block;
-    }
-  }
-
   .index {
     flex: 1;
   }
-  .el-type {
-    flex: 2;
-  }
-  .animation-type {
-    flex: 3;
-    text-align: right;
+  .text {
+    flex: 6;
   }
   .handler {
-    display: none;
-    flex: 3;
+    flex: 2;
+    font-size: 15px;
     text-align: right;
   }
   .handler-btn {
-    margin-left: 10px;
+    margin-left: 8px;
     cursor: pointer;
   }
 }
