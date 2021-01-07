@@ -66,11 +66,11 @@
 
     <Divider />
 
-    <ButtonGroup class="row">
-      <Button style="flex: 1;" :type="richTextAttrs.align === 'left' || '' ? 'primary' : 'default'"><AlignLeftOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.align === 'center' ? 'primary' : 'default'"><AlignCenterOutlined /></Button>
-      <Button style="flex: 1;" :type="richTextAttrs.align === 'right' ? 'primary' : 'default'"><AlignRightOutlined /></Button>
-    </ButtonGroup>
+    <RadioGroup class="row" button-style="solid" :value="richTextAttrs.align">
+      <RadioButton value="left" style="flex: 1;"><AlignLeftOutlined /></RadioButton>
+      <RadioButton value="center" style="flex: 1;"><AlignCenterOutlined /></RadioButton>
+      <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
+    </RadioGroup>
 
     <ButtonGroup class="row">
       <Button style="flex: 1;" :type="richTextAttrs.bulletList ? 'primary' : 'default'"><UnorderedListOutlined /></Button>
@@ -83,14 +83,14 @@
       <div style="flex: 2;">行间距：</div>
       <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value)">
         <template #suffixIcon><ColumnHeightOutlined /></template>
-        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}</SelectOption>
+        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">字间距：</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
         <template #suffixIcon><ColumnWidthOutlined /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}</SelectOption>
+        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
 
@@ -121,7 +121,7 @@ import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
-import { Select, Input, Button, Divider, Popover } from 'ant-design-vue'
+import { Select, Input, Button, Divider, Popover, Radio } from 'ant-design-vue'
 import {
   FontColorsOutlined,
   HighlightOutlined,
@@ -150,6 +150,8 @@ export default defineComponent({
     ButtonGroup: Button.Group,
     Divider,
     Popover,
+    RadioGroup: Radio.Group,
+    RadioButton: Radio.Button,
     FontColorsOutlined,
     HighlightOutlined,
     BgColorsOutlined,

@@ -88,7 +88,7 @@ export const getTextAttrs = (view: EditorView) => {
   const backcolor = getAttrValue(view, 'backcolor', 'backcolor') || '#000'
   const fontsize = getAttrValue(view, 'fontsize', 'fontsize') || '12px'
   const fontname = getAttrValue(view, 'fontname', 'fontname') || '微软雅黑'
-  const align = getAttrValueInSelection(view, 'align')
+  const align = getAttrValueInSelection(view, 'align') || 'left'
   const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)
   const isOrderedList = isActiveOfParentNodeType('ordered_list', view.state)
   const isBlockquote = isActiveOfParentNodeType('blockquote', view.state)
