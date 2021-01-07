@@ -80,7 +80,7 @@ export default defineComponent({
 
     watch(handleElement, () => {
       if(!handleElement.value) return
-      outline.value = 'outline' in handleElement.value && handleElement.value.outline || undefined
+      outline.value = 'outline' in handleElement.value ? handleElement.value.outline : undefined
       hasOutline.value = !!outline.value
     }, { deep: true, immediate: true })
 

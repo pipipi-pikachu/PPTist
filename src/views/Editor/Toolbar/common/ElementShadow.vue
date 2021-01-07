@@ -89,7 +89,7 @@ export default defineComponent({
 
     watch(handleElement, () => {
       if(!handleElement.value) return
-      shadow.value = 'shadow' in handleElement.value && handleElement.value.shadow || undefined
+      shadow.value = 'shadow' in handleElement.value ? handleElement.value.shadow : undefined
       hasShadow.value = !!shadow.value
     }, { deep: true, immediate: true })
 
