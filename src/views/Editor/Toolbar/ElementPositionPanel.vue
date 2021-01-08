@@ -1,20 +1,40 @@
 <template>
   <div class="element-positopn-panel">
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'top')">顶</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')">底</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'up')">上移</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'down')">下移</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置顶层">
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconFont type="icon-layer-top" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置底层">
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconFont type="icon-layer-bottom" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上移一层">
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconFont type="icon-layer-up" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下移一层">
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconFont type="icon-layer-down" /></Button>
+      </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="alignElementToCanvas('left')">左</Button>
-      <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')">中</Button>
-      <Button style="flex: 1;" @click="alignElementToCanvas('right')">右</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
+        <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconFont type="icon-align-left" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
+        <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')"><IconFont type="icon-align-vertical-center" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
+        <Button style="flex: 1;" @click="alignElementToCanvas('right')"><IconFont type="icon-align-right" /></Button>
+      </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="alignElementToCanvas('top')">上</Button>
-      <Button style="flex: 1;" @click="alignElementToCanvas('vertical')">中</Button>
-      <Button style="flex: 1;" @click="alignElementToCanvas('bottom')">下</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
+        <Button style="flex: 1;" @click="alignElementToCanvas('top')"><IconFont type="icon-align-top" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
+        <Button style="flex: 1;" @click="alignElementToCanvas('vertical')"><IconFont type="icon-align-horizontal-center" /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
+        <Button style="flex: 1;" @click="alignElementToCanvas('bottom')"><IconFont type="icon-align-bottom" /></Button>
+      </Tooltip>
     </ButtonGroup>
 
     <Divider />
@@ -54,8 +74,12 @@
           style="flex: 4;"
         />
         <template v-if="['image', 'shape'].includes(handleElement.type)">
-          <LockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" v-if="fixedRatio" />
-          <UnlockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" v-else />
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
+            <LockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
+          </Tooltip>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="宽高比锁定" v-else>
+            <UnlockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
+          </Tooltip>
         </template>
         <div style="flex: 1;" v-else></div>
         <InputNumber 
@@ -81,8 +105,12 @@
 
       <div class="row">
         <div style="flex: 3;">旋转：</div>
-        <RotateLeftOutlined class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
-        <RotateRightOutlined class="icon-btn" @click="updateRotate45('+')" style="flex: 2;" />
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="逆时针旋转">
+          <RotateLeftOutlined class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
+        </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顺时针旋转">
+          <RotateRightOutlined class="icon-btn" @click="updateRotate45('+')" style="flex: 2;" />
+        </Tooltip>
         <div style="flex: 1;"></div>
         <InputNumber 
           :min="-180"
@@ -107,13 +135,14 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { InputNumber, Divider, Button } from 'ant-design-vue'
+import { InputNumber, Divider, Button, Tooltip } from 'ant-design-vue'
 import {
   LockOutlined,
   UnlockOutlined,
   RotateLeftOutlined,
   RotateRightOutlined,
 } from '@ant-design/icons-vue'
+import IconFont from '@/components/IconFont'
 
 export default defineComponent({
   name: 'element-positopn-panel',
@@ -122,10 +151,12 @@ export default defineComponent({
     Divider,
     Button,
     ButtonGroup: Button.Group,
+    Tooltip,
     LockOutlined,
     UnlockOutlined,
     RotateLeftOutlined,
     RotateRightOutlined,
+    IconFont,
   },
   setup() {
     const store = useStore<State>()

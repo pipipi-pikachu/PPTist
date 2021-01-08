@@ -29,10 +29,12 @@
             @update:modelValue="value => emitRichTextCommand('color', value)"
           />
         </template>
-        <Button class="text-color-btn" style="flex: 1;">
-          <FontColorsOutlined />
-          <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
-        </Button>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
+          <Button class="text-color-btn" style="flex: 1;">
+            <FontColorsOutlined />
+            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
+          </Button>
+        </Tooltip>
       </Popover>
       <Popover trigger="click">
         <template #content>
@@ -41,10 +43,12 @@
             @update:modelValue="value => emitRichTextCommand('backcolor', value)"
           />
         </template>
-        <Button class="text-color-btn" style="flex: 1;">
-          <HighlightOutlined />
-          <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
-        </Button>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+          <Button class="text-color-btn" style="flex: 1;">
+            <HighlightOutlined />
+            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
+          </Button>
+        </Tooltip>
       </Popover>
       <Popover trigger="click">
         <template #content>
@@ -53,61 +57,81 @@
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <Button class="text-color-btn" style="flex: 1;">
-          <BgColorsOutlined />
-          <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
-        </Button>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文本框填充">
+          <Button class="text-color-btn" style="flex: 1;">
+            <BgColorsOutlined />
+            <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
+          </Button>
+        </Tooltip>
       </Popover>
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="richTextAttrs.bold"
-        @click="emitRichTextCommand('bold')"
-      ><BoldOutlined /></CheckboxButton>
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="richTextAttrs.em"
-        @click="emitRichTextCommand('em')"
-      ><ItalicOutlined /></CheckboxButton>
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="richTextAttrs.underline"
-        @click="emitRichTextCommand('underline')"
-      ><UnderlineOutlined /></CheckboxButton>
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="richTextAttrs.strikethrough"
-        @click="emitRichTextCommand('strikethrough')"
-      ><StrikethroughOutlined /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.bold"
+          @click="emitRichTextCommand('bold')"
+        ><BoldOutlined /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.em"
+          @click="emitRichTextCommand('em')"
+        ><ItalicOutlined /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.underline"
+          @click="emitRichTextCommand('underline')"
+        ><UnderlineOutlined /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.strikethrough"
+          @click="emitRichTextCommand('strikethrough')"
+        ><StrikethroughOutlined /></CheckboxButton>
+      </Tooltip>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton
-        style="flex: 1;"
-        :checked="richTextAttrs.superscript"
-        @click="emitRichTextCommand('superscript')"
-      >上</CheckboxButton>
-      <CheckboxButton
-        style="flex: 1;"
-        :checked="richTextAttrs.subscript"
-        @click="emitRichTextCommand('subscript')"
-      >下</CheckboxButton>
-      <CheckboxButton
-        style="flex: 1;"
-        :checked="richTextAttrs.code"
-        @click="emitRichTextCommand('code')"
-      >码</CheckboxButton>
-      <CheckboxButton
-        style="flex: 1;"
-        :checked="richTextAttrs.blockquote"
-        @click="emitRichTextCommand('blockquote')"
-      >引</CheckboxButton>
-      <CheckboxButton
-        style="flex: 1;"
-        @click="emitRichTextCommand('clear')"
-      >清</CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上标">
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="richTextAttrs.superscript"
+          @click="emitRichTextCommand('superscript')"
+        ><IconFont type="icon-superscript" /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="richTextAttrs.subscript"
+          @click="emitRichTextCommand('subscript')"
+        ><IconFont type="icon-subscript" /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="行内代码">
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="richTextAttrs.code"
+          @click="emitRichTextCommand('code')"
+        ><IconFont type="icon-code" /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="richTextAttrs.blockquote"
+          @click="emitRichTextCommand('blockquote')"
+        ><IconFont type="icon-blockquote" /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
+        <CheckboxButton
+          style="flex: 1;"
+          @click="emitRichTextCommand('clear')"
+        ><IconFont type="icon-clear" /></CheckboxButton>
+      </Tooltip>
     </CheckboxButtonGroup>
 
     <Divider />
@@ -118,22 +142,32 @@
       :value="richTextAttrs.align"
       @change="e => emitRichTextCommand('align', e.target.value)"
     >
-      <RadioButton value="left" style="flex: 1;"><AlignLeftOutlined /></RadioButton>
-      <RadioButton value="center" style="flex: 1;"><AlignCenterOutlined /></RadioButton>
-      <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
+        <RadioButton value="left" style="flex: 1;"><AlignLeftOutlined /></RadioButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
+        <RadioButton value="center" style="flex: 1;"><AlignCenterOutlined /></RadioButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
+        <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
+      </Tooltip>
     </RadioGroup>
 
     <CheckboxButtonGroup class="row">
-      <CheckboxButton 
-        style="flex: 1;" 
-        :checked="richTextAttrs.bulletList"
-        @click="emitRichTextCommand('bulletList')"
-      ><UnorderedListOutlined /></CheckboxButton>
-      <CheckboxButton 
-        style="flex: 1;" 
-        :checked="richTextAttrs.orderedList"
-        @click="emitRichTextCommand('orderedList')"
-      ><OrderedListOutlined /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="项目符号">
+        <CheckboxButton 
+          style="flex: 1;" 
+          :checked="richTextAttrs.bulletList"
+          @click="emitRichTextCommand('bulletList')"
+        ><UnorderedListOutlined /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
+        <CheckboxButton 
+          style="flex: 1;" 
+          :checked="richTextAttrs.orderedList"
+          @click="emitRichTextCommand('orderedList')"
+        ><OrderedListOutlined /></CheckboxButton>
+      </Tooltip>
     </CheckboxButtonGroup>
 
     <Divider />
@@ -177,7 +211,7 @@ import ElementShadow from '../common/ElementShadow.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
-import { Select, Input, Button, Divider, Popover, Radio } from 'ant-design-vue'
+import { Select, Input, Button, Divider, Popover, Radio, Tooltip } from 'ant-design-vue'
 import {
   FontColorsOutlined,
   HighlightOutlined,
@@ -194,6 +228,7 @@ import {
   ColumnHeightOutlined,
   ColumnWidthOutlined,
 } from '@ant-design/icons-vue'
+import IconFont from '@/components/IconFont'
 
 export default defineComponent({
   name: 'text-style-panel',
@@ -213,6 +248,7 @@ export default defineComponent({
     Popover,
     RadioGroup: Radio.Group,
     RadioButton: Radio.Button,
+    Tooltip,
     FontColorsOutlined,
     HighlightOutlined,
     BgColorsOutlined,
@@ -227,6 +263,7 @@ export default defineComponent({
     UnorderedListOutlined,
     ColumnHeightOutlined,
     ColumnWidthOutlined,
+    IconFont,
   },
   setup() {
     const store = useStore<State>()

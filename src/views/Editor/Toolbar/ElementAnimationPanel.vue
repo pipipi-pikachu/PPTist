@@ -44,8 +44,12 @@
           <div class="index">{{index + 1}}</div>
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
-            <PlayCircleOutlined class="handler-btn" @click="runAnimation(element.elId, element.type)" />
-            <CloseOutlined class="handler-btn" @click="deleteAnimation(element.elId)" />
+            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
+              <PlayCircleOutlined class="handler-btn" @click="runAnimation(element.elId, element.type)" />
+            </Tooltip>
+            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
+              <CloseOutlined class="handler-btn" @click="deleteAnimation(element.elId)" />
+            </Tooltip>
           </div>
         </div>
       </template>
@@ -63,7 +67,7 @@ import { ELEMENT_TYPE } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
-import { Button, Divider, Popover } from 'ant-design-vue'
+import { Button, Divider, Popover, Tooltip } from 'ant-design-vue'
 import {
   PlayCircleOutlined,
   CloseOutlined,
@@ -85,6 +89,7 @@ export default defineComponent({
     PlayCircleOutlined,
     CloseOutlined,
     Popover,
+    Tooltip,
   },
   setup() {
     const store = useStore<State>()

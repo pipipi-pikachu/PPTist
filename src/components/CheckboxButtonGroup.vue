@@ -15,7 +15,7 @@ export default {
   display: flex;
   align-items: center;
 
-  ::v-deep .checkbox-button {
+  ::v-deep(.checkbox-button) {
     border-radius: 0;
     border-left-width: 0;
     border-right-width: 0;

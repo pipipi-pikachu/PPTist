@@ -21,7 +21,7 @@ export default {
   outline: 0;
   background-color: #fff;
   border: 1px solid #d9d9d9;
-  font-size: 12px;
+  font-size: 13px;
   padding: 0 15px;
   height: 32px;
   text-align: center;
