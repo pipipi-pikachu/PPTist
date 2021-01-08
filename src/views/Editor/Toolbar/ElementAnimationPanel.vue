@@ -1,7 +1,7 @@
 <template>
   <div class="element-animation-panel">
     <div class="element-animation">
-      <Popover trigger="click">
+      <Popover trigger="click" v-model:visible="animationPoolVisible">
         <template #content>
           <div class="animation-pool">
             <div class="pool-type" v-for="type in animations" :key="type.name">
@@ -12,9 +12,11 @@
                   v-for="item in type.children" :key="item.name"
                   :class="[
                     'animate__animated',
+                    'animate__faster',
                     hoverPreviewAnimation === item.value && `animate__${item.value}`,
                   ]"
                   @mouseover="hoverPreviewAnimation = item.value"
+                  @click="addAnimation(item.value)"
                 >
                   {{item.name}}
                 </div>
@@ -22,7 +24,7 @@
             </div>
           </div>
         </template>
-        <Button class="element-animation-btn">旋转进入</Button>
+        <Button class="element-animation-btn">{{handleElementAnimation || '点击选择动画'}}</Button>
       </Popover>
     </div>
     
@@ -34,6 +36,7 @@
       :animation="300"
       :scroll="true"
       :scrollSensitivity="50"
+      @end="handleDragEnd"
       itemKey="id"
     >
       <template #item="{ element, index }">
@@ -41,8 +44,8 @@
           <div class="index">{{index + 1}}</div>
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
-            <PlayCircleOutlined class="handler-btn" />
-            <CloseOutlined class="handler-btn" />
+            <PlayCircleOutlined class="handler-btn" @click="runAnimation(element.elId, element.type)" />
+            <CloseOutlined class="handler-btn" @click="deleteAnimation(element.elId)" />
           </div>
         </div>
       </template>
@@ -53,10 +56,11 @@
 <script lang="ts">
 import { computed, defineComponent, ref, Ref } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
-import { PPTAnimation, Slide } from '@/types/slides'
+import { MutationTypes, State } from '@/store'
+import { PPTAnimation, PPTElement, Slide } from '@/types/slides'
 import { ANIMATIONS } from '@/configs/animation'
 import { ELEMENT_TYPE } from '@/configs/element'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
 import { Button, Divider, Popover } from 'ant-design-vue'
@@ -84,10 +88,14 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
+    const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
     const currentSlideAnimations: Ref<PPTAnimation[] | null> = computed(() => store.getters.currentSlideAnimations)
     const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
 
     const hoverPreviewAnimation = ref('')
+    const animationPoolVisible = ref(false)
+
+    const { addHistorySnapshot } = useHistorySnapshot()
 
     const animations = ANIMATIONS
 
@@ -109,10 +117,83 @@ export default defineComponent({
       return animationSequence
     })
 
+    const handleElementAnimation = computed(() => {
+      if(!handleElement.value) return null
+      const animations = currentSlideAnimations.value || []
+      const animation = animations.find(item => item.elId === handleElement.value.id)
+      if(!animation) return null
+      return animationTypes[animation.type]
+    })
+
+    const updateElementAnimation = (type: string) => {
+      const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
+        if(item.elId === handleElement.value.id) return { ...item, type }
+        return item
+      })
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      animationPoolVisible.value = false
+      addHistorySnapshot()
+    }
+
+    const addAnimation = (type: string) => {
+      if(handleElementAnimation.value) {
+        updateElementAnimation(type)
+        return
+      }
+      const animations: PPTAnimation[] = currentSlideAnimations.value ? JSON.parse(JSON.stringify(currentSlideAnimations.value)) : []
+      animations.push({
+        elId: handleElement.value.id,
+        type,
+        duration: 1000,
+      })
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      animationPoolVisible.value = false
+      addHistorySnapshot()
+    }
+
+    const deleteAnimation = (elId: string) => {
+      const animations = (currentSlideAnimations.value as PPTAnimation[]).filter(item => item.elId !== elId)
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      addHistorySnapshot()
+    }
+
+    const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
+      const { newIndex, oldIndex } = eventData
+      if(oldIndex === newIndex) return
+
+      const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
+      const animation = animations[oldIndex]
+      animations.splice(oldIndex, 1)
+      animations.splice(newIndex, 0, animation)
+      
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      addHistorySnapshot()
+    }
+
+    const runAnimation = (elId: string, animationType: string) => {
+      const prefix = 'animate__'
+      const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
+      if(elRef) {
+        const animationName = `${prefix}${animationType}`
+        elRef.classList.add(`${prefix}animated`, animationName)
+
+        const handleAnimationEnd = () => {
+          elRef.classList.remove(`${prefix}animated`, animationName)
+        }
+        elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
+      }
+    }
+
     return {
+      animationPoolVisible,
       animations,
       animationSequence,
       hoverPreviewAnimation,
+      handleElementAnimation,
+      addAnimation,
+      deleteAnimation,
+      handleDragEnd,
+      runAnimation,
     }
   },
 })

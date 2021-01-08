@@ -89,11 +89,11 @@ export default defineComponent({
       if(!isFullscreen()) store.commit(MutationTypes.SET_SCREENING, false)
     }
 
-    const prefix = 'animate__'
     const animationIndex = ref(0)
     const animations = computed(() => currentSlide.value.animations || [])
 
     const runAnimation = () => {
+      const prefix = 'animate__'
       const animation = animations.value[animationIndex.value]
       animationIndex.value += 1
 
