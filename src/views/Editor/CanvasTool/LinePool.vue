@@ -47,13 +47,11 @@
 import { defineComponent } from 'vue'
 import { LINE_LIST, LinePoolItem } from '@/configs/lines'
 
-import SvgWrapper from '@/components/SvgWrapper.vue'
 import LinePointMarker from '@/views/components/element/LineElement/LinePointMarker.vue'
 
 export default defineComponent({
   name: 'line-pool',
   components: {
-    SvgWrapper,
     LinePointMarker,
   },
   setup(props, { emit }) {

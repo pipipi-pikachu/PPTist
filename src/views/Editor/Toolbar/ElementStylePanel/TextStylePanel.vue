@@ -31,7 +31,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
           <Button class="text-color-btn" style="flex: 1;">
-            <FontColorsOutlined />
+            <IconFont type="icon-font-colors" />
             <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
           </Button>
         </Tooltip>
@@ -45,7 +45,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
           <Button class="text-color-btn" style="flex: 1;">
-            <HighlightOutlined />
+            <IconFont type="icon-highlight" />
             <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
           </Button>
         </Tooltip>
@@ -59,7 +59,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文本框填充">
           <Button class="text-color-btn" style="flex: 1;">
-            <BgColorsOutlined />
+            <IconFont type="icon-bg-colors" />
             <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
           </Button>
         </Tooltip>
@@ -72,28 +72,28 @@
           style="flex: 1;"
           :checked="richTextAttrs.bold"
           @click="emitRichTextCommand('bold')"
-        ><BoldOutlined /></CheckboxButton>
+        ><IconFont type="icon-bold" /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.em"
           @click="emitRichTextCommand('em')"
-        ><ItalicOutlined /></CheckboxButton>
+        ><IconFont type="icon-italic" /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.underline"
           @click="emitRichTextCommand('underline')"
-        ><UnderlineOutlined /></CheckboxButton>
+        ><IconFont type="icon-underline" /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.strikethrough"
           @click="emitRichTextCommand('strikethrough')"
-        ><StrikethroughOutlined /></CheckboxButton>
+        ><IconFont type="icon-strikethrough" /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -143,13 +143,13 @@
       @change="e => emitRichTextCommand('align', e.target.value)"
     >
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><AlignLeftOutlined /></RadioButton>
+        <RadioButton value="left" style="flex: 1;"><IconFont type="icon-text-align-left" /></RadioButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><AlignCenterOutlined /></RadioButton>
+        <RadioButton value="center" style="flex: 1;"><IconFont type="icon-text-align-center" /></RadioButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><AlignRightOutlined /></RadioButton>
+        <RadioButton value="right" style="flex: 1;"><IconFont type="icon-text-align-right" /></RadioButton>
       </Tooltip>
     </RadioGroup>
 
@@ -159,14 +159,14 @@
           style="flex: 1;" 
           :checked="richTextAttrs.bulletList"
           @click="emitRichTextCommand('bulletList')"
-        ><UnorderedListOutlined /></CheckboxButton>
+        ><IconFont type="icon-unorderedlist" /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
         <CheckboxButton 
           style="flex: 1;" 
           :checked="richTextAttrs.orderedList"
           @click="emitRichTextCommand('orderedList')"
-        ><OrderedListOutlined /></CheckboxButton>
+        ><IconFont type="icon-orderedlist" /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -175,14 +175,14 @@
     <div class="row">
       <div style="flex: 2;">行间距：</div>
       <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value)">
-        <template #suffixIcon><ColumnHeightOutlined /></template>
+        <template #suffixIcon><IconFont type="icon-column-height" /></template>
         <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">字间距：</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
-        <template #suffixIcon><ColumnWidthOutlined /></template>
+        <template #suffixIcon><IconFont type="icon-column-width" /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
@@ -208,27 +208,6 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
-import { Select, Input, Button, Divider, Popover, Radio, Tooltip } from 'ant-design-vue'
-import {
-  FontColorsOutlined,
-  HighlightOutlined,
-  BgColorsOutlined,
-  BoldOutlined,
-  ItalicOutlined,
-  UnderlineOutlined,
-  StrikethroughOutlined,
-  AlignLeftOutlined,
-  AlignCenterOutlined,
-  AlignRightOutlined,
-  OrderedListOutlined,
-  UnorderedListOutlined,
-  ColumnHeightOutlined,
-  ColumnWidthOutlined,
-} from '@ant-design/icons-vue'
-import IconFont from '@/components/IconFont'
 
 export default defineComponent({
   name: 'text-style-panel',
@@ -236,34 +215,6 @@ export default defineComponent({
     ElementOpacity,
     ElementOutline,
     ElementShadow,
-    ColorPicker,
-    CheckboxButton,
-    CheckboxButtonGroup,
-    Select,
-    SelectOption: Select.Option,
-    InputGroup: Input.Group,
-    Button,
-    ButtonGroup: Button.Group,
-    Divider,
-    Popover,
-    RadioGroup: Radio.Group,
-    RadioButton: Radio.Button,
-    Tooltip,
-    FontColorsOutlined,
-    HighlightOutlined,
-    BgColorsOutlined,
-    BoldOutlined,
-    ItalicOutlined,
-    UnderlineOutlined,
-    StrikethroughOutlined,
-    AlignLeftOutlined,
-    AlignCenterOutlined,
-    AlignRightOutlined,
-    OrderedListOutlined,
-    UnorderedListOutlined,
-    ColumnHeightOutlined,
-    ColumnWidthOutlined,
-    IconFont,
   },
   setup() {
     const store = useStore<State>()

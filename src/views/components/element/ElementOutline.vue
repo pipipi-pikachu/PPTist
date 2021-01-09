@@ -23,14 +23,10 @@
 <script lang="ts">
 import { PropType, defineComponent, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
-import SvgWrapper from '@/components/SvgWrapper.vue'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 
 export default defineComponent({
-  name: 'element-outline', 
-  components: {
-    SvgWrapper,
-  },
+  name: 'element-outline',
   props: {
     width: {
       type: Number,

@@ -42,18 +42,8 @@ import { getElementListRange } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCombineElement from '@/hooks/useCombineElement'
 
-import { Button, Divider, Tooltip } from 'ant-design-vue'
-import IconFont from '@/components/IconFont'
-
 export default defineComponent({
   name: 'multi-position-panel',
-  components: {
-    Button,
-    ButtonGroup: Button.Group,
-    Divider,
-    Tooltip,
-    IconFont,
-  },
   setup() {
     const store = useStore<State>()
     const activeElementIdList = computed(() => store.state.activeElementIdList)

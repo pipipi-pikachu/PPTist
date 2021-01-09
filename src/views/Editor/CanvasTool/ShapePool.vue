@@ -31,13 +31,8 @@
 import { defineComponent } from 'vue'
 import { SHAPE_LIST, ShapePoolItem } from '@/configs/shapes'
 
-import SvgWrapper from '@/components/SvgWrapper.vue'
-
 export default defineComponent({
   name: 'shape-pool',
-  components: {
-    SvgWrapper,
-  },
   setup(props, { emit }) {
     const shapeList = SHAPE_LIST
 

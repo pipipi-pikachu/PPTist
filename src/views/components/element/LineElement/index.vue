@@ -60,13 +60,11 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import LinePointMarker from './LinePointMarker.vue'
-import SvgWrapper from '@/components/SvgWrapper.vue'
 
 export default defineComponent({
   name: 'editable-element-shape',
   components: {
     LinePointMarker,
-    SvgWrapper,
   },
   props: {
     elementInfo: {

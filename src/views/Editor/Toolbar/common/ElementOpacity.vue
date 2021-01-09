@@ -21,13 +21,8 @@ import { MutationTypes, State } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { Slider } from 'ant-design-vue'
-
 export default defineComponent({
   name: 'element-opacity',
-  components: {
-    Slider,
-  },
   setup() {
     const store = useStore<State>()
     const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)

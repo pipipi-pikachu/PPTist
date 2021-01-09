@@ -1,35 +1,35 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <UndoOutlined class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
-      <RedoOutlined class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
+      <IconFont type="icon-undo" class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
+      <IconFont type="icon-redo" class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
     </div>
 
     <div class="add-element-handler">
-      <FontSizeOutlined class="handler-item" @click="drawText()" />
+      <IconFont type="icon-font-size" class="handler-item" @click="drawText()" />
       <FileInput @change="files => insertImageElement(files)">
-        <PictureOutlined class="handler-item" />
+        <IconFont type="icon-image" class="handler-item" />
       </FileInput>
       <Popover trigger="click" v-model:visible="isOpenShapePool">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
-        <StarOutlined class="handler-item" />
+        <IconFont type="icon-star" class="handler-item" />
       </Popover>
       <Popover trigger="click" v-model:visible="isOpenLinePool">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <LineOutlined class="handler-item" />
+        <IconFont type="icon-line" class="handler-item" />
       </Popover>
-      <TableOutlined class="handler-item" />
-      <PieChartOutlined class="handler-item" />
+      <IconFont type="icon-table" class="handler-item" />
+      <IconFont type="icon-piechart" class="handler-item" />
     </div>
 
     <div class="right-handler">
-      <MinusOutlined class="handler-item viewport-size" @click="scaleCanvas('-')" />
+      <IconFont type="icon-minus" class="handler-item viewport-size" @click="scaleCanvas('-')" />
       <span class="text">{{canvasScalePercentage}}</span>
-      <PlusOutlined class="handler-item viewport-size" @click="scaleCanvas('+')" />
+      <IconFont type="icon-plus" class="handler-item viewport-size" @click="scaleCanvas('+')" />
     </div>
   </div>
 </template>
@@ -47,38 +47,12 @@ import useCreateElement from '@/hooks/useCreateElement'
 
 import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
-import FileInput from '@/components/FileInput.vue'
-import { Popover } from 'ant-design-vue'
-import {
-  UndoOutlined,
-  RedoOutlined,
-  FontSizeOutlined,
-  PictureOutlined,
-  StarOutlined,
-  LineOutlined,
-  TableOutlined,
-  PieChartOutlined,
-  MinusOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
 
 export default defineComponent({
   name: 'canvas-tool',
   components: {
     ShapePool,
     LinePool,
-    FileInput,
-    UndoOutlined,
-    RedoOutlined,
-    FontSizeOutlined,
-    PictureOutlined,
-    StarOutlined,
-    LineOutlined,
-    TableOutlined,
-    PieChartOutlined,
-    MinusOutlined,
-    PlusOutlined,
-    Popover,
   },
   setup() {
     const store = useStore<State>()

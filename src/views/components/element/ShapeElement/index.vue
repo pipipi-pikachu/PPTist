@@ -49,13 +49,8 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
-import SvgWrapper from '@/components/SvgWrapper.vue'
-
 export default defineComponent({
   name: 'editable-element-shape',
-  components: {
-    SvgWrapper,
-  },
   props: {
     elementInfo: {
       type: Object as PropType<PPTShapeElement>,

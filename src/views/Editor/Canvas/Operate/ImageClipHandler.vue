@@ -52,15 +52,10 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, 
 import { KEYS } from '@/configs/hotkey'
 import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
 
-import SvgWrapper from '@/components/SvgWrapper.vue'
-
 type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
 
 export default defineComponent({
   name: 'image-clip-handler',
-  components: {
-    SvgWrapper,
-  },
   props: {
     src: {
       type: String,

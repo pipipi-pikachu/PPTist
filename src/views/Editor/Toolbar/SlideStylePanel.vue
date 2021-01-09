@@ -1,6 +1,6 @@
 <template>
   <div class="slide-style-panel">
-    slide-style-panel
+    <div>背景填充</div>
   </div>
 </template>
 

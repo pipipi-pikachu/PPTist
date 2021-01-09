@@ -75,10 +75,10 @@
         />
         <template v-if="['image', 'shape'].includes(handleElement.type)">
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
-            <LockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
+            <IconFont type="icon-lock" style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
           </Tooltip>
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="宽高比锁定" v-else>
-            <UnlockOutlined style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
+            <IconFont type="icon-unlock" style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
           </Tooltip>
         </template>
         <div style="flex: 1;" v-else></div>
@@ -106,10 +106,10 @@
       <div class="row">
         <div style="flex: 3;">旋转：</div>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="逆时针旋转">
-          <RotateLeftOutlined class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
+          <IconFont type="icon-rotate-left" class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顺时针旋转">
-          <RotateRightOutlined class="icon-btn" @click="updateRotate45('+')" style="flex: 2;" />
+          <IconFont type="icon-rotate-right" class="icon-btn" @click="updateRotate45('+')" style="flex: 2;" />
         </Tooltip>
         <div style="flex: 1;"></div>
         <InputNumber 
@@ -135,29 +135,8 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { InputNumber, Divider, Button, Tooltip } from 'ant-design-vue'
-import {
-  LockOutlined,
-  UnlockOutlined,
-  RotateLeftOutlined,
-  RotateRightOutlined,
-} from '@ant-design/icons-vue'
-import IconFont from '@/components/IconFont'
-
 export default defineComponent({
   name: 'element-positopn-panel',
-  components: {
-    InputNumber,
-    Divider,
-    Button,
-    ButtonGroup: Button.Group,
-    Tooltip,
-    LockOutlined,
-    UnlockOutlined,
-    RotateLeftOutlined,
-    RotateRightOutlined,
-    IconFont,
-  },
   setup() {
     const store = useStore<State>()
     const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)

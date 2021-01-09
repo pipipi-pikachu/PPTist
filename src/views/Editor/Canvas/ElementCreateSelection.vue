@@ -32,13 +32,8 @@ import { computed, defineComponent, onMounted, reactive, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 
-import SvgWrapper from '@/components/SvgWrapper.vue'
-
 export default defineComponent({
   name: 'element-create-selection',
-  components: {
-    SvgWrapper,
-  },
   setup(props, { emit }) {
     const store = useStore<State>()
     const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)

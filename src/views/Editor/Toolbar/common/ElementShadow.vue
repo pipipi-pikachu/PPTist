@@ -51,7 +51,7 @@
           </template>
           <Button class="color-btn" style="flex: 3;">
             <div class="color-block"></div>
-            <DownOutlined class="color-btn-icon" />
+            <IconFont type="icon-down" class="color-btn-icon" />
           </Button>
         </Popover>
       </div>
@@ -66,20 +66,8 @@ import { MutationTypes, State } from '@/store'
 import { PPTElement, PPTElementShadow } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import ColorPicker from '@/components/ColorPicker/index.vue'
-import { Slider, Button, Popover, Switch } from 'ant-design-vue'
-import { DownOutlined } from '@ant-design/icons-vue'
-
 export default defineComponent({
   name: 'element-shadow',
-  components: {
-    ColorPicker,
-    Slider,
-    Button,
-    Popover,
-    Switch,
-    DownOutlined,
-  },
   setup() {
     const store = useStore<State>()
     const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)

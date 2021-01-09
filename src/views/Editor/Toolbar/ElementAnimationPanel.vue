@@ -45,10 +45,10 @@
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-              <PlayCircleOutlined class="handler-btn" @click="runAnimation(element.elId, element.type)" />
+              <IconFont type="icon-play-circle" class="handler-btn" @click="runAnimation(element.elId, element.type)" />
             </Tooltip>
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-              <CloseOutlined class="handler-btn" @click="deleteAnimation(element.elId)" />
+              <IconFont type="icon-delete" class="handler-btn" @click="deleteAnimation(element.elId)" />
             </Tooltip>
           </div>
         </div>
@@ -67,11 +67,6 @@ import { ELEMENT_TYPE } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
-import { Button, Divider, Popover, Tooltip } from 'ant-design-vue'
-import {
-  PlayCircleOutlined,
-  CloseOutlined,
-} from '@ant-design/icons-vue'
 
 const animationTypes: { [key: string]: string } = {}
 for(const type of ANIMATIONS) {
@@ -84,12 +79,6 @@ export default defineComponent({
   name: 'element-animation-panel',
   components: {
     Draggable,
-    Button,
-    Divider,
-    PlayCircleOutlined,
-    CloseOutlined,
-    Popover,
-    Tooltip,
   },
   setup() {
     const store = useStore<State>()
