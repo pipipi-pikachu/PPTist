@@ -161,4 +161,5 @@ export interface Slide {
   elements: PPTElement[];
   background?: SlideBackground;
   animations?: PPTAnimation[];
+  turningMode?: 'no' | 'fade' | 'slideX' | 'slideY';
 }
