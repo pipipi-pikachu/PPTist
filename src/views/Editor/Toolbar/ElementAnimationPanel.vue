@@ -40,7 +40,7 @@
       itemKey="id"
     >
       <template #item="{ element, index }">
-        <div class="sequence-item">
+        <div class="sequence-item" :class="{ 'active': handleElement.id === element.elId }">
           <div class="index">{{index + 1}}</div>
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
@@ -190,6 +190,7 @@ export default defineComponent({
     }
 
     return {
+      handleElement,
       animationPoolVisible,
       animations,
       animationSequence,
@@ -247,6 +248,10 @@ export default defineComponent({
   padding: 6px;
   border-radius: $borderRadius;
   margin-bottom: 5px;
+
+  &.active {
+    border-color: $themeColor;
+  }
 
   .index {
     flex: 1;
