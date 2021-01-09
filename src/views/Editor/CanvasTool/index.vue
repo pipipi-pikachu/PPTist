@@ -1,29 +1,45 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <IconFont type="icon-undo" class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
-      <IconFont type="icon-redo" class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="撤销">
+        <IconFont type="icon-undo" class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="重做">
+        <IconFont type="icon-redo" class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
+      </Tooltip>
     </div>
 
     <div class="add-element-handler">
-      <IconFont type="icon-font-size" class="handler-item" @click="drawText()" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
+        <IconFont type="icon-font-size" class="handler-item" @click="drawText()" />
+      </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
-        <IconFont type="icon-image" class="handler-item" />
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
+          <IconFont type="icon-image" class="handler-item" />
+        </Tooltip>
       </FileInput>
       <Popover trigger="click" v-model:visible="isOpenShapePool">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
-        <IconFont type="icon-star" class="handler-item" />
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
+          <IconFont type="icon-star" class="handler-item" />
+        </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="isOpenLinePool">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <IconFont type="icon-line" class="handler-item" />
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条">
+          <IconFont type="icon-line" class="handler-item" />
+        </Tooltip>
       </Popover>
-      <IconFont type="icon-table" class="handler-item" />
-      <IconFont type="icon-piechart" class="handler-item" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
+        <IconFont type="icon-table" class="handler-item" />
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
+        <IconFont type="icon-piechart" class="handler-item" />
+      </Tooltip>
     </div>
 
     <div class="right-handler">

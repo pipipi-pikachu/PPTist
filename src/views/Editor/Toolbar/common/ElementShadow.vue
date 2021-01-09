@@ -49,10 +49,7 @@
               @update:modelValue="value => updateShadow({ color: value })"
             />
           </template>
-          <Button class="color-btn" style="flex: 3;">
-            <div class="color-block"></div>
-            <IconFont type="icon-down" class="color-btn-icon" />
-          </Button>
+          <ColorButton :color="shadow.color" style="flex: 3;" />
         </Popover>
       </div>
     </template>
@@ -66,8 +63,13 @@ import { MutationTypes, State } from '@/store'
 import { PPTElement, PPTElementShadow } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import ColorButton from './ColorButton.vue'
+
 export default defineComponent({
   name: 'element-shadow',
+  components: {
+    ColorButton,
+  },
   setup() {
     const store = useStore<State>()
     const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
@@ -114,22 +116,6 @@ export default defineComponent({
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-}
-.color-btn {
-  display: flex;
-  align-items: center;
-  padding: 0 !important;
-}
-.color-block {
-  width: 100px;
-  height: 20px;
-  background-color: #777;
-  margin: 0 8px;
-}
-.color-btn-icon {
-  font-size: 12px;
-  margin-top: 2px;
-  color: #bfbfbf;
 }
 .switch-wrapper {
   text-align: right;

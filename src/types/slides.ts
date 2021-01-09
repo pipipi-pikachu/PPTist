@@ -153,7 +153,7 @@ export interface PPTAnimation {
 export interface SlideBackground {
   type: 'solid' | 'image';
   value: string;
-  size?: 'cover' | 'contain' | 'repeat';
+  size?: 'cover' | 'contain' | 'repeat' | 'initial';
 }
 
 export interface Slide {

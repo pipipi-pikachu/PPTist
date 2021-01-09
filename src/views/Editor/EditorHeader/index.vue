@@ -4,7 +4,6 @@
       <div class="menu-item">文件</div>
       <div class="menu-item">编辑</div>
       <div class="menu-item">设置</div>
-      <div class="menu-item">素材</div>
       <div class="menu-item">演示</div>
       <div class="menu-item">帮助</div>
     </div>

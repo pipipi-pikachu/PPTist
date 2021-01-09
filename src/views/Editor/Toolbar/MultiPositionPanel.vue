@@ -26,8 +26,8 @@
     <Divider />
 
     <ButtonGroup class="row">
-      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;">组合</Button>
-      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;">取消组合</Button>
+      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconFont type="icon-group" />组合</Button>
+      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconFont type="icon-ungroup" />取消组合</Button>
     </ButtonGroup>
   </div>
 </template>

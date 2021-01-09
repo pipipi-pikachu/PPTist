@@ -12,10 +12,12 @@ export default (background: Ref<SlideBackground | undefined>) => {
         return {
           backgroundImage: `url(${value}`,
           backgroundRepeat: 'repeat',
+          backgroundSize: 'initial',
         }
       }
       return {
         backgroundImage: `url(${value}`,
+        backgroundRepeat: 'no-repeat',
         backgroundSize: size,
       }
     }

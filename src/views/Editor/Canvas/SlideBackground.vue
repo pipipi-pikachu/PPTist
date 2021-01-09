@@ -43,7 +43,6 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   background-position: center;
-  background-size: cover;
   position: absolute;
 }
 </style>
