@@ -1,5 +1,8 @@
 <template>
   <div class="element-style-panel">
+    <div v-if="!currentPanelComponent">
+      请先选中要编辑的元素
+    </div>
     <component :is="currentPanelComponent"></component>
   </div>
 </template>
