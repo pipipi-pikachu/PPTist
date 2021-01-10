@@ -40,13 +40,13 @@ export interface PPTTextElement {
 }
 
 export interface ImageElementFilters {
-  'blur': string;
-  'brightness': string;
-  'contrast': string;
-  'grayscale': string;
-  'saturate': string;
-  'hue-rotate': string;
-  'opacity': string;
+  'blur'?: string;
+  'brightness'?: string;
+  'contrast'?: string;
+  'grayscale'?: string;
+  'saturate'?: string;
+  'hue-rotate'?: string;
+  'opacity'?: string;
 }
 export interface PPTImageElement {
   type: 'image';

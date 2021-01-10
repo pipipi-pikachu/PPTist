@@ -62,6 +62,10 @@ export const mutations: MutationTree<State> = {
     state.toolbarState = type
   },
 
+  [MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID](state, elId) {
+    state.clipingImageElementId = elId
+  },
+
   // slides
 
   [MutationTypes.SET_SLIDES](state, slides: Slide[]) {

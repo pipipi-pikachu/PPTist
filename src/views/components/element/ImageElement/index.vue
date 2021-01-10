@@ -1,7 +1,10 @@
 <template>
   <div 
     class="editable-element-image"
-    :class="{ 'lock': elementInfo.lock }"
+    :class="{
+      'lock': elementInfo.lock,
+      'cliping': clipingImageElementId === elementInfo.id,
+    }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -60,7 +63,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-
+import { useStore } from 'vuex'
+import { State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
@@ -92,6 +96,9 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const store = useStore<State>()
+    const clipingImageElementId = computed(() => store.state.clipingImageElementId)
+
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
@@ -151,6 +158,7 @@ export default defineComponent({
     })
 
     return {
+      clipingImageElementId,
       shadowStyle,
       handleSelectElement,
       clipShape,
@@ -168,6 +176,10 @@ export default defineComponent({
 
   &.lock .element-content {
     cursor: default;
+  }
+
+  &.cliping {
+    visibility: hidden;
   }
 }
 

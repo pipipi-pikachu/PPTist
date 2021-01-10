@@ -1,16 +1,23 @@
 <template>
-  <ImageClipHandler
+  <div 
+    class="clip-wrapper" 
+    :style="{
+      width: elementInfo.width + 'px',
+      height: elementInfo.height + 'px',
+    }"
     v-if="isCliping"
-    :src="elementInfo.src"
-    :clipData="elementInfo.clip"
-    :canvasScale="canvasScale"
-    :width="elementInfo.width"
-    :height="elementInfo.height"
-    :top="elementInfo.top"
-    :left="elementInfo.left"
-    :clipPath="clipShape.style"
-    @clip="range => clip(range)"
-  />
+  >
+    <ImageClipHandler
+      :src="elementInfo.src"
+      :clipData="elementInfo.clip"
+      :width="elementInfo.width"
+      :height="elementInfo.height"
+      :top="elementInfo.top"
+      :left="elementInfo.left"
+      :clipPath="clipShape.style"
+      @clip="range => clip(range)"
+    />
+  </div>
   <div class="image-element-operate" v-else>
     <BorderLine 
       class="operate-border-line"
@@ -38,12 +45,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
-
+import { MutationTypes, State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { OperateResizeHandler, ImageClipedEmitData } from '@/types/edit'
+import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'
@@ -85,17 +92,23 @@ export default defineComponent({
   setup(props) {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
+    const clipingImageElementId = computed(() => store.state.clipingImageElementId)
 
     const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
     const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
     const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
-    const clipingImageElId = ref('')
+    const clipShape = computed(() => {
+      if(!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
+      const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
 
-    const isCliping = computed(() => clipingImageElId.value === props.elementInfo.id)
+      return CLIPPATHS[shape]
+    })
+
+    const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 
     const clip = (data: ImageClipedEmitData) => {
-      clipingImageElId.value = ''
+      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
       
       if(!data) return
 
@@ -113,6 +126,7 @@ export default defineComponent({
     }
 
     return {
+      clipShape,
       scaleWidth,
       resizeHandlers,
       borderLines,
@@ -122,3 +136,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.clip-wrapper {
+  position: relative;
+}
+</style>

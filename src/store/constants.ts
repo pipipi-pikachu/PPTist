@@ -12,6 +12,7 @@ export enum MutationTypes {
   SET_CREATING_ELEMENT = 'setCreatingElement',
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
   SET_TOOLBAR_STATE = 'setToolbarState',
+  SET_CLIPING_IMAGE_ELEMENT_ID = 'setClipingImageElementId',
 
   // slides
   SET_SLIDES = 'setSlides',

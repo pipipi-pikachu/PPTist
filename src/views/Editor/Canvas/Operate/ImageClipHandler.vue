@@ -16,7 +16,7 @@
       class="top-image-content" 
       :style="{
         ...topImgWrapperPositionStyle,
-        clipPath: clipPath,
+        clipPath,
       }"
     >
       <img 
@@ -49,6 +49,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
 
@@ -63,14 +65,9 @@ export default defineComponent({
     },
     clipData: {
       type: Object as PropType<ImageClipData>,
-      required: true,
     },
     clipPath: {
       type: String,
-      required: true,
-    },
-    canvasScale: {
-      type: Number,
       required: true,
     },
     width: {
@@ -91,6 +88,9 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+
     const topImgWrapperPosition = reactive({
       top: 0,
       left: 0,
@@ -172,9 +172,7 @@ export default defineComponent({
     }
 
     const clip = () => {
-      if(isSettingClipRange.value) return
-
-      if(!currentRange.value) {
+      if(isSettingClipRange.value || !currentRange.value) {
         emit('clip', null)
         return
       }
@@ -251,8 +249,8 @@ export default defineComponent({
         const currentPageX = e.pageX
         const currentPageY = e.pageY
 
-        const moveX = (currentPageX - startPageX) / props.canvasScale / props.width * 100
-        const moveY = (currentPageY - startPageY) / props.canvasScale / props.height * 100
+        const moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
+        const moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
 
         let targetLeft = originPositopn.left + moveX
         let targetTop = originPositopn.top + moveY
@@ -307,8 +305,8 @@ export default defineComponent({
         const currentPageX = e.pageX
         const currentPageY = e.pageY
 
-        let moveX = (currentPageX - startPageX) / props.canvasScale / props.width * 100
-        let moveY = (currentPageY - startPageY) / props.canvasScale / props.height * 100
+        let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
+        let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
 
         let targetLeft, targetTop, targetWidth, targetHeight
 

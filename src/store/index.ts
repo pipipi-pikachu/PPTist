@@ -31,6 +31,7 @@ export interface State {
   ctrlKeyState: boolean;
   shiftKeyState: boolean;
   screening: boolean;
+  clipingImageElementId: string;
 }
 
 const state: State = {
@@ -52,6 +53,7 @@ const state: State = {
   ctrlKeyState: false,
   shiftKeyState: false,
   screening: false,
+  clipingImageElementId: '',
 }
 
 export default createStore({
