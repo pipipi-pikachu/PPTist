@@ -1,10 +1,7 @@
 <template>
   <div 
     class="editable-element-image"
-    :class="{
-      'lock': elementInfo.lock,
-      'cliping': clipingImageElementId === elementInfo.id,
-    }"
+    :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -14,8 +11,20 @@
     }"
     @mousedown="$event => handleSelectElement($event)" 
   >
+    <ImageClipHandler
+      v-if="isCliping"
+      :src="elementInfo.src"
+      :clipData="elementInfo.clip"
+      :width="elementInfo.width"
+      :height="elementInfo.height"
+      :top="elementInfo.top"
+      :left="elementInfo.left"
+      :clipPath="clipShape.style"
+      @clip="range => clip(range)"
+    />
     <div 
       class="element-content"
+      v-else
       v-contextmenu="contextmenus"
       :style="{
         filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
@@ -64,7 +73,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
-import { State } from '@/store'
+import { MutationTypes, State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
@@ -73,7 +82,8 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'
 import ImagePolygonOutline from './ImagePolygonOutline.vue'
-
+import ImageClipHandler from './ImageClipHandler.vue'
+import { ImageClipedEmitData } from '@/types/edit'
 
 export default defineComponent({
   name: 'editable-element-image',
@@ -81,6 +91,7 @@ export default defineComponent({
     ImageRectOutline,
     ImageEllipseOutline,
     ImagePolygonOutline,
+    ImageClipHandler,
   },
   props: {
     elementInfo: {
@@ -98,6 +109,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore<State>()
     const clipingImageElementId = computed(() => store.state.clipingImageElementId)
+    const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
@@ -157,7 +169,27 @@ export default defineComponent({
       return ''
     })
 
+    const clip = (data: ImageClipedEmitData) => {
+      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
+      
+      if(!data) return
+
+      const { range, position } = data
+      const originClip = props.elementInfo.clip || {}
+      
+      const _props = {
+        clip: { ...originClip, range },
+        left: props.elementInfo.left + position.left,
+        top: props.elementInfo.top + position.top,
+        width: props.elementInfo.width + position.width,
+        height: props.elementInfo.height + position.height,
+      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: props.elementInfo.id, props: _props })
+    }
+
     return {
+      isCliping,
+      clip,
       clipingImageElementId,
       shadowStyle,
       handleSelectElement,
@@ -176,10 +208,6 @@ export default defineComponent({
 
   &.lock .element-content {
     cursor: default;
-  }
-
-  &.cliping {
-    visibility: hidden;
   }
 }
 

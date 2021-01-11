@@ -1,24 +1,5 @@
 <template>
-  <div 
-    class="clip-wrapper" 
-    :style="{
-      width: elementInfo.width + 'px',
-      height: elementInfo.height + 'px',
-    }"
-    v-if="isCliping"
-  >
-    <ImageClipHandler
-      :src="elementInfo.src"
-      :clipData="elementInfo.clip"
-      :width="elementInfo.width"
-      :height="elementInfo.height"
-      :top="elementInfo.top"
-      :left="elementInfo.left"
-      :clipPath="clipShape.style"
-      @clip="range => clip(range)"
-    />
-  </div>
-  <div class="image-element-operate" v-else>
+  <div class="image-element-operate" :class="{ 'cliping': isCliping }">
     <BorderLine 
       class="operate-border-line"
       v-for="line in borderLines" 
@@ -47,16 +28,14 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
-import { OperateResizeHandler, ImageClipedEmitData } from '@/types/edit'
-import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
+import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
-import ImageClipHandler from './ImageClipHandler.vue'
 
 export default defineComponent({
   name: 'image-element-operate',
@@ -65,7 +44,6 @@ export default defineComponent({
     RotateHandler,
     ResizeHandler,
     BorderLine,
-    ImageClipHandler,
   },
   props: {
     elementInfo: {
@@ -93,52 +71,24 @@ export default defineComponent({
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
     const clipingImageElementId = computed(() => store.state.clipingImageElementId)
+    const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 
     const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
     const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
     const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
-    const clipShape = computed(() => {
-      if(!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
-      const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
-
-      return CLIPPATHS[shape]
-    })
-
-    const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
-
-    const clip = (data: ImageClipedEmitData) => {
-      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
-      
-      if(!data) return
-
-      const { range, position } = data
-      const originClip = props.elementInfo.clip || {}
-      
-      const _props = {
-        clip: { ...originClip, range },
-        left: props.elementInfo.left + position.left,
-        top: props.elementInfo.top + position.top,
-        width: props.elementInfo.width + position.width,
-        height: props.elementInfo.height + position.height,
-      }
-      console.log(_props)
-    }
-
     return {
-      clipShape,
+      isCliping,
       scaleWidth,
       resizeHandlers,
       borderLines,
-      isCliping,
-      clip,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.clip-wrapper {
-  position: relative;
+.image-element-operate.cliping {
+  visibility: hidden;
 }
 </style>
