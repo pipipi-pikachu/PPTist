@@ -5,7 +5,38 @@
       :style="{ backgroundImage: `url(${handleElement.src})` }"
     ></div>
 
-    <Button class="full-width-btn" @click="clipImage()">裁剪图片</Button>
+    <Popover trigger="click" v-model:visible="clipPanelVisible">
+      <template #content>
+        <div class="clip">
+          <Button class="full-width-btn" @click="clipImage()">裁剪</Button>
+
+          <div class="title">按形状裁剪：</div>
+          <div class="shape-clip">
+            <div 
+              class="shape-clip-item" 
+              v-for="(item, index) in shapeClipPathOptions" 
+              :key="index"
+              @click="presetImageClip(index)"
+            >
+              <div class="shape" :style="{ clipPath: item.style }"></div>
+            </div>
+          </div>
+
+          <template v-for="type in ratioClipOptions" :key="type.label">
+            <div class="title" v-if="type.label">{{type.label}}：</div>
+            <ButtonGroup class="row">
+              <Button 
+                style="flex: 1;"
+                v-for="item in type.children"
+                :key="item.key"
+                @click="presetImageClip('rect', item.ratio)"
+              >{{item.key}}</Button>
+            </ButtonGroup>
+          </template>
+        </div>
+      </template>
+      <Button class="full-width-btn">裁剪图片</Button>
+    </Popover>
 
     <Popover trigger="click">
       <template #content>
@@ -62,6 +93,7 @@ import { computed, defineComponent, ref, Ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
+import { CLIPPATHS } from '@/configs/imageClip'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
@@ -87,6 +119,40 @@ const defaultFilters: FilterOption[] = [
   { label: '不透明度', key: 'opacity', default: 100, value: 100, unit: '%', max: 100, step: 5 },
 ]
 
+const shapeClipPathOptions = CLIPPATHS
+const ratioClipOptions = [
+  {
+    label: '纵横比（方形）',
+    children: [
+      { key: '1:1', ratio: 1 / 1 },
+    ],
+  },
+  {
+    label: '纵横比（纵向）',
+    children: [
+      { key: '2:3', ratio: 3 / 2 },
+      { key: '3:4', ratio: 4 / 3 },
+      { key: '3:5', ratio: 5 / 3 },
+      { key: '4:5', ratio: 5 / 4 },
+    ],
+  },
+  {
+    label: '纵横比（横向）',
+    children: [
+      { key: '3:2', ratio: 2 / 3 },
+      { key: '4:3', ratio: 3 / 4 },
+      { key: '5:3', ratio: 3 / 5 },
+      { key: '5:4', ratio: 4 / 5 },
+    ],
+  },
+  {
+    children: [
+      { key: '16:9', ratio: 9 / 16 },
+      { key: '16:10', ratio: 10 / 16 },
+    ],
+  },
+]
+
 export default defineComponent({
   name: 'image-style-panel',
   components: {
@@ -96,6 +162,8 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const handleElement: Ref<PPTImageElement> = computed(() => store.getters.handleElement)
+
+    const clipPanelVisible = ref(false)
 
     const flip = ref({
       x: 0,
@@ -141,18 +209,94 @@ export default defineComponent({
     }
 
     const clipImage = () => {
-      setTimeout(() => {
-        store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, handleElement.value.id)
-      }, 0)
+      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, handleElement.value.id)
+      clipPanelVisible.value = false
+    }
+
+    const presetImageClip = (shape: string, ratio = 0) => {
+      // 图片当前宽高位置、裁剪范围
+      const imgWidth = handleElement.value.width
+      const imgHeight = handleElement.value.height
+      const imgLeft = handleElement.value.left
+      const imgTop = handleElement.value.top
+      const originClipRange = handleElement.value.clip ? handleElement.value.clip.range : [[0, 0], [100, 100]]
+
+      // 图片原本未裁剪过时的宽高位置
+      const originWidth = imgWidth / ((originClipRange[1][0] - originClipRange[0][0]) / 100)
+      const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
+      const originLeft = imgLeft - originWidth * (originClipRange[0][0] / 100)
+      const originTop = imgTop - originHeight * (originClipRange[0][1] / 100)
+      
+      // 取消裁剪（移除裁剪属性，并将宽高位置设置为原本未裁剪过时的状态）
+      if(shape === 'none') {
+        store.commit(MutationTypes.UPDATE_ELEMENT, {
+          id: handleElement.value.id,
+          props: {
+            left: originLeft,
+            top: originTop,
+            width: originWidth,
+            height: originHeight,
+          },
+        })
+        store.commit(MutationTypes.REMOVE_ELEMENT_PROP, {
+          id: handleElement.value.id,
+          propName: 'clip',
+        })
+        clipPanelVisible.value = false
+      }
+
+      // 设置形状和纵横比
+      else if(ratio) {
+        const imageRatio = originHeight / originWidth
+
+        const min = 0
+        const max = 100
+        let range
+
+        if(imageRatio > ratio) {
+          const distance = ((1 - ratio / imageRatio) / 2) * 100
+          range = [[min, distance], [max, max - distance]]
+        }
+        else {
+          const distance = ((1 - imageRatio / ratio) / 2) * 100
+          range = [[distance, min], [max - distance, max]]
+        }
+        store.commit(MutationTypes.UPDATE_ELEMENT, {
+          id: handleElement.value.id,
+          props: {
+            clip: { ...handleElement.value.clip, shape, range },
+            left: originLeft + originWidth * (range[0][0] / 100),
+            top: originTop + originHeight * (range[0][1] / 100),
+            width: originWidth * (range[1][0] - range[0][0]) / 100,
+            height: originHeight * (range[1][1] - range[0][1]) / 100,
+          },
+        })
+        clipImage()
+      }
+
+      // 仅设置形状（维持目前的裁剪范围）
+      else {
+        store.commit(MutationTypes.UPDATE_ELEMENT, {
+          id: handleElement.value.id,
+          props: {
+            clip: { ...handleElement.value.clip, shape, range: originClipRange }
+          },
+        })
+        clipImage()
+      }
     }
 
     return {
+      clipPanelVisible,
+      shapeClipPathOptions,
+      ratioClipOptions,
       filterOptions,
       flip,
       handleElement,
       updateImage,
       updateFilter,
       clipImage,
+      presetImageClip,
     }
   },
 })
@@ -201,6 +345,34 @@ export default defineComponent({
   .value {
     width: 40px;
     text-align: right;
+  }
+}
+
+.clip {
+  width: 280px;
+  font-size: 12px;
+
+  .title {
+    margin-bottom: 5px;
+  }
+}
+.shape-clip {
+  margin-bottom: 10px;
+
+  @include grid-layout-wrapper();
+}
+.shape-clip-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  @include grid-layout-item(5, 19%);
+
+  .shape {
+    width: 40px;
+    height: 40px;
+    background-color: #e1e1e1;
   }
 }
 </style>

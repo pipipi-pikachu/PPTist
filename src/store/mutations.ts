@@ -6,6 +6,11 @@ import { CreatingElement } from '@/types/edit'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
 
+interface RemoveElementPropData {
+  id: string;
+  propName: string;
+}
+
 interface UpdateElementData {
   id: string | string[];
   props: Partial<PPTElement>;
@@ -111,6 +116,18 @@ export const mutations: MutationTree<State> = {
     const slide = state.slides[slideIndex]
     const elements = slide.elements.map(el => {
       return elIdList.includes(el.id) ? { ...el, ...props } : el
+    })
+    state.slides[slideIndex].elements = (elements as PPTElement[])
+  },
+
+  [MutationTypes.REMOVE_ELEMENT_PROP](state, data: RemoveElementPropData) {
+    const { id, propName } = data
+
+    const slideIndex = state.slideIndex
+    const slide = state.slides[slideIndex]
+    const elements = slide.elements.map(el => {
+      if(el.id === id) delete el[propName]
+      return el
     })
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },

@@ -15,7 +15,9 @@ const clickListener = (el: HTMLElement, event: MouseEvent, binding: DirectiveBin
 const ClickOutsideDirective: Directive = {
   mounted(el: HTMLElement, binding) {
     el[CTX_CLICK_OUTSIDE_HANDLER] = (event: MouseEvent) => clickListener(el, event, binding)
-    document.addEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
+    setTimeout(() => {
+      document.addEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
+    }, 0)
   },
   
   unmounted(el: HTMLElement) {
