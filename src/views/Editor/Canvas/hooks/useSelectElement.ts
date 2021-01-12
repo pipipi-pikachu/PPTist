@@ -66,7 +66,8 @@ export default (
       store.commit(MutationTypes.SET_HANDLE_ELEMENT_ID, element.id)
     }
 
-    else if(activeGroupElementId.value !== element.id && element.groupId) {
+    // 如果被点击的元素是当前操作元素，且没有按下多选按钮，则该元素下次保持该状态再次被点击时，将被设置为多选元素中的激活成员
+    else if(activeGroupElementId.value !== element.id) {
       const startPageX = e.pageX
       const startPageY = e.pageY
 
