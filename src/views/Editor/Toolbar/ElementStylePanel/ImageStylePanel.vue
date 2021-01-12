@@ -5,38 +5,39 @@
       :style="{ backgroundImage: `url(${handleElement.src})` }"
     ></div>
 
-    <Popover trigger="click" v-model:visible="clipPanelVisible">
-      <template #content>
-        <div class="clip">
-          <Button class="full-width-btn" @click="clipImage()">裁剪</Button>
-
-          <div class="title">按形状裁剪：</div>
-          <div class="shape-clip">
-            <div 
-              class="shape-clip-item" 
-              v-for="(item, index) in shapeClipPathOptions" 
-              :key="index"
-              @click="presetImageClip(index)"
-            >
-              <div class="shape" :style="{ clipPath: item.style }"></div>
+    <ButtonGroup class="row">
+      <Button style="flex: 5;" @click="clipImage()">裁剪图片</Button>
+      <Popover trigger="click" v-model:visible="clipPanelVisible">
+        <template #content>
+          <div class="clip">
+            <div class="title">按形状裁剪：</div>
+            <div class="shape-clip">
+              <div 
+                class="shape-clip-item" 
+                v-for="(item, index) in shapeClipPathOptions" 
+                :key="index"
+                @click="presetImageClip(index)"
+              >
+                <div class="shape" :style="{ clipPath: item.style }"></div>
+              </div>
             </div>
-          </div>
 
-          <template v-for="type in ratioClipOptions" :key="type.label">
-            <div class="title" v-if="type.label">{{type.label}}：</div>
-            <ButtonGroup class="row">
-              <Button 
-                style="flex: 1;"
-                v-for="item in type.children"
-                :key="item.key"
-                @click="presetImageClip('rect', item.ratio)"
-              >{{item.key}}</Button>
-            </ButtonGroup>
-          </template>
-        </div>
-      </template>
-      <Button class="full-width-btn">裁剪图片</Button>
-    </Popover>
+            <template v-for="type in ratioClipOptions" :key="type.label">
+              <div class="title" v-if="type.label">{{type.label}}：</div>
+              <ButtonGroup class="row">
+                <Button 
+                  style="flex: 1;"
+                  v-for="item in type.children"
+                  :key="item.key"
+                  @click="presetImageClip('rect', item.ratio)"
+                >{{item.key}}</Button>
+              </ButtonGroup>
+            </template>
+          </div>
+        </template>
+        <Button class="no-padding" style="flex: 1;"><IconFont type="icon-down" /></Button>
+      </Popover>
+    </ButtonGroup>
 
     <Popover trigger="click">
       <template #content>
@@ -83,8 +84,10 @@
     <ElementShadow />
     <Divider />
     
-    <Button class="full-width-btn">替换图片</Button>
-    <Button class="full-width-btn">重置样式</Button>
+    <FileInput @change="files => replaceImage(files)">
+      <Button class="full-width-btn">替换图片</Button>
+    </FileInput>
+    <Button class="full-width-btn" @click="resetImage()">重置样式</Button>
   </div>
 </template>
 
@@ -94,6 +97,7 @@ import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
+import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
@@ -213,7 +217,7 @@ export default defineComponent({
       clipPanelVisible.value = false
     }
 
-    const presetImageClip = (shape: string, ratio = 0) => {
+    const getImageElementDataBeforeClip = () => {
       // 图片当前宽高位置、裁剪范围
       const imgWidth = handleElement.value.width
       const imgHeight = handleElement.value.height
@@ -226,27 +230,27 @@ export default defineComponent({
       const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
       const originLeft = imgLeft - originWidth * (originClipRange[0][0] / 100)
       const originTop = imgTop - originHeight * (originClipRange[0][1] / 100)
-      
-      // 取消裁剪（移除裁剪属性，并将宽高位置设置为原本未裁剪过时的状态）
-      if(shape === 'none') {
-        store.commit(MutationTypes.UPDATE_ELEMENT, {
-          id: handleElement.value.id,
-          props: {
-            left: originLeft,
-            top: originTop,
-            width: originWidth,
-            height: originHeight,
-          },
-        })
-        store.commit(MutationTypes.REMOVE_ELEMENT_PROP, {
-          id: handleElement.value.id,
-          propName: 'clip',
-        })
-        clipPanelVisible.value = false
-      }
 
+      return {
+        originClipRange,
+        originWidth,
+        originHeight,
+        originLeft,
+        originTop,
+      }
+    }
+
+    const presetImageClip = (shape: string, ratio = 0) => {
+      const {
+        originClipRange,
+        originWidth,
+        originHeight,
+        originLeft,
+        originTop,
+      } = getImageElementDataBeforeClip()
+      
       // 设置形状和纵横比
-      else if(ratio) {
+      if(ratio) {
         const imageRatio = originHeight / originWidth
 
         const min = 0
@@ -271,9 +275,7 @@ export default defineComponent({
             height: originHeight * (range[1][1] - range[0][1]) / 100,
           },
         })
-        clipImage()
       }
-
       // 仅设置形状（维持目前的裁剪范围）
       else {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
@@ -282,8 +284,46 @@ export default defineComponent({
             clip: { ...handleElement.value.clip, shape, range: originClipRange }
           },
         })
-        clipImage()
       }
+      clipImage()
+      addHistorySnapshot()
+    }
+
+    const replaceImage = (files: File[]) => {
+      const imageFile = files[0]
+      if(!imageFile) return
+      getImageDataURL(imageFile).then(dataURL => {
+        const props = { src: dataURL }
+        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      })
+      addHistorySnapshot()
+    }
+
+    const resetImage = () => {
+      if(handleElement.value.clip) {
+        const {
+          originWidth,
+          originHeight,
+          originLeft,
+          originTop,
+        } = getImageElementDataBeforeClip()
+
+        store.commit(MutationTypes.UPDATE_ELEMENT, {
+          id: handleElement.value.id,
+          props: {
+            left: originLeft,
+            top: originTop,
+            width: originWidth,
+            height: originHeight,
+          },
+        })
+      }
+
+      store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
+        id: handleElement.value.id,
+        propName: ['clip', 'outline', 'flip', 'shadow', 'filter'],
+      })
+      addHistorySnapshot()
     }
 
     return {
@@ -297,6 +337,8 @@ export default defineComponent({
       updateFilter,
       clipImage,
       presetImageClip,
+      replaceImage,
+      resetImage,
     }
   },
 })

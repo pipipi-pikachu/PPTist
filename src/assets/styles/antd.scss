@@ -13,6 +13,10 @@
 }
 .ant-btn {
   font-size: 13px !important;
+
+  &.no-padding {
+    padding: 0;
+  }
 }
 .ant-radio-group {
   font-size: 13px !important;

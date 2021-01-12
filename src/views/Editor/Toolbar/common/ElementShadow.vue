@@ -10,7 +10,7 @@
       <div class="row">
         <div style="flex: 2;">水平阴影：</div>
         <Slider 
-          :min="1" 
+          :min="0" 
           :max="10" 
           :step="1" 
           :value="shadow.h" 
@@ -21,7 +21,7 @@
       <div class="row">
         <div style="flex: 2;">垂直阴影：</div>
         <Slider
-          :min="1"
+          :min="0"
           :max="10"
           :step="1"
           :value="shadow.v"

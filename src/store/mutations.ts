@@ -1,4 +1,5 @@
 import { MutationTree } from 'vuex'
+import omit from 'lodash/omit'
 import { MutationTypes } from './constants'
 import { State } from './index'
 import { Slide, PPTElement } from '@/types/slides'
@@ -8,7 +9,7 @@ import { isSupportFontFamily } from '@/utils/fontFamily'
 
 interface RemoveElementPropData {
   id: string;
-  propName: string;
+  propName: string | string[];
 }
 
 interface UpdateElementData {
@@ -120,14 +121,14 @@ export const mutations: MutationTree<State> = {
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },
 
-  [MutationTypes.REMOVE_ELEMENT_PROP](state, data: RemoveElementPropData) {
+  [MutationTypes.REMOVE_ELEMENT_PROPS](state, data: RemoveElementPropData) {
     const { id, propName } = data
+    const propsNames = typeof propName === 'string' ? [propName] : propName
 
     const slideIndex = state.slideIndex
     const slide = state.slides[slideIndex]
     const elements = slide.elements.map(el => {
-      if(el.id === id) delete el[propName]
-      return el
+      return el.id === id ? omit(el, propsNames) : el
     })
     state.slides[slideIndex].elements = (elements as PPTElement[])
   },

@@ -22,7 +22,7 @@ export enum MutationTypes {
   UPDATE_SLIDE_INDEX = 'updateSlideIndex',
   ADD_ELEMENT = 'addElement',
   UPDATE_ELEMENT = 'updateElement',
-  REMOVE_ELEMENT_PROP = 'removeElementProp',
+  REMOVE_ELEMENT_PROPS = 'removeElementProps',
 
   // snapshot
   SET_SNAPSHOT_CURSOR = 'setSnapshotCursor',
