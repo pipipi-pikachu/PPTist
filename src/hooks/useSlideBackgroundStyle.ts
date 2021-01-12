@@ -8,6 +8,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
     const { type, value, size } = background.value
     if(type === 'solid') return { backgroundColor: value }
     else if(type === 'image') {
+      if(!value) return { backgroundColor: '#fff' }
       if(size === 'repeat') {
         return {
           backgroundImage: `url(${value}`,

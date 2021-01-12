@@ -35,10 +35,7 @@
     <div class="background-image-wrapper" v-if="background.type === 'image'">
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
-          <div 
-            class="content"
-            :style="backgroundStyle"
-          >
+          <div class="content" :style="{ backgroundImage: `url(${background.value})` }">
             <IconFont type="icon-plus" />
           </div>
         </div>
@@ -57,7 +54,6 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './common/ColorButton.vue'
 import { getImageDataURL } from '@/utils/image'
-import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 export default defineComponent({
   name: 'slide-style-panel',
@@ -78,8 +74,6 @@ export default defineComponent({
       }
       return currentSlide.value.background
     })
-
-    const { backgroundStyle } = useSlideBackgroundStyle(background)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -126,7 +120,6 @@ export default defineComponent({
 
     return {
       background,
-      backgroundStyle,
       updateBackgroundType,
       updateBackground,
       uploadBackgroundImage,
@@ -172,6 +165,8 @@ export default defineComponent({
     justify-content: center;
     align-items: center;
     background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
     cursor: pointer;
   }
 }
