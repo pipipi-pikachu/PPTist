@@ -29,6 +29,7 @@ import {
   Switch,
   Radio,
   Input,
+  Modal,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -48,6 +49,7 @@ app.component('RadioGroup', Radio.Group)
 app.component('RadioButton', Radio.Button)
 app.component('Input', Input)
 app.component('InputGroup', Input.Group)
+app.component('Modal', Modal)
 
 app.use(contextmenu)
 app.use(clickOutside)

@@ -8,12 +8,13 @@
       <div 
         :class="[
           'slide-item', 
+          `turning-mode-${slide.turningMode || 'slideY'}`,
           {
             'show': index === slideIndex,
             'prev': index < slideIndex,
             'next': index > slideIndex,
           }
-        ]" 
+        ]"
         v-for="(slide, index) in slides" 
         :key="slide.id"
       >
@@ -32,6 +33,33 @@
         </div>
       </div>
     </div>
+
+    <Modal
+      v-model:visible="slideListModelVisible" 
+      :footer="null" 
+      centered
+      :width="1020"
+      :bodyStyle="{ padding: '50px 20px 20px 20px' }"
+    >
+      <div class="slide-list-model">
+        <div 
+          class="thumbnail"
+          :class="{ 'active': index === slideIndex }"
+          v-for="(slide, index) in slides" 
+          :key="slide.id"
+          @click="turnSlideToIndex(index)"
+        >
+          <ThumbnailSlide :slide="slide" :size="150" />
+        </div>
+      </div>
+    </Modal>
+
+    <div class="tools">
+      <IconFont class="tool-btn" type="icon-left-circle" @click="execPrev()" />
+      <IconFont class="tool-btn" type="icon-right-circle" @click="execNext()" />
+      <IconFont class="tool-btn" type="icon-appstore" @click="slideListModelVisible = true" />
+      <IconFont class="tool-btn" type="icon-edit" />
+    </div>
   </div>
 </template>
 
@@ -40,18 +68,20 @@ import { computed, defineComponent, onMounted, onUnmounted, Ref, ref } from 'vue
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { MutationTypes, State } from '@/store'
+import { Slide } from '@/types/slides'
 import { exitFullscreen, isFullscreen } from '@/utils/fullscreen'
 import { VIEWPORT_ASPECT_RATIO, VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ScreenSlide from './ScreenSlide.vue'
-import { Slide } from '@/types/slides'
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
   name: 'screen',
   components: {
     ScreenSlide,
+    ThumbnailSlide,
   },
   setup() {
     const store = useStore<State>()
@@ -62,6 +92,8 @@ export default defineComponent({
     const slideWidth = ref(0)
     const slideHeight = ref(0)
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
+
+    const slideListModelVisible = ref(false)
 
     const setSlideContentSize = () => {
       const winWidth = document.body.clientWidth
@@ -158,6 +190,12 @@ export default defineComponent({
       animationIndex.value = 0
     }
 
+    const turnSlideToIndex = (index: number) => {
+      slideListModelVisible.value = false
+      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
+      animationIndex.value = 0
+    }
+
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
@@ -188,6 +226,10 @@ export default defineComponent({
       mousewheelListener,
       animationIndex,
       contextmenus,
+      execPrev,
+      execNext,
+      slideListModelVisible,
+      turnSlideToIndex,
     }
   },
 })
@@ -212,17 +254,48 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100%;
-  transition-property: transform;
-  transition-duration: .4s;
 
   &.show {
     z-index: 2;
   }
-  &.prev {
-    transform: translateY(-100%);
+
+  &.turning-mode-no {
+    &.prev {
+      transform: translateY(-100%);
+    }
+    &.next {
+      transform: translateY(100%);
+    }
   }
-  &.next {
-    transform: translateY(100%);
+  &.turning-mode-fade {
+    transition: opacity .75s;
+
+    &.prev {
+      pointer-events: none;
+      opacity: 0;
+    }
+    &.next {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+  &.turning-mode-slideX {
+    transition: transform .35s;
+    &.prev {
+      transform: translateX(-100%);
+    }
+    &.next {
+      transform: translateX(100%);
+    }
+  }
+  &.turning-mode-slideY {
+    transition: transform .35s;
+    &.prev {
+      transform: translateY(-100%);
+    }
+    &.next {
+      transform: translateY(100%);
+    }
   }
 }
 .slide-content {
@@ -234,5 +307,48 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.tools {
+  position: fixed;
+  bottom: 8px;
+  left: 8px;
+  font-size: 25px;
+  color: #666;
+  z-index: 10;
+  cursor: pointer;
+}
+.tool-btn {
+  opacity: .35;
+
+  &:hover {
+    opacity: .7;
+  }
+  & + .tool-btn {
+    margin-left: 8px;
+  }
+}
+
+.slide-list-model {
+  height: 600px;
+  padding: 5px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: overlay;
+
+  .thumbnail {
+    width: 150px;
+    margin-bottom: 12px;
+    outline: 1px solid rgba($color: $themeColor, $alpha: .1);
+
+    &.active {
+      outline-color: $themeColor;
+    }
+
+    &:not(:nth-child(6n)) {
+      margin-right: 12px;
+    }
+  }
 }
 </style>

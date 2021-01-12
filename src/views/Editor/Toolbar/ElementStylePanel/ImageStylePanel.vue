@@ -321,7 +321,7 @@ export default defineComponent({
 
       store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
         id: handleElement.value.id,
-        propName: ['clip', 'outline', 'flip', 'shadow', 'filter'],
+        propName: ['clip', 'outline', 'flip', 'shadow', 'filters'],
       })
       addHistorySnapshot()
     }
