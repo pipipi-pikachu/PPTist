@@ -3,14 +3,34 @@
     <canvas class="canvas" ref="canvasRef"
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
-      @mouseup="handleMouseup"
-      @mouseout="handleMouseup"
+      @mouseup="handleMouseup()"
+      @mouseleave="handleMouseup(); mouseInCanvas = false"
+      @mouseenter="mouseInCanvas = true"
     ></canvas>
+
+    <div 
+      class="pen"
+      :style="{
+        left: mouse.x - penSize / 2 + 'px',
+        top: mouse.y - 50 + penSize / 2 + 'px',
+        color: color,
+      }"
+      v-if="mouseInCanvas && model === 'pen'"
+    ><IconFont class="icon" :style="{ fontSize: '50px' }" type="icon-pen" /></div>
+    
+    <div 
+      class="eraser"
+      :style="{
+        left: mouse.x - rubberSize / 2 + 'px',
+        top: mouse.y - rubberSize / 2 + 'px',
+      }"
+      v-if="mouseInCanvas && model === 'eraser'"
+    ><IconFont class="icon" :style="{ fontSize: rubberSize + 'px' }" type="icon-eraser" /></div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, ref } from 'vue'
+import { defineComponent, onMounted, PropType, reactive, ref } from 'vue'
 
 const penSize = 6
 const rubberSize = 80
@@ -38,6 +58,12 @@ export default defineComponent({
     let isMouseDown = false
     let lastTime = 0
     let lastLineWidth = -1
+
+    const mouse = reactive({
+      x: 0,
+      y: 0,
+    })
+    const mouseInCanvas = ref(false)
 
     const initCanvas = () => {
       if(!canvasRef.value || !writingBoardRef.value) return
@@ -156,7 +182,14 @@ export default defineComponent({
       startDraw(e.offsetX, e.offsetY)
     }
 
+    const updateMousePosition = (e: MouseEvent) => {
+      mouse.x = e.pageX
+      mouse.y = e.pageY
+    }
+
     const handleMousemove = (e: MouseEvent) => {
+      updateMousePosition(e)
+
       if(!isMouseDown) return
       startMove(e.offsetX, e.offsetY)
     }
@@ -175,6 +208,10 @@ export default defineComponent({
     onMounted(initCanvas)
 
     return {
+      mouse,
+      mouseInCanvas,
+      penSize,
+      rubberSize,
       writingBoardRef,
       canvasRef,
       handleMousedown,
@@ -193,6 +230,16 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 8;
+  cursor: none;
+}
+.eraser, .pen {
+  pointer-events: none;
+  position: fixed;
   z-index: 9;
+
+  .icon {
+    filter: drop-shadow(2px 2px 2px #999);
+  }
 }
 </style>
