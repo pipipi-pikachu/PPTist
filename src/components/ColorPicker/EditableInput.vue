@@ -41,7 +41,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss" scoped>
 .editable-input {
   width: 100%;
   position: relative;

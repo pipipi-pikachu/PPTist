@@ -97,16 +97,16 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss" scoped>
 .saturation,
 .saturation-white,
 .saturation-black {
-  cursor: pointer;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  cursor: pointer;
 }
 .saturation-white {
   background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));

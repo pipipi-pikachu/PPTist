@@ -101,7 +101,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss" scoped>
 .hue {
   position: absolute;
   top: 0;

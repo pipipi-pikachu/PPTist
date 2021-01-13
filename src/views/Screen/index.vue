@@ -54,11 +54,33 @@
       </div>
     </Modal>
 
+    <WritingBoard ref="writingBoardRef" :color="writingBoardColor" :model="writingBoardModel" v-if="writingBoardVisible" />
+
     <div class="tools">
       <IconFont class="tool-btn" type="icon-left-circle" @click="execPrev()" />
       <IconFont class="tool-btn" type="icon-right-circle" @click="execNext()" />
       <IconFont class="tool-btn" type="icon-appstore" @click="slideListModelVisible = true" />
-      <IconFont class="tool-btn" type="icon-edit" />
+      <Popover trigger="click" v-model:visible="writingBoardConfigsVisible">
+        <template #content>
+          <div class="writing-board-configs">
+            <div class="btn" @click="writingBoardModel = 'pen'; writingBoardConfigsVisible = false">画笔</div>
+            <div class="btn" @click="writingBoardModel = 'eraser'; writingBoardConfigsVisible = false">橡皮擦</div>
+            <div class="btn" @click="writingBoardRef.clearCanvas(); writingBoardConfigsVisible = false">擦除所有墨迹</div>
+            <div class="btn" @click="writingBoardVisible = false; writingBoardConfigsVisible = false">关闭画笔</div>
+            <div class="colors">
+              <div 
+                class="color" 
+                :class="{ 'active': color === writingBoardColor }"
+                v-for="color in writingBoardColors" 
+                :key="color"
+                :style="{ backgroundColor: color }"
+                @click="writingBoardColor = color; writingBoardConfigsVisible = false"
+              ></div>
+            </div>
+          </div>
+        </template>
+        <IconFont class="tool-btn" type="icon-edit" @click="writingBoardVisible = true" />
+      </Popover>
     </div>
   </div>
 </template>
@@ -76,12 +98,16 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ScreenSlide from './ScreenSlide.vue'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import WritingBoard from '@/components/WritingBoard.vue'
+
+const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
 
 export default defineComponent({
   name: 'screen',
   components: {
     ScreenSlide,
     ThumbnailSlide,
+    WritingBoard,
   },
   setup() {
     const store = useStore<State>()
@@ -94,6 +120,12 @@ export default defineComponent({
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
 
     const slideListModelVisible = ref(false)
+
+    const writingBoardRef = ref()
+    const writingBoardVisible = ref(false)
+    const writingBoardConfigsVisible = ref(false)
+    const writingBoardColor = ref('#e2534d')
+    const writingBoardModel = ref('pen')
 
     const setSlideContentSize = () => {
       const winWidth = document.body.clientWidth
@@ -229,7 +261,13 @@ export default defineComponent({
       execPrev,
       execNext,
       slideListModelVisible,
+      writingBoardVisible,
+      writingBoardConfigsVisible,
       turnSlideToIndex,
+      writingBoardRef,
+      writingBoardColors,
+      writingBoardColor,
+      writingBoardModel,
     }
   },
 })
@@ -348,6 +386,42 @@ export default defineComponent({
 
     &:not(:nth-child(6n)) {
       margin-right: 12px;
+    }
+  }
+}
+
+.writing-board-configs {
+  font-size: 12px;
+
+  .btn {
+    padding: 3px 10px;
+    margin: 0 -10px;
+    margin-bottom: 3px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ccc;
+    }
+  }
+  .colors {
+    display: flex;
+    margin-top: 8px;
+  }
+  .color {
+    width: 15px;
+    height: 15px;
+    outline: 1px solid #ccc;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+    &.active {
+      outline: 2px solid $themeColor;
+    }
+
+    & + .color {
+      margin-left: 5px;
     }
   }
 }

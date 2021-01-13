@@ -85,7 +85,7 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss" scoped>
 .alpha {
   position: absolute;
   top: 0;

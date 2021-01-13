@@ -18,7 +18,7 @@
           <IconFont type="icon-image" class="handler-item" />
         </Tooltip>
       </FileInput>
-      <Popover trigger="click" v-model:visible="isOpenShapePool">
+      <Popover trigger="click" v-model:visible="shapePoolVisible">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
@@ -26,7 +26,7 @@
           <IconFont type="icon-star" class="handler-item" />
         </Tooltip>
       </Popover>
-      <Popover trigger="click" v-model:visible="isOpenLinePool">
+      <Popover trigger="click" v-model:visible="linePoolVisible">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
@@ -89,8 +89,8 @@ export default defineComponent({
       getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
     }
 
-    const isOpenShapePool = ref(false)
-    const isOpenLinePool = ref(false)
+    const shapePoolVisible = ref(false)
+    const linePoolVisible = ref(false)
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'text',
@@ -102,14 +102,14 @@ export default defineComponent({
         type: 'shape',
         data: shape,
       })
-      isOpenShapePool.value = false
+      shapePoolVisible.value = false
     }
     const drawLine = (line: LinePoolItem) => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'line',
         data: line,
       })
-      isOpenLinePool.value = false
+      linePoolVisible.value = false
     }
 
     return {
@@ -120,8 +120,8 @@ export default defineComponent({
       redo,
       undo,
       insertImageElement,
-      isOpenShapePool,
-      isOpenLinePool,
+      shapePoolVisible,
+      linePoolVisible,
       drawText,
       drawShape,
       drawLine,
