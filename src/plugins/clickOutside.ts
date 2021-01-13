@@ -1,4 +1,4 @@
-import { Directive, App, DirectiveBinding } from 'vue'
+import { Directive, DirectiveBinding } from 'vue'
 
 const CTX_CLICK_OUTSIDE_HANDLER = 'CTX_CLICK_OUTSIDE_HANDLER'
 
@@ -28,9 +28,4 @@ const ClickOutsideDirective: Directive = {
   },
 }
 
-export default {
-  install(app: App) {
-    app.directive('click-outside', ClickOutsideDirective)
-  },
-  directive: ClickOutsideDirective,
-}
+export default ClickOutsideDirective

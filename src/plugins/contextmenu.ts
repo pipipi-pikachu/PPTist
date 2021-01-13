@@ -1,4 +1,4 @@
-import { Directive, App, createVNode, render, DirectiveBinding } from 'vue'
+import { Directive, createVNode, render, DirectiveBinding } from 'vue'
 import ContextmenuComponent from '@/components/Contextmenu/index.vue'
 
 const CTX_CONTEXTMENU_HANDLER = 'CTX_CONTEXTMENU_HANDLER'
@@ -53,8 +53,4 @@ const ContextmenuDirective: Directive = {
   },
 }
 
-export default {
-  install(app: App) {
-    app.directive('contextmenu', ContextmenuDirective)
-  }
-}
+export default ContextmenuDirective

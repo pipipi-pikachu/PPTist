@@ -8,8 +8,8 @@ import '@/assets/styles/global.scss'
 import '@/assets/styles/antd.scss'
 import 'animate.css'
 
-import contextmenu from './plugins/contextmenu'
-import clickOutside from './plugins/clickOutside'
+import Contextmenu from './plugins/contextmenu'
+import ClickOutside from './plugins/clickOutside'
 
 import IconFont from '@/components/IconFont'
 import FileInput from '@/components/FileInput.vue'
@@ -51,8 +51,8 @@ app.component('Input', Input)
 app.component('InputGroup', Input.Group)
 app.component('Modal', Modal)
 
-app.use(contextmenu)
-app.use(clickOutside)
+app.directive('contextmenu', Contextmenu)
+app.directive('click-outside', ClickOutside)
 
 app.component('IconFont', IconFont)
 app.component('FileInput', FileInput)
