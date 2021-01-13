@@ -35,49 +35,25 @@
     </div>
 
     <Modal
-      v-model:visible="slideListModelVisible" 
+      v-model:visible="slideThumbnailModelVisible" 
       :footer="null" 
       centered
       :width="1020"
       :bodyStyle="{ padding: '50px 20px 20px 20px' }"
     >
-      <div class="slide-list-model">
-        <div 
-          class="thumbnail"
-          :class="{ 'active': index === slideIndex }"
-          v-for="(slide, index) in slides" 
-          :key="slide.id"
-          @click="turnSlideToIndex(index)"
-        >
-          <ThumbnailSlide :slide="slide" :size="150" />
-        </div>
-      </div>
+      <SlideThumbnails :turnSlideToIndex="turnSlideToIndex" />
     </Modal>
-
-    <WritingBoard ref="writingBoardRef" :color="writingBoardColor" :model="writingBoardModel" v-if="writingBoardVisible" />
 
     <div class="tools">
       <IconFont class="tool-btn" type="icon-left-circle" @click="execPrev()" />
       <IconFont class="tool-btn" type="icon-right-circle" @click="execNext()" />
-      <IconFont class="tool-btn" type="icon-appstore" @click="slideListModelVisible = true" />
-      <Popover trigger="click" v-model:visible="writingBoardConfigsVisible">
+      <IconFont class="tool-btn" type="icon-appstore" @click="slideThumbnailModelVisible = true" />
+      <Popover trigger="click" v-model:visible="writingBoardToolVisible">
         <template #content>
-          <div class="writing-board-configs">
-            <div class="btn" @click="writingBoardModel = 'pen'; writingBoardConfigsVisible = false">画笔</div>
-            <div class="btn" @click="writingBoardModel = 'eraser'; writingBoardConfigsVisible = false">橡皮擦</div>
-            <div class="btn" @click="writingBoardRef.clearCanvas(); writingBoardConfigsVisible = false">擦除所有墨迹</div>
-            <div class="btn" @click="writingBoardVisible = false; writingBoardConfigsVisible = false">关闭画笔</div>
-            <div class="colors">
-              <div 
-                class="color" 
-                :class="{ 'active': color === writingBoardColor }"
-                v-for="color in writingBoardColors" 
-                :key="color"
-                :style="{ backgroundColor: color }"
-                @click="writingBoardColor = color; writingBoardConfigsVisible = false"
-              ></div>
-            </div>
-          </div>
+          <WritingBoardTool 
+            v-model:visible="writingBoardVisible" 
+            @close="writingBoardToolVisible = false" 
+          />
         </template>
         <IconFont class="tool-btn" type="icon-edit" @click="writingBoardVisible = true" />
       </Popover>
@@ -97,17 +73,15 @@ import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ScreenSlide from './ScreenSlide.vue'
-import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import WritingBoard from '@/components/WritingBoard.vue'
-
-const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
+import SlideThumbnails from './SlideThumbnails.vue'
+import WritingBoardTool from './WritingBoardTool.vue'
 
 export default defineComponent({
   name: 'screen',
   components: {
     ScreenSlide,
-    ThumbnailSlide,
-    WritingBoard,
+    SlideThumbnails,
+    WritingBoardTool,
   },
   setup() {
     const store = useStore<State>()
@@ -119,13 +93,10 @@ export default defineComponent({
     const slideHeight = ref(0)
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
 
-    const slideListModelVisible = ref(false)
+    const slideThumbnailModelVisible = ref(false)
 
-    const writingBoardRef = ref()
     const writingBoardVisible = ref(false)
-    const writingBoardConfigsVisible = ref(false)
-    const writingBoardColor = ref('#e2534d')
-    const writingBoardModel = ref('pen')
+    const writingBoardToolVisible = ref(false)
 
     const setSlideContentSize = () => {
       const winWidth = document.body.clientWidth
@@ -223,7 +194,7 @@ export default defineComponent({
     }
 
     const turnSlideToIndex = (index: number) => {
-      slideListModelVisible.value = false
+      slideThumbnailModelVisible.value = false
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
       animationIndex.value = 0
     }
@@ -260,14 +231,10 @@ export default defineComponent({
       contextmenus,
       execPrev,
       execNext,
-      slideListModelVisible,
-      writingBoardVisible,
-      writingBoardConfigsVisible,
+      slideThumbnailModelVisible,
       turnSlideToIndex,
-      writingBoardRef,
-      writingBoardColors,
-      writingBoardColor,
-      writingBoardModel,
+      writingBoardVisible,
+      writingBoardToolVisible,
     }
   },
 })
@@ -364,65 +331,6 @@ export default defineComponent({
   }
   & + .tool-btn {
     margin-left: 8px;
-  }
-}
-
-.slide-list-model {
-  height: 600px;
-  padding: 5px 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  overflow: overlay;
-
-  .thumbnail {
-    width: 150px;
-    margin-bottom: 12px;
-    outline: 1px solid rgba($color: $themeColor, $alpha: .1);
-
-    &.active {
-      outline-color: $themeColor;
-    }
-
-    &:not(:nth-child(6n)) {
-      margin-right: 12px;
-    }
-  }
-}
-
-.writing-board-configs {
-  font-size: 12px;
-
-  .btn {
-    padding: 3px 10px;
-    margin: 0 -10px;
-    margin-bottom: 3px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: #ccc;
-    }
-  }
-  .colors {
-    display: flex;
-    margin-top: 8px;
-  }
-  .color {
-    width: 15px;
-    height: 15px;
-    outline: 1px solid #ccc;
-    cursor: pointer;
-
-    &:hover {
-      transform: scale(1.1);
-    }
-    &.active {
-      outline: 2px solid $themeColor;
-    }
-
-    & + .color {
-      margin-left: 5px;
-    }
   }
 }
 </style>
