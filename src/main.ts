@@ -11,7 +11,7 @@ import 'animate.css'
 import Contextmenu from './plugins/contextmenu'
 import ClickOutside from './plugins/clickOutside'
 
-import IconFont from '@/components/IconFont'
+import IconFont from '@/components/IconFont.vue'
 import FileInput from '@/components/FileInput.vue'
 import SvgWrapper from '@/components/SvgWrapper.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
