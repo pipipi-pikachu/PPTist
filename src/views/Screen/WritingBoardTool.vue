@@ -1,27 +1,29 @@
 <template>
-  <teleport to="body">
-    <WritingBoard 
-      ref="writingBoardRef" 
-      :color="writingBoardColor" 
-      :model="writingBoardModel" 
-      v-if="visible" 
-    />
-  </teleport>
-
   <div class="writing-board-tool">
-    <div class="btn" @click="writingBoardModel = 'pen'; close()">画笔</div>
-    <div class="btn" @click="writingBoardModel = 'eraser'; close()">橡皮擦</div>
-    <div class="btn" @click="writingBoardRef.clearCanvas(); close()">擦除所有墨迹</div>
-    <div class="btn" @click="closeWritingBoard()">关闭画笔</div>
-    <div class="colors">
-      <div 
-        class="color" 
-        :class="{ 'active': color === writingBoardColor }"
-        v-for="color in writingBoardColors" 
-        :key="color"
-        :style="{ backgroundColor: color }"
-        @click="writingBoardColor = color; close()"
-      ></div>
+    <teleport to="body">
+      <WritingBoard 
+        ref="writingBoardRef" 
+        :color="writingBoardColor" 
+        :model="writingBoardModel" 
+        v-if="writingBoardVisible" 
+      />
+    </teleport>
+
+    <div class="tools">
+      <div class="btn" @click="changePen()">画笔</div>
+      <div class="btn" @click="changeEraser()">橡皮擦</div>
+      <div class="btn" @click="clearCanvas()">擦除所有墨迹</div>
+      <div class="btn" @click="closeWritingBoard()">关闭画笔</div>
+      <div class="colors">
+        <div 
+          class="color" 
+          :class="{ 'active': color === writingBoardColor }"
+          v-for="color in writingBoardColors"
+          :key="color"
+          :style="{ backgroundColor: color }"
+          @click="changeColor(color)"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,37 +36,53 @@ const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d
 
 export default defineComponent({
   name: 'writing-board-tool',
-  emits: ['close', 'update:visible'],
   components: {
     WritingBoard,
   },
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-  },
   setup(props, { emit }) {
     const writingBoardRef = ref()
+    const writingBoardVisible = ref(false)
     const writingBoardColor = ref('#e2534d')
     const writingBoardModel = ref('pen')
 
-    const close = () => {
+    const changePen = () => {
+      if(!writingBoardVisible.value) writingBoardVisible.value = true
+      writingBoardModel.value = 'pen'
+      emit('close')
+    }
+
+    const changeEraser = () => {
+      writingBoardModel.value = 'eraser'
+      emit('close')
+    }
+
+    const clearCanvas = () => {
+      writingBoardRef.value.clearCanvas()
+      emit('close')
+    }
+
+    const changeColor = (color: string) => {
+      if(writingBoardModel.value !== 'pen') writingBoardModel.value = 'pen'
+      writingBoardColor.value = color
       emit('close')
     }
 
     const closeWritingBoard = () => {
-      emit('update:visible', false)
+      writingBoardVisible.value = false
       emit('close')
     }
 
     return {
       writingBoardRef,
+      writingBoardVisible,
       writingBoardColors,
       writingBoardColor,
       writingBoardModel,
+      changePen,
+      changeEraser,
+      clearCanvas,
+      changeColor,
       closeWritingBoard,
-      close,
     }
   },
 })

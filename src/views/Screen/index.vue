@@ -50,12 +50,9 @@
       <IconFont class="tool-btn" type="icon-appstore" @click="slideThumbnailModelVisible = true" />
       <Popover trigger="click" v-model:visible="writingBoardToolVisible">
         <template #content>
-          <WritingBoardTool 
-            v-model:visible="writingBoardVisible" 
-            @close="writingBoardToolVisible = false" 
-          />
+          <WritingBoardTool @close="writingBoardToolVisible = false" />
         </template>
-        <IconFont class="tool-btn" type="icon-edit" @click="writingBoardVisible = true" />
+        <IconFont class="tool-btn" type="icon-edit" />
       </Popover>
     </div>
   </div>
@@ -95,7 +92,6 @@ export default defineComponent({
 
     const slideThumbnailModelVisible = ref(false)
 
-    const writingBoardVisible = ref(false)
     const writingBoardToolVisible = ref(false)
 
     const setSlideContentSize = () => {
@@ -233,7 +229,6 @@ export default defineComponent({
       execNext,
       slideThumbnailModelVisible,
       turnSlideToIndex,
-      writingBoardVisible,
       writingBoardToolVisible,
     }
   },

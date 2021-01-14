@@ -12,20 +12,22 @@
       class="pen"
       :style="{
         left: mouse.x - penSize / 2 + 'px',
-        top: mouse.y - 50 + penSize / 2 + 'px',
+        top: mouse.y - 36 + penSize / 2 + 'px',
         color: color,
       }"
       v-if="mouseInCanvas && model === 'pen'"
-    ><IconFont class="icon" :style="{ fontSize: '50px' }" type="icon-pen" /></div>
+    ><IconFont class="icon" :style="{ fontSize: '36px' }" type="icon-pen" /></div>
     
     <div 
       class="eraser"
       :style="{
         left: mouse.x - rubberSize / 2 + 'px',
         top: mouse.y - rubberSize / 2 + 'px',
+        width: rubberSize + 'px',
+        height: rubberSize + 'px',
       }"
       v-if="mouseInCanvas && model === 'eraser'"
-    ><IconFont class="icon" :style="{ fontSize: rubberSize + 'px' }" type="icon-eraser" /></div>
+    ><IconFont class="icon" :style="{ fontSize: rubberSize * 0.6 + 'px' }" type="icon-eraser" /></div>
   </div>
 </template>
 
@@ -239,7 +241,15 @@ export default defineComponent({
   z-index: 9;
 
   .icon {
-    filter: drop-shadow(2px 2px 2px #999);
+    filter: drop-shadow(2px 2px 2px #555);
   }
+}
+.eraser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 4px solid rgba($color: #555, $alpha: .15);
+  color: rgba($color: #555, $alpha: .75);
 }
 </style>
