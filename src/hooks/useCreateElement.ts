@@ -3,7 +3,7 @@ import { MutationTypes } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { PPTElement, TableElementCell } from '@/types/slides'
+import { ChartType, PPTElement, TableElementCell } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import {
@@ -67,13 +67,12 @@ export default () => {
     })
   }
   
-  const createChartElement = (chartType: string, data: string) => {
+  const createChartElement = (chartType: ChartType) => {
     createElement({
       ...DEFAULT_CHART,
       type: 'chart',
       id: createRandomCode(),
       chartType,
-      data,
     })
   }
   

@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent } from 'vue'
+import { computed, PropType, defineComponent, inject } from 'vue'
 import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -37,10 +37,6 @@ export default defineComponent({
       type: Object as PropType<Slide>,
       required: true,
     },
-    scale: {
-      type: Number,
-      required: true,
-    },
     animationIndex: {
       type: Number,
       default: -1,
@@ -50,7 +46,10 @@ export default defineComponent({
     const background = computed(() => props.slide.background)
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 
+    const scale = inject('scale')
+
     return {
+      scale,
       backgroundStyle,
       VIEWPORT_SIZE,
       VIEWPORT_ASPECT_RATIO,

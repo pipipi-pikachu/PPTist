@@ -33,13 +33,14 @@
 import { defineComponent, PropType, computed, Ref } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { ElementTypes, PPTElement, Slide } from '@/types/slides'
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
 import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
+import ChartElementOperate from './ChartElementOperate.vue'
 
 export default defineComponent({
   name: 'operate',
@@ -85,10 +86,11 @@ export default defineComponent({
 
     const currentOperateComponent = computed(() => {
       const elementTypeMap = {
-        'image': ImageElementOperate,
-        'text': TextElementOperate,
-        'shape': ShapeElementOperate,
-        'line': LineElementOperate,
+        [ElementTypes.IMAGE]: ImageElementOperate,
+        [ElementTypes.TEXT]: TextElementOperate,
+        [ElementTypes.SHAPE]: ShapeElementOperate,
+        [ElementTypes.LINE]: LineElementOperate,
+        [ElementTypes.CHART]: ChartElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

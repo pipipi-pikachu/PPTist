@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { PPTElement } from '@/types/slides'
+import { ElementTypes, PPTElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import useLockElement from '@/hooks/useLockElement'
@@ -33,6 +33,7 @@ import ImageElement from '@/views/components/element/ImageElement/index.vue'
 import TextElement from '@/views/components/element/TextElement/index.vue'
 import ShapeElement from '@/views/components/element/ShapeElement/index.vue'
 import LineElement from '@/views/components/element/LineElement/index.vue'
+import ChartElement from '@/views/components/element/ChartElement/index.vue'
 
 export default defineComponent({
   name: 'editable-element',
@@ -57,10 +58,11 @@ export default defineComponent({
   setup(props) {
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
-        'image': ImageElement,
-        'text': TextElement,
-        'shape': ShapeElement,
-        'line': LineElement,
+        [ElementTypes.IMAGE]: ImageElement,
+        [ElementTypes.TEXT]: TextElement,
+        [ElementTypes.SHAPE]: ShapeElement,
+        [ElementTypes.LINE]: LineElement,
+        [ElementTypes.CHART]: ChartElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

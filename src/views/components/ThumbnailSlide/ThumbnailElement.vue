@@ -6,18 +6,20 @@
     <component
       :is="currentElementComponent"
       :elementInfo="elementInfo"
+      target="thumbnail"
     ></component>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { PPTElement } from '@/types/slides'
+import { ElementTypes, PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
 import BaseLineElement from '@/views/components/element/LineElement/BaseLineElement.vue'
+import BaseChartElement from '@/views/components/element/ChartElement/BaseChartElement.vue'
 
 export default defineComponent({
   name: 'base-element',
@@ -34,10 +36,11 @@ export default defineComponent({
   setup(props) {
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
-        'image': BaseImageElement,
-        'text': BaseTextElement,
-        'shape': BaseShapeElement,
-        'line': BaseLineElement,
+        [ElementTypes.IMAGE]: BaseImageElement,
+        [ElementTypes.TEXT]: BaseTextElement,
+        [ElementTypes.SHAPE]: BaseShapeElement,
+        [ElementTypes.LINE]: BaseLineElement,
+        [ElementTypes.CHART]: BaseChartElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

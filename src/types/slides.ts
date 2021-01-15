@@ -105,6 +105,11 @@ export interface PPTLineElement {
   shadow?: PPTElementShadow;
 }
 
+export type ChartType = 'bar' | 'horizontalBar' | 'line' | 'pie' | 'doughnut' | 'polarArea' | 'radar'
+export interface ChartData {
+  labels: string[];
+  series: number[][];
+}
 export interface PPTChartElement {
   type: 'chart';
   id: string;
@@ -114,8 +119,8 @@ export interface PPTChartElement {
   groupId?: string;
   width: number;
   height: number;
-  chartType: string;
-  data: string;
+  chartType: ChartType;
+  data: ChartData;
   outline?: PPTElementOutline;
   theme?: string;
 }

@@ -2,8 +2,9 @@
   <div 
     class="chart"
     :style="{
-      width: width + 'px',
-      height: height + 'px',
+      width: width * scale + 'px',
+      height: height * scale + 'px',
+      transform: `scale(${1 / scale})`,
     }"
   >
     <canvas ref="canvasRef"></canvas>
@@ -11,35 +12,56 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import Chart from 'chart.js'
+import { ChartData, ChartType } from '@/types/slides'
 
-interface ChartData {
-  labels: string[];
-  values: number[][];
+const commonConfigs = {
+  backgroundColor: 'rgba(209, 68, 36, 0.3)',
+  borderColor: 'rgba(209, 68, 36)',
+  borderWidth: 2,
 }
 
-// const data = {
-//   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//   values: [
-//     [12, 19, 3, 5, 2, 3],
-//     [22, 9, 13, 25, 12, 5],
-//   ]
-// }
-
-// bar
-// horizontalBar
-// line
-// radar
-// pie
-// doughnut
-// polarArea
+const defaultOptions: Chart.ChartOptions = {
+  maintainAspectRatio: false,
+  animation: {
+    duration: 0,
+  },
+  hover: {
+    animationDuration: 0,
+  },
+  responsiveAnimationDuration: 0,
+  layout: {
+    padding: {
+      left: 5,
+      right: 5,
+      top: 5,
+      bottom: 5,
+    },
+  },
+  legend: {
+    display: false,
+  },
+  elements: {
+    line: {
+      tension: 0,
+      fill: false,
+      ...commonConfigs,
+    },
+    rectangle: {
+      ...commonConfigs,
+    },
+    arc: {
+      ...commonConfigs,
+    },
+  },
+}
 
 export default defineComponent({
   name: 'chart',
   props: {
     type: {
-      type: String,
+      type: String as PropType<ChartType>,
       required: true,
     },
     width: {
@@ -54,6 +76,13 @@ export default defineComponent({
       type: Object as PropType<ChartData>,
       required: true,
     },
+    options: {
+      type: Object as PropType<Chart.ChartOptions>,
+    },
+    scale: {
+      type: Number,
+      default: 1,
+    },
   },
   setup(props) {
     const canvasRef = ref<HTMLCanvasElement | null>(null)
@@ -61,29 +90,19 @@ export default defineComponent({
 
     const data = computed(() => ({
       labels: props.data.labels,
-      datasets: props.data.values.map(item => {
-        return {
-          data: item,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 0.5)',
-            'rgba(54, 162, 235, 0.5)',
-            'rgba(255, 206, 86, 0.5)',
-            'rgba(75, 192, 192, 0.5)',
-            'rgba(153, 102, 255, 0.5)',
-            'rgba(255, 159, 64, 0.5)',
-          ],
-          borderWidth: 1,
-        }
-      }),
+      datasets: props.data.series.map(item => ({ data: item })),
     }))
+
+    const options = computed(() => {
+      const options = props.options || {}
+      return { ...defaultOptions, ...options }
+    })
+
+    watch(data, () => {
+      if(!chart) return
+      chart.data = data.value
+      chart.update()
+    })
 
     onMounted(() => {
       if(!canvasRef.value) return
@@ -91,33 +110,7 @@ export default defineComponent({
       chart = new Chart(ctx, {
         type: props.type,
         data: data.value,
-        options: {
-          maintainAspectRatio: false,
-          animation: {
-            duration: 0,
-          },
-          hover: {
-            animationDuration: 0,
-          },
-          responsiveAnimationDuration: 0,
-          layout: {
-            padding: {
-              left: 8,
-              right: 8,
-              top: 8,
-              bottom: 8
-            },
-          },
-          legend: {
-            display: false,
-          },
-          elements: {
-            line: {
-              tension: 0,
-              fill: false,
-            },
-          },
-        },
+        options: options.value,
       })
     })
 
@@ -129,3 +122,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.chart {
+  transform-origin: 0 0;
+}
+</style>

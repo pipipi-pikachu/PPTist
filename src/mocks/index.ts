@@ -74,6 +74,26 @@ export const slides: Slide[] = [
     ],
   },
   {
+    id: 'sahduyi',
+    elements: [
+      {
+        id: 'sdasdax',
+        type: 'chart',
+        left: 0,
+        top: 0,
+        width: 400,
+        height: 400,
+        chartType: 'line',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          series: [
+            [12, 19, 3, 5, 4, 18],
+          ]
+        },
+      },
+    ],
+  },
+  {
     id: 'sajd172',
     elements: [
       {

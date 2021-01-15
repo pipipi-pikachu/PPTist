@@ -17,6 +17,7 @@ import TextStylePanel from './TextStylePanel.vue'
 import ImageStylePanel from './ImageStylePanel.vue'
 import ShapeStylePanel from './ShapeStylePanel.vue'
 import LineStylePanel from './LineStylePanel.vue'
+import ChartStylePanel from './ChartStylePanel.vue'
 
 export default defineComponent({
   name: 'element-style-panel',
@@ -32,6 +33,7 @@ export default defineComponent({
         [ElementTypes.IMAGE]: ImageStylePanel,
         [ElementTypes.SHAPE]: ShapeStylePanel,
         [ElementTypes.LINE]: LineStylePanel,
+        [ElementTypes.CHART]: ChartStylePanel,
       }
       return panelMap[handleElement.value.type] || null
     })

@@ -1,5 +1,5 @@
 <template>
-  <div class="shape-element-operate">
+  <div class="chart-element-operate">
     <BorderLine 
       class="operate-border-line"
       v-for="line in borderLines" 
@@ -16,11 +16,6 @@
         :style="point.style"
         @mousedown.stop="$event => scaleElement($event, elementInfo, point.direction)"
       />
-      <RotateHandler
-        class="operate-rotate-handler" 
-        :style="{ left: scaleWidth / 2 + 'px' }"
-        @mousedown.stop="rotateElement(elementInfo)"
-      />
     </template>
   </div>
 </template>
@@ -34,15 +29,13 @@ import { PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
-import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
 export default defineComponent({
-  name: 'shape-element-operate',
+  name: 'chart-element-operate',
   inheritAttrs: false,
   components: {
-    RotateHandler,
     ResizeHandler,
     BorderLine,
   },
@@ -57,10 +50,6 @@ export default defineComponent({
     },
     isMultiSelect: {
       type: Boolean,
-      required: true,
-    },
-    rotateElement: {
-      type: Function as PropType<(element: PPTShapeElement) => void>,
       required: true,
     },
     scaleElement: {

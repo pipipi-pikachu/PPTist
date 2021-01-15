@@ -35,6 +35,12 @@ export const DEFAULT_CHART = {
   top: 0,
   width: 500,
   height: 500,
+  data: {
+    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    series: [
+      [12, 19, 3, 5, 2, 18],
+    ]
+  },
 }
 
 export const DEFAULT_TABLE = {

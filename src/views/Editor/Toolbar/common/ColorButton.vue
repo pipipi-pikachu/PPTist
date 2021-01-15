@@ -29,7 +29,7 @@ export default {
   margin-left: 8px;
   flex: 1;
 }
-.color-btn-icon {
+svg.color-btn-icon {
   width: 30px;
   font-size: 12px;
   margin-top: 2px;
