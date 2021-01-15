@@ -122,7 +122,6 @@ export interface PPTChartElement {
   chartType: ChartType;
   data: ChartData;
   outline?: PPTElementOutline;
-  theme?: string;
 }
 
 export interface TableElementCell {

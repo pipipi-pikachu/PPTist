@@ -18,32 +18,22 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      <Chart
-        :type="elementInfo.chartType"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :data="elementInfo.data"
-        :scale="canvasScale"
-      />
+      Chart
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { defineComponent, PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from '@/components/Chart.vue'
 
 export default defineComponent({
   name: 'editable-element-chart',
   components: {
     ElementOutline,
-    Chart,
   },
   props: {
     elementInfo: {
@@ -66,12 +56,8 @@ export default defineComponent({
       props.selectElement(e, props.elementInfo)
     }
 
-    const store = useStore<State>()
-    const canvasScale = computed(() => store.state.canvasScale)
-
     return {
       handleSelectElement,
-      canvasScale,
     }
   },
 })

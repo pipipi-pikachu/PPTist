@@ -9,7 +9,6 @@
     <component
       :is="currentElementComponent"
       :elementInfo="elementInfo"
-      target="screen"
     ></component>
   </div>
 </template>

@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent, provide } from 'vue'
+import { computed, PropType, defineComponent } from 'vue'
 import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -52,7 +52,6 @@ export default defineComponent({
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 
     const scale = computed(() => props.size / VIEWPORT_SIZE)
-    provide('scale', 1)
 
     return {
       scale,

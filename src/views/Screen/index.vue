@@ -27,6 +27,7 @@
         >
           <ScreenSlide 
             :slide="slide" 
+            :scale="scale"
             :animationIndex="animationIndex"
           />
         </div>
@@ -58,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, provide, Ref, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, Ref, ref } from 'vue'
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { MutationTypes, State } from '@/store'
@@ -89,7 +90,6 @@ export default defineComponent({
     const slideHeight = ref(0)
 
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
-    provide('scale', scale)
 
     const slideThumbnailModelVisible = ref(false)
 
