@@ -11,7 +11,7 @@
 
     <div class="add-element-handler">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
-        <IconFont type="icon-font-size" class="handler-item" @click="drawText()" />
+        <IconFont type="icon-text" class="handler-item" @click="drawText()" />
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
@@ -23,7 +23,7 @@
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
-          <IconFont type="icon-star" class="handler-item" />
+          <IconFont type="icon-shape" class="handler-item" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="linePoolVisible">
