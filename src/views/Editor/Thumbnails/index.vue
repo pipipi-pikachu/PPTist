@@ -167,7 +167,7 @@ export default defineComponent({
   padding: 5px 0;
 
   .thumbnail {
-    outline: 1px solid rgba($color: $themeColor, $alpha: .1);
+    outline: 1px solid rgba($color: $themeColor, $alpha: .15);
   }
 
   &.active {

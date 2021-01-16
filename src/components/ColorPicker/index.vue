@@ -209,6 +209,7 @@ export default defineComponent({
   position: relative;
   margin-top: 4px;
   margin-right: 4px;
+  outline: 1px dashed rgba($color: #666, $alpha: .12);
 
   .checkerboard {
     background-size: auto;

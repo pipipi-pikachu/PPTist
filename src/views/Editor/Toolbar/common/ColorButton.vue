@@ -1,6 +1,9 @@
 <template>
   <Button class="color-btn">
-    <div class="color-block" :style="{ backgroundColor: color }"></div>
+    <div 
+      class="color-block" 
+      :style="{ backgroundColor: color }"
+    ></div>
     <IconPlatte class="color-btn-icon" />
   </Button>
 </template>
@@ -28,6 +31,7 @@ export default {
   height: 20px;
   margin-left: 8px;
   flex: 1;
+  outline: 1px dashed rgba($color: #666, $alpha: .12);
 }
 .color-btn-icon {
   width: 30px;
