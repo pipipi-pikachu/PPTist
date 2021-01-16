@@ -4,7 +4,7 @@
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
   >
-    <div class="add-slide" @click="createSlide()">+ 添加幻灯片</div>
+    <div class="add-slide" @click="createSlide()"><IconPlus /> 添加幻灯片</div>
     <Draggable 
       class="thumbnail-list"
       :modelValue="slides"

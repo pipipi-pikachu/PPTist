@@ -24,7 +24,9 @@
             </div>
           </div>
         </template>
-        <Button class="element-animation-btn">{{handleElementAnimation || '点击选择动画'}}</Button>
+        <Button class="element-animation-btn">
+          <IconEffects style="margin-right: 5px;" /> {{handleElementAnimation || '点击选择动画'}}
+        </Button>
       </Popover>
     </div>
     
@@ -48,7 +50,7 @@
               <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.type)" />
             </Tooltip>
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-              <IconDelete class="handler-btn" @click="deleteAnimation(element.elId)" />
+              <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.elId)" />
             </Tooltip>
           </div>
         </div>
@@ -230,13 +232,13 @@ export default defineComponent({
 }
 
 .sequence-item {
-  height: 32px;
+  height: 36px;
   display: flex;
   align-items: center;
   border: 1px solid $borderColor;
   padding: 6px;
   border-radius: $borderRadius;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 
   &.active {
     border-color: $themeColor;

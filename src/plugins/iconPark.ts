@@ -94,6 +94,8 @@ import {
   Platte,
   UpOne,
   DownOne,
+  SeoFolder,
+  CloseSmall,
 } from '@icon-park/vue-next'
 
 export default {
@@ -169,7 +171,6 @@ export default {
     app.component('IconTextItalic', TextItalic)
     app.component('IconTextUnderline', TextUnderline)
     app.component('IconStrikethrough', Strikethrough)
-    app.component('IconEdit', Edit)
     app.component('IconQuote', Quote)
     app.component('IconList', List)
     app.component('IconOrderedList', OrderedList)
@@ -188,6 +189,7 @@ export default {
     app.component('IconMinus', Minus)
     app.component('IconCheck', Check)
     app.component('IconClose', Close)
+    app.component('IconCloseSmall', CloseSmall)
     
     // 图表
     app.component('IconChartRing', ChartRing)
@@ -221,5 +223,7 @@ export default {
     app.component('IconNewlybuild', Newlybuild)
     app.component('IconEffects', Effects)
     app.component('IconRotate', Rotate)
+    app.component('IconEdit', Edit)
+    app.component('IconSeoFolder', SeoFolder)
   }
 }

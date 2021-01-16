@@ -2,7 +2,6 @@ import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { enterFullscreen } from '@/utils/fullscreen'
 
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useLockElement from '@/hooks/useLockElement'
@@ -12,6 +11,7 @@ import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useMoveElement from '@/hooks/useMoveElement'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useScreening from '@/hooks/useScreening'
 
 export default () => {
   const store = useStore<State>()
@@ -39,6 +39,7 @@ export default () => {
   const { selectAllElement } = useSelectAllElement()
   const { moveElement } = useMoveElement()
   const { redo, undo } = useHistorySnapshot()
+  const { enterScreening } = useScreening()
 
   const copy = () => {
     if(activeElementIdList.value.length) copyElement()
@@ -83,11 +84,6 @@ export default () => {
   const create = () => {
     if(!thumbnailsFocus.value) return
     createSlide()
-  }
-
-  const enterScreening = () => {
-    enterFullscreen()
-    store.commit(MutationTypes.SET_SCREENING, true)
   }
 
   const keydownListener = (e: KeyboardEvent) => {

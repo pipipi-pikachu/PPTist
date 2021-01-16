@@ -64,10 +64,11 @@ import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { MutationTypes, State } from '@/store'
 import { Slide } from '@/types/slides'
-import { exitFullscreen, isFullscreen } from '@/utils/fullscreen'
 import { VIEWPORT_ASPECT_RATIO, VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
+import { isFullscreen } from '@/utils/fullscreen'
+import useScreening from '@/hooks/useScreening'
 
 import ScreenSlide from './ScreenSlide.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
@@ -116,9 +117,11 @@ export default defineComponent({
       slideHeight.value = height
     }
 
+    const { exitScreening } = useScreening()
+
     const windowResizeListener = () => {
       setSlideContentSize()
-      if(!isFullscreen()) store.commit(MutationTypes.SET_SCREENING, false)
+      if(!isFullscreen()) exitScreening()
     }
 
     const animationIndex = ref(0)
@@ -212,7 +215,7 @@ export default defineComponent({
         {
           text: '结束放映',
           subText: 'ESC',
-          handler: exitFullscreen,
+          handler: exitScreening,
         },
       ]
     }
