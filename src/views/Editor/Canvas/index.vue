@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref, ref, watch, watchEffect } from 'vue'
+import { computed, defineComponent, provide, Ref, ref, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { State, MutationTypes } from '@/store'
@@ -214,6 +214,8 @@ export default defineComponent({
         },
       ]
     }
+
+    provide('slideScale', canvasScale)
 
     return {
       elementList,

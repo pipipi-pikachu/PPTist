@@ -49,6 +49,20 @@ export const DEFAULT_TABLE = {
   outline: {
     width: 2,
     style: 'solid',
-    color: DEFAULT_COLOR
+    color: DEFAULT_COLOR,
   },
+}
+
+export const DEFAULT_FORMULA = {
+  left: 0,
+  top: 0,
+}
+
+export const MIN_SIZE = {
+  text: 20,
+  image: 20,
+  shape: 15,
+  chart: 200,
+  table: 20,
+  formula: 20,
 }

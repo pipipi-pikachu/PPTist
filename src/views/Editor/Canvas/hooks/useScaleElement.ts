@@ -4,6 +4,7 @@ import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -111,7 +112,7 @@ export default (
     const startPageX = e.pageX
     const startPageY = e.pageY
 
-    const minSize = 15
+    const minSize = MIN_SIZE[element.type] || 20
     const getSizeWithinRange = (size: number) => size < minSize ? minSize : size
 
     let points: ReturnType<typeof getRotateElementPoints>

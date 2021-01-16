@@ -66,7 +66,7 @@
       <div class="row">
         <div style="flex: 3;">大小：</div>
         <InputNumber
-          :min="15"
+          :min="minSize"
           :max="1500"
           :step="5"
           :value="width"
@@ -83,7 +83,7 @@
         </template>
         <div style="flex: 1;" v-else></div>
         <InputNumber 
-          :min="15"
+          :min="minSize"
           :max="800"
           :step="5"
           :disabled="handleElement.type === 'text'" 
@@ -138,6 +138,7 @@ import { useStore } from 'vuex'
 import round from 'lodash/round'
 import { MutationTypes, State } from '@/store'
 import { PPTElement } from '@/types/slides'
+import { MIN_SIZE } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -154,6 +155,11 @@ export default defineComponent({
     const height = ref(0)
     const rotate = ref(0)
     const fixedRatio = ref(false)
+
+    const minSize = computed(() => {
+      if(!handleElement.value) return 20
+      return MIN_SIZE[handleElement.value.type] || 20
+    })
 
     watch(handleElement, () => {
       if(!handleElement.value) return
@@ -228,6 +234,7 @@ export default defineComponent({
       height,
       rotate,
       fixedRatio,
+      minSize,
       updateLeft,
       updateTop,
       updateWidth,

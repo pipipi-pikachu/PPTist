@@ -23,7 +23,7 @@ import BaseImageElement from '@/views/components/element/ImageElement/BaseImageE
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
 import BaseLineElement from '@/views/components/element/LineElement/BaseLineElement.vue'
-import BaseChartElement from '@/views/components/element/ChartElement/BaseChartElement.vue'
+import ScreenChartElement from '@/views/components/element/ChartElement/ScreenChartElement.vue'
 
 export default defineComponent({
   name: 'screen-element',
@@ -48,7 +48,7 @@ export default defineComponent({
         [ElementTypes.TEXT]: BaseTextElement,
         [ElementTypes.SHAPE]: BaseShapeElement,
         [ElementTypes.LINE]: BaseLineElement,
-        [ElementTypes.CHART]: BaseChartElement,
+        [ElementTypes.CHART]: ScreenChartElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

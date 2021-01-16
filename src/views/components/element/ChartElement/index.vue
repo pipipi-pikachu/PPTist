@@ -18,7 +18,13 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      Chart
+      <Chart
+        :width="elementInfo.width"
+        :height="elementInfo.height"
+        :type="elementInfo.chartType"
+        :data="elementInfo.data"
+        :options="elementInfo.options"
+      />
     </div>
   </div>
 </template>
@@ -29,11 +35,13 @@ import { PPTChartElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
+import Chart from '@/components/Chart.vue'
 
 export default defineComponent({
   name: 'editable-element-chart',
   components: {
     ElementOutline,
+    Chart,
   },
   props: {
     elementInfo: {

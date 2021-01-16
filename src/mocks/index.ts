@@ -2,6 +2,44 @@ import { Slide } from '@/types/slides'
 
 export const slides: Slide[] = [
   {
+    id: 'xsxa123',
+    elements: [
+      {
+        id: 'sdasaxsxs',
+        type: 'chart',
+        left: 100,
+        top: 100,
+        width: 400,
+        height: 400,
+        chartType: 'pie',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          series: [
+            [5, 2, 4, 2, 10],
+          ],
+        },
+        options: {
+          donut: true,
+        },
+      },
+      {
+        id: 'sdasaxs',
+        type: 'chart',
+        left: 600,
+        top: 100,
+        width: 300,
+        height: 300,
+        chartType: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+          series: [
+            [5, 2, 4, 2, 10],
+          ],
+        },
+      },
+    ],
+  },
+  {
     id: 'xxx1',
     background: {
       type: 'solid',

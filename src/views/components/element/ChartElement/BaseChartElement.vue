@@ -13,13 +13,15 @@
         :height="elementInfo.height"
         :outline="elementInfo.outline"
       />
-      Chart
+      <IconChartLine fill="#d70206" strokeWidth="2" :size="size" v-if="elementInfo.chartType === 'line'" />
+      <IconChartHistogram fill="#d70206" strokeWidth="2" :size="size" v-else-if="elementInfo.chartType === 'bar'" />
+      <IconChartProportion fill="#d70206" strokeWidth="2" :size="size" v-else-if="elementInfo.chartType === 'pie'" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
@@ -35,6 +37,13 @@ export default defineComponent({
       required: true,
     },
   },
+  setup(props) {
+    const size = computed(() => Math.min(props.elementInfo.width, props.elementInfo.height))
+
+    return {
+      size,
+    }
+  },
 })
 </script>
 
@@ -46,5 +55,10 @@ export default defineComponent({
 .element-content {
   width: 100%;
   height: 100%;
+  opacity: .5;
+  background-color: rgba($color: #000, $alpha: .05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

@@ -1,3 +1,5 @@
+import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
+
 export interface PPTElementShadow {
   h: number;
   v: number;
@@ -105,7 +107,7 @@ export interface PPTLineElement {
   shadow?: PPTElementShadow;
 }
 
-export type ChartType = 'bar' | 'horizontalBar' | 'line' | 'pie' | 'doughnut' | 'polarArea' | 'radar'
+export type ChartType = 'bar' | 'line' | 'pie'
 export interface ChartData {
   labels: string[];
   series: number[][];
@@ -121,6 +123,7 @@ export interface PPTChartElement {
   height: number;
   chartType: ChartType;
   data: ChartData;
+  options?: ILineChartOptions & IBarChartOptions & IPieChartOptions;
   outline?: PPTElementOutline;
 }
 
@@ -145,8 +148,20 @@ export interface PPTTableElement {
   colSizes: number[];
   data: TableElementCell[][];
 }
+export interface PPTFormulaElement {
+  type: 'formula';
+  id: string;
+  left: number;
+  top: number;
+  lock?: boolean;
+  groupId?: string;
+  width: number;
+  height: number;
+  latex: string;
+  color?: string;
+}
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTFormulaElement
 
 export interface PPTAnimation {
   elId: string;
