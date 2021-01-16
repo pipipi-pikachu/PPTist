@@ -31,15 +31,15 @@ export const DEFAULT_LINE = {
 }
 
 export const DEFAULT_CHART = {
-  left: 0,
-  top: 0,
-  width: 500,
-  height: 500,
+  left: 300,
+  top: 81.25,
+  width: 400,
+  height: 400,
   data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
     series: [
-      [12, 19, 3, 5, 2, 18],
-    ]
+      [12, 19, 5, 2, 18],
+    ],
   },
 }
 

@@ -34,11 +34,16 @@
           <IconConnection class="handler-item" />
         </Tooltip>
       </Popover>
+      <Popover trigger="click" v-model:visible="chartPoolVisible">
+        <template #content>
+          <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
+        </template>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
+          <IconChartProportion class="handler-item" />
+        </Tooltip>
+      </Popover>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
         <IconInsertTable class="handler-item" />
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
-        <IconChartProportion class="handler-item" />
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
         <IconFormula class="handler-item" />
@@ -66,12 +71,14 @@ import useCreateElement from '@/hooks/useCreateElement'
 
 import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
+import ChartPool from './ChartPool.vue'
 
 export default defineComponent({
   name: 'canvas-tool',
   components: {
     ShapePool,
     LinePool,
+    ChartPool,
   },
   setup() {
     const store = useStore<State>()
@@ -84,7 +91,7 @@ export default defineComponent({
     const { scaleCanvas } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const { createImageElement } = useCreateElement()
+    const { createImageElement, createChartElement } = useCreateElement()
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
@@ -94,6 +101,8 @@ export default defineComponent({
 
     const shapePoolVisible = ref(false)
     const linePoolVisible = ref(false)
+    const chartPoolVisible = ref(false)
+
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'text',
@@ -125,9 +134,11 @@ export default defineComponent({
       insertImageElement,
       shapePoolVisible,
       linePoolVisible,
+      chartPoolVisible,
       drawText,
       drawShape,
       drawLine,
+      createChartElement,
     }
   },
 })
