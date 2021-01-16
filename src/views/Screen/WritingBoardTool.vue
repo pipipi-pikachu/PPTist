@@ -6,6 +6,7 @@
         :color="writingBoardColor" 
         :model="writingBoardModel" 
         v-if="writingBoardVisible" 
+        v-contextmenu="contextmenus"
       />
     </teleport>
 
@@ -13,7 +14,7 @@
       <div class="btn" @click="changePen()">画笔</div>
       <div class="btn" @click="changeEraser()">橡皮擦</div>
       <div class="btn" @click="clearCanvas()">擦除所有墨迹</div>
-      <div class="btn" @click="closeWritingBoard()">关闭画笔</div>
+      <div class="btn" @click="closeWritingBoard()">退出画笔</div>
       <div class="colors">
         <div 
           class="color" 
@@ -31,6 +32,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import WritingBoard from '@/components/WritingBoard.vue'
+import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
 
@@ -72,6 +74,29 @@ export default defineComponent({
       emit('close')
     }
 
+    const contextmenus = (): ContextmenuItem[] => {
+      return [
+        {
+          text: '画笔',
+          handler: changePen,
+          disable: writingBoardModel.value === 'pen',
+        },
+        {
+          text: '橡皮擦',
+          handler: changeEraser,
+          disable: writingBoardModel.value === 'eraser',
+        },
+        {
+          text: '擦除所有墨迹',
+          handler: clearCanvas,
+        },
+        {
+          text: '退出画笔',
+          handler: closeWritingBoard,
+        },
+      ]
+    }
+
     return {
       writingBoardRef,
       writingBoardVisible,
@@ -83,6 +108,7 @@ export default defineComponent({
       clearCanvas,
       changeColor,
       closeWritingBoard,
+      contextmenus,
     }
   },
 })

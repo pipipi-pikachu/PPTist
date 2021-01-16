@@ -96,6 +96,8 @@ import {
   DownOne,
   SeoFolder,
   CloseSmall,
+  Undo,
+  Transform,
 } from '@icon-park/vue-next'
 
 export default {
@@ -225,5 +227,7 @@ export default {
     app.component('IconRotate', Rotate)
     app.component('IconEdit', Edit)
     app.component('IconSeoFolder', SeoFolder)
+    app.component('IconUndo', Undo)
+    app.component('IconTransform', Transform)
   }
 }

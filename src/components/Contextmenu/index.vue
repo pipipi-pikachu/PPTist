@@ -13,7 +13,7 @@
     }"
     @contextmenu.prevent
   >
-    <ContextmenuContent 
+    <MenuContent 
       :menus="menus"
       :subMenuPosition="style.subMenuPosition" 
       :handleClickMenuItem="handleClickMenuItem" 
@@ -25,7 +25,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { ContextmenuItem, Axis } from './types'
 
-import ContextmenuContent from './ContextmenuContent.vue'
+import MenuContent from './MenuContent.vue'
 
 const MENU_WIDTH = 160
 const MENU_HEIGHT = 30
@@ -35,7 +35,7 @@ const SUB_MENU_WIDTH = 120
 export default defineComponent({
   name: 'contextmenu',
   components: {
-    ContextmenuContent,
+    MenuContent,
   },
   props: {
     axis: {

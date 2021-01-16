@@ -1,3 +1,4 @@
+// popover
 .ant-popover {
   padding-top: 5px !important;
 }
@@ -11,6 +12,26 @@
 .ant-popover-inner-content {
   padding: 12px !important;
 }
+
+// dropdown
+.ant-dropdown {
+  min-width: 120px;
+  animation: none !important;
+}
+.ant-dropdown-menu {
+  box-shadow: $boxShadow;
+  border: 1px solid $borderColor;
+}
+.ant-dropdown-menu-item {
+  font-size: 13px;
+  transition: none;
+
+  &:hover {
+    background-color: #e1e1e1;
+  }
+}
+
+// button
 .ant-btn {
   font-size: 13px !important;
 
@@ -18,8 +39,26 @@
     padding: 0;
   }
 }
+
+// radio
 .ant-radio-group {
   font-size: 13px !important;
+}
+.ant-radio-button-wrapper {
+  text-align: center;
+}
+
+// slider
+.ant-slider-track {
+  background-color: $themeColor;
+}
+.ant-slider-handle {
+  border-color: $themeColor;
+}
+
+// select
+.ant-select {
+  user-select: none;
 }
 .ant-select-selection-item {
   font-size: 13px;
@@ -27,18 +66,8 @@
 .ant-select-item-option-content {
   font-size: 13px !important;
 }
-.ant-radio-button-wrapper {
-  text-align: center;
-}
-.ant-slider-track {
-  background-color: $themeColor;
-}
-.ant-slider-handle {
-  border-color: $themeColor;
-}
-.ant-select {
-  user-select: none;
-}
+
+// tooltip
 .ant-tooltip-inner {
   font-size: 12px;
 }

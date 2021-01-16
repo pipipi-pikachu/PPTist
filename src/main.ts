@@ -31,6 +31,8 @@ import {
   Radio,
   Input,
   Modal,
+  Dropdown,
+  Menu,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -51,6 +53,9 @@ app.component('RadioButton', Radio.Button)
 app.component('Input', Input)
 app.component('InputGroup', Input.Group)
 app.component('Modal', Modal)
+app.component('Dropdown', Dropdown)
+app.component('Menu', Menu)
+app.component('MenuItem', Menu.Item)
 
 app.directive('contextmenu', Contextmenu)
 app.directive('click-outside', ClickOutside)

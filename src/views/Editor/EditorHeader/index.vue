@@ -1,11 +1,45 @@
 <template>
   <div class="editor-header">
     <div class="left">
-      <div class="menu-item"><IconSeoFolder /> 文件</div>
-      <div class="menu-item"><IconEdit /> 编辑</div>
-      <div class="menu-item"><IconSettingOne /> 设置</div>
-      <div class="menu-item"><IconSlide /> 演示</div>
-      <div class="menu-item"><IconHelpcenter /> 帮助</div>
+      <Dropdown :trigger="['click']">
+        <div class="menu-item"><IconSeoFolder /> 文件</div>
+        <template #overlay>
+          <Menu>
+            <MenuItem>导出JSON文件</MenuItem>
+            <MenuItem>保存到本地</MenuItem>
+          </Menu>
+        </template>
+      </Dropdown>
+      <Dropdown :trigger="['click']">
+        <div class="menu-item"><IconEdit /> 编辑</div>
+        <template #overlay>
+          <Menu>
+            <MenuItem>撤销</MenuItem>
+            <MenuItem>重做</MenuItem>
+            <MenuItem>添加页面</MenuItem>
+            <MenuItem>删除页面</MenuItem>
+          </Menu>
+        </template>
+      </Dropdown>
+      <Dropdown :trigger="['click']">
+        <div class="menu-item"><IconSlide /> 演示</div>
+        <template #overlay>
+          <Menu>
+            <MenuItem>从头开始</MenuItem>
+            <MenuItem>从当前页开始</MenuItem>
+          </Menu>
+        </template>
+      </Dropdown>
+      <Dropdown :trigger="['click']">
+        <div class="menu-item"><IconHelpcenter /> 帮助</div>
+        <template #overlay>
+          <Menu>
+            <MenuItem>开发文档</MenuItem>
+            <MenuItem>常见使用问题</MenuItem>
+            <MenuItem>快捷键</MenuItem>
+          </Menu>
+        </template>
+      </Dropdown>
     </div>
 
     <div class="right">

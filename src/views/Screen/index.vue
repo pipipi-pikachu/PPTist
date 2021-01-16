@@ -211,7 +211,6 @@ export default defineComponent({
           disable: slideIndex.value >= slides.value.length - 1,
           handler: () => turnNextSlide(),
         },
-        { divider: true },
         {
           text: '结束放映',
           subText: 'ESC',

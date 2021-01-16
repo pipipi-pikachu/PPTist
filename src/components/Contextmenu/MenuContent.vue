@@ -1,18 +1,18 @@
 <template>
-  <ul class="contextmenu-content">
+  <ul class="menu-content">
     <template v-for="(menu, index) in menus">
       <li
         v-if="!menu.hide"
-        class="contextmenu-item"
+        class="menu-item"
         :key="menu.text || index"
         @click.stop="handleClickMenuItem(menu)"
         :class="{'divider': menu.divider, 'disable': menu.disable}"
       >
-        <div class="contextmenu-item-content" :class="{'has-sub-menu': menu.children}" v-if="!menu.divider">
+        <div class="menu-item-content" :class="{'has-sub-menu': menu.children}" v-if="!menu.divider">
           <span class="text">{{menu.text}}</span>
           <span class="sub-text" v-if="menu.subText && !menu.children">{{menu.subText}}</span>
 
-          <contextmenu-content 
+          <menu-content 
             class="sub-menu" 
             :style="{
               [subMenuPosition]: '112.5%',
@@ -32,7 +32,7 @@ import { PropType, defineComponent } from 'vue'
 import { ContextmenuItem } from './types'
 
 export default defineComponent({
-  name: 'contextmenu-content',
+  name: 'menu-content',
   props: {
     menus: {
       type: Array as PropType<ContextmenuItem[]>,
@@ -55,7 +55,7 @@ $menuWidth: 160px;
 $menuHeight: 30px;
 $subMenuWidth: 120px;
 
-.contextmenu-content {
+.menu-content {
   width: $menuWidth;
   padding: 5px 0;
   background: #fff;
@@ -65,7 +65,7 @@ $subMenuWidth: 120px;
   list-style: none;
   margin: 0;
 }
-.contextmenu-item {
+.menu-item {
   padding: 0 20px;
   color: #555;
   font-size: 12px;
@@ -76,7 +76,7 @@ $subMenuWidth: 120px;
   background-color: #fff;
   cursor: pointer;
 
-  &:not(.disable):hover > .contextmenu-item-content > .sub-menu {
+  &:not(.disable):hover > .menu-item-content > .sub-menu {
     display: block;
   }
 
@@ -98,7 +98,7 @@ $subMenuWidth: 120px;
     cursor: no-drop;
   }
 }
-.contextmenu-item-content {
+.menu-item-content {
   display: flex;
   align-items: center;
   justify-content: space-between;

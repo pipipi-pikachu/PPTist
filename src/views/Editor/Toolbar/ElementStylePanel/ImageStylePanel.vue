@@ -6,7 +6,7 @@
     ></div>
 
     <ButtonGroup class="row">
-      <Button style="flex: 5;" @click="clipImage()">裁剪图片</Button>
+      <Button style="flex: 5;" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
       <Popover trigger="click" v-model:visible="clipPanelVisible">
         <template #content>
           <div class="clip">
@@ -56,7 +56,7 @@
           </div>
         </div>
       </template>
-      <Button class="full-width-btn">设置滤镜</Button>
+      <Button class="full-width-btn"><IconColorFilter class="btn-icon" /> 设置滤镜</Button>
     </Popover>
     
     <div class="row">
@@ -85,9 +85,9 @@
     <Divider />
     
     <FileInput @change="files => replaceImage(files)">
-      <Button class="full-width-btn">替换图片</Button>
+      <Button class="full-width-btn"><IconTransform class="btn-icon" /> 替换图片</Button>
     </FileInput>
-    <Button class="full-width-btn" @click="resetImage()">重置样式</Button>
+    <Button class="full-width-btn" @click="resetImage()"><IconUndo class="btn-icon" /> 重置样式</Button>
   </div>
 </template>
 
@@ -365,6 +365,9 @@ export default defineComponent({
 .full-width-btn {
   width: 100%;
   margin-bottom: 10px;
+}
+.btn-icon {
+  margin-right: 3px;
 }
 
 .filter {
