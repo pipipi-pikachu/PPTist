@@ -35,7 +35,7 @@
             </template>
           </div>
         </template>
-        <Button class="no-padding" style="flex: 1;"><IconFont type="icon-down" /></Button>
+        <Button class="no-padding" style="flex: 1;"><IconDown /></Button>
       </Popover>
     </ButtonGroup>
 

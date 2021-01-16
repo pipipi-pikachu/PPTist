@@ -16,7 +16,7 @@
         color: color,
       }"
       v-if="mouseInCanvas && model === 'pen'"
-    ><IconFont class="icon" :style="{ fontSize: '36px' }" type="icon-pen" /></div>
+    ><IconWrite class="icon" size="36" /></div>
     
     <div 
       class="eraser"
@@ -27,7 +27,7 @@
         height: rubberSize + 'px',
       }"
       v-if="mouseInCanvas && model === 'eraser'"
-    ><IconFont class="icon" :style="{ fontSize: rubberSize * 0.6 + 'px' }" type="icon-eraser" /></div>
+    ><IconClearFormat class="icon" :size="rubberSize * 0.6" /></div>
   </div>
 </template>
 

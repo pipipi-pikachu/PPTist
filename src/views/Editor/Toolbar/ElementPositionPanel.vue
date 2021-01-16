@@ -2,38 +2,38 @@
   <div class="element-positopn-panel">
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置顶层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconFont type="icon-layer-top" /></Button>
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconSendToBack /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置底层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconFont type="icon-layer-bottom" /></Button>
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconBringToFrontOne /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上移一层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconFont type="icon-layer-up" /></Button>
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconBringToFront /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下移一层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconFont type="icon-layer-down" /></Button>
+        <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconSentToBack /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconFont type="icon-align-left" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconAlignLeft /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')"><IconFont type="icon-align-vertical-center" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')"><IconAlignVertically /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('right')"><IconFont type="icon-align-right" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('right')"><IconAlignRight /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('top')"><IconFont type="icon-align-top" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('top')"><IconAlignTop /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas('vertical')"><IconFont type="icon-align-horizontal-center" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('vertical')"><IconAlignHorizontally /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('bottom')"><IconFont type="icon-align-bottom" /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas('bottom')"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
 
@@ -75,10 +75,10 @@
         />
         <template v-if="['image', 'shape'].includes(handleElement.type)">
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
-            <IconFont type="icon-lock" style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
+            <IconLock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
           </Tooltip>
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="宽高比锁定" v-else>
-            <IconFont type="icon-unlock" style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
+            <IconUnlock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
           </Tooltip>
         </template>
         <div style="flex: 1;" v-else></div>
@@ -106,10 +106,17 @@
       <div class="row">
         <div style="flex: 3;">旋转：</div>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="逆时针旋转">
-          <IconFont type="icon-rotate-left" class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
+          <IconRotate class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顺时针旋转">
-          <IconFont type="icon-rotate-right" class="icon-btn" @click="updateRotate45('+')" style="flex: 2;" />
+          <IconRotate 
+            class="icon-btn" 
+            @click="updateRotate45('+')" 
+            :style="{
+              flex: 2,
+              transform: 'rotateY(180deg)',
+            }" 
+          />
         </Tooltip>
         <div style="flex: 1;"></div>
         <InputNumber 

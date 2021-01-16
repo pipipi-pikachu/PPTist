@@ -2,32 +2,32 @@
   <div class="multi-position-panel">
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('left')"><IconFont type="icon-align-left" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('left')"><IconAlignLeft /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignActiveElement('horizontal')"><IconFont type="icon-align-vertical-center" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('horizontal')"><IconAlignVertically /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('right')"><IconFont type="icon-align-right" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('right')"><IconAlignRight /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('top')"><IconFont type="icon-align-top" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('top')"><IconAlignTop /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignActiveElement('vertical')"><IconFont type="icon-align-horizontal-center" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('vertical')"><IconAlignHorizontally /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('bottom')"><IconFont type="icon-align-bottom" /></Button>
+        <Button style="flex: 1;" @click="alignActiveElement('bottom')"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
 
     <Divider />
 
     <ButtonGroup class="row">
-      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconFont type="icon-group" />组合</Button>
-      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconFont type="icon-ungroup" />取消组合</Button>
+      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconGroup style="margin-right: 3px;" />组合</Button>
+      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconUngroup style="margin-right: 3px;" />取消组合</Button>
     </ButtonGroup>
   </div>
 </template>

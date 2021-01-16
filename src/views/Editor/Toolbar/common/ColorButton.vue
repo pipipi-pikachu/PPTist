@@ -1,7 +1,7 @@
 <template>
   <Button class="color-btn">
     <div class="color-block" :style="{ backgroundColor: color }"></div>
-    <IconFont type="icon-down" class="color-btn-icon" />
+    <IconPlatte class="color-btn-icon" />
   </Button>
 </template>
 
@@ -29,7 +29,7 @@ export default {
   margin-left: 8px;
   flex: 1;
 }
-svg.color-btn-icon {
+.color-btn-icon {
   width: 30px;
   font-size: 12px;
   margin-top: 2px;

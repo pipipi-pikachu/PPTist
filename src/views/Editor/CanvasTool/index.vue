@@ -2,20 +2,20 @@
   <div class="canvas-tool">
     <div class="left-handler">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="撤销">
-        <IconFont type="icon-undo" class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
+        <IconBack class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="重做">
-        <IconFont type="icon-redo" class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
+        <IconNext class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
       </Tooltip>
     </div>
 
     <div class="add-element-handler">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
-        <IconFont type="icon-text" class="handler-item" @click="drawText()" />
+        <IconFontSize class="handler-item" @click="drawText()" />
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
-          <IconFont type="icon-image" class="handler-item" />
+          <IconPicture class="handler-item" />
         </Tooltip>
       </FileInput>
       <Popover trigger="click" v-model:visible="shapePoolVisible">
@@ -23,7 +23,7 @@
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
-          <IconFont type="icon-shape" class="handler-item" />
+          <IconPentagonOne class="handler-item" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="linePoolVisible">
@@ -31,21 +31,24 @@
           <LinePool @select="line => drawLine(line)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条">
-          <IconFont type="icon-line" class="handler-item" />
+          <IconConnection class="handler-item" />
         </Tooltip>
       </Popover>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
-        <IconFont type="icon-table" class="handler-item" />
+        <IconInsertTable class="handler-item" />
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
-        <IconFont type="icon-piechart" class="handler-item" />
+        <IconChartProportion class="handler-item" />
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
+        <IconFormula class="handler-item" />
       </Tooltip>
     </div>
 
     <div class="right-handler">
-      <IconFont type="icon-minus" class="handler-item viewport-size" @click="scaleCanvas('-')" />
+      <IconMinus class="handler-item viewport-size" @click="scaleCanvas('-')" />
       <span class="text">{{canvasScalePercentage}}</span>
-      <IconFont type="icon-plus" class="handler-item viewport-size" @click="scaleCanvas('+')" />
+      <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
     </div>
   </div>
 </template>

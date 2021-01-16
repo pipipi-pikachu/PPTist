@@ -45,10 +45,10 @@
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-              <IconFont type="icon-play-circle" class="handler-btn" @click="runAnimation(element.elId, element.type)" />
+              <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.type)" />
             </Tooltip>
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-              <IconFont type="icon-delete" class="handler-btn" @click="deleteAnimation(element.elId)" />
+              <IconDelete class="handler-btn" @click="deleteAnimation(element.elId)" />
             </Tooltip>
           </div>
         </div>

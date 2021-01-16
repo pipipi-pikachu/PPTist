@@ -45,14 +45,14 @@
     </Modal>
 
     <div class="tools">
-      <IconFont class="tool-btn" type="icon-left-circle" @click="execPrev()" />
-      <IconFont class="tool-btn" type="icon-right-circle" @click="execNext()" />
-      <IconFont class="tool-btn" type="icon-appstore" @click="slideThumbnailModelVisible = true" />
+      <IconLeftC class="tool-btn" @click="execPrev()" />
+      <IconRightC class="tool-btn" @click="execNext()" />
+      <IconSearch class="tool-btn" @click="slideThumbnailModelVisible = true" />
       <Popover trigger="click" v-model:visible="writingBoardToolVisible">
         <template #content>
           <WritingBoardTool @close="writingBoardToolVisible = false" />
         </template>
-        <IconFont class="tool-btn" type="icon-edit" />
+        <IconWrite class="tool-btn" />
       </Popover>
     </div>
   </div>

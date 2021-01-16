@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
 
+import '@icon-park/vue-next/styles/index.css'
 import 'prosemirror-view/style/prosemirror.css'
 import '@/assets/styles/prosemirror.scss'
 import '@/assets/styles/global.scss'
@@ -10,8 +11,8 @@ import 'animate.css'
 
 import Contextmenu from './plugins/contextmenu'
 import ClickOutside from './plugins/clickOutside'
+import IconPark from './plugins/iconPark'
 
-import IconFont from '@/components/IconFont.vue'
 import FileInput from '@/components/FileInput.vue'
 import SvgWrapper from '@/components/SvgWrapper.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
@@ -53,8 +54,8 @@ app.component('Modal', Modal)
 
 app.directive('contextmenu', Contextmenu)
 app.directive('click-outside', ClickOutside)
+app.use(IconPark)
 
-app.component('IconFont', IconFont)
 app.component('FileInput', FileInput)
 app.component('SvgWrapper', SvgWrapper)
 app.component('CheckboxButton', CheckboxButton)

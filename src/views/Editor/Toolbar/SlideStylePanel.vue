@@ -36,7 +36,7 @@
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
           <div class="content" :style="{ backgroundImage: `url(${background.value})` }">
-            <IconFont type="icon-plus" />
+            <IconPlus />
           </div>
         </div>
       </FileInput>

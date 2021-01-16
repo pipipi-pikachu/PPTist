@@ -6,6 +6,7 @@
         :value="richTextAttrs.fontname"
         @change="value => emitRichTextCommand('fontname', value)"
       >
+        <template #suffixIcon><IconFontSize /></template>
         <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
           <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
         </SelectOption>
@@ -15,6 +16,7 @@
         :value="richTextAttrs.fontsize"
         @change="value => emitRichTextCommand('fontsize', value)"
       >
+        <template #suffixIcon><IconAddText /></template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
           {{fontsize}}
         </SelectOption>
@@ -31,7 +33,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
           <Button class="text-color-btn" style="flex: 1;">
-            <IconFont type="icon-font-colors" />
+            <IconText />
             <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
           </Button>
         </Tooltip>
@@ -45,7 +47,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
           <Button class="text-color-btn" style="flex: 1;">
-            <IconFont type="icon-highlight" />
+            <IconBackgroundColor />
             <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
           </Button>
         </Tooltip>
@@ -59,7 +61,7 @@
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文本框填充">
           <Button class="text-color-btn" style="flex: 1;">
-            <IconFont type="icon-bg-colors" />
+            <IconFill />
             <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
           </Button>
         </Tooltip>
@@ -72,28 +74,28 @@
           style="flex: 1;"
           :checked="richTextAttrs.bold"
           @click="emitRichTextCommand('bold')"
-        ><IconFont type="icon-bold" /></CheckboxButton>
+        ><IconTextBold /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.em"
           @click="emitRichTextCommand('em')"
-        ><IconFont type="icon-italic" /></CheckboxButton>
+        ><IconTextItalic /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.underline"
           @click="emitRichTextCommand('underline')"
-        ><IconFont type="icon-underline" /></CheckboxButton>
+        ><IconTextUnderline /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.strikethrough"
           @click="emitRichTextCommand('strikethrough')"
-        ><IconFont type="icon-strikethrough" /></CheckboxButton>
+        ><IconStrikethrough /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -103,34 +105,34 @@
           style="flex: 1;"
           :checked="richTextAttrs.superscript"
           @click="emitRichTextCommand('superscript')"
-        ><IconFont type="icon-superscript" /></CheckboxButton>
+        ><IconUpOne /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.subscript"
           @click="emitRichTextCommand('subscript')"
-        ><IconFont type="icon-subscript" /></CheckboxButton>
+        ><IconDownOne /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="行内代码">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.code"
           @click="emitRichTextCommand('code')"
-        ><IconFont type="icon-code" /></CheckboxButton>
+        ><IconCode /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.blockquote"
           @click="emitRichTextCommand('blockquote')"
-        ><IconFont type="icon-blockquote" /></CheckboxButton>
+        ><IconQuote /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
         <CheckboxButton
           style="flex: 1;"
           @click="emitRichTextCommand('clear')"
-        ><IconFont type="icon-clear" /></CheckboxButton>
+        ><IconFormat /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -143,13 +145,13 @@
       @change="e => emitRichTextCommand('align', e.target.value)"
     >
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><IconFont type="icon-text-align-left" /></RadioButton>
+        <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><IconFont type="icon-text-align-center" /></RadioButton>
+        <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><IconFont type="icon-text-align-right" /></RadioButton>
+        <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
       </Tooltip>
     </RadioGroup>
 
@@ -159,14 +161,14 @@
           style="flex: 1;" 
           :checked="richTextAttrs.bulletList"
           @click="emitRichTextCommand('bulletList')"
-        ><IconFont type="icon-unorderedlist" /></CheckboxButton>
+        ><IconList /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
         <CheckboxButton 
           style="flex: 1;" 
           :checked="richTextAttrs.orderedList"
           @click="emitRichTextCommand('orderedList')"
-        ><IconFont type="icon-orderedlist" /></CheckboxButton>
+        ><IconOrderedList /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -175,14 +177,14 @@
     <div class="row">
       <div style="flex: 2;">行间距：</div>
       <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value)">
-        <template #suffixIcon><IconFont type="icon-column-height" /></template>
+        <template #suffixIcon><IconRowHeight /></template>
         <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">字间距：</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
-        <template #suffixIcon><IconFont type="icon-column-width" /></template>
+        <template #suffixIcon><IconFullwidth /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>

@@ -10,7 +10,7 @@
 
     <div class="right">
       <div class="menu-item icon">
-        <IconFont type="icon-github-fill" />
+        <IconGithub />
       </div>
     </div>
   </div>
