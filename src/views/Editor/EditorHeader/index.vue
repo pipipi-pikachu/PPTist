@@ -5,8 +5,8 @@
         <div class="menu-item"><IconSeoFolder /> 文件</div>
         <template #overlay>
           <Menu>
-            <MenuItem>导出JSON文件</MenuItem>
-            <MenuItem>保存到本地</MenuItem>
+            <MenuItem>重置幻灯片</MenuItem>
+            <MenuItem>缓存幻灯片</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -18,6 +18,7 @@
             <MenuItem>重做</MenuItem>
             <MenuItem>添加页面</MenuItem>
             <MenuItem>删除页面</MenuItem>
+            <MenuItem>网格参考线</MenuItem>
           </Menu>
         </template>
       </Dropdown>

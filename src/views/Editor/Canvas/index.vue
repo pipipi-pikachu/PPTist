@@ -203,10 +203,6 @@ export default defineComponent({
         },
         {
           text: '网格参考线',
-          children: [
-            { text: '网格线', handler: toggleGridLines },
-            { text: '参考线' },
-          ],
         },
         {
           text: '清空本页',

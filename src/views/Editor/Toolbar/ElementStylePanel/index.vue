@@ -3,7 +3,7 @@
     <div v-if="!currentPanelComponent">
       请先选中要编辑的元素
     </div>
-    <component :is="currentPanelComponent"></component>
+    <component v-if="handleElement" :is="currentPanelComponent"></component>
   </div>
 </template>
 
@@ -39,6 +39,7 @@ export default defineComponent({
     })
 
     return {
+      handleElement,
       currentPanelComponent,
     }
   },
