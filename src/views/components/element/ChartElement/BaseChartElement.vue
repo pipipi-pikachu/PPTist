@@ -7,7 +7,12 @@
       height: elementInfo.height + 'px',
     }"
   >
-    <div class="element-content">
+    <div 
+      class="element-content"
+      :style="{
+        backgroundColor: elementInfo.fill,
+      }"
+    >
       <ElementOutline
         :width="elementInfo.width"
         :height="elementInfo.height"

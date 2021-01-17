@@ -11,6 +11,9 @@
   >
     <div 
       class="element-content" 
+      :style="{
+        backgroundColor: elementInfo.fill,
+      }"
       v-contextmenu="contextmenus"
     >
       <ElementOutline

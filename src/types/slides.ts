@@ -121,6 +121,7 @@ export interface PPTChartElement {
   groupId?: string;
   width: number;
   height: number;
+  fill?: string;
   chartType: ChartType;
   data: ChartData;
   options?: ILineChartOptions & IBarChartOptions & IPieChartOptions;
