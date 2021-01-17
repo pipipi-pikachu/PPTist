@@ -33,6 +33,7 @@ import {
   Modal,
   Dropdown,
   Menu,
+  Checkbox,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -56,6 +57,7 @@ app.component('Modal', Modal)
 app.component('Dropdown', Dropdown)
 app.component('Menu', Menu)
 app.component('MenuItem', Menu.Item)
+app.component('Checkbox', Checkbox)
 
 app.directive('contextmenu', Contextmenu)
 app.directive('click-outside', ClickOutside)
