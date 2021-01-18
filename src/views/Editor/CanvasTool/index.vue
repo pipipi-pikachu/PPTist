@@ -45,9 +45,6 @@
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
         <IconInsertTable class="handler-item" />
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
-        <IconFormula class="handler-item" />
-      </Tooltip>
     </div>
 
     <div class="right-handler">

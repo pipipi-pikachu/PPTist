@@ -28,6 +28,7 @@
               <input 
                 :class="['item', { 'selected': rowIndex <= selectedRange[1] && colIndex <= selectedRange[0] }]"
                 :id="`cell-${rowIndex - 1}-${colIndex - 1}`"
+                autocomplete="off"
               >
             </td>
           </tr>
@@ -155,11 +156,8 @@ export default defineComponent({
         const x = currentPageX - startPageX
         const y = currentPageY - startPageY
 
-        let width = originWidth + x
-        let height = originHeight + y
-
-        if(width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
-        if(height % CELL_HEIGHT > CELL_HEIGHT * 0.5) height = height + (CELL_HEIGHT - height % CELL_HEIGHT)
+        const width = originWidth + x
+        const height = originHeight + y
 
         tempRangeSize.value = { width, height }
       }
@@ -169,7 +167,10 @@ export default defineComponent({
         document.onmousemove = null
         document.onmouseup = null
 
-        const { width, height } = tempRangeSize.value
+        let width = tempRangeSize.value.width
+        let height = tempRangeSize.value.height
+        if(width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
+        if(height % CELL_HEIGHT > CELL_HEIGHT * 0.5) height = height + (CELL_HEIGHT - height % CELL_HEIGHT)
 
         let row = Math.round(height / CELL_HEIGHT)
         let col = Math.round(width / CELL_WIDTH)

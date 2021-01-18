@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@icon-park/vue-next": "^1.2.1",
+    "@icon-park/vue-next": "^1.2.2",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^2.0.0-rc.3",
     "chartist": "^0.11.4",

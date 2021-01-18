@@ -149,20 +149,8 @@ export interface PPTTableElement {
   colSizes: number[];
   data: TableElementCell[][];
 }
-export interface PPTFormulaElement {
-  type: 'formula';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-  width: number;
-  height: number;
-  latex: string;
-  color?: string;
-}
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTFormulaElement
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement
 
 export interface PPTAnimation {
   elId: string;
