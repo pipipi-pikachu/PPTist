@@ -49,6 +49,12 @@ export default defineComponent({
     options: {
       type: Object as PropType<ILineChartOptions & IBarChartOptions & IPieChartOptions>,
     },
+    themeColors: {
+      type: Array as PropType<string[]>,
+    },
+    gridColor: {
+      type: String,
+    },
   },
   setup(props) {
     const chartRef = ref<HTMLElement | null>(null)
@@ -93,6 +99,24 @@ export default defineComponent({
 
     onMounted(renderChart)
 
+    const updateTheme = () => {
+      if(!chartRef.value) return
+
+      if(props.themeColors) {
+        for(let i = 0; i < props.themeColors.length; i++) {
+          chartRef.value.style.setProperty(`--theme-color-${i + 1}`, props.themeColors[i])
+        }
+      }
+
+      if(props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
+    }
+
+    watch([
+      () => props.themeColors,
+      () => props.gridColor,
+    ], updateTheme)
+    onMounted(updateTheme)
+
     return {
       slideScale,
       chartRef,
@@ -104,5 +128,49 @@ export default defineComponent({
 <style lang="scss" scoped>
 .chart-content {
   transform-origin: 0 0;
+}
+</style>
+
+<style lang="scss">
+.chart-content {
+  $ct-series-names: (a, b, c, d);
+
+  --theme-color-1: #d70206;
+  --theme-color-2: #f05b4f;
+  --theme-color-3: #f4c63d;
+  --theme-color-4: #d17905;
+
+  @for $i from 1 to length($ct-series-names) {
+    $color: var(--theme-color-#{$i});
+
+    .ct-series-#{nth($ct-series-names, $i)} .ct-line {
+      stroke: $color;
+    }
+    .ct-series-#{nth($ct-series-names, $i)} .ct-point {
+      stroke: $color;
+    }
+    .ct-series-#{nth($ct-series-names, $i)} .ct-area {
+      fill: $color;
+    }
+    .ct-series-#{nth($ct-series-names, $i)} .ct-bar {
+      stroke: $color;
+    }
+    .ct-series-#{nth($ct-series-names, $i)} .ct-slice-pie {
+      fill: $color;
+    }
+    .ct-series-#{nth($ct-series-names, $i)} .ct-slice-donut {
+      stroke: $color;
+    }
+  }
+
+  --grid-color: rgba(0, 0, 0, 0.4);
+
+  .ct-grid {
+    stroke: var(--grid-color);
+  }
+  .ct-label {
+    fill: var(--grid-color);
+    color: var(--grid-color);
+  }
 }
 </style>

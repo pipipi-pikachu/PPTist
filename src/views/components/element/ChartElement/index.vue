@@ -27,6 +27,8 @@
         :type="elementInfo.chartType"
         :data="elementInfo.data"
         :options="elementInfo.options"
+        :themeColors="elementInfo.themeColors"
+        :gridColor="elementInfo.gridColor"
       />
     </div>
   </div>

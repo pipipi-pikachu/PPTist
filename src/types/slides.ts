@@ -126,6 +126,8 @@ export interface PPTChartElement {
   data: ChartData;
   options?: ILineChartOptions & IBarChartOptions & IPieChartOptions;
   outline?: PPTElementOutline;
+  themeColors?: string[];
+  gridColor?: string;
 }
 
 export interface TableElementCell {

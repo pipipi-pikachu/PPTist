@@ -51,6 +51,51 @@
         <ColorButton :color="fill" style="flex: 3;" />
       </Popover>
     </div>
+    <div class="row">
+      <div style="flex: 2;">主题配色：</div>
+      <Popover trigger="click" v-model:visible="themePoolVisible">
+        <template #content>
+          <div class="theme-pool">
+            <div 
+              class="theme-item" 
+              v-for="(theme, index) in CHART_THEME_COLORS" 
+              :key="index"
+              @click="updateTheme(theme)"
+            >
+              <div 
+                class="color-block" 
+                v-for="(color, index) in theme" 
+                :key="index"
+                :style="{ backgroundColor: color }"
+              ></div>
+            </div>
+          </div>
+        </template>
+        <Button class="theme-color-btn" style="flex: 3;">
+          <div class="theme-color-content">
+            <div 
+              class="color-block" 
+              v-for="(color, index) in themeColors" 
+              :key="index"
+              :style="{ backgroundColor: color }"
+            ></div>
+          </div>
+          <IconPlatte class="theme-color-btn-icon" />
+        </Button>
+      </Popover>
+    </div>
+    <div class="row">
+      <div style="flex: 2;">网格颜色：</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            :modelValue="gridColor"
+            @update:modelValue="value => updateGridColor(value)"
+          />
+        </template>
+        <ColorButton :color="gridColor" style="flex: 3;" />
+      </Popover>
+    </div>
 
     <Divider />
     <ElementOutline />
@@ -78,6 +123,7 @@ import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { ChartData, PPTChartElement } from '@/types/slides'
+import { CHART_THEME_COLORS } from '@/configs/chartTheme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../../common/ElementOutline.vue'
@@ -96,10 +142,14 @@ export default defineComponent({
     const handleElement: Ref<PPTChartElement> = computed(() => store.getters.handleElement)
 
     const chartDataEditorVisible = ref(false)
+    const themePoolVisible = ref(false)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const fill = ref<string>()
+
+    const themeColors = ref<string[]>([])
+    const gridColor = ref('')
 
     const lineSmooth = ref<boolean | Function>(true)
     const showLine = ref(true)
@@ -126,6 +176,9 @@ export default defineComponent({
         if(_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
         if(_donut !== undefined) donut.value = _donut
       }
+
+      themeColors.value = handleElement.value.themeColors || CHART_THEME_COLORS[0]
+      gridColor.value = handleElement.value.gridColor || 'rgba(0, 0, 0, 0.4)'
     }, { deep: true, immediate: true })
 
     const updateData = (data: ChartData) => {
@@ -149,8 +202,22 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const updateTheme = (themeColors: string[]) => {
+      themePoolVisible.value = false
+      const props = { themeColors }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    const updateGridColor = (gridColor: string) => {
+      const props = { gridColor }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     return {
       chartDataEditorVisible,
+      themePoolVisible,
       handleElement,
       updateData,
       fill,
@@ -161,6 +228,11 @@ export default defineComponent({
       horizontalBars,
       donut,
       updateOptions,
+      themeColors,
+      gridColor,
+      CHART_THEME_COLORS,
+      updateTheme,
+      updateGridColor,
     }
   },
 })
@@ -178,5 +250,52 @@ export default defineComponent({
 }
 .btn-icon {
   margin-right: 3px;
+}
+
+.theme-item {
+  border-radius: $borderRadius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 20px;
+  transition: background-color .1s;
+
+  & + .theme-item {
+    margin-top: 8px;
+  }
+
+  &:hover {
+    background-color: #e1e1e1;
+    cursor: pointer;
+  }
+}
+.theme-color-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+.theme-color-content {
+  height: 20px;
+  margin-left: 8px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.color-block {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  & + .color-block {
+    margin-left: -3px;
+  }
+}
+.theme-color-btn-icon {
+  width: 30px;
+  font-size: 12px;
+  margin-top: 2px;
+  color: #bfbfbf;
 }
 </style>
