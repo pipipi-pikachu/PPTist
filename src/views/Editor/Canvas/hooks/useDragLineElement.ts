@@ -19,7 +19,7 @@ export default (elementList: Ref<PPTElement[]>) => {
   const dragLineElement = (e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => {
     let isMouseDown = true
 
-    const sorptionRange = 10
+    const sorptionRange = 8
 
     const startPageX = e.pageX
     const startPageY = e.pageY

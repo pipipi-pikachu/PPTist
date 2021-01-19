@@ -29,7 +29,7 @@ export default (
     const originElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
     const originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.id))
 
-    const sorptionRange = 3
+    const sorptionRange = 5
     const elOriginLeft = element.left
     const elOriginTop = element.top
     const elOriginWidth = element.width
@@ -211,25 +211,19 @@ export default (
         const min = Math.min(...range, targetMinX, targetMaxX)
         const max = Math.max(...range, targetMinX, targetMaxX)
         
-        if(Math.abs(targetMinY - value) < sorptionRange) {
-          if(!isHorizontalAdsorbed) {
-            targetTop = targetTop - (targetMinY - value)
-            isHorizontalAdsorbed = true
-          }
+        if(Math.abs(targetMinY - value) < sorptionRange && !isHorizontalAdsorbed) {
+          targetTop = targetTop - (targetMinY - value)
+          isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
-        if(Math.abs(targetMaxY - value) < sorptionRange) {
-          if(!isHorizontalAdsorbed) {
-            targetTop = targetTop - (targetMaxY - value)
-            isHorizontalAdsorbed = true
-          }
+        if(Math.abs(targetMaxY - value) < sorptionRange && !isHorizontalAdsorbed) {
+          targetTop = targetTop - (targetMaxY - value)
+          isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
-        if(Math.abs(targetCenterY - value) < sorptionRange) {
-          if(!isHorizontalAdsorbed) {
-            targetTop = targetTop - (targetCenterY - value)
-            isHorizontalAdsorbed = true
-          }
+        if(Math.abs(targetCenterY - value) < sorptionRange && !isHorizontalAdsorbed) {
+          targetTop = targetTop - (targetCenterY - value)
+          isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
       }
@@ -238,25 +232,19 @@ export default (
         const min = Math.min(...range, targetMinY, targetMaxY)
         const max = Math.max(...range, targetMinY, targetMaxY)
 
-        if(Math.abs(targetMinX - value) < sorptionRange) {
-          if(!isVerticalAdsorbed) {
-            targetLeft = targetLeft - (targetMinX - value)
-            isVerticalAdsorbed = true
-          }
+        if(Math.abs(targetMinX - value) < sorptionRange && !isVerticalAdsorbed) {
+          targetLeft = targetLeft - (targetMinX - value)
+          isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
-        if(Math.abs(targetMaxX - value) < sorptionRange) {
-          if(!isVerticalAdsorbed) {
-            targetLeft = targetLeft - (targetMaxX - value)
-            isVerticalAdsorbed = true
-          }
+        if(Math.abs(targetMaxX - value) < sorptionRange && !isVerticalAdsorbed) {
+          targetLeft = targetLeft - (targetMaxX - value)
+          isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
-        if(Math.abs(targetCenterX - value) < sorptionRange) {
-          if(!isVerticalAdsorbed) {
-            targetLeft = targetLeft - (targetCenterX - value)
-            isVerticalAdsorbed = true
-          }
+        if(Math.abs(targetCenterX - value) < sorptionRange && !isVerticalAdsorbed) {
+          targetLeft = targetLeft - (targetCenterX - value)
+          isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
       }

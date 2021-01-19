@@ -175,7 +175,7 @@ export default (
     
     // 对齐吸附方法
     const alignedAdsorption = (currentX: number | null, currentY: number | null) => {
-      const sorptionRange = 3
+      const sorptionRange = 5
 
       const _alignmentLines: AlignmentLineProps[] = []
       let isVerticalAdsorbed = false
@@ -188,11 +188,9 @@ export default (
           const min = Math.min(...range, currentX || 0)
           const max = Math.max(...range, currentX || 0)
           
-          if(Math.abs(currentY - value) < sorptionRange) {
-            if(!isHorizontalAdsorbed) {
-              correctionVal.offsetY = currentY - value
-              isHorizontalAdsorbed = true
-            }
+          if(Math.abs(currentY - value) < sorptionRange && !isHorizontalAdsorbed) {
+            correctionVal.offsetY = currentY - value
+            isHorizontalAdsorbed = true
             _alignmentLines.push({ type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100 })
           }
         }
@@ -203,11 +201,9 @@ export default (
           const min = Math.min(...range, (currentY || 0))
           const max = Math.max(...range, (currentY || 0))
 
-          if(Math.abs(currentX - value) < sorptionRange) {
-            if(!isVerticalAdsorbed) {
-              correctionVal.offsetX = currentX - value
-              isVerticalAdsorbed = true
-            }
+          if(Math.abs(currentX - value) < sorptionRange && !isVerticalAdsorbed) {
+            correctionVal.offsetX = currentX - value
+            isVerticalAdsorbed = true
             _alignmentLines.push({ type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100 })
           }
         }

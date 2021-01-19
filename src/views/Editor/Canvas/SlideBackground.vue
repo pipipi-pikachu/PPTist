@@ -3,10 +3,7 @@
     class="slide-background"
     :style="backgroundStyle"
   >
-    <template v-if="showGridLines">
-      <GridLines />
-      <GridLines :gridSize="100" gridColor="rgba(100, 100, 100, 0.35)" />
-    </template>
+    <GridLines v-if="showGridLines" />
   </div>
 </template>
 
