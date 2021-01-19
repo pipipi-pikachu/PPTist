@@ -43,6 +43,9 @@ export const actions: ActionTree<State, State> = {
       needDeleteKeys.push(allKeys[0])
       snapshotLength--
     }
+    if(snapshotLength >= 2) {
+      db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: state.slideIndex })
+    }
 
     await db.snapshots.bulkDelete(needDeleteKeys)
 

@@ -10,9 +10,9 @@
           'slide-item', 
           `turning-mode-${slide.turningMode || 'slideY'}`,
           {
-            'show': index === slideIndex,
-            'prev': index < slideIndex,
-            'next': index > slideIndex,
+            'current': index === slideIndex,
+            'before': index < slideIndex,
+            'after': index > slideIndex,
           }
         ]"
         v-for="(slide, index) in slides" 
@@ -260,45 +260,44 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 
-  &.show {
+  &.current {
     z-index: 2;
   }
 
   &.turning-mode-no {
-    &.prev {
+    &.before {
       transform: translateY(-100%);
     }
-    &.next {
+    &.after {
       transform: translateY(100%);
     }
   }
   &.turning-mode-fade {
     transition: opacity .75s;
-
-    &.prev {
+    &.before {
       pointer-events: none;
       opacity: 0;
     }
-    &.next {
+    &.after {
       pointer-events: none;
       opacity: 0;
     }
   }
   &.turning-mode-slideX {
     transition: transform .35s;
-    &.prev {
+    &.before {
       transform: translateX(-100%);
     }
-    &.next {
+    &.after {
       transform: translateX(100%);
     }
   }
   &.turning-mode-slideY {
     transition: transform .35s;
-    &.prev {
+    &.before {
       transform: translateY(-100%);
     }
-    &.next {
+    &.after {
       transform: translateY(100%);
     }
   }
