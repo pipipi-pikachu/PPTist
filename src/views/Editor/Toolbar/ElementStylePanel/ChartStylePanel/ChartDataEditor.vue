@@ -162,10 +162,15 @@ export default defineComponent({
         tempRangeSize.value = { width, height }
       }
 
-      document.onmouseup = () => {
+      document.onmouseup = e => {
         isMouseDown = false
         document.onmousemove = null
         document.onmouseup = null
+
+        const endPageX = e.pageX
+        const endPageY = e.pageY
+
+        if(startPageX === endPageX && startPageY === endPageY) return
 
         let width = tempRangeSize.value.width
         let height = tempRangeSize.value.height
@@ -247,13 +252,31 @@ export default defineComponent({
 }
 .resizable {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
   left: 0;
   top: 0;
-  margin: -4px 0 0 -4px;
-  background-color: $themeColor;
+  margin: -9px 0 0 -9px;
   cursor: nwse-resize;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 12px;
+    right: 0;
+    top: 0;
+    background-color: $themeColor;
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 4px;
+    right: 0;
+    bottom: 0;
+    background-color: $themeColor;
+  }
 }
 table {
   width: 100%;

@@ -39,8 +39,12 @@
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
-        <SvgWrapper width="12" height="12" fill="#fff" stroke="#666">
-          <path d="M 12 0 L 0 0 L 0 12 L 3 12 L 3 3 L 12 3 L 12 0 Z"></path>
+        <SvgWrapper width="12" height="12" fill="#fff" stroke="#333">
+          <path
+            stroke-width="0.3" 
+            shape-rendering="crispEdges"
+            d="M 16 0 L 0 0 L 0 16 L 4 16 L 4 4 L 16 4 L 16 0 Z"
+          ></path>
         </SvgWrapper>
       </div>
     </div>
@@ -288,8 +292,8 @@ export default defineComponent({
       isSettingClipRange.value = true
       let isMouseDown = true
 
-      const minWidth = 32 / props.width * 100
-      const minHeight = 32 / props.height * 100
+      const minWidth = 50 / props.width * 100
+      const minHeight = 50 / props.height * 100
       
       const startPageX = e.pageX
       const startPageY = e.pageY
