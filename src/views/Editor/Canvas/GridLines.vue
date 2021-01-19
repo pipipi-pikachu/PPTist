@@ -24,7 +24,7 @@ import { SlideBackground } from '@/types/slides'
 
 export default defineComponent({
   name: 'grid-lines',
-  setup(props) {
+  setup() {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
     const background: Ref<SlideBackground | undefined> = computed(() => store.getters.currentSlide.background)
