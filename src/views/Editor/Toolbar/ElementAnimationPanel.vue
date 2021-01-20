@@ -1,6 +1,6 @@
 <template>
   <div class="element-animation-panel">
-    <div class="element-animation">
+    <div class="element-animation" v-if="handleElement">
       <Popover trigger="click" v-model:visible="animationPoolVisible">
         <template #content>
           <div class="animation-pool">
@@ -29,6 +29,8 @@
         </Button>
       </Popover>
     </div>
+
+    <div class="tip" v-else><IconClick /> 选中画布中的元素添加动画</div>
     
     <Divider />
 
@@ -42,7 +44,7 @@
       itemKey="id"
     >
       <template #item="{ element, index }">
-        <div class="sequence-item" :class="{ 'active': handleElement.id === element.elId }">
+        <div class="sequence-item" :class="{ 'active': handleElement?.id === element.elId }">
           <div class="index">{{index + 1}}</div>
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
@@ -199,6 +201,11 @@ export default defineComponent({
 <style lang="scss" scoped>
 .element-animation-btn {
   width: 100%;
+}
+.tip {
+  text-align: center;
+  font-style: italic;
+  padding-top: 12px;
 }
 .animation-pool {
   width: 400px;

@@ -98,6 +98,7 @@ import {
   CloseSmall,
   Undo,
   Transform,
+  Click,
 } from '@icon-park/vue-next'
 
 export default {
@@ -229,5 +230,6 @@ export default {
     app.component('IconSeoFolder', SeoFolder)
     app.component('IconUndo', Undo)
     app.component('IconTransform', Transform)
+    app.component('IconClick', Click)
   }
 }
