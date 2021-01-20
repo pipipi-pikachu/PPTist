@@ -23,6 +23,15 @@
         :width="elementInfo.width"
         :height="elementInfo.height"
       >
+        <defs v-if="elementInfo.gradient">
+          <GradientDefs
+            :id="`editabel-gradient-${elementInfo.id}`" 
+            :type="elementInfo.gradient.type"
+            :color1="elementInfo.gradient.color[0]"
+            :color2="elementInfo.gradient.color[1]"
+            :rotate="elementInfo.gradient.rotate"
+          />
+        </defs>
         <g 
           :transform="`scale(${elementInfo.width / elementInfo.viewBox}, ${elementInfo.height / elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
         >
@@ -32,7 +41,7 @@
             stroke-miterlimit="8"
             stroke-linejoin="" 
             :d="elementInfo.path" 
-            :fill="elementInfo.fill"
+            :fill="elementInfo.gradient ? `url(#editabel-gradient-${elementInfo.id})` : elementInfo.fill"
             :stroke="outlineColor"
             :stroke-width="outlineWidth" 
             :stroke-dasharray="outlineStyle === 'dashed' ? '10 5' : '0 0'" 
@@ -50,8 +59,13 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
+import GradientDefs from './GradientDefs.vue'
+
 export default defineComponent({
   name: 'editable-element-shape',
+  components: {
+    GradientDefs,
+  },
   props: {
     elementInfo: {
       type: Object as PropType<PPTShapeElement>,

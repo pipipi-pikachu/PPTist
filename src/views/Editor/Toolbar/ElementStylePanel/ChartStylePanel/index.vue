@@ -53,7 +53,7 @@
     </div>
     <div class="row">
       <div style="flex: 2;">主题配色：</div>
-      <Popover trigger="click" v-model:visible="themePoolVisible">
+      <Popover trigger="click" placement="bottom" v-model:visible="themePoolVisible">
         <template #content>
           <div class="theme-pool">
             <div 
@@ -257,11 +257,12 @@ export default defineComponent({
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 20px;
+  margin: 0 -12px;
+  padding: 5px 32px;
   transition: background-color .1s;
 
   & + .theme-item {
-    margin-top: 8px;
+    margin-top: 3px;
   }
 
   &:hover {

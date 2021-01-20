@@ -72,6 +72,11 @@ export interface PPTImageElement {
   shadow?: PPTElementShadow;
 }
 
+export interface ShapeGradient {
+  type: 'line' | 'radial';
+  color: [string, string];
+  rotate: number;
+}
 export interface PPTShapeElement {
   type: 'shape';
   id: string;
@@ -85,6 +90,7 @@ export interface PPTShapeElement {
   path: string;
   fixedRatio: boolean;
   fill: string;
+  gradient?: ShapeGradient;
   rotate?: number;
   outline?: PPTElementOutline;
   opacity?: number;
