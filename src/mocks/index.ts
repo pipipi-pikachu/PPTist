@@ -25,7 +25,7 @@ export const slides: Slide[] = [
     id: 'xxx1',
     background: {
       type: 'solid',
-      value: '#fff',
+      color: '#fff',
     },
     elements: [
       {

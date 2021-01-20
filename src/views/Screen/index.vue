@@ -13,6 +13,7 @@
             'current': index === slideIndex,
             'before': index < slideIndex,
             'after': index > slideIndex,
+            'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== currentSlide.turningMode,
           }
         ]"
         v-for="(slide, index) in slides" 
@@ -224,6 +225,7 @@ export default defineComponent({
     return {
       slides,
       slideIndex,
+      currentSlide,
       slideWidth,
       slideHeight,
       scale,
@@ -262,6 +264,10 @@ export default defineComponent({
 
   &.current {
     z-index: 2;
+  }
+
+  &.hide {
+    opacity: 0;
   }
 
   &.turning-mode-no {

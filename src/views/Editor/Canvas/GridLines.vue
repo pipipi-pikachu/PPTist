@@ -31,7 +31,7 @@ export default defineComponent({
 
     const gridColor = computed(() => {
       if(!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'
-      const color = background.value.value
+      const color = background.value.color
       const rgba = tinycolor(color).toRgb()
       const newRgba = {
         r: rgba.r > 128 ? rgba.r - 128 : rgba.r + 127,

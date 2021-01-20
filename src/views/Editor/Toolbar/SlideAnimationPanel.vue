@@ -106,34 +106,30 @@ export default defineComponent({
   position: relative;
   overflow: hidden;
 
-  &:hover {
-    animation: no 2s infinite linear;
+  @mixin elAnimation($animationType) {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #d9dadb;
+    animation: $animationType .3s linear;
   }
+
   &.fade:hover {
-    animation: fade 2s infinite linear;
+    &::after {
+      @include elAnimation(fade);
+    }
   }
   &.slideX:hover {
     &::after {
-      width: 192px;
-      height: 100%;
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      background-image: linear-gradient(to right, #666 0%, #666 64px, #d9dadb 64px, #d9dadb 128px, #666 128px, #666 192px);
-      animation: slideX 3s infinite linear;
+      @include elAnimation(slideX);
     }
   }
   &.slideY:hover {
     &::after {
-      width: 100%;
-      height: 108px;
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      background-image: linear-gradient(to bottom, #666 0%, #666 36px, #d9dadb 36px, #d9dadb 72px, #666 72px, #666 108px);
-      animation: slideY 3s infinite linear;
+      @include elAnimation(slideY);
     }
   }
 }
@@ -143,78 +139,28 @@ export default defineComponent({
   text-align: center;
 }
 
-@keyframes no {
-  0% {
-    background-color: #666;
-  }
-  50% {
-    background-color: #666;
-  }
-  51% {
-    background-color: #d9dadb;
-  }
-  100% {
-    background-color: #d9dadb;
-  }
-}
 @keyframes fade {
   0% {
-    background-color: #d9dadb;
-  }
-  50% {
-    background-color: #666;
-  }
-  51% {
-    background-color: #d9dadb;
+    opacity: 0;
   }
   100% {
-    background-color: #666;
+    opacity: 1;
   }
 }
 @keyframes slideX {
   0% {
-    left: 0;
-  }
-  17% {
-    left: -64px;
-  }
-  33% {
-    left: -64px;
-  }
-  50% {
-    left: -128px;
-  }
-  67% {
-    left: -128px;
-  }
-  84% {
-    left: -192px;
+    transform: translateX(100%);
   }
   100% {
-    left: -192px;
+    transform: translateX(0);
   }
 }
 @keyframes slideY {
   0% {
-    top: 0;
-  }
-  17% {
-    top: -36px;
-  }
-  33% {
-    top: -36px;
-  }
-  50% {
-    top: -72px;
-  }
-  67% {
-    top: -72px;
-  }
-  84% {
-    top: -108px;
+    transform: translateY(100%);
   }
   100% {
-    top: -108px;
+    transform: translateY(0);
   }
 }
 </style>

@@ -162,8 +162,9 @@ export interface PPTAnimation {
 
 export interface SlideBackground {
   type: 'solid' | 'image';
-  value: string;
-  size?: 'cover' | 'contain' | 'repeat' | 'initial';
+  color?: string;
+  image?: string;
+  imageSize?: 'cover' | 'contain' | 'repeat' | 'initial';
 }
 
 export interface Slide {

@@ -14,16 +14,16 @@
       <Popover trigger="click" v-if="background.type === 'solid'">
         <template #content>
           <ColorPicker
-            :modelValue="background.value"
-            @update:modelValue="value => updateBackground({ value })"
+            :modelValue="background.color"
+            @update:modelValue="color => updateBackground({ color })"
           />
         </template>
-        <ColorButton :color="background.value" style="flex: 10;" />
+        <ColorButton :color="background.color || '#fff'" style="flex: 10;" />
       </Popover>
       <Select 
         style="flex: 10;" 
         :value="background.size || 'cover'" 
-        @change="value => updateBackground({ size: value })"
+        @change="value => updateBackground({ imageSize: value })"
         v-else
       >
         <SelectOption value="initial">原始大小</SelectOption>
@@ -35,7 +35,7 @@
     <div class="background-image-wrapper" v-if="background.type === 'image'">
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
-          <div class="content" :style="{ backgroundImage: `url(${background.value})` }">
+          <div class="content" :style="{ backgroundImage: `url(${background.image})` }">
             <IconPlus />
           </div>
         </div>
@@ -79,19 +79,21 @@ export default defineComponent({
 
     const updateBackgroundType = (type: 'solid' | 'image') => {
       if(type === 'solid') {
-        const background: SlideBackground = {
+        const newBackground: SlideBackground = {
+          ...background.value,
           type: 'solid',
-          value: '#fff',
+          color: background.value.color || '#fff',
         }
-        store.commit(MutationTypes.UPDATE_SLIDE, { background })
+        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
       }
       else {
-        const background: SlideBackground = {
+        const newBackground: SlideBackground = {
+          ...background.value,
           type: 'image',
-          value: '',
-          size: 'cover',
+          image: background.value.image || '',
+          imageSize: background.value.imageSize || 'cover',
         }
-        store.commit(MutationTypes.UPDATE_SLIDE, { background })
+        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
       }
       addHistorySnapshot()
     }
@@ -104,7 +106,7 @@ export default defineComponent({
     const uploadBackgroundImage = (files: File[]) => {
       const imageFile = files[0]
       if(!imageFile) return
-      getImageDataURL(imageFile).then(dataURL => updateBackground({ value: dataURL }))
+      getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
     }
 
     const applyAllSlide = () => {
