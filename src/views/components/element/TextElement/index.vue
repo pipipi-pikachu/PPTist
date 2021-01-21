@@ -85,9 +85,23 @@ export default defineComponent({
     const elementRef = ref<HTMLElement | null>(null)
 
     const isScaling = ref(false)
+    const realHeightCache = ref(-1)
 
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => {
+    const scaleElementStateListener = (state: boolean) => {
       isScaling.value = state
+
+      if(!state && realHeightCache.value !== -1) {
+        store.commit(MutationTypes.UPDATE_ELEMENT, {
+          id: props.elementInfo.id,
+          props: { height: realHeightCache.value },
+        })
+        realHeightCache.value = -1
+      }
+    }
+
+    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
+    onUnmounted(() => {
+      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
     })
 
     const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
@@ -96,13 +110,14 @@ export default defineComponent({
 
       const realHeight = contentRect.height
 
-      if(!isScaling.value) {
-        if(props.elementInfo.height !== realHeight) {
+      if(props.elementInfo.height !== realHeight) {
+        if(!isScaling.value) {
           store.commit(MutationTypes.UPDATE_ELEMENT, {
             id: props.elementInfo.id,
             props: { height: realHeight },
           })
         }
+        else realHeightCache.value = realHeight
       }
     }
     const resizeObserver = new ResizeObserver(updateTextElementHeight)

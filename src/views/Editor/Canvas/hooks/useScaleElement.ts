@@ -378,14 +378,15 @@ export default (
 
     document.onmouseup = e => {
       isMouseDown = false
-      emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, false)
       document.onmousemove = null
       document.onmouseup = null
       alignmentLines.value = []
-
+      
       if(startPageX === e.pageX && startPageY === e.pageY) return
-
+      
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, false)
+      
       addHistorySnapshot()
     }
   }
