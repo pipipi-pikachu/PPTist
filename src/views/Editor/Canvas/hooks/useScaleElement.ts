@@ -3,6 +3,7 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
+import emitter, { EmitterEvents } from '@/utils/emitter'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
@@ -97,6 +98,7 @@ export default (
 
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
     let isMouseDown = true
+    emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, true)
 
     const elOriginLeft = element.left
     const elOriginTop = element.top
@@ -376,6 +378,7 @@ export default (
 
     document.onmouseup = e => {
       isMouseDown = false
+      emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, false)
       document.onmousemove = null
       document.onmouseup = null
       alignmentLines.value = []

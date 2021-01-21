@@ -84,19 +84,25 @@ export default defineComponent({
 
     const elementRef = ref<HTMLElement | null>(null)
 
-    const debounceUpdateTextElementHeight = debounce(function(realHeight) {
-      store.commit(MutationTypes.UPDATE_ELEMENT, {
-        id: props.elementInfo.id,
-        props: { height: realHeight },
-      })
-    }, 300, { trailing: true })
+    const isScaling = ref(false)
 
-    const updateTextElementHeight = () => {
+    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => {
+      isScaling.value = state
+    })
+
+    const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
+      const contentRect = entries[0].contentRect
       if(!elementRef.value) return
 
-      const realHeight = elementRef.value.clientHeight
-      if(props.elementInfo.height !== realHeight) {
-        debounceUpdateTextElementHeight(realHeight)
+      const realHeight = contentRect.height
+
+      if(!isScaling.value) {
+        if(props.elementInfo.height !== realHeight) {
+          store.commit(MutationTypes.UPDATE_ELEMENT, {
+            id: props.elementInfo.id,
+            props: { height: realHeight },
+          })
+        }
       }
     }
     const resizeObserver = new ResizeObserver(updateTextElementHeight)
