@@ -25,7 +25,7 @@
         @change="value => updateGradient({ type: value })"
         v-else
       >
-        <SelectOption value="line">线性渐变</SelectOption>
+        <SelectOption value="linear">线性渐变</SelectOption>
         <SelectOption value="radial">径向渐变</SelectOption>
       </Select>
     </div>
@@ -55,7 +55,7 @@
           <ColorButton :color="gradient.color[1]" style="flex: 3;" />
         </Popover>
       </div>
-      <div class="row" v-if="gradient.type === 'line'">
+      <div class="row" v-if="gradient.type === 'linear'">
         <div style="flex: 2;">渐变角度：</div>
         <Slider
           :min="0"
@@ -109,7 +109,7 @@ export default defineComponent({
       if(!handleElement.value) return
       fill.value = handleElement.value.fill || '#000'
 
-      gradient.value = handleElement.value.gradient || { type: 'line', rotate: 0, color: [fill.value, '#fff'] }
+      gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, color: [fill.value, '#fff'] }
 
       fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
     }, { deep: true, immediate: true })

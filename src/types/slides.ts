@@ -73,7 +73,7 @@ export interface PPTImageElement {
 }
 
 export interface ShapeGradient {
-  type: 'line' | 'radial';
+  type: 'linear' | 'radial';
   color: [string, string];
   rotate: number;
 }
@@ -167,10 +167,13 @@ export interface PPTAnimation {
 }
 
 export interface SlideBackground {
-  type: 'solid' | 'image';
+  type: 'solid' | 'image' | 'gradient';
   color?: string;
   image?: string;
   imageSize?: 'cover' | 'contain' | 'repeat' | 'initial';
+  gradientType?: 'linear' | 'radial';
+  gradientColor?: [string, string];
+  gradientRotate?: number;
 }
 
 export interface Slide {

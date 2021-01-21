@@ -9,8 +9,10 @@
       >
         <SelectOption value="solid">纯色填充</SelectOption>
         <SelectOption value="image">图片填充</SelectOption>
+        <SelectOption value="gradient">渐变填充</SelectOption>
       </Select>
       <div style="flex: 1;"></div>
+
       <Popover trigger="click" v-if="background.type === 'solid'">
         <template #content>
           <ColorPicker
@@ -20,18 +22,30 @@
         </template>
         <ColorButton :color="background.color || '#fff'" style="flex: 10;" />
       </Popover>
+
       <Select 
         style="flex: 10;" 
         :value="background.size || 'cover'" 
         @change="value => updateBackground({ imageSize: value })"
-        v-else
+        v-else-if="background.type === 'image'"
       >
         <SelectOption value="initial">原始大小</SelectOption>
         <SelectOption value="contain">缩放</SelectOption>
         <SelectOption value="repeat">拼贴</SelectOption>
         <SelectOption value="cover">缩放铺满</SelectOption>
       </Select>
+
+      <Select 
+        style="flex: 10;" 
+        :value="background.gradientType" 
+        @change="value => updateBackground({ gradientType: value })"
+        v-else
+      >
+        <SelectOption value="linear">线性渐变</SelectOption>
+        <SelectOption value="radial">径向渐变</SelectOption>
+      </Select>
     </div>
+
     <div class="background-image-wrapper" v-if="background.type === 'image'">
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
@@ -41,6 +55,45 @@
         </div>
       </FileInput>
     </div>
+
+    <div class="background-gradient-wrapper" v-if="background.type === 'gradient'">
+      <div class="row">
+        <div style="flex: 2;">起点颜色：</div>
+        <Popover trigger="click">
+          <template #content>
+            <ColorPicker
+              :modelValue="background.gradientColor[0]"
+              @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor[1]] })"
+            />
+          </template>
+          <ColorButton :color="background.gradientColor[0]" style="flex: 3;" />
+        </Popover>
+      </div>
+      <div class="row">
+        <div style="flex: 2;">终点颜色：</div>
+        <Popover trigger="click">
+          <template #content>
+            <ColorPicker
+              :modelValue="background.gradientColor[1]"
+              @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor[0], value] })"
+            />
+          </template>
+          <ColorButton :color="background.gradientColor[1]" style="flex: 3;" />
+        </Popover>
+      </div>
+      <div class="row" v-if="background.gradientType === 'linear'">
+        <div style="flex: 2;">渐变角度：</div>
+        <Slider
+          :min="0"
+          :max="360"
+          :step="15"
+          :value="background.gradientRotate"
+          style="flex: 3;"
+          @change="value => updateBackground({ gradientRotate: value })" 
+        />
+      </div>
+    </div>
+
     <div class="row"><Button style="flex: 1;" @click="applyAllSlide()">应用到全部</Button></div>
   </div>
 </template>
@@ -77,7 +130,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const updateBackgroundType = (type: 'solid' | 'image') => {
+    const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
       if(type === 'solid') {
         const newBackground: SlideBackground = {
           ...background.value,
@@ -86,12 +139,22 @@ export default defineComponent({
         }
         store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
       }
-      else {
+      else if(type === 'image') {
         const newBackground: SlideBackground = {
           ...background.value,
           type: 'image',
           image: background.value.image || '',
           imageSize: background.value.imageSize || 'cover',
+        }
+        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
+      }
+      else {
+        const newBackground: SlideBackground = {
+          ...background.value,
+          type: 'gradient',
+          gradientType: background.value.gradientType || 'linear',
+          gradientColor: background.value.gradientColor || ['#fff', '#fff'],
+          gradientRotate: background.value.gradientRotate || 0,
         }
         store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
       }

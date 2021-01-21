@@ -1,6 +1,6 @@
 <template>
   <linearGradient 
-    v-if="type === 'line'"
+    v-if="type === 'linear'"
     :id="id" 
     x1="0%" 
     y1="0%" 
@@ -29,7 +29,7 @@ export default defineComponent({
       required: true,
     },
     type: {
-      type: String as PropType<'line' | 'radial'>,
+      type: String as PropType<'linear' | 'radial'>,
     },
     color1: {
       type: String,

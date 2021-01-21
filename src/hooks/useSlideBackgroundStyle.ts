@@ -10,6 +10,9 @@ export default (background: Ref<SlideBackground | undefined>) => {
       color,
       image,
       imageSize,
+      gradientColor,
+      gradientRotate,
+      gradientType,
     } = background.value
 
     if(type === 'solid') return { backgroundColor: color }
@@ -25,8 +28,16 @@ export default (background: Ref<SlideBackground | undefined>) => {
       return {
         backgroundImage: `url(${image}`,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: imageSize,
+        backgroundSize: imageSize || 'cover',
       }
+    }
+    else if(type === 'gradient') {
+      const rotate = gradientRotate || 0
+      const color1 = gradientColor ? gradientColor[0] : '#fff'
+      const color2 = gradientColor ? gradientColor[1] : '#fff'
+      
+      if(gradientType === 'radial') return { backgroundImage: `radial-gradient(${color1}, ${color2}` }
+      return { backgroundImage: `linear-gradient(${rotate}deg, ${color1}, ${color2}` }
     }
 
     return { backgroundColor: '#fff' }
