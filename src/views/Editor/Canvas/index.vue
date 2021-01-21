@@ -127,7 +127,7 @@ export default defineComponent({
     const ctrlKeyState = computed(() => store.state.ctrlKeyState)
     const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
 
-    const viewportRef = ref<HTMLElement | null>(null)
+    const viewportRef = ref<HTMLElement>()
     const isShowGridLines = ref(false)
     const alignmentLines = ref<AlignmentLineProps[]>([])
 
@@ -143,7 +143,7 @@ export default defineComponent({
 
     useDropImageOrText(viewportRef)
 
-    const canvasRef = ref<HTMLElement | null>(null)
+    const canvasRef = ref<HTMLElement>()
     const canvasScale = computed(() => store.state.canvasScale)
     const { viewportStyles } = useViewportSize(canvasRef)
 

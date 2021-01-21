@@ -40,7 +40,7 @@ export default defineComponent({
       return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`
     })
 
-    const alphaRef = ref<HTMLElement | null>(null)
+    const alphaRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
       if(!alphaRef.value) return

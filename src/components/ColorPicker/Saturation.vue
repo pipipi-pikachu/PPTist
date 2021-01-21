@@ -51,7 +51,7 @@ export default defineComponent({
       emit('change', param)
     }, 20, { leading: true, trailing: false })
 
-    const saturationRef = ref<HTMLElement | null>(null)
+    const saturationRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
       if(!saturationRef.value) return

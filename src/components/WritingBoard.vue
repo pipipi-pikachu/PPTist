@@ -51,8 +51,8 @@ export default defineComponent({
   },
   setup(props) {
     let ctx: CanvasRenderingContext2D | null = null
-    const writingBoardRef = ref<HTMLElement | null>(null)
-    const canvasRef = ref<HTMLCanvasElement | null>(null)
+    const writingBoardRef = ref<HTMLElement>()
+    const canvasRef = ref<HTMLCanvasElement>()
     let lastPos = {
       x: 0,
       y: 0,

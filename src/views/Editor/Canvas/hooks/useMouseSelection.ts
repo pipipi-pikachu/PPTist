@@ -4,7 +4,7 @@ import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>) => {
+export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
   const store = useStore<State>()
   const canvasScale = computed(() => store.state.canvasScale)
 

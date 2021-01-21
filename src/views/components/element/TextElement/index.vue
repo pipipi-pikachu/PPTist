@@ -82,7 +82,7 @@ export default defineComponent({
     const store = useStore<State>()
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const elementRef = ref<HTMLElement | null>(null)
+    const elementRef = ref<HTMLElement>()
 
     const isScaling = ref(false)
     const realHeightCache = ref(-1)
@@ -129,7 +129,7 @@ export default defineComponent({
       if(elementRef.value) resizeObserver.unobserve(elementRef.value)
     })
     
-    const editorViewRef = ref<Element | null>(null)
+    const editorViewRef = ref<HTMLElement>()
     let editorView: EditorView
 
     const handleFocus = () => {

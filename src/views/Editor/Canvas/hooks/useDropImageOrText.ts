@@ -4,7 +4,7 @@ import { State } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import useCreateElement from '@/hooks/useCreateElement'
 
-export default (elementRef: Ref<HTMLElement | null>) => {
+export default (elementRef: Ref<HTMLElement | undefined>) => {
   const store = useStore<State>()
   const disableHotkeys = computed(() => store.state.disableHotkeys)
 

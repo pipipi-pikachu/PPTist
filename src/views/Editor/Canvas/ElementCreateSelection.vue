@@ -42,7 +42,7 @@ export default defineComponent({
     const start = ref<[number, number] | null>(null)
     const end = ref<[number, number] | null>(null)
 
-    const selectionRef = ref<HTMLElement | null>(null)
+    const selectionRef = ref<HTMLElement>()
     const offset = reactive({
       x: 0,
       y: 0,

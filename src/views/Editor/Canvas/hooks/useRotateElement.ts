@@ -13,7 +13,7 @@ const getAngleFromCoordinate = (x: number, y: number) => {
   return angle
 }
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | null>) => {
+export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
   const store = useStore<State>()
   const canvasScale = computed(() => store.state.canvasScale)
 

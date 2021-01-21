@@ -24,7 +24,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const inputRef = ref<HTMLInputElement | null>(null)
+    const inputRef = ref<HTMLInputElement>()
 
     const handleClick = () => {
       if(!inputRef.value) return

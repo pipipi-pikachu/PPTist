@@ -54,7 +54,7 @@ export default defineComponent({
       oldHue.value = h
     })
 
-    const hueRef = ref<HTMLElement | null>(null)
+    const hueRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
       if(!hueRef.value) return

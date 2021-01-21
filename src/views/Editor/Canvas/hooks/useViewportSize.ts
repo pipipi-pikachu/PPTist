@@ -3,7 +3,7 @@ import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
-export default (canvasRef: Ref<HTMLElement | null>) => {
+export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportLeft = ref(0)
   const viewportTop = ref(0)
 

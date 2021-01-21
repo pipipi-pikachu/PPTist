@@ -57,7 +57,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const chartRef = ref<HTMLElement | null>(null)
+    const chartRef = ref<HTMLElement>()
     const slideScale: Ref<number> = inject('slideScale') || ref(1)
 
     let chart: IChartistLineChart | IChartistBarChart | IChartistPieChart | undefined

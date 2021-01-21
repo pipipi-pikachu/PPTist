@@ -4,7 +4,7 @@ import { MutationTypes, State } from '@/store'
 import { CreateElementSelectionData, CreatingLineElement, CreatingShapeElement } from '@/types/edit'
 import useCreateElement from '@/hooks/useCreateElement'
 
-export default (viewportRef: Ref<HTMLElement | null>) => {
+export default (viewportRef: Ref<HTMLElement | undefined>) => {
   const store = useStore<State>()
   const canvasScale = computed(() => store.state.canvasScale)
   const creatingElement = computed(() => store.state.creatingElement)
