@@ -84,8 +84,7 @@ export default () => {
     const DEFAULT_CELL_HEIGHT = 35
     const DEFAULT_BORDER_WIDTH = 2
   
-    const colSizes: number[] = new Array(colCount).fill(DEFAULT_CELL_WIDTH)
-    const rowSizes: number[] = new Array(rowCount).fill(DEFAULT_CELL_HEIGHT)
+    const colWidths: number[] = new Array(colCount).fill(DEFAULT_CELL_WIDTH)
   
     createElement({
       ...DEFAULT_TABLE,
@@ -93,8 +92,7 @@ export default () => {
       id: createRandomCode(),
       width: colCount * DEFAULT_CELL_WIDTH + DEFAULT_BORDER_WIDTH,
       height: rowCount * DEFAULT_CELL_HEIGHT + DEFAULT_BORDER_WIDTH,
-      colSizes,
-      rowSizes,
+      colWidths,
       data,
     })
   }

@@ -151,10 +151,7 @@ export interface PPTTableElement {
   groupId?: string;
   width: number;
   height: number;
-  borderTheme?: string;
-  theme?: string;
-  rowSizes: number[];
-  colSizes: number[];
+  colWidths: number[];
   data: TableElementCell[][];
 }
 

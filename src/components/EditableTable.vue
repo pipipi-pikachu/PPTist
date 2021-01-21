@@ -3,6 +3,17 @@
     class="editable-table"
     :style="{ width: width + 'px' }"
   >
+    <div class="handler">
+      <div 
+        class="drag-line" 
+        v-for="(pos, index) in dragLinePosition" 
+        :key="index"
+        :style="{
+          left: pos + 'px',
+        }"
+        @mousedown="$event => handleMousedownColHandler($event, index)"
+      ></div>
+    </div>
     <table>
       <colgroup>
         <col span="1" v-for="(width, index) in colWidths" :key="index" :width="width">
@@ -28,10 +39,12 @@
             @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
             v-contextmenu="el => contextmenus(el)"
           >
-            <div 
+            <EditableDiv 
               class="cell-text" 
+              :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
               :contenteditable="activedCell === `${rowIndex}_${colIndex}` ? 'plaintext-only' : false"
-            ></div>
+              v-model="cell.text"
+            />
           </td>
         </tr>
       </tbody>
@@ -40,9 +53,12 @@
 </template>
 
 <script lang="ts">
-import { createRandomCode } from '@/utils/common'
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { ContextmenuItem } from './Contextmenu/types'
+import { KEYS } from '@/configs/hotkey'
+import { createRandomCode } from '@/utils/common'
+
+import EditableDiv from './EditableDiv.vue'
 
 interface TableCells {
   id: string;
@@ -62,6 +78,9 @@ interface TableCells {
 
 export default defineComponent({
   name: 'editable-table',
+  components: {
+    EditableDiv,
+  },
   setup() {
     const tableCells = ref<TableCells[][]>([
       [
@@ -86,11 +105,21 @@ export default defineComponent({
         { id: '15', colspan: 1, rowspan: 1, text: '' },
       ],
     ])
-    const width = 800
     const colWidths = ref([160, 160, 160, 160, 160])
     const isStartSelect = ref(false)
     const startCell = ref<number[]>([])
     const endCell = ref<number[]>([])
+
+    const width = computed(() => colWidths.value.reduce((a, b) => (a + b)))
+
+    const dragLinePosition = computed(() => {
+      const dragLinePosition: number[] = []
+      for(let i = 1; i < colWidths.value.length + 1; i++) {
+        const pos = colWidths.value.slice(0, i).reduce((a, b) => (a + b))
+        dragLinePosition.push(pos)
+      }
+      return dragLinePosition
+    })
 
     const hideCells = computed(() => {
       const hideCells = []
@@ -254,6 +283,7 @@ export default defineComponent({
         item.splice(colIndex, 1)
         return item
       })
+      colWidths.value.splice(colIndex, 1)
     }
     
     const insertRow = (selectedIndex: number, rowIndex: number) => {
@@ -281,6 +311,7 @@ export default defineComponent({
         item.splice(colIndex, 0, cell)
         return item
       })
+      colWidths.value.splice(colIndex, 0, 160)
     }
     
     const mergeCells = () => {
@@ -309,6 +340,89 @@ export default defineComponent({
       tableCells.value = _tableCells
       removeSelectedCells()
     }
+
+    const handleMousedownColHandler = (e: MouseEvent, colIndex: number) => {
+      removeSelectedCells()
+      let isMouseDown = true
+
+      const originWidth = colWidths.value[colIndex]
+      const startPageX = e.pageX
+
+      const minWidth = 50
+
+      document.onmousemove = e => {
+        if(!isMouseDown) return
+        
+        const moveX = e.pageX - startPageX
+        const width = originWidth + moveX < minWidth ? minWidth : Math.round(originWidth + moveX)
+
+        colWidths.value[colIndex] = width
+      }
+      document.onmouseup = () => {
+        isMouseDown = false
+        document.onmousemove = null
+        document.onmouseup = null
+      }
+    }
+
+    const clearSelectedCellText = () => {
+      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+
+      for(let i = 0; i < _tableCells.length; i++) {
+        for(let j = 0; j < _tableCells[i].length; j++) {
+          if(selectedCells.value.includes(`${i}_${j}`)) {
+            _tableCells[i][j].text = ''
+          }
+        }
+      }
+      tableCells.value = _tableCells
+    }
+
+    const tabActiveCell = () => {
+      const getNextCell = (i: number, j: number): [number, number] | null => {
+        if(!tableCells.value[i]) return null
+        if(!tableCells.value[i][j]) return getNextCell(i + 1, 0)
+        if(isHideCell(i, j)) return getNextCell(i, j + 1)
+        return [i, j]
+      }
+
+      endCell.value = []
+
+      const nextRow = startCell.value[0]
+      const nextCol = startCell.value[1] + 1
+
+      const nextCell = getNextCell(nextRow, nextCol)
+      if(!nextCell) {
+        insertRow(nextRow, nextRow + 1)
+        startCell.value = [nextRow + 1, 0]
+      }
+      else startCell.value = nextCell
+
+      nextTick(() => {
+        const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
+        textRef.focus()
+      })
+    }
+
+    const keydownListener = (e: KeyboardEvent) => {
+      const key = e.key.toUpperCase()
+      if(selectedCells.value.length < 2) {
+        if(key === KEYS.TAB) {
+          e.preventDefault()
+          tabActiveCell()
+        }
+      }
+      else if(key === KEYS.DELETE) {
+        clearSelectedCellText()
+      }
+    }
+
+    onMounted(() => {
+      document.addEventListener('keydown', keydownListener)
+    })
+    onUnmounted(() => {
+      document.removeEventListener('keydown', keydownListener)
+    })
 
     const getEffectiveTableCells = () => {
       const effectiveTableCells = []
@@ -390,6 +504,7 @@ export default defineComponent({
 
     return {
       width,
+      dragLinePosition,
       tableCells,
       colWidths,
       hideCells,
@@ -400,6 +515,7 @@ export default defineComponent({
       handleCellMouseenter,
       selectCol,
       selectRow,
+      handleMousedownColHandler,
       contextmenus,
     }
   },
@@ -409,6 +525,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-table {
   position: relative;
+  user-select: none;
 }
 table {
   width: 100%;
@@ -417,6 +534,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   word-wrap: break-word;
+  user-select: none;
 
   .cell {
     padding: 5px;
@@ -455,6 +573,22 @@ table {
       background-color: rgba(27, 110, 232, 0.3);
       color: inherit;
     }
+  }
+}
+
+.drag-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: $themeColor;
+  margin-left: -1px;
+  opacity: 0;
+  z-index: 2;
+  cursor: col-resize;
+
+  &:hover {
+    opacity: 1;
   }
 }
 </style>
