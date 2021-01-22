@@ -10,15 +10,20 @@
                 <div 
                   class="pool-item" 
                   v-for="item in type.children" :key="item.name"
-                  :class="[
-                    'animate__animated',
-                    'animate__faster',
-                    hoverPreviewAnimation === item.value && `animate__${item.value}`,
-                  ]"
-                  @mouseover="hoverPreviewAnimation = item.value"
+                  @mouseenter="hoverPreviewAnimation = item.value"
+                  @mouseleave="hoverPreviewAnimation = ''"
                   @click="addAnimation(item.value)"
                 >
-                  {{item.name}}
+                  <div 
+                    class="animation-box"
+                    :class="[
+                      'animate__animated',
+                      'animate__faster',
+                      hoverPreviewAnimation === item.value && `animate__${item.value}`,
+                    ]"
+                  >
+                    {{item.name}}
+                  </div>
                 </div>
               </div>
             </div>
