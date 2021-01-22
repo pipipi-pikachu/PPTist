@@ -82,7 +82,7 @@ export default defineComponent({
     EditableDiv,
   },
   props: {
-    tableCells: {
+    data: {
       type: Array as PropType<TableCells[][]>,
     },
   },
