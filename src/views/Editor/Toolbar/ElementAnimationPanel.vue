@@ -251,6 +251,11 @@ export default defineComponent({
   padding: 6px;
   border-radius: $borderRadius;
   margin-bottom: 8px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 
   &.active {
     border-color: $themeColor;

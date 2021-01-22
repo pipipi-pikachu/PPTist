@@ -187,5 +187,10 @@ export default defineComponent({
   font-size: 12px;
   color: #999;
   width: 20px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 </style>

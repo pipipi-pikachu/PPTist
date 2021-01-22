@@ -6,7 +6,6 @@
     :style="{ zIndex: elementIndex }"
   >
     <component
-      :id="`editable-element-${elementInfo.id}`"
       :is="currentElementComponent"
       :elementInfo="elementInfo"
       :selectElement="selectElement"

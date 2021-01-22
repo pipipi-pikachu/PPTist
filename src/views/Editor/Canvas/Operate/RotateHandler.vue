@@ -18,5 +18,10 @@ export default {
   border: 1px solid $themeColor;
   background-color: #fff;
   border-radius: 1px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 }
 </style>
