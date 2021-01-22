@@ -51,6 +51,5 @@ export default defineComponent({
   right: 0;
   background-color: #fff;
   padding: 10px;
-  z-index: -1;
 }
 </style>

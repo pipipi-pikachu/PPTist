@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref } from 'vue'
 import { ContextmenuItem } from './Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
@@ -80,6 +80,11 @@ export default defineComponent({
   name: 'editable-table',
   components: {
     EditableDiv,
+  },
+  props: {
+    tableCells: {
+      type: Array as PropType<TableCells[][]>,
+    },
   },
   setup() {
     const tableCells = ref<TableCells[][]>([
@@ -195,11 +200,11 @@ export default defineComponent({
     const handleMouseup = () => isStartSelect.value = false
 
     const handleCellMousedown = (e: MouseEvent, rowIndex: number, colIndex: number) => {
-      if(e.which !== 1) return
-
-      endCell.value = []
-      isStartSelect.value = true
-      startCell.value = [rowIndex, colIndex]
+      if(e.button === 0) {
+        endCell.value = []
+        isStartSelect.value = true
+        startCell.value = [rowIndex, colIndex]
+      }
     }
 
     const handleCellMouseenter = (rowIndex: number, colIndex: number) => {
@@ -486,13 +491,22 @@ export default defineComponent({
         { divider: true },
         {
           text: '合并单元格',
-          hide: !isMultiSelected,
+          disable: !isMultiSelected,
           handler: mergeCells,
         },
         {
           text: '取消合并单元格',
-          hide: isMultiSelected || !canSplit,
+          disable: isMultiSelected || !canSplit,
           handler: () => splitCells(rowIndex, colIndex),
+        },
+        { divider: true },
+        {
+          text: '选中当前列',
+          handler: () => selectCol(colIndex),
+        },
+        {
+          text: '选中当前行',
+          handler: () => selectRow(rowIndex),
         },
         {
           text: '选中全部单元格',
@@ -544,6 +558,17 @@ table {
     vertical-align: middle;
     border: 1px solid #d9d9d9;
     cursor: default;
+
+    &.active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      border: 1px solid rgba($color: $themeColor, $alpha: .5);
+      pointer-events: none;
+    }
 
     &.selected::after {
       content: '';
