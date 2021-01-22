@@ -117,7 +117,7 @@ export default defineComponent({
   user-select: none;
 
   &.multi-select {
-    opacity: .3;
+    opacity: 0;
   }
 }
 .animation-index {

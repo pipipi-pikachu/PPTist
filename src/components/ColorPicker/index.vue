@@ -1,5 +1,5 @@
 <template>
-  <div class="color-picker" @contextmenu.prevent>
+  <div class="color-picker">
     <div class="picker-saturation-wrap">
       <Saturation :value="color" :hue="hue" @change="value => changeColor(value)" />
     </div>

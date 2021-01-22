@@ -16,8 +16,13 @@ export default () => {
     
     store.commit(MutationTypes.SET_CANVAS_PERCENTAGE, percentage)
   }
+
+  const setCanvasPercentage = (percentage: number) => {
+    store.commit(MutationTypes.SET_CANVAS_PERCENTAGE, percentage)
+  }
   
   return {
     scaleCanvas,
+    setCanvasPercentage,
   }
 }

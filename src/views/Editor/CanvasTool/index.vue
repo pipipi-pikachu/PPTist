@@ -51,6 +51,9 @@
       <IconMinus class="handler-item viewport-size" @click="scaleCanvas('-')" />
       <span class="text">{{canvasScalePercentage}}</span>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="适配屏幕">
+        <IconFullScreen class="handler-item viewport-size-adaptation" @click="setCanvasPercentage(90)" />
+      </Tooltip>
     </div>
   </div>
 </template>
@@ -85,7 +88,7 @@ export default defineComponent({
 
     const canvasScalePercentage = computed(() => parseInt(canvasScale.value * 100 + '') + '%')
 
-    const { scaleCanvas } = useScaleCanvas()
+    const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
     const { createImageElement, createChartElement } = useCreateElement()
@@ -123,6 +126,7 @@ export default defineComponent({
 
     return {
       scaleCanvas,
+      setCanvasPercentage,
       canvasScalePercentage,
       canUndo,
       canRedo,
