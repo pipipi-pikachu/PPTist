@@ -33,6 +33,7 @@ import TextElement from '@/views/components/element/TextElement/index.vue'
 import ShapeElement from '@/views/components/element/ShapeElement/index.vue'
 import LineElement from '@/views/components/element/LineElement/index.vue'
 import ChartElement from '@/views/components/element/ChartElement/index.vue'
+import TableElement from '@/views/components/element/TableElement/index.vue'
 
 export default defineComponent({
   name: 'editable-element',
@@ -62,6 +63,7 @@ export default defineComponent({
         [ElementTypes.SHAPE]: ShapeElement,
         [ElementTypes.LINE]: LineElement,
         [ElementTypes.CHART]: ChartElement,
+        [ElementTypes.TABLE]: TableElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

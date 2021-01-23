@@ -36,7 +36,7 @@ import { defineComponent, PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from '@/components/Chart.vue'
+import Chart from './Chart.vue'
 
 export default defineComponent({
   name: 'screen-element-chart',

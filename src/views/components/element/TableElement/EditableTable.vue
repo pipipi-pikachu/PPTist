@@ -56,8 +56,8 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref } from 'vue'
 import debounce from 'lodash/debounce'
-import { ContextmenuItem } from './Contextmenu/types'
 import { TableCell } from '@/types/slides'
+import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
 

@@ -41,6 +41,7 @@ import TextElementOperate from './TextElementOperate.vue'
 import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
 import ChartElementOperate from './ChartElementOperate.vue'
+import TableElementOperate from './TableElementOperate.vue'
 
 export default defineComponent({
   name: 'operate',
@@ -91,6 +92,7 @@ export default defineComponent({
         [ElementTypes.SHAPE]: ShapeElementOperate,
         [ElementTypes.LINE]: LineElementOperate,
         [ElementTypes.CHART]: ChartElementOperate,
+        [ElementTypes.TABLE]: TableElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

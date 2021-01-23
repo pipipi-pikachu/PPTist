@@ -40,7 +40,7 @@ import { PPTChartElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from '@/components/Chart.vue'
+import Chart from './Chart.vue'
 
 export default defineComponent({
   name: 'editable-element-chart',
