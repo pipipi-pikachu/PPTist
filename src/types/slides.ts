@@ -136,11 +136,20 @@ export interface PPTChartElement {
   gridColor?: string;
 }
 
-export interface TableElementCell {
+export interface TableCell {
+  id: string;
   colspan: number;
   rowspan: number;
-  content: string;
-  bgColor: string;
+  text: string;
+  style?: {
+    color?: string;
+    bgColor?: string;
+    fontSize?: number;
+    fontName?: string;
+    bold?: boolean;
+    italic?: boolean;
+    align?: string;
+  };
 }
 export interface PPTTableElement {
   type: 'table';
@@ -152,7 +161,7 @@ export interface PPTTableElement {
   width: number;
   height: number;
   colWidths: number[];
-  data: TableElementCell[][];
+  data: TableCell[][];
 }
 
 export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement

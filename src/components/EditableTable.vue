@@ -44,6 +44,7 @@
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
               :contenteditable="activedCell === `${rowIndex}_${colIndex}` ? 'plaintext-only' : false"
               v-model="cell.text"
+              @update:modelValue="handleInput()"
             />
           </td>
         </tr>
@@ -54,27 +55,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref } from 'vue'
+import debounce from 'lodash/debounce'
 import { ContextmenuItem } from './Contextmenu/types'
+import { TableCell } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
 
 import EditableDiv from './EditableDiv.vue'
-
-interface TableCells {
-  id: string;
-  colspan: number;
-  rowspan: number;
-  text: string;
-  style?: {
-    color?: string;
-    bgColor?: string;
-    fontSize?: number;
-    fontName?: string;
-    bold?: boolean;
-    italic?: boolean;
-    align?: string;
-  };
-}
 
 export default defineComponent({
   name: 'editable-table',
@@ -83,33 +70,32 @@ export default defineComponent({
   },
   props: {
     data: {
-      type: Array as PropType<TableCells[][]>,
+      type: Array as PropType<TableCell[][]>,
+      required: true,
+    },
+    outlineWidth: {
+      type: Number,
+      default: 1,
+    },
+    outlineColor: {
+      type: String,
+      default: '#41464b',
+    },
+    outlineStyle: {
+      type: String,
+      default: 'solid',
     },
   },
-  setup() {
-    const tableCells = ref<TableCells[][]>([
-      [
-        { id: '1', colspan: 1, rowspan: 1, text: '' },
-        { id: '2', colspan: 1, rowspan: 1, text: '' },
-        { id: '3', colspan: 1, rowspan: 1, text: '' },
-        { id: '4', colspan: 1, rowspan: 1, text: '' },
-        { id: '5', colspan: 1, rowspan: 1, text: '' },
-      ],
-      [
-        { id: '6', colspan: 1, rowspan: 1, text: '' },
-        { id: '7', colspan: 1, rowspan: 1, text: '' },
-        { id: '8', colspan: 1, rowspan: 1, text: '' },
-        { id: '9', colspan: 1, rowspan: 1, text: '' },
-        { id: '10', colspan: 1, rowspan: 1, text: '' },
-      ],
-      [
-        { id: '11', colspan: 1, rowspan: 1, text: '' },
-        { id: '12', colspan: 1, rowspan: 1, text: '' },
-        { id: '13', colspan: 1, rowspan: 1, text: '' },
-        { id: '14', colspan: 1, rowspan: 1, text: '' },
-        { id: '15', colspan: 1, rowspan: 1, text: '' },
-      ],
-    ])
+  setup(props, { emit }) {
+    const tableCells = computed<TableCell[][]>({
+      get() {
+        return props.data
+      },
+      set(newData) {
+        emit('change', newData)
+      },
+    })
+    
     const colWidths = ref([160, 160, 160, 160, 160])
     const isStartSelect = ref(false)
     const startCell = ref<number[]>([])
@@ -246,7 +232,7 @@ export default defineComponent({
     }
 
     const deleteRow = (rowIndex: number) => {
-      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
       const targetCells = tableCells.value[rowIndex]
       const hideCellsPos = []
@@ -268,7 +254,7 @@ export default defineComponent({
     }
 
     const deleteCol = (colIndex: number) => {
-      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
       const hideCellsPos = []
       for(let i = 0; i < tableCells.value.length; i++) {
@@ -292,7 +278,7 @@ export default defineComponent({
     }
     
     const insertRow = (selectedIndex: number, rowIndex: number) => {
-      const rowCells: TableCells[] = []
+      const rowCells: TableCell[] = []
       for(let i = 0; i < tableCells.value[0].length; i++) {
         rowCells.push({
           colspan: 1,
@@ -328,7 +314,7 @@ export default defineComponent({
       const maxX = Math.max(startX, endX)
       const maxY = Math.max(startY, endY)
 
-      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
       
       _tableCells[minX][minY].rowspan = maxX - minX + 1
       _tableCells[minX][minY].colspan = maxY - minY + 1
@@ -338,7 +324,7 @@ export default defineComponent({
     }
 
     const splitCells = (rowIndex: number, colIndex: number) => {
-      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
       _tableCells[rowIndex][colIndex].rowspan = 1
       _tableCells[rowIndex][colIndex].colspan = 1
 
@@ -371,7 +357,7 @@ export default defineComponent({
     }
 
     const clearSelectedCellText = () => {
-      const _tableCells: TableCells[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
       for(let i = 0; i < _tableCells.length; i++) {
         for(let j = 0; j < _tableCells[i].length; j++) {
@@ -515,6 +501,9 @@ export default defineComponent({
       ]
     }
 
+    const handleInput = debounce(function() {
+      emit('change', tableCells.value)
+    }, 300, { trailing: true })
 
     return {
       width,
@@ -531,6 +520,7 @@ export default defineComponent({
       selectRow,
       handleMousedownColHandler,
       contextmenus,
+      handleInput,
     }
   },
 })
@@ -558,17 +548,6 @@ table {
     vertical-align: middle;
     border: 1px solid #d9d9d9;
     cursor: default;
-
-    &.active::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      border: 1px solid rgba($color: $themeColor, $alpha: .5);
-      pointer-events: none;
-    }
 
     &.selected::after {
       content: '';
