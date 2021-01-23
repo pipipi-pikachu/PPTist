@@ -91,7 +91,7 @@ export default (
 ) => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
+  const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
   const canvasScale = computed(() => store.state.canvasScale)
 
   const { addHistorySnapshot } = useHistorySnapshot()

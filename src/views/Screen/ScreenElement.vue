@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, Ref } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
 import { ElementTypes, PPTElement, Slide } from '@/types/slides'
@@ -54,7 +54,7 @@ export default defineComponent({
     })
 
     const store = useStore<State>()
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const needWaitAnimation = computed(() => {
       const animations = currentSlide.value.animations || []

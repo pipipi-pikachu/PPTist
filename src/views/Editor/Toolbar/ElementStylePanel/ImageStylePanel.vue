@@ -92,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTImageElement } from '@/types/slides'
@@ -165,7 +165,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTImageElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTImageElement>(() => store.getters.handleElement)
 
     const clipPanelVisible = ref(false)
 
@@ -174,7 +174,7 @@ export default defineComponent({
       y: 0,
     })
 
-    const filterOptions: Ref<FilterOption[]> = ref(JSON.parse(JSON.stringify(defaultFilters)))
+    const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
 
     watch(handleElement, () => {
       if(!handleElement.value) return

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
@@ -23,7 +23,7 @@ export default defineComponent({
   name: 'element-style-panel',
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
     const currentPanelComponent = computed(() => {
       if(!handleElement.value) return null

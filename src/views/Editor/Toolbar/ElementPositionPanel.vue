@@ -133,7 +133,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import round from 'lodash/round'
 import { MutationTypes, State } from '@/store'
@@ -147,7 +147,7 @@ export default defineComponent({
   name: 'element-positopn-panel',
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
     const left = ref(0)
     const top = ref(0)

@@ -199,7 +199,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTTextElement } from '@/types/slides'
@@ -220,7 +220,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTTextElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTTextElement>(() => store.getters.handleElement)
 
     const fill = ref<string>()
     const lineHeight = ref<number>()

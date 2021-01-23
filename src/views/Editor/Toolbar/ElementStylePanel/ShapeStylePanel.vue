@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTShapeElement, ShapeGradient } from '@/types/slides'
@@ -99,7 +99,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTShapeElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTShapeElement>(() => store.getters.handleElement)
 
     const fill = ref<string>()
     const gradient = ref<ShapeGradient>()

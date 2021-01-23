@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTLineElement } from '@/types/slides'
@@ -80,7 +80,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTLineElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTLineElement>(() => store.getters.handleElement)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 

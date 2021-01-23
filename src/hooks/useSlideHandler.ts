@@ -1,4 +1,4 @@
-import { Ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { Slide } from '@/types/slides'
@@ -14,7 +14,7 @@ export default () => {
   const store = useStore<State>()
   const slideIndex = computed(() => store.state.slideIndex)
   const slidesLength = computed(() => store.state.slides.length)
-  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { addHistorySnapshot } = useHistorySnapshot()

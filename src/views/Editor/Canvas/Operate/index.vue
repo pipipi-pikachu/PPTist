@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, Ref } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import { useStore } from 'vuex'
 import { State } from '@/store'
 import { ElementTypes, PPTElement, Slide } from '@/types/slides'
@@ -82,7 +82,7 @@ export default defineComponent({
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
     const toolbarState = computed(() => store.state.toolbarState)
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const currentOperateComponent = computed(() => {
       const elementTypeMap = {

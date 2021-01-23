@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, Ref, ref } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 
@@ -36,7 +36,7 @@ export default defineComponent({
   name: 'element-create-selection',
   setup(props, { emit }) {
     const store = useStore<State>()
-    const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
+    const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
     const creatingElement = computed(() => store.state.creatingElement)
 
     const start = ref<[number, number] | null>(null)

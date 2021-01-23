@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, Ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTAnimation, PPTElement, Slide } from '@/types/slides'
@@ -91,9 +91,9 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTElement> = computed(() => store.getters.handleElement)
-    const currentSlideAnimations: Ref<PPTAnimation[] | null> = computed(() => store.getters.currentSlideAnimations)
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+    const currentSlideAnimations = computed<PPTAnimation[] | null>(() => store.getters.currentSlideAnimations)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const hoverPreviewAnimation = ref('')
     const animationPoolVisible = ref(false)

@@ -1,4 +1,4 @@
-import { Ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -11,7 +11,7 @@ import useDeleteElement from './useDeleteElement'
 export default () => {
   const store = useStore<State>()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
+  const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { deleteElement } = useDeleteElement()

@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, Ref, ref, watch, watchEffect } from 'vue'
+import { computed, defineComponent, provide, ref, watch, watchEffect } from 'vue'
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { State, MutationTypes } from '@/store'
@@ -125,7 +125,7 @@ export default defineComponent({
     const handleElementId = computed(() => store.state.handleElementId)
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
     const ctrlKeyState = computed(() => store.state.ctrlKeyState)
-    const ctrlOrShiftKeyActive: Ref<boolean> = computed(() => store.getters.ctrlOrShiftKeyActive)
+    const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
     const viewportRef = ref<HTMLElement>()
     const isShowGridLines = ref(false)
@@ -134,7 +134,7 @@ export default defineComponent({
     const activeGroupElementId = ref('')
     watch(handleElementId, () => activeGroupElementId.value = '')
 
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
     const elementList = ref<PPTElement[]>([])
     const setLocalElementList = () => {
       elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []

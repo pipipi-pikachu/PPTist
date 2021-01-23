@@ -118,7 +118,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
@@ -139,7 +139,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore<State>()
-    const handleElement: Ref<PPTChartElement> = computed(() => store.getters.handleElement)
+    const handleElement = computed<PPTChartElement>(() => store.getters.handleElement)
 
     const chartDataEditorVisible = ref(false)
     const themePoolVisible = ref(false)

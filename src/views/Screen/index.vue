@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, provide, Ref, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
 import { MutationTypes, State } from '@/store'
@@ -86,7 +86,7 @@ export default defineComponent({
     const store = useStore<State>()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const slideWidth = ref(0)
     const slideHeight = ref(0)

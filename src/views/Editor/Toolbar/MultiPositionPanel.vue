@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
@@ -47,8 +47,8 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const activeElementIdList = computed(() => store.state.activeElementIdList)
-    const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const { addHistorySnapshot } = useHistorySnapshot()
     const { combineElements, uncombineElements } = useCombineElement()

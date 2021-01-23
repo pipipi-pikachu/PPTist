@@ -1,4 +1,4 @@
-import { Ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { State, MutationTypes } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
@@ -10,8 +10,8 @@ export default () => {
   const store = useStore<State>()
 
   const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeElementList: Ref<PPTElement[]> = computed(() => store.getters.activeElementList)
-  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+  const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
+  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const alignElementToCanvas = (command: ElementAlignCommand) => {
     const viewportWidth = VIEWPORT_SIZE

@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, Ref } from 'vue'
+import { computed, defineComponent } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { Slide } from '@/types/slides'
@@ -28,7 +28,7 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const slides = computed(() => store.state.slides)
-    const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY')
 

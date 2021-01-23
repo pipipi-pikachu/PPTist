@@ -1,4 +1,4 @@
-import { computed, Ref } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { decrypt } from '@/utils/crypto'
@@ -13,7 +13,7 @@ interface PasteTextClipboardDataOptions {
 
 export default () => {
   const store = useStore<State>()
-  const currentSlide: Ref<Slide> = computed(() => store.getters.currentSlide)
+  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 

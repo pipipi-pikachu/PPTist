@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, Ref } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import tinycolor from 'tinycolor2'
 import { State } from '@/store'
@@ -27,7 +27,7 @@ export default defineComponent({
   setup() {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
-    const background: Ref<SlideBackground | undefined> = computed(() => store.getters.currentSlide.background)
+    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide.background)
 
     const gridColor = computed(() => {
       if(!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'
