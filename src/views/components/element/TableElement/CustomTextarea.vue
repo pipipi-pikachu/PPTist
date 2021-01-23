@@ -1,7 +1,7 @@
 <template>
   <div 
-    class="editable-div"
-    ref="editableDivRef"
+    class="custom-textarea"
+    ref="textareaRef"
     :contenteditable="contenteditable"
     @focus="handleFocus"
     @blur="handleBlur"
@@ -14,7 +14,7 @@
 import { defineComponent, onUnmounted, ref, watch } from 'vue'
 
 export default defineComponent({
-  name: 'editable-div',
+  name: 'custom-textarea',
   props: {
     modelValue: {
       type: String,
@@ -26,27 +26,27 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const editableDivRef = ref<HTMLElement>()
+    const textareaRef = ref<HTMLElement>()
     const text = ref('')
     const isFocus = ref(false)
 
     watch(() => props.modelValue, () => {
       if(isFocus.value) return
       text.value = props.modelValue
-      if(editableDivRef.value) editableDivRef.value.innerHTML = props.modelValue
+      if(textareaRef.value) textareaRef.value.innerHTML = props.modelValue
     }, { immediate: true })
 
     const handleInput = () => {
-      if(!editableDivRef.value) return
-      const text = editableDivRef.value.innerHTML
+      if(!textareaRef.value) return
+      const text = textareaRef.value.innerHTML
       emit('update:modelValue', text)
     }
 
     const handleFocus = () => {
       isFocus.value = true
 
-      if(!editableDivRef.value) return
-      editableDivRef.value.onpaste = (e: ClipboardEvent) => {
+      if(!textareaRef.value) return
+      textareaRef.value.onpaste = (e: ClipboardEvent) => {
         e.preventDefault()
         if(!e.clipboardData) return
 
@@ -60,15 +60,15 @@ export default defineComponent({
 
     const handleBlur = () => {
       isFocus.value = false
-      if(editableDivRef.value) editableDivRef.value.onpaste = null
+      if(textareaRef.value) textareaRef.value.onpaste = null
     }
 
     onUnmounted(() => {
-      if(editableDivRef.value) editableDivRef.value.onpaste = null
+      if(textareaRef.value) textareaRef.value.onpaste = null
     })
 
     return {
-      editableDivRef,
+      textareaRef,
       handleFocus,
       handleInput,
       handleBlur,

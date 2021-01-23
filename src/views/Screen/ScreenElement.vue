@@ -24,6 +24,7 @@ import BaseTextElement from '@/views/components/element/TextElement/BaseTextElem
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
 import BaseLineElement from '@/views/components/element/LineElement/BaseLineElement.vue'
 import ScreenChartElement from '@/views/components/element/ChartElement/ScreenChartElement.vue'
+import BaseTableElement from '@/views/components/element/TableElement/BaseTableElement.vue'
 
 export default defineComponent({
   name: 'screen-element',
@@ -49,6 +50,7 @@ export default defineComponent({
         [ElementTypes.SHAPE]: BaseShapeElement,
         [ElementTypes.LINE]: BaseLineElement,
         [ElementTypes.CHART]: ScreenChartElement,
+        [ElementTypes.TABLE]: BaseTableElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

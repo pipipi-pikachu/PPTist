@@ -1,0 +1,143 @@
+<template>
+  <div 
+    class="static-table"
+    :style="{ width: totalWidth + 'px' }"
+  >
+    <table>
+      <colgroup>
+        <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
+      </colgroup>
+      <tbody>
+        <tr
+          v-for="(rowCells, rowIndex) in data" 
+          :key="rowIndex"
+        >
+          <td 
+            class="cell"
+            :style="{
+              borderStyle: outline.style,
+              borderColor: outline.color,
+              borderWidth: outline.width + 'px',
+            }"
+            v-for="(cell, colIndex) in rowCells"
+            :key="cell.id"
+            :rowspan="cell.rowspan"
+            :colspan="cell.colspan"
+            v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
+          >
+            <div class="cell-text" v-html="cell.content" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
+import { PPTElementOutline, TableCell } from '@/types/slides'
+
+export default defineComponent({
+  name: 'static-table',
+  props: {
+    data: {
+      type: Array as PropType<TableCell[][]>,
+      required: true,
+    },
+    width: {
+      type: Number,
+      required: true,
+    },
+    colWidths: {
+      type: Array as PropType<number[]>,
+      required: true,
+    },
+    outline: {
+      type: Object as PropType<PPTElementOutline>,
+      required: true,
+    },
+    editable: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    const colSizeList = ref<number[]>([])
+    const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
+
+    watch([
+      () => props.colWidths,
+      () => props.width,
+    ], () => {
+      colSizeList.value = props.colWidths.map(item => item * props.width)
+    }, { immediate: true })
+
+    const hideCells = computed(() => {
+      const hideCells = []
+      
+      for(let i = 0; i < props.data.length; i++) {
+        const rowCells = props.data[i]
+
+        for(let j = 0; j < rowCells.length; j++) {
+          const cell = rowCells[j]
+          
+          if(cell.colspan > 1 || cell.rowspan > 1) {
+            for(let row = i; row < i + cell.rowspan; row++) {
+              for(let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
+                hideCells.push(`${row}_${col}`)
+              }
+            }
+          }
+        }
+      }
+      return hideCells
+    })
+
+    return {
+      colSizeList,
+      totalWidth,
+      hideCells,
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.static-table {
+  position: relative;
+  user-select: none;
+}
+table {
+  width: 100%;
+  position: relative;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 0;
+  word-wrap: break-word;
+  user-select: none;
+
+  tr {
+    height: 36px;
+  }
+
+  .cell {
+    position: relative;
+    white-space: normal;
+    word-wrap: break-word;
+    vertical-align: middle;
+    cursor: default;
+  }
+
+  .cell-text {
+    min-height: 32px;
+    padding: 5px;
+    border: 0;
+    outline: 0;
+    line-height: 1.5;
+    font-size: 14px;
+    user-select: none;
+    cursor: text;
+  }
+}
+</style>

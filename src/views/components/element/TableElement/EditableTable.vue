@@ -1,9 +1,9 @@
 <template>
   <div 
     class="editable-table"
-    :style="{ width: width + 'px' }"
+    :style="{ width: totalWidth + 'px' }"
   >
-    <div class="handler">
+    <div class="handler" v-if="editable">
       <div 
         class="drag-line" 
         v-for="(pos, index) in dragLinePosition" 
@@ -16,7 +16,7 @@
     </div>
     <table>
       <colgroup>
-        <col span="1" v-for="(width, index) in colWidths" :key="index" :width="width">
+        <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
         <tr
@@ -29,6 +29,11 @@
               'selected': selectedCells.includes(`${rowIndex}_${colIndex}`) && selectedCells.length > 1,
               'active': activedCell === `${rowIndex}_${colIndex}`,
             }"
+            :style="{
+              borderStyle: outline.style,
+              borderColor: outline.color,
+              borderWidth: outline.width + 'px',
+            }"
             v-for="(cell, colIndex) in rowCells"
             :key="cell.id"
             :rowspan="cell.rowspan"
@@ -39,7 +44,7 @@
             @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
             v-contextmenu="el => contextmenus(el)"
           >
-            <EditableDiv 
+            <CustomTextarea 
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
               :contenteditable="activedCell === `${rowIndex}_${colIndex}` ? 'plaintext-only' : false"
@@ -54,39 +59,48 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
-import { TableCell } from '@/types/slides'
+import { PPTElementOutline, TableCell } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
 
-import EditableDiv from './EditableDiv.vue'
+import CustomTextarea from './CustomTextarea.vue'
+import { useStore } from 'vuex'
+import { State } from '@/store'
 
 export default defineComponent({
   name: 'editable-table',
   components: {
-    EditableDiv,
+    CustomTextarea,
   },
   props: {
     data: {
       type: Array as PropType<TableCell[][]>,
       required: true,
     },
-    outlineWidth: {
+    width: {
       type: Number,
-      default: 1,
+      required: true,
     },
-    outlineColor: {
-      type: String,
-      default: '#41464b',
+    colWidths: {
+      type: Array as PropType<number[]>,
+      required: true,
     },
-    outlineStyle: {
-      type: String,
-      default: 'solid',
+    outline: {
+      type: Object as PropType<PPTElementOutline>,
+      required: true,
+    },
+    editable: {
+      type: Boolean,
+      default: true,
     },
   },
   setup(props, { emit }) {
+    const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+
     const tableCells = computed<TableCell[][]>({
       get() {
         return props.data
@@ -95,18 +109,33 @@ export default defineComponent({
         emit('change', newData)
       },
     })
+
+    const colSizeList = ref<number[]>([])
+    const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
+    watch([
+      () => props.colWidths,
+      () => props.width,
+    ], () => {
+      colSizeList.value = props.colWidths.map(item => item * props.width)
+    }, { immediate: true })
     
-    const colWidths = ref([160, 160, 160, 160, 160])
     const isStartSelect = ref(false)
     const startCell = ref<number[]>([])
     const endCell = ref<number[]>([])
+    
+    const removeSelectedCells = () => {
+      startCell.value = []
+      endCell.value = []
+    }
 
-    const width = computed(() => colWidths.value.reduce((a, b) => (a + b)))
+    watch(() => props.editable, () => {
+      if(!props.editable) removeSelectedCells()
+    })
 
     const dragLinePosition = computed(() => {
       const dragLinePosition: number[] = []
-      for(let i = 1; i < colWidths.value.length + 1; i++) {
-        const pos = colWidths.value.slice(0, i).reduce((a, b) => (a + b))
+      for(let i = 1; i < colSizeList.value.length + 1; i++) {
+        const pos = colSizeList.value.slice(0, i).reduce((a, b) => (a + b))
         dragLinePosition.push(pos)
       }
       return dragLinePosition
@@ -207,11 +236,6 @@ export default defineComponent({
 
     const isHideCell = (rowIndex: number, colIndex: number) => hideCells.value.includes(`${rowIndex}_${colIndex}`)
 
-    const removeSelectedCells = () => {
-      startCell.value = []
-      endCell.value = []
-    }
-
     const selectCol = (index: number) => {
       const maxRow = tableCells.value.length - 1
       startCell.value = [0, index]
@@ -274,12 +298,15 @@ export default defineComponent({
         item.splice(colIndex, 1)
         return item
       })
-      colWidths.value.splice(colIndex, 1)
+      colSizeList.value.splice(colIndex, 1)
+      emit('changeColWidths', colSizeList.value)
     }
     
-    const insertRow = (selectedIndex: number, rowIndex: number) => {
+    const insertRow = (rowIndex: number) => {
+      const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
+
       const rowCells: TableCell[] = []
-      for(let i = 0; i < tableCells.value[0].length; i++) {
+      for(let i = 0; i < _tableCells[0].length; i++) {
         rowCells.push({
           colspan: 1,
           rowspan: 1,
@@ -288,10 +315,11 @@ export default defineComponent({
         })
       }
 
-      tableCells.value.splice(rowIndex, 0, rowCells)
+      _tableCells.splice(rowIndex, 0, rowCells)
+      tableCells.value = _tableCells
     }
 
-    const insertCol = (selectedIndex: number, colIndex: number) => {
+    const insertCol = (colIndex: number) => {
       tableCells.value = tableCells.value.map(item => {
         const cell = {
           colspan: 1,
@@ -302,7 +330,8 @@ export default defineComponent({
         item.splice(colIndex, 0, cell)
         return item
       })
-      colWidths.value.splice(colIndex, 0, 160)
+      colSizeList.value.splice(colIndex, 0, 100)
+      emit('changeColWidths', colSizeList.value)
     }
     
     const mergeCells = () => {
@@ -336,7 +365,7 @@ export default defineComponent({
       removeSelectedCells()
       let isMouseDown = true
 
-      const originWidth = colWidths.value[colIndex]
+      const originWidth = colSizeList.value[colIndex]
       const startPageX = e.pageX
 
       const minWidth = 50
@@ -344,15 +373,17 @@ export default defineComponent({
       document.onmousemove = e => {
         if(!isMouseDown) return
         
-        const moveX = e.pageX - startPageX
+        const moveX = (e.pageX - startPageX) / canvasScale.value
         const width = originWidth + moveX < minWidth ? minWidth : Math.round(originWidth + moveX)
 
-        colWidths.value[colIndex] = width
+        colSizeList.value[colIndex] = width
       }
       document.onmouseup = () => {
         isMouseDown = false
         document.onmousemove = null
         document.onmouseup = null
+
+        emit('changeColWidths', colSizeList.value)
       }
     }
 
@@ -384,14 +415,14 @@ export default defineComponent({
 
       const nextCell = getNextCell(nextRow, nextCol)
       if(!nextCell) {
-        insertRow(nextRow, nextRow + 1)
+        insertRow(nextRow + 1)
         startCell.value = [nextRow + 1, 0]
       }
       else startCell.value = nextCell
 
       nextTick(() => {
         const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
-        textRef.focus()
+        if(textRef) textRef.focus()
       })
     }
 
@@ -453,15 +484,15 @@ export default defineComponent({
         {
           text: '插入列',
           children: [
-            { text: '到左侧', handler: () => insertCol(colIndex, colIndex) },
-            { text: '到右侧', handler: () => insertCol(colIndex, colIndex + 1) },
+            { text: '到左侧', handler: () => insertCol(colIndex) },
+            { text: '到右侧', handler: () => insertCol(colIndex + 1) },
           ],
         },
         {
           text: '插入行',
           children: [
-            { text: '到上方', handler: () => insertRow(rowIndex, rowIndex) },
-            { text: '到下方', handler: () => insertRow(rowIndex, rowIndex + 1) },
+            { text: '到上方', handler: () => insertRow(rowIndex) },
+            { text: '到下方', handler: () => insertRow(rowIndex + 1) },
           ],
         },
         {
@@ -506,10 +537,10 @@ export default defineComponent({
     }, 300, { trailing: true })
 
     return {
-      width,
       dragLinePosition,
       tableCells,
-      colWidths,
+      colSizeList,
+      totalWidth,
       hideCells,
       selectedCells,
       activedCell,
@@ -537,16 +568,19 @@ table {
   table-layout: fixed;
   border-collapse: collapse;
   border-spacing: 0;
+  border: 0;
   word-wrap: break-word;
   user-select: none;
 
+  tr {
+    height: 36px;
+  }
+
   .cell {
-    padding: 5px;
     position: relative;
     white-space: normal;
     word-wrap: break-word;
     vertical-align: middle;
-    border: 1px solid #d9d9d9;
     cursor: default;
 
     &.selected::after {
@@ -561,7 +595,8 @@ table {
   }
 
   .cell-text {
-    min-height: 22px;
+    min-height: 32px;
+    padding: 5px;
     border: 0;
     outline: 0;
     line-height: 1.5;
@@ -571,11 +606,6 @@ table {
 
     &.active {
       user-select: text;
-    }
-
-    ::selection {
-      background-color: rgba(27, 110, 232, 0.3);
-      color: inherit;
     }
   }
 }

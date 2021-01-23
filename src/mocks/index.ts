@@ -25,8 +25,13 @@ export const slides: Slide[] = [
         left: 20,
         top: 20,
         width: 400,
-        height: 90,
+        height: 108,
         colWidths: [0.25, 0.25, 0.25, 0.25],
+        outline: {
+          width: 1,
+          style: 'solid',
+          color: '#999',
+        },
         data: [
           [
             { id: '1', colspan: 1, rowspan: 1, text: '' },

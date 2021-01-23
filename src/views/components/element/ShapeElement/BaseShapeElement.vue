@@ -1,5 +1,6 @@
 <template>
-  <div class="base-element-shape"
+  <div 
+    class="base-element-shape"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',

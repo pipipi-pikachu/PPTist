@@ -61,7 +61,9 @@ export default defineComponent({
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
 
-    const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
+    const outlineWidth = computed(() => props.elementInfo.outline.width || 1)
+
+    const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value)
     const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 
     const { textElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)

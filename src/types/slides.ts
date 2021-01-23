@@ -160,6 +160,7 @@ export interface PPTTableElement {
   groupId?: string;
   width: number;
   height: number;
+  outline: PPTElementOutline;
   colWidths: number[];
   data: TableCell[][];
 }
