@@ -18,6 +18,7 @@ export default () => {
       if(activeElementIdList.value.includes(element.id)) element.lock = true
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     addHistorySnapshot()
   }
 
@@ -38,6 +39,7 @@ export default () => {
       }
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [handleElement.id])
     addHistorySnapshot()
   }
 

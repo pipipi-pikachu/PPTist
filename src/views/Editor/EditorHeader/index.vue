@@ -14,11 +14,11 @@
         <div class="menu-item"><IconEdit /> 编辑</div>
         <template #overlay>
           <Menu>
-            <MenuItem>撤销</MenuItem>
-            <MenuItem>重做</MenuItem>
-            <MenuItem>添加页面</MenuItem>
-            <MenuItem>删除页面</MenuItem>
-            <MenuItem>网格参考线</MenuItem>
+            <MenuItem @click="undo()">撤销</MenuItem>
+            <MenuItem @click="redo()">重做</MenuItem>
+            <MenuItem @click="createSlide()">添加页面</MenuItem>
+            <MenuItem @click="deleteSlide()">删除页面</MenuItem>
+            <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -26,8 +26,8 @@
         <div class="menu-item"><IconSlide /> 演示</div>
         <template #overlay>
           <Menu>
-            <MenuItem>从头开始</MenuItem>
-            <MenuItem>从当前页开始</MenuItem>
+            <MenuItem @click="enterScreeningFromStart()">从头开始</MenuItem>
+            <MenuItem @click="enterScreening()">从当前页开始</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -57,16 +57,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useStore } from 'vuex'
+import { MutationTypes, State } from '@/store'
 import useScreening from '@/hooks/useScreening'
+import useSlideHandler from '@/hooks/useSlideHandler'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default defineComponent({
   name: 'editor-header',
   setup() {
-    const { enterScreening } = useScreening()
+    const store = useStore<State>()
+
+    const { enterScreening, enterScreeningFromStart } = useScreening()
+    const { createSlide, deleteSlide } = useSlideHandler()
+    const { redo, undo } = useHistorySnapshot()
+
+    const showGridLines = computed(() => store.state.showGridLines)
+    const toggleGridLines = () => {
+      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
+    }
 
     return {
       enterScreening,
+      enterScreeningFromStart,
+      createSlide,
+      deleteSlide,
+      redo,
+      undo,
+      toggleGridLines,
+      showGridLines,
     }
   },
 })

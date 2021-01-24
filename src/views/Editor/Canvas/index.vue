@@ -202,7 +202,7 @@ export default defineComponent({
           handler: pasteElement,
         },
         {
-          text: '网格参考线',
+          text: '网格线',
           handler: toggleGridLines,
         },
         {

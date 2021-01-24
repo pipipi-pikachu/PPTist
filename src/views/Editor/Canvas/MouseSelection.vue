@@ -43,7 +43,8 @@ export default {
 <style lang="scss" scoped>
 .mouse-selection {
   position: absolute;
-  background: rgba(150, 150, 150, 0.25);
+  background-color: rgba($themeColor, 0.1);
+  border: 1px solid $themeColor;
   z-index: 200;
 
   &.quadrant-1 {

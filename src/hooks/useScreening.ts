@@ -10,6 +10,11 @@ export default () => {
     store.commit(MutationTypes.SET_SCREENING, true)
   }
 
+  const enterScreeningFromStart = () => {
+    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0)
+    enterScreening()
+  }
+
   const exitScreening = () => {
     store.commit(MutationTypes.SET_SCREENING, false)
     if(isFullscreen()) exitFullscreen()
@@ -17,6 +22,7 @@ export default () => {
 
   return {
     enterScreening,
+    enterScreeningFromStart,
     exitScreening,
   }
 }
