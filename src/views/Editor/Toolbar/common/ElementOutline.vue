@@ -1,6 +1,6 @@
 <template>
   <div class="element-outline">
-    <div class="row">
+    <div class="row" v-if="!fixed">
       <div style="flex: 2;">启用边框：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
@@ -59,6 +59,12 @@ export default defineComponent({
   components: {
     ColorButton,
   },
+  props: {
+    fixed: {
+      type: Boolean,
+      default: false,
+    },
+  },
   setup() {
     const store = useStore<State>()
     const handleElement = computed<PPTElement>(() => store.getters.handleElement)
@@ -81,11 +87,13 @@ export default defineComponent({
     }
 
     const toggleOutline = (checked: boolean) => {
-      let props: { outline?: PPTElementOutline } = { outline: undefined }
       if(checked) {
-        props = { outline: { width: 2, color: '#000', style: 'solid' } }
+        const props = { outline: { width: 2, color: '#000', style: 'solid' } }
+        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      else {
+        store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, { id: handleElement.value.id, propName: 'outline' })
+      }
       addHistorySnapshot()
     }
 

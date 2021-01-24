@@ -14,7 +14,16 @@
         @mousedown="$event => handleMousedownColHandler($event, index)"
       ></div>
     </div>
-    <table>
+    <table 
+      :class="{
+        'theme': theme,
+        'row-header': theme?.rowHeader,
+        'row-footer': theme?.rowFooter,
+        'col-header': theme?.colHeader,
+        'col-footer': theme?.colFooter,
+      }"
+      :style="`--themeColor: ${theme?.color}; --subThemeColor1: ${subThemeColor[0]}; --subThemeColor2: ${subThemeColor[1]}`"
+    >
       <colgroup>
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
@@ -33,6 +42,7 @@
               borderStyle: outline.style,
               borderColor: outline.color,
               borderWidth: outline.width + 'px',
+              ...getTextStyle(cell.style),
             }"
             v-for="(cell, colIndex) in rowCells"
             :key="cell.id"
@@ -61,7 +71,8 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
-import { PPTElementOutline, TableCell } from '@/types/slides'
+import tinycolor from 'tinycolor2'
+import { PPTElementOutline, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
@@ -92,6 +103,9 @@ export default defineComponent({
       type: Object as PropType<PPTElementOutline>,
       required: true,
     },
+    theme: {
+      type: Object as PropType<TableTheme>,
+    },
     editable: {
       type: Boolean,
       default: true,
@@ -100,6 +114,19 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore<State>()
     const canvasScale = computed(() => store.state.canvasScale)
+
+    const subThemeColor = ref(['', ''])
+    watch(() => props.theme, () => {
+      if(props.theme) {
+        const rgba = tinycolor(props.theme.color).toRgb()
+        const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
+        const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
+        subThemeColor.value = [
+          `rgba(${[subRgba1.r, subRgba1.g, subRgba1.b, subRgba1.a].join(',')})`,
+          `rgba(${[subRgba2.r, subRgba2.g, subRgba2.b, subRgba2.a].join(',')})`,
+        ]
+      }
+    }, { immediate: true })
 
     const tableCells = computed<TableCell[][]>({
       get() {
@@ -185,6 +212,10 @@ export default defineComponent({
         }
       }
       return selectedCells
+    })
+
+    watch(selectedCells, () => {
+      emit('changeSelectedCells', selectedCells.value)
     })
 
     const activedCell = computed(() => {
@@ -446,6 +477,36 @@ export default defineComponent({
       document.removeEventListener('keydown', keydownListener)
     })
 
+    const getTextStyle = (style?: TableCellStyle) => {
+      if(!style) return {}
+      const {
+        bold,
+        em,
+        underline,
+        strikethrough,
+        color,
+        backcolor,
+        fontsize,
+        fontname,
+        align,
+      } = style
+      
+      return {
+        fontWeight: bold ? 'bold' : 'normal',
+        fontStyle: em ? 'italic' : 'normal',
+        textDecoration: `${underline ? 'underline' : ''} ${strikethrough ? 'line-through' : ''}`,
+        color: color || '#000',
+        backgroundColor: backcolor || '',
+        fontSize: fontsize || '14px',
+        fontFamily: fontname || '微软雅黑',
+        textAlign: align || 'left',
+      }
+    }
+
+    const handleInput = debounce(function() {
+      emit('change', tableCells.value)
+    }, 300, { trailing: true })
+
     const getEffectiveTableCells = () => {
       const effectiveTableCells = []
 
@@ -532,11 +593,8 @@ export default defineComponent({
       ]
     }
 
-    const handleInput = debounce(function() {
-      emit('change', tableCells.value)
-    }, 300, { trailing: true })
-
     return {
+      getTextStyle,
       dragLinePosition,
       tableCells,
       colSizeList,
@@ -552,6 +610,7 @@ export default defineComponent({
       handleMousedownColHandler,
       contextmenus,
       handleInput,
+      subThemeColor,
     }
   },
 })
@@ -572,6 +631,40 @@ table {
   word-wrap: break-word;
   user-select: none;
 
+  --themeColor: $themeColor;
+  --subThemeColor1: $themeColor;
+  --subThemeColor2: $themeColor;
+
+  &.theme {
+    tr:nth-child(2n) .cell {
+      background-color: var(--subThemeColor1);
+    }
+    tr:nth-child(2n + 1) .cell {
+      background-color: var(--subThemeColor2);
+    }
+
+    &.row-header {
+      tr:first-child .cell {
+        background-color: var(--themeColor);
+      }
+    }
+    &.row-footer {
+      tr:last-child .cell {
+        background-color: var(--themeColor);
+      }
+    }
+    &.col-header {
+      tr .cell:first-child {
+        background-color: var(--themeColor);
+      }
+    }
+    &.col-footer {
+      tr .cell:last-child {
+        background-color: var(--themeColor);
+      }
+    }
+  }
+
   tr {
     height: 36px;
   }
@@ -581,6 +674,7 @@ table {
     white-space: normal;
     word-wrap: break-word;
     vertical-align: middle;
+    font-size: 14px;
     cursor: default;
 
     &.selected::after {
@@ -590,7 +684,7 @@ table {
       position: absolute;
       top: 0;
       left: 0;
-      background-color: rgba($color: #888, $alpha: .1);
+      background-color: rgba($color: $themeColor, $alpha: .3);
     }
   }
 
@@ -600,7 +694,6 @@ table {
     border: 0;
     outline: 0;
     line-height: 1.5;
-    font-size: 14px;
     user-select: none;
     cursor: text;
 

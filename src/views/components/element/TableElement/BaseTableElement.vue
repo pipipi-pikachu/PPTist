@@ -13,6 +13,7 @@
         :width="elementInfo.width"
         :colWidths="elementInfo.colWidths"
         :outline="elementInfo.outline"
+        :theme="elementInfo.theme"
       />
     </div>
   </div>

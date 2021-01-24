@@ -15,29 +15,35 @@
     >
       <div 
         class="table-mask" 
-        v-if="!editable"
-        @dblclick="editable = true"
+        :class="{ 'lock': elementInfo.lock }"
+        v-if="!editable || elementInfo.lock"
+        @dblclick="startEdit()"
         @mousedown="$event => handleSelectElement($event)"
-      ></div>
+      >
+        <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
+      </div>
+
       <EditableTable 
         @mousedown.stop
         :data="elementInfo.data"
         :width="elementInfo.width"
         :colWidths="elementInfo.colWidths"
         :outline="elementInfo.outline"
+        :theme="elementInfo.theme"
         :editable="editable"
         @change="data => updateTableCells(data)"
         @changeColWidths="widths => updateColWidths(widths)"
+        @changeSelectedCells="cells => updateSelectedCells(cells)"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
-import { PPTTableElement, TableCell } from '@/types/slides'
+import { PPTTableElement, TableCell, TableCellStyle } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -64,6 +70,8 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore<State>()
+    const canvasScale = computed(() => store.state.canvasScale)
+
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const handleSelectElement = (e: MouseEvent) => {
@@ -151,12 +159,64 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const selectedCells = ref<string[]>([])
+
+    const emitUpdateTextAttrsState = () => {
+      let rowIndex = 0
+      let colIndex = 0
+      if(selectedCells.value.length) {
+        const selectedCell = selectedCells.value[0]
+        rowIndex = +selectedCell.split('_')[0]
+        colIndex = +selectedCell.split('_')[1]
+      }
+      emitter.emit(EmitterEvents.UPDATE_TABLE_TEXT_STATE, props.elementInfo.data[rowIndex][colIndex].style)
+    }
+
+    const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
+      const data: TableCell[][] = JSON.parse(JSON.stringify(props.elementInfo.data))
+
+      for(let i = 0; i < data.length; i++) {
+        for(let j = 0; j < data[i].length; j++) {
+          if(!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
+            const style = data[i][j].style || {}
+            data[i][j].style = { ...style, ...textAttrProp }
+          }
+        }
+      }
+
+      store.commit(MutationTypes.UPDATE_ELEMENT, {
+        id: props.elementInfo.id, 
+        props: { data },
+      })
+
+      addHistorySnapshot()
+      nextTick(emitUpdateTextAttrsState)
+    }
+
+    const updateSelectedCells = (cells: string[]) => {
+      selectedCells.value = cells
+      nextTick(emitUpdateTextAttrsState)
+    }
+
+    emitter.on(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, state => updateTextAttrs(state))
+    onUnmounted(() => {
+      emitter.off(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, state => updateTextAttrs(state))
+    })
+
+    const startEdit = () => {
+      if(!props.elementInfo.lock) editable.value = true
+    }
+
     return {
       elementRef,
+      canvasScale,
       handleSelectElement,
       updateTableCells,
       updateColWidths,
       editable,
+      startEdit,
+      selectedCells,
+      updateSelectedCells,
     }
   },
 })
@@ -184,5 +244,22 @@ export default defineComponent({
   left: 0;
   right: 0;
   z-index: 10;
+  opacity: 0;
+  transition: opacity .2s;
+
+  .mask-tip {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: rgba($color: #000, $alpha: .5);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 12px;
+    transform-origin: 0 0;
+  }
+
+  &:hover:not(.lock) {
+    opacity: .9;
+  }
 }
 </style>

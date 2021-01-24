@@ -9,11 +9,13 @@
     <template v-if="handleElement.chartType === 'line'">
       <div class="row">
         <Checkbox 
-          @change="e => updateOptions({ showArea: e.target.checked })" :checked="showArea" 
+          @change="e => updateOptions({ showArea: e.target.checked })"
+          :checked="showArea" 
           style="flex: 1;"
         >面积图样式</Checkbox>
         <Checkbox 
-          @change="e => updateOptions({ showLine: !e.target.checked })" :checked="!showLine" 
+          @change="e => updateOptions({ showLine: !e.target.checked })"
+          :checked="!showLine" 
           style="flex: 1;"
         >散点图样式</Checkbox>
       </div>

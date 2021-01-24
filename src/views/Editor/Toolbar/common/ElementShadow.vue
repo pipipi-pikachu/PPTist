@@ -92,11 +92,13 @@ export default defineComponent({
     }
 
     const toggleShadow = (checked: boolean) => {
-      let props: { shadow?: PPTElementShadow } = { shadow: undefined }
       if(checked) {
-        props = { shadow: { h: 1, v: 1, blur: 2, color: '#000' } }
+        const props = { shadow: { h: 1, v: 1, blur: 2, color: '#000' } }
+        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      else {
+        store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, { id: handleElement.value.id, propName: 'shadow' })
+      }
       addHistorySnapshot()
     }
 

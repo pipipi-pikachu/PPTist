@@ -136,21 +136,31 @@ export interface PPTChartElement {
   gridColor?: string;
 }
 
+export interface TableCellStyle {
+  bold?: boolean;
+  em?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  color?: string;
+  backcolor?: string;
+  fontsize?: string;
+  fontname?: string;
+  align?: string;
+}
 export interface TableCell {
   id: string;
   colspan: number;
   rowspan: number;
   text: string;
-  style?: {
-    color?: string;
-    bgColor?: string;
-    fontSize?: number;
-    fontName?: string;
-    bold?: boolean;
-    italic?: boolean;
-    align?: string;
-  };
+  style?: TableCellStyle;
 }
+export interface TableTheme {
+  color: string;
+  rowHeader: boolean;
+  rowFooter: boolean;
+  colHeader: boolean;
+  colFooter: boolean;
+} 
 export interface PPTTableElement {
   type: 'table';
   id: string;
@@ -161,6 +171,7 @@ export interface PPTTableElement {
   width: number;
   height: number;
   outline: PPTElementOutline;
+  theme?: TableTheme;
   colWidths: number[];
   data: TableCell[][];
 }

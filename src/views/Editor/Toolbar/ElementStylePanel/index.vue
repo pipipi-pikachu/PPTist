@@ -18,6 +18,7 @@ import ImageStylePanel from './ImageStylePanel.vue'
 import ShapeStylePanel from './ShapeStylePanel.vue'
 import LineStylePanel from './LineStylePanel.vue'
 import ChartStylePanel from './ChartStylePanel/index.vue'
+import TableStylePanel from './TableStylePanel.vue'
 
 export default defineComponent({
   name: 'element-style-panel',
@@ -34,6 +35,7 @@ export default defineComponent({
         [ElementTypes.SHAPE]: ShapeStylePanel,
         [ElementTypes.LINE]: LineStylePanel,
         [ElementTypes.CHART]: ChartStylePanel,
+        [ElementTypes.TABLE]: TableStylePanel,
       }
       return panelMap[handleElement.value.type] || null
     })
