@@ -176,6 +176,8 @@ export default () => {
     else if(command === ElementOrderCommands.TOP) newElementList = moveTopElement(currentSlide.value.elements, element)
     else if(command === ElementOrderCommands.BOTTOM) newElementList = moveBottomElement(currentSlide.value.elements, element)
 
+    if(!newElementList) return
+
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     addHistorySnapshot()
   }
