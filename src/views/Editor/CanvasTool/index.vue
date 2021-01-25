@@ -42,9 +42,17 @@
           <IconChartProportion class="handler-item" />
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
-        <IconInsertTable class="handler-item" />
-      </Tooltip>
+      <Popover trigger="click" v-model:visible="tableGeneratorVisible">
+        <template #content>
+          <TableGenerator
+            @close="tableGeneratorVisible = false"
+            @insert="({ row, col }) => { createTableElement(row, col); tableGeneratorVisible = false }"
+          />
+        </template>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
+          <IconInsertTable class="handler-item" />
+        </Tooltip>
+      </Popover>
     </div>
 
     <div class="right-handler">
@@ -72,6 +80,7 @@ import useCreateElement from '@/hooks/useCreateElement'
 import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
 import ChartPool from './ChartPool.vue'
+import TableGenerator from './TableGenerator.vue'
 
 export default defineComponent({
   name: 'canvas-tool',
@@ -79,6 +88,7 @@ export default defineComponent({
     ShapePool,
     LinePool,
     ChartPool,
+    TableGenerator,
   },
   setup() {
     const store = useStore<State>()
@@ -91,7 +101,7 @@ export default defineComponent({
     const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const { createImageElement, createChartElement } = useCreateElement()
+    const { createImageElement, createChartElement, createTableElement } = useCreateElement()
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
@@ -102,6 +112,7 @@ export default defineComponent({
     const shapePoolVisible = ref(false)
     const linePoolVisible = ref(false)
     const chartPoolVisible = ref(false)
+    const tableGeneratorVisible = ref(false)
 
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
@@ -136,10 +147,12 @@ export default defineComponent({
       shapePoolVisible,
       linePoolVisible,
       chartPoolVisible,
+      tableGeneratorVisible,
       drawText,
       drawShape,
       drawLine,
       createChartElement,
+      createTableElement,
     }
   },
 })

@@ -3,7 +3,7 @@ import { MutationTypes } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { ChartType, PPTElement } from '@/types/slides'
+import { ChartType, PPTElement, TableCell } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import {
@@ -12,6 +12,7 @@ import {
   DEFAULT_SHAPE,
   DEFAULT_LINE,
   DEFAULT_CHART,
+  DEFAULT_TABLE,
 } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -75,8 +76,24 @@ export default () => {
     })
   }
   
-  const createTableElement = (rowCount: number, colCount: number) => {
-    console.log(rowCount, colCount)
+  const createTableElement = (row: number, col: number) => {
+    const rowCells: TableCell[] = new Array(col).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+    const data: TableCell[][] = new Array(row).fill(rowCells)
+
+    const DEFAULT_CELL_WIDTH = 100
+    const DEFAULT_CELL_HEIGHT = 40
+
+    const colWidths: number[] = new Array(col).fill(1 / col)
+
+    createElement({
+      ...DEFAULT_TABLE,
+      type: 'table',
+      id: createRandomCode(),
+      width: col * DEFAULT_CELL_WIDTH,
+      height: row * DEFAULT_CELL_HEIGHT,
+      colWidths,
+      data,
+    })
   }
   
   const createTextElement = (position: CommonElementPosition) => {

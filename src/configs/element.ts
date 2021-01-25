@@ -1,3 +1,5 @@
+import { PPTElementOutline } from '@/types/slides'
+
 const DEFAULT_COLOR = '#d14424'
 
 export const ELEMENT_TYPE = {
@@ -43,19 +45,22 @@ export const DEFAULT_CHART = {
   },
 }
 
+const tableOutline: PPTElementOutline = {
+  width: 2,
+  style: 'solid',
+  color: '#eeece1',
+}
 export const DEFAULT_TABLE = {
   left: 0,
   top: 0,
-  outline: {
-    width: 2,
-    style: 'solid',
+  outline: tableOutline,
+  theme: {
     color: DEFAULT_COLOR,
+    rowHeader: true,
+    rowFooter: false,
+    colHeader: false,
+    colFooter: false,
   },
-}
-
-export const DEFAULT_FORMULA = {
-  left: 0,
-  top: 0,
 }
 
 export const MIN_SIZE = {
