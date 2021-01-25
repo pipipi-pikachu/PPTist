@@ -108,6 +108,29 @@
 
     <Divider />
 
+    <div class="row">
+      <Button style="flex: 5;">上方插入行</Button>
+      <div style="flex: 1;"></div>
+      <Button style="flex: 5;">下方插入行</Button>
+    </div>
+    <div class="row">
+      <Button style="flex: 5;">左侧插入列</Button>
+      <div style="flex: 1;"></div>
+      <Button style="flex: 5;">右侧插入列</Button>
+    </div>
+    <div class="row">
+      <Button style="flex: 5;">删除行</Button>
+      <div style="flex: 1;"></div>
+      <Button style="flex: 5;">删除列</Button>
+    </div>
+    <div class="row">
+      <Button style="flex: 5;">合并单元格</Button>
+      <div style="flex: 1;"></div>
+      <Button style="flex: 5;">拆分单元格</Button>
+    </div>
+
+    <Divider />
+
     <div class="row theme-switch">
       <div style="flex: 2;">启用主题表格：</div>
       <div class="switch-wrapper" style="flex: 3;">
@@ -202,7 +225,20 @@ export default defineComponent({
       hasTheme.value = !!theme.value
     }, { deep: true, immediate: true })
 
-    const updateTextAttrs = (style?: Partial<TableCellStyle>) => {
+    const selectedCells = ref<string[]>([])
+
+    const updateTextAttrs = () => {
+      if(!handleElement.value) return
+
+      let rowIndex = 0
+      let colIndex = 0
+      if(selectedCells.value.length) {
+        const selectedCell = selectedCells.value[0]
+        rowIndex = +selectedCell.split('_')[0]
+        colIndex = +selectedCell.split('_')[1]
+      }
+      const style = handleElement.value.data[rowIndex][colIndex].style
+
       if(!style) {
         textAttrs.value = {
           bold: false,
@@ -231,9 +267,14 @@ export default defineComponent({
       }
     }
 
-    emitter.on(EmitterEvents.UPDATE_TABLE_TEXT_STATE, style => updateTextAttrs(style))
+    const updateSelectedCells = (cells: string[]) => {
+      selectedCells.value = cells
+      updateTextAttrs()
+    }
+
+    emitter.on(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
     onUnmounted(() => {
-      emitter.off(EmitterEvents.UPDATE_TABLE_TEXT_STATE, style => updateTextAttrs(style))
+      emitter.off(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
     })
 
     const availableFonts = computed(() => store.state.availableFonts)
@@ -245,6 +286,7 @@ export default defineComponent({
 
     const emitUpdateTextAttrCommand = (textAttrProp: Partial<TableCellStyle>) => {
       emitter.emit(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, textAttrProp)
+      updateTextAttrs()
     }
 
     const updateTheme = (themeProp: Partial<TableTheme>) => {

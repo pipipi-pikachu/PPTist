@@ -161,17 +161,6 @@ export default defineComponent({
 
     const selectedCells = ref<string[]>([])
 
-    const emitUpdateTextAttrsState = () => {
-      let rowIndex = 0
-      let colIndex = 0
-      if(selectedCells.value.length) {
-        const selectedCell = selectedCells.value[0]
-        rowIndex = +selectedCell.split('_')[0]
-        colIndex = +selectedCell.split('_')[1]
-      }
-      emitter.emit(EmitterEvents.UPDATE_TABLE_TEXT_STATE, props.elementInfo.data[rowIndex][colIndex].style)
-    }
-
     const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
       const data: TableCell[][] = JSON.parse(JSON.stringify(props.elementInfo.data))
 
@@ -190,12 +179,13 @@ export default defineComponent({
       })
 
       addHistorySnapshot()
-      nextTick(emitUpdateTextAttrsState)
     }
 
     const updateSelectedCells = (cells: string[]) => {
       selectedCells.value = cells
-      nextTick(emitUpdateTextAttrsState)
+      nextTick(() => {
+        emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, selectedCells.value)
+      })
     }
 
     emitter.on(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, state => updateTextAttrs(state))
