@@ -522,6 +522,24 @@ export default defineComponent({
       return effectiveTableCells
     }
 
+    const checkCanDeleteRowOrCol = () => {
+      const effectiveTableCells = getEffectiveTableCells()
+      const canDeleteRow = effectiveTableCells.length > 1
+      const canDeleteCol = effectiveTableCells[0].length > 1
+
+      return { canDeleteRow, canDeleteCol }
+    }
+
+    const checkCanMergeOrSplit = (rowIndex: number, colIndex: number) => {
+      const isMultiSelected = selectedCells.value.length > 1
+      const targetCell = tableCells.value[rowIndex][colIndex]
+
+      const canMerge = isMultiSelected
+      const canSplit = !isMultiSelected && (targetCell.rowspan > 1 || targetCell.colspan > 1)
+
+      return { canMerge, canSplit }
+    }
+
     const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
       const cellIndex = el.dataset.cellIndex as string
       const rowIndex = +cellIndex.split('_')[0]
@@ -532,14 +550,8 @@ export default defineComponent({
         endCell.value = []
       }
 
-      const isMultiSelected = selectedCells.value.length > 1
-
-      const targetCell = tableCells.value[rowIndex][colIndex]
-      const canSplit = targetCell.rowspan > 1 || targetCell.colspan > 1
-
-      const effectiveTableCells = getEffectiveTableCells()
-      const canDeleteRow = effectiveTableCells.length > 1
-      const canDeleteCol = effectiveTableCells[0].length > 1
+      const { canMerge, canSplit } = checkCanMergeOrSplit(rowIndex, colIndex)
+      const { canDeleteRow, canDeleteCol } = checkCanDeleteRowOrCol()
 
       return [
         {
@@ -569,12 +581,12 @@ export default defineComponent({
         { divider: true },
         {
           text: '合并单元格',
-          disable: !isMultiSelected,
+          disable: !canMerge,
           handler: mergeCells,
         },
         {
           text: '取消合并单元格',
-          disable: isMultiSelected || !canSplit,
+          disable: !canSplit,
           handler: () => splitCells(rowIndex, colIndex),
         },
         { divider: true },

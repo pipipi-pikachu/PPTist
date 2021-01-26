@@ -109,24 +109,18 @@
     <Divider />
 
     <div class="row">
-      <Button style="flex: 5;">上方插入行</Button>
-      <div style="flex: 1;"></div>
-      <Button style="flex: 5;">下方插入行</Button>
+      <div style="flex: 2;">行数：</div>
+      <InputNumber 
+        :value="rowCount" 
+        style="flex: 3;" 
+      />
     </div>
     <div class="row">
-      <Button style="flex: 5;">左侧插入列</Button>
-      <div style="flex: 1;"></div>
-      <Button style="flex: 5;">右侧插入列</Button>
-    </div>
-    <div class="row">
-      <Button style="flex: 5;">删除行</Button>
-      <div style="flex: 1;"></div>
-      <Button style="flex: 5;">删除列</Button>
-    </div>
-    <div class="row">
-      <Button style="flex: 5;">合并单元格</Button>
-      <div style="flex: 1;"></div>
-      <Button style="flex: 5;">拆分单元格</Button>
+      <div style="flex: 2;">列数：</div>
+      <InputNumber 
+        :value="colCount" 
+        style="flex: 3;" 
+      />
     </div>
 
     <Divider />
@@ -217,12 +211,17 @@ export default defineComponent({
 
     const theme = ref<TableTheme>()
     const hasTheme = ref(false)
+    const rowCount = ref(0)
+    const colCount = ref(0)
 
     watch(handleElement, () => {
       if(!handleElement.value) return
       
       theme.value = handleElement.value.theme
       hasTheme.value = !!theme.value
+
+      rowCount.value = handleElement.value.data.length
+      colCount.value = handleElement.value.data[0].length
     }, { deep: true, immediate: true })
 
     const selectedCells = ref<string[]>([])
@@ -334,6 +333,8 @@ export default defineComponent({
       textAttrs,
       updateTextAttrs,
       theme,
+      rowCount,
+      colCount,
       hasTheme,
       toggleTheme,
       updateTheme,
