@@ -227,7 +227,8 @@ export default defineComponent({
     const wordSpace = ref<number>()
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if(!handleElement.value || handleElement.value.type !== 'text') return
+
       fill.value = handleElement.value.fill || '#000'
       lineHeight.value = handleElement.value.lineHeight || 1.5
       wordSpace.value = handleElement.value.wordSpace || 0

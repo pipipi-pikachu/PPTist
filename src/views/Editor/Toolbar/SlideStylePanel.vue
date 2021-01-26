@@ -94,7 +94,72 @@
       </div>
     </div>
 
-    <div class="row"><Button style="flex: 1;" @click="applyAllSlide()">应用到全部</Button></div>
+    <div class="row"><Button style="flex: 1;" @click="applyAllSlide()">应用背景到全部</Button></div>
+
+    <Divider />
+
+    <div class="title">全局主题</div>
+    <div class="row">
+      <div style="flex: 2;">字体：</div>
+      <Select
+        style="flex: 3;"
+        value="微软雅黑"
+      >
+        <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
+          <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
+        </SelectOption>
+      </Select>
+    </div>
+    <div class="row">
+      <div style="flex: 2;">字体颜色：</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            modelValue="#333"
+          />
+        </template>
+        <ColorButton color="#333" style="flex: 3;" />
+      </Popover>
+    </div>
+    <div class="row">
+      <div style="flex: 2;">背景颜色：</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            modelValue="#333"
+          />
+        </template>
+        <ColorButton color="#333" style="flex: 3;" />
+      </Popover>
+    </div>
+    <div class="row">
+      <div style="flex: 2;">主题色：</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            modelValue="#333"
+          />
+        </template>
+        <ColorButton color="#333" style="flex: 3;" />
+      </Popover>
+    </div>
+
+    <div class="title" style="margin-top: 20px;">预置主题：</div>
+    <div class="theme-list">
+      <div 
+        class="theme-item" 
+        v-for="(item, index) in themes" 
+        :key="index"
+        :style="{ backgroundColor: item.background }"
+      >
+        <div class="theme-item-content">
+          <div class="text" :style="{ color: item.text }">Aa</div>
+          <div class="color-block" :style="{ backgroundColor: item.color }"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row"><Button style="flex: 1;" @click="applyAllSlide()">应用主题到全部</Button></div>
   </div>
 </template>
 
@@ -108,6 +173,37 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from './common/ColorButton.vue'
 import { getImageDataURL } from '@/utils/image'
 
+const themes = [
+  { color: '#42464b', background: '#fff', text: '#333' },
+  { color: '#5d82ba', background: '#fff', text: '#333' },
+  { color: '#005a6f', background: '#fff', text: '#333' },
+  { color: '#232d05', background: '#fff244', text: '#333' },
+  { color: '#d0614c', background: '#dfb044', text: '#333' },
+  { color: '#86a1ad', background: '#dfdbd4', text: '#333' },
+  { color: '#697586', background: '#d5c4a4', text: '#333' },
+  { color: '#333333', background: '#7acfa6', text: '#333' },
+  { color: '#42464b', background: '#415065', text: '#fff' },
+  { color: '#0c5999', background: '#35a2cd', text: '#fff' },
+  { color: '#c49a41', background: '#8c4357', text: '#fff' },
+  { color: '#dfaa00', background: '#2e4e7d', text: '#fff' },
+  { color: '#d1ad88', background: '#f99070', text: '#fff' },
+  { color: '#464d52', background: '#657984', text: '#fff' },
+  { color: '#ffcfb6', background: '#1e4c6f', text: '#fff' },
+  { color: '#c3a043', background: '#43292a', text: '#fff' },
+  { color: '#ffffff', background: '#171925', text: '#fff' },
+  { color: '#df9636', background: '#5b89a0', text: '#fff' },
+  { color: '#b898a4', background: '#93716b', text: '#fff' },
+  { color: '#c47a11', background: '#187db1', text: '#fff' },
+  { color: '#333333', background: '#759564', text: '#fff' },
+  { color: '#355b5e', background: '#424b50', text: '#fff' },
+  { color: '#d29090', background: '#942a32', text: '#fff' },
+  { color: '#00cfdf', background: '#3b434d', text: '#fff' },
+  { color: '#424246', background: '#c70042', text: '#fff' },
+  { color: '#2e4155', background: '#b35d44', text: '#fff' },
+  { color: '#11bfce', background: '#8f98aa', text: '#fff' },
+  { color: '#333333', background: '#549688', text: '#fff' },
+]
+
 export default defineComponent({
   name: 'slide-style-panel',
   components: {
@@ -117,6 +213,7 @@ export default defineComponent({
     const store = useStore<State>()
     const slides = computed(() => store.state.slides)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const availableFonts = computed(() => store.state.availableFonts)
 
     const background = computed(() => {
       if(!currentSlide.value.background) {
@@ -184,11 +281,13 @@ export default defineComponent({
     }
 
     return {
+      availableFonts,
       background,
       updateBackgroundType,
       updateBackground,
       uploadBackgroundImage,
       applyAllSlide,
+      themes,
     }
   },
 })
@@ -233,6 +332,40 @@ export default defineComponent({
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
+  }
+}
+
+.theme-list {
+  @include grid-layout-wrapper();
+}
+.theme-item {
+  @include grid-layout-item(4, 22%);
+
+  padding-bottom: 22%;
+  border-radius: $borderRadius;
+  position: relative;
+  cursor: pointer;
+
+  .theme-item-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .color-block {
+    width: 28px;
+    height: 10px;
+    margin-top: 5px;
   }
 }
 </style>

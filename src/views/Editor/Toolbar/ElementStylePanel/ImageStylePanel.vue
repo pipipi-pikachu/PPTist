@@ -177,7 +177,7 @@ export default defineComponent({
     const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if(!handleElement.value || handleElement.value.type !== 'image') return
 
       if(handleElement.value.flip) {
         flip.value = {

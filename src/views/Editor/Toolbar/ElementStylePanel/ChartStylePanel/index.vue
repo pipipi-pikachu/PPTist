@@ -160,7 +160,7 @@ export default defineComponent({
     const donut = ref(false)
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if(!handleElement.value || handleElement.value.type !== 'chart') return
       fill.value = handleElement.value.fill || '#000'
 
       if(handleElement.value.options) {

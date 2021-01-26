@@ -228,7 +228,7 @@ export default defineComponent({
     const minColCount = ref(0)
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if(!handleElement.value || handleElement.value.type !== 'table') return
       
       theme.value = handleElement.value.theme
       hasTheme.value = !!theme.value
@@ -347,7 +347,8 @@ export default defineComponent({
       const value = +(e.target as HTMLInputElement).value
       const rowCount = handleElement.value.data.length
 
-      if(value <= rowCount) return message.warning('设置行数不能少于当前值')
+      if(value === rowCount) return
+      if(value < rowCount) return message.warning('设置行数不能少于当前值')
 
       const rowCells: TableCell[] = new Array(colCount.value).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
       const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
@@ -364,7 +365,8 @@ export default defineComponent({
       const value = +(e.target as HTMLInputElement).value
       const colCount = handleElement.value.data[0].length
 
-      if(value <= colCount) return message.warning('设置列数不能少于当前值')
+      if(value === colCount) return
+      if(value < colCount) return message.warning('设置列数不能少于当前值')
 
       const tableCells = handleElement.value.data.map(item => {
         const cells: TableCell[] = new Array(value - colCount).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
