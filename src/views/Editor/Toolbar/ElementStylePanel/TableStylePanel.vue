@@ -4,7 +4,7 @@
       <Select
         style="flex: 3;"
         :value="textAttrs.fontname"
-        @change="value => emitUpdateTextAttrCommand({ fontname: value })"
+        @change="value => updateTextAttrs({ fontname: value })"
       >
         <template #suffixIcon><IconFontSize /></template>
         <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
@@ -14,7 +14,7 @@
       <Select
         style="flex: 2;"
         :value="textAttrs.fontsize"
-        @change="value => emitUpdateTextAttrCommand({ fontsize: value })"
+        @change="value => updateTextAttrs({ fontsize: value })"
       >
         <template #suffixIcon><IconAddText /></template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
@@ -28,7 +28,7 @@
         <template #content>
           <ColorPicker
             :modelValue="textAttrs.color"
-            @update:modelValue="value => emitUpdateTextAttrCommand({ color: value })"
+            @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
@@ -42,7 +42,7 @@
         <template #content>
           <ColorPicker
             :modelValue="textAttrs.backcolor"
-            @update:modelValue="value => emitUpdateTextAttrCommand({ backcolor: value })"
+            @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="单元格填充">
@@ -59,28 +59,28 @@
         <CheckboxButton 
           style="flex: 1;"
           :checked="textAttrs.bold"
-          @click="emitUpdateTextAttrCommand({ bold: !textAttrs.bold })"
+          @click="updateTextAttrs({ bold: !textAttrs.bold })"
         ><IconTextBold /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
         <CheckboxButton 
           style="flex: 1;"
           :checked="textAttrs.em"
-          @click="emitUpdateTextAttrCommand({ em: !textAttrs.em })"
+          @click="updateTextAttrs({ em: !textAttrs.em })"
         ><IconTextItalic /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="textAttrs.underline"
-          @click="emitUpdateTextAttrCommand({ underline: !textAttrs.underline })"
+          @click="updateTextAttrs({ underline: !textAttrs.underline })"
         ><IconTextUnderline /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
         <CheckboxButton 
           style="flex: 1;"
           :checked="textAttrs.strikethrough"
-          @click="emitUpdateTextAttrCommand({ strikethrough: !textAttrs.strikethrough })"
+          @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
         ><IconStrikethrough /></CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
@@ -89,7 +89,7 @@
       class="row" 
       button-style="solid" 
       :value="textAttrs.align"
-      @change="e => emitUpdateTextAttrCommand({ align: e.target.value })"
+      @change="e => updateTextAttrs({ align: e.target.value })"
     >
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
         <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
@@ -186,7 +186,7 @@
 import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
-import { PPTTableElement, TableCellStyle, TableTheme } from '@/types/slides'
+import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -227,7 +227,7 @@ export default defineComponent({
 
     const selectedCells = ref<string[]>([])
 
-    const updateTextAttrs = () => {
+    const updateTextAttrState = () => {
       if(!handleElement.value) return
 
       let rowIndex = 0
@@ -269,7 +269,7 @@ export default defineComponent({
 
     const updateSelectedCells = (cells: string[]) => {
       selectedCells.value = cells
-      updateTextAttrs()
+      updateTextAttrState()
     }
 
     emitter.on(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
@@ -284,9 +284,22 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const emitUpdateTextAttrCommand = (textAttrProp: Partial<TableCellStyle>) => {
-      emitter.emit(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, textAttrProp)
-      updateTextAttrs()
+    const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
+      const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+
+      for(let i = 0; i < data.length; i++) {
+        for(let j = 0; j < data[i].length; j++) {
+          if(!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
+            const style = data[i][j].style || {}
+            data[i][j].style = { ...style, ...textAttrProp }
+          }
+        }
+      }
+      const props = { data }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+
+      addHistorySnapshot()
+      updateTextAttrState()
     }
 
     const updateTheme = (themeProp: Partial<TableTheme>) => {
@@ -319,7 +332,7 @@ export default defineComponent({
       availableFonts,
       fontSizeOptions,
       textAttrs,
-      emitUpdateTextAttrCommand,
+      updateTextAttrs,
       theme,
       hasTheme,
       toggleTheme,

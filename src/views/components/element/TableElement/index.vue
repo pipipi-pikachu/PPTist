@@ -43,7 +43,7 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
-import { PPTTableElement, TableCell, TableCellStyle } from '@/types/slides'
+import { PPTTableElement, TableCell } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -159,39 +159,9 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
-    const selectedCells = ref<string[]>([])
-
-    const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
-      const data: TableCell[][] = JSON.parse(JSON.stringify(props.elementInfo.data))
-
-      for(let i = 0; i < data.length; i++) {
-        for(let j = 0; j < data[i].length; j++) {
-          if(!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
-            const style = data[i][j].style || {}
-            data[i][j].style = { ...style, ...textAttrProp }
-          }
-        }
-      }
-
-      store.commit(MutationTypes.UPDATE_ELEMENT, {
-        id: props.elementInfo.id, 
-        props: { data },
-      })
-
-      addHistorySnapshot()
-    }
-
     const updateSelectedCells = (cells: string[]) => {
-      selectedCells.value = cells
-      nextTick(() => {
-        emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, selectedCells.value)
-      })
+      nextTick(() => emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells))
     }
-
-    emitter.on(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, state => updateTextAttrs(state))
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.EXEC_TABLE_TEXT_COMMAND, state => updateTextAttrs(state))
-    })
 
     const startEdit = () => {
       if(!props.elementInfo.lock) editable.value = true
@@ -205,7 +175,6 @@ export default defineComponent({
       updateColWidths,
       editable,
       startEdit,
-      selectedCells,
       updateSelectedCells,
     }
   },
