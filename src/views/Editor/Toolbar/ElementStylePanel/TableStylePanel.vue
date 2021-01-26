@@ -111,14 +111,22 @@
     <div class="row">
       <div style="flex: 2;">行数：</div>
       <InputNumber 
-        :value="rowCount" 
+        :min="minRowCount"
+        :max="20"
+        v-model:value="rowCount" 
+        @pressEnter="e => setTableRow(e)"
+        @blur="e => setTableRow(e)"
         style="flex: 3;" 
       />
     </div>
     <div class="row">
       <div style="flex: 2;">列数：</div>
       <InputNumber 
-        :value="colCount" 
+        :min="minColCount"
+        :max="20"
+        v-model:value="colCount" 
+        @pressEnter="e => setTableCol(e)"
+        @blur="e => setTableCol(e)"
         style="flex: 3;" 
       />
     </div>
@@ -182,7 +190,10 @@ import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
+import { createRandomCode } from '@/utils/common'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+
+import { message } from 'ant-design-vue'
 
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
@@ -213,6 +224,8 @@ export default defineComponent({
     const hasTheme = ref(false)
     const rowCount = ref(0)
     const colCount = ref(0)
+    const minRowCount = ref(0)
+    const minColCount = ref(0)
 
     watch(handleElement, () => {
       if(!handleElement.value) return
@@ -222,6 +235,9 @@ export default defineComponent({
 
       rowCount.value = handleElement.value.data.length
       colCount.value = handleElement.value.data[0].length
+
+      minRowCount.value = handleElement.value.data.length
+      minColCount.value = handleElement.value.data[0].length
     }, { deep: true, immediate: true })
 
     const selectedCells = ref<string[]>([])
@@ -327,7 +343,54 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const setTableRow = (e: KeyboardEvent) => {
+      const value = +(e.target as HTMLInputElement).value
+      const rowCount = handleElement.value.data.length
+
+      if(value <= rowCount) return message.warning('设置行数不能少于当前值')
+
+      const rowCells: TableCell[] = new Array(colCount.value).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+      const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
+
+      const tableCells: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+      tableCells.push(...newTableCells)
+
+      const props = { data: tableCells }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    const setTableCol = (e: KeyboardEvent) => {
+      const value = +(e.target as HTMLInputElement).value
+      const colCount = handleElement.value.data[0].length
+
+      if(value <= colCount) return message.warning('设置列数不能少于当前值')
+
+      const tableCells = handleElement.value.data.map(item => {
+        const cells: TableCell[] = new Array(value - colCount).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+        item.push(...cells)
+        return item
+      })
+
+      const colSizeList = handleElement.value.colWidths.map(item => item * handleElement.value.width)
+      const newColSizeList = new Array(value - colCount).fill(100)
+      colSizeList.push(...newColSizeList)
+
+      const width = handleElement.value.width + 100 * (value - colCount)
+      const colWidths = colSizeList.map(item => item / width)
+
+      const props = {
+        width,
+        data: tableCells,
+        colWidths,
+      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+
+      addHistorySnapshot()
+    }
+
     return {
+      handleElement,
       availableFonts,
       fontSizeOptions,
       textAttrs,
@@ -335,9 +398,13 @@ export default defineComponent({
       theme,
       rowCount,
       colCount,
+      minRowCount,
+      minColCount,
       hasTheme,
       toggleTheme,
       updateTheme,
+      setTableRow,
+      setTableCol,
     }
   },
 })
