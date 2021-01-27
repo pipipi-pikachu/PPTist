@@ -1,5 +1,16 @@
 <template>
   <div class="text-style-panel">
+    <div class="preset-style">
+      <div 
+        class="preset-style-item"
+        v-for="item in presetStyles"
+        :key="item.label"
+        :style="item.style"
+      >{{item.label}}</div>
+    </div>
+
+    <Divider />
+    
     <InputGroup compact class="row">
       <Select
         style="flex: 3;"
@@ -211,6 +222,36 @@ import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 
+const presetStyles = [
+  {
+    label: '大标题',
+    style: {
+      fontSize: '30px',
+      fontWeight: 700,
+    },
+  },
+  {
+    label: '小标题',
+    style: {
+      fontSize: '24px',
+      fontWeight: 700,
+    },
+  },
+  {
+    label: '正文',
+    style: {
+      fontSize: '20px',
+    },
+  },
+  {
+    label: '注释',
+    style: {
+      fontSize: '16px',
+      fontStyle: 'italic',
+    },
+  },
+]
+
 export default defineComponent({
   name: 'text-style-panel',
   components: {
@@ -304,6 +345,7 @@ export default defineComponent({
       updateWordSpace,
       updateFill,
       emitRichTextCommand,
+      presetStyles,
     }
   },
 })
@@ -318,6 +360,36 @@ export default defineComponent({
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+.preset-style {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.preset-style-item {
+  width: 50%;
+  height: 60px;
+  border: solid 1px #d6d6d6;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: all .2s;
+
+  &:hover {
+    border-color: $themeColor;
+    color: $themeColor;
+    z-index: 1;
+  }
+
+  &:nth-child(2n) {
+    margin-left: -1px;
+  }
+  &:nth-child(n+3) {
+    margin-top: -1px;
+  }
 }
 .text-color-btn {
   display: flex;

@@ -128,7 +128,6 @@ export default defineComponent({
     const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
     const viewportRef = ref<HTMLElement>()
-    const isShowGridLines = ref(false)
     const alignmentLines = ref<AlignmentLineProps[]>([])
 
     const activeGroupElementId = ref('')
@@ -202,7 +201,7 @@ export default defineComponent({
           handler: pasteElement,
         },
         {
-          text: '网格线',
+          text: showGridLines.value ? '关闭网格线' : '打开网格线',
           handler: toggleGridLines,
         },
         {
@@ -227,7 +226,6 @@ export default defineComponent({
       handleClickBlankArea,
       removeEditorAreaFocus,
       currentSlide,
-      isShowGridLines,
       creatingElement,
       insertElementFromCreateSelection,
       alignmentLines,

@@ -55,8 +55,8 @@ export default () => {
         src,
         width,
         height,
-        left: 0,
-        top: 0,
+        left: (VIEWPORT_SIZE - width) / 2,
+        top: (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO - height) / 2,
         fixedRatio: true,
       })
     })
@@ -87,19 +87,22 @@ export default () => {
     const data: TableCell[][] = new Array(row).fill(rowCells)
 
     const DEFAULT_CELL_WIDTH = 100
-    const DEFAULT_CELL_HEIGHT = 40
+    const DEFAULT_CELL_HEIGHT = 36
 
     const colWidths: number[] = new Array(col).fill(1 / col)
+
+    const width = col * DEFAULT_CELL_WIDTH
+    const height = row * DEFAULT_CELL_HEIGHT
 
     createElement({
       type: 'table',
       id: createRandomCode(),
-      width: col * DEFAULT_CELL_WIDTH,
-      height: row * DEFAULT_CELL_HEIGHT,
+      width,
+      height,
       colWidths,
       data,
-      left: 0,
-      top: 0,
+      left: (VIEWPORT_SIZE - width) / 2,
+      top: (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO - height) / 2,
       outline: {
         width: 2,
         style: 'solid',
