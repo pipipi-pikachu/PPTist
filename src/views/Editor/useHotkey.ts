@@ -87,7 +87,8 @@ export default () => {
   }
 
   const keydownListener = (e: KeyboardEvent) => {
-    const { ctrlKey, shiftKey } = e
+    const { ctrlKey, shiftKey, metaKey } = e
+
     const key = e.key.toUpperCase()
 
     if(ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
@@ -101,7 +102,7 @@ export default () => {
     
     if(!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
-    if(ctrlKey && key === KEYS.C) {
+    if((ctrlKey || metaKey) && key === KEYS.C) {
       if(disableHotkeys.value) return
       e.preventDefault()
       copy()
