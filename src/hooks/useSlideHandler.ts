@@ -13,6 +13,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default () => {
   const store = useStore<State>()
   const slideIndex = computed(() => store.state.slideIndex)
+  const theme = computed(() => store.state.theme)
   const slidesLength = computed(() => store.state.slides.length)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
@@ -51,6 +52,10 @@ export default () => {
     const emptySlide = {
       id: createRandomCode(8),
       elements: [],
+      background: {
+        type: 'solid',
+        color: theme.value.backgroundColor,
+      },
     }
     store.commit(MutationTypes.ADD_SLIDE, emptySlide)
     addHistorySnapshot()
