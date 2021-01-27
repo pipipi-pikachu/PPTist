@@ -3,7 +3,8 @@
     class="base-element"
     :style="{
       zIndex: elementIndex,
-      color: themeFontColor,
+      color: theme.fontColor,
+      fontFamily: theme.fontName,
     }"
   >
     <component
@@ -41,7 +42,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore<State>()
-    const themeFontColor = computed(() => store.state.theme.fontColor)
+    const theme = computed(() => store.state.theme)
 
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
@@ -57,7 +58,7 @@ export default defineComponent({
 
     return {
       currentElementComponent,
-      themeFontColor,
+      theme,
     }
   },
 })

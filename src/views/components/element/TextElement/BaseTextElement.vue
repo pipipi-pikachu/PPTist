@@ -67,7 +67,6 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.5;
   word-break: break-word;
-  font-family: '微软雅黑';
 
   .text {
     position: relative;
