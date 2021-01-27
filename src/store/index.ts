@@ -4,7 +4,7 @@ import { actions } from './actions'
 import { mutations } from './mutations'
 import { MutationTypes, ActionTypes } from './constants'
 
-import { Slide } from '@/types/slides'
+import { Slide, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/index'
@@ -24,6 +24,7 @@ export interface State {
   creatingElement: CreatingElement | null;
   availableFonts: FontName[];
   toolbarState: ToolbarState;
+  theme: SlideTheme;
   slides: Slide[];
   slideIndex: number;
   snapshotCursor: number;
@@ -46,6 +47,12 @@ const state: State = {
   creatingElement: null,
   availableFonts: [],
   toolbarState: 'slideStyle',
+  theme: {
+    themeColor: '#d14424',
+    fontColor: '#333',
+    fontName: '微软雅黑',
+    backgroundColor: '#fff',
+  },
   slides: slides,
   slideIndex: 0,
   snapshotCursor: -1,

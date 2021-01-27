@@ -15,6 +15,7 @@ export enum MutationTypes {
   SET_CLIPING_IMAGE_ELEMENT_ID = 'setClipingImageElementId',
 
   // slides
+  SET_THEME = 'setTheme',
   SET_SLIDES = 'setSlides',
   ADD_SLIDE = 'addSlide',
   UPDATE_SLIDE = 'updateSlide',

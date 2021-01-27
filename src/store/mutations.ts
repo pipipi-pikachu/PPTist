@@ -2,7 +2,7 @@ import { MutationTree } from 'vuex'
 import omit from 'lodash/omit'
 import { MutationTypes } from './constants'
 import { State } from './index'
-import { Slide, PPTElement } from '@/types/slides'
+import { Slide, PPTElement, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { FONT_NAMES } from '@/configs/fontName'
 import { isSupportFontFamily } from '@/utils/fontFamily'
@@ -73,6 +73,10 @@ export const mutations: MutationTree<State> = {
   },
 
   // slides
+
+  [MutationTypes.SET_THEME](state, themeProps: Partial<SlideTheme>) {
+    state.theme = { ...state.theme, ...themeProps }
+  },
 
   [MutationTypes.SET_SLIDES](state, slides: Slide[]) {
     state.slides = slides

@@ -201,3 +201,10 @@ export interface Slide {
   animations?: PPTAnimation[];
   turningMode?: 'no' | 'fade' | 'slideX' | 'slideY';
 }
+
+export interface SlideTheme {
+  backgroundColor: string;
+  themeColor: string;
+  fontColor: string;
+  fontName: string;
+}
