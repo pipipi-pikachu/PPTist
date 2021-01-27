@@ -30,7 +30,7 @@ export default defineComponent({
 
     const handleInput = (e: InputEvent) => {
       const value = (e.target as HTMLInputElement).value
-      if(value.length >= 6) emit('change', tinycolor(value).toRgb())
+      if(value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
     }
 
     return {

@@ -55,35 +55,14 @@
     </div>
     <div class="row">
       <div style="flex: 2;">主题配色：</div>
-      <Popover trigger="click" placement="bottom" v-model:visible="themePoolVisible">
+      <Popover trigger="click">
         <template #content>
-          <div class="theme-pool">
-            <div 
-              class="theme-item" 
-              v-for="(theme, index) in CHART_THEME_COLORS" 
-              :key="index"
-              @click="updateTheme(theme)"
-            >
-              <div 
-                class="color-block" 
-                v-for="(color, index) in theme" 
-                :key="index"
-                :style="{ backgroundColor: color }"
-              ></div>
-            </div>
-          </div>
+          <ColorPicker
+            :modelValue="themeColor"
+            @update:modelValue="value => updateTheme(value)"
+          />
         </template>
-        <Button class="theme-color-btn" style="flex: 3;">
-          <div class="theme-color-content">
-            <div 
-              class="color-block" 
-              v-for="(color, index) in themeColors" 
-              :key="index"
-              :style="{ backgroundColor: color }"
-            ></div>
-          </div>
-          <IconPlatte class="theme-color-btn-icon" />
-        </Button>
+        <ColorButton :color="themeColor" style="flex: 3;" />
       </Popover>
     </div>
     <div class="row">
@@ -144,13 +123,12 @@ export default defineComponent({
     const handleElement = computed<PPTChartElement>(() => store.getters.handleElement)
 
     const chartDataEditorVisible = ref(false)
-    const themePoolVisible = ref(false)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const fill = ref<string>()
 
-    const themeColors = ref<string[]>([])
+    const themeColor = ref<string>('')
     const gridColor = ref('')
 
     const lineSmooth = ref<boolean | Function>(true)
@@ -179,7 +157,7 @@ export default defineComponent({
         if(_donut !== undefined) donut.value = _donut
       }
 
-      themeColors.value = handleElement.value.themeColors || CHART_THEME_COLORS[0]
+      themeColor.value = handleElement.value.themeColor
       gridColor.value = handleElement.value.gridColor || 'rgba(0, 0, 0, 0.4)'
     }, { deep: true, immediate: true })
 
@@ -204,9 +182,8 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
-    const updateTheme = (themeColors: string[]) => {
-      themePoolVisible.value = false
-      const props = { themeColors }
+    const updateTheme = (themeColor: string) => {
+      const props = { themeColor }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
@@ -219,7 +196,6 @@ export default defineComponent({
 
     return {
       chartDataEditorVisible,
-      themePoolVisible,
       handleElement,
       updateData,
       fill,
@@ -230,7 +206,7 @@ export default defineComponent({
       horizontalBars,
       donut,
       updateOptions,
-      themeColors,
+      themeColor,
       gridColor,
       CHART_THEME_COLORS,
       updateTheme,
@@ -252,53 +228,5 @@ export default defineComponent({
 }
 .btn-icon {
   margin-right: 3px;
-}
-
-.theme-item {
-  border-radius: $borderRadius;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 -12px;
-  padding: 5px 32px;
-  transition: background-color .1s;
-
-  & + .theme-item {
-    margin-top: 3px;
-  }
-
-  &:hover {
-    background-color: #e1e1e1;
-    cursor: pointer;
-  }
-}
-.theme-color-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 !important;
-}
-.theme-color-content {
-  height: 20px;
-  margin-left: 8px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.color-block {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-
-  & + .color-block {
-    margin-left: -3px;
-  }
-}
-.theme-color-btn-icon {
-  width: 30px;
-  font-size: 12px;
-  margin-top: 2px;
-  color: #bfbfbf;
 }
 </style>

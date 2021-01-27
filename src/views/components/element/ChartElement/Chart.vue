@@ -15,6 +15,7 @@
 <script lang="ts">
 import { defineComponent, inject, onMounted, PropType, ref, Ref, watch } from 'vue'
 import upperFirst from 'lodash/upperFirst'
+import tinycolor from 'tinycolor2'
 import Chartist, {
   IChartistLineChart,
   IChartistBarChart,
@@ -49,8 +50,9 @@ export default defineComponent({
     options: {
       type: Object as PropType<ILineChartOptions & IBarChartOptions & IPieChartOptions>,
     },
-    themeColors: {
-      type: Array as PropType<string[]>,
+    themeColor: {
+      type: String,
+      required: true,
     },
     gridColor: {
       type: String,
@@ -102,17 +104,24 @@ export default defineComponent({
     const updateTheme = () => {
       if(!chartRef.value) return
 
-      if(props.themeColors) {
-        for(let i = 0; i < props.themeColors.length; i++) {
-          chartRef.value.style.setProperty(`--theme-color-${i + 1}`, props.themeColors[i])
+      const hsla = tinycolor(props.themeColor).toHsl()
+
+      for(let i = 0; i < 10; i++) {
+        let h = hsla.h + i * 36
+        if(h > 360) h = h - 360
+
+        const _hsla = {
+          ...hsla,
+          h,
         }
+        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, tinycolor(_hsla).toRgbString())
       }
 
       if(props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
     }
 
     watch([
-      () => props.themeColors,
+      () => props.themeColor,
       () => props.gridColor,
     ], updateTheme)
     onMounted(updateTheme)
@@ -133,12 +142,18 @@ export default defineComponent({
 
 <style lang="scss">
 .chart-content {
-  $ct-series-names: (a, b, c, d);
+  $ct-series-names: (a, b, c, d, e, f, g, h, i, j);
 
-  --theme-color-1: #d70206;
-  --theme-color-2: #f05b4f;
-  --theme-color-3: #f4c63d;
-  --theme-color-4: #d17905;
+  --theme-color-1: #666;
+  --theme-color-2: #666;
+  --theme-color-3: #666;
+  --theme-color-4: #666;
+  --theme-color-5: #666;
+  --theme-color-6: #666;
+  --theme-color-7: #666;
+  --theme-color-8: #666;
+  --theme-color-9: #666;
+  --theme-color-10: #666;
 
   @for $i from 1 to length($ct-series-names) {
     $color: var(--theme-color-#{$i});

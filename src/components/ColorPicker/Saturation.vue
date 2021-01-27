@@ -48,7 +48,7 @@ export default defineComponent({
     const pointerLeft = computed(() => color.value.s * 100 + '%')
 
     const emitChangeEvent = throttle(function(param) {
-      emit('change', param)
+      emit('colorChange', param)
     }, 20, { leading: true, trailing: false })
 
     const saturationRef = ref<HTMLElement>()

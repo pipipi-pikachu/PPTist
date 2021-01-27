@@ -267,7 +267,34 @@ export default defineComponent({
     }
 
     const applyThemeAllSlide = () => {
-      console.log('applyThemeAllSlide')
+      const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
+      const { themeColor, backgroundColor, fontColor } = theme.value
+
+      for(const slide of newSlides) {
+        slide.background = {
+          ...slide.background,
+          type: 'solid',
+          color: backgroundColor
+        }
+
+        const elements = slide.elements
+        for(const el of elements) {
+          if(el.type === 'shape') el.fill = themeColor
+          else if(el.type === 'line') el.color = themeColor
+          else if(el.type === 'text') {
+            if(el.fill) el.fill = themeColor
+          }
+          else if(el.type === 'table') {
+            if(el.theme) el.theme.color = themeColor
+          }
+          else if(el.type === 'chart') {
+            el.themeColor = themeColor
+            el.gridColor = fontColor
+          }
+        }
+      }
+      store.commit(MutationTypes.SET_SLIDES, newSlides)
+      addHistorySnapshot()
     }
 
     return {

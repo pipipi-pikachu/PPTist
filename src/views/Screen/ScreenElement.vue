@@ -3,6 +3,7 @@
     class="screen-element"
     :style="{
       zIndex: elementIndex,
+      color: themeFontColor,
       visibility: needWaitAnimation ? 'hidden' : 'visible',
     }"
   >
@@ -56,6 +57,7 @@ export default defineComponent({
     })
 
     const store = useStore<State>()
+    const themeFontColor = computed(() => store.state.theme.fontColor)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const needWaitAnimation = computed(() => {
@@ -68,6 +70,7 @@ export default defineComponent({
     return {
       currentElementComponent,
       needWaitAnimation,
+      themeFontColor,
     }
   },
 })

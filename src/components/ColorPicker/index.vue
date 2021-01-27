@@ -1,7 +1,7 @@
 <template>
   <div class="color-picker">
     <div class="picker-saturation-wrap">
-      <Saturation :value="color" :hue="hue" @change="value => changeColor(value)" />
+      <Saturation :value="color" :hue="hue" @colorChange="value => changeColor(value)" />
     </div>
     <div class="picker-controls">
       <div class="picker-color-wrap">
@@ -10,16 +10,16 @@
       </div>
       <div class="picker-sliders">
         <div class="picker-hue-wrap">
-          <Hue :value="color" :hue="hue" @change="value => changeColor(value)" />
+          <Hue :value="color" :hue="hue" @colorChange="value => changeColor(value)" />
         </div>
         <div class="picker-alpha-wrap">
-          <Alpha :value="color" @change="value => changeColor(value)" />
+          <Alpha :value="color" @colorChange="value => changeColor(value)" />
         </div>
       </div>
     </div>
 
     <div class="picker-field">
-      <EditableInput :value="color" @change="value => changeColor(value)" />
+      <EditableInput :value="color" @colorChange="value => changeColor(value)" />
     </div>
 
     <div class="picker-presets">

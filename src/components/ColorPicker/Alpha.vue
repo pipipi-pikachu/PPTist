@@ -54,7 +54,7 @@ export default defineComponent({
       else a = Math.round(left * 100 / containerWidth) / 100
 
       if(color.value.a !== a) {
-        emit('change', {
+        emit('colorChange', {
           r: color.value.r,
           g: color.value.g,
           b: color.value.b,

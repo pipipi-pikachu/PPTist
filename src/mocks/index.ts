@@ -12,6 +12,7 @@ export const slides: Slide[] = [
         width: 300,
         height: 300,
         chartType: 'line',
+        themeColor: '#d70206',
         data: {
           labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
           series: [

@@ -71,7 +71,7 @@ export default defineComponent({
         h = (360 * percent / 100)
       }
       if(color.value.h !== h) {
-        emit('change', {
+        emit('colorChange', {
           h,
           l: color.value.l,
           s: color.value.s,
