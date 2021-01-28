@@ -227,7 +227,7 @@ const presetStyles = [
   {
     label: '大标题',
     style: {
-      fontSize: '30px',
+      fontSize: '26px',
       fontWeight: 700,
     },
     cmd: [
@@ -240,7 +240,7 @@ const presetStyles = [
   {
     label: '小标题',
     style: {
-      fontSize: '24px',
+      fontSize: '22px',
       fontWeight: 700,
     },
     cmd: [
@@ -261,7 +261,17 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释',
+    label: '正文[小]',
+    style: {
+      fontSize: '18px',
+    },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '18px' },
+    ],
+  },
+  {
+    label: '注释 1',
     style: {
       fontSize: '16px',
       fontStyle: 'italic',
@@ -270,6 +280,18 @@ const presetStyles = [
       { command: 'clear' },
       { command: 'fontsize', value: '16px' },
       { command: 'em' },
+    ],
+  },
+  {
+    label: '注释 2',
+    style: {
+      fontSize: '16px',
+      textDecoration: 'underline',
+    },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '16px' },
+      { command: 'underline' },
     ],
   },
 ]
@@ -400,7 +422,7 @@ export default defineComponent({
 }
 .preset-style-item {
   width: 50%;
-  height: 60px;
+  height: 50px;
   border: solid 1px #d6d6d6;
   box-sizing: border-box;
   display: flex;
