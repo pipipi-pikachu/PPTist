@@ -8,7 +8,7 @@ import { Slide, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/index'
-import { FontName } from '@/configs/fontName'
+import { SYS_FONTS } from '@/configs/font'
 
 export { MutationTypes, ActionTypes }
 
@@ -22,7 +22,7 @@ export interface State {
   disableHotkeys: boolean;
   showGridLines: boolean;
   creatingElement: CreatingElement | null;
-  availableFonts: FontName[];
+  availableFonts: typeof SYS_FONTS;
   toolbarState: ToolbarState;
   theme: SlideTheme;
   slides: Slide[];

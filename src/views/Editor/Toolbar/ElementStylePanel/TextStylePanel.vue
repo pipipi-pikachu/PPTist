@@ -19,9 +19,16 @@
         @change="value => emitRichTextCommand('fontname', value)"
       >
         <template #suffixIcon><IconFontSize /></template>
-        <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
-          <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
-        </SelectOption>
+        <SelectOptGroup label="系统字体">
+          <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
+            <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
+          </SelectOption>
+        </SelectOptGroup>
+        <SelectOptGroup label="在线字体">
+          <SelectOption v-for="font in webFonts" :key="font.name" :value="font.name">
+            <span>{{font.name}}</span>
+          </SelectOption>
+        </SelectOptGroup>
       </Select>
       <Select
         style="flex: 2;"
@@ -217,6 +224,7 @@ import { MutationTypes, State } from '@/store'
 import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { TextAttrs } from '@/prosemirror/utils'
+import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
@@ -295,6 +303,8 @@ const presetStyles = [
     ],
   },
 ]
+
+const webFonts = WEB_FONTS
 
 interface CommandPayload {
   command: string;
@@ -391,6 +401,7 @@ export default defineComponent({
       wordSpace,
       richTextAttrs,
       availableFonts,
+      webFonts,
       fontSizeOptions,
       lineHeightOptions,
       wordSpaceOptions,
