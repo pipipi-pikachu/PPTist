@@ -6,6 +6,7 @@
         v-for="item in presetStyles"
         :key="item.label"
         :style="item.style"
+        @click="emitBatchRichTextCommand(item.cmd)"
       >{{item.label}}</div>
     </div>
 
@@ -229,6 +230,12 @@ const presetStyles = [
       fontSize: '30px',
       fontWeight: 700,
     },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '48px' },
+      { command: 'align', value: 'center' },
+      { command: 'bold' },
+    ],
   },
   {
     label: '小标题',
@@ -236,12 +243,22 @@ const presetStyles = [
       fontSize: '24px',
       fontWeight: 700,
     },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '36px' },
+      { command: 'align', value: 'center' },
+      { command: 'bold' },
+    ],
   },
   {
     label: '正文',
     style: {
       fontSize: '20px',
     },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '20px' },
+    ],
   },
   {
     label: '注释',
@@ -249,8 +266,18 @@ const presetStyles = [
       fontSize: '16px',
       fontStyle: 'italic',
     },
+    cmd: [
+      { command: 'clear' },
+      { command: 'fontsize', value: '16px' },
+      { command: 'em' },
+    ],
   },
 ]
+
+interface CommandPayload {
+  command: string;
+  value?: string;
+}
 
 export default defineComponent({
   name: 'text-style-panel',
@@ -312,6 +339,10 @@ export default defineComponent({
       emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, { command, value })
     }
 
+    const emitBatchRichTextCommand = (payload: CommandPayload[]) => {
+      emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, payload)
+    }
+
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateLineHeight = (value: number) => {
@@ -345,6 +376,7 @@ export default defineComponent({
       updateWordSpace,
       updateFill,
       emitRichTextCommand,
+      emitBatchRichTextCommand,
       presetStyles,
     }
   },

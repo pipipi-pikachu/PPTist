@@ -42,18 +42,18 @@ import debounce from 'lodash/debounce'
 import { useStore } from 'vuex'
 import { MutationTypes, State } from '@/store'
 import { EditorView } from 'prosemirror-view'
+import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { initProsemirrorEditor } from '@/prosemirror/'
 import { getTextAttrs } from '@/prosemirror/utils'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import { alignmentCommand } from '@/prosemirror/commands/setTextAlign'
+import { toggleList } from '@/prosemirror/commands/toggleList'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import { toggleMark, wrapIn } from 'prosemirror-commands'
-import { alignmentCommand } from '@/prosemirror/commands/setTextAlign'
-import { toggleList } from '@/prosemirror/commands/toggleList'
 
 interface CommandPayload {
   command: string;
@@ -195,69 +195,91 @@ export default defineComponent({
 
     const handleElementId = computed(() => store.state.handleElementId)
     
-    const execCommand = (payload: CommandPayload) => {
+    const execCommand = (payload: CommandPayload | CommandPayload[]) => {
       if(handleElementId.value !== props.elementInfo.id) return
 
-      if(payload.command === 'fontname' && payload.value) {
-        const mark = editorView.state.schema.marks.fontname.create({ fontname: payload.value })
-        const { $from, $to } = editorView.state.selection
-        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+      const commands = ('command' in payload) ? [payload] : payload
+
+      for(const item of commands) {
+        if(item.command === 'fontname' && item.value) {
+          const mark = editorView.state.schema.marks.fontname.create({ fontname: item.value })
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          const { $from, $to } = editorView.state.selection
+          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+        }
+        else if(item.command === 'fontsize' && item.value) {
+          const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          const { $from, $to } = editorView.state.selection
+          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+        }
+        else if(item.command === 'color' && item.value) {
+          const mark = editorView.state.schema.marks.forecolor.create({ color: item.value })
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          const { $from, $to } = editorView.state.selection
+          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+        }
+        else if(item.command === 'backcolor' && item.value) {
+          const mark = editorView.state.schema.marks.backcolor.create({ backcolor: item.value })
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          const { $from, $to } = editorView.state.selection
+          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+        }
+        else if(item.command === 'bold') {
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          toggleMark(editorView.state.schema.marks.strong)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'em') {
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          toggleMark(editorView.state.schema.marks.em)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'underline') {
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          toggleMark(editorView.state.schema.marks.underline)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'strikethrough') {
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'subscript') {
+          toggleMark(editorView.state.schema.marks.subscript)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'superscript') {
+          toggleMark(editorView.state.schema.marks.superscript)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'blockquote') {
+          wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'code') {
+          toggleMark(editorView.state.schema.marks.code)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'align' && item.value) {
+          alignmentCommand(editorView, item.value)
+        }
+        else if(item.command === 'bulletList') {
+          const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
+          toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'orderedList') {
+          const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
+          toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
+        }
+        else if(item.command === 'clear') {
+          const { empty } = editorView.state.selection
+          if(empty) selectAll(editorView.state, editorView.dispatch)
+          const { $from, $to } = editorView.state.selection
+          editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
+        }
       }
-      else if(payload.command === 'fontsize' && payload.value) {
-        const mark = editorView.state.schema.marks.fontsize.create({ fontsize: payload.value })
-        const { $from, $to } = editorView.state.selection
-        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
-      }
-      else if(payload.command === 'color' && payload.value) {
-        const mark = editorView.state.schema.marks.forecolor.create({ color: payload.value })
-        const { $from, $to } = editorView.state.selection
-        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
-      }
-      else if(payload.command === 'backcolor' && payload.value) {
-        const mark = editorView.state.schema.marks.backcolor.create({ backcolor: payload.value })
-        const { $from, $to } = editorView.state.selection
-        editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
-      }
-      else if(payload.command === 'bold') {
-        toggleMark(editorView.state.schema.marks.strong)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'em') {
-        toggleMark(editorView.state.schema.marks.em)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'underline') {
-        toggleMark(editorView.state.schema.marks.underline)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'strikethrough') {
-        toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'subscript') {
-        toggleMark(editorView.state.schema.marks.subscript)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'superscript') {
-        toggleMark(editorView.state.schema.marks.superscript)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'blockquote') {
-        wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'code') {
-        toggleMark(editorView.state.schema.marks.code)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'align' && payload.value) {
-        alignmentCommand(editorView, payload.value)
-      }
-      else if(payload.command === 'bulletList') {
-        const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
-        toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'orderedList') {
-        const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
-        toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
-      }
-      else if(payload.command === 'clear') {
-        if(editorView.state.selection.empty) return false
-        const { $from, $to } = editorView.state.selection
-        editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
-      }
+
       editorView.focus()
       handleInput()
       handleClick()
