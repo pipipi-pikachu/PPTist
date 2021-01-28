@@ -7,6 +7,7 @@ import 'prosemirror-view/style/prosemirror.css'
 import '@/assets/styles/prosemirror.scss'
 import '@/assets/styles/global.scss'
 import '@/assets/styles/antd.scss'
+import '@/assets/styles/font.scss'
 import 'animate.css'
 
 import Contextmenu from './plugins/contextmenu'
