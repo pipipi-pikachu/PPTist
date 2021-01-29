@@ -39,9 +39,15 @@ export default () => {
     }).catch(err => message.warning(err))
   }
 
+  const quickCopyElement = () => {
+    copyElement()
+    pasteElement()
+  }
+
   return {
     copyElement,
     cutElement,
     pasteElement,
+    quickCopyElement,
   }
 }

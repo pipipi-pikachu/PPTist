@@ -11,6 +11,7 @@ import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useMoveElement from '@/hooks/useMoveElement'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useScreening from '@/hooks/useScreening'
+import useScaleCanvas from '@/hooks/useScaleCanvas'
 
 export default () => {
   const store = useStore()
@@ -29,16 +30,18 @@ export default () => {
     createSlide,
     deleteSlide,
     cutSlide,
+    copyAndPasteSlide,
   } = useSlideHandler()
 
   const { combineElements, uncombineElements } = useCombineElement()
   const { deleteElement } = useDeleteElement()
   const { lockElement } = useLockElement()
-  const { copyElement, cutElement } = useCopyAndPasteElement()
+  const { copyElement, cutElement, quickCopyElement } = useCopyAndPasteElement()
   const { selectAllElement } = useSelectAllElement()
   const { moveElement } = useMoveElement()
   const { redo, undo } = useHistorySnapshot()
   const { enterScreening } = useScreening()
+  const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
 
   const copy = () => {
     if(activeElementIdList.value.length) copyElement()
@@ -46,9 +49,13 @@ export default () => {
   }
 
   const cut = () => {
-    if(disableHotkeys.value) return
     if(activeElementIdList.value.length) cutElement()
     else if(thumbnailsFocus.value) cutSlide()
+  }
+
+  const quickCopy = () => {
+    if(activeElementIdList.value.length) quickCopyElement()
+    else if(thumbnailsFocus.value) copyAndPasteSlide()
   }
 
   const selectAll = () => {
@@ -111,6 +118,11 @@ export default () => {
       e.preventDefault()
       cut()
     }
+    if(ctrlKey && key === KEYS.D) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      quickCopy()
+    }
     if(ctrlKey && key === KEYS.Z) {
       if(disableHotkeys.value) return
       e.preventDefault()
@@ -170,6 +182,21 @@ export default () => {
       if(disableHotkeys.value) return
       e.preventDefault()
       create()
+    }
+    if(key === KEYS.MINUS) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      scaleCanvas('-')
+    }
+    if(key === KEYS.EQUAL) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      scaleCanvas('+')
+    }
+    if(key === KEYS.DIGIT_0) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      setCanvasPercentage(90)
     }
   }
   
