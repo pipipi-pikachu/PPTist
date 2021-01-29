@@ -1,6 +1,5 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
@@ -24,7 +23,7 @@ interface LineElementPosition {
 }
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const themeColor = computed(() => store.state.theme.themeColor)
   const fontColor = computed(() => store.state.theme.fontColor)
 

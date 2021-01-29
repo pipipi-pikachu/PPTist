@@ -1,6 +1,5 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import { copyText, readClipboard } from '@/utils/clipboard'
@@ -11,7 +10,7 @@ import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const slideIndex = computed(() => store.state.slideIndex)
   const theme = computed(() => store.state.theme)
   const slidesLength = computed(() => store.state.slides.length)

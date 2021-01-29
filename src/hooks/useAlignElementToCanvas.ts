@@ -1,13 +1,12 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
 
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)

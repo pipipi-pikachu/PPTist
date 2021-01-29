@@ -79,8 +79,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTShapeElement, ShapeGradient } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -98,7 +97,7 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTShapeElement>(() => store.getters.handleElement)
 
     const fill = ref<string>()

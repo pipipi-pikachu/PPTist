@@ -1,12 +1,11 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 

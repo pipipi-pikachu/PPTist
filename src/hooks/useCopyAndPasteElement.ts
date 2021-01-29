@@ -1,6 +1,5 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
@@ -9,7 +8,7 @@ import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useDeleteElement from './useDeleteElement'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
 

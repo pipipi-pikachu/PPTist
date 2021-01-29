@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import store from './store'
+import { store, key } from './store'
 
 import '@icon-park/vue-next/styles/index.css'
 import 'prosemirror-view/style/prosemirror.css'
@@ -71,5 +71,5 @@ app.component('CheckboxButton', CheckboxButton)
 app.component('CheckboxButtonGroup', CheckboxButtonGroup)
 app.component('ColorPicker', ColorPicker)
 
-app.use(store)
+app.use(store, key)
 app.mount('#app')

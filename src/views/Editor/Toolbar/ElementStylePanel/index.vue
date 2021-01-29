@@ -9,8 +9,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
 
 import TextStylePanel from './TextStylePanel.vue'
@@ -23,7 +22,7 @@ import TableStylePanel from './TableStylePanel.vue'
 export default defineComponent({
   name: 'element-style-panel',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
     const currentPanelComponent = computed(() => {

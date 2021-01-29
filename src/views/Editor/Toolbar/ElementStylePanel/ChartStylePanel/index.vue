@@ -101,8 +101,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { ChartData, PPTChartElement } from '@/types/slides'
 import { CHART_THEME_COLORS } from '@/configs/chartTheme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -119,7 +118,7 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTChartElement>(() => store.getters.handleElement)
 
     const chartDataEditorVisible = ref(false)

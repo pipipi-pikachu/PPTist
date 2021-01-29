@@ -64,8 +64,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -79,7 +78,7 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTLineElement>(() => store.getters.handleElement)
 
     const { addHistorySnapshot } = useHistorySnapshot()

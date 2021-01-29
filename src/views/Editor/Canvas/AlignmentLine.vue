@@ -6,8 +6,7 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { AlignmentLineAxis } from '@/types/edit'
 
 export default defineComponent({
@@ -27,7 +26,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
 
     const left = computed(() => props.axis.x * canvasScale.value + 'px')

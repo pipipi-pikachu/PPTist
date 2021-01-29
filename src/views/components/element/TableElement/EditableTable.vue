@@ -72,14 +72,13 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import tinycolor from 'tinycolor2'
+import { useStore } from '@/store'
 import { PPTElementOutline, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
 
 import CustomTextarea from './CustomTextarea.vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
 
 export default defineComponent({
   name: 'editable-table',
@@ -112,7 +111,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
 
     const subThemeColor = ref(['', ''])

@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex'
-import { State } from './index'
+import { State } from './state'
 
 export const getters: GetterTree<State, State> = {
   currentSlide(state) {

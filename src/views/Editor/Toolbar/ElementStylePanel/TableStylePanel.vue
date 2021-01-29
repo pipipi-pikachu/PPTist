@@ -186,8 +186,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { createRandomCode } from '@/utils/common'
@@ -205,7 +204,7 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTTableElement>(() => store.getters.handleElement)
 
     const textAttrs = ref({

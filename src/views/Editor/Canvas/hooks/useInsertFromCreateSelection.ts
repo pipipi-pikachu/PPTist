@@ -1,11 +1,10 @@
 import { computed, Ref } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { CreateElementSelectionData, CreatingLineElement, CreatingShapeElement } from '@/types/edit'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (viewportRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore<State>()
+  const store = useStore()
   const canvasScale = computed(() => store.state.canvasScale)
   const creatingElement = computed(() => store.state.creatingElement)
 

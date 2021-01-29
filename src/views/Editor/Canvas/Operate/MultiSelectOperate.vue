@@ -22,8 +22,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { PPTElement, ElementTypes } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
 import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
@@ -49,7 +48,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const canvasScale = computed(() => store.state.canvasScale)
     const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.id)))

@@ -33,8 +33,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -49,7 +48,7 @@ export default defineComponent({
     ThumbnailSlide,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
 

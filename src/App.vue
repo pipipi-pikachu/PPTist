@@ -5,8 +5,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, ActionTypes, State } from '@/store'
+import { MutationTypes, ActionTypes, useStore } from '@/store'
 
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
@@ -18,7 +17,7 @@ export default defineComponent({
     Screen,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const screening = computed(() => store.state.screening)
 
     onMounted(() => {

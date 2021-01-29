@@ -174,8 +174,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -191,7 +190,7 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const slides = computed(() => store.state.slides)
     const theme = computed(() => store.state.theme)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)

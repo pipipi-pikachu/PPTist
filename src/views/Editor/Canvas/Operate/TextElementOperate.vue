@@ -27,8 +27,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 
 import { PPTTextElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
@@ -69,7 +68,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
 
     const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)

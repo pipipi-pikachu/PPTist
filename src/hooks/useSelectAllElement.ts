@@ -1,10 +1,9 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const selectAllElement = () => {

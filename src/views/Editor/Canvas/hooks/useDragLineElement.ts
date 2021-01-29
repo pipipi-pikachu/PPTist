@@ -1,6 +1,5 @@
 import { Ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement, PPTLineElement } from '@/types/slides'
 import { OperateLineHandler, OperateLineHandlers } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -11,7 +10,7 @@ interface AdsorptionPoint {
 }
 
 export default (elementList: Ref<PPTElement[]>) => {
-  const store = useStore<State>()
+  const store = useStore()
   const canvasScale = computed(() => store.state.canvasScale)
 
   const { addHistorySnapshot } = useHistorySnapshot()

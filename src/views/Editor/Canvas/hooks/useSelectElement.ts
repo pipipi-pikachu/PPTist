@@ -1,7 +1,6 @@
 import { Ref, computed } from 'vue'
-import { useStore } from 'vuex'
 import uniq from 'lodash/uniq'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 
 export default (
@@ -9,7 +8,7 @@ export default (
   activeGroupElementId: Ref<string>,
   moveElement: (e: MouseEvent, element: PPTElement) => void,
 ) => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const handleElementId = computed(() => store.state.handleElementId)
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)

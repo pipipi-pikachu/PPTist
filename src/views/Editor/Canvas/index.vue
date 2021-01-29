@@ -76,9 +76,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, provide, ref, watch, watchEffect } from 'vue'
-import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
@@ -119,7 +118,7 @@ export default defineComponent({
     Operate,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
 
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const handleElementId = computed(() => store.state.handleElementId)

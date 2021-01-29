@@ -34,8 +34,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
@@ -45,7 +44,7 @@ import useCombineElement from '@/hooks/useCombineElement'
 export default defineComponent({
   name: 'multi-position-panel',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)

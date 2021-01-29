@@ -9,8 +9,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { SlideBackground } from '@/types/slides'
 import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -21,7 +20,7 @@ export default defineComponent({
     GridLines,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const showGridLines = computed(() => store.state.showGridLines)
     const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide.background)
 

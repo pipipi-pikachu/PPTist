@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-const CRYPTO_KEY = 'zxc_ppt_online_editor'
+const CRYPTO_KEY = 'pptist'
 
 // 加密函数
 export const encrypt = (msg: string) => {

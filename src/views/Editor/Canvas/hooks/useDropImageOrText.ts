@@ -1,11 +1,10 @@
 import { computed, onMounted, onUnmounted, Ref } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (elementRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore<State>()
+  const store = useStore()
   const disableHotkeys = computed(() => store.state.disableHotkeys)
 
   const { createImageElement } = useCreateElement()

@@ -1,6 +1,5 @@
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -14,7 +13,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useScreening from '@/hooks/useScreening'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
 
   const ctrlKeyActive = computed(() => store.state.ctrlKeyState)
   const shiftKeyActive = computed(() => store.state.shiftKeyState)

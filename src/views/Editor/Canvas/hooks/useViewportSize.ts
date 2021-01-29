@@ -1,13 +1,12 @@
 import { ref, computed, onMounted, onUnmounted, Ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 
 export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportLeft = ref(0)
   const viewportTop = ref(0)
 
-  const store = useStore<State>()
+  const store = useStore()
   const canvasPercentage = computed(() => store.state.canvasPercentage)
 
   const setViewportSize = () => {

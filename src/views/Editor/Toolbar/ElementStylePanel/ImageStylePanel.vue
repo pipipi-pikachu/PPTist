@@ -93,8 +93,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
 import { getImageDataURL } from '@/utils/image'
@@ -164,7 +163,7 @@ export default defineComponent({
     ElementShadow,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTImageElement>(() => store.getters.handleElement)
 
     const clipPanelVisible = ref(false)

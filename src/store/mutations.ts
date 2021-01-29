@@ -1,7 +1,7 @@
 import { MutationTree } from 'vuex'
 import omit from 'lodash/omit'
 import { MutationTypes } from './constants'
-import { State } from './index'
+import { State } from './state'
 import { Slide, PPTElement, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { SYS_FONTS } from '@/configs/font'

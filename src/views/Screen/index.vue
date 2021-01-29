@@ -61,9 +61,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
-import { useStore } from 'vuex'
 import throttle from 'lodash/throttle'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { VIEWPORT_ASPECT_RATIO, VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
@@ -83,7 +82,7 @@ export default defineComponent({
     WritingBoardTool,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)

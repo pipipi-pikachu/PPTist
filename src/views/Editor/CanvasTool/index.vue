@@ -68,8 +68,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
@@ -91,7 +90,7 @@ export default defineComponent({
     TableGenerator,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
     const canUndo = computed(() => store.getters.canUndo)
     const canRedo = computed(() => store.getters.canRedo)

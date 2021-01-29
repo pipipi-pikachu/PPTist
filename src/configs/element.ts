@@ -13,5 +13,4 @@ export const MIN_SIZE = {
   shape: 15,
   chart: 200,
   table: 20,
-  formula: 20,
 }

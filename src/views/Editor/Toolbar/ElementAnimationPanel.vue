@@ -68,8 +68,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTAnimation, PPTElement, Slide } from '@/types/slides'
 import { ANIMATIONS } from '@/configs/animation'
 import { ELEMENT_TYPE } from '@/configs/element'
@@ -90,7 +89,7 @@ export default defineComponent({
     Draggable,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTElement>(() => store.getters.handleElement)
     const currentSlideAnimations = computed<PPTAnimation[] | null>(() => store.getters.currentSlideAnimations)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)

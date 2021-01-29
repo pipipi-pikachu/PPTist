@@ -1,11 +1,10 @@
-import { useStore } from 'vuex'
 import { computed } from 'vue'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 

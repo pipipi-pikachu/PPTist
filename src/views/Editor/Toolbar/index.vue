@@ -17,8 +17,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, watch } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { ToolbarState, ToolbarStates } from '@/types/toolbar'
 
 import ElementStylePanel from './ElementStylePanel/index.vue'
@@ -31,7 +30,7 @@ import MultiPositionPanel from './MultiPositionPanel.vue'
 export default defineComponent({
   name: 'toolbar',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const toolbarState = computed(() => store.state.toolbarState)
 
     const elementTabs = [

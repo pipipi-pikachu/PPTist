@@ -18,15 +18,14 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default defineComponent({
   name: 'slide-animation-panel',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const slides = computed(() => store.state.slides)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 

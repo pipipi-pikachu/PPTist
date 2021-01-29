@@ -1,12 +1,11 @@
 import { computed, onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
   const disableHotkeys = computed(() => store.state.disableHotkeys)

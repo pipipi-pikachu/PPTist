@@ -17,8 +17,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { ElementTypes, PPTElement, Slide } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
@@ -57,7 +56,7 @@ export default defineComponent({
       return elementTypeMap[props.elementInfo.type] || null
     })
 
-    const store = useStore<State>()
+    const store = useStore()
     const theme = computed(() => store.state.theme)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 

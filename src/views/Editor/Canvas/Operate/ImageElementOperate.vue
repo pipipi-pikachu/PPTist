@@ -27,8 +27,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
@@ -68,7 +67,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
     const clipingImageElementId = computed(() => store.state.clipingImageElementId)
     const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)

@@ -219,8 +219,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { TextAttrs } from '@/prosemirror/utils'
@@ -319,7 +318,7 @@ export default defineComponent({
     ElementShadow,
   },
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const handleElement = computed<PPTTextElement>(() => store.getters.handleElement)
 
     const fill = ref<string>()

@@ -16,16 +16,15 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { useStore } from 'vuex'
 import tinycolor from 'tinycolor2'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { SlideBackground } from '@/types/slides'
 
 export default defineComponent({
   name: 'grid-lines',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
     const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide.background)
 

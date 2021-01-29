@@ -58,8 +58,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -67,7 +66,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default defineComponent({
   name: 'editor-header',
   setup() {
-    const store = useStore<State>()
+    const store = useStore()
 
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide } = useSlideHandler()

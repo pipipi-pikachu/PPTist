@@ -1,6 +1,5 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
@@ -12,7 +11,7 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const { addHistorySnapshot } = useHistorySnapshot()

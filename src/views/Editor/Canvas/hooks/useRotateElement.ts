@@ -1,6 +1,5 @@
 import { Ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -14,7 +13,7 @@ const getAngleFromCoordinate = (x: number, y: number) => {
 }
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore<State>()
+  const store = useStore()
   const canvasScale = computed(() => store.state.canvasScale)
 
   const { addHistorySnapshot } = useHistorySnapshot()

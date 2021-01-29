@@ -1,10 +1,9 @@
-import { useStore } from 'vuex'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
-import { State, ActionTypes } from '@/store'
+import { ActionTypes, useStore } from '@/store'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
 
   const addHistorySnapshot = debounce(function() {
     store.dispatch(ActionTypes.ADD_SNAPSHOT)

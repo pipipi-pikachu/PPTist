@@ -1,9 +1,8 @@
 import { computed } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
   const canvasPercentage = computed(() => store.state.canvasPercentage)
 
   const scaleCanvas = (command: '+' | '-') => {

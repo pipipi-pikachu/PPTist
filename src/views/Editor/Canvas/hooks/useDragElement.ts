@@ -1,6 +1,5 @@
 import { Ref, computed } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
@@ -12,7 +11,7 @@ export default (
   activeGroupElementId: Ref<string>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const canvasScale = computed(() => store.state.canvasScale)
 

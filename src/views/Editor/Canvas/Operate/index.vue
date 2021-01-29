@@ -31,8 +31,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { ElementTypes, PPTElement, Slide } from '@/types/slides'
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
 
@@ -80,7 +79,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
     const toolbarState = computed(() => store.state.toolbarState)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)

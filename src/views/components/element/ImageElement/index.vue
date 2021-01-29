@@ -72,8 +72,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
@@ -107,7 +106,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const clipingImageElementId = computed(() => store.state.clipingImageElementId)
     const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 

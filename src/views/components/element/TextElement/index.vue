@@ -39,8 +39,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { PPTTextElement } from '@/types/slides'
@@ -79,7 +78,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore<State>()
+    const store = useStore()
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const elementRef = ref<HTMLElement>()

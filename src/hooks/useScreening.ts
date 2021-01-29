@@ -1,9 +1,8 @@
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { enterFullscreen, exitFullscreen, isFullscreen } from '@/utils/fullscreen'
 
 export default () => {
-  const store = useStore<State>()
+  const store = useStore()
 
   const enterScreening = () => {
     enterFullscreen()

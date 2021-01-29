@@ -29,13 +29,12 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
-import { useStore } from 'vuex'
-import { MutationTypes, State } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 
 export default defineComponent({
   name: 'element-create-selection',
   setup(props, { emit }) {
-    const store = useStore<State>()
+    const store = useStore()
     const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
     const creatingElement = computed(() => store.state.creatingElement)
 

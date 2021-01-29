@@ -53,8 +53,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
-import { useStore } from 'vuex'
-import { State } from '@/store'
+import { useStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
 
@@ -92,7 +91,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore<State>()
+    const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
 
     const topImgWrapperPosition = reactive({

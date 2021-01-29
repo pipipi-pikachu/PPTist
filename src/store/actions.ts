@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex'
 import { IndexableTypeArray } from 'dexie'
-import { State } from './index'
+import { State } from './state'
 import { ActionTypes, MutationTypes } from './constants'
 import db, { Snapshot } from '@/utils/database'
 

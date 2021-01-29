@@ -1,6 +1,5 @@
 import { computed, Ref } from 'vue'
-import { useStore } from 'vuex'
-import { State, MutationTypes } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import emitter, { EmitterEvents } from '@/utils/emitter'
@@ -89,7 +88,7 @@ export default (
   activeGroupElementId: Ref<string>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
-  const store = useStore<State>()
+  const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
   const canvasScale = computed(() => store.state.canvasScale)
