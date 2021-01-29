@@ -106,9 +106,16 @@
         :value="theme.fontName"
         @change="value => updateTheme({ fontName: value })"
       >
-        <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
-          <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
-        </SelectOption>
+        <SelectOptGroup label="系统字体">
+          <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
+            <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
+          </SelectOption>
+        </SelectOptGroup>
+        <SelectOptGroup label="在线字体">
+          <SelectOption v-for="font in webFonts" :key="font.name" :value="font.name">
+            <span>{{font.name}}</span>
+          </SelectOption>
+        </SelectOptGroup>
       </Select>
     </div>
     <div class="row">
@@ -177,12 +184,14 @@ import { computed, defineComponent } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
+import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './common/ColorButton.vue'
 import { getImageDataURL } from '@/utils/image'
 
 const themes = PRESET_THEMES
+const webFonts = WEB_FONTS
 
 export default defineComponent({
   name: 'slide-style-panel',
@@ -305,6 +314,7 @@ export default defineComponent({
       applyBackgroundAllSlide,
       themes,
       theme,
+      webFonts,
       updateTheme,
       applyThemeAllSlide,
     }
