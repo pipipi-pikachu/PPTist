@@ -139,11 +139,11 @@ export default defineComponent({
     }
     watchEffect(setLocalElementList)
 
-    useDropImageOrText(viewportRef)
-
     const canvasRef = ref<HTMLElement>()
     const canvasScale = computed(() => store.state.canvasScale)
     const { viewportStyles } = useViewportSize(canvasRef)
+
+    useDropImageOrText(canvasRef)
 
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 

@@ -37,7 +37,7 @@ export default () => {
 
   const createImageElement = (src: string) => {
     getImageSize(src).then(({ width, height }) => {
-      const scale = width / height
+      const scale = height / width
   
       if(scale < VIEWPORT_ASPECT_RATIO && width > VIEWPORT_SIZE) {
         width = VIEWPORT_SIZE
@@ -117,7 +117,7 @@ export default () => {
     })
   }
   
-  const createTextElement = (position: CommonElementPosition) => {
+  const createTextElement = (position: CommonElementPosition, content = '请输入内容') => {
     const { left, top, width, height } = position
     createElement({
       type: 'text',
@@ -126,7 +126,7 @@ export default () => {
       top, 
       width, 
       height,
-      content: '请输入内容',
+      content,
     })
   }
   

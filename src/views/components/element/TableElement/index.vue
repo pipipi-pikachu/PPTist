@@ -13,16 +13,6 @@
       class="element-content" 
       v-contextmenu="contextmenus"
     >
-      <div 
-        class="table-mask" 
-        :class="{ 'lock': elementInfo.lock }"
-        v-if="!editable || elementInfo.lock"
-        @dblclick="startEdit()"
-        @mousedown="$event => handleSelectElement($event)"
-      >
-        <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
-      </div>
-
       <EditableTable 
         @mousedown.stop
         :data="elementInfo.data"
@@ -35,6 +25,15 @@
         @changeColWidths="widths => updateColWidths(widths)"
         @changeSelectedCells="cells => updateSelectedCells(cells)"
       />
+      <div 
+        class="table-mask" 
+        :class="{ 'lock': elementInfo.lock }"
+        v-if="!editable || elementInfo.lock"
+        @dblclick="startEdit()"
+        @mousedown="$event => handleSelectElement($event)"
+      >
+        <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
+      </div>
     </div>
   </div>
 </template>
@@ -201,7 +200,6 @@ export default defineComponent({
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 10;
   opacity: 0;
   transition: opacity .2s;
 

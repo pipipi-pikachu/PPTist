@@ -7,7 +7,7 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
   const store = useStore()
   const disableHotkeys = computed(() => store.state.disableHotkeys)
 
-  const { createImageElement } = useCreateElement()
+  const { createImageElement, createTextElement } = useCreateElement()
 
   const handleDrop = (e: DragEvent) => {
     if(!e.dataTransfer) return
@@ -22,7 +22,12 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
     else if(dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
       dataTransferItem.getAsString(text => {
         if(disableHotkeys.value) return
-        console.log(text)
+        createTextElement({
+          left: 0,
+          top: 0,
+          width: 600,
+          height: 50,
+        }, text)
       })
     }
   }

@@ -4,6 +4,7 @@ import { decrypt } from '@/utils/crypto'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useCreateElement from '@/hooks/useCreateElement'
 
 interface PasteTextClipboardDataOptions {
   onlySlide?: boolean;
@@ -15,6 +16,7 @@ export default () => {
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const { addHistorySnapshot } = useHistorySnapshot()
+  const { createTextElement } = useCreateElement()
 
   const pasteElement = (elements: PPTElement[]) => {
     const groupIdMap = {}
@@ -51,7 +53,12 @@ export default () => {
   }
 
   const pasteText = (text: string) => {
-    console.log(text)
+    createTextElement({
+      left: 0,
+      top: 0,
+      width: 600,
+      height: 50,
+    }, text)
   }
 
   const pasteTextClipboardData = (text: string, options?: PasteTextClipboardDataOptions) => {
