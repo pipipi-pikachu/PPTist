@@ -88,13 +88,14 @@
       <Button class="full-width-btn"><IconTransform class="btn-icon" /> 替换图片</Button>
     </FileInput>
     <Button class="full-width-btn" @click="resetImage()"><IconUndo class="btn-icon" /> 重置样式</Button>
+    <Button class="full-width-btn" @click="setBackgroundImage()"><IconTheme class="btn-icon" /> 设为背景</Button>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { PPTImageElement } from '@/types/slides'
+import { PPTImageElement, Slide } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -165,6 +166,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const handleElement = computed<PPTImageElement>(() => store.getters.handleElement)
+    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const clipPanelVisible = ref(false)
 
@@ -325,6 +327,17 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const setBackgroundImage = () => {
+      const background = {
+        ...currentSlide.value.background,
+        type: 'image',
+        image: handleElement.value.src,
+        imageSize: 'cover',
+      }
+      store.commit(MutationTypes.UPDATE_SLIDE, { background })
+      addHistorySnapshot()
+    }
+
     return {
       clipPanelVisible,
       shapeClipPathOptions,
@@ -338,6 +351,7 @@ export default defineComponent({
       presetImageClip,
       replaceImage,
       resetImage,
+      setBackgroundImage,
     }
   },
 })

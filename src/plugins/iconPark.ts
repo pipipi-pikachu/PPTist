@@ -17,7 +17,6 @@ import {
   List,
   OrderedList,
   Drag,
-  Formula,
   Helpcenter,
   SplitCells,
   MergeCells,
@@ -99,6 +98,8 @@ import {
   Undo,
   Transform,
   Click,
+  Theme,
+  Symbol,
 } from '@icon-park/vue-next'
 
 export default {
@@ -109,7 +110,7 @@ export default {
     app.component('IconPentagonOne', PentagonOne)
     app.component('IconConnection', Connection)
     app.component('IconInsertTable', InsertTable)
-    app.component('IconFormula', Formula)
+    app.component('IconSymbol', Symbol)
 
     // 剪贴板
     app.component('IconCopy', Copy)
@@ -231,5 +232,6 @@ export default {
     app.component('IconUndo', Undo)
     app.component('IconTransform', Transform)
     app.component('IconClick', Click)
+    app.component('IconTheme', Theme)
   }
 }
