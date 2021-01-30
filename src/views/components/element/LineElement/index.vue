@@ -6,11 +6,9 @@
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)"
   >
     <div 
       class="element-content" 
-      v-contextmenu="contextmenus"
       :style="{ filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '' }"
     >
       <SvgWrapper
@@ -47,6 +45,15 @@
           stroke-miterlimit 
           :marker-start="elementInfo.points[0] ? `url(#${elementInfo.id}-${elementInfo.points[0]}-start)` : ''"
           :marker-end="elementInfo.points[1] ? `url(#${elementInfo.id}-${elementInfo.points[1]}-end)` : ''"
+        ></path>
+				<path
+          class="line-path"
+          :d="path" 
+          stroke="transparent" 
+          stroke-width="20" 
+          fill="none" 
+          @mousedown="$event => handleSelectElement($event)"
+          v-contextmenu="contextmenus"
         ></path>
 			</SvgWrapper>
     </div>
@@ -121,9 +128,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-shape {
   position: absolute;
-  cursor: move;
 
-  &.lock .element-content {
+  &.lock .line-path {
     cursor: default;
   }
 }
@@ -137,5 +143,8 @@ export default defineComponent({
     transform-origin: 0 0;
     overflow: visible;
   }
+}
+.line-path {
+  cursor: move;
 }
 </style>
