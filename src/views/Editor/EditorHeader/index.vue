@@ -2,15 +2,6 @@
   <div class="editor-header">
     <div class="left">
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconSeoFolder /> 文件</div>
-        <template #overlay>
-          <Menu>
-            <MenuItem>重置幻灯片</MenuItem>
-            <MenuItem>缓存幻灯片</MenuItem>
-          </Menu>
-        </template>
-      </Dropdown>
-      <Dropdown :trigger="['click']">
         <div class="menu-item"><IconEdit /> 编辑</div>
         <template #overlay>
           <Menu>
@@ -19,6 +10,7 @@
             <MenuItem @click="createSlide()">添加页面</MenuItem>
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
+            <MenuItem>重置幻灯片</MenuItem>
           </Menu>
         </template>
       </Dropdown>
