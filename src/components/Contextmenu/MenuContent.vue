@@ -51,7 +51,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$menuWidth: 160px;
+$menuWidth: 165px;
 $menuHeight: 30px;
 $subMenuWidth: 120px;
 

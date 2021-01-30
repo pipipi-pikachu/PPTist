@@ -3,6 +3,7 @@
     class="thumbnails"
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
+    v-contextmenu="contextmenusThumbnails"
   >
     <div class="add-slide" @click="createSlide()"><IconPlus /> 添加幻灯片</div>
     <Draggable 
@@ -19,7 +20,7 @@
           class="thumbnail-wrapper"
           :class="{ 'active': slideIndex === index }"
           @mousedown="changSlideIndex(index)"
-          v-contextmenu="contextmenus"
+          v-contextmenu="contextmenusThumbnailItem"
         >
           <div class="slide-index">{{ fillDigit(index + 1, 2) }}</div>
           <div class="thumbnail">
@@ -37,6 +38,7 @@ import { MutationTypes, useStore } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useScreening from '@/hooks/useScreening'
 
 import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -87,7 +89,24 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, newIndex)
     }
 
-    const contextmenus = (): ContextmenuItem[] => {
+    const { enterScreening } = useScreening()
+
+    const contextmenusThumbnails = (): ContextmenuItem[] => {
+      return [
+        {
+          text: '粘贴',
+          subText: 'Ctrl + V',
+          handler: pasteSlide,
+        },
+        {
+          text: '新建页面',
+          subText: 'Enter',
+          handler: createSlide,
+        },
+      ]
+    }
+
+    const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       return [
         {
           text: '剪切',
@@ -119,6 +138,12 @@ export default defineComponent({
           subText: 'Delete',
           handler: deleteSlide,
         },
+        { divider: true },
+        {
+          text: '从本页演示',
+          subText: 'Ctrl+F5',
+          handler: enterScreening,
+        },
       ]
     }
 
@@ -128,7 +153,8 @@ export default defineComponent({
       slideIndex,
       createSlide,
       changSlideIndex,
-      contextmenus,
+      contextmenusThumbnails,
+      contextmenusThumbnailItem,
       fillDigit,
       handleDragEnd,
     }
