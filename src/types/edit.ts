@@ -3,7 +3,7 @@ import { LinePoolItem } from '@/configs/lines'
 
 export type ElementOrderCommand = 'up' | 'down' | 'top' | 'bottom'
 
-export enum ElementOrderCommands {
+export const enum ElementOrderCommands {
   UP = 'up',
   DOWN = 'down',
   TOP = 'top',
@@ -12,7 +12,7 @@ export enum ElementOrderCommands {
 
 export type ElementAlignCommand = 'top'| 'bottom' | 'left' | 'right' | 'vertical' | 'horizontal'
 
-export enum ElementAlignCommands {
+export const enum ElementAlignCommands {
   TOP = 'top',
   BOTTOM = 'bottom',
   LEFT = 'left',
@@ -23,7 +23,7 @@ export enum ElementAlignCommands {
 
 export type OperateBorderLine = 'top' | 'bottom' | 'left' | 'right'
 
-export enum OperateBorderLines {
+export const enum OperateBorderLines {
   T = 'top',
   B = 'bottom',
   L = 'left',
@@ -32,7 +32,7 @@ export enum OperateBorderLines {
 
 export type OperateResizeHandler = '' | 'left-top' | 'top' | 'right-top' | 'left' | 'right' | 'left-bottom' | 'bottom' | 'right-bottom'
 
-export enum OperateResizeHandlers {
+export const enum OperateResizeHandlers {
   LEFT_TOP = 'left-top',
   TOP = 'top',
   RIGHT_TOP = 'right-top',
@@ -45,7 +45,7 @@ export enum OperateResizeHandlers {
 
 export type OperateLineHandler = 'start' | 'end'
 
-export enum OperateLineHandlers {
+export const enum OperateLineHandlers {
   START = 'start',
   END = 'end,'
 }

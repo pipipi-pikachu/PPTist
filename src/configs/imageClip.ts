@@ -1,10 +1,10 @@
-export enum ClipPathTypes {
+export const enum ClipPathTypes {
   RECT = 'rect',
   ELLIPSE = 'ellipse',
   POLYGON = 'polygon',
 }
 
-export enum ClipPaths {
+export const enum ClipPaths {
   RECT = 'rect',
   ROUNDRECT = 'roundRect',
   ELLIPSE = 'ellipse',

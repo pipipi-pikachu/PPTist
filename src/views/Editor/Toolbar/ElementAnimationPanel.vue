@@ -71,7 +71,7 @@ import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTAnimation, PPTElement, Slide } from '@/types/slides'
 import { ANIMATIONS } from '@/configs/animation'
-import { ELEMENT_TYPE } from '@/configs/element'
+import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
@@ -107,7 +107,7 @@ export default defineComponent({
       for(const animation of currentSlideAnimations.value) {
         const el = currentSlide.value.elements.find(el => el.id === animation.elId)
         if(!el) continue
-        const elType = ELEMENT_TYPE[el.type]
+        const elType = ELEMENT_TYPE_ZH[el.type]
         const animationType = animationTypes[animation.type]
 
         animationSequence.push({

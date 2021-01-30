@@ -23,7 +23,7 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } from 'vue'
 import { useStore } from '@/store'
-import { PPTElement, ElementTypes } from '@/types/slides'
+import { PPTElement } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
 import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
@@ -67,7 +67,7 @@ export default defineComponent({
     const disableResize = computed(() => {
       return localActiveElementList.value.some(item => {
         if(
-          (item.type === ElementTypes.IMAGE || item.type === ElementTypes.SHAPE) && 
+          (item.type === 'image' || item.type === 'shape') && 
           !item.rotate
         ) return false
         return true

@@ -1,4 +1,4 @@
-export enum KEYS {
+export const enum KEYS {
   C = 'C',
   X = 'X',
   Z = 'Z',

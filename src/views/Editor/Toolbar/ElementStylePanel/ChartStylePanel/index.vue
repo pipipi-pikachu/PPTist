@@ -103,7 +103,6 @@ import { computed, defineComponent, ref, watch } from 'vue'
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 import { MutationTypes, useStore } from '@/store'
 import { ChartData, PPTChartElement } from '@/types/slides'
-import { CHART_THEME_COLORS } from '@/configs/chartTheme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../../common/ElementOutline.vue'
@@ -207,7 +206,6 @@ export default defineComponent({
       updateOptions,
       themeColor,
       gridColor,
-      CHART_THEME_COLORS,
       updateTheme,
       updateGridColor,
     }

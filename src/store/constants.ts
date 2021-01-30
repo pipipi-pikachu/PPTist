@@ -1,4 +1,4 @@
-export enum MutationTypes {
+export const enum MutationTypes {
 
   // editor
   SET_ACTIVE_ELEMENT_ID_LIST = 'setActiveElementIdList',
@@ -37,7 +37,7 @@ export enum MutationTypes {
   SET_SCREENING = 'setScreening',
 }
 
-export enum ActionTypes {
+export const enum ActionTypes {
   INIT_SNAPSHOT_DATABASE = 'initSnapshotDatabase',
   ADD_SNAPSHOT = 'addSnapshot',
   UN_DO = 'undo',

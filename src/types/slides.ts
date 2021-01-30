@@ -7,7 +7,7 @@ export interface PPTElementShadow {
   color: string;
 }
 
-export enum ElementTypes {
+export const enum ElementTypes {
   TEXT = 'text',
   IMAGE = 'image',
   SHAPE = 'shape',

@@ -1,4 +1,4 @@
-import { ElementTypes, PPTElement } from '@/types/slides'
+import { PPTElement } from '@/types/slides'
 
 // 获取矩形旋转后在画布中的位置范围
 interface RotatedElementData {
@@ -46,7 +46,7 @@ export const getRectRotatedRange = (element: RotatedElementData) => {
 export const getElementRange = (element: PPTElement) => {
   let minX, maxX, minY, maxY
 
-  if(element.type === ElementTypes.LINE) {
+  if(element.type === 'line') {
     minX = element.left
     maxX = element.left + Math.max(element.start[0], element.end[0])
     minY = element.top

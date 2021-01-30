@@ -1,6 +1,6 @@
 import { Ref, computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { ElementTypes, PPTElement } from '@/types/slides'
+import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
 import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
@@ -48,7 +48,7 @@ export default (
 
     // 元素在页面内水平和垂直方向的范围和中心位置（需要特殊计算线条和被旋转的元素）
     for(const el of elementList.value) {
-      if(el.type === ElementTypes.LINE) continue
+      if(el.type === 'line') continue
       if(isActiveGroupElement && el.id === element.id) continue
       if(!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
 
@@ -144,7 +144,7 @@ export default (
           targetMinY = yRange[0]
           targetMaxY = yRange[1]
         }
-        else if(element.type === ElementTypes.LINE) {
+        else if(element.type === 'line') {
           targetMinX = targetLeft
           targetMaxX = targetLeft + Math.max(element.start[0], element.end[0])
           targetMinY = targetTop
@@ -178,7 +178,7 @@ export default (
             rightValues.push(xRange[1])
             bottomValues.push(yRange[1])
           }
-          else if(element.type === ElementTypes.LINE) {
+          else if(element.type === 'line') {
             leftValues.push(left)
             topValues.push(top)
             rightValues.push(left + Math.max(element.start[0], element.end[0]))

@@ -1,6 +1,6 @@
 import { computed, Ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { ElementTypes, PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
+import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
@@ -139,7 +139,7 @@ export default (
       
       for(const el of elementList.value) {
         if('rotate' in el && el.rotate) continue
-        if(el.type === ElementTypes.LINE) continue
+        if(el.type === 'line') continue
         if(isActiveGroupElement && el.id === element.id) continue
         if(!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
 
@@ -468,7 +468,7 @@ export default (
       // 根据上面计算的比例，修改所有被激活元素的位置大小
       // 宽高通过乘以对应的比例得到，位置通过将被操作元素在所有元素整体中的相对位置乘以对应比例获得
       elementList.value = elementList.value.map(el => {
-        if((el.type === ElementTypes.IMAGE || el.type === ElementTypes.SHAPE) && activeElementIdList.value.includes(el.id)) {
+        if((el.type === 'image' || el.type === 'shape') && activeElementIdList.value.includes(el.id)) {
           const originElement = originElementList.find(originEl => originEl.id === el.id) as PPTImageElement | PPTShapeElement
           return {
             ...el,
