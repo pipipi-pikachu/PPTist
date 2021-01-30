@@ -141,7 +141,7 @@ export default defineComponent({
         { divider: true },
         {
           text: '从本页演示',
-          subText: 'Ctrl+F5',
+          subText: 'Ctrl+F',
           handler: enterScreening,
         },
       ]
