@@ -279,10 +279,12 @@ export default defineComponent({
       const { themeColor, backgroundColor, fontColor } = theme.value
 
       for(const slide of newSlides) {
-        slide.background = {
-          ...slide.background,
-          type: 'solid',
-          color: backgroundColor
+        if(!slide.background || slide.background.type !== 'image') {
+          slide.background = {
+            ...slide.background,
+            type: 'solid',
+            color: backgroundColor
+          }
         }
 
         const elements = slide.elements
