@@ -18,7 +18,7 @@
                 :key="index"
                 @click="presetImageClip(index)"
               >
-                <div class="shape" :style="{ clipPath: item.style }"></div>
+                <div class="shape" :style="{ backgroundImage: `url(${handleElement.src})`, clipPath: item.style }"></div>
               </div>
             </div>
 
@@ -407,7 +407,7 @@ export default defineComponent({
 }
 
 .clip {
-  width: 280px;
+  width: 260px;
   font-size: 12px;
 
   .title {
@@ -425,12 +425,14 @@ export default defineComponent({
   align-items: center;
   cursor: pointer;
 
-  @include grid-layout-item(5, 19%);
+  @include grid-layout-item(5, 16%);
 
   .shape {
     width: 40px;
     height: 40px;
-    background-color: #e1e1e1;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 }
 </style>
