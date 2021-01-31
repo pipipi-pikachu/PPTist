@@ -27,9 +27,8 @@
         <div class="menu-item"><IconHelpcenter /> 帮助</div>
         <template #overlay>
           <Menu>
-            <MenuItem>开发文档</MenuItem>
-            <MenuItem>常见使用问题</MenuItem>
-            <MenuItem>快捷键</MenuItem>
+            <MenuItem @click="openDoc()">开发文档</MenuItem>
+            <MenuItem @click="hotkeyDrawerVisible = true">快捷键</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -45,16 +44,96 @@
         <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
       </Tooltip>
     </div>
+
+    <Drawer
+      width="300"
+      placement="right"
+      :visible="hotkeyDrawerVisible"
+      @close="hotkeyDrawerVisible = false"
+    >
+      <div class="hotkeys">
+        <template v-for="item in hotkeys" :key="item.type">
+          <div class="title">{{item.type}}</div>
+          <div class="hotkey-item" v-for="hotkey in item.children" :key="hotkey.label">
+            <div class="label">{{hotkey.label}}</div>
+            <div class="value">{{hotkey.value}}</div>
+          </div>
+        </template>
+      </div>
+    </Drawer>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+
+import { message } from 'ant-design-vue'
+
+const hotkeys = [
+  {
+    type: '通用',
+    children: [
+      { label: '剪切', value: 'Ctrl + X' },
+      { label: '复制', value: 'Ctrl + C' },
+      { label: '粘贴', value: 'Ctrl + V' },
+      { label: '快速复制粘贴', value: 'Ctrl + D' },
+      { label: '全选', value: 'Ctrl + A' },
+      { label: '撤销', value: 'Ctrl + Z' },
+      { label: '恢复', value: 'Ctrl + Y' },
+      { label: '删除', value: 'Delete' },
+    ],
+  },
+  {
+    type: '选中元素操作',
+    children: [
+      { label: '移动', value: '↑ / ← / ↓ / →' },
+      { label: '锁定', value: 'Ctrl + L' },
+      { label: '组合', value: 'Ctrl + G' },
+      { label: '取消组合', value: 'Ctrl + Shift + G' },
+    ],
+  },
+  {
+    type: '幻灯片编辑',
+    children: [
+      { label: '新建幻灯片', value: 'Enter' },
+      { label: '缩放画布', value: 'Ctrl + 鼠标滚动' },
+      { label: '放大画布', value: 'Ctrl + =' },
+      { label: '缩小画布', value: 'Ctrl + -' },
+      { label: '缩放画布到合适大小', value: 'Ctrl + 0' },
+      { label: '编辑上一页', value: '↑ / ←' },
+      { label: '编辑下一页', value: '↓ / →' },
+    ],
+  },
+  {
+    type: '表格编辑',
+    children: [
+      { label: '聚焦到下一个单元格', value: 'Tab' },
+    ],
+  },
+  {
+    type: '文本编辑',
+    children: [
+      { label: '加粗', value: 'Ctrl + B' },
+      { label: '斜体', value: 'Ctrl + I' },
+      { label: '下划线', value: 'Ctrl + U' },
+      { label: '删除线', value: 'Ctrl + D' },
+    ],
+  },
+  {
+    type: '幻灯片放映',
+    children: [
+      { label: '开始放映幻灯片', value: 'Ctrl + F' },
+      { label: '切换上一页', value: '↑ / ←' },
+      { label: '切换下一页', value: '↓ / →' },
+      { label: '退出放映', value: 'ESC' },
+    ],
+  },
+]
 
 export default defineComponent({
   name: 'editor-header',
@@ -77,6 +156,12 @@ export default defineComponent({
       }])
     }
 
+    const openDoc = () => {
+      message.warning('作者努力编写中...')
+    }
+
+    const hotkeyDrawerVisible = ref(false)
+
     return {
       enterScreening,
       enterScreeningFromStart,
@@ -87,6 +172,9 @@ export default defineComponent({
       toggleGridLines,
       showGridLines,
       resetSlides,
+      openDoc,
+      hotkeyDrawerVisible,
+      hotkeys,
     }
   },
 })
@@ -110,5 +198,28 @@ export default defineComponent({
   font-size: 13px;
   margin: 0 10px;
   cursor: pointer;
+}
+
+.hotkeys {
+  height: 100%;
+  overflow: auto;
+  font-size: 12px;
+}
+.title {
+  font-size: 14px;
+  font-weight: 700;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 15px 0 5px 0;
+}
+.hotkey-item {
+  border-bottom: 1px solid #e5e5e5;
+  padding: 15px 0 5px 0;
+  display: flex;
+  align-items: center;
+}
+.label {
+  width: 150px;
+
+  @include ellipsis();
 }
 </style>

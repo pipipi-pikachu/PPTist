@@ -35,6 +35,7 @@ import {
   Dropdown,
   Menu,
   Checkbox,
+  Drawer,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -60,6 +61,7 @@ app.component('Dropdown', Dropdown)
 app.component('Menu', Menu)
 app.component('MenuItem', Menu.Item)
 app.component('Checkbox', Checkbox)
+app.component('Drawer', Drawer)
 
 app.directive('contextmenu', Contextmenu)
 app.directive('click-outside', ClickOutside)
