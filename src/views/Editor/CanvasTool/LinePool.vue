@@ -9,25 +9,28 @@
         >
           <defs>
             <LinePointMarker
+              class="line-marker"
               v-if="line.points[0]"
               :id="`preset-line-${index}`"
               position="start"
               :type="line.points[0]"
-              color="#aaa"
+              color="currentColor"
               :baseSize="2"
             />
             <LinePointMarker
+              class="line-marker"
               v-if="line.points[1]"
               :id="`preset-line-${index}`"
               position="end"
               :type="line.points[1]"
-              color="#999"
+              color="currentColor"
               :baseSize="2"
             />
           </defs>
           <path
+            class="line-path"
             :d="line.path" 
-            stroke="#aaa" 
+            stroke="currentColor" 
             fill="none" 
             stroke-width="2" 
             :stroke-dasharray="line.style === 'solid' ? '0, 0' : '4, 1'"
@@ -96,6 +99,11 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #999;
+
+  &:hover {
+    color: $themeColor;
+  }
 
   svg:not(:root) {
     overflow: visible;

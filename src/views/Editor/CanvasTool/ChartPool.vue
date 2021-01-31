@@ -55,5 +55,10 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #999;
+
+  &:hover {
+    color: $themeColor;
+  }
 }
 </style>

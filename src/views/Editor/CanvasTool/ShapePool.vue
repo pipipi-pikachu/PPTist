@@ -1,30 +1,36 @@
 <template>
-  <ul class="shape-pool">
-    <li class="shape-item" v-for="(shape, index) in shapeList" :key="index">
-      <div class="shape-content" @click="selectShape(shape)">
-        <SvgWrapper 
-          overflow="visible" 
-          width="20"
-          height="20"
-        >
-          <g 
-            :transform="`scale(${20 / shape.viewBox}, ${20 / shape.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
-          >
-            <path 
-              vector-effect="non-scaling-stroke" 
-              stroke-linecap="butt" 
-              stroke-miterlimit="8"
-              stroke-linejoin
-              fill="transparent"
-              stroke="#999"
-              stroke-width="2" 
-              :d="shape.path"
-            ></path>
-          </g>
-        </SvgWrapper>
+  <div class="shape-pool">
+    <div class="category" v-for="item in shapeList" :key="item.type">
+      <div class="category-name">{{item.type}}</div>
+      <div class="shape-list">
+        <div class="shape-item" v-for="(shape, index) in item.children" :key="index">
+          <div class="shape-content" @click="selectShape(shape)">
+            <SvgWrapper 
+              overflow="visible" 
+              width="20"
+              height="20"
+            >
+              <g 
+                :transform="`scale(${20 / shape.viewBox}, ${20 / shape.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
+              >
+                <path 
+                  class="shape-path"
+                  vector-effect="non-scaling-stroke" 
+                  stroke-linecap="butt" 
+                  stroke-miterlimit="8"
+                  stroke-linejoin
+                  fill="transparent"
+                  stroke="#999"
+                  stroke-width="2" 
+                  :d="shape.path"
+                ></path>
+              </g>
+            </SvgWrapper>
+          </div>
+        </div>
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -50,18 +56,31 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .shape-pool {
-  width: 400px;
-  max-height: 400px;
+  width: 360px;
+  max-height: 500px;
   overflow: auto;
-  margin-bottom: -5px;
-
+  margin-bottom: -12px;
+  margin-right: -12px;
+  padding-right: 12px;
+}
+.category-name {
+  width: 100%;
+  font-size: 13px;
+  margin-bottom: 10px;
+  border-left: 4px solid #aaa;
+  background-color: #eee;
+  padding: 2px 0 2px 10px;
+}
+.shape-list {
   @include grid-layout-wrapper();
+
+  margin-bottom: 10px;
 }
 .shape-item {
-  @include grid-layout-item(10, 9%);
+  @include grid-layout-item(10, 8%);
 
   height: 0;
-  padding-bottom: 9%;
+  padding-bottom: 8%;
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
@@ -75,6 +94,10 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover .shape-path {
+    stroke: $themeColor;
+  }
 
   svg:not(:root) {
     overflow: visible;

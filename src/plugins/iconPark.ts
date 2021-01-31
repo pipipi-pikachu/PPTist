@@ -6,7 +6,7 @@ import {
   Unlock,
   Search,
   Delete,
-  Slide,
+  Ppt,
   SettingOne,
   Clear,
   Format,
@@ -208,7 +208,7 @@ export default {
     app.component('IconPlayOne', PlayOne)
     app.component('IconSearch', Search)
     app.component('IconDelete', Delete)
-    app.component('IconSlide', Slide)
+    app.component('IconPpt', Ppt)
     app.component('IconSettingOne', SettingOne)
     app.component('IconClear', Clear)
     app.component('IconLinkOne', LinkOne)

@@ -226,7 +226,7 @@ export default defineComponent({
   margin-bottom: 10px;
   border-left: 4px solid #aaa;
   background-color: #eee;
-  padding: 2px 0 3px 10px;
+  padding: 2px 0 2px 10px;
 }
 .pool-item-wrapper {
   @include grid-layout-wrapper();

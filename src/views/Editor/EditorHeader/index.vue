@@ -15,7 +15,7 @@
         </template>
       </Dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconSlide /> 演示</div>
+        <div class="menu-item"><IconPpt /> 演示</div>
         <template #overlay>
           <Menu>
             <MenuItem @click="enterScreeningFromStart()">从头开始</MenuItem>
@@ -38,7 +38,7 @@
     <div class="right">
       <Tooltip :mouseLeaveDelay="0" title="幻灯片放映">
         <div class="menu-item" @click="enterScreening()">
-          <IconSlide size="18" fill="#666" style="margin-top: 2px;" />
+          <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
         </div>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" title="Github 仓库">
