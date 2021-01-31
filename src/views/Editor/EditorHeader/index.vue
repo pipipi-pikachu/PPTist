@@ -10,7 +10,7 @@
             <MenuItem @click="createSlide()">添加页面</MenuItem>
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
-            <MenuItem>重置幻灯片</MenuItem>
+            <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -51,6 +51,7 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { MutationTypes, useStore } from '@/store'
+import { createRandomCode } from '@/utils/common'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -69,6 +70,13 @@ export default defineComponent({
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
+    const resetSlides = () => {
+      store.commit(MutationTypes.SET_SLIDES, [{
+        id: createRandomCode(),
+        elements: [],
+      }])
+    }
+
     return {
       enterScreening,
       enterScreeningFromStart,
@@ -78,6 +86,7 @@ export default defineComponent({
       undo,
       toggleGridLines,
       showGridLines,
+      resetSlides,
     }
   },
 })
