@@ -89,12 +89,15 @@ const hotkeys = [
     ],
   },
   {
-    type: '选中元素操作',
+    type: '元素操作',
     children: [
       { label: '移动', value: '↑ / ← / ↓ / →' },
       { label: '锁定', value: 'Ctrl + L' },
       { label: '组合', value: 'Ctrl + G' },
       { label: '取消组合', value: 'Ctrl + Shift + G' },
+      { label: '多选', value: '按住 Ctrl 或 Shift' },
+      { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
+      { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
     ],
   },
   {
