@@ -89,15 +89,12 @@ const hotkeys = [
     ],
   },
   {
-    type: '元素操作',
+    type: '幻灯片放映',
     children: [
-      { label: '移动', value: '↑ / ← / ↓ / →' },
-      { label: '锁定', value: 'Ctrl + L' },
-      { label: '组合', value: 'Ctrl + G' },
-      { label: '取消组合', value: 'Ctrl + Shift + G' },
-      { label: '多选', value: '按住 Ctrl 或 Shift' },
-      { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
-      { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
+      { label: '开始放映幻灯片', value: 'Ctrl + F' },
+      { label: '切换上一页', value: '↑ / ←' },
+      { label: '切换下一页', value: '↓ / →' },
+      { label: '退出放映', value: 'ESC' },
     ],
   },
   {
@@ -113,6 +110,19 @@ const hotkeys = [
     ],
   },
   {
+    type: '元素操作',
+    children: [
+      { label: '移动', value: '↑ / ← / ↓ / →' },
+      { label: '锁定', value: 'Ctrl + L' },
+      { label: '组合', value: 'Ctrl + G' },
+      { label: '取消组合', value: 'Ctrl + Shift + G' },
+      { label: '多选', value: '按住 Ctrl 或 Shift' },
+      { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
+      { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
+      { label: '确认图片裁剪', value: 'Enter' },
+    ],
+  },
+  {
     type: '表格编辑',
     children: [
       { label: '聚焦到下一个单元格', value: 'Tab' },
@@ -125,15 +135,6 @@ const hotkeys = [
       { label: '斜体', value: 'Ctrl + I' },
       { label: '下划线', value: 'Ctrl + U' },
       { label: '删除线', value: 'Ctrl + D' },
-    ],
-  },
-  {
-    type: '幻灯片放映',
-    children: [
-      { label: '开始放映幻灯片', value: 'Ctrl + F' },
-      { label: '切换上一页', value: '↑ / ←' },
-      { label: '切换下一页', value: '↓ / →' },
-      { label: '退出放映', value: 'ESC' },
     ],
   },
 ]
