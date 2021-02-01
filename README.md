@@ -1,6 +1,8 @@
 #  PPTist
 > 一个基于 Vue3.X + TypeScript 的在线演示文稿应用。
 
+你可以对它进行二次开发，打造属于自己的 在线演示文稿应用 或者 在线设计工具（二次开发文档正在编写中）。
+
 在线体验地址：https://pptist.gitee.io/
 
 Github仓库：https://github.com/pipipi-pikachu/PPTist
@@ -40,3 +42,6 @@ npm run serve
 `clipboard` -- 用于复制内容到剪贴板
 
 `@icon-park/vue-next` -- 图标库
+
+#  License
+MIT
