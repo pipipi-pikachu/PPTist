@@ -103,6 +103,10 @@ export const SHAPE_LIST = [
       },
       {
         viewBox: 200,
+        path: 'M 75 0 L 125 0 L 175 25 L 200 75 L 200 125 L 175 175 L 125 200 L 75 200 L 25 175 L 0 125 L 0 75 L 25 25 L 75 0 Z'
+      },
+      {
+        viewBox: 200,
         path: 'M 100 0 L 0 50 L 0 200 L 200 200 L 200 50 L 100 0 Z'
       },
       {

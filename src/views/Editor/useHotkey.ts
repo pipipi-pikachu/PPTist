@@ -1,5 +1,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { MutationTypes, useStore } from '@/store'
+import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
+import { PPTElement } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -9,6 +11,7 @@ import useCombineElement from '@/hooks/useCombineElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useMoveElement from '@/hooks/useMoveElement'
+import useOrderElement from '@/hooks/useOrderElement'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useScreening from '@/hooks/useScreening'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
@@ -20,6 +23,7 @@ export default () => {
   const shiftKeyActive = computed(() => store.state.shiftKeyState)
   const disableHotkeys = computed(() => store.state.disableHotkeys)
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
@@ -39,6 +43,7 @@ export default () => {
   const { copyElement, cutElement, quickCopyElement } = useCopyAndPasteElement()
   const { selectAllElement } = useSelectAllElement()
   const { moveElement } = useMoveElement()
+  const { orderElement } = useOrderElement()
   const { redo, undo } = useHistorySnapshot()
   const { enterScreening } = useScreening()
   const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
@@ -87,13 +92,18 @@ export default () => {
     else if(key === KEYS.UP || key === KEYS.DOWN) updateSlideIndex(key)
   }
 
+  const order = (command: ElementOrderCommand) => {
+    if(!handleElement.value) return
+    orderElement(handleElement.value, command)
+  }
+
   const create = () => {
     if(!thumbnailsFocus.value) return
     createSlide()
   }
 
   const keydownListener = (e: KeyboardEvent) => {
-    const { ctrlKey, shiftKey, metaKey } = e
+    const { ctrlKey, shiftKey, altKey, metaKey } = e
 
     const key = e.key.toUpperCase()
 
@@ -152,6 +162,16 @@ export default () => {
       if(disableHotkeys.value) return
       e.preventDefault()
       uncombine()
+    }
+    if(altKey && key === KEYS.F) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      order(ElementOrderCommands.TOP)
+    }
+    if(altKey && key === KEYS.B) {
+      if(disableHotkeys.value) return
+      e.preventDefault()
+      order(ElementOrderCommands.BOTTOM)
     }
     if(key === KEYS.DELETE) {
       if(disableHotkeys.value) return

@@ -457,11 +457,33 @@ export default defineComponent({
     }
 
     const keydownListener = (e: KeyboardEvent) => {
+      if(!props.editable || !selectedCells.value.length) return
+
       const key = e.key.toUpperCase()
       if(selectedCells.value.length < 2) {
         if(key === KEYS.TAB) {
           e.preventDefault()
           tabActiveCell()
+        }
+        if(e.ctrlKey && key === KEYS.UP) {
+          e.preventDefault()
+          const rowIndex = +selectedCells.value[0].split('_')[0]
+          insertRow(rowIndex)
+        }
+        if(e.ctrlKey && key === KEYS.DOWN) {
+          e.preventDefault()
+          const rowIndex = +selectedCells.value[0].split('_')[0]
+          insertRow(rowIndex + 1)
+        }
+        if(e.ctrlKey && key === KEYS.LEFT) {
+          e.preventDefault()
+          const colIndex = +selectedCells.value[0].split('_')[1]
+          insertCol(colIndex)
+        }
+        if(e.ctrlKey && key === KEYS.RIGHT) {
+          e.preventDefault()
+          const colIndex = +selectedCells.value[0].split('_')[1]
+          insertCol(colIndex + 1)
         }
       }
       else if(key === KEYS.DELETE) {

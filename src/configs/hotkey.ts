@@ -8,6 +8,7 @@ export const enum KEYS {
   L = 'L',
   F = 'F',
   D = 'D',
+  B = 'B',
   MINUS = '-',
   EQUAL = '=',
   DIGIT_0 = '0',
