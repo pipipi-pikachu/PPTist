@@ -167,7 +167,12 @@ export default defineComponent({
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
       if(key === KEYS.UP || key === KEYS.LEFT) execPrev()
-      else if(key === KEYS.DOWN || key === KEYS.RIGHT) execNext()
+      else if(
+        key === KEYS.DOWN || 
+        key === KEYS.RIGHT ||
+        key === KEYS.SPACE || 
+        key === KEYS.ENTER
+      ) execNext()
     }
 
     const mousewheelListener = throttle(function(e: WheelEvent) {

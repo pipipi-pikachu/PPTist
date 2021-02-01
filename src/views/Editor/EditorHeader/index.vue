@@ -46,7 +46,7 @@
     </div>
 
     <Drawer
-      width="300"
+      width="320"
       placement="right"
       :visible="hotkeyDrawerVisible"
       @close="hotkeyDrawerVisible = false"
@@ -93,7 +93,7 @@ const hotkeys = [
     children: [
       { label: '开始放映幻灯片', value: 'Ctrl + F' },
       { label: '切换上一页', value: '↑ / ←' },
-      { label: '切换下一页', value: '↓ / →' },
+      { label: '切换下一页', value: '↓ / → / Enter / Space' },
       { label: '退出放映', value: 'ESC' },
     ],
   },
@@ -154,6 +154,7 @@ export default defineComponent({
     }
 
     const resetSlides = () => {
+      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
       store.commit(MutationTypes.SET_SLIDES, [{
         id: createRandomCode(),
         elements: [],
@@ -222,7 +223,7 @@ export default defineComponent({
   align-items: center;
 }
 .label {
-  width: 150px;
+  width: 140px;
 
   @include ellipsis();
 }
