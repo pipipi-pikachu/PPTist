@@ -26,7 +26,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
-    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide.background)
+    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide?.background)
 
     const gridColor = computed(() => {
       if(!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'

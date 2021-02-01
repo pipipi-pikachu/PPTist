@@ -86,7 +86,7 @@ export const getTextAttrs = (view: EditorView) => {
   const isCode = isActiveMark(view, 'code')
   const color = getAttrValue(view, 'forecolor', 'color') || '#000'
   const backcolor = getAttrValue(view, 'backcolor', 'backcolor') || '#000'
-  const fontsize = getAttrValue(view, 'fontsize', 'fontsize') || '12px'
+  const fontsize = getAttrValue(view, 'fontsize', 'fontsize') || '20px'
   const fontname = getAttrValue(view, 'fontname', 'fontname') || '微软雅黑'
   const align = getAttrValueInSelection(view, 'align') || 'left'
   const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)

@@ -22,7 +22,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const showGridLines = computed(() => store.state.showGridLines)
-    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide.background)
+    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide?.background)
 
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 

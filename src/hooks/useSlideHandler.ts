@@ -61,11 +61,16 @@ export default () => {
   }
 
   const copyAndPasteSlide = () => {
-    store.commit(MutationTypes.ADD_SLIDE, currentSlide.value)
+    store.commit(MutationTypes.ADD_SLIDE, {
+      ...currentSlide.value,
+      id: createRandomCode(8),
+    })
     addHistorySnapshot()
   }
 
   const deleteSlide = () => {
+    if(slidesLength.value === 1) return message.warning('无法继续删除')
+    
     store.commit(MutationTypes.DELETE_SLIDE, currentSlide.value.id)
     addHistorySnapshot()
   }

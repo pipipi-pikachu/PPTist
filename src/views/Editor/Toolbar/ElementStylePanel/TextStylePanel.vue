@@ -343,7 +343,7 @@ export default defineComponent({
       code: false,
       color: '#000',
       backcolor: '#000',
-      fontsize: '12px',
+      fontsize: '20px',
       fontname: '微软雅黑',
       align: 'left',
       bulletList: false,
@@ -354,10 +354,11 @@ export default defineComponent({
     const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
       '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
-      '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '80px',
+      '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
+      '80px', '88px', '96px', '104px', '112px', '120px',
     ]
-    const lineHeightOptions = [0.5, 1.0, 1.2, 1.5, 1.8, 2.0, 3.0]
-    const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 8]
+    const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
+    const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
     const updateRichTextAttrs = (attr: TextAttrs) => richTextAttrs.value = attr
 
