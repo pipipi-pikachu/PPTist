@@ -48,7 +48,8 @@ export default () => {
   }
 
   const pasteSlide = (slide: Slide) => {
-    store.commit(MutationTypes.ADD_SLIDE, slide)
+    const newSlide = { ...slide, id: createRandomCode() }
+    store.commit(MutationTypes.ADD_SLIDE, newSlide)
     addHistorySnapshot()
   }
 
