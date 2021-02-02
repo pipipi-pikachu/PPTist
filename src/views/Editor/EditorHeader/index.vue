@@ -41,7 +41,9 @@
         </div>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" title="Github 仓库">
-        <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
+        <a href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
+          <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
+        </a>
       </Tooltip>
     </div>
 
