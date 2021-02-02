@@ -66,6 +66,7 @@
     "babel-plugin-import": "^1.13.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0-0",
+    "husky": "^4.3.8",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "sass": "^1.26.5",
