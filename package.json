@@ -36,6 +36,8 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@types/chartist": "^0.11.0",
     "@types/clipboard": "^2.0.1",
     "@types/crypto-js": "^4.0.1",
@@ -73,5 +75,11 @@
     "stylelint-webpack-plugin": "^2.1.1",
     "typescript": "~3.9.3",
     "vue-jest": "^5.0.0-0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "ls-lint && lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
