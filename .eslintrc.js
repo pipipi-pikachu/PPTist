@@ -63,9 +63,9 @@ module.exports = {
     'no-eval': 'error',
     'no-var': 'error',
     'no-with': 'error',
-    'no-alert': isProduction ? 'warn' : 'off',
-    'no-console': isProduction ? 'warn' : 'off',
-    'no-debugger': isProduction ? 'warn' : 'off',
+    'no-alert': isProduction ? 'error' : 'warn',
+    'no-console': isProduction ? 'error' : 'warn',
+    'no-debugger': isProduction ? 'error' : 'warn',
   },
   overrides: [
     {
