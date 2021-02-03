@@ -18,7 +18,7 @@ export default (
   const { addHistorySnapshot } = useHistorySnapshot()
 
   const dragElement = (e: MouseEvent, element: PPTElement) => {
-    if(!activeElementIdList.value.includes(element.id)) return
+    if (!activeElementIdList.value.includes(element.id)) return
     let isMouseDown = true
 
     // 可视范围宽高，用于边缘对齐吸附
@@ -47,13 +47,13 @@ export default (
     let verticalLines: AlignLine[] = []
 
     // 元素在页面内水平和垂直方向的范围和中心位置（需要特殊计算线条和被旋转的元素）
-    for(const el of elementList.value) {
-      if(el.type === 'line') continue
-      if(isActiveGroupElement && el.id === element.id) continue
-      if(!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
+    for (const el of elementList.value) {
+      if (el.type === 'line') continue
+      if (isActiveGroupElement && el.id === element.id) continue
+      if (!isActiveGroupElement && activeElementIdList.value.includes(el.id)) continue
 
       let left, top, width, height
-      if('rotate' in el && el.rotate) {
+      if ('rotate' in el && el.rotate) {
         const { xRange, yRange } = getRectRotatedRange({
           left: el.left,
           top: el.top,
@@ -111,11 +111,11 @@ export default (
       // 对于鼠标第一次滑动距离过小的操作判定为误操作
       // 这里仅在误操作标记未被赋值（null，第一次触发移动），以及被标记为误操作时（true，当前处于误操作范围，但可能会脱离该范围转变成正常操作），才会去计算
       // 已经被标记为非误操作时（false），不需要再次计算（因为不可能从非误操作转变成误操作）
-      if(isMisoperation !== false) {
+      if (isMisoperation !== false) {
         isMisoperation = Math.abs(startPageX - currentPageX) < sorptionRange && 
                          Math.abs(startPageY - currentPageY) < sorptionRange
       }
-      if(!isMouseDown || isMisoperation) return
+      if (!isMouseDown || isMisoperation) return
 
       // 鼠标按下后移动的距离
       const moveX = (currentPageX - startPageX) / canvasScale.value
@@ -130,8 +130,8 @@ export default (
       // 注意这里需要用元素的原始信息结合移动信息来计算
       let targetMinX: number, targetMaxX: number, targetMinY: number, targetMaxY: number
 
-      if(activeElementIdList.value.length === 1 || isActiveGroupElement) {
-        if(elOriginRotate) {
+      if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
+        if (elOriginRotate) {
           const { xRange, yRange } = getRectRotatedRange({
             left: targetLeft,
             top: targetTop,
@@ -144,7 +144,7 @@ export default (
           targetMinY = yRange[0]
           targetMaxY = yRange[1]
         }
-        else if(element.type === 'line') {
+        else if (element.type === 'line') {
           targetMinX = targetLeft
           targetMaxX = targetLeft + Math.max(element.start[0], element.end[0])
           targetMinY = targetTop
@@ -163,7 +163,7 @@ export default (
         const rightValues = []
         const bottomValues = []
         
-        for(let i = 0; i < originActiveElementList.length; i++) {
+        for (let i = 0; i < originActiveElementList.length; i++) {
           const element = originActiveElementList[i]
           const left = element.left + moveX
           const top = element.top + moveY
@@ -171,14 +171,14 @@ export default (
           const height = ('height' in element && element.height) ? element.height : 0
           const rotate = ('rotate' in element && element.rotate) ? element.rotate : 0
 
-          if('rotate' in element && element.rotate) {
+          if ('rotate' in element && element.rotate) {
             const { xRange, yRange } = getRectRotatedRange({ left, top, width, height, rotate })
             leftValues.push(xRange[0])
             topValues.push(yRange[0])
             rightValues.push(xRange[1])
             bottomValues.push(yRange[1])
           }
-          else if(element.type === 'line') {
+          else if (element.type === 'line') {
             leftValues.push(left)
             topValues.push(top)
             rightValues.push(left + Math.max(element.start[0], element.end[0]))
@@ -205,43 +205,43 @@ export default (
       const _alignmentLines: AlignmentLineProps[] = []
       let isVerticalAdsorbed = false
       let isHorizontalAdsorbed = false
-      for(let i = 0; i < horizontalLines.length; i++) {
+      for (let i = 0; i < horizontalLines.length; i++) {
         const { value, range } = horizontalLines[i]
         const min = Math.min(...range, targetMinX, targetMaxX)
         const max = Math.max(...range, targetMinX, targetMaxX)
         
-        if(Math.abs(targetMinY - value) < sorptionRange && !isHorizontalAdsorbed) {
+        if (Math.abs(targetMinY - value) < sorptionRange && !isHorizontalAdsorbed) {
           targetTop = targetTop - (targetMinY - value)
           isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
-        if(Math.abs(targetMaxY - value) < sorptionRange && !isHorizontalAdsorbed) {
+        if (Math.abs(targetMaxY - value) < sorptionRange && !isHorizontalAdsorbed) {
           targetTop = targetTop - (targetMaxY - value)
           isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
-        if(Math.abs(targetCenterY - value) < sorptionRange && !isHorizontalAdsorbed) {
+        if (Math.abs(targetCenterY - value) < sorptionRange && !isHorizontalAdsorbed) {
           targetTop = targetTop - (targetCenterY - value)
           isHorizontalAdsorbed = true
           _alignmentLines.push({type: 'horizontal', axis: {x: min - 50, y: value}, length: max - min + 100})
         }
       }
-      for(let i = 0; i < verticalLines.length; i++) {
+      for (let i = 0; i < verticalLines.length; i++) {
         const { value, range } = verticalLines[i]
         const min = Math.min(...range, targetMinY, targetMaxY)
         const max = Math.max(...range, targetMinY, targetMaxY)
 
-        if(Math.abs(targetMinX - value) < sorptionRange && !isVerticalAdsorbed) {
+        if (Math.abs(targetMinX - value) < sorptionRange && !isVerticalAdsorbed) {
           targetLeft = targetLeft - (targetMinX - value)
           isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
-        if(Math.abs(targetMaxX - value) < sorptionRange && !isVerticalAdsorbed) {
+        if (Math.abs(targetMaxX - value) < sorptionRange && !isVerticalAdsorbed) {
           targetLeft = targetLeft - (targetMaxX - value)
           isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
         }
-        if(Math.abs(targetCenterX - value) < sorptionRange && !isVerticalAdsorbed) {
+        if (Math.abs(targetCenterX - value) < sorptionRange && !isVerticalAdsorbed) {
           targetLeft = targetLeft - (targetCenterX - value)
           isVerticalAdsorbed = true
           _alignmentLines.push({type: 'vertical', axis: {x: value, y: min - 50}, length: max - min + 100})
@@ -250,7 +250,7 @@ export default (
       alignmentLines.value = _alignmentLines
       
       // 非多选，或者当前操作的元素时激活的组合元素
-      if(activeElementIdList.value.length === 1 || isActiveGroupElement) {
+      if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
         elementList.value = elementList.value.map(el => {
           return el.id === element.id ? { ...el, left: targetLeft, top: targetTop } : el
         })
@@ -260,11 +260,11 @@ export default (
       // 那么其他非操作元素要移动的位置通过操作元素的移动偏移量计算
       else {
         const handleElement = elementList.value.find(el => el.id === element.id)
-        if(!handleElement) return
+        if (!handleElement) return
 
         elementList.value = elementList.value.map(el => {
-          if(activeElementIdList.value.includes(el.id)) {
-            if(el.id === element.id) {
+          if (activeElementIdList.value.includes(el.id)) {
+            if (el.id === element.id) {
               return {
                 ...el,
                 left: targetLeft,
@@ -292,7 +292,7 @@ export default (
       const currentPageY = e.pageY
 
       // 对比初始位置，没有实际的位移不更新数据
-      if(startPageX === currentPageX && startPageY === currentPageY) return
+      if (startPageX === currentPageX && startPageY === currentPageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
       addHistorySnapshot()

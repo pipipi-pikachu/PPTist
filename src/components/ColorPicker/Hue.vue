@@ -37,40 +37,40 @@ export default defineComponent({
     
     const color = computed(() => {
       const hsla = tinycolor(props.value).toHsl()
-      if(hsla.s === 0) hsla.h = props.hue
+      if (hsla.s === 0) hsla.h = props.hue
       return hsla
     })
 
     const pointerLeft = computed(() => {
-      if(color.value.h === 0 && pullDirection.value === 'right') return '100%'
+      if (color.value.h === 0 && pullDirection.value === 'right') return '100%'
       return color.value.h * 100 / 360 + '%'
     })
 
     watch(() => props.value, () => {
       const hsla = tinycolor(props.value).toHsl()
       const h = hsla.s === 0 ? props.hue : hsla.h
-      if(h !== 0 && h - oldHue.value > 0) pullDirection.value = 'right'
-      if(h !== 0 && h - oldHue.value < 0) pullDirection.value = 'left'
+      if (h !== 0 && h - oldHue.value > 0) pullDirection.value = 'right'
+      if (h !== 0 && h - oldHue.value < 0) pullDirection.value = 'left'
       oldHue.value = h
     })
 
     const hueRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
-      if(!hueRef.value) return
+      if (!hueRef.value) return
 
       const containerWidth = hueRef.value.clientWidth
       const xOffset = hueRef.value.getBoundingClientRect().left + window.pageXOffset
       const left = e.pageX - xOffset
       let h, percent
       
-      if(left < 0) h = 0
-      else if(left > containerWidth) h = 360
+      if (left < 0) h = 0
+      else if (left > containerWidth) h = 360
       else {
         percent = left * 100 / containerWidth
         h = (360 * percent / 100)
       }
-      if(color.value.h !== h) {
+      if (color.value.h !== h) {
         emit('colorChange', {
           h,
           l: color.value.l,

@@ -77,8 +77,8 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import Draggable from 'vuedraggable'
 
 const animationTypes: { [key: string]: string } = {}
-for(const type of ANIMATIONS) {
-  for(const animation of type.children) {
+for (const type of ANIMATIONS) {
+  for (const animation of type.children) {
     animationTypes[animation.value] = animation.name
   }
 }
@@ -102,11 +102,11 @@ export default defineComponent({
     const animations = ANIMATIONS
 
     const animationSequence = computed(() => {
-      if(!currentSlideAnimations.value) return []
+      if (!currentSlideAnimations.value) return []
       const animationSequence = []
-      for(const animation of currentSlideAnimations.value) {
+      for (const animation of currentSlideAnimations.value) {
         const el = currentSlide.value.elements.find(el => el.id === animation.elId)
-        if(!el) continue
+        if (!el) continue
         const elType = ELEMENT_TYPE_ZH[el.type]
         const animationType = animationTypes[animation.type]
 
@@ -120,16 +120,16 @@ export default defineComponent({
     })
 
     const handleElementAnimation = computed(() => {
-      if(!handleElement.value) return null
+      if (!handleElement.value) return null
       const animations = currentSlideAnimations.value || []
       const animation = animations.find(item => item.elId === handleElement.value.id)
-      if(!animation) return null
+      if (!animation) return null
       return animationTypes[animation.type]
     })
 
     const updateElementAnimation = (type: string) => {
       const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
-        if(item.elId === handleElement.value.id) return { ...item, type }
+        if (item.elId === handleElement.value.id) return { ...item, type }
         return item
       })
       store.commit(MutationTypes.UPDATE_SLIDE, { animations })
@@ -138,7 +138,7 @@ export default defineComponent({
     }
 
     const addAnimation = (type: string) => {
-      if(handleElementAnimation.value) {
+      if (handleElementAnimation.value) {
         updateElementAnimation(type)
         return
       }
@@ -161,7 +161,7 @@ export default defineComponent({
 
     const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
       const { newIndex, oldIndex } = eventData
-      if(oldIndex === newIndex) return
+      if (oldIndex === newIndex) return
 
       const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
       const animation = animations[oldIndex]
@@ -175,7 +175,7 @@ export default defineComponent({
     const runAnimation = (elId: string, animationType: string) => {
       const prefix = 'animate__'
       const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
-      if(elRef) {
+      if (elRef) {
         const animationName = `${prefix}${animationType}`
         elRef.classList.add(`${prefix}animated`, animationName)
 

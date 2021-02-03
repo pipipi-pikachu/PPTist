@@ -41,7 +41,7 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateTurningMode = (mode: string) => {
-      if(mode === currentTurningMode.value) return
+      if (mode === currentTurningMode.value) return
       store.commit(MutationTypes.UPDATE_SLIDE, { turningMode: mode })
       addHistorySnapshot()
     }

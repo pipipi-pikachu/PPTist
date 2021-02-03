@@ -159,24 +159,24 @@ export default defineComponent({
 
     const handleClickBlankArea = (e: MouseEvent) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-      if(!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
-      if(!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+      if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
+      if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
       removeAllRanges()
     }
 
     const removeEditorAreaFocus = () => {
-      if(editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
+      if (editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
 
     const { scaleCanvas } = useScaleCanvas()
     const throttleScaleCanvas = throttle(scaleCanvas, 100, { leading: true, trailing: false })
 
     const mousewheelScaleCanvas = (e: WheelEvent) => {
-      if(!ctrlKeyState.value) return
+      if (!ctrlKeyState.value) return
 
       e.preventDefault()
-      if(e.deltaY > 0) throttleScaleCanvas('-')
-      else if(e.deltaY < 0) throttleScaleCanvas('+')
+      if (e.deltaY > 0) throttleScaleCanvas('-')
+      else if (e.deltaY < 0) throttleScaleCanvas('+')
     }
 
     const showGridLines = computed(() => store.state.showGridLines)

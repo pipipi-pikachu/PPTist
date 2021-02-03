@@ -22,7 +22,7 @@ export const mutations: MutationTree<State> = {
   // editor
 
   [MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST](state, activeElementIdList: string[]) {
-    if(activeElementIdList.length === 1) state.handleElementId = activeElementIdList[0]
+    if (activeElementIdList.length === 1) state.handleElementId = activeElementIdList[0]
     else state.handleElementId = ''
     
     state.activeElementIdList = activeElementIdList
@@ -96,7 +96,7 @@ export const mutations: MutationTree<State> = {
   [MutationTypes.DELETE_SLIDE](state, slideId: string) {
     const deleteIndex = state.slides.findIndex(item => item.id === slideId)
 
-    if(deleteIndex === state.slides.length - 1) {
+    if (deleteIndex === state.slides.length - 1) {
       state.slideIndex = deleteIndex - 1
     }
     state.slides.splice(deleteIndex, 1)

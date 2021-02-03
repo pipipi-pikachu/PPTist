@@ -175,9 +175,9 @@ export default defineComponent({
     }
 
     const handleClip = () => {
-      if(isSettingClipRange.value) return
+      if (isSettingClipRange.value) return
 
-      if(!currentRange.value) {
+      if (!currentRange.value) {
         emit('clip', null)
         return
       }
@@ -200,7 +200,7 @@ export default defineComponent({
 
     const keyboardClip = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
-      if(key === KEYS.ENTER) handleClip()
+      if (key === KEYS.ENTER) handleClip()
     }
 
     onMounted(() => {
@@ -249,7 +249,7 @@ export default defineComponent({
       }
 
       document.onmousemove = e => {
-        if(!isMouseDown) return
+        if (!isMouseDown) return
 
         const currentPageX = e.pageX
         const currentPageY = e.pageY
@@ -261,12 +261,12 @@ export default defineComponent({
         let targetTop = originPositopn.top + moveY
 
         // 范围限制
-        if(targetLeft < 0) targetLeft = 0
-        else if(targetLeft + originPositopn.width > bottomPosition.width) {
+        if (targetLeft < 0) targetLeft = 0
+        else if (targetLeft + originPositopn.width > bottomPosition.width) {
           targetLeft = bottomPosition.width - originPositopn.width
         }
-        if(targetTop < 0) targetTop = 0
-        else if(targetTop + originPositopn.height > bottomPosition.height) {
+        if (targetTop < 0) targetTop = 0
+        else if (targetTop + originPositopn.height > bottomPosition.height) {
           targetTop = bottomPosition.height - originPositopn.height
         }
         
@@ -305,7 +305,7 @@ export default defineComponent({
       }
 
       document.onmousemove = e => {
-        if(!isMouseDown) return
+        if (!isMouseDown) return
 
         const currentPageX = e.pageX
         const currentPageY = e.pageY
@@ -316,17 +316,17 @@ export default defineComponent({
         let targetLeft, targetTop, targetWidth, targetHeight
 
         // 根据不同缩放点，计算目标大小和位置，同时做大小和范围的限制
-        if(type === 't-l') {
-          if(originPositopn.left + moveX < 0) {
+        if (type === 't-l') {
+          if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
           }
-          if(originPositopn.top + moveY < 0) {
+          if (originPositopn.top + moveY < 0) {
             moveY = -originPositopn.top
           }
-          if(originPositopn.width - moveX < minWidth) {
+          if (originPositopn.width - moveX < minWidth) {
             moveX = originPositopn.width - minWidth
           }
-          if(originPositopn.height - moveY < minHeight) {
+          if (originPositopn.height - moveY < minHeight) {
             moveY = originPositopn.height - minHeight
           }
           targetWidth = originPositopn.width - moveX
@@ -334,17 +334,17 @@ export default defineComponent({
           targetLeft = originPositopn.left + moveX
           targetTop = originPositopn.top + moveY
         }
-        else if(type === 't-r') {
-          if(originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
+        else if (type === 't-r') {
+          if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
             moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
           }
-          if(originPositopn.top + moveY < 0) {
+          if (originPositopn.top + moveY < 0) {
             moveY = -originPositopn.top
           }
-          if(originPositopn.width + moveX < minWidth) {
+          if (originPositopn.width + moveX < minWidth) {
             moveX = minWidth - originPositopn.width
           }
-          if(originPositopn.height - moveY < minHeight) {
+          if (originPositopn.height - moveY < minHeight) {
             moveY = originPositopn.height - minHeight
           }
           targetWidth = originPositopn.width + moveX
@@ -352,17 +352,17 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top + moveY
         }
-        else if(type === 'b-l') {
-          if(originPositopn.left + moveX < 0) {
+        else if (type === 'b-l') {
+          if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
           }
-          if(originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
+          if (originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
             moveY = bottomPosition.height - (originPositopn.top + originPositopn.height)
           }
-          if(originPositopn.width - moveX < minWidth) {
+          if (originPositopn.width - moveX < minWidth) {
             moveX = originPositopn.width - minWidth
           }
-          if(originPositopn.height + moveY < minHeight) {
+          if (originPositopn.height + moveY < minHeight) {
             moveY = minHeight - originPositopn.height
           }
           targetWidth = originPositopn.width - moveX
@@ -371,16 +371,16 @@ export default defineComponent({
           targetTop = originPositopn.top
         }
         else {
-          if(originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
+          if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
             moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
           }
-          if(originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
+          if (originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
             moveY = bottomPosition.height - (originPositopn.top + originPositopn.height)
           }
-          if(originPositopn.width + moveX < minWidth) {
+          if (originPositopn.width + moveX < minWidth) {
             moveX = minWidth - originPositopn.width
           }
-          if(originPositopn.height + moveY < minHeight) {
+          if (originPositopn.height + moveY < minHeight) {
             moveY = minHeight - originPositopn.height
           }
           targetWidth = originPositopn.width + moveX

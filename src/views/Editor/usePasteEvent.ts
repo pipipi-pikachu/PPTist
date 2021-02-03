@@ -18,25 +18,25 @@ export default () => {
   }
 
   const pasteListener = (e: ClipboardEvent) => {
-    if(!editorAreaFocus.value && !thumbnailsFocus.value) return
-    if(disableHotkeys.value) return
+    if (!editorAreaFocus.value && !thumbnailsFocus.value) return
+    if (disableHotkeys.value) return
 
-    if(!e.clipboardData) return
+    if (!e.clipboardData) return
 
     const clipboardDataItems = e.clipboardData.items
     const clipboardDataFirstItem = clipboardDataItems[0]
 
-    if(!clipboardDataFirstItem) return
+    if (!clipboardDataFirstItem) return
 
-    for(const item of clipboardDataItems) {
-      if(item.kind === 'file' && item.type.indexOf('image') !== -1) {
+    for (const item of clipboardDataItems) {
+      if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
         const imageFile = item.getAsFile()
-        if(imageFile) pasteImageFile(imageFile)
+        if (imageFile) pasteImageFile(imageFile)
         return
       }
     }
 
-    if(clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
+    if (clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
       clipboardDataFirstItem.getAsString(text => pasteTextClipboardData(text))
     }
   }

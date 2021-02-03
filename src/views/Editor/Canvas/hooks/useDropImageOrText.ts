@@ -10,18 +10,18 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
   const { createImageElement, createTextElement } = useCreateElement()
 
   const handleDrop = (e: DragEvent) => {
-    if(!e.dataTransfer) return
+    if (!e.dataTransfer) return
     const dataTransferItem = e.dataTransfer.items[0]
 
-    if(dataTransferItem.kind === 'file' && dataTransferItem.type.indexOf('image') !== -1) {
+    if (dataTransferItem.kind === 'file' && dataTransferItem.type.indexOf('image') !== -1) {
       const imageFile = dataTransferItem.getAsFile()
-      if(imageFile) {
+      if (imageFile) {
         getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
       }
     }
-    else if(dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
+    else if (dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
       dataTransferItem.getAsString(text => {
-        if(disableHotkeys.value) return
+        if (disableHotkeys.value) return
         createTextElement({
           left: 0,
           top: 0,

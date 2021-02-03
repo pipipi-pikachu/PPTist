@@ -11,7 +11,7 @@ export default () => {
   const { addHistorySnapshot } = useHistorySnapshot()
 
   const deleteElement = () => {
-    if(!activeElementIdList.value.length) return
+    if (!activeElementIdList.value.length) return
     const newElementList = currentSlide.value.elements.filter(el => !activeElementIdList.value.includes(el.id))
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
@@ -19,7 +19,7 @@ export default () => {
   }
 
   const deleteAllElements = () => {
-    if(!currentSlide.value.elements.length) return
+    if (!currentSlide.value.elements.length) return
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: [] })
     addHistorySnapshot()

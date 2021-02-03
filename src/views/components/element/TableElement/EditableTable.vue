@@ -116,7 +116,7 @@ export default defineComponent({
 
     const subThemeColor = ref(['', ''])
     watch(() => props.theme, () => {
-      if(props.theme) {
+      if (props.theme) {
         const rgba = tinycolor(props.theme.color).toRgb()
         const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
         const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
@@ -155,12 +155,12 @@ export default defineComponent({
     }
 
     watch(() => props.editable, () => {
-      if(!props.editable) removeSelectedCells()
+      if (!props.editable) removeSelectedCells()
     })
 
     const dragLinePosition = computed(() => {
       const dragLinePosition: number[] = []
-      for(let i = 1; i < colSizeList.value.length + 1; i++) {
+      for (let i = 1; i < colSizeList.value.length + 1; i++) {
         const pos = colSizeList.value.slice(0, i).reduce((a, b) => (a + b))
         dragLinePosition.push(pos)
       }
@@ -170,15 +170,15 @@ export default defineComponent({
     const hideCells = computed(() => {
       const hideCells = []
       
-      for(let i = 0; i < tableCells.value.length; i++) {
+      for (let i = 0; i < tableCells.value.length; i++) {
         const rowCells = tableCells.value[i]
 
-        for(let j = 0; j < rowCells.length; j++) {
+        for (let j = 0; j < rowCells.length; j++) {
           const cell = rowCells[j]
           
-          if(cell.colspan > 1 || cell.rowspan > 1) {
-            for(let row = i; row < i + cell.rowspan; row++) {
-              for(let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
+          if (cell.colspan > 1 || cell.rowspan > 1) {
+            for (let row = i; row < i + cell.rowspan; row++) {
+              for (let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
                 hideCells.push(`${row}_${col}`)
               }
             }
@@ -189,13 +189,13 @@ export default defineComponent({
     })
 
     const selectedCells = computed(() => {
-      if(!startCell.value.length) return []
+      if (!startCell.value.length) return []
       const [startX, startY] = startCell.value
 
-      if(!endCell.value.length) return [`${startX}_${startY}`]
+      if (!endCell.value.length) return [`${startX}_${startY}`]
       const [endX, endY] = endCell.value
 
-      if(startX === endX && startY === endY) return [`${startX}_${startY}`]
+      if (startX === endX && startY === endY) return [`${startX}_${startY}`]
 
       const selectedCells = []
 
@@ -204,10 +204,10 @@ export default defineComponent({
       const maxX = Math.max(startX, endX)
       const maxY = Math.max(startY, endY)
 
-      for(let i = 0; i < tableCells.value.length; i++) {
+      for (let i = 0; i < tableCells.value.length; i++) {
         const rowCells = tableCells.value[i]
-        for(let j = 0; j < rowCells.length; j++) {
-          if(i >= minX && i <= maxX && j >= minY && j <= maxY) selectedCells.push(`${i}_${j}`)
+        for (let j = 0; j < rowCells.length; j++) {
+          if (i >= minX && i <= maxX && j >= minY && j <= maxY) selectedCells.push(`${i}_${j}`)
         }
       }
       return selectedCells
@@ -218,18 +218,18 @@ export default defineComponent({
     })
 
     const activedCell = computed(() => {
-      if(selectedCells.value.length > 1) return null
+      if (selectedCells.value.length > 1) return null
       return selectedCells.value[0]
     })
 
     const selectedRange = computed(() => {
-      if(!startCell.value.length) return null
+      if (!startCell.value.length) return null
       const [startX, startY] = startCell.value
 
-      if(!endCell.value.length) return { row: [startX, startX], col: [startY, startY] }
+      if (!endCell.value.length) return { row: [startX, startX], col: [startY, startY] }
       const [endX, endY] = endCell.value
 
-      if(startX === endX && startY === endY) return { row: [startX, startX], col: [startY, startY] }
+      if (startX === endX && startY === endY) return { row: [startX, startX], col: [startY, startY] }
 
       const minX = Math.min(startX, endX)
       const minY = Math.min(startY, endY)
@@ -245,7 +245,7 @@ export default defineComponent({
     const handleMouseup = () => isStartSelect.value = false
 
     const handleCellMousedown = (e: MouseEvent, rowIndex: number, colIndex: number) => {
-      if(e.button === 0) {
+      if (e.button === 0) {
         endCell.value = []
         isStartSelect.value = true
         startCell.value = [rowIndex, colIndex]
@@ -253,7 +253,7 @@ export default defineComponent({
     }
 
     const handleCellMouseenter = (rowIndex: number, colIndex: number) => {
-      if(!isStartSelect.value) return
+      if (!isStartSelect.value) return
       endCell.value = [rowIndex, colIndex]
     }
 
@@ -290,13 +290,13 @@ export default defineComponent({
 
       const targetCells = tableCells.value[rowIndex]
       const hideCellsPos = []
-      for(let i = 0; i < targetCells.length; i++) {
-        if(isHideCell(rowIndex, i)) hideCellsPos.push(i)
+      for (let i = 0; i < targetCells.length; i++) {
+        if (isHideCell(rowIndex, i)) hideCellsPos.push(i)
       }
       
-      for(const pos of hideCellsPos) {
-        for(let i = rowIndex; i >= 0; i--) {
-          if(!isHideCell(i, pos)) {
+      for (const pos of hideCellsPos) {
+        for (let i = rowIndex; i >= 0; i--) {
+          if (!isHideCell(i, pos)) {
             _tableCells[i][pos].rowspan = _tableCells[i][pos].rowspan - 1
             break
           }
@@ -311,13 +311,13 @@ export default defineComponent({
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
       const hideCellsPos = []
-      for(let i = 0; i < tableCells.value.length; i++) {
-        if(isHideCell(i, colIndex)) hideCellsPos.push(i)
+      for (let i = 0; i < tableCells.value.length; i++) {
+        if (isHideCell(i, colIndex)) hideCellsPos.push(i)
       }
 
-      for(const pos of hideCellsPos) {
-        for(let i = colIndex; i >= 0; i--) {
-          if(!isHideCell(pos, i)) {
+      for (const pos of hideCellsPos) {
+        for (let i = colIndex; i >= 0; i--) {
+          if (!isHideCell(pos, i)) {
             _tableCells[pos][i].colspan = _tableCells[pos][i].colspan - 1
             break
           }
@@ -336,7 +336,7 @@ export default defineComponent({
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
       const rowCells: TableCell[] = []
-      for(let i = 0; i < _tableCells[0].length; i++) {
+      for (let i = 0; i < _tableCells[0].length; i++) {
         rowCells.push({
           colspan: 1,
           rowspan: 1,
@@ -401,7 +401,7 @@ export default defineComponent({
       const minWidth = 50
 
       document.onmousemove = e => {
-        if(!isMouseDown) return
+        if (!isMouseDown) return
         
         const moveX = (e.pageX - startPageX) / canvasScale.value
         const width = originWidth + moveX < minWidth ? minWidth : Math.round(originWidth + moveX)
@@ -420,9 +420,9 @@ export default defineComponent({
     const clearSelectedCellText = () => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
-      for(let i = 0; i < _tableCells.length; i++) {
-        for(let j = 0; j < _tableCells[i].length; j++) {
-          if(selectedCells.value.includes(`${i}_${j}`)) {
+      for (let i = 0; i < _tableCells.length; i++) {
+        for (let j = 0; j < _tableCells[i].length; j++) {
+          if (selectedCells.value.includes(`${i}_${j}`)) {
             _tableCells[i][j].text = ''
           }
         }
@@ -432,9 +432,9 @@ export default defineComponent({
 
     const tabActiveCell = () => {
       const getNextCell = (i: number, j: number): [number, number] | null => {
-        if(!tableCells.value[i]) return null
-        if(!tableCells.value[i][j]) return getNextCell(i + 1, 0)
-        if(isHideCell(i, j)) return getNextCell(i, j + 1)
+        if (!tableCells.value[i]) return null
+        if (!tableCells.value[i][j]) return getNextCell(i + 1, 0)
+        if (isHideCell(i, j)) return getNextCell(i, j + 1)
         return [i, j]
       }
 
@@ -444,7 +444,7 @@ export default defineComponent({
       const nextCol = startCell.value[1] + 1
 
       const nextCell = getNextCell(nextRow, nextCol)
-      if(!nextCell) {
+      if (!nextCell) {
         insertRow(nextRow + 1)
         startCell.value = [nextRow + 1, 0]
       }
@@ -452,41 +452,41 @@ export default defineComponent({
 
       nextTick(() => {
         const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
-        if(textRef) textRef.focus()
+        if (textRef) textRef.focus()
       })
     }
 
     const keydownListener = (e: KeyboardEvent) => {
-      if(!props.editable || !selectedCells.value.length) return
+      if (!props.editable || !selectedCells.value.length) return
 
       const key = e.key.toUpperCase()
-      if(selectedCells.value.length < 2) {
-        if(key === KEYS.TAB) {
+      if (selectedCells.value.length < 2) {
+        if (key === KEYS.TAB) {
           e.preventDefault()
           tabActiveCell()
         }
-        if(e.ctrlKey && key === KEYS.UP) {
+        if (e.ctrlKey && key === KEYS.UP) {
           e.preventDefault()
           const rowIndex = +selectedCells.value[0].split('_')[0]
           insertRow(rowIndex)
         }
-        if(e.ctrlKey && key === KEYS.DOWN) {
+        if (e.ctrlKey && key === KEYS.DOWN) {
           e.preventDefault()
           const rowIndex = +selectedCells.value[0].split('_')[0]
           insertRow(rowIndex + 1)
         }
-        if(e.ctrlKey && key === KEYS.LEFT) {
+        if (e.ctrlKey && key === KEYS.LEFT) {
           e.preventDefault()
           const colIndex = +selectedCells.value[0].split('_')[1]
           insertCol(colIndex)
         }
-        if(e.ctrlKey && key === KEYS.RIGHT) {
+        if (e.ctrlKey && key === KEYS.RIGHT) {
           e.preventDefault()
           const colIndex = +selectedCells.value[0].split('_')[1]
           insertCol(colIndex + 1)
         }
       }
-      else if(key === KEYS.DELETE) {
+      else if (key === KEYS.DELETE) {
         clearSelectedCellText()
       }
     }
@@ -499,7 +499,7 @@ export default defineComponent({
     })
 
     const getTextStyle = (style?: TableCellStyle) => {
-      if(!style) return {}
+      if (!style) return {}
       const {
         bold,
         em,
@@ -524,20 +524,20 @@ export default defineComponent({
       }
     }
 
-    const handleInput = debounce(function() {
+    const handleInput = debounce(function () {
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
     const getEffectiveTableCells = () => {
       const effectiveTableCells = []
 
-      for(let i = 0; i < tableCells.value.length; i++) {
+      for (let i = 0; i < tableCells.value.length; i++) {
         const rowCells = tableCells.value[i]
         const _rowCells = []
-        for(let j = 0; j < rowCells.length; j++) {
-          if(!isHideCell(i, j)) _rowCells.push(rowCells[j])
+        for (let j = 0; j < rowCells.length; j++) {
+          if (!isHideCell(i, j)) _rowCells.push(rowCells[j])
         }
-        if(_rowCells.length) effectiveTableCells.push(_rowCells)
+        if (_rowCells.length) effectiveTableCells.push(_rowCells)
       }
 
       return effectiveTableCells
@@ -566,7 +566,7 @@ export default defineComponent({
       const rowIndex = +cellIndex.split('_')[0]
       const colIndex = +cellIndex.split('_')[1]
 
-      if(!selectedCells.value.includes(`${rowIndex}_${colIndex}`)) {
+      if (!selectedCells.value.includes(`${rowIndex}_${colIndex}`)) {
         startCell.value = [rowIndex, colIndex]
         endCell.value = []
       }

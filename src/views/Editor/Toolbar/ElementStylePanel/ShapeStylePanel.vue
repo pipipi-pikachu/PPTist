@@ -105,7 +105,7 @@ export default defineComponent({
     const fillType = ref('fill')
 
     watch(handleElement, () => {
-      if(!handleElement.value || handleElement.value.type !== 'shape') return
+      if (!handleElement.value || handleElement.value.type !== 'shape') return
       fill.value = handleElement.value.fill || '#000'
 
       gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, color: [fill.value, '#fff'] }
@@ -116,7 +116,7 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateFillType = (type: 'gradient' | 'fill') => {
-      if(type === 'fill') {
+      if (type === 'fill') {
         store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
           id: handleElement.value.id,
           propName: 'gradient',

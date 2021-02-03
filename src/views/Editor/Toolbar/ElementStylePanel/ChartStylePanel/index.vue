@@ -136,10 +136,10 @@ export default defineComponent({
     const donut = ref(false)
 
     watch(handleElement, () => {
-      if(!handleElement.value || handleElement.value.type !== 'chart') return
+      if (!handleElement.value || handleElement.value.type !== 'chart') return
       fill.value = handleElement.value.fill || '#000'
 
-      if(handleElement.value.options) {
+      if (handleElement.value.options) {
         const {
           lineSmooth: _lineSmooth,
           showLine: _showLine,
@@ -148,11 +148,11 @@ export default defineComponent({
           donut: _donut,
         } = handleElement.value.options
 
-        if(_lineSmooth !== undefined) lineSmooth.value = _lineSmooth
-        if(_showLine !== undefined) showLine.value = _showLine
-        if(_showArea !== undefined) showArea.value = _showArea
-        if(_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
-        if(_donut !== undefined) donut.value = _donut
+        if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth
+        if (_showLine !== undefined) showLine.value = _showLine
+        if (_showArea !== undefined) showArea.value = _showArea
+        if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
+        if (_donut !== undefined) donut.value = _donut
       }
 
       themeColor.value = handleElement.value.themeColor

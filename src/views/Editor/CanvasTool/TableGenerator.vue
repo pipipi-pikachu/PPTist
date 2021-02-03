@@ -65,14 +65,14 @@ export default defineComponent({
     const isCustom = ref(false)
 
     const handleClickTable = () => {
-      if(!endCell.value.length) return
+      if (!endCell.value.length) return
       const [row, col] = endCell.value
       emit('insert', { row, col })
     }
 
     const insertCustomTable = () => {
-      if(customRow.value < 1 || customRow.value > 20) return message.warning('行数/列数必须在0~20之间！')
-      if(customCol.value < 1 || customCol.value > 20) return message.warning('行数/列数必须在0~20之间！')
+      if (customRow.value < 1 || customRow.value > 20) return message.warning('行数/列数必须在0~20之间！')
+      if (customCol.value < 1 || customCol.value > 20) return message.warning('行数/列数必须在0~20之间！')
       emit('insert', { row: customRow.value, col: customCol.value })
       isCustom.value = false
     }

@@ -16,7 +16,7 @@ export default () => {
   const { deleteElement } = useDeleteElement()
 
   const copyElement = () => {
-    if(!activeElementIdList.value.length) return
+    if (!activeElementIdList.value.length) return
 
     const text = encrypt(JSON.stringify({
       type: 'elements',

@@ -23,14 +23,14 @@ export default defineComponent({
   setup(props, { emit }) {
     const val = computed(() => {
       let _hex = ''
-      if(props.value.a < 1) _hex = tinycolor(props.value).toHex8String().toUpperCase()
+      if (props.value.a < 1) _hex = tinycolor(props.value).toHex8String().toUpperCase()
       else _hex = tinycolor(props.value).toHexString().toUpperCase()
       return _hex.replace('#', '')
     })
 
     const handleInput = (e: InputEvent) => {
       const value = (e.target as HTMLInputElement).value
-      if(value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
+      if (value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
     }
 
     return {

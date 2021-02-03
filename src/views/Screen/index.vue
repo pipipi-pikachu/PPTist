@@ -101,11 +101,11 @@ export default defineComponent({
       const winHeight = document.body.clientHeight
       let width, height
 
-      if(winHeight / winWidth === VIEWPORT_ASPECT_RATIO) {
+      if (winHeight / winWidth === VIEWPORT_ASPECT_RATIO) {
         width = winWidth
         height = winHeight
       }
-      else if(winHeight / winWidth > VIEWPORT_ASPECT_RATIO) {
+      else if (winHeight / winWidth > VIEWPORT_ASPECT_RATIO) {
         width = winWidth
         height = winWidth * VIEWPORT_ASPECT_RATIO
       }
@@ -121,7 +121,7 @@ export default defineComponent({
 
     const windowResizeListener = () => {
       setSlideContentSize()
-      if(!isFullscreen()) exitScreening()
+      if (!isFullscreen()) exitScreening()
     }
 
     const animationIndex = ref(0)
@@ -133,7 +133,7 @@ export default defineComponent({
       animationIndex.value += 1
 
       const elRef = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-      if(elRef) {
+      if (elRef) {
         const animationName = `${prefix}${animation.type}`
         elRef.classList.add(`${prefix}animated`, animationName)
 
@@ -145,20 +145,20 @@ export default defineComponent({
     }
 
     const execPrev = () => {
-      if(animations.value.length && animationIndex.value > 0) {
+      if (animations.value.length && animationIndex.value > 0) {
         animationIndex.value -= 1
       }
-      else if(slideIndex.value > 0) {
+      else if (slideIndex.value > 0) {
         store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
         const lastIndex = animations.value ? animations.value.length : 0
         animationIndex.value = lastIndex
       }
     }
     const execNext = () => {
-      if(animations.value.length && animationIndex.value < animations.value.length) {
+      if (animations.value.length && animationIndex.value < animations.value.length) {
         runAnimation()
       }
-      else if(slideIndex.value < slides.value.length - 1) {
+      else if (slideIndex.value < slides.value.length - 1) {
         store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
         animationIndex.value = 0
       }
@@ -166,8 +166,8 @@ export default defineComponent({
 
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
-      if(key === KEYS.UP || key === KEYS.LEFT) execPrev()
-      else if(
+      if (key === KEYS.UP || key === KEYS.LEFT) execPrev()
+      else if (
         key === KEYS.DOWN || 
         key === KEYS.RIGHT ||
         key === KEYS.SPACE || 
@@ -175,9 +175,9 @@ export default defineComponent({
       ) execNext()
     }
 
-    const mousewheelListener = throttle(function(e: WheelEvent) {
-      if(e.deltaY < 0) execPrev()
-      else if(e.deltaY > 0) execNext()
+    const mousewheelListener = throttle(function (e: WheelEvent) {
+      if (e.deltaY < 0) execPrev()
+      else if (e.deltaY > 0) execNext()
     }, 500, { leading: true, trailing: false })
 
     onMounted(() => {

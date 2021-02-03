@@ -91,7 +91,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
   const bStep = (_endColor.b - _startColor.b) / step
   const gradientColorArr = []
 
-  for(let i = 0; i < step; i++) {
+  for (let i = 0; i < step; i++) {
     const gradientColor = tinycolor({
       r: _startColor.r + rStep * i,
       g: _startColor.g + gStep * i,
@@ -104,7 +104,7 @@ const gradient = (startColor: string, endColor: string, step: number) => {
 
 const getPresetColors = () => {
   const presetColors = []
-  for(const color of presetColorConfig) {
+  for (const color of presetColorConfig) {
     presetColors.push(gradient(color[1], color[0], 5))
   }
   return presetColors
@@ -151,7 +151,7 @@ export default defineComponent({
     }
 
     const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
-      if('h' in value) {
+      if ('h' in value) {
         hue.value = value.h
         color.value = tinycolor(value).toRgb()
       }

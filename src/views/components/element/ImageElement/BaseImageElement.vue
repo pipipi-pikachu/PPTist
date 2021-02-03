@@ -82,7 +82,7 @@ export default defineComponent({
   },
   setup(props) {
     const imgPosition = computed(() => {
-      if(!props.elementInfo || !props.elementInfo.clip) {
+      if (!props.elementInfo || !props.elementInfo.clip) {
         return {
           top: '0',
           left: '0',
@@ -107,27 +107,27 @@ export default defineComponent({
     })
 
     const clipShape = computed(() => {
-      if(!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
+      if (!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
       const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
 
       return CLIPPATHS[shape]
     })
 
     const filter = computed(() => {
-      if(!props.elementInfo.filters) return ''
+      if (!props.elementInfo.filters) return ''
       let filter = ''
-      for(const key of Object.keys(props.elementInfo.filters)) {
+      for (const key of Object.keys(props.elementInfo.filters)) {
         filter += `${key}(${props.elementInfo.filters[key]}) `
       }
       return filter
     })
 
     const flip = computed(() => {
-      if(!props.elementInfo.flip) return ''
+      if (!props.elementInfo.flip) return ''
       const { x, y } = props.elementInfo.flip
-      if(x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
-      else if(x) return `rotateX(${x}deg)`
-      else if(y) return `rotateY(${y}deg)`
+      if (x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
+      else if (x) return `rotateX(${x}deg)`
+      else if (y) return `rotateY(${y}deg)`
       return ''
     })
 

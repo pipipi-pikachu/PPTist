@@ -16,20 +16,20 @@ export const toggleList = (listType: NodeType, itemType: NodeType) => {
     const { $from, $to } = selection
     const range = $from.blockRange($to)
 
-    if(!range) return false
+    if (!range) return false
 
     const parentList = findParentNode((node: Node) => isList(node, schema))(selection)
 
-    if(range.depth >= 1 && parentList && range.depth - parentList.depth <= 1) {
-      if(parentList.node.type === listType) {
+    if (range.depth >= 1 && parentList && range.depth - parentList.depth <= 1) {
+      if (parentList.node.type === listType) {
         return liftListItem(itemType)(state, dispatch)
       }
 
-      if(isList(parentList.node, schema) && listType.validContent(parentList.node.content)) {
+      if (isList(parentList.node, schema) && listType.validContent(parentList.node.content)) {
         const { tr } = state
         tr.setNodeMarkup(parentList.pos, listType)
 
-        if(dispatch) dispatch(tr)
+        if (dispatch) dispatch(tr)
 
         return false
       }

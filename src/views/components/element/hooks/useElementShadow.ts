@@ -5,7 +5,7 @@ export default (shadow: Ref<PPTElementShadow | undefined>) => {
   const shadowStyle = ref('')
 
   watchEffect(() => {
-    if(shadow.value) {
+    if (shadow.value) {
       const { h, v, blur, color } = shadow.value
       shadowStyle.value = `${h}px ${v}px ${blur}px ${color}`
     }

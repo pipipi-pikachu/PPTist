@@ -10,8 +10,8 @@ export default () => {
     const step = 5
     const max = 120
     const min = 60
-    if(command === '+' && percentage <= max) percentage += step
-    if(command === '-' && percentage >= min) percentage -= step
+    if (command === '+' && percentage <= max) percentage += step
+    if (command === '-' && percentage >= min) percentage -= step
     
     store.commit(MutationTypes.SET_CANVAS_PERCENTAGE, percentage)
   }

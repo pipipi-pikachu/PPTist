@@ -47,7 +47,7 @@ export default defineComponent({
       y: 0,
     })
     onMounted(() => {
-      if(!selectionRef.value) return
+      if (!selectionRef.value) return
       const { x, y } = selectionRef.value.getBoundingClientRect()
       offset.x = x
       offset.y = y
@@ -61,23 +61,23 @@ export default defineComponent({
       start.value = [startPageX, startPageY]
 
       document.onmousemove = e => {
-        if(!creatingElement.value || !isMouseDown) return
+        if (!creatingElement.value || !isMouseDown) return
 
         let currentPageX = e.pageX
         let currentPageY = e.pageY
 
-        if(ctrlOrShiftKeyActive.value) {
+        if (ctrlOrShiftKeyActive.value) {
           const moveX = currentPageX - startPageX
           const moveY = currentPageY - startPageY
 
           const absX = Math.abs(moveX)
           const absY = Math.abs(moveY)
 
-          if(creatingElement.value.type === 'shape') {
+          if (creatingElement.value.type === 'shape') {
             // moveX和moveY一正一负
             const isOpposite = (moveY > 0 && moveX < 0) || (moveY < 0 && moveX > 0)
 
-            if(absX > absY) {
+            if (absX > absY) {
               currentPageY = isOpposite ? startPageY - moveX : startPageY + moveX
             }
             else {
@@ -85,8 +85,8 @@ export default defineComponent({
             }
           }
 
-          else if(creatingElement.value.type === 'line') {
-            if(absX > absY) currentPageY = startPageY
+          else if (creatingElement.value.type === 'line') {
+            if (absX > absY) currentPageY = startPageY
             else currentPageX = startPageX
           }
         }
@@ -104,7 +104,7 @@ export default defineComponent({
 
         const minSize = 30
 
-        if(Math.abs(endPageX - startPageX) >= minSize || Math.abs(endPageY - startPageY) >= minSize) {
+        if (Math.abs(endPageX - startPageX) >= minSize || Math.abs(endPageY - startPageY) >= minSize) {
           emit('created', {
             start: start.value,
             end: end.value,
@@ -115,8 +115,8 @@ export default defineComponent({
     }
 
     const lineData = computed(() => {
-      if(!start.value || !end.value) return null
-      if(!creatingElement.value || creatingElement.value.type !== 'line') return null
+      if (!start.value || !end.value) return null
+      if (!creatingElement.value || creatingElement.value.type !== 'line') return null
 
       const [_startX, _startY] = start.value
       const [_endX, _endY] = end.value
@@ -147,7 +147,7 @@ export default defineComponent({
     })
 
     const position = computed(() => {
-      if(!start.value || !end.value) return {}
+      if (!start.value || !end.value) return {}
 
       const [startX, startY] = start.value
       const [endX, endY] = end.value

@@ -8,9 +8,9 @@ export const getters: GetterTree<State, State> = {
 
   currentSlideAnimations(state) {
     const currentSlide = state.slides[state.slideIndex]
-    if(!currentSlide) return null
+    if (!currentSlide) return null
     const animations = currentSlide.animations
-    if(!animations) return null
+    if (!animations) return null
 
     const els = currentSlide.elements
     const elIds = els.map(el => el.id)
@@ -19,13 +19,13 @@ export const getters: GetterTree<State, State> = {
 
   activeElementList(state) {
     const currentSlide = state.slides[state.slideIndex]
-    if(!currentSlide || !currentSlide.elements) return []
+    if (!currentSlide || !currentSlide.elements) return []
     return currentSlide.elements.filter(element => state.activeElementIdList.includes(element.id))
   },
 
   handleElement(state) {
     const currentSlide = state.slides[state.slideIndex]
-    if(!currentSlide || !currentSlide.elements) return null
+    if (!currentSlide || !currentSlide.elements) return null
     return currentSlide.elements.find(element => state.handleElementId === element.id) || null
   },
 

@@ -76,7 +76,7 @@ export default defineComponent({
     }
 
     const renderChart = () => {
-      if(!chartRef.value) return
+      if (!chartRef.value) return
 
       const type = upperFirst(props.type)
       const { data, options } = getDataAndOptions()
@@ -84,7 +84,7 @@ export default defineComponent({
     }
 
     const updateChart = () => {
-      if(!chart) {
+      if (!chart) {
         renderChart()
         return
       }
@@ -102,13 +102,13 @@ export default defineComponent({
     onMounted(renderChart)
 
     const updateTheme = () => {
-      if(!chartRef.value) return
+      if (!chartRef.value) return
 
       const hsla = tinycolor(props.themeColor).toHsl()
 
-      for(let i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         let h = hsla.h + i * 36
-        if(h > 360) h = h - 360
+        if (h > 360) h = h - 360
 
         const _hsla = {
           ...hsla,
@@ -117,7 +117,7 @@ export default defineComponent({
         chartRef.value.style.setProperty(`--theme-color-${i + 1}`, tinycolor(_hsla).toRgbString())
       }
 
-      if(props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
+      if (props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
     }
 
     watch([

@@ -26,9 +26,9 @@ export default (elementList: Ref<PPTElement[]>) => {
     const adsorptionPoints: AdsorptionPoint[] = []
 
     // 获取全部非线条且未旋转元素的8个点作为吸附点
-    for(let i = 0; i < elementList.value.length; i++) {
+    for (let i = 0; i < elementList.value.length; i++) {
       const _element = elementList.value[i]
-      if(_element.type === 'line' || ('rotate' in _element && _element.rotate)) continue
+      if (_element.type === 'line' || ('rotate' in _element && _element.rotate)) continue
 
       const left = _element.left
       const top = _element.top
@@ -63,7 +63,7 @@ export default (elementList: Ref<PPTElement[]>) => {
     }
 
     document.onmousemove = e => {
-      if(!isMouseDown) return
+      if (!isMouseDown) return
 
       const currentPageX = e.pageX
       const currentPageY = e.pageY
@@ -81,16 +81,16 @@ export default (elementList: Ref<PPTElement[]>) => {
       // 根据拖拽的点，选择修改起点或终点的位置
       // 两点在水平和垂直方向上有对齐吸附
       // 靠近其他元素的吸附点有对齐吸附
-      if(command === OperateLineHandlers.START) {
+      if (command === OperateLineHandlers.START) {
         startX = startX + moveX
         startY = startY + moveY
 
-        if(Math.abs(startX - endX) < sorptionRange) startX = endX
-        if(Math.abs(startY - endY) < sorptionRange) startY = endY
+        if (Math.abs(startX - endX) < sorptionRange) startX = endX
+        if (Math.abs(startY - endY) < sorptionRange) startY = endY
 
-        for(const adsorptionPoint of adsorptionPoints) {
+        for (const adsorptionPoint of adsorptionPoints) {
           const { x, y } = adsorptionPoint
-          if(Math.abs(x - startX) < sorptionRange && Math.abs(y - startY) < sorptionRange) {
+          if (Math.abs(x - startX) < sorptionRange && Math.abs(y - startY) < sorptionRange) {
             startX = x
             startY = y
             break
@@ -101,12 +101,12 @@ export default (elementList: Ref<PPTElement[]>) => {
         endX = endX + moveX
         endY = endY + moveY
 
-        if(Math.abs(startX - endX) < sorptionRange) endX = startX
-        if(Math.abs(startY - endY) < sorptionRange) endY = startY
+        if (Math.abs(startX - endX) < sorptionRange) endX = startX
+        if (Math.abs(startY - endY) < sorptionRange) endY = startY
 
-        for(const adsorptionPoint of adsorptionPoints) {
+        for (const adsorptionPoint of adsorptionPoints) {
           const { x, y } = adsorptionPoint
-          if(Math.abs(x - endX) < sorptionRange && Math.abs(y - endY) < sorptionRange) {
+          if (Math.abs(x - endX) < sorptionRange && Math.abs(y - endY) < sorptionRange) {
             endX = x
             endY = y
             break
@@ -122,18 +122,18 @@ export default (elementList: Ref<PPTElement[]>) => {
 
       const start: [number, number] = [0, 0]
       const end: [number, number] = [maxX - minX, maxY - minY]
-      if(startX > endX) {
+      if (startX > endX) {
         start[0] = maxX - minX
         end[0] = 0
       }
-      if(startY > endY) {
+      if (startY > endY) {
         start[1] = maxY - minY
         end[1] = 0
       }
 
       // 修改线条的位置和两点的坐标
       elementList.value = elementList.value.map(el => {
-        if(el.id === element.id) {
+        if (el.id === element.id) {
           return {
             ...el,
             left: minX,
@@ -155,7 +155,7 @@ export default (elementList: Ref<PPTElement[]>) => {
       const currentPageY = e.pageY
 
       // 对比原始鼠标位置，没有实际的位移不更新数据
-      if(startPageX === currentPageX && startPageY === currentPageY) return
+      if (startPageX === currentPageX && startPageY === currentPageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
       addHistorySnapshot()

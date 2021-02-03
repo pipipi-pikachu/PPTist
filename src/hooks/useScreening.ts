@@ -16,7 +16,7 @@ export default () => {
 
   const exitScreening = () => {
     store.commit(MutationTypes.SET_SCREENING, false)
-    if(isFullscreen()) exitFullscreen()
+    if (isFullscreen()) exitFullscreen()
   }
 
   return {

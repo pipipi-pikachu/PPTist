@@ -89,15 +89,15 @@ export default defineComponent({
     const hideCells = computed(() => {
       const hideCells = []
       
-      for(let i = 0; i < props.data.length; i++) {
+      for (let i = 0; i < props.data.length; i++) {
         const rowCells = props.data[i]
 
-        for(let j = 0; j < rowCells.length; j++) {
+        for (let j = 0; j < rowCells.length; j++) {
           const cell = rowCells[j]
           
-          if(cell.colspan > 1 || cell.rowspan > 1) {
-            for(let row = i; row < i + cell.rowspan; row++) {
-              for(let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
+          if (cell.colspan > 1 || cell.rowspan > 1) {
+            for (let row = i; row < i + cell.rowspan; row++) {
+              for (let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
                 hideCells.push(`${row}_${col}`)
               }
             }
@@ -109,7 +109,7 @@ export default defineComponent({
 
     const subThemeColor = ref(['', ''])
     watch(() => props.theme, () => {
-      if(props.theme) {
+      if (props.theme) {
         const rgba = tinycolor(props.theme.color).toRgb()
         const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
         const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
@@ -121,7 +121,7 @@ export default defineComponent({
     }, { immediate: true })
 
     const getTextStyle = (style?: TableCellStyle) => {
-      if(!style) return {}
+      if (!style) return {}
       const {
         bold,
         em,

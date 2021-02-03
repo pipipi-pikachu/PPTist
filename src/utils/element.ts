@@ -46,13 +46,13 @@ export const getRectRotatedRange = (element: RotatedElementData) => {
 export const getElementRange = (element: PPTElement) => {
   let minX, maxX, minY, maxY
 
-  if(element.type === 'line') {
+  if (element.type === 'line') {
     minX = element.left
     maxX = element.left + Math.max(element.start[0], element.end[0])
     minY = element.top
     maxY = element.top + Math.max(element.start[1], element.end[1])
   }
-  else if('rotate' in element && element.rotate) {
+  else if ('rotate' in element && element.rotate) {
     const { left, top, width, height, rotate } = element
     const { xRange, yRange } = getRectRotatedRange({ left, top, width, height, rotate })
     minX = xRange[0]
@@ -102,7 +102,7 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
   const uniqLines: AlignLine[] = []
   lines.forEach(line => {
     const index = uniqLines.findIndex(_line => _line.value === line.value)
-    if(index === -1) uniqLines.push(line)
+    if (index === -1) uniqLines.push(line)
     else {
       const uniqLine = uniqLines[index]
       const rangeMin = Math.min(uniqLine.range[0], line.range[0])

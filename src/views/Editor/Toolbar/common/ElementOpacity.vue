@@ -29,7 +29,7 @@ export default defineComponent({
     const opacity = ref<number>()
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if (!handleElement.value) return
       opacity.value = 'opacity' in handleElement.value && handleElement.value.opacity !== undefined ? handleElement.value.opacity : 1
     }, { deep: true, immediate: true })
 

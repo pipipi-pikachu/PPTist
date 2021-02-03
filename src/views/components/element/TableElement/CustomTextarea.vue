@@ -31,13 +31,13 @@ export default defineComponent({
     const isFocus = ref(false)
 
     watch(() => props.modelValue, () => {
-      if(isFocus.value) return
+      if (isFocus.value) return
       text.value = props.modelValue
-      if(textareaRef.value) textareaRef.value.innerHTML = props.modelValue
+      if (textareaRef.value) textareaRef.value.innerHTML = props.modelValue
     }, { immediate: true })
 
     const handleInput = () => {
-      if(!textareaRef.value) return
+      if (!textareaRef.value) return
       const text = textareaRef.value.innerHTML
       emit('update:modelValue', text)
     }
@@ -45,14 +45,14 @@ export default defineComponent({
     const handleFocus = () => {
       isFocus.value = true
 
-      if(!textareaRef.value) return
+      if (!textareaRef.value) return
       textareaRef.value.onpaste = (e: ClipboardEvent) => {
         e.preventDefault()
-        if(!e.clipboardData) return
+        if (!e.clipboardData) return
 
         const clipboardDataFirstItem = e.clipboardData.items[0]
 
-        if(clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
+        if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
           clipboardDataFirstItem.getAsString(text => emit('update:modelValue', text))
         }
       }
@@ -60,11 +60,11 @@ export default defineComponent({
 
     const handleBlur = () => {
       isFocus.value = false
-      if(textareaRef.value) textareaRef.value.onpaste = null
+      if (textareaRef.value) textareaRef.value.onpaste = null
     }
 
     onUnmounted(() => {
-      if(textareaRef.value) textareaRef.value.onpaste = null
+      if (textareaRef.value) textareaRef.value.onpaste = null
     })
 
     return {

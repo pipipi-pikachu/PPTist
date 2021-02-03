@@ -326,7 +326,7 @@ export default defineComponent({
     const wordSpace = ref<number>()
 
     watch(handleElement, () => {
-      if(!handleElement.value || handleElement.value.type !== 'text') return
+      if (!handleElement.value || handleElement.value.type !== 'text') return
 
       fill.value = handleElement.value.fill || '#000'
       lineHeight.value = handleElement.value.lineHeight || 1.5

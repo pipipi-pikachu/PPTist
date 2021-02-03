@@ -33,7 +33,7 @@ export default defineComponent({
     const top = computed(() => props.axis.y * canvasScale.value + 'px')
 
     const sizeStyle = computed(() => {
-      if(props.type === 'vertical') return { height: props.length * canvasScale.value + 'px' }
+      if (props.type === 'vertical') return { height: props.length * canvasScale.value + 'px' }
       return { width: props.length * canvasScale.value + 'px' }
     })
 

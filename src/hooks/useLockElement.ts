@@ -13,8 +13,8 @@ export default () => {
   const lockElement = () => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
   
-    for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.id)) element.lock = true
+    for (const element of newElementList) {
+      if (activeElementIdList.value.includes(element.id)) element.lock = true
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
@@ -24,15 +24,15 @@ export default () => {
   const unlockElement = (handleElement: PPTElement) => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
-    if(handleElement.groupId) {
-      for(const element of newElementList) {
-        if(element.groupId === handleElement.groupId) element.lock = false
+    if (handleElement.groupId) {
+      for (const element of newElementList) {
+        if (element.groupId === handleElement.groupId) element.lock = false
       }
       return newElementList
     }
     
-    for(const element of newElementList) {
-      if(element.id === handleElement.id) {
+    for (const element of newElementList) {
+      if (element.id === handleElement.id) {
         element.lock = false
         break
       }

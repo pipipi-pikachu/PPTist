@@ -7,9 +7,9 @@ const equalNodeType = (nodeType: NodeType, node: Node) => {
 }
 
 const findParentNodeClosestToPos = ($pos: ResolvedPos, predicate: (node: Node) => boolean) => {
-  for(let i = $pos.depth; i > 0; i--) {
+  for (let i = $pos.depth; i > 0; i--) {
     const node = $pos.node(i)
-    if(predicate(node)) {
+    if (predicate(node)) {
       return {
         pos: i > 0 ? $pos.before(i) : 0,
         start: $pos.start(i),
@@ -46,16 +46,16 @@ export const getMarkAttrs = (view: EditorView) => {
 
 export const getAttrValue = (view: EditorView, markType: string, attr: string) => {
   const marks = getMarkAttrs(view)
-  for(const mark of marks) {
-    if(mark.type.name === markType && mark.attrs[attr]) return mark.attrs[attr]
+  for (const mark of marks) {
+    if (mark.type.name === markType && mark.attrs[attr]) return mark.attrs[attr]
   }
   return null
 }
 
 export const isActiveMark = (view: EditorView, markType: string) => {
   const marks = getMarkAttrs(view)
-  for(const mark of marks) {
-    if(mark.type.name === markType) return true
+  for (const mark of marks) {
+    if (mark.type.name === markType) return true
   }
   return false
 }
@@ -67,7 +67,7 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
   let keepChecking = true
   let value = ''
   doc.nodesBetween(from, to, node => {
-    if(keepChecking && node.attrs[attr]) {
+    if (keepChecking && node.attrs[attr]) {
       keepChecking = false
       value = node.attrs[attr]
     }

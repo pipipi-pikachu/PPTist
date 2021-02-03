@@ -73,7 +73,7 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const handleSelectElement = (e: MouseEvent) => {
-      if(props.elementInfo.lock) return
+      if (props.elementInfo.lock) return
       e.stopPropagation()
 
       props.selectElement(e, props.elementInfo)
@@ -82,7 +82,7 @@ export default defineComponent({
     const handleElementId = computed(() => store.state.handleElementId)
 
     watch(handleElementId, () => {
-      if(handleElementId.value !== props.elementInfo.id) editable.value = false
+      if (handleElementId.value !== props.elementInfo.id) editable.value = false
     })
 
     watch(editable, () => {
@@ -97,9 +97,9 @@ export default defineComponent({
     const scaleElementStateListener = (state: boolean) => {
       isScaling.value = state
 
-      if(state) editable.value = false
+      if (state) editable.value = false
 
-      if(!state && realHeightCache.value !== -1) {
+      if (!state && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
@@ -115,12 +115,12 @@ export default defineComponent({
 
     const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {
       const contentRect = entries[0].contentRect
-      if(!elementRef.value) return
+      if (!elementRef.value) return
 
       const realHeight = contentRect.height
 
-      if(props.elementInfo.height !== realHeight) {
-        if(!isScaling.value) {
+      if (props.elementInfo.height !== realHeight) {
+        if (!isScaling.value) {
           store.commit(MutationTypes.UPDATE_ELEMENT, {
             id: props.elementInfo.id,
             props: { height: realHeight },
@@ -133,10 +133,10 @@ export default defineComponent({
     const resizeObserver = new ResizeObserver(updateTableElementHeight)
 
     onMounted(() => {
-      if(elementRef.value) resizeObserver.observe(elementRef.value)
+      if (elementRef.value) resizeObserver.observe(elementRef.value)
     })
     onUnmounted(() => {
-      if(elementRef.value) resizeObserver.unobserve(elementRef.value)
+      if (elementRef.value) resizeObserver.unobserve(elementRef.value)
     })
 
     const updateTableCells = (data: TableCell[][]) => {
@@ -162,7 +162,7 @@ export default defineComponent({
     }
 
     const startEdit = () => {
-      if(!props.elementInfo.lock) editable.value = true
+      if (!props.elementInfo.lock) editable.value = true
     }
 
     return {

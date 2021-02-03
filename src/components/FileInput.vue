@@ -27,13 +27,13 @@ export default defineComponent({
     const inputRef = ref<HTMLInputElement>()
 
     const handleClick = () => {
-      if(!inputRef.value) return
+      if (!inputRef.value) return
       inputRef.value.value = ''
       inputRef.value.click()
     }
     const handleChange = (e: InputEvent) => {
       const files = (e.target as HTMLInputElement).files
-      if(files) emit('change', files)
+      if (files) emit('change', files)
     }
 
     return {

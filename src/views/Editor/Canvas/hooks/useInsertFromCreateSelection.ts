@@ -11,7 +11,7 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
   const formatCreateSelection = (selectionData: CreateElementSelectionData) => {
     const { start, end } = selectionData
 
-    if(!viewportRef.value) return
+    if (!viewportRef.value) return
     const viewportRect = viewportRef.value.getBoundingClientRect()
 
     const [startX, startY] = start
@@ -32,7 +32,7 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
   const formatCreateSelectionForLine = (selectionData: CreateElementSelectionData) => {
     const { start, end } = selectionData
 
-    if(!viewportRef.value) return
+    if (!viewportRef.value) return
     const viewportRect = viewportRef.value.getBoundingClientRect()
 
     const [startX, startY] = start
@@ -67,18 +67,18 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
   const { createTextElement, createShapeElement, createLineElement } = useCreateElement()
 
   const insertElementFromCreateSelection = (selectionData: CreateElementSelectionData) => {
-    if(!creatingElement.value) return
+    if (!creatingElement.value) return
 
     const type = creatingElement.value.type
-    if(type === 'text') {
+    if (type === 'text') {
       const position = formatCreateSelection(selectionData)
       position && createTextElement(position)
     }
-    else if(type === 'shape') {
+    else if (type === 'shape') {
       const position = formatCreateSelection(selectionData)
       position && createShapeElement(position, (creatingElement.value as CreatingShapeElement).data)
     }
-    else if(type === 'line') {
+    else if (type === 'line') {
       const position = formatCreateSelectionForLine(selectionData)
       position && createLineElement(position, (creatingElement.value as CreatingLineElement).data)
     }

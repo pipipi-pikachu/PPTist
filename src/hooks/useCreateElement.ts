@@ -39,11 +39,11 @@ export default () => {
     getImageSize(src).then(({ width, height }) => {
       const scale = height / width
   
-      if(scale < VIEWPORT_ASPECT_RATIO && width > VIEWPORT_SIZE) {
+      if (scale < VIEWPORT_ASPECT_RATIO && width > VIEWPORT_SIZE) {
         width = VIEWPORT_SIZE
         height = width * scale
       }
-      else if(height > VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO) {
+      else if (height > VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO) {
         height = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
         width = height / scale
       }

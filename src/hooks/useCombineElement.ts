@@ -14,14 +14,14 @@ export default () => {
 
   // 组合元素（为当前所有激活元素添加一个相同的groupId）
   const combineElements = () => {
-    if(!activeElementList.value.length) return
+    if (!activeElementList.value.length) return
 
     let newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     const groupId = createRandomCode()
 
     const combineElementList: PPTElement[] = []
-    for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.id)) {
+    for (const element of newElementList) {
+      if (activeElementIdList.value.includes(element.id)) {
         element.groupId = groupId
         combineElementList.push(element)
       }
@@ -41,13 +41,13 @@ export default () => {
 
   // 取消组合元素（移除所有被激活元素的groupId）
   const uncombineElements = () => {
-    if(!activeElementList.value.length) return
+    if (!activeElementList.value.length) return
     const hasElementInGroup = activeElementList.value.some(item => item.groupId)
-    if(!hasElementInGroup) return
+    if (!hasElementInGroup) return
     
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
-    for(const element of newElementList) {
-      if(activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
+    for (const element of newElementList) {
+      if (activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     addHistorySnapshot()

@@ -206,7 +206,7 @@ export default defineComponent({
     const availableFonts = computed(() => store.state.availableFonts)
 
     const background = computed(() => {
-      if(!currentSlide.value.background) {
+      if (!currentSlide.value.background) {
         return {
           type: 'solid',
           value: '#fff',
@@ -218,7 +218,7 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
-      if(type === 'solid') {
+      if (type === 'solid') {
         const newBackground: SlideBackground = {
           ...background.value,
           type: 'solid',
@@ -226,7 +226,7 @@ export default defineComponent({
         }
         store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
       }
-      else if(type === 'image') {
+      else if (type === 'image') {
         const newBackground: SlideBackground = {
           ...background.value,
           type: 'image',
@@ -255,7 +255,7 @@ export default defineComponent({
 
     const uploadBackgroundImage = (files: File[]) => {
       const imageFile = files[0]
-      if(!imageFile) return
+      if (!imageFile) return
       getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
     }
 
@@ -278,8 +278,8 @@ export default defineComponent({
       const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
       const { themeColor, backgroundColor, fontColor } = theme.value
 
-      for(const slide of newSlides) {
-        if(!slide.background || slide.background.type !== 'image') {
+      for (const slide of newSlides) {
+        if (!slide.background || slide.background.type !== 'image') {
           slide.background = {
             ...slide.background,
             type: 'solid',
@@ -288,16 +288,16 @@ export default defineComponent({
         }
 
         const elements = slide.elements
-        for(const el of elements) {
-          if(el.type === 'shape') el.fill = themeColor
-          else if(el.type === 'line') el.color = themeColor
-          else if(el.type === 'text') {
-            if(el.fill) el.fill = themeColor
+        for (const el of elements) {
+          if (el.type === 'shape') el.fill = themeColor
+          else if (el.type === 'line') el.color = themeColor
+          else if (el.type === 'text') {
+            if (el.fill) el.fill = themeColor
           }
-          else if(el.type === 'table') {
-            if(el.theme) el.theme.color = themeColor
+          else if (el.type === 'table') {
+            if (el.theme) el.theme.color = themeColor
           }
-          else if(el.type === 'chart') {
+          else if (el.type === 'chart') {
             el.themeColor = themeColor
             el.gridColor = fontColor
           }

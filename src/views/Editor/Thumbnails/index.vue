@@ -66,20 +66,20 @@ export default defineComponent({
     const changSlideIndex = (index: number) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
 
-      if(slideIndex.value === index) return
+      if (slideIndex.value === index) return
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
     }
 
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
 
     const setThumbnailsFocus = (focus: boolean) => {
-      if(thumbnailsFocus.value === focus) return
+      if (thumbnailsFocus.value === focus) return
       store.commit(MutationTypes.SET_THUMBNAILS_FOCUS, focus)
     }
 
     const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
       const { newIndex, oldIndex } = eventData
-      if(oldIndex === newIndex) return
+      if (oldIndex === newIndex) return
 
       const _slides = JSON.parse(JSON.stringify(slides.value))
       const _slide = _slides[oldIndex]

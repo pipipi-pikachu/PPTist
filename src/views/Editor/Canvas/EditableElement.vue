@@ -84,7 +84,7 @@ export default defineComponent({
     const { copyElement, cutElement } = useCopyAndPasteElement()
 
     const contextmenus = (): ContextmenuItem[] => {
-      if(props.elementInfo.lock) {
+      if (props.elementInfo.lock) {
         return [{
           text: '解锁', 
           handler: () => unlockElement(props.elementInfo),

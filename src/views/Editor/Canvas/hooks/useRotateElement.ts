@@ -31,11 +31,11 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     const centerX = elLeft + elWidth / 2
     const centerY = elTop + elHeight / 2
 
-    if(!viewportRef.value) return
+    if (!viewportRef.value) return
     const viewportRect = viewportRef.value.getBoundingClientRect()
 
     document.onmousemove = e => {
-      if(!isMouseDown) return
+      if (!isMouseDown) return
       
       // 计算鼠标基于旋转中心的坐标
       const mouseX = (e.pageX - viewportRect.left) / canvasScale.value
@@ -47,15 +47,15 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
       // 45°的倍数位置有吸附效果
       const sorptionRange = 5
-      if( Math.abs(angle) <= sorptionRange ) angle = 0
-      else if( angle > 0 && Math.abs(angle - 45) <= sorptionRange ) angle -= (angle - 45)
-      else if( angle < 0 && Math.abs(angle + 45) <= sorptionRange ) angle -= (angle + 45)
-      else if( angle > 0 && Math.abs(angle - 90) <= sorptionRange ) angle -= (angle - 90)
-      else if( angle < 0 && Math.abs(angle + 90) <= sorptionRange ) angle -= (angle + 90)
-      else if( angle > 0 && Math.abs(angle - 135) <= sorptionRange ) angle -= (angle - 135)
-      else if( angle < 0 && Math.abs(angle + 135) <= sorptionRange ) angle -= (angle + 135)
-      else if( angle > 0 && Math.abs(angle - 180) <= sorptionRange ) angle -= (angle - 180)
-      else if( angle < 0 && Math.abs(angle + 180) <= sorptionRange ) angle -= (angle + 180)
+      if ( Math.abs(angle) <= sorptionRange ) angle = 0
+      else if ( angle > 0 && Math.abs(angle - 45) <= sorptionRange ) angle -= (angle - 45)
+      else if ( angle < 0 && Math.abs(angle + 45) <= sorptionRange ) angle -= (angle + 45)
+      else if ( angle > 0 && Math.abs(angle - 90) <= sorptionRange ) angle -= (angle - 90)
+      else if ( angle < 0 && Math.abs(angle + 90) <= sorptionRange ) angle -= (angle + 90)
+      else if ( angle > 0 && Math.abs(angle - 135) <= sorptionRange ) angle -= (angle - 135)
+      else if ( angle < 0 && Math.abs(angle + 135) <= sorptionRange ) angle -= (angle + 135)
+      else if ( angle > 0 && Math.abs(angle - 180) <= sorptionRange ) angle -= (angle - 180)
+      else if ( angle < 0 && Math.abs(angle + 180) <= sorptionRange ) angle -= (angle + 180)
 
       // 修改元素角度
       elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, rotate: angle } : el)
@@ -66,7 +66,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       document.onmousemove = null
       document.onmouseup = null
 
-      if(elOriginRotate === angle) return
+      if (elOriginRotate === angle) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
       addHistorySnapshot()

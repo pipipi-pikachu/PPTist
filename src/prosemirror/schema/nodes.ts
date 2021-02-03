@@ -43,7 +43,7 @@ const paragraph: NodeSpec = {
   toDOM: (node: Node) => {
     const { align } = node.attrs
     let style = ''
-    if(align && align !== 'left') style += `text-align: ${align};`
+    if (align && align !== 'left') style += `text-align: ${align};`
 
     return ['p', { style }, 0]
   },

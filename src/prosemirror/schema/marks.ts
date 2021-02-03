@@ -68,7 +68,7 @@ const forecolor: MarkSpec = {
   toDOM: mark => {
     const { color } = mark.attrs
     let style = ''
-    if(color) style += `color: ${color};`
+    if (color) style += `color: ${color};`
     return ['span', { style }, 0]
   },
 }
@@ -88,7 +88,7 @@ const backcolor: MarkSpec = {
   toDOM: mark => {
     const { backcolor } = mark.attrs
     let style = ''
-    if(backcolor) style += `background-color: ${backcolor};`
+    if (backcolor) style += `background-color: ${backcolor};`
     return ['span', { style }, 0]
   },
 }
@@ -108,7 +108,7 @@ const fontsize: MarkSpec = {
   toDOM: mark => {
     const { fontsize } = mark.attrs
     let style = ''
-    if(fontsize) style += `font-size: ${fontsize}`
+    if (fontsize) style += `font-size: ${fontsize}`
     return ['span', { style }, 0]
   },
 }
@@ -130,7 +130,7 @@ const fontname: MarkSpec = {
   toDOM: mark => {
     const { fontname } = mark.attrs
     let style = ''
-    if(fontname) style += `font-family: ${fontname}`
+    if (fontname) style += `font-family: ${fontname}`
     return ['span', { style }, 0]
   },
 }

@@ -9,7 +9,7 @@ export const actions: ActionTree<State, State> = {
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
     const lastSnapshot = snapshots.slice(-1)[0]
 
-    if(lastSnapshot) {
+    if (lastSnapshot) {
       db.snapshots.clear()
     }
 
@@ -27,7 +27,7 @@ export const actions: ActionTree<State, State> = {
 
     let needDeleteKeys: IndexableTypeArray = []
 
-    if(state.snapshotCursor >= 0 && state.snapshotCursor < allKeys.length - 1) {
+    if (state.snapshotCursor >= 0 && state.snapshotCursor < allKeys.length - 1) {
       needDeleteKeys = allKeys.slice(state.snapshotCursor + 1)
     }
 
@@ -39,11 +39,11 @@ export const actions: ActionTree<State, State> = {
 
     let snapshotLength = allKeys.length - needDeleteKeys.length + 1
 
-    if(snapshotLength > 20) {
+    if (snapshotLength > 20) {
       needDeleteKeys.push(allKeys[0])
       snapshotLength--
     }
-    if(snapshotLength >= 2) {
+    if (snapshotLength >= 2) {
       db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: state.slideIndex })
     }
 
@@ -54,7 +54,7 @@ export const actions: ActionTree<State, State> = {
   },
 
   async [ActionTypes.UN_DO]({ state, commit }) {
-    if(state.snapshotCursor <= 0) return
+    if (state.snapshotCursor <= 0) return
 
     const snapshotCursor = state.snapshotCursor - 1
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
@@ -68,7 +68,7 @@ export const actions: ActionTree<State, State> = {
   },
 
   async [ActionTypes.RE_DO]({ state, commit }) {
-    if(state.snapshotCursor >= state.snapshotLength - 1) return
+    if (state.snapshotCursor >= state.snapshotLength - 1) return
 
     const snapshotCursor = state.snapshotCursor + 1
     const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()

@@ -43,17 +43,17 @@ export default defineComponent({
     const alphaRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
-      if(!alphaRef.value) return
+      if (!alphaRef.value) return
       const containerWidth = alphaRef.value.clientWidth
       const xOffset = alphaRef.value.getBoundingClientRect().left + window.pageXOffset
       const left = e.pageX - xOffset
       let a
 
-      if(left < 0) a = 0
-      else if(left > containerWidth) a = 1
+      if (left < 0) a = 0
+      else if (left > containerWidth) a = 1
       else a = Math.round(left * 100 / containerWidth) / 100
 
-      if(color.value.a !== a) {
+      if (color.value.a !== a) {
         emit('colorChange', {
           r: color.value.r,
           g: color.value.g,

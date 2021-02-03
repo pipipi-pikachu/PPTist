@@ -29,7 +29,7 @@ export default defineComponent({
     const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide?.background)
 
     const gridColor = computed(() => {
-      if(!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'
+      if (!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'
       const color = background.value.color
       const rgba = tinycolor(color).toRgb()
       const newRgba = {
@@ -48,10 +48,10 @@ export default defineComponent({
       const maxY = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
 
       let path = ''
-      for(let i = 0; i <= Math.floor(maxY / gridSize); i++) {
+      for (let i = 0; i <= Math.floor(maxY / gridSize); i++) {
         path += `M0 ${i * gridSize}, L${maxX} ${i * gridSize}`
       }
-      for(let i = 0; i <= Math.floor(maxX / gridSize); i++) {
+      for (let i = 0; i <= Math.floor(maxX / gridSize); i++) {
         path += `M${i * gridSize} 0, L${i * gridSize} ${maxY}`
       }
       return path

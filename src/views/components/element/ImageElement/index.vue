@@ -114,19 +114,19 @@ export default defineComponent({
     const { shadowStyle } = useElementShadow(shadow)
 
     const handleSelectElement = (e: MouseEvent) => {
-      if(props.elementInfo.lock) return
+      if (props.elementInfo.lock) return
       e.stopPropagation()
       props.selectElement(e, props.elementInfo)
     }
     const clipShape = computed(() => {
-      if(!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
+      if (!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
       const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
 
       return CLIPPATHS[shape]
     })
 
     const imgPosition = computed(() => {
-      if(!props.elementInfo || !props.elementInfo.clip) {
+      if (!props.elementInfo || !props.elementInfo.clip) {
         return {
           top: '0',
           left: '0',
@@ -151,27 +151,27 @@ export default defineComponent({
     })
 
     const filter = computed(() => {
-      if(!props.elementInfo.filters) return ''
+      if (!props.elementInfo.filters) return ''
       let filter = ''
-      for(const key of Object.keys(props.elementInfo.filters)) {
+      for (const key of Object.keys(props.elementInfo.filters)) {
         filter += `${key}(${props.elementInfo.filters[key]}) `
       }
       return filter
     })
 
     const flip = computed(() => {
-      if(!props.elementInfo.flip) return ''
+      if (!props.elementInfo.flip) return ''
       const { x, y } = props.elementInfo.flip
-      if(x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
-      else if(x) return `rotateX(${x}deg)`
-      else if(y) return `rotateY(${y}deg)`
+      if (x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
+      else if (x) return `rotateX(${x}deg)`
+      else if (y) return `rotateY(${y}deg)`
       return ''
     })
 
     const clip = (data: ImageClipedEmitData) => {
       store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
       
-      if(!data) return
+      if (!data) return
 
       const { range, position } = data
       const originClip = props.elementInfo.clip || {}

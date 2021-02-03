@@ -21,10 +21,10 @@ export default () => {
 
   const updateSlideIndex = (command: string) => {
     let targetIndex = 0
-    if(command === KEYS.UP && slideIndex.value > 0) {
+    if (command === KEYS.UP && slideIndex.value > 0) {
       targetIndex = slideIndex.value - 1
     }
-    else if(command === KEYS.DOWN && slideIndex.value < slidesLength.value - 1) {
+    else if (command === KEYS.DOWN && slideIndex.value < slidesLength.value - 1) {
       targetIndex = slideIndex.value + 1
     }
     store.commit(MutationTypes.UPDATE_SLIDE_INDEX, targetIndex)
@@ -69,7 +69,7 @@ export default () => {
   }
 
   const deleteSlide = () => {
-    if(slidesLength.value === 1) return message.warning('无法继续删除')
+    if (slidesLength.value === 1) return message.warning('无法继续删除')
     
     store.commit(MutationTypes.DELETE_SLIDE, currentSlide.value.id)
     addHistorySnapshot()

@@ -63,7 +63,7 @@ export default defineComponent({
     const needWaitAnimation = computed(() => {
       const animations = currentSlide.value.animations || []
       const elementIndexInAnimation = animations.findIndex(animation => animation.elId === props.elementInfo.id)
-      if(elementIndexInAnimation !== -1 && elementIndexInAnimation >= props.animationIndex) return true
+      if (elementIndexInAnimation !== -1 && elementIndexInAnimation >= props.animationIndex) return true
       return false      
     })
 

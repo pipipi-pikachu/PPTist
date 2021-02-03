@@ -54,14 +54,14 @@ export default defineComponent({
 
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const currentTabs = computed(() => {
-      if(!activeElementIdList.value.length) return slideTabs
-      else if(activeElementIdList.value.length > 1) return multiSelectTabs
+      if (!activeElementIdList.value.length) return slideTabs
+      else if (activeElementIdList.value.length > 1) return multiSelectTabs
       return elementTabs
     })
 
     watch(currentTabs, () => {
       const currentTabsValue = currentTabs.value.map(tab => tab.value)
-      if(!currentTabsValue.includes(toolbarState.value)) {
+      if (!currentTabsValue.includes(toolbarState.value)) {
         store.commit(MutationTypes.SET_TOOLBAR_STATE, currentTabsValue[0])
       }
     })

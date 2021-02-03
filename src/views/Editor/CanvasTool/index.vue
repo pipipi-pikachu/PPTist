@@ -104,7 +104,7 @@ export default defineComponent({
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
-      if(!imageFile) return
+      if (!imageFile) return
       getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
     }
 

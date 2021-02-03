@@ -156,19 +156,19 @@ export default defineComponent({
     const fixedRatio = ref(false)
 
     const minSize = computed(() => {
-      if(!handleElement.value) return 20
+      if (!handleElement.value) return 20
       return MIN_SIZE[handleElement.value.type] || 20
     })
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if (!handleElement.value) return
 
       left.value = round(handleElement.value.left, 1)
       top.value = round(handleElement.value.top, 1)
 
       fixedRatio.value = 'fixedRatio' in handleElement.value && !!handleElement.value.fixedRatio
 
-      if(handleElement.value.type !== 'line') {
+      if (handleElement.value.type !== 'line') {
         width.value = round(handleElement.value.width, 1)
         height.value = round(handleElement.value.height, 1)
         rotate.value = 'rotate' in handleElement.value && handleElement.value.rotate !== undefined ? round(handleElement.value.rotate, 1) : 0
@@ -212,11 +212,11 @@ export default defineComponent({
     }
     const updateRotate45 = (command: '+' | '-') => {
       let _rotate = Math.floor(rotate.value / 45) * 45
-      if(command === '+') _rotate = _rotate + 45
-      else if(command === '-') _rotate = _rotate - 45
+      if (command === '+') _rotate = _rotate + 45
+      else if (command === '-') _rotate = _rotate - 45
 
-      if(_rotate < -180) _rotate = -180
-      if(_rotate > 180) _rotate = 180
+      if (_rotate < -180) _rotate = -180
+      if (_rotate > 180) _rotate = 180
 
       const props = { rotate: _rotate }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })

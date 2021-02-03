@@ -8,7 +8,7 @@ const clickListener = (el: HTMLElement, event: MouseEvent, binding: DirectiveBin
   const path = event.composedPath()
   const isClickOutside = path ? path.indexOf(el) < 0 : !el.contains(event.target as HTMLElement)
 
-  if(!isClickOutside) return
+  if (!isClickOutside) return
   handler(event)
 }
 
@@ -21,7 +21,7 @@ const ClickOutsideDirective: Directive = {
   },
   
   unmounted(el: HTMLElement) {
-    if(el[CTX_CLICK_OUTSIDE_HANDLER]) {
+    if (el[CTX_CLICK_OUTSIDE_HANDLER]) {
       document.removeEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
       delete el[CTX_CLICK_OUTSIDE_HANDLER]
     }

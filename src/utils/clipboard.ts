@@ -26,9 +26,9 @@ export const copyText = (text: string) => {
 // 读取剪贴板
 export const readClipboard = (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    if(navigator.clipboard) {
+    if (navigator.clipboard) {
       navigator.clipboard.readText().then(text => {
-        if(!text) reject('剪贴板为空或者不包含文本')
+        if (!text) reject('剪贴板为空或者不包含文本')
         return resolve(text)
       })
     }

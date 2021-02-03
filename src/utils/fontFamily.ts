@@ -1,8 +1,8 @@
 // 判断用户的操作系统是否安装了某字体
 export const isSupportFontFamily = (fontFamily: string) => {
-  if(typeof fontFamily !== 'string') return false
+  if (typeof fontFamily !== 'string') return false
   const arial = 'Arial'
-  if(fontFamily.toLowerCase() === arial.toLowerCase()) return true
+  if (fontFamily.toLowerCase() === arial.toLowerCase()) return true
   const a = 'a'
   const size = 100
   const width = 100
@@ -11,7 +11,7 @@ export const isSupportFontFamily = (fontFamily: string) => {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
 
-  if(!ctx) return false
+  if (!ctx) return false
 
   canvas.width = width
   canvas.height = height

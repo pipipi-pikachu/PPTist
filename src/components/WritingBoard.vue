@@ -68,10 +68,10 @@ export default defineComponent({
     const mouseInCanvas = ref(false)
 
     const initCanvas = () => {
-      if(!canvasRef.value || !writingBoardRef.value) return
+      if (!canvasRef.value || !writingBoardRef.value) return
 
       ctx = canvasRef.value.getContext('2d')
-      if(!ctx) return
+      if (!ctx) return
 
       canvasRef.value.width = writingBoardRef.value.clientWidth
       canvasRef.value.height = writingBoardRef.value.clientHeight
@@ -97,17 +97,17 @@ export default defineComponent({
       const v = s / t
       let lineWidth
 
-      if(v <= minV) lineWidth = maxWidth
-      else if(v >= maxV) lineWidth = minWidth
+      if (v <= minV) lineWidth = maxWidth
+      else if (v >= maxV) lineWidth = minWidth
       else lineWidth = maxWidth - v / maxV * maxWidth
 
-      if(lastLineWidth === -1) return lineWidth
+      if (lastLineWidth === -1) return lineWidth
       return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
     }
 
     // 画笔绘制方法
     const draw = (posX: number, posY: number, lineWidth: number) => {
-      if(!ctx) return
+      if (!ctx) return
 
       const lastPosX = lastPos.x
       const lastPosY = lastPos.y
@@ -123,7 +123,7 @@ export default defineComponent({
 
     // 橡皮擦除方法
     const erase = (posX: number, posY: number) => {
-      if(!ctx || !canvasRef.value) return
+      if (!ctx || !canvasRef.value) return
       const lastPosX = lastPos.x
       const lastPosY = lastPos.y
 
@@ -164,7 +164,7 @@ export default defineComponent({
       const time = new Date().getTime()
 
       // 画笔模式（这里通过绘制速度调节画笔的粗细）
-      if(props.model === 'pen') {
+      if (props.model === 'pen') {
         const s = getDistance(posX, posY)
         const t = time - lastTime
         const lineWidth = getLineWidth(s, t)
@@ -192,18 +192,18 @@ export default defineComponent({
     const handleMousemove = (e: MouseEvent) => {
       updateMousePosition(e)
 
-      if(!isMouseDown) return
+      if (!isMouseDown) return
       startMove(e.offsetX, e.offsetY)
     }
 
     const handleMouseup = () => {
-      if(!isMouseDown) return
+      if (!isMouseDown) return
       isMouseDown = false
     }
 
     // 清空画布
     const clearCanvas = () => {
-      if(!ctx || !canvasRef.value) return
+      if (!ctx || !canvasRef.value) return
       ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
     }
 

@@ -178,9 +178,9 @@ export default defineComponent({
     const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
 
     watch(handleElement, () => {
-      if(!handleElement.value || handleElement.value.type !== 'image') return
+      if (!handleElement.value || handleElement.value.type !== 'image') return
 
-      if(handleElement.value.flip) {
+      if (handleElement.value.flip) {
         flip.value = {
           x: handleElement.value.flip.x || 0,
           y: handleElement.value.flip.y || 0,
@@ -189,9 +189,9 @@ export default defineComponent({
       else flip.value = { x: 0, y: 0 }
 
       const filters = handleElement.value.filters
-      if(filters) {
+      if (filters) {
         filterOptions.value = defaultFilters.map(item => {
-          if(filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
+          if (filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
           return item
         })
       }
@@ -251,14 +251,14 @@ export default defineComponent({
       } = getImageElementDataBeforeClip()
       
       // 设置形状和纵横比
-      if(ratio) {
+      if (ratio) {
         const imageRatio = originHeight / originWidth
 
         const min = 0
         const max = 100
         let range
 
-        if(imageRatio > ratio) {
+        if (imageRatio > ratio) {
           const distance = ((1 - ratio / imageRatio) / 2) * 100
           range = [[min, distance], [max, max - distance]]
         }
@@ -292,7 +292,7 @@ export default defineComponent({
 
     const replaceImage = (files: File[]) => {
       const imageFile = files[0]
-      if(!imageFile) return
+      if (!imageFile) return
       getImageDataURL(imageFile).then(dataURL => {
         const props = { src: dataURL }
         store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
@@ -301,7 +301,7 @@ export default defineComponent({
     }
 
     const resetImage = () => {
-      if(handleElement.value.clip) {
+      if (handleElement.value.clip) {
         const {
           originWidth,
           originHeight,

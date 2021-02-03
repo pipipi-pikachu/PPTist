@@ -66,7 +66,7 @@ export default defineComponent({
 
     const disableResize = computed(() => {
       return localActiveElementList.value.some(item => {
-        if(
+        if (
           (item.type === 'image' || item.type === 'shape') && 
           !item.rotate
         ) return false

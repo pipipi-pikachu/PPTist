@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view'
 
 export const setTextAlign = (tr: Transaction, schema: Schema, alignment: string) => {
   const { selection, doc } = tr
-  if(!selection || !doc) return tr
+  if (!selection || !doc) return tr
 
   const { from, to } = selection
   const { nodes } = schema
@@ -27,7 +27,7 @@ export const setTextAlign = (tr: Transaction, schema: Schema, alignment: string)
   doc.nodesBetween(from, to, (node, pos) => {
     const nodeType = node.type
     const align = node.attrs.align || ''
-    if(align !== alignment && allowedNodeTypes.has(nodeType)) {
+    if (align !== alignment && allowedNodeTypes.has(nodeType)) {
       tasks.push({
         node,
         pos,
@@ -37,12 +37,12 @@ export const setTextAlign = (tr: Transaction, schema: Schema, alignment: string)
     return true
   })
 
-  if(!tasks.length) return tr
+  if (!tasks.length) return tr
 
   tasks.forEach(task => {
     const { node, pos, nodeType } = task
     let { attrs } = node
-    if(alignment) attrs = { ...attrs, align: alignment }
+    if (alignment) attrs = { ...attrs, align: alignment }
     else attrs = { ...attrs, align: null }
     tr = tr.setNodeMarkup(pos, nodeType, attrs, node.marks)
   })

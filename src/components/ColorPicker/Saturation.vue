@@ -39,7 +39,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const color = computed(() => {
       const hsva = tinycolor(props.value).toHsv()
-      if(hsva.s === 0) hsva.h = props.hue
+      if (hsva.s === 0) hsva.h = props.hue
       return hsva
     })
 
@@ -47,14 +47,14 @@ export default defineComponent({
     const pointerTop = computed(() => (-(color.value.v * 100) + 1) + 100 + '%')
     const pointerLeft = computed(() => color.value.s * 100 + '%')
 
-    const emitChangeEvent = throttle(function(param) {
+    const emitChangeEvent = throttle(function (param) {
       emit('colorChange', param)
     }, 20, { leading: true, trailing: false })
 
     const saturationRef = ref<HTMLElement>()
     const handleChange = (e: MouseEvent) => {
       e.preventDefault()
-      if(!saturationRef.value) return
+      if (!saturationRef.value) return
       
       const containerWidth = saturationRef.value.clientWidth
       const containerHeight = saturationRef.value.clientHeight

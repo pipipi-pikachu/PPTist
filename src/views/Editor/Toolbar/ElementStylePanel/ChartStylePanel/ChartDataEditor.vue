@@ -86,18 +86,18 @@ export default defineComponent({
       const rowCount = labels.length
       const colCount = series.length
 
-      for(let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+      for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
         const row = [labels[rowIndex]]
-        for(let colIndex = 0; colIndex < colCount; colIndex++) {
+        for (let colIndex = 0; colIndex < colCount; colIndex++) {
           row.push(series[colIndex][rowIndex] + '')
         }
         _data.push(row)
       }
 
-      for(let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
-        for(let colIndex = 0; colIndex < colCount + 1; colIndex++) {
+      for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        for (let colIndex = 0; colIndex < colCount + 1; colIndex++) {
           const inputRef = document.querySelector(`#cell-${rowIndex}-${colIndex}`) as HTMLInputElement
-          if(!inputRef) continue
+          if (!inputRef) continue
           inputRef.value = _data[rowIndex][colIndex] + ''
         }
       }
@@ -113,19 +113,19 @@ export default defineComponent({
       const labels: string[] = []
       const series: number[][] = []
 
-      for(let rowIndex = 0; rowIndex < row; rowIndex++) {
+      for (let rowIndex = 0; rowIndex < row; rowIndex++) {
         let labelsItem = `类别${rowIndex + 1}`
         const labelInputRef = document.querySelector(`#cell-${rowIndex}-0`) as HTMLInputElement
-        if(labelInputRef && labelInputRef.value) labelsItem = labelInputRef.value
+        if (labelInputRef && labelInputRef.value) labelsItem = labelInputRef.value
         labels.push(labelsItem)
       }
 
-      for(let colIndex = 1; colIndex < col; colIndex++) {
+      for (let colIndex = 1; colIndex < col; colIndex++) {
         const seriesItem = []
-        for(let rowIndex = 0; rowIndex < row; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < row; rowIndex++) {
           const valueInputRef = document.querySelector(`#cell-${rowIndex}-${colIndex}`) as HTMLInputElement
           let value = 0
-          if(valueInputRef && valueInputRef.value && !!(+valueInputRef.value)) {
+          if (valueInputRef && valueInputRef.value && !!(+valueInputRef.value)) {
             value = +valueInputRef.value
           }
           seriesItem.push(value)
@@ -148,7 +148,7 @@ export default defineComponent({
       const originHeight = selectedRange.value[1] * CELL_HEIGHT
 
       document.onmousemove = e => {
-        if(!isMouseDown) return
+        if (!isMouseDown) return
 
         const currentPageX = e.pageX
         const currentPageY = e.pageY
@@ -170,18 +170,18 @@ export default defineComponent({
         const endPageX = e.pageX
         const endPageY = e.pageY
 
-        if(startPageX === endPageX && startPageY === endPageY) return
+        if (startPageX === endPageX && startPageY === endPageY) return
 
         let width = tempRangeSize.value.width
         let height = tempRangeSize.value.height
-        if(width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
-        if(height % CELL_HEIGHT > CELL_HEIGHT * 0.5) height = height + (CELL_HEIGHT - height % CELL_HEIGHT)
+        if (width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
+        if (height % CELL_HEIGHT > CELL_HEIGHT * 0.5) height = height + (CELL_HEIGHT - height % CELL_HEIGHT)
 
         let row = Math.round(height / CELL_HEIGHT)
         let col = Math.round(width / CELL_WIDTH)
 
-        if(row < 3) row = 3
-        if(col < 2) col = 2
+        if (row < 3) row = 3
+        if (col < 2) col = 2
 
         selectedRange.value = [col, row]
         tempRangeSize.value = { width: 0, height: 0 }

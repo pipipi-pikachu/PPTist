@@ -77,7 +77,7 @@ export default defineComponent({
     const hasShadow = ref(false)
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if (!handleElement.value) return
       shadow.value = 'shadow' in handleElement.value ? handleElement.value.shadow : undefined
       hasShadow.value = !!shadow.value
     }, { deep: true, immediate: true })
@@ -91,7 +91,7 @@ export default defineComponent({
     }
 
     const toggleShadow = (checked: boolean) => {
-      if(checked) {
+      if (checked) {
         const props = { shadow: { h: 1, v: 1, blur: 2, color: '#000' } }
         store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       }

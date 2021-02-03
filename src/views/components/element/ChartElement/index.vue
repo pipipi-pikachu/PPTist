@@ -63,7 +63,7 @@ export default defineComponent({
   },
   setup(props) {
     const handleSelectElement = (e: MouseEvent) => {
-      if(props.elementInfo.lock) return
+      if (props.elementInfo.lock) return
       e.stopPropagation()
 
       props.selectElement(e, props.elementInfo)

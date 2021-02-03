@@ -8,12 +8,12 @@ const contextmenuListener = (el: HTMLElement, event: MouseEvent, binding: Direct
   event.preventDefault()
 
   const menus = binding.value(el)
-  if(!menus) return
+  if (!menus) return
 
   let container: HTMLDivElement | null = null
 
   const removeContextMenu = () => {
-    if(container) {
+    if (container) {
       document.body.removeChild(container)
       container = null
     }
@@ -46,7 +46,7 @@ const ContextmenuDirective: Directive = {
   },
 
   unmounted(el: HTMLElement) {
-    if(el && el[CTX_CONTEXTMENU_HANDLER]) {
+    if (el && el[CTX_CONTEXTMENU_HANDLER]) {
       el.removeEventListener('contextmenu', el[CTX_CONTEXTMENU_HANDLER])
       delete el[CTX_CONTEXTMENU_HANDLER]
     }

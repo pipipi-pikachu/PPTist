@@ -13,9 +13,9 @@ export default () => {
 
   const moveElement = (command: string) => {
     const newElementList = currentSlide.value.elements.map(el => {
-      if(activeElementIdList.value.includes(el.id)) {
+      if (activeElementIdList.value.includes(el.id)) {
         let { left, top } = el
-        switch(command) {
+        switch (command) {
           case KEYS.LEFT: 
             left = left - 1
             break

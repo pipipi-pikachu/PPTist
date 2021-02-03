@@ -54,7 +54,7 @@ export default defineComponent({
 
     const canCombine = computed(() => {
       const firstGroupId = activeElementList.value[0].groupId
-      if(!firstGroupId) return true
+      if (!firstGroupId) return true
 
       const inSameGroup = activeElementList.value.every(el => (el.groupId && el.groupId) === firstGroupId)
       return !inSameGroup
@@ -66,17 +66,17 @@ export default defineComponent({
 
       // 获取每一个组合的宽高位置
       const groupElementRangeMap = {}
-      for(const activeElement of activeElementList.value) {
-        if(activeElement.groupId && !groupElementRangeMap[activeElement.groupId]) {
+      for (const activeElement of activeElementList.value) {
+        if (activeElement.groupId && !groupElementRangeMap[activeElement.groupId]) {
           const groupElements = activeElementList.value.filter(item => item.groupId === activeElement.groupId)
           groupElementRangeMap[activeElement.groupId] = getElementListRange(groupElements)
         }
       }
 
-      if(command === ElementAlignCommands.LEFT) {
+      if (command === ElementAlignCommands.LEFT) {
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) element.left = minX
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) element.left = minX
             else {
               const range = groupElementRangeMap[element.groupId]
               const offset = range.minX - minX
@@ -85,10 +85,10 @@ export default defineComponent({
           }
         })
       }
-      else if(command === ElementAlignCommands.RIGHT) {
+      else if (command === ElementAlignCommands.RIGHT) {
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) {
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) {
               const elWidth = element.type === 'line' ? Math.max(element.start[0], element.end[0]) : element.width
               element.left = maxX - elWidth
             }
@@ -100,10 +100,10 @@ export default defineComponent({
           }
         })
       }
-      else if(command === ElementAlignCommands.TOP) {
+      else if (command === ElementAlignCommands.TOP) {
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) element.top = minY
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) element.top = minY
             else {
               const range = groupElementRangeMap[element.groupId]
               const offset = range.minY - minY
@@ -112,10 +112,10 @@ export default defineComponent({
           }
         })
       }
-      else if(command === ElementAlignCommands.BOTTOM) {
+      else if (command === ElementAlignCommands.BOTTOM) {
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) {
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) {
               const elHeight = element.type === 'line' ? Math.max(element.start[1], element.end[1]) : element.height
               element.top = maxY - elHeight
             }
@@ -127,11 +127,11 @@ export default defineComponent({
           }
         })
       }
-      else if(command === ElementAlignCommands.HORIZONTAL) {
+      else if (command === ElementAlignCommands.HORIZONTAL) {
         const horizontalCenter = (minX + maxX) / 2
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) {
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) {
               const elWidth = element.type === 'line' ? Math.max(element.start[0], element.end[0]) : element.width
               element.left = horizontalCenter - elWidth / 2
             }
@@ -144,11 +144,11 @@ export default defineComponent({
           }
         })
       }
-      else if(command === ElementAlignCommands.VERTICAL) {
+      else if (command === ElementAlignCommands.VERTICAL) {
         const verticalCenter = (minY + maxY) / 2
         elementList.forEach(element => {
-          if(activeElementIdList.value.includes(element.id)) {
-            if(!element.groupId) {
+          if (activeElementIdList.value.includes(element.id)) {
+            if (!element.groupId) {
               const elHeight = element.type === 'line' ? Math.max(element.start[1], element.end[1]) : element.height
               element.top = verticalCenter - elHeight / 2
             }

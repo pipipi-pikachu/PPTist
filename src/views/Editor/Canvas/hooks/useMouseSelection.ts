@@ -17,7 +17,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
   })
 
   const updateMouseSelection = (e: MouseEvent) => {
-    if(!viewportRef.value) return
+    if (!viewportRef.value) return
 
     let isMouseDown = true
     const viewportRect = viewportRef.value.getBoundingClientRect()
@@ -38,7 +38,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     mouseSelectionState.height = 0
 
     document.onmousemove = e => {
-      if(!isMouseDown) return
+      if (!isMouseDown) return
 
       const currentPageX = e.pageX
       const currentPageY = e.pageY
@@ -49,13 +49,13 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       const width = Math.abs(offsetWidth)
       const height = Math.abs(offsetHeight)
 
-      if( width < minSelectionRange || height < minSelectionRange ) return
+      if ( width < minSelectionRange || height < minSelectionRange ) return
       
       let quadrant = 0
-      if( offsetWidth > 0 && offsetHeight > 0 ) quadrant = 4
-      else if( offsetWidth < 0 && offsetHeight < 0 ) quadrant = 1
-      else if( offsetWidth > 0 && offsetHeight < 0 ) quadrant = 2
-      else if( offsetWidth < 0 && offsetHeight > 0 ) quadrant = 3
+      if ( offsetWidth > 0 && offsetHeight > 0 ) quadrant = 4
+      else if ( offsetWidth < 0 && offsetHeight < 0 ) quadrant = 1
+      else if ( offsetWidth > 0 && offsetHeight < 0 ) quadrant = 2
+      else if ( offsetWidth < 0 && offsetHeight > 0 ) quadrant = 3
 
       mouseSelectionState.isShow = true
       mouseSelectionState.quadrant = quadrant
@@ -71,7 +71,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       // 计算当前页面中的每一个元素是否处在鼠标选择范围中（必须完全包裹）
       // 将选择范围中的元素添加为激活元素
       let inRangeElementList: PPTElement[] = []
-      for(let i = 0; i < elementList.value.length; i++) {
+      for (let i = 0; i < elementList.value.length; i++) {
         const element = elementList.value[i]
         const mouseSelectionLeft = mouseSelectionState.left
         const mouseSelectionTop = mouseSelectionState.top
@@ -83,25 +83,25 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
         const { minX, maxX, minY, maxY } = getElementRange(element)
 
         let isInclude = false
-        if(quadrant === 4) {
+        if (quadrant === 4) {
           isInclude = minX > mouseSelectionLeft && 
                       maxX < mouseSelectionLeft + mouseSelectionWidth && 
                       minY > mouseSelectionTop && 
                       maxY < mouseSelectionTop + mouseSelectionHeight
         }
-        else if(quadrant === 1) {
+        else if (quadrant === 1) {
           isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
                       maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 
                       maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
         }
-        else if(quadrant === 2) {
+        else if (quadrant === 2) {
           isInclude = minX > mouseSelectionLeft && 
                       maxX < mouseSelectionLeft + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 
                       maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
         }
-        else if(quadrant === 3) {
+        else if (quadrant === 3) {
           isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
                       maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
                       minY > mouseSelectionTop && 
@@ -109,12 +109,12 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
         }
 
         // 被锁定的元素除外
-        if(isInclude && !element.lock) inRangeElementList.push(element)
+        if (isInclude && !element.lock) inRangeElementList.push(element)
       }
 
       // 对于组合元素成员，必须所有成员都在选择范围中才算被选中
       inRangeElementList = inRangeElementList.filter(inRangeElement => {
-        if(inRangeElement.groupId) {
+        if (inRangeElement.groupId) {
           const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
           const groupElementList = elementList.value.filter(element => element.groupId === inRangeElement.groupId)
           return groupElementList.every(groupElement => inRangeElementIdList.includes(groupElement.id))
@@ -122,7 +122,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
         return true
       })
       const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
-      if(inRangeElementIdList.length) store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, inRangeElementIdList)
+      if (inRangeElementIdList.length) store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, inRangeElementIdList)
 
       mouseSelectionState.isShow = false
     }

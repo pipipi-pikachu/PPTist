@@ -48,7 +48,7 @@ export default defineComponent({
     const writingBoardModel = ref('pen')
 
     const changePen = () => {
-      if(!writingBoardVisible.value) writingBoardVisible.value = true
+      if (!writingBoardVisible.value) writingBoardVisible.value = true
       writingBoardModel.value = 'pen'
       emit('close')
     }
@@ -64,7 +64,7 @@ export default defineComponent({
     }
 
     const changeColor = (color: string) => {
-      if(writingBoardModel.value !== 'pen') writingBoardModel.value = 'pen'
+      if (writingBoardModel.value !== 'pen') writingBoardModel.value = 'pen'
       writingBoardColor.value = color
       emit('close')
     }

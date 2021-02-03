@@ -72,7 +72,7 @@ export default defineComponent({
     const hasOutline = ref(false)
 
     watch(handleElement, () => {
-      if(!handleElement.value) return
+      if (!handleElement.value) return
       outline.value = 'outline' in handleElement.value ? handleElement.value.outline : undefined
       hasOutline.value = !!outline.value
     }, { deep: true, immediate: true })
@@ -86,7 +86,7 @@ export default defineComponent({
     }
 
     const toggleOutline = (checked: boolean) => {
-      if(checked) {
+      if (checked) {
         const props = { outline: { width: 2, color: '#000', style: 'solid' } }
         store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       }

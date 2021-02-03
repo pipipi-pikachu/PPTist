@@ -89,7 +89,7 @@ export default defineComponent({
     const scaleElementStateListener = (state: boolean) => {
       isScaling.value = state
 
-      if(!state && realHeightCache.value !== -1) {
+      if (!state && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
@@ -105,12 +105,12 @@ export default defineComponent({
 
     const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
       const contentRect = entries[0].contentRect
-      if(!elementRef.value) return
+      if (!elementRef.value) return
 
       const realHeight = contentRect.height
 
-      if(props.elementInfo.height !== realHeight) {
-        if(!isScaling.value) {
+      if (props.elementInfo.height !== realHeight) {
+        if (!isScaling.value) {
           store.commit(MutationTypes.UPDATE_ELEMENT, {
             id: props.elementInfo.id,
             props: { height: realHeight },
@@ -122,10 +122,10 @@ export default defineComponent({
     const resizeObserver = new ResizeObserver(updateTextElementHeight)
 
     onMounted(() => {
-      if(elementRef.value) resizeObserver.observe(elementRef.value)
+      if (elementRef.value) resizeObserver.observe(elementRef.value)
     })
     onUnmounted(() => {
-      if(elementRef.value) resizeObserver.unobserve(elementRef.value)
+      if (elementRef.value) resizeObserver.unobserve(elementRef.value)
     })
     
     const editorViewRef = ref<HTMLElement>()
@@ -137,7 +137,7 @@ export default defineComponent({
     const handleBlur = () => {
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, false)
     }
-    const handleInput = debounce(function() {
+    const handleInput = debounce(function () {
       store.commit(MutationTypes.UPDATE_ELEMENT, {
         id: props.elementInfo.id, 
         props: { content: editorView.dom.innerHTML },
@@ -145,7 +145,7 @@ export default defineComponent({
       addHistorySnapshot()
     }, 300, { trailing: true })
 
-    const handleClick = debounce(function() {
+    const handleClick = debounce(function () {
       const attr = getTextAttrs(editorView)
       emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
     }, 30, { trailing: true })
@@ -157,8 +157,8 @@ export default defineComponent({
 
     const textContent = computed(() => props.elementInfo.content)
     watch(textContent, () => {
-      if(!editorView) return
-      if(editorView.hasFocus()) return
+      if (!editorView) return
+      if (editorView.hasFocus()) return
       editorView.dom.innerHTML = textContent.value
     })
 
@@ -183,7 +183,7 @@ export default defineComponent({
     })
 
     const handleSelectElement = (e: MouseEvent, canMove = true) => {
-      if(props.elementInfo.lock) return
+      if (props.elementInfo.lock) return
       e.stopPropagation()
 
       props.selectElement(e, props.elementInfo, canMove)
@@ -195,85 +195,85 @@ export default defineComponent({
     const handleElementId = computed(() => store.state.handleElementId)
     
     const execCommand = (payload: CommandPayload | CommandPayload[]) => {
-      if(handleElementId.value !== props.elementInfo.id) return
+      if (handleElementId.value !== props.elementInfo.id) return
 
       const commands = ('command' in payload) ? [payload] : payload
 
-      for(const item of commands) {
-        if(item.command === 'fontname' && item.value) {
+      for (const item of commands) {
+        if (item.command === 'fontname' && item.value) {
           const mark = editorView.state.schema.marks.fontname.create({ fontname: item.value })
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
         }
-        else if(item.command === 'fontsize' && item.value) {
+        else if (item.command === 'fontsize' && item.value) {
           const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
         }
-        else if(item.command === 'color' && item.value) {
+        else if (item.command === 'color' && item.value) {
           const mark = editorView.state.schema.marks.forecolor.create({ color: item.value })
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
         }
-        else if(item.command === 'backcolor' && item.value) {
+        else if (item.command === 'backcolor' && item.value) {
           const mark = editorView.state.schema.marks.backcolor.create({ backcolor: item.value })
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
         }
-        else if(item.command === 'bold') {
+        else if (item.command === 'bold') {
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           toggleMark(editorView.state.schema.marks.strong)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'em') {
+        else if (item.command === 'em') {
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           toggleMark(editorView.state.schema.marks.em)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'underline') {
+        else if (item.command === 'underline') {
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           toggleMark(editorView.state.schema.marks.underline)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'strikethrough') {
+        else if (item.command === 'strikethrough') {
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'subscript') {
+        else if (item.command === 'subscript') {
           toggleMark(editorView.state.schema.marks.subscript)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'superscript') {
+        else if (item.command === 'superscript') {
           toggleMark(editorView.state.schema.marks.superscript)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'blockquote') {
+        else if (item.command === 'blockquote') {
           wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'code') {
+        else if (item.command === 'code') {
           toggleMark(editorView.state.schema.marks.code)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'align' && item.value) {
+        else if (item.command === 'align' && item.value) {
           alignmentCommand(editorView, item.value)
         }
-        else if(item.command === 'bulletList') {
+        else if (item.command === 'bulletList') {
           const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
           toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'orderedList') {
+        else if (item.command === 'orderedList') {
           const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
           toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
         }
-        else if(item.command === 'clear') {
+        else if (item.command === 'clear') {
           const { empty } = editorView.state.selection
-          if(empty) selectAll(editorView.state, editorView.dispatch)
+          if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
         }
