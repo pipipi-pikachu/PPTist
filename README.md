@@ -5,7 +5,7 @@
 
 在线体验地址：https://pptist.gitee.io/
 
-Github仓库：https://github.com/pipipi-pikachu/PPTist
+Github仓库（优先更新）：https://github.com/pipipi-pikachu/PPTist
 
 
 # 项目运行
