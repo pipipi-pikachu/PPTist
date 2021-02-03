@@ -1,3 +1,7 @@
+// https://eslint.org/docs/rules/
+
+const isProduction = process.env.NODE_ENV === 'production'
+
 module.exports = {
   root: true,
   env: {
@@ -13,6 +17,11 @@ module.exports = {
   },
   rules: {
     'curly': ['error', 'multi-line'],
+    'eqeqeq': ['error', 'always'],
+    'semi': ['error', 'never'],
+    'indent': ['error', 2, { 
+      'SwitchCase': 1,
+    }],
     'quotes': ['error', 'single', {
       'avoidEscape': true,
       'allowTemplateLiterals': true,
@@ -30,23 +39,20 @@ module.exports = {
     'spaced-comment': ['error', 'always'],
     'arrow-spacing': 'error',
     'no-duplicate-imports': 'error',
-    'semi': ['error', 'never'],
-    'comma-spacing': ['error', { 'before': false, 'after': true }],
-    'indent': ['error', 2, {'SwitchCase': 1}],
-    'eqeqeq': ['error', 'always', {'null': 'ignore'}],
+    'comma-spacing': ['error', {
+      'before': false,
+      'after': true,
+    }],
     'default-case': 'error',
-    'no-eval': 'error',
-    'no-var': 'error',
-    'no-with': 'error',
-    'max-depth': ['error', 5],
-    'consistent-this': ['error', 'self'],
-    'max-lines': ['error', 1000],
+    'consistent-this': ['error', '_this'],
+    'max-depth': ['error', 4],
+    'max-lines': ['error', 800],
     'no-multi-str': 'error',
     'space-infix-ops': 'error',
     'space-before-blocks': ['error', 'always'],
     'space-before-function-paren': ['error', {
-      'anonymous': 'never',
       'named': 'never',
+      'anonymous': 'never',
       'asyncArrow': 'always',
     }],
     'keyword-spacing': ['error'],
@@ -54,9 +60,12 @@ module.exports = {
     'no-useless-return': 'error',
     'array-bracket-spacing': 'error',
     'no-useless-escape': 'off',
-    'no-alert': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-eval': 'error',
+    'no-var': 'error',
+    'no-with': 'error',
+    'no-alert': isProduction ? 'warn' : 'off',
+    'no-console': isProduction ? 'warn' : 'off',
+    'no-debugger': isProduction ? 'warn' : 'off',
   },
   overrides: [
     {
