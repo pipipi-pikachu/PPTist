@@ -3,9 +3,11 @@
 
 你可以对它进行二次开发，打造属于自己的 在线演示文稿应用 或者 在线设计工具（二次开发文档正在编写中）。
 
-在线体验地址：https://pptist.gitee.io/
+在线体验地址（优先更新）：https://www.pptist.cn/
 
-Github仓库（优先更新）：https://github.com/pipipi-pikachu/PPTist
+如果网络状态不佳，可以访问国内镜像：https://pptist.gitee.io/
+
+Github仓库（给个star呗😁）：https://github.com/pipipi-pikachu/PPTist
 
 
 # 项目运行
