@@ -7,11 +7,11 @@
           <div class="shape-content" @click="selectShape(shape)">
             <SvgWrapper 
               overflow="visible" 
-              width="20"
-              height="20"
+              width="18"
+              height="18"
             >
               <g 
-                :transform="`scale(${20 / shape.viewBox}, ${20 / shape.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
+                :transform="`scale(${18 / shape.viewBox}, ${18 / shape.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
               >
                 <path 
                   class="shape-path"
@@ -56,8 +56,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .shape-pool {
-  width: 360px;
-  max-height: 500px;
+  width: 340px;
+  max-height: 540px;
   overflow: auto;
   margin-bottom: -12px;
   margin-right: -12px;
