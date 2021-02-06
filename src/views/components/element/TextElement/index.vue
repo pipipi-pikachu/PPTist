@@ -137,7 +137,7 @@ export default defineComponent({
     const handleBlur = () => {
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, false)
     }
-    const handleInput = debounce(function () {
+    const handleInput = debounce(function() {
       store.commit(MutationTypes.UPDATE_ELEMENT, {
         id: props.elementInfo.id, 
         props: { content: editorView.dom.innerHTML },
@@ -145,7 +145,7 @@ export default defineComponent({
       addHistorySnapshot()
     }, 300, { trailing: true })
 
-    const handleClick = debounce(function () {
+    const handleClick = debounce(function() {
       const attr = getTextAttrs(editorView)
       emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
     }, 30, { trailing: true })

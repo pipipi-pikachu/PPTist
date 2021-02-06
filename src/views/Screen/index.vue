@@ -175,7 +175,7 @@ export default defineComponent({
       ) execNext()
     }
 
-    const mousewheelListener = throttle(function (e: WheelEvent) {
+    const mousewheelListener = throttle(function(e: WheelEvent) {
       if (e.deltaY < 0) execPrev()
       else if (e.deltaY > 0) execNext()
     }, 500, { leading: true, trailing: false })

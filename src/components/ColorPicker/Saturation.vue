@@ -47,7 +47,7 @@ export default defineComponent({
     const pointerTop = computed(() => (-(color.value.v * 100) + 1) + 100 + '%')
     const pointerLeft = computed(() => color.value.s * 100 + '%')
 
-    const emitChangeEvent = throttle(function (param) {
+    const emitChangeEvent = throttle(function(param) {
       emit('colorChange', param)
     }, 20, { leading: true, trailing: false })
 

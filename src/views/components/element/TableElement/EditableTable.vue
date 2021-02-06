@@ -524,7 +524,7 @@ export default defineComponent({
       }
     }
 
-    const handleInput = debounce(function () {
+    const handleInput = debounce(function() {
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
