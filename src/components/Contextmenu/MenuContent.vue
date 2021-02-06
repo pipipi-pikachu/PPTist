@@ -1,22 +1,18 @@
 <template>
   <ul class="menu-content">
-    <template v-for="(menu, index) in menus">
+    <template v-for="(menu, index) in menus" :key="menu.text || index">
       <li
         v-if="!menu.hide"
         class="menu-item"
-        :key="menu.text || index"
         @click.stop="handleClickMenuItem(menu)"
         :class="{'divider': menu.divider, 'disable': menu.disable}"
       >
-        <div class="menu-item-content" :class="{'has-sub-menu': menu.children}" v-if="!menu.divider">
+        <div class="menu-item-content" :class="{'has-children': menu.children}" v-if="!menu.divider">
           <span class="text">{{menu.text}}</span>
           <span class="sub-text" v-if="menu.subText && !menu.children">{{menu.subText}}</span>
 
           <menu-content 
-            class="sub-menu" 
-            :style="{
-              [subMenuPosition]: '112.5%',
-            }"
+            class="sub-menu"
             :menus="menu.children" 
             v-if="menu.children && menu.children.length"
             :handleClickMenuItem="handleClickMenuItem" 
@@ -38,10 +34,6 @@ export default defineComponent({
       type: Array as PropType<ContextmenuItem[]>,
       required: true,
     },
-    subMenuPosition: {
-      type: String,
-      default: 'left',
-    },
     handleClickMenuItem: {
       type: Function,
       required: true,
@@ -51,7 +43,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$menuWidth: 160px;
+$menuWidth: 170px;
 $menuHeight: 30px;
 $subMenuWidth: 120px;
 
@@ -104,7 +96,7 @@ $subMenuWidth: 120px;
   justify-content: space-between;
   position: relative;
 
-  &.has-sub-menu::before {
+  &.has-children::before {
     content: '';
     display: inline-block;
     width: 8px;
@@ -121,10 +113,11 @@ $subMenuWidth: 120px;
     opacity: 0.6;
   }
   .sub-menu {
-    position: absolute;
-    top: -6px;
-    display: none;
     width: $subMenuWidth;
+    position: absolute;
+    display: none;
+    left: 112%;
+    top: -6px;
   }
 }
 </style>

@@ -30,6 +30,7 @@ import useCombineElement from '@/hooks/useCombineElement'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
+import useSelectAllElement from '@/hooks/useSelectAllElement'
 
 import { ElementOrderCommands, ElementAlignCommands } from '@/types/edit'
 
@@ -81,7 +82,8 @@ export default defineComponent({
     const { combineElements, uncombineElements } = useCombineElement()
     const { deleteElement } = useDeleteElement()
     const { lockElement, unlockElement } = useLockElement()
-    const { copyElement, cutElement } = useCopyAndPasteElement()
+    const { copyElement, pasteElement, cutElement } = useCopyAndPasteElement()
+    const { selectAllElement } = useSelectAllElement()
 
     const contextmenus = (): ContextmenuItem[] => {
       if (props.elementInfo.lock) {
@@ -102,7 +104,26 @@ export default defineComponent({
           subText: 'Ctrl + C',
           handler: copyElement,
         },
+        {
+          text: '粘贴',
+          subText: 'Ctrl + V',
+          handler: pasteElement,
+        },
         { divider: true },
+        {
+          text: '对齐方式',
+          children: [
+            { text: '水平垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.CENTER) },
+            { divider: true },
+            { text: '水平居中', handler: () => alignElementToCanvas(ElementAlignCommands.HORIZONTAL) },
+            { text: '左对齐', handler: () => alignElementToCanvas(ElementAlignCommands.LEFT) },
+            { text: '右对齐', handler: () => alignElementToCanvas(ElementAlignCommands.RIGHT) },
+            { divider: true },
+            { text: '垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.VERTICAL) },
+            { text: '顶部对齐', handler: () => alignElementToCanvas(ElementAlignCommands.TOP) },
+            { text: '底部对齐', handler: () => alignElementToCanvas(ElementAlignCommands.BOTTOM) },
+          ],
+        },
         {
           text: '层级排序',
           disable: props.isMultiSelect && !props.elementInfo.groupId,
@@ -114,28 +135,17 @@ export default defineComponent({
             { text: '下移一层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.DOWN) },
           ],
         },
-        {
-          text: '水平对齐',
-          children: [
-            { text: '水平居中', handler: () => alignElementToCanvas(ElementAlignCommands.HORIZONTAL) },
-            { text: '左对齐', handler: () => alignElementToCanvas(ElementAlignCommands.LEFT) },
-            { text: '右对齐', handler: () => alignElementToCanvas(ElementAlignCommands.RIGHT) },
-          ],
-        },
-        {
-          text: '垂直对齐',
-          children: [
-            { text: '垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.VERTICAL) },
-            { text: '上对齐', handler: () => alignElementToCanvas(ElementAlignCommands.TOP) },
-            { text: '下对齐', handler: () => alignElementToCanvas(ElementAlignCommands.BOTTOM) },
-          ],
-        },
         { divider: true },
         {
           text: props.elementInfo.groupId ? '取消组合' : '组合',
           subText: 'Ctrl + G',
           handler: props.elementInfo.groupId ? uncombineElements : combineElements,
           hide: !props.isMultiSelect,
+        },
+        {
+          text: '全选',
+          subText: 'Ctrl + A',
+          handler: selectAllElement,
         },
         {
           text: '锁定',

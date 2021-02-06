@@ -12,21 +12,21 @@ const contextmenuListener = (el: HTMLElement, event: MouseEvent, binding: Direct
 
   let container: HTMLDivElement | null = null
 
-  const removeContextMenu = () => {
+  const removeContextmenu = () => {
     if (container) {
       document.body.removeChild(container)
       container = null
     }
     el.classList.remove('contextmenu-active')
-    document.body.removeEventListener('scroll', removeContextMenu)  
-    window.removeEventListener('resize', removeContextMenu)
+    document.body.removeEventListener('scroll', removeContextmenu)  
+    window.removeEventListener('resize', removeContextmenu)
   }
 
   const options = {
     axis: { x: event.x, y: event.y },
     el,
     menus,
-    removeContextMenu,
+    removeContextmenu,
   }
   container = document.createElement('div')
   const vm = createVNode(ContextmenuComponent, options, null)
@@ -35,8 +35,8 @@ const contextmenuListener = (el: HTMLElement, event: MouseEvent, binding: Direct
 
   el.classList.add('contextmenu-active')
 
-  document.body.addEventListener('scroll', removeContextMenu)
-  window.addEventListener('resize', removeContextMenu)
+  document.body.addEventListener('scroll', removeContextmenu)
+  window.addEventListener('resize', removeContextmenu)
 }
 
 const ContextmenuDirective: Directive = {

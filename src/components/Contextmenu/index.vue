@@ -1,21 +1,20 @@
 <template>
   <div 
     class="mask"
-    @contextmenu.prevent="removeContextMenu()"
-    @mousedown="removeContextMenu()"
+    @contextmenu.prevent="removeContextmenu()"
+    @mousedown="removeContextmenu()"
   ></div>
 
   <div 
     class="contextmenu"
     :style="{
-      left: style.left,
-      top: style.top,
+      left: style.left + 'px',
+      top: style.top + 'px',
     }"
     @contextmenu.prevent
   >
     <MenuContent 
       :menus="menus"
-      :subMenuPosition="style.subMenuPosition" 
       :handleClickMenuItem="handleClickMenuItem" 
     />
   </div>
@@ -27,10 +26,10 @@ import { ContextmenuItem, Axis } from './types'
 
 import MenuContent from './MenuContent.vue'
 
-const MENU_WIDTH = 160
+const MENU_WIDTH = 170
 const MENU_HEIGHT = 30
 const DIVIDER_HEIGHT = 11
-const SUB_MENU_WIDTH = 120
+const PADDING = 5
 
 export default defineComponent({
   name: 'contextmenu',
@@ -50,7 +49,7 @@ export default defineComponent({
       type: Array as PropType<ContextmenuItem[]>,
       required: true,
     },
-    removeContextMenu: {
+    removeContextmenu: {
       type: Function,
       required: true,
     },
@@ -58,34 +57,25 @@ export default defineComponent({
   setup(props) {
     const style = computed(() => {
       const { x, y } = props.axis
-      const normalMenuCount = props.menus.filter(menu => !menu.divider && !menu.hide).length
-      const dividerMenuCount = props.menus.filter(menu => menu.divider).length
-      const padding = 10
+      const menuCount = props.menus.filter(menu => !(menu.divider || menu.hide)).length
+      const dividerCount = props.menus.filter(menu => menu.divider).length
 
       const menuWidth = MENU_WIDTH
-      const menuHeight = normalMenuCount * MENU_HEIGHT + dividerMenuCount * DIVIDER_HEIGHT + padding
-
-      const maxMenuWidth = MENU_WIDTH + SUB_MENU_WIDTH - 10
+      const menuHeight = menuCount * MENU_HEIGHT + dividerCount * DIVIDER_HEIGHT + PADDING * 2
 
       const screenWidth = document.body.clientWidth
       const screenHeight = document.body.clientHeight
 
-      const left = (screenWidth <= x + menuWidth ? x - menuWidth : x)
-      const top = (screenHeight <= y + menuHeight ? y - menuHeight : y)
-
-      const subMenuPosition = screenWidth <= left + maxMenuWidth ? 'right' : 'left'
-
       return {
-        left: left + 'px',
-        top: top + 'px',
-        subMenuPosition,
+        left: screenWidth <= x + menuWidth ? x - menuWidth : x,
+        top: screenHeight <= y + menuHeight ? y - menuHeight : y,
       }
     })
 
     const handleClickMenuItem = (item: ContextmenuItem) => {
       if (item.disable || item.children) return
       if (item.handler) item.handler(props.el)
-      props.removeContextMenu()
+      props.removeContextmenu()
     }
 
     return {

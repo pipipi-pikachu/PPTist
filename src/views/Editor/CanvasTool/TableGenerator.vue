@@ -1,7 +1,7 @@
 <template>
   <div class="table-generator">
     <div class="title">
-      <div class="lef">插入表格 {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
+      <div class="lef">表格 {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
       <div class="right" @click="isCustom = !isCustom">{{ isCustom ? '返回' : '自定义'}}</div>
     </div>
     <table 

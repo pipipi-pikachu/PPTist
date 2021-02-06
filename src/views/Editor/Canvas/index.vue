@@ -97,6 +97,7 @@ import useDeleteElement from '@/hooks/useDeleteElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
+import useScreening from '@/hooks/useScreening'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -156,6 +157,7 @@ export default defineComponent({
     const { selectAllElement } = useSelectAllElement()
     const { deleteAllElements } = useDeleteElement()
     const { pasteElement } = useCopyAndPasteElement()
+    const { enterScreening } = useScreening()
 
     const handleClickBlankArea = (e: MouseEvent) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
@@ -190,22 +192,28 @@ export default defineComponent({
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
-          text: '全选',
-          subText: 'Ctrl + A',
-          handler: selectAllElement,
-        },
-        {
           text: '粘贴',
           subText: 'Ctrl + V',
           handler: pasteElement,
         },
         {
+          text: '全选',
+          subText: 'Ctrl + A',
+          handler: selectAllElement,
+        },
+        {
+          text: '重置当前页',
+          handler: deleteAllElements,
+        },
+        {
           text: showGridLines.value ? '关闭网格线' : '打开网格线',
           handler: toggleGridLines,
         },
+        { divider: true },
         {
-          text: '清空本页',
-          handler: deleteAllElements,
+          text: '从当前页演示',
+          subText: 'Ctrl+F',
+          handler: enterScreening,
         },
       ]
     }

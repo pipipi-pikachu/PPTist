@@ -21,6 +21,12 @@ export default () => {
     for (const element of newElementList) {
       if (!activeElementIdList.value.includes(element.id)) continue
       
+      if (command === ElementAlignCommands.CENTER) {
+        const offsetY = minY + (maxY - minY) / 2 - viewportHeight / 2
+        const offsetX = minX + (maxX - minX) / 2 - viewportWidth / 2
+        element.top = element.top - offsetY 
+        element.left = element.left - offsetX           
+      }
       if (command === ElementAlignCommands.TOP) {
         const offsetY = minY - 0
         element.top = element.top - offsetY            

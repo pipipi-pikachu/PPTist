@@ -10,7 +10,7 @@ export const enum ElementOrderCommands {
   BOTTOM = 'bottom',
 }
 
-export type ElementAlignCommand = 'top'| 'bottom' | 'left' | 'right' | 'vertical' | 'horizontal'
+export type ElementAlignCommand = 'top'| 'bottom' | 'left' | 'right' | 'vertical' | 'horizontal' | 'center'
 
 export const enum ElementAlignCommands {
   TOP = 'top',
@@ -19,6 +19,7 @@ export const enum ElementAlignCommands {
   RIGHT = 'right',
   VERTICAL = 'vertical',
   HORIZONTAL = 'horizontal',
+  CENTER = 'center',
 }
 
 export type OperateBorderLine = 'top' | 'bottom' | 'left' | 'right'

@@ -103,6 +103,11 @@ export default defineComponent({
           subText: 'Enter',
           handler: createSlide,
         },
+        {
+          text: '开始演示',
+          subText: 'Ctrl+F',
+          handler: enterScreening,
+        },
       ]
     }
 
@@ -131,6 +136,7 @@ export default defineComponent({
         },
         {
           text: '复制页面',
+          subText: 'Ctrl + D',
           handler: copyAndPasteSlide,
         },
         {
@@ -140,7 +146,7 @@ export default defineComponent({
         },
         { divider: true },
         {
-          text: '从本页演示',
+          text: '从当前页演示',
           subText: 'Ctrl+F',
           handler: enterScreening,
         },
