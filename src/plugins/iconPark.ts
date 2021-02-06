@@ -100,6 +100,7 @@ import {
   Click,
   Theme,
   Symbol,
+  ArrowCircleLeft,
 } from '@icon-park/vue-next'
 
 export default {
@@ -233,5 +234,6 @@ export default {
     app.component('IconTransform', Transform)
     app.component('IconClick', Click)
     app.component('IconTheme', Theme)
+    app.component('IconArrowCircleLeft', ArrowCircleLeft)
   }
 }

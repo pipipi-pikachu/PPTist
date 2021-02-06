@@ -35,15 +35,11 @@
       </div>
     </div>
 
-    <Modal
-      v-model:visible="slideThumbnailModelVisible" 
-      :footer="null" 
-      centered
-      :width="1020"
-      :bodyStyle="{ padding: '50px 20px 20px 20px' }"
-    >
-      <SlideThumbnails :turnSlideToIndex="turnSlideToIndex" />
-    </Modal>
+    <SlideThumbnails 
+      v-if="slideThumbnailModelVisible" 
+      :turnSlideToIndex="turnSlideToIndex" 
+      @close="slideThumbnailModelVisible = false"
+    />
 
     <div class="tools">
       <IconLeftC class="tool-btn" @click="execPrev()" />
@@ -207,15 +203,23 @@ export default defineComponent({
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
-          text: '上一页',
+          text: '上一张',
+          subText: '↑、←',
           disable: slideIndex.value <= 0,
           handler: () => turnPrevSlide(),
         },
         {
-          text: '下一页',
+          text: '下一张',
+          subText: '↓、→',
           disable: slideIndex.value >= slides.value.length - 1,
           handler: () => turnNextSlide(),
         },
+        { divider: true },
+        {
+          text: '查看所有幻灯片',
+          handler: () => slideThumbnailModelVisible.value = true,
+        },
+        { divider: true },
         {
           text: '结束放映',
           subText: 'ESC',
