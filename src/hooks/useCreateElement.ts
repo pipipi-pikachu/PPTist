@@ -157,7 +157,7 @@ export default () => {
       end,
       points: data.points,
       color: themeColor.value,
-      style: 'solid',
+      style: data.style,
       width: 2,
     })
   }
