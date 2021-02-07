@@ -1,25 +1,16 @@
 import { App } from 'vue'
 import {
-  Home,
   PlayOne,
   Lock,
   Unlock,
   Search,
-  Delete,
   Ppt,
-  SettingOne,
-  Clear,
   Format,
   Picture,
   FullScreen,
-  OffScreen,
-  LinkOne,
   List,
   OrderedList,
-  Drag,
   Helpcenter,
-  SplitCells,
-  MergeCells,
   FlipVertically,
   FlipHorizontally,
   FontSize,
@@ -30,19 +21,13 @@ import {
   Strikethrough,
   Edit,
   Quote,
-  EnterTheKeyboard,
-  Copy,
-  Clipboard,
-  Find,
   BackgroundColor,
   Group,
   Ungroup,
-  FullSelection,
   ClearFormat,
   Back,
   Next,
   Fullwidth,
-  GridFour,
   AlignTop,
   AlignLeft,
   AlignRight,
@@ -55,37 +40,24 @@ import {
   AlignTextRight,
   AlignTextCenter,
   RowHeight,
-  More,
   Write,
   InsertTable,
-  CuttingOne,
-  AddThree,
   AddText,
   Fill,
   Tailoring,
-  Newlybuild,
   Effects,
   ColorFilter,
-  Up,
   Down,
-  Left,
-  Right,
   Plus,
   Minus,
-  Check,
-  Close,
   Connection,
   BringToFrontOne,
   SentToBack,
   Github,
-  ChartRing,
   ChartLine,
-  ChartHistogramOne,
   ChartHistogram,
   ChartProportion,
-  ChartScatter,
   PentagonOne,
-  PageTemplate,
   Text,
   Rotate,
   LeftC,
@@ -93,13 +65,11 @@ import {
   Platte,
   UpOne,
   DownOne,
-  SeoFolder,
   CloseSmall,
   Undo,
   Transform,
   Click,
   Theme,
-  Symbol,
   ArrowCircleLeft,
 } from '@icon-park/vue-next'
 
@@ -111,12 +81,6 @@ export default {
     app.component('IconPentagonOne', PentagonOne)
     app.component('IconConnection', Connection)
     app.component('IconInsertTable', InsertTable)
-    app.component('IconSymbol', Symbol)
-
-    // 剪贴板
-    app.component('IconCopy', Copy)
-    app.component('IconClipboard', Clipboard)
-    app.component('IconCuttingOne', CuttingOne)
 
     // 锁定与解锁
     app.component('IconLock', Lock)
@@ -124,7 +88,6 @@ export default {
 
     // 全屏
     app.component('IconFullScreen', FullScreen)
-    app.component('IconOffScreen', OffScreen)
 
     // 撤销重做
     app.component('IconBack', Back)
@@ -152,10 +115,6 @@ export default {
     app.component('IconFill', Fill)
     app.component('IconBackgroundColor', BackgroundColor)
     app.component('IconPlatte', Platte)
-
-    // 表格编辑
-    app.component('IconSplitCells', SplitCells)
-    app.component('IconMergeCells', MergeCells)
     
     // 图片编辑
     app.component('IconTailoring', Tailoring)
@@ -184,52 +143,29 @@ export default {
     app.component('IconFormat', Format)
 
     // 箭头与符号
-    app.component('IconUp', Up)
     app.component('IconDown', Down)
-    app.component('IconLeft', Left)
-    app.component('IconRight', Right)
     app.component('IconLeftC', LeftC)
     app.component('IconRightC', RightC)
     app.component('IconPlus', Plus)
     app.component('IconMinus', Minus)
-    app.component('IconCheck', Check)
-    app.component('IconClose', Close)
     app.component('IconCloseSmall', CloseSmall)
     
     // 图表
-    app.component('IconChartRing', ChartRing)
     app.component('IconChartLine', ChartLine)
-    app.component('IconChartHistogramOne', ChartHistogramOne)
     app.component('IconChartHistogram', ChartHistogram)
     app.component('IconChartProportion', ChartProportion)
-    app.component('IconChartScatter', ChartScatter)
 
     // 其他
-    app.component('IconHome', Home)
     app.component('IconPlayOne', PlayOne)
     app.component('IconSearch', Search)
-    app.component('IconDelete', Delete)
     app.component('IconPpt', Ppt)
-    app.component('IconSettingOne', SettingOne)
-    app.component('IconClear', Clear)
-    app.component('IconLinkOne', LinkOne)
-    app.component('IconDrag', Drag)
     app.component('IconHelpcenter', Helpcenter)
-    app.component('IconEnterTheKeyboard', EnterTheKeyboard)
-    app.component('IconFind', Find)
-    app.component('IconFullSelection', FullSelection)
     app.component('IconClearFormat', ClearFormat)
-    app.component('IconGridFour', GridFour)
-    app.component('IconPageTemplate', PageTemplate)
     app.component('IconGithub', Github)
-    app.component('IconMore', More)
     app.component('IconWrite', Write)
-    app.component('IconAddThree', AddThree)
-    app.component('IconNewlybuild', Newlybuild)
     app.component('IconEffects', Effects)
     app.component('IconRotate', Rotate)
     app.component('IconEdit', Edit)
-    app.component('IconSeoFolder', SeoFolder)
     app.component('IconUndo', Undo)
     app.component('IconTransform', Transform)
     app.component('IconClick', Click)
