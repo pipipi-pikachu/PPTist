@@ -7,7 +7,7 @@
 
 如果网络状态不佳，可以访问国内镜像：https://pptist.gitee.io/
 
-Github仓库（给个star呗😁）：https://github.com/pipipi-pikachu/PPTist
+Github仓库：https://github.com/pipipi-pikachu/PPTist
 
 
 # 项目运行
