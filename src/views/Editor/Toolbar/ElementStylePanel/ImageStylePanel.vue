@@ -59,24 +59,18 @@
       <Button class="full-width-btn"><IconColorFilter class="btn-icon" /> 设置滤镜</Button>
     </Popover>
     
-    <div class="row">
-      <div style="flex: 2;">水平翻转：</div>
-      <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="flip.x === 180" 
-          @change="checked => updateImage({ flip: { x: checked ? 180 : 0, y: flip.y } })" 
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div style="flex: 2;">垂直翻转：</div>
-      <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="flip.y === 180" 
-          @change="checked => updateImage({ flip: { x: flip.x, y: checked ? 180 : 0 } })" 
-        />
-      </div>
-    </div>
+    <CheckboxButtonGroup class="row">
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="flip.x === 180"
+        @click="updateImage({ flip: { x: flip.x === 180 ? 0 : 180, y: flip.y } })"
+      ><IconFlipVertically /> 水平翻转</CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="flip.y === 180"
+        @click="updateImage({ flip: { x: flip.x, y: flip.y === 180 ? 0 : 180 } })"
+      ><IconFlipHorizontally /> 垂直翻转</CheckboxButton>
+    </CheckboxButtonGroup>
 
     <Divider />
     <ElementOutline />
