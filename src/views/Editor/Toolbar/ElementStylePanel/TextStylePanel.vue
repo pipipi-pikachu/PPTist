@@ -20,13 +20,13 @@
       >
         <template #suffixIcon><IconFontSize /></template>
         <SelectOptGroup label="系统字体">
-          <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
-            <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
+          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
+            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
         <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in webFonts" :key="font.name" :value="font.name">
-            <span>{{font.name}}</span>
+          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+            <span>{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
       </Select>

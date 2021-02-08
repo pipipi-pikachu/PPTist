@@ -61,7 +61,7 @@ export const mutations: MutationTree<State> = {
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {
-    state.availableFonts = SYS_FONTS.filter(font => isSupportFontFamily(font.en))
+    state.availableFonts = SYS_FONTS.filter(font => isSupportFontFamily(font.value))
   },
 
   [MutationTypes.SET_TOOLBAR_STATE](state, type) {
