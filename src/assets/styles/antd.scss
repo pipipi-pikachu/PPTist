@@ -8,6 +8,7 @@
   display: none;
 }
 .ant-popover-inner {
+  box-shadow: $boxShadow;
   border: 1px solid $borderColor;
 }
 .ant-popover-inner-content {
@@ -19,6 +20,7 @@
   min-width: 120px;
 }
 .ant-dropdown-menu {
+  box-shadow: $boxShadow;
   border: 1px solid $borderColor;
 }
 .ant-dropdown-menu-item {
@@ -30,8 +32,10 @@
 }
 
 // button
-.ant-btn.no-padding {
-  padding: 0;
+.ant-btn {
+  &.no-padding {
+    padding: 0;
+  }
 }
 
 // radio
