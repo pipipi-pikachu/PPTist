@@ -367,10 +367,10 @@ export default defineComponent({
 }
 
 .theme-list {
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .theme-item {
-  @include grid-layout-item(4, 22%);
+  @include flex-grid-layout-children(4, 22%);
 
   padding-bottom: 22%;
   border-radius: $borderRadius;

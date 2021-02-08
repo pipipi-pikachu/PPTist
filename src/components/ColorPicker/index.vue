@@ -229,10 +229,10 @@ export default defineComponent({
 }
 
 .picker-presets {
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .picker-presets-color {
-  @include grid-layout-item(10, 7%);
+  @include flex-grid-layout-children(10, 7%);
 
   height: 0;
   padding-bottom: 7%;
@@ -241,10 +241,10 @@ export default defineComponent({
   cursor: pointer;
 }
 .picker-gradient-presets {
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .picker-gradient-col {
-  @include grid-layout-item(10, 7%);
+  @include flex-grid-layout-children(10, 7%);
 
   display: flex;
   flex-direction: column;

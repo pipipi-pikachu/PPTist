@@ -35,10 +35,10 @@ export default defineComponent({
   width: 120px;
   margin-bottom: -5px;
 
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .chart-item {
-  @include grid-layout-item(3, 32%);
+  @include flex-grid-layout-children(3, 32%);
 
   height: 0;
   padding-bottom: 32%;

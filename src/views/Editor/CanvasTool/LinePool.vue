@@ -77,10 +77,10 @@ export default defineComponent({
   width: 200px;
   margin-bottom: -5px;
 
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .line-item {
-  @include grid-layout-item(5, 19%);
+  @include flex-grid-layout-children(5, 19%);
 
   height: 0;
   padding-bottom: 19%;

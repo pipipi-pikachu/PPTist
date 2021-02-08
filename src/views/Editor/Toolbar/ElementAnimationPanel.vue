@@ -229,10 +229,10 @@ export default defineComponent({
   padding: 2px 0 2px 10px;
 }
 .pool-item-wrapper {
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .pool-item {
-  @include grid-layout-item(4, 24%);
+  @include flex-grid-layout-children(4, 24%);
 
   margin-bottom: 10px;
   height: 40px;

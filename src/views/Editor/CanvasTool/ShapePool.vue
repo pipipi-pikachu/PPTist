@@ -72,12 +72,12 @@ export default defineComponent({
   padding: 2px 0 2px 10px;
 }
 .shape-list {
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 
   margin-bottom: 10px;
 }
 .shape-item {
-  @include grid-layout-item(10, 8%);
+  @include flex-grid-layout-children(10, 8%);
 
   height: 0;
   padding-bottom: 8%;

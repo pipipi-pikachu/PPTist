@@ -19,37 +19,57 @@ time, mark, audio, video {
   box-sizing: border-box;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
   display: block;
 }
+
 body {
   line-height: 1;
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
-html, body {
+
+html,
+body {
   height: 100%;
   overflow: hidden;
   background-color: #fff;
   color: $textColor;
 }
-ol, ul {
+
+ol,
+ul,
+li {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
-blockquote::before, blockquote::after,
-q::before, q::after {
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
   content: '';
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 a {
   text-decoration: none;
-  color: #fff;
 }
 
 ::-webkit-scrollbar {

@@ -47,6 +47,6 @@ export default defineComponent({
 .label {
   width: 140px;
 
-  @include ellipsis();
+  @include ellipsis-oneline();
 }
 </style>

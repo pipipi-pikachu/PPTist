@@ -411,7 +411,7 @@ export default defineComponent({
 .shape-clip {
   margin-bottom: 10px;
 
-  @include grid-layout-wrapper();
+  @include flex-grid-layout();
 }
 .shape-clip-item {
   display: flex;
@@ -419,7 +419,7 @@ export default defineComponent({
   align-items: center;
   cursor: pointer;
 
-  @include grid-layout-item(5, 16%);
+  @include flex-grid-layout-children(5, 16%);
 
   .shape {
     width: 40px;
