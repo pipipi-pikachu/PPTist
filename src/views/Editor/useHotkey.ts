@@ -173,7 +173,7 @@ export default () => {
       e.preventDefault()
       order(ElementOrderCommands.BOTTOM)
     }
-    if (key === KEYS.DELETE) {
+    if (key === KEYS.DELETE || key === KEYS.BACKSPACE) {
       if (disableHotkeys.value) return
       e.preventDefault()
       remove()
