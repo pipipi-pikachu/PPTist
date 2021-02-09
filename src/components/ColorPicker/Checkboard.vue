@@ -6,6 +6,7 @@
 import { computed, defineComponent } from 'vue'
 
 const checkboardCache = {}
+
 const renderCheckboard = (white: string, grey: string, size: number) => {
   const canvas = document.createElement('canvas')
   canvas.width = canvas.height = size * 2

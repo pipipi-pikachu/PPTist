@@ -19,6 +19,10 @@ export default () => {
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  /**
+   * 移动页面焦点
+   * @param command 移动页面焦点命令：上移、下移
+   */
   const updateSlideIndex = (command: string) => {
     let targetIndex = 0
     if (command === KEYS.UP && slideIndex.value > 0) {
@@ -30,6 +34,7 @@ export default () => {
     store.commit(MutationTypes.UPDATE_SLIDE_INDEX, targetIndex)
   }
 
+  // 将当前页面数据加密后复制到剪贴板
   const copySlide = () => {
     const text = encrypt(JSON.stringify({
       type: 'slide',
@@ -41,12 +46,14 @@ export default () => {
     })
   }
 
+  // 尝试将剪贴板页面数据解密后添加到下一页（粘贴）
   const pasteSlide = () => {
     readClipboard().then(text => {
       pasteTextClipboardData(text, { onlySlide: true })
     }).catch(err => message.warning(err))
   }
 
+  // 创建一页空白页并添加到下一页
   const createSlide = () => {
     const emptySlide = {
       id: createRandomCode(8),
@@ -60,6 +67,7 @@ export default () => {
     addHistorySnapshot()
   }
 
+  // 将当前页复制一份到下一页
   const copyAndPasteSlide = () => {
     store.commit(MutationTypes.ADD_SLIDE, {
       ...currentSlide.value,
@@ -68,6 +76,7 @@ export default () => {
     addHistorySnapshot()
   }
 
+  // 删除当前页
   const deleteSlide = () => {
     if (slidesLength.value === 1) return message.warning('无法继续删除')
     
@@ -75,6 +84,7 @@ export default () => {
     addHistorySnapshot()
   }
 
+  // 将当前页复制后删除（剪切）
   const cutSlide = () => {
     copySlide()
     deleteSlide()

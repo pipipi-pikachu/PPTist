@@ -18,6 +18,10 @@ export default () => {
   const { addHistorySnapshot } = useHistorySnapshot()
   const { createTextElement } = useCreateElement()
 
+  /**
+   * 粘贴元素（一组）
+   * @param elements 元素列表数据
+   */
   const pasteElement = (elements: PPTElement[]) => {
     const groupIdMap = {}
     const elIdMap = {}
@@ -47,6 +51,10 @@ export default () => {
     addHistorySnapshot()
   }
 
+  /**
+   * 粘贴页面
+   * @param slide 页面数据
+   */
   const pasteSlide = (slide: Slide) => {
     store.commit(MutationTypes.ADD_SLIDE, {
       ...slide,
@@ -55,6 +63,10 @@ export default () => {
     addHistorySnapshot()
   }
 
+  /**
+   * 粘贴普通文本：创建为新的文本元素
+   * @param text 文本
+   */
   const pasteText = (text: string) => {
     createTextElement({
       left: 0,
@@ -64,6 +76,11 @@ export default () => {
     }, text)
   }
 
+  /**
+   * 解析剪贴板内容，根据解析结果选择合适的粘贴方式
+   * @param text 剪贴板内容
+   * @param options 配置项：onlySlide -- 仅处理页面粘贴；onlyElements -- 仅处理元素粘贴；
+   */
   const pasteTextClipboardData = (text: string, options?: PasteTextClipboardDataOptions) => {
     const onlySlide = options?.onlySlide || false
     const onlyElements = options?.onlyElements || false
@@ -76,7 +93,7 @@ export default () => {
       clipboardData = text
     }
 
-    // 粘贴自定义元素或页面
+    // 元素或页面
     if (typeof clipboardData === 'object') {
       const { type, data } = clipboardData
 
@@ -84,7 +101,7 @@ export default () => {
       else if (type === 'slide' && !onlyElements) pasteSlide(data)
     }
 
-    // 粘贴普通文本
+    // 普通文本
     else if (!onlyElements && !onlySlide) pasteText(clipboardData)
   }
 

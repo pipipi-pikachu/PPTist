@@ -27,7 +27,7 @@
         height: rubberSize + 'px',
       }"
       v-if="mouseInCanvas && model === 'eraser'"
-    ><IconClearFormat class="icon" :size="rubberSize * 0.6" /></div>
+    ></div>
   </div>
 </template>
 
@@ -53,6 +53,7 @@ export default defineComponent({
     let ctx: CanvasRenderingContext2D | null = null
     const writingBoardRef = ref<HTMLElement>()
     const canvasRef = ref<HTMLCanvasElement>()
+
     let lastPos = {
       x: 0,
       y: 0,
@@ -61,12 +62,22 @@ export default defineComponent({
     let lastTime = 0
     let lastLineWidth = -1
 
+    // 鼠标位置坐标：用于画笔或橡皮位置跟随
     const mouse = reactive({
       x: 0,
       y: 0,
     })
+    // 更新鼠标位置坐标
+    const updateMousePosition = (e: MouseEvent) => {
+      mouse.x = e.pageX
+      mouse.y = e.pageY
+    }
+    
+    // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
     const mouseInCanvas = ref(false)
 
+
+    // 初始化画布
     const initCanvas = () => {
       if (!canvasRef.value || !writingBoardRef.value) return
 
@@ -82,30 +93,9 @@ export default defineComponent({
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
     }
+    onMounted(initCanvas)
 
-    const getDistance = (posX: number, posY: number) => {
-      const lastPosX = lastPos.x
-      const lastPosY = lastPos.y
-      return Math.sqrt((posX - lastPosX) * (posX - lastPosX) + (posY - lastPosY) * (posY - lastPosY))
-    }
-
-    const getLineWidth = (s: number, t: number) => {
-      const maxV = 10
-      const minV = 0.1
-      const maxWidth = penSize
-      const minWidth = 3
-      const v = s / t
-      let lineWidth
-
-      if (v <= minV) lineWidth = maxWidth
-      else if (v >= maxV) lineWidth = minWidth
-      else lineWidth = maxWidth - v / maxV * maxWidth
-
-      if (lastLineWidth === -1) return lineWidth
-      return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
-    }
-
-    // 画笔绘制方法
+    // 绘制画笔墨迹方法
     const draw = (posX: number, posY: number, lineWidth: number) => {
       if (!ctx) return
 
@@ -121,7 +111,7 @@ export default defineComponent({
       ctx.closePath()
     }
 
-    // 橡皮擦除方法
+    // 擦除墨迹方法
     const erase = (posX: number, posY: number) => {
       if (!ctx || !canvasRef.value) return
       const lastPosX = lastPos.x
@@ -155,47 +145,60 @@ export default defineComponent({
       ctx.restore()
     }
 
-    const startDraw = (posX: number, posY: number) => {
-      lastPos = { x: posX, y: posY }
-      lastTime = new Date().getTime()
-    }
-
-    const startMove = (posX: number, posY: number) => {
-      const time = new Date().getTime()
-
-      // 画笔模式（这里通过绘制速度调节画笔的粗细）
-      if (props.model === 'pen') {
-        const s = getDistance(posX, posY)
-        const t = time - lastTime
-        const lineWidth = getLineWidth(s, t)
-  
-        draw(posX, posY, lineWidth)
-        lastLineWidth = lineWidth
-      }
-      // 橡皮模式
-      else erase(posX, posY)
-
-      lastPos = { x: posX, y: posY }
-      lastTime = new Date().getTime()
-    }
-
+    // 准备开始绘制/擦除墨迹（落笔）
     const handleMousedown = (e: MouseEvent) => {
       isMouseDown = true
-      startDraw(e.offsetX, e.offsetY)
+      lastPos = { x: e.offsetX, y: e.offsetY }
+      lastTime = new Date().getTime()
     }
 
-    const updateMousePosition = (e: MouseEvent) => {
-      mouse.x = e.pageX
-      mouse.y = e.pageY
+    // 计算鼠标两次移动之间的距离
+    const getDistance = (posX: number, posY: number) => {
+      const lastPosX = lastPos.x
+      const lastPosY = lastPos.y
+      return Math.sqrt((posX - lastPosX) * (posX - lastPosX) + (posY - lastPosY) * (posY - lastPosY))
     }
 
+    // 根据鼠标两次移动之间的距离s和时间t计算绘制速度，速度越快，墨迹越细
+    const getLineWidth = (s: number, t: number) => {
+      const maxV = 10
+      const minV = 0.1
+      const maxWidth = penSize
+      const minWidth = 3
+      const v = s / t
+      let lineWidth
+
+      if (v <= minV) lineWidth = maxWidth
+      else if (v >= maxV) lineWidth = minWidth
+      else lineWidth = maxWidth - v / maxV * maxWidth
+
+      if (lastLineWidth === -1) return lineWidth
+      return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
+    }
+
+    // 开始绘制/擦除墨迹（移动）
     const handleMousemove = (e: MouseEvent) => {
       updateMousePosition(e)
 
       if (!isMouseDown) return
-      startMove(e.offsetX, e.offsetY)
+      
+      const time = new Date().getTime()
+
+      if (props.model === 'pen') {
+        const s = getDistance(e.offsetX, e.offsetY)
+        const t = time - lastTime
+        const lineWidth = getLineWidth(s, t)
+  
+        draw(e.offsetX, e.offsetY, lineWidth)
+        lastLineWidth = lineWidth
+      }
+      else erase(e.offsetX, e.offsetY)
+
+      lastPos = { x: e.offsetX, y: e.offsetY }
+      lastTime = new Date().getTime()
     }
 
+    // 结束绘制/擦除墨迹（停笔）
     const handleMouseup = () => {
       if (!isMouseDown) return
       isMouseDown = false
@@ -206,8 +209,6 @@ export default defineComponent({
       if (!ctx || !canvasRef.value) return
       ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
     }
-
-    onMounted(initCanvas)
 
     return {
       mouse,

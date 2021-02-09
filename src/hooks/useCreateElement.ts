@@ -29,12 +29,17 @@ export default () => {
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  // 创建（插入）一个元素并将其设置为被选中元素
   const createElement = (element: PPTElement) => {
     store.commit(MutationTypes.ADD_ELEMENT, element)
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.id])
     addHistorySnapshot()
   }
 
+  /**
+   * 创建图片元素
+   * @param src 图片地址
+   */
   const createImageElement = (src: string) => {
     getImageSize(src).then(({ width, height }) => {
       const scale = height / width
@@ -61,6 +66,10 @@ export default () => {
     })
   }
   
+  /**
+   * 创建图表元素
+   * @param chartType 图表类型
+   */
   const createChartElement = (chartType: ChartType) => {
     createElement({
       type: 'chart',
@@ -81,6 +90,11 @@ export default () => {
     })
   }
   
+  /**
+   * 创建表格元素
+   * @param row 行数
+   * @param col 列数
+   */
   const createTableElement = (row: number, col: number) => {
     const rowCells: TableCell[] = new Array(col).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
     const data: TableCell[][] = new Array(row).fill(rowCells)
@@ -117,6 +131,11 @@ export default () => {
     })
   }
   
+  /**
+   * 创建文本元素
+   * @param position 位置大小信息
+   * @param content 文本内容
+   */
   const createTextElement = (position: CommonElementPosition, content = '请输入内容') => {
     const { left, top, width, height } = position
     createElement({
@@ -130,6 +149,11 @@ export default () => {
     })
   }
   
+  /**
+   * 创建形状元素
+   * @param position 位置大小信息
+   * @param data 形状路径信息
+   */
   const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem) => {
     const { left, top, width, height } = position
     createElement({
@@ -146,6 +170,11 @@ export default () => {
     })
   }
   
+  /**
+   * 创建线条元素
+   * @param position 位置大小信息
+   * @param data 线条的路径和样式
+   */
   const createLineElement = (position: LineElementPosition, data: LinePoolItem) => {
     const { left, top, start, end } = position
     createElement({

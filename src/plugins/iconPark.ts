@@ -1,3 +1,5 @@
+// https://iconpark.bytedance.com/official
+
 import { App } from 'vue'
 import {
   PlayOne,
@@ -24,7 +26,6 @@ import {
   BackgroundColor,
   Group,
   Ungroup,
-  ClearFormat,
   Back,
   Next,
   Fullwidth,
@@ -160,7 +161,6 @@ export default {
     app.component('IconSearch', Search)
     app.component('IconPpt', Ppt)
     app.component('IconHelpcenter', Helpcenter)
-    app.component('IconClearFormat', ClearFormat)
     app.component('IconGithub', Github)
     app.component('IconWrite', Write)
     app.component('IconEffects', Effects)

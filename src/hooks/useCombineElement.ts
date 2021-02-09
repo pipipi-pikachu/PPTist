@@ -9,16 +9,23 @@ export default () => {
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const handleElementId = computed(() => store.state.handleElementId)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  // 组合元素（为当前所有激活元素添加一个相同的groupId）
+  /**
+   * 组合当前选中的元素：给当前选中的元素赋予一个相同的分组ID
+   */
   const combineElements = () => {
     if (!activeElementList.value.length) return
 
+    // 生成一个新元素列表进行后续操作
     let newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
+
+    // 生成分组ID
     const groupId = createRandomCode()
 
+    // 收集需要组合的元素列表，并赋上唯一分组ID
     const combineElementList: PPTElement[] = []
     for (const element of newElementList) {
       if (activeElementIdList.value.includes(element.id)) {
@@ -27,19 +34,23 @@ export default () => {
       }
     }
 
-    // 注意，组合元素的层级应该是连续的，所以需要获取该组元素中最顶层的元素，将组内其他成员从原位置移动到最顶层的元素的下面
-    const combineElementMaxIndex = newElementList.findIndex(_element => _element.id === combineElementList[combineElementList.length - 1].id)
+    // 确保该组合内所有元素成员的层级是连续的，具体操作方法为：
+    // 先获取到该组合内最上层元素的层级，将本次需要组合的元素从新元素列表中移除，
+    // 再根据最上层元素的层级位置，将上面收集到的需要组合的元素列表一起插入到新元素列表中合适的位置
+    const combineElementMaxLevel = newElementList.findIndex(_element => _element.id === combineElementList[combineElementList.length - 1].id)
     const combineElementIdList = combineElementList.map(_element => _element.id)
     newElementList = newElementList.filter(_element => !combineElementIdList.includes(_element.id))
 
-    const insertIndex = combineElementMaxIndex - combineElementList.length + 1
-    newElementList.splice(insertIndex, 0, ...combineElementList)
+    const insertLevel = combineElementMaxLevel - combineElementList.length + 1
+    newElementList.splice(insertLevel, 0, ...combineElementList)
 
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
     addHistorySnapshot()
   }
 
-  // 取消组合元素（移除所有被激活元素的groupId）
+  /**
+   * 取消组合元素：移除选中元素的分组ID
+   */
   const uncombineElements = () => {
     if (!activeElementList.value.length) return
     const hasElementInGroup = activeElementList.value.some(item => item.groupId)
@@ -50,6 +61,11 @@ export default () => {
       if (activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
     }
     store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+
+    // 取消组合后，需要重置激活元素状态
+    // 默认重置为当前正在操作的元素,如果不存在则重置为空
+    const handleElementIdList = handleElementId.value ? [handleElementId.value] : []
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, handleElementIdList)
     addHistorySnapshot()
   }
 

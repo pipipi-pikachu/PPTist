@@ -35,6 +35,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const color = computed(() => props.value)
+    
     const gradientColor = computed(() => {
       const rgbaStr = [color.value.r, color.value.g, color.value.b].join(',')
       return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`

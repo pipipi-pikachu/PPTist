@@ -10,6 +10,7 @@ export default () => {
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  // 锁定选中的元素,并清空选中元素状态
   const lockElement = () => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
   
@@ -21,6 +22,10 @@ export default () => {
     addHistorySnapshot()
   }
 
+  /**
+   * 解除元素的锁定状态,并将其设置为当前选择元素
+   * @param handleElement 需要解锁的元素
+   */
   const unlockElement = (handleElement: PPTElement) => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 

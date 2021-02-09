@@ -11,22 +11,27 @@ export default () => {
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  const moveElement = (command: string) => {
+  /**
+   * 将元素向指定方向移动指定的距离
+   * @param command 移动方向
+   * @param step 移动距离
+   */
+  const moveElement = (command: string, step = 1) => {
     const newElementList = currentSlide.value.elements.map(el => {
       if (activeElementIdList.value.includes(el.id)) {
         let { left, top } = el
         switch (command) {
           case KEYS.LEFT: 
-            left = left - 1
+            left = left - step
             break
           case KEYS.RIGHT: 
-            left = left + 1
+            left = left + step
             break
           case KEYS.UP: 
-            top = top - 1
+            top = top - step
             break
           case KEYS.DOWN: 
-            top = top + 1
+            top = top + step
             break
           default: break
         }
