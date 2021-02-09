@@ -58,20 +58,8 @@
       </template>
       <Button class="full-width-btn"><IconColorFilter class="btn-icon" /> 设置滤镜</Button>
     </Popover>
-    
-    <CheckboxButtonGroup class="row">
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="flip.x === 180"
-        @click="updateImage({ flip: { x: flip.x === 180 ? 0 : 180, y: flip.y } })"
-      ><IconFlipVertically /> 水平翻转</CheckboxButton>
-      <CheckboxButton 
-        style="flex: 1;"
-        :checked="flip.y === 180"
-        @click="updateImage({ flip: { x: flip.x, y: flip.y === 180 ? 0 : 180 } })"
-      ><IconFlipHorizontally /> 垂直翻转</CheckboxButton>
-    </CheckboxButtonGroup>
-
+  
+    <ElementFlip />
     <Divider />
     <ElementOutline />
     <Divider />
@@ -96,6 +84,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
+import ElementFlip from '../common/ElementFlip.vue'
 
 interface FilterOption {
   label: string;
@@ -156,6 +145,7 @@ export default defineComponent({
   components: {
     ElementOutline,
     ElementShadow,
+    ElementFlip,
   },
   setup() {
     const store = useStore()
@@ -164,24 +154,11 @@ export default defineComponent({
 
     const clipPanelVisible = ref(false)
 
-    const flip = ref({
-      x: 0,
-      y: 0,
-    })
-
     const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'image') return
-
-      if (handleElement.value.flip) {
-        flip.value = {
-          x: handleElement.value.flip.x || 0,
-          y: handleElement.value.flip.y || 0,
-        }
-      }
-      else flip.value = { x: 0, y: 0 }
-
+      
       const filters = handleElement.value.filters
       if (filters) {
         filterOptions.value = defaultFilters.map(item => {
@@ -193,11 +170,6 @@ export default defineComponent({
     }, { deep: true, immediate: true })
 
     const { addHistorySnapshot } = useHistorySnapshot()
-
-    const updateImage = (props: Partial<PPTImageElement>) => {
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
-    }
 
     const updateFilter = (filter: FilterOption, value: number) => {
       const originFilters = handleElement.value.filters || {}
@@ -337,9 +309,7 @@ export default defineComponent({
       shapeClipPathOptions,
       ratioClipOptions,
       filterOptions,
-      flip,
       handleElement,
-      updateImage,
       updateFilter,
       clipImage,
       presetImageClip,

@@ -41,6 +41,10 @@ export interface PPTTextElement {
   shadow?: PPTElementShadow;
 }
 
+export interface ImageOrShapeFlip {
+  x?: number;
+  y?: number;
+}
 export interface ImageElementFilters {
   'blur'?: string;
   'brightness'?: string;
@@ -68,7 +72,7 @@ export interface PPTImageElement {
     range: [[number, number], [number, number]];
     shape: 'rect' | 'roundRect' | 'ellipse' | 'triangle' | 'pentagon' | 'rhombus' | 'star';
   };
-  flip?: { x?: number; y?: number };
+  flip?: ImageOrShapeFlip;
   shadow?: PPTElementShadow;
 }
 
@@ -94,6 +98,7 @@ export interface PPTShapeElement {
   rotate?: number;
   outline?: PPTElementOutline;
   opacity?: number;
+  flip?: ImageOrShapeFlip;
   shadow?: PPTElementShadow;
 }
 

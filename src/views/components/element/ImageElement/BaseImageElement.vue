@@ -13,7 +13,7 @@
       class="element-content"
       :style="{
         filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
-        transform: flip,
+        transform: flipStyle,
       }"
     >
       <ImageRectOutline
@@ -66,6 +66,7 @@ import ImageEllipseOutline from './ImageEllipseOutline.vue'
 import ImagePolygonOutline from './ImagePolygonOutline.vue'
 
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 
 export default defineComponent({
   name: 'base-element-image',
@@ -122,23 +123,17 @@ export default defineComponent({
       return filter
     })
 
-    const flip = computed(() => {
-      if (!props.elementInfo.flip) return ''
-      const { x, y } = props.elementInfo.flip
-      if (x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
-      else if (x) return `rotateX(${x}deg)`
-      else if (y) return `rotateY(${y}deg)`
-      return ''
-    })
-
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
+
+    const flip = computed(() => props.elementInfo.flip)
+    const { flipStyle } = useElementFlip(flip)
 
     return {
       imgPosition,
       clipShape,
       filter,
-      flip,
+      flipStyle,
       shadowStyle,
     }
   },

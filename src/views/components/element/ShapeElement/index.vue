@@ -17,6 +17,7 @@
       :style="{
         opacity: elementInfo.opacity,
         filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
+        transform: flipStyle,
       }"
     >
       <SvgWrapper 
@@ -59,6 +60,7 @@ import { PPTShapeElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 
 import GradientDefs from './GradientDefs.vue'
 
@@ -94,12 +96,16 @@ export default defineComponent({
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
+    const flip = computed(() => props.elementInfo.flip)
+    const { flipStyle } = useElementFlip(flip)
+
     return {
       handleSelectElement,
       shadowStyle,
       outlineWidth,
       outlineStyle,
       outlineColor,
+      flipStyle,
     }
   },
 })

@@ -68,6 +68,7 @@
       </div>
     </template>
 
+    <ElementFlip />
     <Divider />
     <ElementOutline />
     <Divider />
@@ -86,6 +87,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
+import ElementFlip from '../common/ElementFlip.vue'
 import ColorButton from '../common/ColorButton.vue'
 
 export default defineComponent({
@@ -94,6 +96,7 @@ export default defineComponent({
     ElementOpacity,
     ElementOutline,
     ElementShadow,
+    ElementFlip,
     ColorButton,
   },
   setup() {

@@ -28,7 +28,7 @@
       v-contextmenu="contextmenus"
       :style="{
         filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
-        transform: flip,
+        transform: flipStyle,
       }"
     >
       <ImageRectOutline
@@ -77,6 +77,7 @@ import { PPTImageElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 
 import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'
@@ -112,6 +113,9 @@ export default defineComponent({
 
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
+
+    const flip = computed(() => props.elementInfo.flip)
+    const { flipStyle } = useElementFlip(flip)
 
     const handleSelectElement = (e: MouseEvent) => {
       if (props.elementInfo.lock) return
@@ -159,15 +163,6 @@ export default defineComponent({
       return filter
     })
 
-    const flip = computed(() => {
-      if (!props.elementInfo.flip) return ''
-      const { x, y } = props.elementInfo.flip
-      if (x && y) return `rotateX(${x}deg) rotateY(${y}deg)`
-      else if (x) return `rotateX(${x}deg)`
-      else if (y) return `rotateY(${y}deg)`
-      return ''
-    })
-
     const clip = (data: ImageClipedEmitData) => {
       store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
       
@@ -195,7 +190,7 @@ export default defineComponent({
       clipShape,
       imgPosition,
       filter,
-      flip,
+      flipStyle,
     }
   },
 })
