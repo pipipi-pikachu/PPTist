@@ -39,7 +39,7 @@
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
-        <SvgWrapper width="12" height="12" fill="#fff" stroke="#333">
+        <SvgWrapper width="16" height="16" fill="#fff" stroke="#333">
           <path
             stroke-width="0.3" 
             shape-rendering="crispEdges"
@@ -93,6 +93,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
+    const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
     const topImgWrapperPosition = reactive({
       top: 0,
@@ -198,17 +199,17 @@ export default defineComponent({
       emit('clip', clipedEmitData)
     }
 
-    const keyboardClip = (e: KeyboardEvent) => {
+    const keyboardListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
       if (key === KEYS.ENTER) handleClip()
     }
 
     onMounted(() => {
       initClipPosition()
-      document.addEventListener('keydown', keyboardClip)
+      document.addEventListener('keydown', keyboardListener)
     })
     onUnmounted(() => {
-      document.removeEventListener('keydown', keyboardClip)
+      document.removeEventListener('keydown', keyboardListener)
     })
 
     const getRange = () => {
@@ -304,6 +305,8 @@ export default defineComponent({
         height: topImgWrapperPosition.height,
       }
 
+      const aspectRatio = topImgWrapperPosition.width / topImgWrapperPosition.height
+
       document.onmousemove = e => {
         if (!isMouseDown) return
 
@@ -312,6 +315,11 @@ export default defineComponent({
 
         let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
         let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
+
+        if (ctrlOrShiftKeyActive.value) {
+          if (type === 'b-r' || type === 't-l') moveY = moveX / aspectRatio
+          if (type === 'b-l' || type === 't-r') moveY = -moveX / aspectRatio
+        }
 
         let targetLeft, targetTop, targetWidth, targetHeight
 
@@ -459,8 +467,8 @@ export default defineComponent({
 
 .clip-point {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   left: 0;
   top: 0;
   transform-origin: 0 0;
@@ -473,27 +481,27 @@ export default defineComponent({
   }
 
   &.t-l {
-    cursor: nwse-resize;
     left: 0;
     top: 0;
+    cursor: nwse-resize;
   }
   &.t-r {
-    cursor: nesw-resize;
     left: 100%;
     top: 0;
     transform: rotate(90deg);
+    cursor: nesw-resize;
   }
   &.b-l {
-    cursor: nesw-resize;
     left: 0;
     top: 100%;
     transform: rotate(-90deg);
+    cursor: nesw-resize;
   }
   &.b-r {
-    cursor: nwse-resize;
     left: 100%;
     top: 100%;
     transform: rotate(180deg);
+    cursor: nwse-resize;
   }
 }
 </style>
