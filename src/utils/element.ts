@@ -1,6 +1,5 @@
 import { PPTElement } from '@/types/slides'
 
-// 获取矩形旋转后在画布中的位置范围
 interface RotatedElementData {
   left: number;
   top: number;
@@ -8,6 +7,11 @@ interface RotatedElementData {
   height: number;
   rotate: number;
 }
+
+/**
+ * 计算元素在画布中的矩形范围旋转后的新位置范围
+ * @param element 元素的位置大小和旋转角度信息
+ */
 export const getRectRotatedRange = (element: RotatedElementData) => {
   const { left, top, width, height, rotate = 0 } = element
 
@@ -17,11 +21,8 @@ export const getRectRotatedRange = (element: RotatedElementData) => {
   const tlbraRadian = (180 - rotate - auxiliaryAngle) * Math.PI / 180
   const trblaRadian = (auxiliaryAngle - rotate) * Math.PI / 180
 
-  const halfWidth = width / 2
-  const halfHeight = height / 2
-
-  const middleLeft = left + halfWidth
-  const middleTop = top + halfHeight
+  const middleLeft = left + width / 2
+  const middleTop = top + height / 2
 
   const xAxis = [
     middleLeft + radius * Math.cos(tlbraRadian),
@@ -42,7 +43,10 @@ export const getRectRotatedRange = (element: RotatedElementData) => {
   }
 }
 
-// 获取元素在画布中的位置范围
+/**
+ * 计算元素在画布中的位置范围
+ * @param element 元素信息
+ */
 export const getElementRange = (element: PPTElement) => {
   let minX, maxX, minY, maxY
 
@@ -69,7 +73,10 @@ export const getElementRange = (element: PPTElement) => {
   return { minX, maxX, minY, maxY }
 }
 
-// 获取元素集合在画布中的位置范围
+/**
+ * 计算一组元素在画布中的位置范围
+ * @param elementList 一组元素信息
+ */
 export const getElementListRange = (elementList: PPTElement[]) => {
   const leftValues: number[] = []
   const topValues: number[] = []
@@ -97,7 +104,10 @@ export interface AlignLine {
   range: [number, number];
 }
 
-// 对齐参考线去重，对于相同位置的多条参考线，取长度范围的最小值和最大值，并基于此范围将多条参考线合并为一条
+/**
+ * 将一组参考线进行去重：同位置的的多条参考线仅留下一条，取该位置所有参考线的最大值和最小值为新的范围
+ * @param lines 一组参考线信息
+ */
 export const uniqAlignLines = (lines: AlignLine[]) => {
   const uniqLines: AlignLine[] = []
   lines.forEach(line => {

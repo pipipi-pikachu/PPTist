@@ -3,7 +3,10 @@ interface ImageSize {
   height: number;
 }
 
-// 获取图片的原始宽高
+/**
+ * 获取图片的原始宽高
+ * @param src 图片地址
+ */
 export const getImageSize = (src: string): Promise<ImageSize> => {
   return new Promise(resolve => {
     const img = document.createElement('img')
@@ -30,7 +33,10 @@ export const getImageSize = (src: string): Promise<ImageSize> => {
   })
 }
 
-// 获取图片文件的dataURL
+/**
+ * 读取图片文件的dataURL
+ * @param file 图片文件
+ */
 export const getImageDataURL = (file: File): Promise<string> => {
   return new Promise(resolve => {
     const reader = new FileReader()

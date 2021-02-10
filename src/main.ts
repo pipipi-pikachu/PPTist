@@ -10,16 +10,19 @@ import '@/assets/styles/antd.scss'
 import '@/assets/styles/font.scss'
 import 'animate.css'
 
+// 自定义插件
 import Contextmenu from './plugins/contextmenu'
 import ClickOutside from './plugins/clickOutside'
 import IconPark from './plugins/iconPark'
 
+// 自定义组件
 import FileInput from '@/components/FileInput.vue'
 import SvgWrapper from '@/components/SvgWrapper.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 
+// antd 组件
 import {
   InputNumber,
   Divider,
@@ -39,6 +42,16 @@ import {
 } from 'ant-design-vue'
 
 const app = createApp(App)
+
+app.directive('contextmenu', Contextmenu)
+app.directive('click-outside', ClickOutside)
+app.use(IconPark)
+
+app.component('FileInput', FileInput)
+app.component('SvgWrapper', SvgWrapper)
+app.component('CheckboxButton', CheckboxButton)
+app.component('CheckboxButtonGroup', CheckboxButtonGroup)
+app.component('ColorPicker', ColorPicker)
 
 app.component('InputNumber', InputNumber)
 app.component('Divider', Divider)
@@ -62,16 +75,6 @@ app.component('Menu', Menu)
 app.component('MenuItem', Menu.Item)
 app.component('Checkbox', Checkbox)
 app.component('Drawer', Drawer)
-
-app.directive('contextmenu', Contextmenu)
-app.directive('click-outside', ClickOutside)
-app.use(IconPark)
-
-app.component('FileInput', FileInput)
-app.component('SvgWrapper', SvgWrapper)
-app.component('CheckboxButton', CheckboxButton)
-app.component('CheckboxButtonGroup', CheckboxButtonGroup)
-app.component('ColorPicker', ColorPicker)
 
 app.use(store, key)
 app.mount('#app')

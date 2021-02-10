@@ -26,11 +26,6 @@ import { ContextmenuItem, Axis } from './types'
 
 import MenuContent from './MenuContent.vue'
 
-const MENU_WIDTH = 170
-const MENU_HEIGHT = 30
-const DIVIDER_HEIGHT = 11
-const PADDING = 5
-
 export default defineComponent({
   name: 'contextmenu',
   components: {
@@ -56,6 +51,11 @@ export default defineComponent({
   },
   setup(props) {
     const style = computed(() => {
+      const MENU_WIDTH = 170
+      const MENU_HEIGHT = 30
+      const DIVIDER_HEIGHT = 11
+      const PADDING = 5
+
       const { x, y } = props.axis
       const menuCount = props.menus.filter(menu => !(menu.divider || menu.hide)).length
       const dividerCount = props.menus.filter(menu => menu.divider).length

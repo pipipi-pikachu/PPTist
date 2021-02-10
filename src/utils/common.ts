@@ -1,6 +1,9 @@
 import padStart from 'lodash/padStart'
 
-// 生成随机码
+/**
+ * 生成随机码
+ * @param len 随机码长度
+ */
 export const createRandomCode = (len = 6) => {
   const charset = `_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
   const maxLen = charset.length
@@ -12,7 +15,11 @@ export const createRandomCode = (len = 6) => {
   return ret
 }
 
-// 数字补足位数，例如将6补足3位 -> 003
+/**
+ * 补足数字位数
+ * @param digit 数字
+ * @param len 位数
+ */
 export const fillDigit = (digit: number, len: number) => {
   return padStart('' + digit, len, '0')
 }

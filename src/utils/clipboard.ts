@@ -1,6 +1,9 @@
 import Clipboard from 'clipboard'
 
-// 复制文本到剪贴板
+/**
+ * 复制文本到剪贴板
+ * @param text 文本内容
+ */
 export const copyText = (text: string) => {
   return new Promise((resolve, reject) => {
     const fakeElement = document.createElement('button')
