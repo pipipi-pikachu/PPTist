@@ -127,32 +127,6 @@ export default defineComponent({
       return animationTypes[animation.type]
     })
 
-    const updateElementAnimation = (type: string) => {
-      const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
-        if (item.elId === handleElement.value.id) return { ...item, type }
-        return item
-      })
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
-      animationPoolVisible.value = false
-      addHistorySnapshot()
-    }
-
-    const addAnimation = (type: string) => {
-      if (handleElementAnimation.value) {
-        updateElementAnimation(type)
-        return
-      }
-      const animations: PPTAnimation[] = currentSlideAnimations.value ? JSON.parse(JSON.stringify(currentSlideAnimations.value)) : []
-      animations.push({
-        elId: handleElement.value.id,
-        type,
-        duration: 1000,
-      })
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
-      animationPoolVisible.value = false
-      addHistorySnapshot()
-    }
-
     const deleteAnimation = (elId: string) => {
       const animations = (currentSlideAnimations.value as PPTAnimation[]).filter(item => item.elId !== elId)
       store.commit(MutationTypes.UPDATE_SLIDE, { animations })
@@ -184,6 +158,36 @@ export default defineComponent({
         }
         elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
       }
+    }
+
+    const updateElementAnimation = (type: string) => {
+      const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
+        if (item.elId === handleElement.value.id) return { ...item, type }
+        return item
+      })
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      animationPoolVisible.value = false
+      addHistorySnapshot()
+
+      runAnimation(handleElement.value.id, type)
+    }
+
+    const addAnimation = (type: string) => {
+      if (handleElementAnimation.value) {
+        updateElementAnimation(type)
+        return
+      }
+      const animations: PPTAnimation[] = currentSlideAnimations.value ? JSON.parse(JSON.stringify(currentSlideAnimations.value)) : []
+      animations.push({
+        elId: handleElement.value.id,
+        type,
+        duration: 1000,
+      })
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      animationPoolVisible.value = false
+      addHistorySnapshot()
+
+      runAnimation(handleElement.value.id, type)
     }
 
     return {
@@ -238,8 +242,10 @@ export default defineComponent({
   height: 40px;
   line-height: 40px;
   text-align: center;
-  background-color: $lightGray;
   cursor: pointer;
+}
+.animation-box {
+  background-color: $lightGray;
 }
 
 .sequence-item {

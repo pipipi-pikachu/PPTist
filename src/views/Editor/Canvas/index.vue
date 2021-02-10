@@ -202,12 +202,13 @@ export default defineComponent({
           handler: selectAllElement,
         },
         {
-          text: '重置当前页',
-          handler: deleteAllElements,
+          text: '网格线',
+          subText: showGridLines.value ? '√' : '',
+          handler: toggleGridLines,
         },
         {
-          text: showGridLines.value ? '关闭网格线' : '打开网格线',
-          handler: toggleGridLines,
+          text: '重置当前页',
+          handler: deleteAllElements,
         },
         { divider: true },
         {

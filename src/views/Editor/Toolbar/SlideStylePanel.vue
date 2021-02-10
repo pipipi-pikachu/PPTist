@@ -155,7 +155,7 @@
       </Popover>
     </div>
 
-    <div class="title" style="margin-top: 20px;">应用预置主题：</div>
+    <div class="title" style="margin-top: 20px;">预置主题：</div>
     <div class="theme-list">
       <div 
         class="theme-item" 
