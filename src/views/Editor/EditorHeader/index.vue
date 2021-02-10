@@ -2,7 +2,7 @@
   <div class="editor-header">
     <div class="left">
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconEdit /> 编辑</div>
+        <div class="menu-item"><IconEdit /> <span class="text">编辑</span></div>
         <template #overlay>
           <Menu>
             <MenuItem @click="undo()">撤销</MenuItem>
@@ -15,7 +15,7 @@
         </template>
       </Dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconPpt /> 演示</div>
+        <div class="menu-item"><IconPpt /> <span class="text">演示</span></div>
         <template #overlay>
           <Menu>
             <MenuItem @click="enterScreeningFromStart()">从头开始</MenuItem>
@@ -24,7 +24,7 @@
         </template>
       </Dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconHelpcenter /> 帮助</div>
+        <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
         <template #overlay>
           <Menu>
             <MenuItem @click="openDoc()">开发文档</MenuItem>
@@ -132,8 +132,16 @@ export default defineComponent({
   align-items: center;
 }
 .menu-item {
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 13px;
   margin: 0 10px;
   cursor: pointer;
+
+  .text {
+    margin-left: 4px;
+  }
 }
 </style>
