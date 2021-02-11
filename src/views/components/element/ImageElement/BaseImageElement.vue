@@ -16,26 +16,7 @@
         transform: flipStyle,
       }"
     >
-      <ImageRectOutline
-        v-if="clipShape.type === 'rect'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :radius="clipShape.radius"
-        :outline="elementInfo.outline"
-      />
-      <ImageEllipseOutline
-        v-else-if="clipShape.type === 'ellipse'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
-      <ImagePolygonOutline
-        v-else-if="clipShape.type === 'polygon'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :createPath="clipShape.createPath"
-        :outline="elementInfo.outline"
-      />
+      <ImageOutline :elementInfo="elementInfo" />
 
       <div class="image-content" :style="{ clipPath: clipShape.style }">
         <img 
@@ -57,23 +38,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-
 import { PPTImageElement } from '@/types/slides'
-import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
-
-import ImageRectOutline from './ImageRectOutline.vue'
-import ImageEllipseOutline from './ImageEllipseOutline.vue'
-import ImagePolygonOutline from './ImagePolygonOutline.vue'
-
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useClipImage from './useClipImage'
+import useFilter from './useFilter'
+
+import ImageOutline from './ImageOutline/index.vue'
 
 export default defineComponent({
   name: 'base-element-image',
   components: {
-    ImageRectOutline,
-    ImageEllipseOutline,
-    ImagePolygonOutline,
+    ImageOutline,
   },
   props: {
     elementInfo: {
@@ -82,59 +58,24 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const imgPosition = computed(() => {
-      if (!props.elementInfo || !props.elementInfo.clip) {
-        return {
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-        }
-      }
-
-      const [start, end] = props.elementInfo.clip.range
-
-      const widthScale = (end[0] - start[0]) / 100
-      const heightScale = (end[1] - start[1]) / 100
-      const left = start[0] / widthScale
-      const top = start[1] / heightScale
-
-      return {
-        left: -left + '%',
-        top: -top + '%',
-        width: 100 / widthScale + '%',
-        height: 100 / heightScale + '%',
-      }
-    })
-
-    const clipShape = computed(() => {
-      if (!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
-      const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
-
-      return CLIPPATHS[shape]
-    })
-
-    const filter = computed(() => {
-      if (!props.elementInfo.filters) return ''
-      let filter = ''
-      for (const key of Object.keys(props.elementInfo.filters)) {
-        filter += `${key}(${props.elementInfo.filters[key]}) `
-      }
-      return filter
-    })
-
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
     const flip = computed(() => props.elementInfo.flip)
     const { flipStyle } = useElementFlip(flip)
+    
+    const clip = computed(() => props.elementInfo.clip)
+    const { clipShape, imgPosition } = useClipImage(clip)
+
+    const filters = computed(() => props.elementInfo.filters)
+    const { filter } = useFilter(filters)
 
     return {
       imgPosition,
-      clipShape,
       filter,
       flipStyle,
       shadowStyle,
+      clipShape,
     }
   },
 })

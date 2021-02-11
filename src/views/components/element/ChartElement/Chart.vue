@@ -101,6 +101,7 @@ export default defineComponent({
 
     onMounted(renderChart)
 
+    // 更新主题配色：通过主题色的色相旋转，计算出一系列的颜色作为主题配色
     const updateTheme = () => {
       if (!chartRef.value) return
 
@@ -116,15 +117,19 @@ export default defineComponent({
         }
         chartRef.value.style.setProperty(`--theme-color-${i + 1}`, tinycolor(_hsla).toRgbString())
       }
+    }
 
+    watch(() => props.themeColor, updateTheme)
+    onMounted(updateTheme)
+
+    // 更新网格颜色，包括坐标的文字部分
+    const updateGridColor = () => {
+      if (!chartRef.value) return
       if (props.gridColor) chartRef.value.style.setProperty(`--grid-color`, props.gridColor)
     }
 
-    watch([
-      () => props.themeColor,
-      () => props.gridColor,
-    ], updateTheme)
-    onMounted(updateTheme)
+    watch(() => props.gridColor, updateGridColor)
+    onMounted(updateGridColor)
 
     return {
       slideScale,

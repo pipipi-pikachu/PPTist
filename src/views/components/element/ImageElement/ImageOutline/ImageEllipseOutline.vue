@@ -18,7 +18,7 @@
       :ry="height / 2"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
-      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
+      :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
     ></ellipse>
 	</SvgWrapper>
 </template>

@@ -1,15 +1,14 @@
-import { ref, Ref, watchEffect } from 'vue'
+import { computed, Ref } from 'vue'
 import { PPTElementShadow } from '@/types/slides'
 
+// 计算元素的阴影样式
 export default (shadow: Ref<PPTElementShadow | undefined>) => {
-  const shadowStyle = ref('')
-
-  watchEffect(() => {
+  const shadowStyle = computed(() => {
     if (shadow.value) {
       const { h, v, blur, color } = shadow.value
-      shadowStyle.value = `${h}px ${v}px ${blur}px ${color}`
+      return `${h}px ${v}px ${blur}px ${color}`
     }
-    else shadowStyle.value = ''
+    return ''
   })
 
   return {

@@ -113,7 +113,21 @@ export default defineComponent({
   setup(props, { emit }) {
     const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
+    
+    const isStartSelect = ref(false)
+    const startCell = ref<number[]>([])
+    const endCell = ref<number[]>([])
 
+    const tableCells = computed<TableCell[][]>({
+      get() {
+        return props.data
+      },
+      set(newData) {
+        emit('change', newData)
+      },
+    })
+
+    // 通过表格的主题色计算辅助颜色
     const subThemeColor = ref(['', ''])
     watch(() => props.theme, () => {
       if (props.theme) {
@@ -127,15 +141,7 @@ export default defineComponent({
       }
     }, { immediate: true })
 
-    const tableCells = computed<TableCell[][]>({
-      get() {
-        return props.data
-      },
-      set(newData) {
-        emit('change', newData)
-      },
-    })
-
+    // 计算表格每一列的列宽和总宽度
     const colSizeList = ref<number[]>([])
     const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
     watch([
@@ -145,10 +151,8 @@ export default defineComponent({
       colSizeList.value = props.colWidths.map(item => item * props.width)
     }, { immediate: true })
     
-    const isStartSelect = ref(false)
-    const startCell = ref<number[]>([])
-    const endCell = ref<number[]>([])
-    
+    // 清除全部单元格的选中状态
+    // 表格处于不可编辑状态时也需要清除
     const removeSelectedCells = () => {
       startCell.value = []
       endCell.value = []
@@ -158,6 +162,7 @@ export default defineComponent({
       if (!props.editable) removeSelectedCells()
     })
 
+    // 用于拖拽列宽的操作节点位置
     const dragLinePosition = computed(() => {
       const dragLinePosition: number[] = []
       for (let i = 1; i < colSizeList.value.length + 1; i++) {
@@ -167,6 +172,7 @@ export default defineComponent({
       return dragLinePosition
     })
 
+    // 无效的单元格位置（被合并的单元格位置）集合
     const hideCells = computed(() => {
       const hideCells = []
       
@@ -188,6 +194,7 @@ export default defineComponent({
       return hideCells
     })
 
+    // 当前选中的单元格集合
     const selectedCells = computed(() => {
       if (!startCell.value.length) return []
       const [startX, startY] = startCell.value
@@ -217,11 +224,13 @@ export default defineComponent({
       emit('changeSelectedCells', selectedCells.value)
     })
 
+    // 当前激活的单元格：当且仅当只有一个选中单元格时，该单元格为激活的单元格
     const activedCell = computed(() => {
       if (selectedCells.value.length > 1) return null
       return selectedCells.value[0]
     })
 
+    // 当前选中的单元格位置范围
     const selectedRange = computed(() => {
       if (!startCell.value.length) return null
       const [startX, startY] = startCell.value
@@ -242,6 +251,7 @@ export default defineComponent({
       }
     })
 
+    // 设置选中单元格状态（鼠标点击或拖选）
     const handleMouseup = () => isStartSelect.value = false
 
     const handleCellMousedown = (e: MouseEvent, rowIndex: number, colIndex: number) => {
@@ -264,20 +274,24 @@ export default defineComponent({
       document.removeEventListener('mouseup', handleMouseup)
     })
 
+    // 判断某位置是否为无效单元格（被合并掉的位置）
     const isHideCell = (rowIndex: number, colIndex: number) => hideCells.value.includes(`${rowIndex}_${colIndex}`)
 
+    // 选中指定的列
     const selectCol = (index: number) => {
       const maxRow = tableCells.value.length - 1
       startCell.value = [0, index]
       endCell.value = [maxRow, index]
     }
 
+    // 选中指定的行
     const selectRow = (index: number) => {
       const maxCol = tableCells.value[index].length - 1
       startCell.value = [index, 0]
       endCell.value = [index, maxCol]
     }
 
+    // 选中全部单元格
     const selectAll = () => {
       const maxRow = tableCells.value.length - 1
       const maxCol = tableCells.value[maxRow].length - 1
@@ -285,6 +299,7 @@ export default defineComponent({
       endCell.value = [maxRow, maxCol]
     }
 
+    // 删除一行
     const deleteRow = (rowIndex: number) => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
@@ -307,6 +322,7 @@ export default defineComponent({
       tableCells.value = _tableCells
     }
 
+    // 删除一列
     const deleteCol = (colIndex: number) => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
@@ -332,6 +348,7 @@ export default defineComponent({
       emit('changeColWidths', colSizeList.value)
     }
     
+    // 插入一行
     const insertRow = (rowIndex: number) => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
@@ -349,6 +366,7 @@ export default defineComponent({
       tableCells.value = _tableCells
     }
 
+    // 插入一列
     const insertCol = (colIndex: number) => {
       tableCells.value = tableCells.value.map(item => {
         const cell = {
@@ -364,6 +382,7 @@ export default defineComponent({
       emit('changeColWidths', colSizeList.value)
     }
     
+    // 合并单元格
     const mergeCells = () => {
       const [startX, startY] = startCell.value
       const [endX, endY] = endCell.value
@@ -382,6 +401,7 @@ export default defineComponent({
       removeSelectedCells()
     }
 
+    // 拆分单元格
     const splitCells = (rowIndex: number, colIndex: number) => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
       _tableCells[rowIndex][colIndex].rowspan = 1
@@ -391,6 +411,7 @@ export default defineComponent({
       removeSelectedCells()
     }
 
+    // 鼠标拖拽调整列宽
     const handleMousedownColHandler = (e: MouseEvent, colIndex: number) => {
       removeSelectedCells()
       let isMouseDown = true
@@ -417,6 +438,7 @@ export default defineComponent({
       }
     }
 
+    // 清空选中单元格内的文字
     const clearSelectedCellText = () => {
       const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
 
@@ -430,6 +452,10 @@ export default defineComponent({
       tableCells.value = _tableCells
     }
 
+    // 将焦点移动到下一个单元格
+    // 当前行右边有单元格时，焦点右移
+    // 当前行右边无单元格（已处在行末），且存在下一行时，焦点移动下下一行行首
+    // 当前行右边无单元格（已处在行末），且不存在下一行（已处在最后一行）时，新建一行并将焦点移动下下一行行首
     const tabActiveCell = () => {
       const getNextCell = (i: number, j: number): [number, number] | null => {
         if (!tableCells.value[i]) return null
@@ -450,12 +476,14 @@ export default defineComponent({
       }
       else startCell.value = nextCell
 
+      // 移动焦点后自动聚焦文本
       nextTick(() => {
         const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
         if (textRef) textRef.focus()
       })
     }
 
+    // 表格快捷键监听
     const keydownListener = (e: KeyboardEvent) => {
       if (!props.editable || !selectedCells.value.length) return
 
@@ -498,6 +526,7 @@ export default defineComponent({
       document.removeEventListener('keydown', keydownListener)
     })
 
+    // 计算单元格文本样式
     const getTextStyle = (style?: TableCellStyle) => {
       if (!style) return {}
       const {
@@ -524,10 +553,12 @@ export default defineComponent({
       }
     }
 
+    // 单元格文字输入时更新表格数据
     const handleInput = debounce(function() {
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
+    // 获取有效的单元格（排除掉被合并的单元格）
     const getEffectiveTableCells = () => {
       const effectiveTableCells = []
 
@@ -543,6 +574,7 @@ export default defineComponent({
       return effectiveTableCells
     }
 
+    // 检查是否可以删除行和列：有效的行/列数大于1
     const checkCanDeleteRowOrCol = () => {
       const effectiveTableCells = getEffectiveTableCells()
       const canDeleteRow = effectiveTableCells.length > 1
@@ -551,6 +583,9 @@ export default defineComponent({
       return { canDeleteRow, canDeleteCol }
     }
 
+    // 检查是否可以合并或拆分
+    // 必须多选才可以合并
+    // 必须单选且所选单元格为合并单元格才可以拆分
     const checkCanMergeOrSplit = (rowIndex: number, colIndex: number) => {
       const isMultiSelected = selectedCells.value.length > 1
       const targetCell = tableCells.value[rowIndex][colIndex]
@@ -717,7 +752,7 @@ table {
       position: absolute;
       top: 0;
       left: 0;
-      background-color: rgba($color: $themeColor, $alpha: .3);
+      background-color: rgba($color: #666, $alpha: .4);
     }
   }
 

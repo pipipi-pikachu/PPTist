@@ -82,6 +82,7 @@ export default defineComponent({
     })
 
     const lineDashArray = computed(() => props.elementInfo.style === 'dashed' ? '10, 5' : '0, 0')
+
     const path = computed(() => {
       const start = props.elementInfo.start.join(',')
       const end = props.elementInfo.end.join(',')

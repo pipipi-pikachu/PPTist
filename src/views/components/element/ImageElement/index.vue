@@ -20,7 +20,7 @@
       :top="elementInfo.top"
       :left="elementInfo.left"
       :clipPath="clipShape.style"
-      @clip="range => clip(range)"
+      @clip="range => handleClip(range)"
     />
     <div 
       class="element-content"
@@ -31,28 +31,9 @@
         transform: flipStyle,
       }"
     >
-      <ImageRectOutline
-        v-if="clipShape.type === 'rect'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :radius="clipShape.radius"
-        :outline="elementInfo.outline"
-      />
-      <ImageEllipseOutline
-        v-else-if="clipShape.type === 'ellipse'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
-      <ImagePolygonOutline
-        v-else-if="clipShape.type === 'polygon'"
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-        :createPath="clipShape.createPath"
-      />
+      <ImageOutline :elementInfo="elementInfo" />
 
-      <div class="image-content" :style="{clipPath: clipShape.style}">
+      <div class="image-content" :style="{ clipPath: clipShape.style }">
         <img 
           :src="elementInfo.src" 
           :draggable="false" 
@@ -74,23 +55,20 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
+import { ImageClipedEmitData } from '@/types/edit'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useClipImage from './useClipImage'
+import useFilter from './useFilter'
 
-import ImageRectOutline from './ImageRectOutline.vue'
-import ImageEllipseOutline from './ImageEllipseOutline.vue'
-import ImagePolygonOutline from './ImagePolygonOutline.vue'
+import ImageOutline from './ImageOutline/index.vue'
 import ImageClipHandler from './ImageClipHandler.vue'
-import { ImageClipedEmitData } from '@/types/edit'
 
 export default defineComponent({
   name: 'editable-element-image',
   components: {
-    ImageRectOutline,
-    ImageEllipseOutline,
-    ImagePolygonOutline,
+    ImageOutline,
     ImageClipHandler,
   },
   props: {
@@ -117,53 +95,19 @@ export default defineComponent({
     const flip = computed(() => props.elementInfo.flip)
     const { flipStyle } = useElementFlip(flip)
 
+    const clip = computed(() => props.elementInfo.clip)
+    const { clipShape, imgPosition } = useClipImage(clip)
+
+    const filters = computed(() => props.elementInfo.filters)
+    const { filter } = useFilter(filters)
+
     const handleSelectElement = (e: MouseEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
       props.selectElement(e, props.elementInfo)
     }
-    const clipShape = computed(() => {
-      if (!props.elementInfo || !props.elementInfo.clip) return CLIPPATHS.rect
-      const shape = props.elementInfo.clip.shape || ClipPathTypes.RECT
 
-      return CLIPPATHS[shape]
-    })
-
-    const imgPosition = computed(() => {
-      if (!props.elementInfo || !props.elementInfo.clip) {
-        return {
-          top: '0',
-          left: '0',
-          width: '100%',
-          height: '100%',
-        }
-      }
-
-      const [start, end] = props.elementInfo.clip.range
-
-      const widthScale = (end[0] - start[0]) / 100
-      const heightScale = (end[1] - start[1]) / 100
-      const left = start[0] / widthScale
-      const top = start[1] / heightScale
-
-      return {
-        left: -left + '%',
-        top: -top + '%',
-        width: 100 / widthScale + '%',
-        height: 100 / heightScale + '%',
-      }
-    })
-
-    const filter = computed(() => {
-      if (!props.elementInfo.filters) return ''
-      let filter = ''
-      for (const key of Object.keys(props.elementInfo.filters)) {
-        filter += `${key}(${props.elementInfo.filters[key]}) `
-      }
-      return filter
-    })
-
-    const clip = (data: ImageClipedEmitData) => {
+    const handleClip = (data: ImageClipedEmitData) => {
       store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
       
       if (!data) return
@@ -183,7 +127,7 @@ export default defineComponent({
 
     return {
       isCliping,
-      clip,
+      handleClip,
       clipingImageElementId,
       shadowStyle,
       handleSelectElement,

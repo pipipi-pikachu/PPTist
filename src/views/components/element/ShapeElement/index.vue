@@ -46,7 +46,7 @@
             :fill="elementInfo.gradient ? `url(#editabel-gradient-${elementInfo.id})` : elementInfo.fill"
             :stroke="outlineColor"
             :stroke-width="outlineWidth" 
-            :stroke-dasharray="outlineStyle === 'dashed' ? '10 5' : '0 0'" 
+            :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
           ></path>
         </g>
 			</SvgWrapper>

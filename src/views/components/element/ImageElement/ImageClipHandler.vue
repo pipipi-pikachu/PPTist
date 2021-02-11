@@ -95,12 +95,6 @@ export default defineComponent({
     const canvasScale = computed(() => store.state.canvasScale)
     const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
-    const topImgWrapperPosition = reactive({
-      top: 0,
-      left: 0,
-      width: 0,
-      height: 0,
-    })
     const clipWrapperPositionStyle = reactive({
       top: '0',
       left: '0',
@@ -108,6 +102,7 @@ export default defineComponent({
     const isSettingClipRange = ref(false)
     const currentRange = ref<ImageClipDataRange | null>(null)
 
+    // 获取裁剪区域信息（裁剪区域占原图的宽高比例，处在原图中的位置）
     const getClipDataTransformInfo = () => {
       const [start, end] = props.clipData ? props.clipData.range : [[0, 0], [100, 100]]
 
@@ -118,7 +113,8 @@ export default defineComponent({
 
       return { widthScale, heightScale, left, top }
     }
-
+    
+    // 底层图片位置大小（遮罩区域图片）
     const imgPosition = computed(() => {
       const { widthScale, heightScale, left, top } = getClipDataTransformInfo()
       return {
@@ -129,6 +125,7 @@ export default defineComponent({
       }
     })
 
+    // 底层图片位置大小样式（遮罩区域图片）
     const bottomImgPositionStyle = computed(() => {
       return {
         top: imgPosition.value.top + '%',
@@ -138,6 +135,15 @@ export default defineComponent({
       }
     })
 
+    // 顶层图片容器位置大小（裁剪高亮区域）
+    const topImgWrapperPosition = reactive({
+      top: 0,
+      left: 0,
+      width: 0,
+      height: 0,
+    })
+
+    // 顶层图片容器位置大小样式（裁剪高亮区域）
     const topImgWrapperPositionStyle = computed(() => {
       return {
         top: topImgWrapperPosition.top + '%',
@@ -147,6 +153,7 @@ export default defineComponent({
       }
     })
 
+    // 顶层图片位置大小样式（裁剪区域图片）
     const topImgPositionStyle = computed(() => {
       const bottomWidth = imgPosition.value.width
       const bottomHeight = imgPosition.value.height
@@ -164,6 +171,7 @@ export default defineComponent({
       }
     })
 
+    // 初始化裁剪位置信息
     const initClipPosition = () => {
       const { left, top } = getClipDataTransformInfo()
       topImgWrapperPosition.left = left
@@ -175,6 +183,7 @@ export default defineComponent({
       clipWrapperPositionStyle.left = -left + '%'
     }
 
+    // 执行裁剪：计算裁剪后的图片位置大小和裁剪信息，并将数据同步出去
     const handleClip = () => {
       if (isSettingClipRange.value) return
 
@@ -199,6 +208,7 @@ export default defineComponent({
       emit('clip', clipedEmitData)
     }
 
+    // 快捷键监听：回车确认裁剪
     const keyboardListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
       if (key === KEYS.ENTER) handleClip()
@@ -212,7 +222,8 @@ export default defineComponent({
       document.removeEventListener('keydown', keyboardListener)
     })
 
-    const getRange = () => {
+    // 计算并更新裁剪区域范围数据
+    const updateRange = () => {
       const retPosition = {
         left: parseInt(topImgPositionStyle.value.left),
         top: parseInt(topImgPositionStyle.value.top),
@@ -235,6 +246,7 @@ export default defineComponent({
       currentRange.value = [start, end]
     }
 
+    // 移动裁剪区域
     const moveClipRange = (e: MouseEvent) => {
       isSettingClipRange.value = true
       let isMouseDown = true
@@ -261,7 +273,6 @@ export default defineComponent({
         let targetLeft = originPositopn.left + moveX
         let targetTop = originPositopn.top + moveY
 
-        // 范围限制
         if (targetLeft < 0) targetLeft = 0
         else if (targetLeft + originPositopn.width > bottomPosition.width) {
           targetLeft = bottomPosition.width - originPositopn.width
@@ -280,7 +291,7 @@ export default defineComponent({
         document.onmousemove = null
         document.onmouseup = null
 
-        getRange()
+        updateRange()
 
         setTimeout(() => {
           isSettingClipRange.value = false
@@ -288,6 +299,7 @@ export default defineComponent({
       }
     }
 
+    // 缩放裁剪区域
     const scaleClipRange = (e: MouseEvent, type: ScaleClipRangeType) => {
       isSettingClipRange.value = true
       let isMouseDown = true
@@ -323,7 +335,6 @@ export default defineComponent({
 
         let targetLeft, targetTop, targetWidth, targetHeight
 
-        // 根据不同缩放点，计算目标大小和位置，同时做大小和范围的限制
         if (type === 't-l') {
           if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
@@ -408,7 +419,7 @@ export default defineComponent({
         document.onmousemove = null
         document.onmouseup = null
 
-        getRange()
+        updateRange()
 
         setTimeout(() => isSettingClipRange.value = false, 0)
       }

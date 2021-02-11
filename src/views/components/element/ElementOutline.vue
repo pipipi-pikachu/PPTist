@@ -15,7 +15,7 @@
       :d="`M0,0 L${width},0 L${width},${height} L0,${height} Z`" 
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
-      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
+      :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
     ></path>
 	</SvgWrapper>
 </template>

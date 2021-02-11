@@ -86,6 +86,23 @@ export default defineComponent({
     const isScaling = ref(false)
     const realHeightCache = ref(-1)
 
+    const editorViewRef = ref<HTMLElement>()
+    let editorView: EditorView
+
+    const shadow = computed(() => props.elementInfo.shadow)
+    const { shadowStyle } = useElementShadow(shadow)
+
+    const handleElementId = computed(() => store.state.handleElementId)
+
+    const handleSelectElement = (e: MouseEvent, canMove = true) => {
+      if (props.elementInfo.lock) return
+      e.stopPropagation()
+
+      props.selectElement(e, props.elementInfo, canMove)
+    }
+
+    // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
+    // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
     const scaleElementStateListener = (state: boolean) => {
       isScaling.value = state
 
@@ -127,10 +144,11 @@ export default defineComponent({
     onUnmounted(() => {
       if (elementRef.value) resizeObserver.unobserve(elementRef.value)
     })
-    
-    const editorViewRef = ref<HTMLElement>()
-    let editorView: EditorView
 
+    // 富文本的各种交互事件监听：
+    // 聚焦时取消全局快捷键事件
+    // 输入文字时同步数据到vuex
+    // 点击鼠标和键盘时同步富文本状态到工具栏
     const handleFocus = () => {
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
     }
@@ -155,6 +173,7 @@ export default defineComponent({
       handleClick()
     }
 
+    // 将富文本内容同步到DOM
     const textContent = computed(() => props.elementInfo.content)
     watch(textContent, () => {
       if (!editorView) return
@@ -162,11 +181,13 @@ export default defineComponent({
       editorView.dom.innerHTML = textContent.value
     })
 
+    // 打开/关闭编辑器的编辑模式
     const editable = computed(() => !props.elementInfo.lock)
     watch(editable, () => {
       editorView.setProps({ editable: () => editable.value })
     })
 
+    // Prosemirror编辑器的初始化和卸载
     onMounted(() => {
       editorView = initProsemirrorEditor((editorViewRef.value as Element), textContent.value, {
         handleDOMEvents: {
@@ -181,19 +202,9 @@ export default defineComponent({
     onUnmounted(() => {
       editorView && editorView.destroy()
     })
-
-    const handleSelectElement = (e: MouseEvent, canMove = true) => {
-      if (props.elementInfo.lock) return
-      e.stopPropagation()
-
-      props.selectElement(e, props.elementInfo, canMove)
-    }
     
-    const shadow = computed(() => props.elementInfo.shadow)
-    const { shadowStyle } = useElementShadow(shadow)
-
-    const handleElementId = computed(() => store.state.handleElementId)
-    
+    // 执行富文本命令（可以是一个或多个）
+    // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
     const execCommand = (payload: CommandPayload | CommandPayload[]) => {
       if (handleElementId.value !== props.elementInfo.id) return
 

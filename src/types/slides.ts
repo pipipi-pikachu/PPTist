@@ -54,6 +54,10 @@ export interface ImageElementFilters {
   'hue-rotate'?: string;
   'opacity'?: string;
 }
+export interface ImageElementClip {
+  range: [[number, number], [number, number]];
+  shape: string;
+}
 export interface PPTImageElement {
   type: 'image';
   id: string;
@@ -68,10 +72,7 @@ export interface PPTImageElement {
   rotate?: number;
   outline?: PPTElementOutline;
   filters?: ImageElementFilters;
-  clip?: {
-    range: [[number, number], [number, number]];
-    shape: 'rect' | 'roundRect' | 'ellipse' | 'triangle' | 'pentagon' | 'rhombus' | 'star';
-  };
+  clip?: ImageElementClip;
   flip?: ImageOrShapeFlip;
   shadow?: PPTElementShadow;
 }

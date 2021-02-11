@@ -13,7 +13,7 @@
         transform: `scale(${scale})`,
       }"
     >
-      <div class="background" :style="{ ...backgroundStyle }"></div>
+      <div class="background" :style="backgroundStyle"></div>
       <ThumbnailElement
         v-for="(element, index) in slide.elements"
         :key="element.id"

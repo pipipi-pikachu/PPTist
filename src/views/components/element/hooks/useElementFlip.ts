@@ -1,18 +1,20 @@
-import { ref, Ref, watchEffect } from 'vue'
+import { computed, Ref } from 'vue'
 import { ImageOrShapeFlip } from '@/types/slides'
 
+// 计算元素的翻转样式
 export default (flip: Ref<ImageOrShapeFlip | undefined>) => {
-  const flipStyle = ref('')
-
-  watchEffect(() => {
+  const flipStyle = computed(() => {
     if (flip.value) {
+      let style = ''
+      
       const { x, y } = flip.value
-      if (x && y) flipStyle.value = `rotateX(${x}deg) rotateY(${y}deg)`
-      else if (x) flipStyle.value = `rotateX(${x}deg)`
-      else if (y) flipStyle.value = `rotateY(${y}deg)`
-      else flipStyle.value = ''
+      if (x && y) style = `rotateX(${x}deg) rotateY(${y}deg)`
+      else if (x) style = `rotateX(${x}deg)`
+      else if (y) style = `rotateY(${y}deg)`
+
+      return style
     }
-    else flipStyle.value = ''
+    return ''
   })
 
   return {

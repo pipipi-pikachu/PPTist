@@ -69,6 +69,9 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     const canvasScale = computed(() => store.state.canvasScale)
+    const handleElementId = computed(() => store.state.handleElementId)
+    
+    const elementRef = ref<HTMLElement>()
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -78,8 +81,9 @@ export default defineComponent({
 
       props.selectElement(e, props.elementInfo)
     }
+
+    // 更新表格的可编辑状态，表格处于编辑状态时需要禁用全局快捷键
     const editable = ref(false)
-    const handleElementId = computed(() => store.state.handleElementId)
 
     watch(handleElementId, () => {
       if (handleElementId.value !== props.elementInfo.id) editable.value = false
@@ -88,9 +92,13 @@ export default defineComponent({
     watch(editable, () => {
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, editable.value)
     })
-    
-    const elementRef = ref<HTMLElement>()
 
+    const startEdit = () => {
+      if (!props.elementInfo.lock) editable.value = true
+    }
+
+    // 监听表格元素的尺寸变化，当高度变化时，更新高度到vuex
+    // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
     const isScaling = ref(false)
     const realHeightCache = ref(-1)
 
@@ -139,6 +147,7 @@ export default defineComponent({
       if (elementRef.value) resizeObserver.unobserve(elementRef.value)
     })
 
+    // 更新表格内容数据
     const updateTableCells = (data: TableCell[][]) => {
       store.commit(MutationTypes.UPDATE_ELEMENT, {
         id: props.elementInfo.id, 
@@ -146,6 +155,8 @@ export default defineComponent({
       })
       addHistorySnapshot()
     }
+
+    // 更新表格的列宽数据
     const updateColWidths = (widths: number[]) => {
       const width = widths.reduce((a, b) => a + b)
       const colWidths = widths.map(item => item / width)
@@ -157,12 +168,9 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 更新表格当前选中的单元格
     const updateSelectedCells = (cells: string[]) => {
       nextTick(() => emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells))
-    }
-
-    const startEdit = () => {
-      if (!props.elementInfo.lock) editable.value = true
     }
 
     return {

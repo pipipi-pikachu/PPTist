@@ -30,6 +30,8 @@ export default defineComponent({
     const text = ref('')
     const isFocus = ref(false)
 
+    // 自定义v-modal，同步数据
+    // 当文本框聚焦时，不执行数据同步
     watch(() => props.modelValue, () => {
       if (isFocus.value) return
       text.value = props.modelValue
@@ -42,6 +44,7 @@ export default defineComponent({
       emit('update:modelValue', text)
     }
 
+    // 聚焦时更新焦点标记，并监听粘贴事件
     const handleFocus = () => {
       isFocus.value = true
 
@@ -58,11 +61,13 @@ export default defineComponent({
       }
     }
 
+    // 失焦时更新焦点标记，清除粘贴事件监听
     const handleBlur = () => {
       isFocus.value = false
       if (textareaRef.value) textareaRef.value.onpaste = null
     }
 
+    // 清除粘贴事件监听
     onUnmounted(() => {
       if (textareaRef.value) textareaRef.value.onpaste = null
     })

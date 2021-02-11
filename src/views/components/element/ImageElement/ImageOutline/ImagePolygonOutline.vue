@@ -1,25 +1,22 @@
 <template>
   <SvgWrapper 
-    class="image-rect-outline" 
+    class="image-polygon-outline" 
     v-if="outline"
     overflow="visible" 
     :width="width"
     :height="height"
   >
-    <rect 
+    <path 
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
       stroke-linejoin
       fill="transparent"
-      :rx="radius" 
-      :ry="radius"
-      :width="width"
-      :height="height"
+      :d="createPath(width, height)"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
-      :stroke-dasharray="outlineStyle === 'dashed' ? '12 9' : '0 0'" 
-    ></rect>
+      :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
+    ></path>
 	</SvgWrapper>
 </template>
 
@@ -29,7 +26,7 @@ import { PPTElementOutline } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 
 export default defineComponent({
-  name: 'image-rect-outline',
+  name: 'image-polygon-outline',
   props: {
     width: {
       type: Number,
@@ -42,9 +39,9 @@ export default defineComponent({
     outline: {
       type: Object as PropType<PPTElementOutline>
     },
-    radius: {
-      type: String,
-      default: '0',
+    createPath: {
+      type: Function,
+      required: true,
     },
   },
   setup(props) {
