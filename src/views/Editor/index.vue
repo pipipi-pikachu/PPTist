@@ -15,8 +15,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
-import useHotkey from './useHotkey'
-import usePasteEvent from './usePasteEvent'
+import useGlobalHotkey from '@/hooks/useGlobalHotkey'
+import usePasteEvent from '@/hooks/usePasteEvent'
 
 import EditorHeader from './EditorHeader/index.vue'
 import Canvas from './Canvas/index.vue'
@@ -34,7 +34,7 @@ export default defineComponent({
     Toolbar,
   },
   setup() {
-    useHotkey()
+    useGlobalHotkey()
     usePasteEvent()
   },
 })

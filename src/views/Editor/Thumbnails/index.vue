@@ -63,6 +63,7 @@ export default defineComponent({
       cutSlide,
     } = useSlideHandler()
 
+    // 切换页面
     const changSlideIndex = (index: number) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
 
@@ -72,11 +73,13 @@ export default defineComponent({
 
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
 
+    // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
     const setThumbnailsFocus = (focus: boolean) => {
       if (thumbnailsFocus.value === focus) return
       store.commit(MutationTypes.SET_THUMBNAILS_FOCUS, focus)
     }
 
+    // 拖拽调整顺序后进行数据的同步
     const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
       const { newIndex, oldIndex } = eventData
       if (oldIndex === newIndex) return

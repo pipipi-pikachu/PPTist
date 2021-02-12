@@ -1,8 +1,8 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
-import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
-import useCreateElement from '@/hooks/useCreateElement'
+import usePasteTextClipboardData from './usePasteTextClipboardData'
+import useCreateElement from './useCreateElement'
 
 export default () => {
   const store = useStore()
@@ -13,10 +13,15 @@ export default () => {
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { createImageElement } = useCreateElement()
 
+  // 粘贴图片到幻灯片元素
   const pasteImageFile = (imageFile: File) => {
     getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
   }
 
+  /**
+   * 粘贴事件监听
+   * @param e ClipboardEvent
+   */
   const pasteListener = (e: ClipboardEvent) => {
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return
     if (disableHotkeys.value) return
@@ -28,6 +33,7 @@ export default () => {
 
     if (!clipboardDataFirstItem) return
 
+    // 如果剪贴板内有图片，优先尝试读取图片
     for (const item of clipboardDataItems) {
       if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
         const imageFile = item.getAsFile()
@@ -35,7 +41,8 @@ export default () => {
         return
       }
     }
-
+    
+    // 如果剪贴板内没有图片，但有文字内容，尝试解析文字内容
     if (clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
       clipboardDataFirstItem.getAsString(text => pasteTextClipboardData(text))
     }

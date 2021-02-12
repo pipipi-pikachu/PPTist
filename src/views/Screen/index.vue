@@ -92,6 +92,7 @@ export default defineComponent({
 
     const writingBoardToolVisible = ref(false)
 
+    // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
     const setSlideContentSize = () => {
       const winWidth = document.body.clientWidth
       const winHeight = document.body.clientHeight
@@ -113,6 +114,8 @@ export default defineComponent({
       slideHeight.value = height
     }
 
+    // 窗口尺寸变化监听：窗口发生变化时更新幻灯片的大小
+    // 如果退出了全屏，需要返回到编辑模式
     const { exitScreening } = useScreening()
 
     const windowResizeListener = () => {
@@ -120,9 +123,18 @@ export default defineComponent({
       if (!isFullscreen()) exitScreening()
     }
 
-    const animationIndex = ref(0)
-    const animations = computed(() => currentSlide.value.animations || [])
+    onMounted(() => {
+      window.addEventListener('resize', windowResizeListener)
+    })
+    onUnmounted(() => {
+      window.removeEventListener('resize', windowResizeListener)
+    })
 
+    // 当前页的元素动画列表和当前执行到的位置
+    const animations = computed(() => currentSlide.value.animations || [])
+    const animationIndex = ref(0)
+
+    // 执行元素的入场动画
     const runAnimation = () => {
       const prefix = 'animate__'
       const animation = animations.value[animationIndex.value]
@@ -140,6 +152,9 @@ export default defineComponent({
       }
     }
 
+    // 向上/向下播放
+    // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
+    // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
     const execPrev = () => {
       if (animations.value.length && animationIndex.value > 0) {
         animationIndex.value -= 1
@@ -160,6 +175,13 @@ export default defineComponent({
       }
     }
 
+    // 鼠标滚动翻页
+    const mousewheelListener = throttle(function(e: WheelEvent) {
+      if (e.deltaY < 0) execPrev()
+      else if (e.deltaY > 0) execNext()
+    }, 500, { leading: true, trailing: false })
+
+    // 快捷键翻页
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
       if (key === KEYS.UP || key === KEYS.LEFT) execPrev()
@@ -171,20 +193,14 @@ export default defineComponent({
       ) execNext()
     }
 
-    const mousewheelListener = throttle(function(e: WheelEvent) {
-      if (e.deltaY < 0) execPrev()
-      else if (e.deltaY > 0) execNext()
-    }, 500, { leading: true, trailing: false })
-
     onMounted(() => {
-      window.addEventListener('resize', windowResizeListener)
       document.addEventListener('keydown', keydownListener)
     })
     onUnmounted(() => {
-      window.removeEventListener('resize', windowResizeListener)
       document.removeEventListener('keydown', keydownListener)
     })
 
+    // 切换到上一张/上一张幻灯片（无视元素的入场动画）
     const turnPrevSlide = () => {
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
       animationIndex.value = 0
@@ -194,6 +210,7 @@ export default defineComponent({
       animationIndex.value = 0
     }
 
+    // 切换幻灯片到指定的页面
     const turnSlideToIndex = (index: number) => {
       slideThumbnailModelVisible.value = false
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)

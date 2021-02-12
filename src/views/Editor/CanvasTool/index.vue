@@ -113,12 +113,15 @@ export default defineComponent({
     const chartPoolVisible = ref(false)
     const tableGeneratorVisible = ref(false)
 
+    // 绘制文字范围
     const drawText = () => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'text',
         data: null,
       })
     }
+
+    // 绘制形状范围
     const drawShape = (shape: ShapePoolItem) => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'shape',
@@ -126,6 +129,8 @@ export default defineComponent({
       })
       shapePoolVisible.value = false
     }
+
+    // 绘制线条路径
     const drawLine = (line: LinePoolItem) => {
       store.commit(MutationTypes.SET_CREATING_ELEMENT, {
         type: 'line',

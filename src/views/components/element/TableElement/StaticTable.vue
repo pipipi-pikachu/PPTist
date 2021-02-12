@@ -45,8 +45,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
-import tinycolor from 'tinycolor2'
-import { PPTElementOutline, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
+import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
+import { getTextStyle } from './utils'
+import useHideCells from './useHideCells'
+import useSubThemeColor from './useSubThemeColor'
 
 export default defineComponent({
   name: 'static-table',
@@ -86,65 +88,11 @@ export default defineComponent({
       colSizeList.value = props.colWidths.map(item => item * props.width)
     }, { immediate: true })
 
-    const hideCells = computed(() => {
-      const hideCells = []
-      
-      for (let i = 0; i < props.data.length; i++) {
-        const rowCells = props.data[i]
+    const cells = computed(() => props.data)
+    const { hideCells } = useHideCells(cells)
 
-        for (let j = 0; j < rowCells.length; j++) {
-          const cell = rowCells[j]
-          
-          if (cell.colspan > 1 || cell.rowspan > 1) {
-            for (let row = i; row < i + cell.rowspan; row++) {
-              for (let col = row === i ? j + 1 : j; col < j + cell.colspan; col++) {
-                hideCells.push(`${row}_${col}`)
-              }
-            }
-          }
-        }
-      }
-      return hideCells
-    })
-
-    const subThemeColor = ref(['', ''])
-    watch(() => props.theme, () => {
-      if (props.theme) {
-        const rgba = tinycolor(props.theme.color).toRgb()
-        const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
-        const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
-        subThemeColor.value = [
-          `rgba(${[subRgba1.r, subRgba1.g, subRgba1.b, subRgba1.a].join(',')})`,
-          `rgba(${[subRgba2.r, subRgba2.g, subRgba2.b, subRgba2.a].join(',')})`,
-        ]
-      }
-    }, { immediate: true })
-
-    const getTextStyle = (style?: TableCellStyle) => {
-      if (!style) return {}
-      const {
-        bold,
-        em,
-        underline,
-        strikethrough,
-        color,
-        backcolor,
-        fontsize,
-        fontname,
-        align,
-      } = style
-      
-      return {
-        fontWeight: bold ? 'bold' : 'normal',
-        fontStyle: em ? 'italic' : 'normal',
-        textDecoration: `${underline ? 'underline' : ''} ${strikethrough ? 'line-through' : ''}`,
-        color: color || '#000',
-        backgroundColor: backcolor || '',
-        fontSize: fontsize || '14px',
-        fontFamily: fontname || '微软雅黑',
-        textAlign: align || 'left',
-      }
-    }
+    const theme = computed(() => props.theme)
+    const { subThemeColor } = useSubThemeColor(theme)
 
     return {
       colSizeList,

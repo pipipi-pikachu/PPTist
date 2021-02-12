@@ -47,28 +47,33 @@ export default defineComponent({
     const writingBoardColor = ref('#e2534d')
     const writingBoardModel = ref('pen')
 
+    // 切换到画笔状态
     const changePen = () => {
       if (!writingBoardVisible.value) writingBoardVisible.value = true
       writingBoardModel.value = 'pen'
       emit('close')
     }
 
+    // 切换到橡皮状态
     const changeEraser = () => {
       writingBoardModel.value = 'eraser'
       emit('close')
     }
 
+    // 清除画布上的墨迹
     const clearCanvas = () => {
       writingBoardRef.value.clearCanvas()
       emit('close')
     }
 
+    // 修改画笔颜色，如果当前不处于画笔状态则先切换到画笔状态
     const changeColor = (color: string) => {
       if (writingBoardModel.value !== 'pen') writingBoardModel.value = 'pen'
       writingBoardColor.value = color
       emit('close')
     }
-
+    
+    // 关闭写字板
     const closeWritingBoard = () => {
       writingBoardVisible.value = false
       emit('close')
