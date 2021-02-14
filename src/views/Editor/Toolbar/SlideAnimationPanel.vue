@@ -40,12 +40,14 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 修改播放时的切换页面方式
     const updateTurningMode = (mode: string) => {
       if (mode === currentTurningMode.value) return
       store.commit(MutationTypes.UPDATE_SLIDE, { turningMode: mode })
       addHistorySnapshot()
     }
 
+    // 将当前页的切换页面方式应用到全部页面
     const applyAllSlide = () => {
       const newSlides = slides.value.map(slide => {
         return {

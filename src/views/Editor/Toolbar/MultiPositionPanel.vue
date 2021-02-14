@@ -52,6 +52,7 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
     const { combineElements, uncombineElements } = useCombineElement()
 
+    // 判断当前多选的几个元素是否可以组合
     const canCombine = computed(() => {
       const firstGroupId = activeElementList.value[0].groupId
       if (!firstGroupId) return true
@@ -60,11 +61,12 @@ export default defineComponent({
       return !inSameGroup
     })
 
+    // 对齐选中的元素
     const alignActiveElement = (command: ElementAlignCommand) => {
       const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)
       const elementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
-      // 获取每一个组合的宽高位置
+      // 如果所选择的元素为组合元素的成员，需要计算该组合的整体范围
       const groupElementRangeMap = {}
       for (const activeElement of activeElementList.value) {
         if (activeElement.groupId && !groupElementRangeMap[activeElement.groupId]) {
@@ -73,6 +75,7 @@ export default defineComponent({
         }
       }
 
+      // 根据不同的命令，计算对齐的位置
       if (command === ElementAlignCommands.LEFT) {
         elementList.forEach(element => {
           if (activeElementIdList.value.includes(element.id)) {

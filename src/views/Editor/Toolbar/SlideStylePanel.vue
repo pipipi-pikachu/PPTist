@@ -217,6 +217,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 设置背景模式：纯色、图片、渐变色
     const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
       if (type === 'solid') {
         const newBackground: SlideBackground = {
@@ -248,17 +249,20 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置背景图片
     const updateBackground = (props: Partial<SlideBackground>) => {
       store.commit(MutationTypes.UPDATE_SLIDE, { background: { ...background.value, ...props } })
       addHistorySnapshot()
     }
 
+    // 上传背景图片
     const uploadBackgroundImage = (files: File[]) => {
       const imageFile = files[0]
       if (!imageFile) return
       getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
     }
 
+    // 应用当前页背景到全部页面
     const applyBackgroundAllSlide = () => {
       const newSlides = slides.value.map(slide => {
         return {
@@ -270,10 +274,12 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置主题
     const updateTheme = (themeProps: Partial<SlideTheme>) => {
       store.commit(MutationTypes.SET_THEME, themeProps)
     }
 
+    // 将当前主题应用到全部页面
     const applyThemeAllSlide = () => {
       const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
       const { themeColor, backgroundColor, fontColor } = theme.value

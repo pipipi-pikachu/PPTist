@@ -180,6 +180,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 设置元素位置
     const updateLeft = (value: number) => {
       const props = { left: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
@@ -190,6 +191,8 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
+
+    // 设置元素宽度、高度、旋转角度
     const updateWidth = (value: number) => {
       const props = { width: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
@@ -205,11 +208,15 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
+
+    // 固定元素的宽高比
     const updateFixedRatio = (value: boolean) => {
       const props = { fixedRatio: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
+
+    // 将元素旋转45度（顺时针或逆时针）
     const updateRotate45 = (command: '+' | '-') => {
       let _rotate = Math.floor(rotate.value / 45) * 45
       if (command === '+') _rotate = _rotate + 45

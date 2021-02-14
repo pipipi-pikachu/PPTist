@@ -101,6 +101,7 @@ export default defineComponent({
 
     const animations = ANIMATIONS
 
+    // 当前页面的动画列表
     const animationSequence = computed(() => {
       if (!currentSlideAnimations.value) return []
       const animationSequence = []
@@ -119,6 +120,7 @@ export default defineComponent({
       return animationSequence
     })
 
+    // 当前选中元素的入场动画信息
     const handleElementAnimation = computed(() => {
       if (!handleElement.value) return null
       const animations = currentSlideAnimations.value || []
@@ -127,12 +129,14 @@ export default defineComponent({
       return animationTypes[animation.type]
     })
 
+    // 删除元素入场动画
     const deleteAnimation = (elId: string) => {
       const animations = (currentSlideAnimations.value as PPTAnimation[]).filter(item => item.elId !== elId)
       store.commit(MutationTypes.UPDATE_SLIDE, { animations })
       addHistorySnapshot()
     }
 
+    // 拖拽修改入场动画顺序后同步数据
     const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
       const { newIndex, oldIndex } = eventData
       if (oldIndex === newIndex) return
@@ -146,6 +150,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 执行入场动画预览
     const runAnimation = (elId: string, animationType: string) => {
       const prefix = 'animate__'
       const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
@@ -160,6 +165,7 @@ export default defineComponent({
       }
     }
 
+    // 修改元素入场动画，并执行一次预览
     const updateElementAnimation = (type: string) => {
       const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
         if (item.elId === handleElement.value.id) return { ...item, type }
@@ -172,6 +178,7 @@ export default defineComponent({
       runAnimation(handleElement.value.id, type)
     }
 
+    // 添加元素入场动画，并执行一次预览
     const addAnimation = (type: string) => {
       if (handleElementAnimation.value) {
         updateElementAnimation(type)
