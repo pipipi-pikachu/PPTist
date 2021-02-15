@@ -130,7 +130,7 @@ export default defineComponent({
     cursor: pointer;
 
     &:hover {
-      background-color: #ccc;
+      background-color: rgba($color: $themeColor, $alpha: .2);
     }
   }
   .colors {

@@ -27,7 +27,7 @@
   transition: none;
 
   &:hover {
-    background-color: #e1e1e1;
+    background-color: rgba($color: $themeColor, $alpha: .2);
   }
 }
 
@@ -54,6 +54,9 @@
 // select
 .ant-select {
   user-select: none;
+}
+.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
+  background-color: rgba($color: $themeColor, $alpha: .2);
 }
 
 // tooltip
