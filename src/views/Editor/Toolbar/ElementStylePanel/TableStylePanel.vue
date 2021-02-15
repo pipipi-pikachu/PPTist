@@ -206,6 +206,11 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const handleElement = computed<PPTTableElement>(() => store.getters.handleElement)
+    
+    const availableFonts = computed(() => store.state.availableFonts)
+    const fontSizeOptions = [
+      '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
+    ]
 
     const textAttrs = ref({
       bold: false,
@@ -239,8 +244,11 @@ export default defineComponent({
       minColCount.value = handleElement.value.data[0].length
     }, { deep: true, immediate: true })
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
     const selectedCells = ref<string[]>([])
 
+    // 更新当前选中单元格的文本样式状态
     const updateTextAttrState = () => {
       if (!handleElement.value) return
 
@@ -281,6 +289,7 @@ export default defineComponent({
       }
     }
 
+    // 监听并更新当前选中的单元格
     const updateSelectedCells = (cells: string[]) => {
       selectedCells.value = cells
       updateTextAttrState()
@@ -291,13 +300,7 @@ export default defineComponent({
       emitter.off(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
     })
 
-    const availableFonts = computed(() => store.state.availableFonts)
-    const fontSizeOptions = [
-      '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
-    ]
-
-    const { addHistorySnapshot } = useHistorySnapshot()
-
+    // 设置单元格内容文本样式
     const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
       const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
 
@@ -316,6 +319,7 @@ export default defineComponent({
       updateTextAttrState()
     }
 
+    // 更新表格主题：主题色、标题行、汇总行、第一列、最后一列
     const updateTheme = (themeProp: Partial<TableTheme>) => {
       const currentTheme = theme.value || {}
       const props = { theme: { ...currentTheme, ...themeProp } }
@@ -323,6 +327,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 开启/关闭表格主题
     const toggleTheme = (checked: boolean) => {
       if (checked) {
         const props = {
@@ -342,6 +347,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置表格行数（只能增加）
     const setTableRow = (e: KeyboardEvent) => {
       const value = +(e.target as HTMLInputElement).value
       const rowCount = handleElement.value.data.length
@@ -360,6 +366,8 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+
+    // 设置表格列数（只能增加）
     const setTableCol = (e: KeyboardEvent) => {
       const value = +(e.target as HTMLInputElement).value
       const colCount = handleElement.value.data[0].length

@@ -171,6 +171,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 设置滤镜
     const updateFilter = (filter: FilterOption, value: number) => {
       const originFilters = handleElement.value.filters || {}
       const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
@@ -179,20 +180,22 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 打开自由裁剪
     const clipImage = () => {
       store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, handleElement.value.id)
       clipPanelVisible.value = false
     }
 
+    // 获取原始图片的位置大小
     const getImageElementDataBeforeClip = () => {
-      // 图片当前宽高位置、裁剪范围
+
+      // 图片当前的位置大小和裁剪范围
       const imgWidth = handleElement.value.width
       const imgHeight = handleElement.value.height
       const imgLeft = handleElement.value.left
       const imgTop = handleElement.value.top
       const originClipRange = handleElement.value.clip ? handleElement.value.clip.range : [[0, 0], [100, 100]]
 
-      // 图片原本未裁剪过时的宽高位置
       const originWidth = imgWidth / ((originClipRange[1][0] - originClipRange[0][0]) / 100)
       const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
       const originLeft = imgLeft - originWidth * (originClipRange[0][0] / 100)
@@ -207,6 +210,7 @@ export default defineComponent({
       }
     }
 
+    // 预设裁剪
     const presetImageClip = (shape: string, ratio = 0) => {
       const {
         originClipRange,
@@ -216,7 +220,7 @@ export default defineComponent({
         originTop,
       } = getImageElementDataBeforeClip()
       
-      // 设置形状和纵横比
+      // 纵横比裁剪（形状固定为矩形）
       if (ratio) {
         const imageRatio = originHeight / originWidth
 
@@ -243,7 +247,7 @@ export default defineComponent({
           },
         })
       }
-      // 仅设置形状（维持目前的裁剪范围）
+      // 形状裁剪（保持当前裁剪范围）
       else {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: handleElement.value.id,
@@ -256,6 +260,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 替换图片（保持当前的样式）
     const replaceImage = (files: File[]) => {
       const imageFile = files[0]
       if (!imageFile) return
@@ -266,6 +271,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 重置图片：清除全部样式
     const resetImage = () => {
       if (handleElement.value.clip) {
         const {
@@ -293,6 +299,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 将图片设置为背景
     const setBackgroundImage = () => {
       const background = {
         ...currentSlide.value.background,

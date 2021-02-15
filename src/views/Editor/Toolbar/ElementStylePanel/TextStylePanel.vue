@@ -360,6 +360,7 @@ export default defineComponent({
     const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
+    // 接收并更新当前光标所在位置的富文本状态
     const updateRichTextAttrs = (attr: TextAttrs) => richTextAttrs.value = attr
 
     emitter.on(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
@@ -367,28 +368,33 @@ export default defineComponent({
       emitter.off(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
     })
 
+    // 发射富文本设置命令
     const emitRichTextCommand = (command: string, value?: string) => {
       emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, { command, value })
     }
 
+    // 发射富文本设置命令（批量）
     const emitBatchRichTextCommand = (payload: CommandPayload[]) => {
       emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, payload)
     }
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 设置行高
     const updateLineHeight = (value: number) => {
       const props = { lineHeight: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 
+    // 设置字间距
     const updateWordSpace = (value: number) => {
       const props = { wordSpace: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 
+    // 设置文本框填充
     const updateFill = (value: string) => {
       const props = { fill: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })

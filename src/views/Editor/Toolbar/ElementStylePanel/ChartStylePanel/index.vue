@@ -159,6 +159,7 @@ export default defineComponent({
       gridColor.value = handleElement.value.gridColor || 'rgba(0, 0, 0, 0.4)'
     }, { deep: true, immediate: true })
 
+    // 设置图表数据
     const updateData = (data: ChartData) => {
       chartDataEditorVisible.value = false
       const props = { data }
@@ -166,12 +167,14 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置填充色
     const updateFill = (value: string) => {
       const props = { fill: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 
+    // 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
     const updateOptions = (optionProps: ILineChartOptions & IBarChartOptions & IPieChartOptions) => {
       const options = handleElement.value.options || {}
       const newOptions = { ...options, ...optionProps }
@@ -180,12 +183,14 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置主题色
     const updateTheme = (themeColor: string) => {
       const props = { themeColor }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 
+    // 设置网格颜色
     const updateGridColor = (gridColor: string) => {
       const props = { gridColor }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })

@@ -118,6 +118,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    // 设置填充类型：渐变、纯色
     const updateFillType = (type: 'gradient' | 'fill') => {
       if (type === 'fill') {
         store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
@@ -132,12 +133,14 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置渐变填充
     const updateGradient = (gradientProps: Partial<ShapeGradient>) => {
       const props = { gradient: { ...gradient.value, ...gradientProps } }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 
+    // 设置填充色
     const updateFill = (value: string) => {
       const props = { fill: value }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })

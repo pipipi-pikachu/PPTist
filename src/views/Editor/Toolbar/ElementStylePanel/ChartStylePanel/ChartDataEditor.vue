@@ -62,6 +62,7 @@ export default defineComponent({
     const selectedRange = ref([0, 0])
     const tempRangeSize = ref({ width: 0, height: 0 })
 
+    // 当前选区的边框线条位置
     const rangeLines = computed(() => {
       const width = selectedRange.value[0] * CELL_WIDTH
       const height = selectedRange.value[1] * CELL_HEIGHT
@@ -73,12 +74,14 @@ export default defineComponent({
       ]
     })
 
+    // 当前选区的缩放点位置
     const resizablePointStyle = computed(() => {
       const width = selectedRange.value[0] * CELL_WIDTH
       const height = selectedRange.value[1] * CELL_HEIGHT
       return { left: width + 'px', top: height + 'px' }
     })
 
+    // 初始化图表数据：将数据格式化并填充到DOM
     const initData = () => {
       const _data: string[][] = []
 
@@ -107,12 +110,14 @@ export default defineComponent({
 
     onMounted(initData)
 
+    // 获取当前图表DOM中的数据，整理格式化后传递出去
     const getTableData = () => {
       const [col, row] = selectedRange.value
 
       const labels: string[] = []
       const series: number[][] = []
 
+      // 第一列为系列名，实际数据从第二列开始
       for (let rowIndex = 0; rowIndex < row; rowIndex++) {
         let labelsItem = `类别${rowIndex + 1}`
         const labelInputRef = document.querySelector(`#cell-${rowIndex}-0`) as HTMLInputElement
@@ -136,8 +141,10 @@ export default defineComponent({
       emit('save', data)
     }
 
+    // 关闭图表数据编辑器
     const closeEditor = () => emit('close')
 
+    // 鼠标拖拽修改选中的数据范围
     const changeSelectRange = (e: MouseEvent) => {
       let isMouseDown = true
 
@@ -172,6 +179,7 @@ export default defineComponent({
 
         if (startPageX === endPageX && startPageY === endPageY) return
 
+        // 拖拽结束时，范围超过格子一半自动扩大到下一格（如拖动到一格半多的位置，会自动扩展到两格，横竖都同理）
         let width = tempRangeSize.value.width
         let height = tempRangeSize.value.height
         if (width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
