@@ -3,9 +3,11 @@ import { MutationTypes, useStore } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-// 给定一个坐标，计算该坐标到(0, 0)点连线的弧度值
-// 注意，Math.atan2的一般用法是Math.atan2(y, x)返回的是原点(0,0)到(x,y)点的线段与X轴正方向之间的弧度值
-// 这里将使用时将x与y的传入顺序交换了，为的是获取原点(0,0)到(x,y)点的线段与Y轴正方向之间的弧度值
+/**
+ * 计算给定坐标到原点连线的弧度
+ * @param x 坐标x
+ * @param y 坐标y
+ */
 const getAngleFromCoordinate = (x: number, y: number) => {
   const radian = Math.atan2(x, y)
   const angle = 180 / Math.PI * radian
@@ -18,16 +20,18 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  // 旋转元素
   const rotateElement = (element: PPTTextElement | PPTImageElement | PPTShapeElement) => {
     let isMouseDown = true
     let angle = 0
     const elOriginRotate = element.rotate || 0
 
-    // 计算元素中心（旋转的中心，坐标原点）
     const elLeft = element.left
     const elTop = element.top
     const elWidth = element.width
     const elHeight = element.height
+
+    // 元素中心点（旋转中心点）
     const centerX = elLeft + elWidth / 2
     const centerY = elTop + elHeight / 2
 
@@ -37,7 +41,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     document.onmousemove = e => {
       if (!isMouseDown) return
       
-      // 计算鼠标基于旋转中心的坐标
+      // 计算当前鼠标位置相对元素中心点连线的角度（弧度）
       const mouseX = (e.pageX - viewportRect.left) / canvasScale.value
       const mouseY = (e.pageY - viewportRect.top) / canvasScale.value
       const x = mouseX - centerX
@@ -45,7 +49,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
       angle = getAngleFromCoordinate(x, y)
 
-      // 45°的倍数位置有吸附效果
+      // 靠近45倍数的角度时有吸附效果
       const sorptionRange = 5
       if ( Math.abs(angle) <= sorptionRange ) angle = 0
       else if ( angle > 0 && Math.abs(angle - 45) <= sorptionRange ) angle -= (angle - 45)
@@ -57,7 +61,6 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       else if ( angle > 0 && Math.abs(angle - 180) <= sorptionRange ) angle -= (angle - 180)
       else if ( angle < 0 && Math.abs(angle + 180) <= sorptionRange ) angle -= (angle + 180)
 
-      // 修改元素角度
       elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, rotate: angle } : el)
     }
 

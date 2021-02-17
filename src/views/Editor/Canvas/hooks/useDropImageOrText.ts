@@ -9,10 +9,12 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
 
   const { createImageElement, createTextElement } = useCreateElement()
 
+  // 拖拽元素到画布中
   const handleDrop = (e: DragEvent) => {
     if (!e.dataTransfer) return
     const dataTransferItem = e.dataTransfer.items[0]
 
+    // 检查事件对象中是否存在图片，存在则插入图片，否则继续检查是否存在文字，存在则插入文字
     if (dataTransferItem.kind === 'file' && dataTransferItem.type.indexOf('image') !== -1) {
       const imageFile = dataTransferItem.getAsFile()
       if (imageFile) {

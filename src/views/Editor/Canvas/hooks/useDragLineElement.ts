@@ -15,6 +15,7 @@ export default (elementList: Ref<PPTElement[]>) => {
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  // 拖拽线条端点
   const dragLineElement = (e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => {
     let isMouseDown = true
 
@@ -25,7 +26,7 @@ export default (elementList: Ref<PPTElement[]>) => {
 
     const adsorptionPoints: AdsorptionPoint[] = []
 
-    // 获取全部非线条且未旋转元素的8个点作为吸附点
+    // 获取所有线条以外的未旋转的元素的8个缩放点作为吸附位置
     for (let i = 0; i < elementList.value.length; i++) {
       const _element = elementList.value[i]
       if (_element.type === 'line' || ('rotate' in _element && _element.rotate)) continue
@@ -68,19 +69,17 @@ export default (elementList: Ref<PPTElement[]>) => {
       const currentPageX = e.pageX
       const currentPageY = e.pageY
 
-      // 鼠标按下后移动的距离
       const moveX = (currentPageX - startPageX) / canvasScale.value
       const moveY = (currentPageY - startPageY) / canvasScale.value
       
-      // 线条两个端点（起点和终点）基于编辑区域的位置
+      // 线条起点和终点在编辑区域中的位置
       let startX = element.left + element.start[0]
       let startY = element.top + element.start[1]
       let endX = element.left + element.end[0]
       let endY = element.top + element.end[1]
 
-      // 根据拖拽的点，选择修改起点或终点的位置
-      // 两点在水平和垂直方向上有对齐吸附
-      // 靠近其他元素的吸附点有对齐吸附
+      // 拖拽起点或终点的位置
+      // 水平和垂直方向上有吸附
       if (command === OperateLineHandlers.START) {
         startX = startX + moveX
         startY = startY + moveY
@@ -114,7 +113,7 @@ export default (elementList: Ref<PPTElement[]>) => {
         }
       }
 
-      // 计算两个端点基于自身元素位置的坐标
+      // 计算更新起点和终点基于自身元素位置的坐标
       const minX = Math.min(startX, endX)
       const minY = Math.min(startY, endY)
       const maxX = Math.max(startX, endX)
@@ -131,7 +130,6 @@ export default (elementList: Ref<PPTElement[]>) => {
         end[1] = 0
       }
 
-      // 修改线条的位置和两点的坐标
       elementList.value = elementList.value.map(el => {
         if (el.id === element.id) {
           return {
@@ -154,7 +152,6 @@ export default (elementList: Ref<PPTElement[]>) => {
       const currentPageX = e.pageX
       const currentPageY = e.pageY
 
-      // 对比原始鼠标位置，没有实际的位移不更新数据
       if (startPageX === currentPageX && startPageY === currentPageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })

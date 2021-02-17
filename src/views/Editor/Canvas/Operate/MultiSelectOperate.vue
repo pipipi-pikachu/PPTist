@@ -60,10 +60,22 @@ export default defineComponent({
       maxY: 0,
     })
 
+    // 根据多选元素整体在画布中的范围，计算边框线和缩放点的位置信息
     const width = computed(() => (range.maxX - range.minX) * canvasScale.value)
     const height = computed(() => (range.maxY - range.minY) * canvasScale.value)
     const { resizeHandlers, borderLines } = useCommonOperate(width, height)
 
+    // 计算多选元素整体在画布中的范围
+    const setRange = () => {
+      const { minX, maxX, minY, maxY } = getElementListRange(localActiveElementList.value)
+      range.minX = minX
+      range.maxX = maxX
+      range.minY = minY
+      range.maxY = maxY
+    }
+    watchEffect(setRange)
+
+    // 禁用多选状态下缩放：仅未旋转的图片和形状可以在多选状态下缩放
     const disableResize = computed(() => {
       return localActiveElementList.value.some(item => {
         if (
@@ -73,16 +85,6 @@ export default defineComponent({
         return true
       })
     })
-
-    const setRange = () => {
-      const { minX, maxX, minY, maxY } = getElementListRange(localActiveElementList.value)
-      range.minX = minX
-      range.maxX = maxX
-      range.minY = minY
-      range.maxY = maxY
-    }
-
-    watchEffect(setRange)
 
     return {
       ...toRefs(range),

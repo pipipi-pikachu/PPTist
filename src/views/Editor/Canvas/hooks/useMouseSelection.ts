@@ -16,6 +16,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     quadrant: 1,
   })
 
+  // 更新鼠标框选范围
   const updateMouseSelection = (e: MouseEvent) => {
     if (!viewportRef.value) return
 
@@ -30,6 +31,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     const left = (startPageX - viewportRect.x) / canvasScale.value
     const top = (startPageY - viewportRect.y) / canvasScale.value
 
+    // 确定框选的起始位置和其他默认值初始化
     mouseSelectionState.isShow = false
     mouseSelectionState.quadrant = 4
     mouseSelectionState.top = top
@@ -51,12 +53,15 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
       if ( width < minSelectionRange || height < minSelectionRange ) return
       
+      // 计算鼠标框选（移动）的方向
+      // 按四个象限的位置区分，如右下角为第四象限
       let quadrant = 0
       if ( offsetWidth > 0 && offsetHeight > 0 ) quadrant = 4
       else if ( offsetWidth < 0 && offsetHeight < 0 ) quadrant = 1
       else if ( offsetWidth > 0 && offsetHeight < 0 ) quadrant = 2
       else if ( offsetWidth < 0 && offsetHeight > 0 ) quadrant = 3
 
+      // 更新框选范围
       mouseSelectionState.isShow = true
       mouseSelectionState.quadrant = quadrant
       mouseSelectionState.width = width
@@ -68,8 +73,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       document.onmouseup = null
       isMouseDown = false
 
-      // 计算当前页面中的每一个元素是否处在鼠标选择范围中（必须完全包裹）
-      // 将选择范围中的元素添加为激活元素
+      // 计算画布中的元素是否处在鼠标选择范围中，处在范围中的元素设置为被选中状态
       let inRangeElementList: PPTElement[] = []
       for (let i = 0; i < elementList.value.length; i++) {
         const element = elementList.value[i]
@@ -82,6 +86,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
         const { minX, maxX, minY, maxY } = getElementRange(element)
 
+        // 计算元素是否处在框选范围内时，四个框选方向的计算方式有差异
         let isInclude = false
         if (quadrant === 4) {
           isInclude = minX > mouseSelectionLeft && 
@@ -108,11 +113,11 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
                       maxY < mouseSelectionTop + mouseSelectionHeight
         }
 
-        // 被锁定的元素除外
+        // 被锁定的元素即使在范围内，也不需要设置为选中状态
         if (isInclude && !element.lock) inRangeElementList.push(element)
       }
 
-      // 对于组合元素成员，必须所有成员都在选择范围中才算被选中
+      // 如果范围内有组合元素的成员，需要该组全部成员都处在范围内，才会被设置为选中状态
       inRangeElementList = inRangeElementList.filter(inRangeElement => {
         if (inRangeElement.groupId) {
           const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)

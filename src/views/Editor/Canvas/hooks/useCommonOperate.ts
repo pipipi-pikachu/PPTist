@@ -2,6 +2,7 @@ import { computed, Ref } from 'vue'
 import { OperateResizeHandlers, OperateBorderLines } from '@/types/edit'
 
 export default (width: Ref<number>, height: Ref<number>) => {
+  // 元素缩放点
   const resizeHandlers = computed(() => {
     return [
       { direction: OperateResizeHandlers.LEFT_TOP, style: {} },
@@ -13,8 +14,9 @@ export default (width: Ref<number>, height: Ref<number>) => {
       { direction: OperateResizeHandlers.BOTTOM, style: {left: width.value / 2 + 'px', top: height.value + 'px'} },
       { direction: OperateResizeHandlers.RIGHT_BOTTOM, style: {left: width.value + 'px', top: height.value + 'px'} },
     ]
-  }
-  )
+  })
+
+  // 文本元素缩放点
   const textElementResizeHandlers = computed(() => {
     return [
       { direction: OperateResizeHandlers.LEFT, style: {top: height.value / 2 + 'px'} },
@@ -22,6 +24,7 @@ export default (width: Ref<number>, height: Ref<number>) => {
     ]
   })
 
+  // 元素选中边框线
   const borderLines = computed(() => {
     return [
       { type: OperateBorderLines.T, style: {width: width.value + 'px'} },

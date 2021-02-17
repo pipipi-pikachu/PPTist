@@ -8,13 +8,18 @@ import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-// 计算元素被旋转一定角度后，八个操作点的新坐标
 interface RotateElementData {
   left: number;
   top: number;
   width: number;
   height: number;
 }
+
+/**
+ * 计算旋转后的元素八个缩放点的位置
+ * @param element 元素原始位置大小信息
+ * @param angle 旋转角度
+ */
 const getRotateElementPoints = (element: RotateElementData, angle: number) => {
   const { left, top, width, height } = element
 
@@ -68,7 +73,11 @@ const getRotateElementPoints = (element: RotateElementData, angle: number) => {
   return { leftTopPoint, topPoint, rightTopPoint, rightPoint, rightBottomPoint, bottomPoint, leftBottomPoint, leftPoint }
 }
 
-// 获取元素某个操作点对角线上另一端的操作点坐标（例如：左上 <-> 右下）
+/**
+ * 获取元素某缩放点相对的另一个点的位置，如：【上】对应【下】、【左上】对应【右下】
+ * @param direction 当前操作的缩放点
+ * @param points 旋转后的元素八个缩放点的位置
+ */
 const getOppositePoint = (direction: string, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
   const oppositeMap = {
     [OperateResizeHandlers.RIGHT_BOTTOM]: points.leftTopPoint,
@@ -95,6 +104,7 @@ export default (
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
+  // 缩放元素
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
     let isMouseDown = true
     emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, true)
@@ -103,16 +113,17 @@ export default (
     const elOriginTop = element.top
     const elOriginWidth = element.width
     const elOriginHeight = element.height
-
-    const fixedRatio = ctrlOrShiftKeyActive.value || ('fixedRatio' in element && element.fixedRatio)
-    const aspectRatio = elOriginWidth / elOriginHeight
     
     const elRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
     const rotateRadian = Math.PI * elRotate / 180
 
+    const fixedRatio = ctrlOrShiftKeyActive.value || ('fixedRatio' in element && element.fixedRatio)
+    const aspectRatio = elOriginWidth / elOriginHeight
+
     const startPageX = e.pageX
     const startPageY = e.pageY
 
+    // 元素最小缩放限制
     const minSize = MIN_SIZE[element.type] || 20
     const getSizeWithinRange = (size: number) => size < minSize ? minSize : size
 
@@ -122,16 +133,20 @@ export default (
     let horizontalLines: AlignLine[] = []
     let verticalLines: AlignLine[] = []
 
+    // 旋转后的元素进行缩放时，引入基点的概念，以当前操作的缩放点相对的点为基点
+    // 例如拖动右下角缩放时，左上角为基点，需要保持左上角不变然后修改其他的点的位置来达到所放的效果
     if ('rotate' in element && element.rotate) {
-      // 元素旋转后的各点坐标以及对角坐标
       const { left, top, width, height } = element
       points = getRotateElementPoints({ left, top, width, height }, elRotate)
       const oppositePoint = getOppositePoint(command, points)
 
-      // 基点坐标（以操作点相对的点为基点，例如拖动右下角，实际上是保持左上角不变的前提下修改其他信息）
       baseLeft = oppositePoint.left
       baseTop = oppositePoint.top
     }
+
+    // 未旋转的元素具有缩放时的对齐吸附功能，在这处收集对齐对齐吸附线
+    // 包括页面内除目标元素外的其他元素在画布中的各个可吸附对齐位置：上下左右四边
+    // 其中线条和被旋转过的元素不参与吸附对齐
     else {
       const edgeWidth = VIEWPORT_SIZE
       const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
@@ -159,7 +174,7 @@ export default (
         verticalLines.push(leftLine, rightLine)
       }
 
-      // 页面边界、水平和垂直的中心位置
+      // 画布可视区域的四个边界、水平中心、垂直中心
       const edgeTopLine: AlignLine = { value: 0, range: [0, edgeWidth] }
       const edgeBottomLine: AlignLine = { value: edgeHeight, range: [0, edgeWidth] }
       const edgeHorizontalCenterLine: AlignLine = { value: edgeHeight / 2, range: [0, edgeWidth] }
@@ -175,6 +190,8 @@ export default (
     }
     
     // 对齐吸附方法
+    // 将收集到的对齐吸附线与计算的目标元素当前的位置大小相关数据做对比，差值小于设定的值时执行自动缩放校正
+    // 水平和垂直两个方向需要分开计算
     const alignedAdsorption = (currentX: number | null, currentY: number | null) => {
       const sorptionRange = 5
 
@@ -213,6 +230,7 @@ export default (
       return correctionVal
     }
 
+    // 开始缩放
     document.onmousemove = e => {
       if (!isMouseDown) return
 
@@ -227,21 +245,22 @@ export default (
       let left = elOriginLeft
       let top = elOriginTop
       
-      // 元素被旋转的情况下
+      // 元素被旋转的情况下，需要根据元素旋转的角度，重新计算需要缩放的距离（鼠标按下后移动的距离）
       if (elRotate) {
-        // 根据元素旋转的角度，修正鼠标按下后移动的距离（因为拖动的方向发生了改变）
         const revisedX = (Math.cos(rotateRadian) * x + Math.sin(rotateRadian) * y) / canvasScale.value
         let revisedY = (Math.cos(rotateRadian) * y - Math.sin(rotateRadian) * x) / canvasScale.value
 
-        // 锁定宽高比例
+        // 锁定宽高比例（仅四个角可能触发，四条边不会触发）
+        // 以水平方向上缩放的距离为基础，计算垂直方向上的缩放距离，保持二者具有相同的缩放比例
         if (fixedRatio) {
           if (command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP) revisedY = revisedX / aspectRatio
           if (command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) revisedY = -revisedX / aspectRatio
         }
 
         // 根据不同的操作点分别计算元素缩放后的大小和位置
-        // 这里计算的位置是错误的，因为旋转后缩放实际上也改变了元素的位置，需要在后面进行矫正
-        // 这里计算的大小是正确的，因为上面修正鼠标按下后移动的距离时其实已经进行过了矫正
+        // 需要注意：
+        // 此处计算的位置需要在后面重新进行校正，因为旋转后再缩放事实上会改变元素基点的位置（虽然视觉上基点保持不动，但这是【旋转】+【移动】共同作用的结果）
+        // 但此处计算的大小不需要重新校正，因为前面已经重新计算需要缩放的距离，相当于大小已经经过了校正
         if (command === OperateResizeHandlers.RIGHT_BOTTOM) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
           height = getSizeWithinRange(elOriginHeight + revisedY)
@@ -277,7 +296,7 @@ export default (
           width = getSizeWithinRange(elOriginWidth + revisedX)
         }
 
-        // 获取当前元素基点坐标，与初始状态的基点坐标进行对比并矫正差值
+        // 获取当前元素的基点坐标，与初始状态时的基点坐标进行对比，并计算差值进行元素位置的校正
         const currentPoints = getRotateElementPoints({ width, height, left, top }, elRotate)
         const currentOppositePoint = getOppositePoint(command, currentPoints)
         const currentBaseLeft = currentOppositePoint.left
@@ -290,7 +309,9 @@ export default (
         top = top - offsetY
       }
 
-      // 元素未被旋转的情况下，根据所操纵点的位置添加对齐吸附
+      // 元素未被旋转的情况下，正常计算新的位置大小即可，无需复杂的校正等工作
+      // 额外需要处理对齐吸附相关的操作
+      // 锁定宽高比例相关的操作同上，不再赘述
       else {
         let moveX = x / canvasScale.value
         let moveY = y / canvasScale.value
@@ -390,6 +411,7 @@ export default (
     }
   }
 
+  // 多选元素缩放
   const scaleMultiElement = (e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandlers) => {
     let isMouseDown = true
     
@@ -409,17 +431,16 @@ export default (
       const currentPageX = e.pageX
       const currentPageY = e.pageY
 
-      // 鼠标按下后移动的距离
       const x = (currentPageX - startPageX) / canvasScale.value
       let y = (currentPageY - startPageY) / canvasScale.value
 
-      // 锁定宽高比例
+      // 锁定宽高比例，逻辑同上
       if (ctrlOrShiftKeyActive.value) {
         if (command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP) y = x / aspectRatio
         if (command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) y = -x / aspectRatio
       }
 
-      // 获取鼠标缩放时当前所有激活元素的范围
+      // 所有选中元素的整体范围
       let currentMinX = minX
       let currentMaxX = maxX
       let currentMinY = minY
@@ -454,19 +475,18 @@ export default (
         currentMaxX = maxX + x
       }
 
-      // 多选下所有元素整体宽高
+      // 所有选中元素的整体宽高
       const currentOppositeWidth = currentMaxX - currentMinX
       const currentOppositeHeight = currentMaxY - currentMinY
 
-      // 所有元素的整体宽高与被操作元素宽高的比例
+      // 当前正在操作元素宽高占所有选中元素的整体宽高的比例
       let widthScale = currentOppositeWidth / operateWidth
       let heightScale = currentOppositeHeight / operateHeight
 
       if (widthScale <= 0) widthScale = 0
       if (heightScale <= 0) heightScale = 0
       
-      // 根据上面计算的比例，修改所有被激活元素的位置大小
-      // 宽高通过乘以对应的比例得到，位置通过将被操作元素在所有元素整体中的相对位置乘以对应比例获得
+      // 根据前面计算的比例，计算并修改所有选中元素的位置大小
       elementList.value = elementList.value.map(el => {
         if ((el.type === 'image' || el.type === 'shape') && activeElementIdList.value.includes(el.id)) {
           const originElement = originElementList.find(originEl => originEl.id === el.id) as PPTImageElement | PPTShapeElement

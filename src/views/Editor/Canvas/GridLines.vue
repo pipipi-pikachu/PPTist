@@ -28,6 +28,7 @@ export default defineComponent({
     const canvasScale = computed(() => store.state.canvasScale)
     const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide?.background)
 
+    // 计算网格线的颜色，避免与背景的颜色太接近
     const gridColor = computed(() => {
       if (!background.value || background.value.type === 'image') return 'rgba(100, 100, 100, 0.5)'
       const color = background.value.color
@@ -43,6 +44,7 @@ export default defineComponent({
 
     const gridSize = 50
 
+    // 计算网格路径
     const getPath = () => {
       const maxX = VIEWPORT_SIZE
       const maxY = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO

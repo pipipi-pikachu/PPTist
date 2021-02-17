@@ -21,19 +21,20 @@ export default (
     if (!activeElementIdList.value.includes(element.id)) return
     let isMouseDown = true
 
-    // 可视范围宽高，用于边缘对齐吸附
     const edgeWidth = VIEWPORT_SIZE
     const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
+    
+    const sorptionRange = 5
 
     const originElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
     const originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.id))
-
-    const sorptionRange = 5
+  
     const elOriginLeft = element.left
     const elOriginTop = element.top
     const elOriginWidth = element.width
     const elOriginHeight = ('height' in element && element.height) ? element.height : 0
     const elOriginRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
+  
     const startPageX = e.pageX
     const startPageY = e.pageY
 
@@ -41,12 +42,12 @@ export default (
 
     const isActiveGroupElement = element.id === activeGroupElementId.value
 
-    // 收集对齐参考线
-    // 包括页面内出被操作元素以外的所有元素在页面内水平和垂直方向的范围和中心位置、页面边界和水平和垂直的中心位置
+    // 收集对齐对齐吸附线
+    // 包括页面内除目标元素外的其他元素在画布中的各个可吸附对齐位置：上下左右四边，水平中心、垂直中心
+    // 其中线条和被旋转过的元素需要重新计算他们在画布中的中心点位置的范围
     let horizontalLines: AlignLine[] = []
     let verticalLines: AlignLine[] = []
 
-    // 元素在页面内水平和垂直方向的范围和中心位置（需要特殊计算线条和被旋转的元素）
     for (const el of elementList.value) {
       if (el.type === 'line') continue
       if (isActiveGroupElement && el.id === element.id) continue
@@ -89,7 +90,7 @@ export default (
       verticalLines.push(leftLine, rightLine, verticalCenterLine)
     }
 
-    // 页面边界、水平和垂直的中心位置
+    // 画布可视区域的四个边界、水平中心、垂直中心
     const edgeTopLine: AlignLine = { value: 0, range: [0, edgeWidth] }
     const edgeBottomLine: AlignLine = { value: edgeHeight, range: [0, edgeWidth] }
     const edgeHorizontalCenterLine: AlignLine = { value: edgeHeight / 2, range: [0, edgeWidth] }
@@ -100,34 +101,34 @@ export default (
     horizontalLines.push(edgeTopLine, edgeBottomLine, edgeHorizontalCenterLine)
     verticalLines.push(edgeLeftLine, edgeRightLine, edgeVerticalCenterLine)
     
-    // 参考线去重
+    // 对齐吸附线去重
     horizontalLines = uniqAlignLines(horizontalLines)
     verticalLines = uniqAlignLines(verticalLines)
 
+    // 开始移动
     document.onmousemove = e => {
       const currentPageX = e.pageX
       const currentPageY = e.pageY
 
-      // 对于鼠标第一次滑动距离过小的操作判定为误操作
-      // 这里仅在误操作标记未被赋值（null，第一次触发移动），以及被标记为误操作时（true，当前处于误操作范围，但可能会脱离该范围转变成正常操作），才会去计算
-      // 已经被标记为非误操作时（false），不需要再次计算（因为不可能从非误操作转变成误操作）
+      // 如果鼠标滑动距离过小，则将操作判定为误操作：
+      // 如果误操作标记为null，表示是第一次触发移动，需要计算当前是否是误操作
+      // 如果误操作标记为true，表示当前还处在误操作范围内，但仍然需要继续计算检查后续操作是否还处于误操作
+      // 如果误操作标记为false，表示已经脱离了误操作范围，不需要再次计算
       if (isMisoperation !== false) {
         isMisoperation = Math.abs(startPageX - currentPageX) < sorptionRange && 
                          Math.abs(startPageY - currentPageY) < sorptionRange
       }
       if (!isMouseDown || isMisoperation) return
 
-      // 鼠标按下后移动的距离
       const moveX = (currentPageX - startPageX) / canvasScale.value
       const moveY = (currentPageY - startPageY) / canvasScale.value
 
-      // 被操作元素需要移动到的位置
+      // 基础目标位置
       let targetLeft = elOriginLeft + moveX
       let targetTop = elOriginTop + moveY
 
-      // 计算被操作元素在页面中的范围（用于吸附对齐）
-      // 需要区分计算：多选状态、线条、被旋转的元素
-      // 注意这里需要用元素的原始信息结合移动信息来计算
+      // 计算目标元素在画布中的位置范围，用于吸附对齐
+      // 需要区分单选和多选两种情况，其中多选状态下需要计算多选元素的整体范围；单选状态下需要继续区分线条、普通元素、旋转后的普通元素三种情况
       let targetMinX: number, targetMaxX: number, targetMinY: number, targetMaxY: number
 
       if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
@@ -201,7 +202,8 @@ export default (
       const targetCenterX = targetMinX + (targetMaxX - targetMinX) / 2
       const targetCenterY = targetMinY + (targetMaxY - targetMinY) / 2
 
-      // 根据收集到的参考线，分别执行垂直和水平两个方向的对齐吸附
+      // 将收集到的对齐吸附线与计算的目标元素位置范围做对比，二者的差小于设定的值时执行自动对齐校正
+      // 水平和垂直两个方向需要分开计算
       const _alignmentLines: AlignmentLineProps[] = []
       let isVerticalAdsorbed = false
       let isHorizontalAdsorbed = false
@@ -249,15 +251,15 @@ export default (
       }
       alignmentLines.value = _alignmentLines
       
-      // 非多选，或者当前操作的元素时激活的组合元素
+      // 单选状态下，或者当前选中的多个元素中存在正在操作的元素时，仅修改正在操作的元素的位置
       if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
         elementList.value = elementList.value.map(el => {
           return el.id === element.id ? { ...el, left: targetLeft, top: targetTop } : el
         })
       }
 
-      // 修改元素位置，如果需要修改位置的元素不是被操作的元素（例如多选下的操作）
-      // 那么其他非操作元素要移动的位置通过操作元素的移动偏移量计算
+      // 多选状态下，除了修改正在操作的元素的位置，其他被选中的元素也需要修改位置信息
+      // 其他被选中的元素的位置信息通过正在操作的元素的移动偏移量来进行计算
       else {
         const handleElement = elementList.value.find(el => el.id === element.id)
         if (!handleElement) return
@@ -291,7 +293,6 @@ export default (
       const currentPageX = e.pageX
       const currentPageY = e.pageY
 
-      // 对比初始位置，没有实际的位移不更新数据
       if (startPageX === currentPageX && startPageY === currentPageY) return
 
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })

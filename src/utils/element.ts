@@ -105,8 +105,8 @@ export interface AlignLine {
 }
 
 /**
- * 将一组参考线进行去重：同位置的的多条参考线仅留下一条，取该位置所有参考线的最大值和最小值为新的范围
- * @param lines 一组参考线信息
+ * 将一组对齐吸附线进行去重：同位置的的多条对齐吸附线仅留下一条，取该位置所有对齐吸附线的最大值和最小值为新的范围
+ * @param lines 一组对齐吸附线信息
  */
 export const uniqAlignLines = (lines: AlignLine[]) => {
   const uniqLines: AlignLine[] = []

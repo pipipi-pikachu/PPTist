@@ -14,10 +14,13 @@ export default (
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
+  // 选中元素
   const selectElement = (e: MouseEvent, element: PPTElement, canMove = true) => {
     if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
 
-    // 如果被点击的元素处于未激活状态，则将他设置为激活元素（单选），或者加入到激活元素中（多选）
+    // 如果目标元素当前未被选中，则将他设为选中状态
+    // 此时如果按下Ctrl键或Shift键，则进入多选状态，将当前已选中的元素和目标元素一桶设置为选中状态，否则仅将目标元素设置为选中状态
+    // 如果目标元素是分组成员，需要将该组合的其他元素一起设置为选中状态
     if (!activeElementIdList.value.includes(element.id)) {
       let newActiveIdList: string[] = []
 
@@ -26,7 +29,6 @@ export default (
       }
       else newActiveIdList = [element.id]
       
-      // 同时如果该元素是分组成员，需要将和他同组的元素一起激活
       if (element.groupId) {
         const groupMembersId: string[] = []
         elementList.value.forEach((el: PPTElement) => {
@@ -39,11 +41,12 @@ export default (
       store.commit(MutationTypes.SET_HANDLE_ELEMENT_ID, element.id)
     }
 
-    // 如果被点击的元素已激活，且按下了多选按钮，则取消其激活状态（除非该元素或分组是最后的一个激活元素）
+    // 如果目标元素已被选中，且按下了Ctrl键或Shift键，则取消其被选中状态
+    // 除非目标元素是最后的一个被选中元素，或者目标元素所在的组合是最后一组选中组合
+    // 如果目标元素是分组成员，需要将该组合的其他元素一起取消选中状态
     else if (ctrlOrShiftKeyActive.value) {
       let newActiveIdList: string[] = []
 
-      // 同时如果该元素是分组成员，需要将和他同组的元素一起取消
       if (element.groupId) {
         const groupMembersId: string[] = []
         elementList.value.forEach((el: PPTElement) => {
@@ -60,12 +63,12 @@ export default (
       }
     }
 
-    // 如果被点击的元素已激活，且没有按下多选按钮，且该元素不是当前操作元素，则将其设置为当前操作元素
+    // 如果目标元素已被选中，同时目标元素不是当前操作元素，则将其设置为当前操作元素
     else if (handleElementId.value !== element.id) {
       store.commit(MutationTypes.SET_HANDLE_ELEMENT_ID, element.id)
     }
 
-    // 如果被点击的元素是当前操作元素，且没有按下多选按钮，则该元素下次保持该状态再次被点击时，将被设置为多选元素中的激活成员
+    // 如果目标元素已被选中，同时也是当前操作元素，那么当目标元素在该状态下再次被点击时，将被设置为多选元素中的激活成员
     else if (activeGroupElementId.value !== element.id) {
       const startPageX = e.pageX
       const startPageY = e.pageY
@@ -84,6 +87,7 @@ export default (
     if (canMove) moveElement(e, element)
   }
 
+  // 选中页面内的全部元素
   const selectAllElement = () => {
     const unlockedElements = elementList.value.filter(el => !el.lock)
     const newActiveElementIdList = unlockedElements.map(el => el.id)

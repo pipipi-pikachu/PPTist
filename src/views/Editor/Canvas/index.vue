@@ -159,6 +159,7 @@ export default defineComponent({
     const { pasteElement } = useCopyAndPasteElement()
     const { enterScreening } = useScreening()
 
+    // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
     const handleClickBlankArea = (e: MouseEvent) => {
       store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
       if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
@@ -166,10 +167,12 @@ export default defineComponent({
       removeAllRanges()
     }
 
+    // 移除画布编辑区域焦点
     const removeEditorAreaFocus = () => {
       if (editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
 
+    // 按住Ctrl键滚动鼠标缩放画布
     const { scaleCanvas } = useScaleCanvas()
     const throttleScaleCanvas = throttle(scaleCanvas, 100, { leading: true, trailing: false })
 
@@ -181,11 +184,13 @@ export default defineComponent({
       else if (e.deltaY < 0) throttleScaleCanvas('+')
     }
 
+    // 开关网格线
     const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
+    // 在鼠标绘制的范围插入元素
     const creatingElement = computed(() => store.state.creatingElement)
     const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewportRef)
 
