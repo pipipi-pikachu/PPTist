@@ -17,15 +17,13 @@
     >
       <template #item="{ element, index }">
         <div
-          class="thumbnail-wrapper"
-          :class="{ 'active': slideIndex === index }"
+          class="thumbnail-item"
+          :class="{ 'selected': slideIndex === index }"
           @mousedown="changSlideIndex(index)"
           v-contextmenu="contextmenusThumbnailItem"
         >
-          <div class="slide-index">{{ fillDigit(index + 1, 2) }}</div>
-          <div class="thumbnail">
-            <ThumbnailSlide :slide="element" :size="120" />
-          </div>
+          <div class="label">{{ fillDigit(index + 1, 2) }}</div>
+          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" />
         </div>
       </template>
     </Draggable>
@@ -108,7 +106,7 @@ export default defineComponent({
         },
         {
           text: '开始演示',
-          subText: 'Ctrl+F',
+          subText: 'Ctrl + F',
           handler: enterScreening,
         },
       ]
@@ -150,7 +148,7 @@ export default defineComponent({
         { divider: true },
         {
           text: '从当前页演示',
-          subText: 'Ctrl+F',
+          subText: 'Ctrl + F',
           handler: enterScreening,
         },
       ]
@@ -194,7 +192,7 @@ export default defineComponent({
   flex: 1;
   overflow: auto;
 }
-.thumbnail-wrapper {
+.thumbnail-item {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -204,8 +202,8 @@ export default defineComponent({
     outline: 1px solid rgba($color: $themeColor, $alpha: .15);
   }
 
-  &.active {
-    .slide-index {
+  &.selected {
+    .label {
       color: $themeColor;
     }
     .thumbnail {
@@ -213,11 +211,7 @@ export default defineComponent({
     }
   }
 }
-.thumbnail {
-  width: 120px;
-  height: 67.5px;
-}
-.slide-index {
+.label {
   font-size: 12px;
   color: #999;
   width: 20px;

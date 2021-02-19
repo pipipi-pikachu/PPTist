@@ -1,5 +1,5 @@
 <template>
-  <div class="hamster-ppt-screen">
+  <div class="pptist-screen">
     <div 
       class="slide-list"
       @mousewheel="$event => mousewheelListener($event)"
@@ -268,7 +268,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.hamster-ppt-screen {
+.pptist-screen {
   width: 100%;
   height: 100%;
   position: relative;

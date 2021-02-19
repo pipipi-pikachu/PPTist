@@ -6,7 +6,7 @@
     }"
   >
     <div 
-      class="elements-wrapper"
+      class="elements"
       :style="{
         width: VIEWPORT_SIZE + 'px',
         height: VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO + 'px',
@@ -68,7 +68,7 @@ export default defineComponent({
   background-color: #fff;
   overflow: hidden;
 }
-.elements-wrapper {
+.elements {
   transform-origin: 0 0;
 }
 .background {
