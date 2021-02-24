@@ -56,18 +56,32 @@
         @click="selectPresetColor(c)"
       ></div>
     </div>
+
+    <div class="recent-colors-title">最近使用：</div>
+    <div class="recent-colors">
+      <div
+        v-for="c in recentColors"
+        :key="c"
+        class="picker-presets-color"
+        :style="{ background: c }"
+        @click="selectPresetColor(c)"
+      ></div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
+import debounce from 'lodash/debounce'
 
 import Alpha from './Alpha.vue'
 import Checkboard from './Checkboard.vue'
 import Hue from './Hue.vue'
 import Saturation from './Saturation.vue'
 import EditableInput from './EditableInput.vue'
+
+const RECENT_COLORS = 'RECENT_COLORS'
 
 const presetColorConfig = [
   ['#7f7f7f', '#f2f2f2'],
@@ -127,6 +141,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const hue = ref(0)
+    const recentColors = ref<string[]>([])
 
     const color = computed({
       get() {
@@ -150,12 +165,37 @@ export default defineComponent({
       emit('update:modelValue', colorString)
     }
 
+    // 每次选择非预设颜色时，需要将该颜色加入到最近使用列表中
+    const updateRecentColorsCache = debounce(function() {
+      const _color = tinycolor(color.value).toRgbString()
+      if (!recentColors.value.includes(_color)) {
+        recentColors.value = [_color, ...recentColors.value]
+
+        const maxLength = 10
+        if (recentColors.value.length > maxLength) {
+          recentColors.value = recentColors.value.slice(-maxLength)
+        }
+      }
+    }, 300, { trailing: true })
+
+    onMounted(() => {
+      const recentColorsCache = localStorage.getItem(RECENT_COLORS)
+      if (recentColorsCache) recentColors.value = JSON.parse(recentColorsCache)
+    })
+
+    watch(recentColors, () => {
+      const recentColorsCache = JSON.stringify(recentColors.value)
+      localStorage.setItem(RECENT_COLORS, recentColorsCache)
+    })
+
     const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
       if ('h' in value) {
         hue.value = value.h
         color.value = tinycolor(value).toRgb()
       }
       else color.value = value
+
+      updateRecentColorsCache()
     }
 
     return {
@@ -167,6 +207,7 @@ export default defineComponent({
       currentColor,
       changeColor,
       selectPresetColor,
+      recentColors,
     }
   },
 })
@@ -255,5 +296,13 @@ export default defineComponent({
   padding-bottom: 100%;
   position: relative;
   cursor: pointer;
+}
+
+.recent-colors-title {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.recent-colors {
+  @include flex-grid-layout();
 }
 </style>
