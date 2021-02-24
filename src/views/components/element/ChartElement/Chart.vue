@@ -101,21 +101,14 @@ export default defineComponent({
 
     onMounted(renderChart)
 
-    // 更新主题配色：通过主题色的色相旋转，计算出一系列的颜色作为主题配色
+    // 更新主题配色：获取主题色的相近颜色作为主题配色
     const updateTheme = () => {
       if (!chartRef.value) return
 
-      const hsla = tinycolor(props.themeColor).toHsl()
-
+      const colors = tinycolor(props.themeColor).analogous(10)
       for (let i = 0; i < 10; i++) {
-        let h = hsla.h + i * 36
-        if (h > 360) h = h - 360
-
-        const _hsla = {
-          ...hsla,
-          h,
-        }
-        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, tinycolor(_hsla).toRgbString())
+        const color = colors[i].toRgbString()
+        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, color)
       }
     }
 
