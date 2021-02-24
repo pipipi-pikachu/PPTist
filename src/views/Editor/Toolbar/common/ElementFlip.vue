@@ -5,12 +5,12 @@
         style="flex: 1;"
         :checked="flip.x === 180"
         @click="updateFlip({ x: flip.x === 180 ? 0 : 180, y: flip.y })"
-      ><IconFlipVertically /> 水平翻转</CheckboxButton>
+      ><IconFlipVertically /> 垂直翻转</CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="flip.y === 180"
         @click="updateFlip({ x: flip.x, y: flip.y === 180 ? 0 : 180 })"
-      ><IconFlipHorizontally /> 垂直翻转</CheckboxButton>
+      ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
     </CheckboxButtonGroup>
   </div>
 </template>
