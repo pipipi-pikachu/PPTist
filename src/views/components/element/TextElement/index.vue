@@ -149,12 +149,6 @@ export default defineComponent({
     // 聚焦时取消全局快捷键事件
     // 输入文字时同步数据到vuex
     // 点击鼠标和键盘时同步富文本状态到工具栏
-    const handleFocus = () => {
-      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
-    }
-    const handleBlur = () => {
-      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, false)
-    }
     const handleInput = debounce(function() {
       store.commit(MutationTypes.UPDATE_ELEMENT, {
         id: props.elementInfo.id, 
@@ -162,6 +156,18 @@ export default defineComponent({
       })
       addHistorySnapshot()
     }, 300, { trailing: true })
+
+    const handleFocus = () => {
+      if (props.elementInfo.content === '请输入内容') {
+        editorView.dom.innerHTML = ''
+        handleInput()
+      }
+      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
+    }
+
+    const handleBlur = () => {
+      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, false)
+    }
 
     const handleClick = debounce(function() {
       const attr = getTextAttrs(editorView)
