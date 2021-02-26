@@ -61,8 +61,10 @@ export const actions: ActionTree<State, State> = {
     const snapshot = snapshots[snapshotCursor]
     const { index, slides } = snapshot
 
+    const slideIndex = index > slides.length - 1 ? slides.length - 1 : index
+
     commit(MutationTypes.SET_SLIDES, slides)
-    commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
+    commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex)
     commit(MutationTypes.SET_SNAPSHOT_CURSOR, snapshotCursor)
     commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
   },
@@ -75,8 +77,10 @@ export const actions: ActionTree<State, State> = {
     const snapshot = snapshots[snapshotCursor]
     const { index, slides } = snapshot
 
+    const slideIndex = index > slides.length - 1 ? slides.length - 1 : index
+
     commit(MutationTypes.SET_SLIDES, slides)
-    commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
+    commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex)
     commit(MutationTypes.SET_SNAPSHOT_CURSOR, snapshotCursor)
     commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
   },
