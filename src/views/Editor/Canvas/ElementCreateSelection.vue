@@ -15,7 +15,7 @@
       >
 				<path
           :d="lineData.path" 
-          stroke="#888" 
+          stroke="#d14424" 
           fill="none" 
           stroke-width="1" 
           stroke-linecap 
@@ -200,9 +200,10 @@ export default defineComponent({
 }
 .selection {
   position: absolute;
+  opacity: .8;
 
   &:not(.line) {
-    border: 1px solid #888;
+    border: 1px solid $themeColor;
   }
 }
 </style>

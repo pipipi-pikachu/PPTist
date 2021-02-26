@@ -2,28 +2,28 @@ import { ActionTree } from 'vuex'
 import { IndexableTypeArray } from 'dexie'
 import { State } from './state'
 import { ActionTypes, MutationTypes } from './constants'
-import db, { Snapshot } from '@/utils/database'
+import { snapshotDB, Snapshot } from '@/utils/database'
 
 export const actions: ActionTree<State, State> = {
   async [ActionTypes.INIT_SNAPSHOT_DATABASE]({ commit, state }) {
-    const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
+    const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
     const lastSnapshot = snapshots.slice(-1)[0]
 
     if (lastSnapshot) {
-      db.snapshots.clear()
+      snapshotDB.snapshots.clear()
     }
 
     const newFirstSnapshot = {
       index: state.slideIndex,
       slides: state.slides,
     }
-    await db.snapshots.add(newFirstSnapshot)
+    await snapshotDB.snapshots.add(newFirstSnapshot)
     commit(MutationTypes.SET_SNAPSHOT_CURSOR, 0)
     commit(MutationTypes.SET_SNAPSHOT_LENGTH, 1)
   },
 
   async [ActionTypes.ADD_SNAPSHOT]({ state, commit }) {
-    const allKeys = await db.snapshots.orderBy('id').keys()
+    const allKeys = await snapshotDB.snapshots.orderBy('id').keys()
 
     let needDeleteKeys: IndexableTypeArray = []
 
@@ -35,7 +35,7 @@ export const actions: ActionTree<State, State> = {
       index: state.slideIndex,
       slides: state.slides,
     }
-    await db.snapshots.add(snapshot)
+    await snapshotDB.snapshots.add(snapshot)
 
     let snapshotLength = allKeys.length - needDeleteKeys.length + 1
 
@@ -44,10 +44,10 @@ export const actions: ActionTree<State, State> = {
       snapshotLength--
     }
     if (snapshotLength >= 2) {
-      db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: state.slideIndex })
+      snapshotDB.snapshots.update(allKeys[snapshotLength - 2] as number, { index: state.slideIndex })
     }
 
-    await db.snapshots.bulkDelete(needDeleteKeys)
+    await snapshotDB.snapshots.bulkDelete(needDeleteKeys)
 
     commit(MutationTypes.SET_SNAPSHOT_CURSOR, snapshotLength - 1)
     commit(MutationTypes.SET_SNAPSHOT_LENGTH, snapshotLength)
@@ -57,7 +57,7 @@ export const actions: ActionTree<State, State> = {
     if (state.snapshotCursor <= 0) return
 
     const snapshotCursor = state.snapshotCursor - 1
-    const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
+    const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
     const snapshot = snapshots[snapshotCursor]
     const { index, slides } = snapshot
 
@@ -71,7 +71,7 @@ export const actions: ActionTree<State, State> = {
     if (state.snapshotCursor >= state.snapshotLength - 1) return
 
     const snapshotCursor = state.snapshotCursor + 1
-    const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
+    const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
     const snapshot = snapshots[snapshotCursor]
     const { index, slides } = snapshot
 

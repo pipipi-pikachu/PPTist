@@ -1,8 +1,10 @@
 <template>
   <div class="editor-header">
     <div class="left">
-      <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconEdit /> <span class="text">编辑</span></div>
+      <Dropdown :trigger="['click']" @visibleChange="visible => editDropdownVisible = visible">
+        <div class="menu-item" :class="['dropdown-menu', { 'active': editDropdownVisible }]">
+          <IconEdit /> <span class="text">编辑</span>
+        </div>
         <template #overlay>
           <Menu>
             <MenuItem @click="undo()">撤销</MenuItem>
@@ -14,8 +16,10 @@
           </Menu>
         </template>
       </Dropdown>
-      <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconPpt /> <span class="text">演示</span></div>
+      <Dropdown :trigger="['click']" @visibleChange="visible => screenDropdownVisible = visible">
+        <div class="menu-item" :class="['dropdown-menu', { 'active': screenDropdownVisible }]">
+          <IconPpt /> <span class="text">演示</span>
+        </div>
         <template #overlay>
           <Menu>
             <MenuItem @click="enterScreeningFromStart()">从头开始</MenuItem>
@@ -23,8 +27,10 @@
           </Menu>
         </template>
       </Dropdown>
-      <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
+      <Dropdown :trigger="['click']" @visibleChange="visible => helpDropdownVisible = visible">
+        <div class="menu-item" :class="['dropdown-menu', { 'active': helpDropdownVisible }]">
+          <IconHelpcenter /> <span class="text">帮助</span>
+        </div>
         <template #overlay>
           <Menu>
             <MenuItem @click="openDoc()">开发文档</MenuItem>
@@ -40,11 +46,9 @@
           <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
         </div>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" title="Github 仓库">
-        <a href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
-          <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
-        </a>
-      </Tooltip>
+      <a href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
+        <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
+      </a>
     </div>
 
     <Drawer
@@ -81,6 +85,10 @@ export default defineComponent({
     const { createSlide, deleteSlide } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
 
+    const editDropdownVisible = ref(false)
+    const screenDropdownVisible = ref(false)
+    const helpDropdownVisible = ref(false)
+
     const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
@@ -112,6 +120,9 @@ export default defineComponent({
       resetSlides,
       openDoc,
       hotkeyDrawerVisible,
+      editDropdownVisible,
+      screenDropdownVisible,
+      helpDropdownVisible,
     }
   },
 })
@@ -132,16 +143,24 @@ export default defineComponent({
   align-items: center;
 }
 .menu-item {
-  height: 70%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 13px;
-  margin: 0 10px;
+  padding: 0 10px;
   cursor: pointer;
 
   .text {
     margin-left: 4px;
+  }
+}
+
+.dropdown-menu {
+  transition: background-color .2s;
+
+  &.active {
+    background-color: $lightGray;
   }
 }
 </style>

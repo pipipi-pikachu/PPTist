@@ -45,7 +45,7 @@
           :scaleElement="scaleElement"
           :dragLineElement="dragLineElement"
         />
-        <SlideBackground />
+        <ViewportBackground />
       </div>
 
       <div 
@@ -101,7 +101,7 @@ import useScreening from '@/hooks/useScreening'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
-import SlideBackground from './SlideBackground.vue'
+import ViewportBackground from './ViewportBackground.vue'
 import AlignmentLine from './AlignmentLine.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
@@ -112,7 +112,7 @@ export default defineComponent({
   components: {
     EditableElement,
     MouseSelection,
-    SlideBackground,
+    ViewportBackground,
     AlignmentLine,
     ElementCreateSelection,
     MultiSelectOperate,

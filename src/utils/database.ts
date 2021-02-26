@@ -18,4 +18,4 @@ class SnapshotDatabase extends Dexie {
   }
 }
 
-export default new SnapshotDatabase()
+export const snapshotDB = new SnapshotDatabase()

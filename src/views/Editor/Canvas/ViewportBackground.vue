@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="slide-background"
+    class="viewport-background"
     :style="backgroundStyle"
   >
     <GridLines v-if="showGridLines" />
@@ -15,7 +15,7 @@ import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 export default defineComponent({
-  name: 'slide-background',
+  name: 'viewport-background',
   components: {
     GridLines,
   },
@@ -35,7 +35,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.slide-background {
+.viewport-background {
   width: 100%;
   height: 100%;
   background-position: center;

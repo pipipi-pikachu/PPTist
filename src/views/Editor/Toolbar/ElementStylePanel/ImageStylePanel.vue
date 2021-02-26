@@ -52,7 +52,7 @@
               :value="filter.value"
               @change="value => updateFilter(filter, value)"
             />
-            <div class="value">{{`${filter.value}${filter.unit}`}}</div>
+            <div class="value">{{filter.value}}</div>
           </div>
         </div>
       </template>

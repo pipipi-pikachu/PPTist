@@ -21,10 +21,8 @@
 }
 .ant-dropdown-menu {
   box-shadow: $boxShadow;
-  border: 1px solid $borderColor;
 }
 .ant-dropdown-menu-item {
-  transition: none;
 
   &:hover {
     background-color: rgba($color: $themeColor, $alpha: .2);
