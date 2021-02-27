@@ -111,6 +111,14 @@ export default defineComponent({
     const path = computed(() => {
       const start = props.elementInfo.start.join(',')
       const end = props.elementInfo.end.join(',')
+      if (props.elementInfo.broken) {
+        const mid = props.elementInfo.broken.join(',')
+        return `M${start} L${mid} L${end}`
+      }
+      if (props.elementInfo.curve) {
+        const mid = props.elementInfo.curve.join(',')
+        return `M${start} Q${mid} ${end}`
+      }
       return `M${start} L${end}`
     })
 

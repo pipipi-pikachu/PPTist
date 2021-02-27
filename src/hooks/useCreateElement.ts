@@ -3,7 +3,7 @@ import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
-import { ChartType, PPTElement, TableCell } from '@/types/slides'
+import { PPTLineElement, ChartType, PPTElement, TableCell } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -177,7 +177,8 @@ export default () => {
    */
   const createLineElement = (position: LineElementPosition, data: LinePoolItem) => {
     const { left, top, start, end } = position
-    createElement({
+
+    const newElement: PPTLineElement = {
       type: 'line',
       id: createRandomCode(),
       left, 
@@ -188,7 +189,10 @@ export default () => {
       color: themeColor.value,
       style: data.style,
       width: 2,
-    })
+    }
+    if (data.isBroken) newElement.broken = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+    if (data.isCurve) newElement.curve = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+    createElement(newElement)
   }
 
   return {

@@ -78,6 +78,10 @@ export default (elementList: Ref<PPTElement[]>) => {
       let endX = element.left + element.end[0]
       let endY = element.top + element.end[1]
 
+      const mid = element.broken || element.curve || [0, 0]
+      let midX = element.left + mid[0]
+      let midY = element.top + mid[1]
+
       // 拖拽起点或终点的位置
       // 水平和垂直方向上有吸附
       if (command === OperateLineHandlers.START) {
@@ -96,7 +100,7 @@ export default (elementList: Ref<PPTElement[]>) => {
           }
         }
       }
-      else {
+      else if (command === OperateLineHandlers.END) {
         endX = endX + moveX
         endY = endY + moveY
 
@@ -110,6 +114,19 @@ export default (elementList: Ref<PPTElement[]>) => {
             endY = y
             break
           }
+        }
+      }
+      else {
+        midX = midX + moveX
+        midY = midY + moveY
+
+        if (Math.abs(midX - startX) < sorptionRange) midX = startX
+        if (Math.abs(midY - startY) < sorptionRange) midY = startY
+        if (Math.abs(midX - endX) < sorptionRange) midX = endX
+        if (Math.abs(midY - endY) < sorptionRange) midY = endY
+        if (Math.abs(midX - (startX + endX) / 2) < sorptionRange && Math.abs(midY - (startY + endY) / 2) < sorptionRange) {
+          midX = (startX + endX) / 2
+          midY = (startY + endY) / 2
         }
       }
 
@@ -132,13 +149,22 @@ export default (elementList: Ref<PPTElement[]>) => {
 
       elementList.value = elementList.value.map(el => {
         if (el.id === element.id) {
-          return {
-            ...el,
+          const newEl: PPTLineElement = {
+            ...(el as PPTLineElement),
             left: minX,
             top: minY,
             start: start,
             end: end,
           }
+          if (command !== OperateLineHandlers.MID) {
+            if (element.broken) newEl.broken = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+            if (element.curve) newEl.curve = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
+          }
+          else {
+            if (element.broken) newEl.broken = [midX - minX, midY - minY]
+            if (element.curve) newEl.curve = [midX - minX, midY - minY]
+          }
+          return newEl
         }
         return el
       })

@@ -117,6 +117,8 @@ export interface PPTLineElement {
   color: string;
   points: [string, string];
   shadow?: PPTElementShadow;
+  broken?: [number, number];
+  curve?: [number, number];
 }
 
 export type ChartType = 'bar' | 'line' | 'pie'

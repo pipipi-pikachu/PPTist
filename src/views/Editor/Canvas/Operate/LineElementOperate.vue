@@ -51,7 +51,7 @@ export default defineComponent({
     const canvasScale = computed(() => store.state.canvasScale)
 
     const resizeHandlers = computed(() => {
-      return [
+      const handlers = [
         {
           handler: OperateLineHandlers.START,
           style: {
@@ -67,6 +67,19 @@ export default defineComponent({
           }
         },
       ]
+
+      if (props.elementInfo.curve || props.elementInfo.broken) {
+        const midHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
+
+        handlers.push({
+          handler: OperateLineHandlers.MID,
+          style: {
+            left: midHandler[0] * canvasScale.value + 'px',
+            top: midHandler[1] * canvasScale.value + 'px',
+          }
+        })
+      }
+      return handlers
     })
 
     return {
