@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'element-create-selection',
