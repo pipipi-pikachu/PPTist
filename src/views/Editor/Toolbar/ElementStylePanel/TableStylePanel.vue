@@ -7,9 +7,16 @@
         @change="value => updateTextAttrs({ fontname: value })"
       >
         <template #suffixIcon><IconFontSize /></template>
-        <SelectOption v-for="font in availableFonts" :key="font.en" :value="font.en">
-          <span :style="{ fontFamily: font.en }">{{font.zh}}</span>
-        </SelectOption>
+        <SelectOptGroup label="系统字体">
+          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
+            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
+          </SelectOption>
+        </SelectOptGroup>
+        <SelectOptGroup label="在线字体">
+          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+            <span>{{font.label}}</span>
+          </SelectOption>
+        </SelectOptGroup>
       </Select>
       <Select
         style="flex: 2;"
@@ -190,12 +197,15 @@ import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { createRandomCode } from '@/utils/common'
+import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { message } from 'ant-design-vue'
 
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
+
+const webFonts = WEB_FONTS
 
 export default defineComponent({
   name: 'table-style-panel',
@@ -414,6 +424,7 @@ export default defineComponent({
       updateTheme,
       setTableRow,
       setTableCol,
+      webFonts,
     }
   },
 })
