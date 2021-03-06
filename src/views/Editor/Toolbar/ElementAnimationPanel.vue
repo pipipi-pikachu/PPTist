@@ -1,7 +1,7 @@
 <template>
   <div class="element-animation-panel">
     <div class="element-animation" v-if="handleElement">
-      <Popover trigger="click" v-model:visible="animationPoolVisible">
+      <Popover trigger="click" v-model:visible="animationPoolVisible" v-if="handleElement.type !== 'chart'">
         <template #content>
           <div class="animation-pool">
             <div class="pool-type" v-for="type in animations" :key="type.name">
@@ -33,6 +33,9 @@
           <IconEffects style="margin-right: 5px;" /> {{handleElementAnimation || '点击选择动画'}}
         </Button>
       </Popover>
+      <Button class="element-animation-btn" v-else disabled>
+        <IconEffects style="margin-right: 5px;" /> 图表元素暂不支持动画
+      </Button>
     </div>
 
     <div class="tip" v-else><IconClick /> 选中画布中的元素添加动画</div>
