@@ -117,7 +117,7 @@ export default defineComponent({
           })
         }
         else {
-          const defaultSize = 100
+          const defaultSize = 200
           const minX = Math.min(endPageX, startPageX)
           const minY = Math.min(endPageY, startPageY)
           const maxX = Math.max(endPageX, startPageX)
