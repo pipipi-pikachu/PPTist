@@ -18,8 +18,11 @@
       <template #item="{ element, index }">
         <div
           class="thumbnail-item"
-          :class="{ 'selected': slideIndex === index }"
-          @mousedown="changSlideIndex(index)"
+          :class="{
+            'active': slideIndex === index,
+            'selected': selectedSlidesIndex.includes(index),
+          }"
+          @mousedown="handleClickSlideThumbnail(index)"
           v-contextmenu="contextmenusThumbnailItem"
         >
           <div class="label">{{ fillDigit(index + 1, 2) }}</div>
@@ -51,6 +54,9 @@ export default defineComponent({
     const store = useStore()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
+    const ctrlKeyState = computed(() => store.state.ctrlKeyState)
+    const shiftKeyState = computed(() => store.state.shiftKeyState)
+    const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
 
     const {
       copySlide,
@@ -69,12 +75,63 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
     }
 
+    // 点击缩略图
+    const handleClickSlideThumbnail = (index: number) => {
+      const isMultiSelected = selectedSlidesIndex.value.length > 1
+
+      // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
+      if (ctrlKeyState.value) {
+        if (slideIndex.value === index) {
+          if (!isMultiSelected) return
+
+          const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+          store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+          changSlideIndex(selectedSlidesIndex.value[0])
+        }
+        else {
+          if (selectedSlidesIndex.value.includes(index)) {
+            const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+            store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+          }
+          else {
+            const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
+            store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+            changSlideIndex(index)
+          }
+        }
+      }
+      // 按住Shift键，选择范围内的全部幻灯片
+      else if (shiftKeyState.value) {
+        if (slideIndex.value === index && !isMultiSelected) return
+
+        let minIndex = Math.min(...selectedSlidesIndex.value)
+        let maxIndex = index
+
+        if (index < minIndex) {
+          maxIndex = Math.max(...selectedSlidesIndex.value)
+          minIndex = index
+        }
+
+        const newSelectedSlidesIndex = []
+        for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
+        store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+        changSlideIndex(index)
+      }
+      // 正常切换页面
+      else {
+        store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
+        changSlideIndex(index)
+      }
+    }
+
     const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
 
     // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
     const setThumbnailsFocus = (focus: boolean) => {
       if (thumbnailsFocus.value === focus) return
       store.commit(MutationTypes.SET_THUMBNAILS_FOCUS, focus)
+
+      if (!focus) store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
     }
 
     // 拖拽调整顺序后进行数据的同步
@@ -158,8 +215,9 @@ export default defineComponent({
       setThumbnailsFocus,
       slides,
       slideIndex,
+      selectedSlidesIndex,
       createSlide,
-      changSlideIndex,
+      handleClickSlideThumbnail,
       contextmenusThumbnails,
       contextmenusThumbnailItem,
       fillDigit,
@@ -202,10 +260,15 @@ export default defineComponent({
     outline: 1px solid rgba($color: $themeColor, $alpha: .15);
   }
 
-  &.selected {
+  &.active {
     .label {
       color: $themeColor;
     }
+    .thumbnail {
+      outline-color: $themeColor;
+    }
+  }
+  &.selected {
     .thumbnail {
       outline-color: $themeColor;
     }

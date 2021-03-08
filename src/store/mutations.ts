@@ -106,6 +106,10 @@ export const mutations: MutationTree<State> = {
     state.slideIndex = index
   },
 
+  [MutationTypes.UPDATE_SELECTED_SLIDES_INDEX](state, selectedSlidesIndex: number[]) {
+    state.selectedSlidesIndex = selectedSlidesIndex
+  },
+
   [MutationTypes.ADD_ELEMENT](state, element: PPTElement | PPTElement[]) {
     const elements = Array.isArray(element) ? element : [element]
     const currentSlideEls = state.slides[state.slideIndex].elements

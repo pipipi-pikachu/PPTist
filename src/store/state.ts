@@ -19,6 +19,7 @@ export interface State {
   theme: SlideTheme;
   slides: Slide[];
   slideIndex: number;
+  selectedSlidesIndex: number[];
   snapshotCursor: number;
   snapshotLength: number;
   ctrlKeyState: boolean;
@@ -47,6 +48,7 @@ export const state: State = {
   },
   slides: slides,
   slideIndex: 0,
+  selectedSlidesIndex: [],
   snapshotCursor: -1,
   snapshotLength: 0,
   ctrlKeyState: false,

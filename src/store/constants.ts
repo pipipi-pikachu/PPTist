@@ -21,6 +21,7 @@ export const enum MutationTypes {
   UPDATE_SLIDE = 'updateSlide',
   DELETE_SLIDE = 'deleteSlide',
   UPDATE_SLIDE_INDEX = 'updateSlideIndex',
+  UPDATE_SELECTED_SLIDES_INDEX = 'updateSelectedSlidesIndex',
   ADD_ELEMENT = 'addElement',
   UPDATE_ELEMENT = 'updateElement',
   REMOVE_ELEMENT_PROPS = 'removeElementProps',
