@@ -65,7 +65,6 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { createRandomCode } from '@/utils/common'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -82,7 +81,7 @@ export default defineComponent({
     const store = useStore()
 
     const { enterScreening, enterScreeningFromStart } = useScreening()
-    const { createSlide, deleteSlide } = useSlideHandler()
+    const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
 
     const editDropdownVisible = ref(false)
@@ -92,14 +91,6 @@ export default defineComponent({
     const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
-    }
-
-    const resetSlides = () => {
-      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-      store.commit(MutationTypes.SET_SLIDES, [{
-        id: createRandomCode(),
-        elements: [],
-      }])
     }
 
     const openDoc = () => {

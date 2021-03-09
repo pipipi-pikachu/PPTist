@@ -35,6 +35,7 @@ export const HOTKEY_DOC = [
       { label: '撤销', value: 'Ctrl + Z' },
       { label: '恢复', value: 'Ctrl + Y' },
       { label: '删除', value: 'Delete / Backspace' },
+      { label: '多选', value: '按住 Ctrl 或 Shift' },
     ],
   },
   {
@@ -67,7 +68,6 @@ export const HOTKEY_DOC = [
       { label: '取消组合', value: 'Ctrl + Shift + G' },
       { label: '置顶层', value: 'Alt + F' },
       { label: '置底层', value: 'Alt + B' },
-      { label: '多选', value: '按住 Ctrl 或 Shift' },
       { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
       { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
       { label: '确认图片裁剪', value: 'Enter' },

@@ -13,11 +13,25 @@ export default () => {
   const store = useStore()
   const slideIndex = computed(() => store.state.slideIndex)
   const theme = computed(() => store.state.theme)
-  const slidesLength = computed(() => store.state.slides.length)
+  const slides = computed(() => store.state.slides)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+
+  const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
+  const selectedSlides = computed(() => slides.value.filter((item, index) => selectedSlidesIndex.value.includes(index)))
+  const selectedSlidesId = computed(() => selectedSlides.value.map(item => item.id))
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { addHistorySnapshot } = useHistorySnapshot()
+
+  // 重置幻灯片
+  const resetSlides = () => {
+    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0)
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+    store.commit(MutationTypes.SET_SLIDES, [{
+      id: createRandomCode(),
+      elements: [],
+    }])
+  }
 
   /**
    * 移动页面焦点
@@ -28,7 +42,7 @@ export default () => {
     if (command === KEYS.UP && slideIndex.value > 0) {
       targetIndex = slideIndex.value - 1
     }
-    else if (command === KEYS.DOWN && slideIndex.value < slidesLength.value - 1) {
+    else if (command === KEYS.DOWN && slideIndex.value < slides.value.length - 1) {
       targetIndex = slideIndex.value + 1
     }
     store.commit(MutationTypes.UPDATE_SLIDE_INDEX, targetIndex)
@@ -37,8 +51,8 @@ export default () => {
   // 将当前页面数据加密后复制到剪贴板
   const copySlide = () => {
     const text = encrypt(JSON.stringify({
-      type: 'slide',
-      data: currentSlide.value,
+      type: 'slides',
+      data: selectedSlides.value,
     }))
 
     copyText(text).then(() => {
@@ -76,21 +90,26 @@ export default () => {
     addHistorySnapshot()
   }
 
-  // 删除当前页
-  const deleteSlide = () => {
-    if (slidesLength.value === 1) return message.warning('无法继续删除')
-    
-    store.commit(MutationTypes.DELETE_SLIDE, currentSlide.value.id)
+  // 删除当前页，若将删除全部页面，则执行重置幻灯片操作
+  const deleteSlide = (targetSlidesId = selectedSlidesId.value) => {
+    if (slides.value.length === targetSlidesId.length) resetSlides()
+    else store.commit(MutationTypes.DELETE_SLIDE, targetSlidesId)
+
+    store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
+
     addHistorySnapshot()
   }
 
   // 将当前页复制后删除（剪切）
+  // 由于复制操作会导致多选状态消失，所以需要提前将需要删除的页面ID进行缓存
   const cutSlide = () => {
+    const targetSlidesId = [...selectedSlidesId.value]
     copySlide()
-    deleteSlide()
+    deleteSlide(targetSlidesId)
   }
 
   return {
+    resetSlides,
     updateSlideIndex,
     copySlide,
     pasteSlide,

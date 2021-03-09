@@ -55,11 +55,12 @@ export default () => {
    * 粘贴页面
    * @param slide 页面数据
    */
-  const pasteSlide = (slide: Slide) => {
-    store.commit(MutationTypes.ADD_SLIDE, {
+  const pasteSlides = (slides: Slide[]) => {
+    const newSlides = slides.map(slide => ({
       ...slide,
       id: createRandomCode(8),
-    })
+    }))
+    store.commit(MutationTypes.ADD_SLIDE, newSlides)
     addHistorySnapshot()
   }
 
@@ -98,7 +99,7 @@ export default () => {
       const { type, data } = clipboardData
 
       if (type === 'elements' && !onlySlide) pasteElement(data)
-      else if (type === 'slide' && !onlyElements) pasteSlide(data)
+      else if (type === 'slides' && !onlyElements) pasteSlides(data)
     }
 
     // 普通文本

@@ -200,7 +200,7 @@ export default defineComponent({
         {
           text: '删除页面',
           subText: 'Delete',
-          handler: deleteSlide,
+          handler: () => deleteSlide(),
         },
         { divider: true },
         {

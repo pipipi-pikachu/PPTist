@@ -82,9 +82,10 @@ export const mutations: MutationTree<State> = {
     state.slides = slides
   },
 
-  [MutationTypes.ADD_SLIDE](state, slide: Slide) {
+  [MutationTypes.ADD_SLIDE](state, slide: Slide | Slide[]) {
+    const slides = Array.isArray(slide) ? slide : [slide]
     const addIndex = state.slideIndex + 1
-    state.slides.splice(addIndex, 0, slide)
+    state.slides.splice(addIndex, 0, ...slides)
     state.slideIndex = addIndex
   },
 
@@ -93,13 +94,21 @@ export const mutations: MutationTree<State> = {
     state.slides[slideIndex] = { ...state.slides[slideIndex], ...props }
   },
 
-  [MutationTypes.DELETE_SLIDE](state, slideId: string) {
-    const deleteIndex = state.slides.findIndex(item => item.id === slideId)
+  [MutationTypes.DELETE_SLIDE](state, slideId: string | string[]) {
+    const slidesId = Array.isArray(slideId) ? slideId : [slideId]
 
-    if (deleteIndex === state.slides.length - 1) {
-      state.slideIndex = deleteIndex - 1
+    const deleteSlidesIndex = []
+    for (let i = 0; i < slidesId.length; i++) {
+      const index = state.slides.findIndex(item => item.id === slidesId[i])
+      deleteSlidesIndex.push(index)
     }
-    state.slides.splice(deleteIndex, 1)
+    let newIndex = Math.min(...deleteSlidesIndex)
+
+    const maxIndex = state.slides.length - slidesId.length - 1
+    if (newIndex > maxIndex) newIndex = maxIndex
+
+    state.slideIndex = newIndex
+    state.slides = state.slides.filter(item => !slidesId.includes(item.id))
   },
 
   [MutationTypes.UPDATE_SLIDE_INDEX](state, index: number) {
