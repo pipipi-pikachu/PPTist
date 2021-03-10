@@ -110,7 +110,19 @@ export default defineComponent({
 
         const minSize = 30
 
-        if (Math.abs(endPageX - startPageX) >= minSize && Math.abs(endPageY - startPageY) >= minSize) {
+        if (
+          creatingElement.value?.type === 'line' &&
+          (Math.abs(endPageX - startPageX) >= minSize || Math.abs(endPageY - startPageY) >= minSize)
+        ) {
+          emit('created', {
+            start: start.value,
+            end: end.value,
+          })
+        }
+        else if (
+          creatingElement.value?.type !== 'line' &&
+          (Math.abs(endPageX - startPageX) >= minSize && Math.abs(endPageY - startPageY) >= minSize)
+        ) {
           emit('created', {
             start: start.value,
             end: end.value,
