@@ -15,7 +15,7 @@ export const PRESET_THEMES = [
   { color: '#464d52', background: '#657984', text: '#fff' },
   { color: '#ffcfb6', background: '#1e4c6f', text: '#fff' },
   { color: '#c3a043', background: '#43292a', text: '#fff' },
-  { color: '#ffffff', background: '#171925', text: '#fff' },
+  { color: '#464d52', background: '#60546f', text: '#fff' },
   { color: '#df9636', background: '#5b89a0', text: '#fff' },
   { color: '#b898a4', background: '#93716b', text: '#fff' },
   { color: '#c47a11', background: '#187db1', text: '#fff' },
