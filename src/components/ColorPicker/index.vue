@@ -173,7 +173,7 @@ export default defineComponent({
 
         const maxLength = 10
         if (recentColors.value.length > maxLength) {
-          recentColors.value = recentColors.value.slice(-maxLength)
+          recentColors.value = recentColors.value.slice(0, maxLength)
         }
       }
     }, 300, { trailing: true })
