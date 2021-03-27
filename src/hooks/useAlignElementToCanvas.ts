@@ -3,13 +3,14 @@ import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
-import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useHistorySnapshot from './useHistorySnapshot'
 
 export default () => {
   const store = useStore()
 
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const viewportRatio = computed(() => store.state.viewportRatio)
   const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
   const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
@@ -21,7 +22,7 @@ export default () => {
    */
   const alignElementToCanvas = (command: ElementAlignCommand) => {
     const viewportWidth = VIEWPORT_SIZE
-    const viewportHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
+    const viewportHeight = VIEWPORT_SIZE * viewportRatio.value
     const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)
   
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))

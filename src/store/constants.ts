@@ -16,6 +16,7 @@ export const enum MutationTypes {
 
   // slides
   SET_THEME = 'setTheme',
+  SET_VIEWPORT_RATIO = 'setViewportRatio',
   SET_SLIDES = 'setSlides',
   ADD_SLIDE = 'addSlide',
   UPDATE_SLIDE = 'updateSlide',

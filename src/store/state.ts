@@ -17,6 +17,7 @@ export interface State {
   availableFonts: typeof SYS_FONTS;
   toolbarState: ToolbarState;
   theme: SlideTheme;
+  viewportRatio: number;
   slides: Slide[];
   slideIndex: number;
   selectedSlidesIndex: number[];
@@ -46,6 +47,7 @@ export const state: State = {
     fontName: '微软雅黑',
     backgroundColor: '#fff',
   },
+  viewportRatio: 0.5625,
   slides: slides,
   slideIndex: 0,
   selectedSlidesIndex: [],

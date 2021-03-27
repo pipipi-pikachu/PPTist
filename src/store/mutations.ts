@@ -78,6 +78,10 @@ export const mutations: MutationTree<State> = {
     state.theme = { ...state.theme, ...themeProps }
   },
 
+  [MutationTypes.SET_VIEWPORT_RATIO](state, viewportRatio: number) {
+    state.viewportRatio = viewportRatio
+  },
+
   [MutationTypes.SET_SLIDES](state, slides: Slide[]) {
     state.slides = slides
   },

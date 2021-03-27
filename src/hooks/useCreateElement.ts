@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
-import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { PPTLineElement, ChartType, PPTElement, TableCell } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
@@ -26,6 +26,7 @@ export default () => {
   const store = useStore()
   const themeColor = computed(() => store.state.theme.themeColor)
   const fontColor = computed(() => store.state.theme.fontColor)
+  const viewportRatio = computed(() => store.state.viewportRatio)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -44,12 +45,12 @@ export default () => {
     getImageSize(src).then(({ width, height }) => {
       const scale = height / width
   
-      if (scale < VIEWPORT_ASPECT_RATIO && width > VIEWPORT_SIZE) {
+      if (scale < viewportRatio.value && width > VIEWPORT_SIZE) {
         width = VIEWPORT_SIZE
         height = width * scale
       }
-      else if (height > VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO) {
-        height = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
+      else if (height > VIEWPORT_SIZE * viewportRatio.value) {
+        height = VIEWPORT_SIZE * viewportRatio.value
         width = height / scale
       }
 
@@ -60,7 +61,7 @@ export default () => {
         width,
         height,
         left: (VIEWPORT_SIZE - width) / 2,
-        top: (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO - height) / 2,
+        top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
         fixedRatio: true,
       })
     })
@@ -115,7 +116,7 @@ export default () => {
       colWidths,
       data,
       left: (VIEWPORT_SIZE - width) / 2,
-      top: (VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO - height) / 2,
+      top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
       outline: {
         width: 2,
         style: 'solid',
