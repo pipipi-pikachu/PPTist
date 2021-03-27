@@ -3,7 +3,7 @@ import { MutationTypes, useStore } from '@/store'
 import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import emitter, { EmitterEvents } from '@/utils/emitter'
-import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -99,8 +99,9 @@ export default (
 ) => {
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
   const canvasScale = computed(() => store.state.canvasScale)
+  const viewportRatio = computed(() => store.state.viewportRatio)
+  const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -149,7 +150,7 @@ export default (
     // 其中线条和被旋转过的元素不参与吸附对齐
     else {
       const edgeWidth = VIEWPORT_SIZE
-      const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
+      const edgeHeight = VIEWPORT_SIZE * viewportRatio.value
       const isActiveGroupElement = element.id === activeGroupElementId.value
       
       for (const el of elementList.value) {

@@ -1,2 +1,1 @@
 export const VIEWPORT_SIZE = 1000
-export const VIEWPORT_ASPECT_RATIO = 0.5625

@@ -60,7 +60,7 @@ import { computed, defineComponent, onMounted, onUnmounted, provide, ref } from 
 import throttle from 'lodash/throttle'
 import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
-import { VIEWPORT_ASPECT_RATIO, VIEWPORT_SIZE } from '@/configs/canvas'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { isFullscreen } from '@/utils/fullscreen'
@@ -81,6 +81,7 @@ export default defineComponent({
     const store = useStore()
     const slides = computed(() => store.state.slides)
     const slideIndex = computed(() => store.state.slideIndex)
+    const viewportRatio = computed(() => store.state.viewportRatio)
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
     const slideWidth = ref(0)
@@ -98,16 +99,16 @@ export default defineComponent({
       const winHeight = document.body.clientHeight
       let width, height
 
-      if (winHeight / winWidth === VIEWPORT_ASPECT_RATIO) {
+      if (winHeight / winWidth === viewportRatio.value) {
         width = winWidth
         height = winHeight
       }
-      else if (winHeight / winWidth > VIEWPORT_ASPECT_RATIO) {
+      else if (winHeight / winWidth > viewportRatio.value) {
         width = winWidth
-        height = winWidth * VIEWPORT_ASPECT_RATIO
+        height = winWidth * viewportRatio.value
       }
       else {
-        width = winHeight / VIEWPORT_ASPECT_RATIO
+        width = winHeight / viewportRatio.value
         height = winHeight
       }
       slideWidth.value = width

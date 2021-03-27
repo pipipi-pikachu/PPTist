@@ -2,7 +2,7 @@ import { Ref, computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
-import { VIEWPORT_SIZE, VIEWPORT_ASPECT_RATIO } from '@/configs/canvas'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -14,6 +14,7 @@ export default (
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const canvasScale = computed(() => store.state.canvasScale)
+  const viewportRatio = computed(() => store.state.viewportRatio)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -22,7 +23,7 @@ export default (
     let isMouseDown = true
 
     const edgeWidth = VIEWPORT_SIZE
-    const edgeHeight = VIEWPORT_SIZE * VIEWPORT_ASPECT_RATIO
+    const edgeHeight = VIEWPORT_SIZE * viewportRatio.value
     
     const sorptionRange = 5
 
