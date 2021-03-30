@@ -217,6 +217,7 @@ export default defineComponent({
 .editor-content {
   width: 100%;
   height: 360px;
+  overflow: auto;
   overflow: overlay;
   position: relative;
   border-right: 1px solid #ccc;

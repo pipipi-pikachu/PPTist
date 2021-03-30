@@ -25,7 +25,9 @@ module.exports = {
     'block-no-empty': true,
     'block-opening-brace-newline-after': 'always',
     'block-opening-brace-space-before': 'always',
-    'declaration-block-no-duplicate-properties': true,
+    'declaration-block-no-duplicate-properties': [true, {
+      ignoreProperties: ['overflow'],
+    }],
     'declaration-block-semicolon-newline-after': 'always',
     'declaration-block-trailing-semicolon': 'always',
     'selector-pseudo-element-colon-notation': 'double',

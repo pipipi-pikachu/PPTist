@@ -44,6 +44,7 @@
             height: imgPosition.height,
             filter: filter,
           }" 
+          @dragstart.prevent
           alt=""
         />
       </div>

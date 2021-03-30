@@ -8,7 +8,6 @@
       fill="none" 
       :stroke="gridColor" 
       stroke-width="0.3" 
-      shape-rendering="crispEdges"
       stroke-dasharray="5"
     ></path>
   </SvgWrapper>
@@ -52,10 +51,10 @@ export default defineComponent({
 
       let path = ''
       for (let i = 0; i <= Math.floor(maxY / gridSize); i++) {
-        path += `M0 ${i * gridSize}, L${maxX} ${i * gridSize}`
+        path += `M0 ${i * gridSize} L${maxX} ${i * gridSize} `
       }
       for (let i = 0; i <= Math.floor(maxX / gridSize); i++) {
-        path += `M${i * gridSize} 0, L${i * gridSize} ${maxY}`
+        path += `M${i * gridSize} 0 L${i * gridSize} ${maxY} `
       }
       return path
     }

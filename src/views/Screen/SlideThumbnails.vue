@@ -79,6 +79,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
+  overflow: auto;
   overflow: overlay;
 
   .thumbnail {
