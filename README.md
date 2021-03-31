@@ -17,7 +17,7 @@ npm install
 npm run serve
 ```
 
-> 注意：要求vue版本必须为3.0.4且ant-design-vue版本必须为2.0.0，否则会出现下拉菜单样式异常 或 选择器在生命周期销毁阶段发生异常。这可能是ant-design-vue的一个bug。
+> 注意：要求vue版本必须为3.0.7或以下，且ant-design-vue版本必须为2.1.0或以下，否则会出现下拉菜单样式异常 或 选择器在生命周期销毁阶段发生异常。这可能是ant-design-vue的一个bug。
 
 
 # 📜 功能列表
