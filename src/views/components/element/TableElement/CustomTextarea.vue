@@ -82,3 +82,10 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.custom-textarea {
+  border: 0;
+  outline: 0;
+}
+</style>

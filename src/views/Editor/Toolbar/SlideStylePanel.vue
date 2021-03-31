@@ -98,6 +98,17 @@
 
     <Divider />
 
+    <div class="row">
+      <div style="flex: 2;">画布尺寸：</div>
+      <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value)">
+        <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
+        <SelectOption :value="0.625">宽屏 16 ：10</SelectOption>
+        <SelectOption :value="0.75">标准 4 ：3</SelectOption>
+      </Select>
+    </div>
+
+    <Divider />
+
     <div class="title">全局主题</div>
     <div class="row">
       <div style="flex: 2;">字体：</div>
@@ -176,17 +187,6 @@
     </div>
 
     <div class="row"><Button style="flex: 1;" @click="applyThemeAllSlide()">应用主题到全部</Button></div>
-
-    <Divider />
-
-    <div class="row">
-      <div style="flex: 2;">画布尺寸：</div>
-      <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value)">
-        <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
-        <SelectOption :value="0.625">宽屏 16 ：10</SelectOption>
-        <SelectOption :value="0.75">标准 4 ：3</SelectOption>
-      </Select>
-    </div>
   </div>
 </template>
 
