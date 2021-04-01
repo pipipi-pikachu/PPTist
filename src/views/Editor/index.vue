@@ -6,6 +6,7 @@
       <div class="layout-content-center">
         <CanvasTool class="center-top" />
         <Canvas class="center-body" />
+        <Remark class="center-bottom" />
       </div>
       <Toolbar class="layout-content-right" />
     </div>
@@ -23,6 +24,7 @@ import Canvas from './Canvas/index.vue'
 import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
+import Remark from './Remark/index.vue'
 
 export default defineComponent({
   name: 'editor',
@@ -32,6 +34,7 @@ export default defineComponent({
     CanvasTool,
     Thumbnails,
     Toolbar,
+    Remark,
   },
   setup() {
     useGlobalHotkey()
@@ -63,7 +66,10 @@ export default defineComponent({
     height: 40px;
   }
   .center-body {
-    height: calc(100% - 40px);
+    height: calc(100% - 40px - 40px);
+  }
+  .center-bottom {
+    height: 40px;
   }
 }
 .layout-content-right {
