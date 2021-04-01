@@ -69,6 +69,8 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { isFullscreen } from '@/utils/fullscreen'
 import useScreening from '@/hooks/useScreening'
 
+import { message } from 'ant-design-vue'
+
 import ScreenSlide from './ScreenSlide.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
@@ -158,6 +160,16 @@ export default defineComponent({
       }
     }
 
+    // 关闭自动播放
+    const autoPlayTimer = ref(0)
+    const closeAutoPlay = () => {
+      if (autoPlayTimer.value) {
+        clearInterval(autoPlayTimer.value)
+        autoPlayTimer.value = 0
+      }
+    }
+    onUnmounted(closeAutoPlay)
+
     // 向上/向下播放
     // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
     // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
@@ -170,6 +182,9 @@ export default defineComponent({
         const lastIndex = animations.value ? animations.value.length : 0
         animationIndex.value = lastIndex
       }
+      else {
+        message.success('已经是第一页了')
+      }
     }
     const execNext = () => {
       if (animations.value.length && animationIndex.value < animations.value.length) {
@@ -179,6 +194,17 @@ export default defineComponent({
         store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
         animationIndex.value = 0
       }
+      else {
+        message.success('已经是最后一页了')
+        closeAutoPlay()
+      }
+    }
+
+    // 自动播放
+    const autoPlay = () => {
+      closeAutoPlay()
+      message.success('开始自动放映')
+      autoPlayTimer.value = setInterval(execNext, 2500)
     }
 
     // 鼠标滚动翻页
@@ -226,16 +252,26 @@ export default defineComponent({
     const contextmenus = (): ContextmenuItem[] => {
       return [
         {
-          text: '上一张',
-          subText: '↑、←',
+          text: '上一页',
+          subText: '↑ ←',
           disable: slideIndex.value <= 0,
           handler: () => turnPrevSlide(),
         },
         {
-          text: '下一张',
-          subText: '↓、→',
+          text: '下一页',
+          subText: '↓ →',
           disable: slideIndex.value >= slides.value.length - 1,
           handler: () => turnNextSlide(),
+        },
+        {
+          text: '第一页',
+          disable: slideIndex.value === 0,
+          handler: () => turnSlideToIndex(0),
+        },
+        {
+          text: '最后一页',
+          disable: slideIndex.value === slides.value.length - 1,
+          handler: () => turnSlideToIndex(slides.value.length - 1),
         },
         { divider: true },
         {
@@ -248,6 +284,10 @@ export default defineComponent({
           handler: () => slideThumbnailModelVisible.value = true,
         },
         { divider: true },
+        {
+          text: autoPlayTimer.value ? '取消自动放映' : '自动放映',
+          handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
+        },
         {
           text: '结束放映',
           subText: 'ESC',
