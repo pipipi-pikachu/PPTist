@@ -44,13 +44,16 @@
     <div class="tools">
       <IconLeftC class="tool-btn" @click="execPrev()" />
       <IconRightC class="tool-btn" @click="execNext()" />
-      <IconSearch class="tool-btn" @click="slideThumbnailModelVisible = true" />
       <Popover trigger="click" v-model:visible="writingBoardToolVisible">
         <template #content>
           <WritingBoardTool @close="writingBoardToolVisible = false" />
         </template>
         <IconWrite class="tool-btn" />
       </Popover>
+    </div>
+
+    <div class="page-number" @click="slideThumbnailModelVisible = true" v-if="showPageNumber">
+      {{slideIndex + 1}} / {{slides.length}}
     </div>
   </div>
 </template>
@@ -88,6 +91,8 @@ export default defineComponent({
     const slideHeight = ref(0)
 
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
+
+    const showPageNumber = ref(false)
 
     const slideThumbnailModelVisible = ref(false)
 
@@ -234,6 +239,11 @@ export default defineComponent({
         },
         { divider: true },
         {
+          text: '显示页码',
+          subText: showPageNumber.value ? '√' : '',
+          handler: () => showPageNumber.value = !showPageNumber.value,
+        },
+        {
           text: '查看所有幻灯片',
           handler: () => slideThumbnailModelVisible.value = true,
         },
@@ -263,6 +273,7 @@ export default defineComponent({
       slideThumbnailModelVisible,
       turnSlideToIndex,
       writingBoardToolVisible,
+      showPageNumber,
     }
   },
 })
@@ -358,10 +369,22 @@ export default defineComponent({
   opacity: .35;
 
   &:hover {
-    opacity: .7;
+    opacity: .9;
   }
   & + .tool-btn {
     margin-left: 8px;
   }
+}
+.page-number {
+  position: fixed;
+  bottom: 8px;
+  right: 8px;
+  padding: 8px 12px;
+  color: #666;
+  background-color: rgba($color: #f2f4f6, $alpha: .7);
+  box-shadow: 0 2px 12px 0 rgba($color: #333, $alpha: .2);
+  border-radius: $borderRadius;
+  z-index: 10;
+  cursor: pointer;
 }
 </style>

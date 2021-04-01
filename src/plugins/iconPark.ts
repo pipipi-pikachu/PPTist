@@ -5,7 +5,6 @@ import {
   PlayOne,
   Lock,
   Unlock,
-  Search,
   Ppt,
   Format,
   Picture,
@@ -158,7 +157,6 @@ export default {
 
     // 其他
     app.component('IconPlayOne', PlayOne)
-    app.component('IconSearch', Search)
     app.component('IconPpt', Ppt)
     app.component('IconHelpcenter', Helpcenter)
     app.component('IconGithub', Github)
