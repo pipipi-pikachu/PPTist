@@ -5,8 +5,10 @@
   border: 0;
   font-size: 20px;
   word-break: break-word;
-  // safari取消继承 issue #7
-  user-select: text;
+
+  &:not(.ProseMirror-static) {
+    user-select: text;
+  }
 
   ::selection {
     background-color: rgba(#d14424, 0.3);
