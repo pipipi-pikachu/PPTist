@@ -130,12 +130,12 @@ export default defineComponent({
   transition: background-color .2s;
   cursor: pointer;
 
-  &:hover {
-    background-color: $lightGray;
-  }
-
   .text {
     margin-left: 4px;
   }
+}
+
+.left .menu-item:hover {
+  background-color: $lightGray;
 }
 </style>
