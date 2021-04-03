@@ -5,8 +5,12 @@
       <Thumbnails class="layout-content-left" />
       <div class="layout-content-center">
         <CanvasTool class="center-top" />
-        <Canvas class="center-body" />
-        <Remark class="center-bottom" />
+        <Canvas class="center-body" :style="{ height: `calc(100% - ${remarkHeight + 40}px)` }" />
+        <Remark
+          class="center-bottom" 
+          v-model:height="remarkHeight" 
+          :style="{ height: `${remarkHeight}px` }"
+        />
       </div>
       <Toolbar class="layout-content-right" />
     </div>
@@ -14,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import useGlobalHotkey from '@/hooks/useGlobalHotkey'
 import usePasteEvent from '@/hooks/usePasteEvent'
@@ -37,8 +41,14 @@ export default defineComponent({
     Remark,
   },
   setup() {
+    const remarkHeight = ref(40)
+
     useGlobalHotkey()
     usePasteEvent()
+
+    return {
+      remarkHeight,
+    }
   },
 })
 </script>
@@ -63,12 +73,6 @@ export default defineComponent({
   width: calc(100% - 160px - 260px);
 
   .center-top {
-    height: 40px;
-  }
-  .center-body {
-    height: calc(100% - 40px - 40px);
-  }
-  .center-bottom {
     height: 40px;
   }
 }

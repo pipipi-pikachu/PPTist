@@ -1,5 +1,9 @@
 <template>
   <div class="remark">
+    <div 
+      class="resize-handler"
+      @mousedown="$event => resize($event)"
+    ></div>
     <textarea
       :value="remark"
       placeholder="点击输入演讲者备注"
@@ -15,7 +19,13 @@ import { Slide } from '@/types/slides'
 
 export default defineComponent({
   name: 'remark',
-  setup() {
+  props: {
+    height: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props, { emit }) {
     const store = useStore()
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
     const remark = computed(() => currentSlide.value?.remark || '')
@@ -25,9 +35,36 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_SLIDE, { remark: value })
     }
 
+    const resize = (e: MouseEvent) => {
+      let isMouseDown = true
+      const startPageY = e.pageY
+      const originHeight = props.height
+
+      document.onmousemove = e => {
+        if (!isMouseDown) return
+
+        const currentPageY = e.pageY
+
+        const moveY = currentPageY - startPageY
+        let newHeight = -moveY + originHeight
+
+        if (newHeight < 40) newHeight = 40
+        if (newHeight > 120) newHeight = 120
+
+        emit('update:height', newHeight)
+      }
+
+      document.onmouseup = () => {
+        isMouseDown = false
+        document.onmousemove = null
+        document.onmouseup = null
+      }
+    }
+
     return {
       remark,
       handleInput,
+      resize,
     }
   },
 })
@@ -55,5 +92,14 @@ export default defineComponent({
     font-size: 12px;
     background-color: transparent;
   }
+}
+.resize-handler {
+  height: 7px;
+  position: absolute;
+  top: -3px;
+  left: 0;
+  right: 0;
+  cursor: n-resize;
+  z-index: 2;
 }
 </style>
