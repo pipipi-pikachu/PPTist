@@ -1,9 +1,7 @@
 # 🎨 PPTist
 > 一个基于 Vue3.x + TypeScript 的在线演示文稿应用，还原了大部分PPT常用功能，支持 文字、图片、形状、线条、图表、表格 6种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，尽可能还原本地桌面应用的使用体验。
 
-你可以对它进行二次开发，打造属于自己的 在线演示文稿应用 或者 在线设计工具（二次开发文档正在编写中）。
-
-在线体验地址（优先更新）：https://www.pptist.cn/
+在线体验地址：https://pipipi-pikachu.github.io/PPTist/
 
 如果网络状态不佳，可以访问国内镜像：https://pptist.gitee.io/
 
@@ -179,3 +177,6 @@ A. 设置预置主题的作用是使新添加的元素和页面应用主题样�
 
 # 📄 开源协议
 [MIT License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE)
+
+# 💣 友情提示
+本项目不接受任何形式的私人咨询，有任何问题欢迎在 github 提交你的 Issues
