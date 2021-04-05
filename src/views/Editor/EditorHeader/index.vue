@@ -11,6 +11,7 @@
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
+            <MenuItem @click="exportDialogVisible = true">导出为</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -53,11 +54,22 @@
     >
       <HotkeyDoc />
     </Drawer>
+
+    <Modal
+      v-model:visible="exportDialogVisible" 
+      :footer="null" 
+      centered
+      :closable="false"
+      :width="680"
+      destroyOnClose
+    >
+      <ExportDialog @close="exportDialogVisible = false"/>
+    </Modal>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -70,6 +82,7 @@ export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
+    ExportDialog: defineAsyncComponent(() => import('./ExportDialog.vue')),
   },
   setup() {
     const store = useStore()
@@ -88,6 +101,7 @@ export default defineComponent({
     }
 
     const hotkeyDrawerVisible = ref(false)
+    const exportDialogVisible = ref(false)
 
     return {
       enterScreening,
@@ -101,6 +115,7 @@ export default defineComponent({
       resetSlides,
       openDoc,
       hotkeyDrawerVisible,
+      exportDialogVisible,
     }
   },
 })
