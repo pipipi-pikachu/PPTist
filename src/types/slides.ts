@@ -56,7 +56,7 @@ export interface ImageElementFilters {
 }
 export interface ImageElementClip {
   range: [[number, number], [number, number]];
-  shape: string;
+  shape?: string;
 }
 export interface PPTImageElement {
   type: 'image';
