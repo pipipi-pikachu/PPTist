@@ -7,46 +7,50 @@
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
       height: elementInfo.height + 'px',
-      transform: `rotate(${elementInfo.rotate}deg)`,
     }"
     @mousedown="$event => handleSelectElement($event)" 
   >
-    <ImageClipHandler
-      v-if="isCliping"
-      :src="elementInfo.src"
-      :clipData="elementInfo.clip"
-      :width="elementInfo.width"
-      :height="elementInfo.height"
-      :top="elementInfo.top"
-      :left="elementInfo.left"
-      :clipPath="clipShape.style"
-      @clip="range => handleClip(range)"
-    />
-    <div 
-      class="element-content"
-      v-else
-      v-contextmenu="contextmenus"
-      :style="{
-        filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
-        transform: flipStyle,
-      }"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <ImageOutline :elementInfo="elementInfo" />
+      <ImageClipHandler
+        v-if="isCliping"
+        :src="elementInfo.src"
+        :clipData="elementInfo.clip"
+        :width="elementInfo.width"
+        :height="elementInfo.height"
+        :top="elementInfo.top"
+        :left="elementInfo.left"
+        :clipPath="clipShape.style"
+        @clip="range => handleClip(range)"
+      />
+      <div 
+        class="element-content"
+        v-else
+        v-contextmenu="contextmenus"
+        :style="{
+          filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
+          transform: flipStyle,
+        }"
+      >
+        <ImageOutline :elementInfo="elementInfo" />
 
-      <div class="image-content" :style="{ clipPath: clipShape.style }">
-        <img 
-          :src="elementInfo.src" 
-          :draggable="false" 
-          :style="{
-            top: imgPosition.top,
-            left: imgPosition.left,
-            width: imgPosition.width,
-            height: imgPosition.height,
-            filter: filter,
-          }" 
-          @dragstart.prevent
-          alt=""
-        />
+        <div class="image-content" :style="{ clipPath: clipShape.style }">
+          <img 
+            :src="elementInfo.src" 
+            :draggable="false" 
+            :style="{
+              top: imgPosition.top,
+              left: imgPosition.left,
+              width: imgPosition.width,
+              height: imgPosition.height,
+              filter: filter,
+            }" 
+            @dragstart.prevent
+            alt=""
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -149,7 +153,10 @@ export default defineComponent({
     cursor: default;
   }
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

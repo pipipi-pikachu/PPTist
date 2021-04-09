@@ -9,28 +9,33 @@
       transform: `rotate(${elementInfo.rotate}deg)`,
     }"
   >
-    <div 
-      class="element-content"
-      :style="{
-        filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
-        transform: flipStyle,
-      }"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <ImageOutline :elementInfo="elementInfo" />
+      <div 
+        class="element-content"
+        :style="{
+          filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
+          transform: flipStyle,
+        }"
+      >
+        <ImageOutline :elementInfo="elementInfo" />
 
-      <div class="image-content" :style="{ clipPath: clipShape.style }">
-        <img 
-          :src="elementInfo.src" 
-          :draggable="false" 
-          :style="{
-            top: imgPosition.top,
-            left: imgPosition.left,
-            width: imgPosition.width,
-            height: imgPosition.height,
-            filter: filter,
-          }" 
-          alt=""
-        />
+        <div class="image-content" :style="{ clipPath: clipShape.style }">
+          <img 
+            :src="elementInfo.src" 
+            :draggable="false" 
+            :style="{
+              top: imgPosition.top,
+              left: imgPosition.left,
+              width: imgPosition.width,
+              height: imgPosition.height,
+              filter: filter,
+            }" 
+            alt=""
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -85,7 +90,10 @@ export default defineComponent({
 .base-element-image {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

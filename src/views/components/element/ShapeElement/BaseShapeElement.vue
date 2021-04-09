@@ -6,47 +6,51 @@
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
       height: elementInfo.height + 'px',
-      transform: `rotate(${elementInfo.rotate}deg)`,
     }"
   >
-    <div 
-      class="element-content"
-      :style="{
-        opacity: elementInfo.opacity,
-        filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
-        transform: flipStyle,
-      }"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <SvgWrapper 
-        overflow="visible" 
-        :width="elementInfo.width"
-        :height="elementInfo.height"
+      <div 
+        class="element-content"
+        :style="{
+          opacity: elementInfo.opacity,
+          filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
+          transform: flipStyle,
+        }"
       >
-        <defs v-if="elementInfo.gradient">
-          <GradientDefs
-            :id="`base-gradient-${elementInfo.id}`" 
-            :type="elementInfo.gradient.type"
-            :color1="elementInfo.gradient.color[0]"
-            :color2="elementInfo.gradient.color[1]"
-            :rotate="elementInfo.gradient.rotate"
-          />
-        </defs>
-        <g 
-          :transform="`scale(${elementInfo.width / elementInfo.viewBox}, ${elementInfo.height / elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
+        <SvgWrapper 
+          overflow="visible" 
+          :width="elementInfo.width"
+          :height="elementInfo.height"
         >
-          <path 
-            vector-effect="non-scaling-stroke" 
-            stroke-linecap="butt" 
-            stroke-miterlimit="8"
-            stroke-linejoin="" 
-            :d="elementInfo.path" 
-            :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : elementInfo.fill"
-            :stroke="outlineColor"
-            :stroke-width="outlineWidth" 
-            :stroke-dasharray="outlineStyle === 'dashed' ? '10 5' : '0 0'" 
-          ></path>
-        </g>
-			</SvgWrapper>
+          <defs v-if="elementInfo.gradient">
+            <GradientDefs
+              :id="`base-gradient-${elementInfo.id}`" 
+              :type="elementInfo.gradient.type"
+              :color1="elementInfo.gradient.color[0]"
+              :color2="elementInfo.gradient.color[1]"
+              :rotate="elementInfo.gradient.rotate"
+            />
+          </defs>
+          <g 
+            :transform="`scale(${elementInfo.width / elementInfo.viewBox}, ${elementInfo.height / elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
+          >
+            <path 
+              vector-effect="non-scaling-stroke" 
+              stroke-linecap="butt" 
+              stroke-miterlimit="8"
+              stroke-linejoin="" 
+              :d="elementInfo.path" 
+              :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : elementInfo.fill"
+              :stroke="outlineColor"
+              :stroke-width="outlineWidth" 
+              :stroke-dasharray="outlineStyle === 'dashed' ? '10 5' : '0 0'" 
+            ></path>
+          </g>
+        </SvgWrapper>
+      </div>
     </div>
   </div>
 </template>
@@ -96,7 +100,10 @@ export default defineComponent({
 .base-element-shape {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

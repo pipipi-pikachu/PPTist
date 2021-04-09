@@ -7,31 +7,35 @@
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
-      transform: `rotate(${elementInfo.rotate}deg)`,
     }"
     @mousedown="$event => handleSelectElement($event)"
   >
-    <div 
-      class="element-content"
-      :style="{
-        backgroundColor: elementInfo.fill,
-        opacity: elementInfo.opacity,
-        textShadow: shadowStyle,
-        lineHeight: elementInfo.lineHeight,
-        letterSpacing: (elementInfo.wordSpace || 0) + 'px',
-      }"
-      v-contextmenu="contextmenus"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <ElementOutline
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
       <div 
-        class="text"
-        ref="editorViewRef"
-        @mousedown="$event => handleSelectElement($event, false)"
-      ></div>
+        class="element-content"
+        :style="{
+          backgroundColor: elementInfo.fill,
+          opacity: elementInfo.opacity,
+          textShadow: shadowStyle,
+          lineHeight: elementInfo.lineHeight,
+          letterSpacing: (elementInfo.wordSpace || 0) + 'px',
+        }"
+        v-contextmenu="contextmenus"
+      >
+        <ElementOutline
+          :width="elementInfo.width"
+          :height="elementInfo.height"
+          :outline="elementInfo.outline"
+        />
+        <div 
+          class="text"
+          ref="editorViewRef"
+          @mousedown="$event => handleSelectElement($event, false)"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -325,7 +329,10 @@ export default defineComponent({
     cursor: default;
   }
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   position: relative;
   padding: 10px;

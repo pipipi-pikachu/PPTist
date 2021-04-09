@@ -5,25 +5,29 @@
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
-      transform: `rotate(${elementInfo.rotate}deg)`,
     }"
   >
-    <div 
-      class="element-content"
-      :style="{
-        backgroundColor: elementInfo.fill,
-        opacity: elementInfo.opacity,
-        textShadow: shadowStyle,
-        lineHeight: elementInfo.lineHeight,
-        letterSpacing: (elementInfo.wordSpace || 0) + 'px',
-      }"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <ElementOutline
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
-      <div class="text ProseMirror-static" v-html="elementInfo.content"></div>
+      <div 
+        class="element-content"
+        :style="{
+          backgroundColor: elementInfo.fill,
+          opacity: elementInfo.opacity,
+          textShadow: shadowStyle,
+          lineHeight: elementInfo.lineHeight,
+          letterSpacing: (elementInfo.wordSpace || 0) + 'px',
+        }"
+      >
+        <ElementOutline
+          :width="elementInfo.width"
+          :height="elementInfo.height"
+          :outline="elementInfo.outline"
+        />
+        <div class="text ProseMirror-static" v-html="elementInfo.content"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -61,7 +65,10 @@ export default defineComponent({
 .base-element-text {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   position: relative;
   padding: 10px;
