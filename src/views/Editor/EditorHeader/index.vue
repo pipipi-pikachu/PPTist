@@ -69,20 +69,22 @@
 </template>
 
 <script lang="ts">
-import { computed, defineAsyncComponent, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import HotkeyDoc from './HotkeyDoc.vue'
+import ExportDialog from './ExportDialog.vue'
+
 import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
-    ExportDialog: defineAsyncComponent(() => import('./ExportDialog.vue')),
+    ExportDialog,
   },
   setup() {
     const store = useStore()
