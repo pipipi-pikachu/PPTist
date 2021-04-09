@@ -22,8 +22,7 @@ export interface PPTElementOutline {
   color?: string;
 }
 
-export interface PPTTextElement {
-  type: 'text';
+interface PPTBaseElement {
   id: string;
   left: number;
   top: number;
@@ -31,6 +30,10 @@ export interface PPTTextElement {
   groupId?: string;
   width: number;
   height: number;
+}
+
+export interface PPTTextElement extends PPTBaseElement{
+  type: 'text';
   content: string;
   rotate?: number;
   outline?: PPTElementOutline;
@@ -58,15 +61,8 @@ export interface ImageElementClip {
   range: [[number, number], [number, number]];
   shape: string;
 }
-export interface PPTImageElement {
+export interface PPTImageElement extends PPTBaseElement{
   type: 'image';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-  width: number;
-  height: number;
   fixedRatio: boolean;
   src: string;
   rotate?: number;
@@ -82,15 +78,8 @@ export interface ShapeGradient {
   color: [string, string];
   rotate: number;
 }
-export interface PPTShapeElement {
+export interface PPTShapeElement extends PPTBaseElement{
   type: 'shape';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-  width: number;
-  height: number;
   viewBox: number;
   path: string;
   fixedRatio: boolean;
@@ -103,16 +92,10 @@ export interface PPTShapeElement {
   shadow?: PPTElementShadow;
 }
 
-export interface PPTLineElement {
+export interface PPTLineElement extends Omit<PPTBaseElement, 'height'>{
   type: 'line';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
   start: [number, number];
   end: [number, number];
-  width: number;
   style: string;
   color: string;
   points: [string, string];
@@ -126,15 +109,8 @@ export interface ChartData {
   labels: string[];
   series: number[][];
 }
-export interface PPTChartElement {
+export interface PPTChartElement extends PPTBaseElement{
   type: 'chart';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-  width: number;
-  height: number;
   fill?: string;
   chartType: ChartType;
   data: ChartData;
@@ -169,15 +145,8 @@ export interface TableTheme {
   colHeader: boolean;
   colFooter: boolean;
 } 
-export interface PPTTableElement {
+export interface PPTTableElement extends PPTBaseElement{
   type: 'table';
-  id: string;
-  left: number;
-  top: number;
-  lock?: boolean;
-  groupId?: string;
-  width: number;
-  height: number;
   outline: PPTElementOutline;
   theme?: TableTheme;
   colWidths: number[];
