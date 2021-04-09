@@ -39,6 +39,7 @@ import {
   Menu,
   Checkbox,
   Drawer,
+  Spin,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -75,6 +76,7 @@ app.component('Menu', Menu)
 app.component('MenuItem', Menu.Item)
 app.component('Checkbox', Checkbox)
 app.component('Drawer', Drawer)
+app.component('Spin', Spin)
 
 app.use(store, key)
 app.mount('#app')

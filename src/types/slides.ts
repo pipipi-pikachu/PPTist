@@ -205,6 +205,7 @@ export interface SlideBackground {
 export interface Slide {
   id: string;
   elements: PPTElement[];
+  remark?: string;
   background?: SlideBackground;
   animations?: PPTAnimation[];
   turningMode?: 'no' | 'fade' | 'slideX' | 'slideY';
