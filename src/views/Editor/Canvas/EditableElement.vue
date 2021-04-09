@@ -2,7 +2,7 @@
   <div 
     class="editable-element"
     ref="elementRef"
-    :id="'editable-element-' + elementInfo.id"
+    :id="`editable-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
       color: theme.fontColor,

@@ -1,6 +1,7 @@
 <template>
   <div 
     class="screen-element"
+    :id="`screen-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
       color: theme.fontColor,

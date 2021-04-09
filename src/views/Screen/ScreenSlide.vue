@@ -9,7 +9,6 @@
   >
     <div class="background" :style="{ ...backgroundStyle }"></div>
     <ScreenElement
-      :id="`screen-element-${element.id}`"
       v-for="(element, index) in slide.elements"
       :key="element.id"
       :elementInfo="element"

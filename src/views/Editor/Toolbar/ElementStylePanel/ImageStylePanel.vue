@@ -14,9 +14,9 @@
             <div class="shape-clip">
               <div 
                 class="shape-clip-item" 
-                v-for="(item, index) in shapeClipPathOptions" 
-                :key="index"
-                @click="presetImageClip(index)"
+                v-for="(item, key) in shapeClipPathOptions" 
+                :key="key"
+                @click="presetImageClip(key)"
               >
                 <div class="shape" :style="{ backgroundImage: `url(${handleElement.src})`, clipPath: item.style }"></div>
               </div>
