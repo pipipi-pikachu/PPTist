@@ -59,7 +59,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { PPTImageElement } from '@/types/slides'
+import { ImageElementClip, PPTImageElement } from '@/types/slides'
 import { ImageClipedEmitData } from '@/types/edit'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
@@ -118,7 +118,7 @@ export default defineComponent({
       if (!data) return
 
       const { range, position } = data
-      const originClip = props.elementInfo.clip || {}
+      const originClip: ImageElementClip = props.elementInfo.clip || { shape: 'rect', range: [[0, 0], [100, 100]] }
       
       const _props = {
         clip: { ...originClip, range },
