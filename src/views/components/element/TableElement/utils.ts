@@ -17,11 +17,14 @@ export const getTextStyle = (style?: TableCellStyle) => {
     fontname,
     align,
   } = style
+
+  let textDecoration = `${underline ? 'underline' : ''} ${strikethrough ? 'line-through' : ''}`
+  if (textDecoration === ' ') textDecoration = 'none'
   
   return {
     fontWeight: bold ? 'bold' : 'normal',
     fontStyle: em ? 'italic' : 'normal',
-    textDecoration: `${underline ? 'underline' : ''} ${strikethrough ? 'line-through' : ''}`,
+    textDecoration,
     color: color || '#000',
     backgroundColor: backcolor || '',
     fontSize: fontsize || '14px',
