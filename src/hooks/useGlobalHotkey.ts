@@ -35,6 +35,7 @@ export default () => {
     deleteSlide,
     cutSlide,
     copyAndPasteSlide,
+    selectAllSlide,
   } = useSlideHandler()
 
   const { combineElements, uncombineElements } = useCombineElement()
@@ -64,8 +65,8 @@ export default () => {
   }
 
   const selectAll = () => {
-    if (!editorAreaFocus.value) return
-    selectAllElement()
+    if (editorAreaFocus.value) selectAllElement()
+    if (thumbnailsFocus.value) selectAllSlide()
   }
 
   const lock = () => {

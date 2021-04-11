@@ -65,6 +65,7 @@ export default defineComponent({
       copyAndPasteSlide,
       deleteSlide,
       cutSlide,
+      selectAllSlide,
     } = useSlideHandler()
 
     // 切换页面
@@ -157,6 +158,11 @@ export default defineComponent({
           handler: pasteSlide,
         },
         {
+          text: '全选',
+          subText: 'Ctrl + A',
+          handler: selectAllSlide,
+        },
+        {
           text: '新建页面',
           subText: 'Enter',
           handler: createSlide,
@@ -185,6 +191,11 @@ export default defineComponent({
           text: '粘贴',
           subText: 'Ctrl + V',
           handler: pasteSlide,
+        },
+        {
+          text: '全选',
+          subText: 'Ctrl + A',
+          handler: selectAllSlide,
         },
         { divider: true },
         {

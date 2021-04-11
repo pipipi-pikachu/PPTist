@@ -108,6 +108,13 @@ export default () => {
     deleteSlide(targetSlidesId)
   }
 
+  // 选中全部幻灯片
+  const selectAllSlide = () => {
+    const newSelectedSlidesIndex = Array.from(Array(slides.value.length), (item, index) => index)
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+    store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+  }
+
   return {
     resetSlides,
     updateSlideIndex,
@@ -117,5 +124,6 @@ export default () => {
     copyAndPasteSlide,
     deleteSlide,
     cutSlide,
+    selectAllSlide,
   }
 }
