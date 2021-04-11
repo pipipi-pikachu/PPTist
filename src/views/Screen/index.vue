@@ -41,15 +41,12 @@
       @close="slideThumbnailModelVisible = false"
     />
 
+    <WritingBoardTool v-if="writingBoardToolVisible" @close="writingBoardToolVisible = false" />
+
     <div class="tools">
       <IconLeftTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execPrev()" />
       <IconRightTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execNext()" />
-      <Popover trigger="click" v-model:visible="writingBoardToolVisible">
-        <template #content>
-          <WritingBoardTool @close="writingBoardToolVisible = false" />
-        </template>
-        <IconWrite class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" />
-      </Popover>
+      <IconWrite class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="writingBoardToolVisible = true" />
     </div>
 
     <div class="page-number" @click="slideThumbnailModelVisible = true" v-if="showPageNumber">
@@ -282,6 +279,10 @@ export default defineComponent({
         {
           text: '查看所有幻灯片',
           handler: () => slideThumbnailModelVisible.value = true,
+        },
+        {
+          text: '画笔',
+          handler: () => writingBoardToolVisible.value = true,
         },
         { divider: true },
         {
