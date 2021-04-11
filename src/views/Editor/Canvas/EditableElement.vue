@@ -125,13 +125,20 @@ export default defineComponent({
           ],
         },
         {
-          text: '层级排序',
+          text: '置于顶层',
           disable: props.isMultiSelect && !props.elementInfo.groupId,
+          handler: () => orderElement(props.elementInfo, ElementOrderCommands.TOP),
           children: [
-            { text: '置顶层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.TOP) },
-            { text: '置底层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.BOTTOM) },
-            { divider: true },
+            { text: '置于顶层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.TOP) },
             { text: '上移一层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.UP) },
+          ],
+        },
+        {
+          text: '置于底层',
+          disable: props.isMultiSelect && !props.elementInfo.groupId,
+          handler: () => orderElement(props.elementInfo, ElementOrderCommands.BOTTOM),
+          children: [
+            { text: '置于底层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.BOTTOM) },
             { text: '下移一层', handler: () => orderElement(props.elementInfo, ElementOrderCommands.DOWN) },
           ],
         },

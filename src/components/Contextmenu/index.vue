@@ -73,7 +73,8 @@ export default defineComponent({
     })
 
     const handleClickMenuItem = (item: ContextmenuItem) => {
-      if (item.disable || item.children) return
+      if (item.disable) return
+      if (item.children && !item.handler) return
       if (item.handler) item.handler(props.el)
       props.removeContextmenu()
     }
