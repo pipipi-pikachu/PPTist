@@ -111,19 +111,26 @@ export default defineComponent({
         },
         { divider: true },
         {
-          text: '对齐方式',
+          text: '水平居中',
+          handler: () => alignElementToCanvas(ElementAlignCommands.HORIZONTAL),
           children: [
-            { text: '水平垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.CENTER) },
-            { divider: true },
+            { text: '水平垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.CENTER), },
             { text: '水平居中', handler: () => alignElementToCanvas(ElementAlignCommands.HORIZONTAL) },
             { text: '左对齐', handler: () => alignElementToCanvas(ElementAlignCommands.LEFT) },
             { text: '右对齐', handler: () => alignElementToCanvas(ElementAlignCommands.RIGHT) },
-            { divider: true },
+          ],
+        },
+        {
+          text: '垂直居中',
+          handler: () => alignElementToCanvas(ElementAlignCommands.VERTICAL),
+          children: [
+            { text: '水平垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.CENTER) },
             { text: '垂直居中', handler: () => alignElementToCanvas(ElementAlignCommands.VERTICAL) },
             { text: '顶部对齐', handler: () => alignElementToCanvas(ElementAlignCommands.TOP) },
             { text: '底部对齐', handler: () => alignElementToCanvas(ElementAlignCommands.BOTTOM) },
           ],
         },
+        { divider: true },
         {
           text: '置于顶层',
           disable: props.isMultiSelect && !props.elementInfo.groupId,
