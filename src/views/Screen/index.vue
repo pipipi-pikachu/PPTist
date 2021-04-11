@@ -42,13 +42,13 @@
     />
 
     <div class="tools">
-      <IconLeftC class="tool-btn" @click="execPrev()" />
-      <IconRightC class="tool-btn" @click="execNext()" />
+      <IconLeftTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execPrev()" />
+      <IconRightTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execNext()" />
       <Popover trigger="click" v-model:visible="writingBoardToolVisible">
         <template #content>
           <WritingBoardTool @close="writingBoardToolVisible = false" />
         </template>
-        <IconWrite class="tool-btn" />
+        <IconWrite class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" />
       </Popover>
     </div>
 
@@ -421,10 +421,15 @@ export default defineComponent({
   right: 8px;
   padding: 8px 12px;
   color: #666;
-  background-color: rgba($color: #f2f4f6, $alpha: .7);
-  box-shadow: 0 2px 12px 0 rgba($color: #333, $alpha: .2);
+  border: 2px solid #acacac;
+  background-color: rgba($color: #fff, $alpha: .6);
   border-radius: $borderRadius;
   z-index: 10;
   cursor: pointer;
+
+  &:hover {
+    border: 2px solid #333;
+    color: #333;
+  }
 }
 </style>

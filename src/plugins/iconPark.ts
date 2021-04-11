@@ -60,8 +60,8 @@ import {
   PentagonOne,
   Text,
   Rotate,
-  LeftC,
-  RightC,
+  LeftTwo,
+  RightTwo,
   Platte,
   UpOne,
   DownOne,
@@ -144,8 +144,8 @@ export default {
 
     // 箭头与符号
     app.component('IconDown', Down)
-    app.component('IconLeftC', LeftC)
-    app.component('IconRightC', RightC)
+    app.component('IconLeftTwo', LeftTwo)
+    app.component('IconRightTwo', RightTwo)
     app.component('IconPlus', Plus)
     app.component('IconMinus', Minus)
     app.component('IconCloseSmall', CloseSmall)
