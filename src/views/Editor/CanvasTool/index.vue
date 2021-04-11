@@ -23,7 +23,7 @@
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
-          <IconPentagonOne class="handler-item" />
+          <IconGraphicDesign class="handler-item" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="linePoolVisible">

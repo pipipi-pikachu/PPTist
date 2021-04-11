@@ -54,10 +54,14 @@ import {
   BringToFrontOne,
   SentToBack,
   Github,
-  ChartLine,
-  ChartHistogram,
   ChartProportion,
-  PentagonOne,
+  ChartHistogram,
+  ChartHistogramOne,
+  ChartLine,
+  ChartLineArea,
+  ChartScatter,
+  ChartPie,
+  ChartRing,
   Text,
   Rotate,
   LeftTwo,
@@ -71,6 +75,7 @@ import {
   Click,
   Theme,
   ArrowCircleLeft,
+  GraphicDesign,
 } from '@icon-park/vue-next'
 
 export default {
@@ -78,8 +83,9 @@ export default {
     // 插入元素
     app.component('IconFontSize', FontSize)
     app.component('IconPicture', Picture)
-    app.component('IconPentagonOne', PentagonOne)
+    app.component('IconGraphicDesign', GraphicDesign)
     app.component('IconConnection', Connection)
+    app.component('IconChartProportion', ChartProportion)
     app.component('IconInsertTable', InsertTable)
 
     // 锁定与解锁
@@ -151,9 +157,13 @@ export default {
     app.component('IconCloseSmall', CloseSmall)
     
     // 图表
-    app.component('IconChartLine', ChartLine)
     app.component('IconChartHistogram', ChartHistogram)
-    app.component('IconChartProportion', ChartProportion)
+    app.component('IconChartHistogramOne', ChartHistogramOne)
+    app.component('IconChartLine', ChartLine)
+    app.component('IconChartLineArea', ChartLineArea)
+    app.component('IconChartScatter', ChartScatter)
+    app.component('IconChartPie', ChartPie)
+    app.component('IconChartRing', ChartRing)
 
     // 其他
     app.component('IconPlayOne', PlayOne)

@@ -4,7 +4,7 @@
       <div class="chart-content" @click="selectChart(chart)">
         <IconChartLine size="24" v-if="chart === 'line'" />
         <IconChartHistogram size="24" v-else-if="chart === 'bar'" />
-        <IconChartProportion size="24" v-else-if="chart === 'pie'" />
+        <IconChartPie size="24" v-else-if="chart === 'pie'" />
       </div>
     </li>
   </ul>
