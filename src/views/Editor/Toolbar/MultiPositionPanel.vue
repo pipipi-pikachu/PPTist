@@ -22,6 +22,10 @@
         <Button style="flex: 1;" @click="alignActiveElement('bottom')"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
+    <ButtonGroup class="row" v-if="activeElementList.length > 2">
+      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">水平均匀分布</Button>
+      <Button style="flex: 1;" @click="uniformVerticalDisplay()">垂直均匀分布</Button>
+    </ButtonGroup>
 
     <Divider />
 
@@ -38,6 +42,7 @@ import { useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useCombineElement from '@/hooks/useCombineElement'
 import useAlignActiveElement from '@/hooks/useAlignActiveElement'
+import useUniformDisplayElement from '@/hooks/useUniformDisplayElement'
 
 export default defineComponent({
   name: 'multi-position-panel',
@@ -47,6 +52,7 @@ export default defineComponent({
 
     const { combineElements, uncombineElements } = useCombineElement()
     const { alignActiveElement } = useAlignActiveElement()
+    const { uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
 
     // 判断当前多选的几个元素是否可以组合
     const canCombine = computed(() => {
@@ -58,10 +64,13 @@ export default defineComponent({
     })
 
     return {
+      activeElementList,
       canCombine,
       combineElements,
       uncombineElements,
       alignActiveElement,
+      uniformHorizontalDisplay,
+      uniformVerticalDisplay,
     }
   },
 })
