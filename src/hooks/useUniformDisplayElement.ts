@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
-import { getElementRange, getElementListRange, getRectRotatedRange } from '@/utils/element'
+import { getElementRange, getElementListRange, getRectRotatedOffset } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
 interface SortedElementData {
@@ -58,21 +58,13 @@ export default () => {
       for (const sortedItem of sortedElementData) {
         if (sortedItem.el.id === element.id) {
           if ('rotate' in element && element.rotate) {
-            const { xRange: originXRange } = getRectRotatedRange({
-              left: element.left,
-              top: element.top,
-              width: element.width,
-              height: element.height,
-              rotate: 0,
-            })
-            const { xRange: rotatedXRange } = getRectRotatedRange({
+            const { offsetX } = getRectRotatedOffset({
               left: element.left,
               top: element.top,
               width: element.width,
               height: element.height,
               rotate: element.rotate,
             })
-            const offsetX = rotatedXRange[0] - originXRange[0]
             element.left = sortedItem.pos - offsetX
           }
           else element.left = sortedItem.pos
@@ -125,21 +117,13 @@ export default () => {
       for (const sortedItem of sortedElementData) {
         if (sortedItem.el.id === element.id) {
           if ('rotate' in element && element.rotate) {
-            const { yRange: originYRange } = getRectRotatedRange({
-              left: element.left,
-              top: element.top,
-              width: element.width,
-              height: element.height,
-              rotate: 0,
-            })
-            const { yRange: rotatedYRange } = getRectRotatedRange({
+            const { offsetY } = getRectRotatedOffset({
               left: element.left,
               top: element.top,
               width: element.width,
               height: element.height,
               rotate: element.rotate,
             })
-            const offsetY = rotatedYRange[0] - originYRange[0]
             element.top = sortedItem.pos - offsetY
           }
           else element.top = sortedItem.pos

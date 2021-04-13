@@ -44,6 +44,31 @@ export const getRectRotatedRange = (element: RotatedElementData) => {
 }
 
 /**
+ * 计算元素在画布中的矩形范围旋转后的新位置与旋转之前位置的偏离距离
+ * @param element 元素的位置大小和旋转角度信息
+ */
+export const getRectRotatedOffset = (element: RotatedElementData) => {
+  const { xRange: originXRange, yRange: originYRange } = getRectRotatedRange({
+    left: element.left,
+    top: element.top,
+    width: element.width,
+    height: element.height,
+    rotate: 0,
+  })
+  const { xRange: rotatedXRange, yRange: rotatedYRange } = getRectRotatedRange({
+    left: element.left,
+    top: element.top,
+    width: element.width,
+    height: element.height,
+    rotate: element.rotate,
+  })
+  return {
+    offsetX: rotatedXRange[0] - originXRange[0],
+    offsetY: rotatedYRange[0] - originYRange[0],
+  }
+}
+
+/**
  * 计算元素在画布中的位置范围
  * @param element 元素信息
  */

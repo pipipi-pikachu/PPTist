@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
-import { getElementListRange } from '@/utils/element'
+import { getElementListRange, getRectRotatedOffset } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
 export default () => {
@@ -35,7 +35,19 @@ export default () => {
     if (command === ElementAlignCommands.LEFT) {
       elementList.forEach(element => {
         if (activeElementIdList.value.includes(element.id)) {
-          if (!element.groupId) element.left = minX
+          if (!element.groupId) {
+            if ('rotate' in element && element.rotate) {
+              const { offsetX } = getRectRotatedOffset({
+                left: element.left,
+                top: element.top,
+                width: element.width,
+                height: element.height,
+                rotate: element.rotate,
+              })
+              element.left = minX - offsetX
+            }
+            else element.left = minX
+          }
           else {
             const range = groupElementRangeMap[element.groupId]
             const offset = range.minX - minX
@@ -49,7 +61,17 @@ export default () => {
         if (activeElementIdList.value.includes(element.id)) {
           if (!element.groupId) {
             const elWidth = element.type === 'line' ? Math.max(element.start[0], element.end[0]) : element.width
-            element.left = maxX - elWidth
+            if ('rotate' in element && element.rotate) {
+              const { offsetX } = getRectRotatedOffset({
+                left: element.left,
+                top: element.top,
+                width: element.width,
+                height: element.height,
+                rotate: element.rotate,
+              })
+              element.left = maxX - elWidth + offsetX
+            }
+            else element.left = maxX - elWidth
           }
           else {
             const range = groupElementRangeMap[element.groupId]
@@ -62,7 +84,19 @@ export default () => {
     else if (command === ElementAlignCommands.TOP) {
       elementList.forEach(element => {
         if (activeElementIdList.value.includes(element.id)) {
-          if (!element.groupId) element.top = minY
+          if (!element.groupId) {
+            if ('rotate' in element && element.rotate) {
+              const { offsetY } = getRectRotatedOffset({
+                left: element.left,
+                top: element.top,
+                width: element.width,
+                height: element.height,
+                rotate: element.rotate,
+              })
+              element.top = minY - offsetY
+            }
+            else element.top = minY
+          }
           else {
             const range = groupElementRangeMap[element.groupId]
             const offset = range.minY - minY
@@ -76,7 +110,17 @@ export default () => {
         if (activeElementIdList.value.includes(element.id)) {
           if (!element.groupId) {
             const elHeight = element.type === 'line' ? Math.max(element.start[1], element.end[1]) : element.height
-            element.top = maxY - elHeight
+            if ('rotate' in element && element.rotate) {
+              const { offsetY } = getRectRotatedOffset({
+                left: element.left,
+                top: element.top,
+                width: element.width,
+                height: element.height,
+                rotate: element.rotate,
+              })
+              element.top = maxY - elHeight + offsetY
+            }
+            else element.top = maxY - elHeight
           }
           else {
             const range = groupElementRangeMap[element.groupId]
