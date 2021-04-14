@@ -23,19 +23,24 @@ export default () => {
     const copyOfActiveElementList: PPTElement[] = JSON.parse(JSON.stringify(activeElementList.value))
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
+    // 将选中的元素按位置（从左到右）排序
     copyOfActiveElementList.sort((elementA, elementB) => {
       const { minX: elAMinX } = getElementRange(elementA)
       const { minX: elBMinX } = getElementRange(elementB)
       return elAMinX - elBMinX
     })
 
-    let totaiWidth = 0
+    // 计算元素均匀分布所需要的间隔：
+    // (所选元素整体范围 - 所有所选元素宽度和) / (所选元素数 - 1)
+    let totalWidth = 0
     for (const element of activeElementList.value) {
       const { minX: elMinX, maxX: elMaxX } = getElementRange(element)
-      totaiWidth += (elMaxX - elMinX)
+      totalWidth += (elMaxX - elMinX)
     }
-    const span = ((maxX - minX) - totaiWidth) / (activeElementList.value.length - 1)
+    const span = ((maxX - minX) - totalWidth) / (activeElementList.value.length - 1)
 
+    // 将所选元素按位置顺序依次计算目标位置
+    // 注意pos并非元素目标left值，而是目标位置范围最小值（元素旋转后的left值 ≠ 范围最小值）
     const sortedElementData: SortedElementData[] = []
     for (const element of copyOfActiveElementList) {
       if (!sortedElementData.length) {
@@ -52,6 +57,8 @@ export default () => {
       sortedElementData.push({ el: element, pos: lastItemPos + lastElementWidth + span })
     }
 
+    // 根据目标位置计算元素最终目标left值
+    // 对于旋转后的元素，需要计算旋转前后left的偏移来做校正
     for (const element of newElementList) {
       if (!activeElementIdList.value.includes(element.id)) continue
 
@@ -76,7 +83,7 @@ export default () => {
     addHistorySnapshot()
   }
 
-  // 垂直均匀排列
+  // 垂直均匀排列（逻辑类似水平均匀排列方法）
   const uniformVerticalDisplay = () => {
     const { minY, maxY } = getElementListRange(activeElementList.value)
     const copyOfActiveElementList: PPTElement[] = JSON.parse(JSON.stringify(activeElementList.value))
@@ -88,12 +95,12 @@ export default () => {
       return elAMinY - elBMinY
     })
 
-    let totaiHeight = 0
+    let totalHeight = 0
     for (const element of activeElementList.value) {
       const { minY: elMinY, maxY: elMaxY } = getElementRange(element)
-      totaiHeight += (elMaxY - elMinY)
+      totalHeight += (elMaxY - elMinY)
     }
-    const span = ((maxY - minY) - totaiHeight) / (activeElementList.value.length - 1)
+    const span = ((maxY - minY) - totalHeight) / (activeElementList.value.length - 1)
 
     const sortedElementData: SortedElementData[] = []
     for (const element of copyOfActiveElementList) {
