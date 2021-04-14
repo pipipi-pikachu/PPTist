@@ -5,7 +5,7 @@
     v-click-outside="() => setThumbnailsFocus(false)"
     v-contextmenu="contextmenusThumbnails"
   >
-    <div class="add-slide" @click="createSlide()"><IconPlus /> 添加幻灯片</div>
+    <div class="add-slide" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
     <Draggable 
       class="thumbnail-list"
       :modelValue="slides"
@@ -255,6 +255,11 @@ export default defineComponent({
   flex-shrink: 0;
   border-bottom: 1px solid $borderColor;
   cursor: pointer;
+
+  .icon {
+    margin-right: 3px;
+    font-size: 14px;
+  }
 }
 .thumbnail-list {
   padding: 5px 0;

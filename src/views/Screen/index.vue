@@ -422,15 +422,9 @@ export default defineComponent({
   right: 8px;
   padding: 8px 12px;
   color: #666;
-  border: 2px solid #acacac;
-  background-color: rgba($color: #fff, $alpha: .6);
+  background-color: #eee;
   border-radius: $borderRadius;
   z-index: 10;
   cursor: pointer;
-
-  &:hover {
-    border: 2px solid #333;
-    color: #333;
-  }
 }
 </style>
