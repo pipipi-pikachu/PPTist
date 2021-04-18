@@ -1,6 +1,9 @@
 ---
 name: Bug反馈
+about: 'Bug report'
 title: "[Bug report]"
+labels: ''
+assignees: ''
 ---
 
 **问题描述**  
