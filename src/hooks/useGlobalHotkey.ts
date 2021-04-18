@@ -1,7 +1,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from './useSlideHandler'
@@ -24,6 +24,7 @@ export default () => {
   const disableHotkeys = computed(() => store.state.disableHotkeys)
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
@@ -101,6 +102,21 @@ export default () => {
   const create = () => {
     if (!thumbnailsFocus.value) return
     createSlide()
+  }
+
+  const tabActiveElement = () => {
+    if (!currentSlide.value.elements.length) return
+    if (!handleElement.value) {
+      const firstElement = currentSlide.value.elements[0]
+      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [firstElement.id])
+      return
+    }
+
+    const currentIndex = currentSlide.value.elements.findIndex(el => el.id === handleElement.value.id)
+    const nextIndex = currentIndex >= currentSlide.value.elements.length - 1 ? 0 : currentIndex + 1
+    const nextElementId = currentSlide.value.elements[nextIndex].id
+
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [nextElementId])
   }
 
   const keydownListener = (e: KeyboardEvent) => {
@@ -218,6 +234,11 @@ export default () => {
       if (disableHotkeys.value) return
       e.preventDefault()
       setCanvasPercentage(90)
+    }
+    if (key === KEYS.TAB) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      tabActiveElement()
     }
   }
   
