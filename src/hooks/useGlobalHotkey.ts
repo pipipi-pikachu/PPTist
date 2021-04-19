@@ -140,7 +140,7 @@ export default () => {
       e.preventDefault()
       copy()
     }
-    if (ctrlKey && key === KEYS.X) {
+    if ((ctrlKey || metaKey) && key === KEYS.X) {
       if (disableHotkeys.value) return
       e.preventDefault()
       cut()
