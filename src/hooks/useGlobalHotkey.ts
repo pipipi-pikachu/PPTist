@@ -121,13 +121,14 @@ export default () => {
 
   const keydownListener = (e: KeyboardEvent) => {
     const { ctrlKey, shiftKey, altKey, metaKey } = e
-
+    const ctrlOrMetaKeyActive = ctrlKey || metaKey
+    
     const key = e.key.toUpperCase()
 
-    if ((ctrlKey || metaKey) && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
+    if (ctrlOrMetaKeyActive && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
     if (shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
 
-    if ((ctrlKey || metaKey) && key === KEYS.F) {
+    if (ctrlOrMetaKeyActive && key === KEYS.F) {
       e.preventDefault()
       enterScreening()
       store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
@@ -135,47 +136,47 @@ export default () => {
     
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
-    if ((ctrlKey || metaKey) && key === KEYS.C) {
+    if (ctrlOrMetaKeyActive && key === KEYS.C) {
       if (disableHotkeys.value) return
       e.preventDefault()
       copy()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.X) {
+    if (ctrlOrMetaKeyActive && key === KEYS.X) {
       if (disableHotkeys.value) return
       e.preventDefault()
       cut()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.D) {
+    if (ctrlOrMetaKeyActive && key === KEYS.D) {
       if (disableHotkeys.value) return
       e.preventDefault()
       quickCopy()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.Z) {
+    if (ctrlOrMetaKeyActive && key === KEYS.Z) {
       if (disableHotkeys.value) return
       e.preventDefault()
       undo()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.Y) {
+    if (ctrlOrMetaKeyActive && key === KEYS.Y) {
       if (disableHotkeys.value) return
       e.preventDefault()
       redo()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.A) {
+    if (ctrlOrMetaKeyActive && key === KEYS.A) {
       if (disableHotkeys.value) return
       e.preventDefault()
       selectAll()
     }
-    if ((ctrlKey || metaKey) && key === KEYS.L) {
+    if (ctrlOrMetaKeyActive && key === KEYS.L) {
       if (disableHotkeys.value) return
       e.preventDefault()
       lock()
     }
-    if (!shiftKey && (ctrlKey || metaKey) && key === KEYS.G) {
+    if (!shiftKey && ctrlOrMetaKeyActive && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       combine()
     }
-    if (shiftKey && (ctrlKey || metaKey) && key === KEYS.G) {
+    if (shiftKey && ctrlOrMetaKeyActive && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       uncombine()
