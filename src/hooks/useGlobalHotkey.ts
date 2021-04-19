@@ -124,10 +124,10 @@ export default () => {
 
     const key = e.key.toUpperCase()
 
-    if (ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
+    if ((ctrlKey || metaKey) && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
     if (shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
 
-    if (ctrlKey && key === KEYS.F) {
+    if ((ctrlKey || metaKey) && key === KEYS.F) {
       e.preventDefault()
       enterScreening()
       store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
@@ -145,37 +145,37 @@ export default () => {
       e.preventDefault()
       cut()
     }
-    if (ctrlKey && key === KEYS.D) {
+    if ((ctrlKey || metaKey) && key === KEYS.D) {
       if (disableHotkeys.value) return
       e.preventDefault()
       quickCopy()
     }
-    if (ctrlKey && key === KEYS.Z) {
+    if ((ctrlKey || metaKey) && key === KEYS.Z) {
       if (disableHotkeys.value) return
       e.preventDefault()
       undo()
     }
-    if (ctrlKey && key === KEYS.Y) {
+    if ((ctrlKey || metaKey) && key === KEYS.Y) {
       if (disableHotkeys.value) return
       e.preventDefault()
       redo()
     }
-    if (ctrlKey && key === KEYS.A) {
+    if ((ctrlKey || metaKey) && key === KEYS.A) {
       if (disableHotkeys.value) return
       e.preventDefault()
       selectAll()
     }
-    if (ctrlKey && key === KEYS.L) {
+    if ((ctrlKey || metaKey) && key === KEYS.L) {
       if (disableHotkeys.value) return
       e.preventDefault()
       lock()
     }
-    if (!shiftKey && ctrlKey && key === KEYS.G) {
+    if (!shiftKey && (ctrlKey || metaKey) && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       combine()
     }
-    if (shiftKey && ctrlKey && key === KEYS.G) {
+    if (shiftKey && (ctrlKey || metaKey) && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       uncombine()
