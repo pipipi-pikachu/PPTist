@@ -16,6 +16,7 @@ export const slides: Slide[] = [
         fill: '#d14424',
         fixedRatio: false,
         opacity: 0.7,
+        rotate: 0
       },
       {
         type: 'shape',
@@ -32,6 +33,7 @@ export const slides: Slide[] = [
           x: 180,
           y: 0,
         },
+        rotate: 0
       },
       {
         type: 'text',
@@ -41,6 +43,7 @@ export const slides: Slide[] = [
         width: 585,
         height: 188,
         content: '<p style=\'\'><strong><span style=\'font-size:  112px\'>PPTIST</span></strong></p>',
+        rotate: 0
       },
       {
         type: 'text',
@@ -50,6 +53,7 @@ export const slides: Slide[] = [
         width: 585,
         height: 56,
         content: '<p style=\'\'><span style=\'font-size:  24px\'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>',
+        rotate: 0
       },
       {
         type: 'line',
