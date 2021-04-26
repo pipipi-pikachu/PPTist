@@ -8,7 +8,6 @@
       width: elementInfo.width + 'px',
       height: elementInfo.height + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)" 
   >
     <div
       class="rotate-wrapper"
@@ -28,11 +27,12 @@
       <div 
         class="element-content"
         v-else
-        v-contextmenu="contextmenus"
         :style="{
           filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
           transform: flipStyle,
         }"
+        v-contextmenu="contextmenus"
+        @mousedown="$event => handleSelectElement($event)" 
       >
         <ImageOutline :elementInfo="elementInfo" />
 

@@ -190,7 +190,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-table {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -201,6 +200,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   position: relative;
+  cursor: move;
 }
 .table-mask {
   position: absolute;

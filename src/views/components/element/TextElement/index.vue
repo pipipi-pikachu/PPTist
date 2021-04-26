@@ -8,7 +8,6 @@
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)"
   >
     <div
       class="rotate-wrapper"
@@ -24,6 +23,7 @@
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
         }"
         v-contextmenu="contextmenus"
+        @mousedown="$event => handleSelectElement($event)"
       >
         <ElementOutline
           :width="elementInfo.width"
@@ -323,7 +323,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-text {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -338,6 +337,7 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.5;
   word-break: break-word;
+  cursor: move;
 
   .text {
     position: relative;
