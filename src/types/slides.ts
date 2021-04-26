@@ -35,7 +35,7 @@ interface PPTBaseElement {
 export interface PPTTextElement extends PPTBaseElement{
   type: 'text';
   content: string;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   fill?: string;
   lineHeight?: number;
@@ -65,7 +65,7 @@ export interface PPTImageElement extends PPTBaseElement{
   type: 'image';
   fixedRatio: boolean;
   src: string;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   filters?: ImageElementFilters;
   clip?: ImageElementClip;
@@ -85,7 +85,7 @@ export interface PPTShapeElement extends PPTBaseElement{
   fixedRatio: boolean;
   fill: string;
   gradient?: ShapeGradient;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   opacity?: number;
   flip?: ImageOrShapeFlip;
