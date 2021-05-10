@@ -38,14 +38,12 @@ export default () => {
    * @param command 移动页面焦点命令：上移、下移
    */
   const updateSlideIndex = (command: string) => {
-    let targetIndex = 0
     if (command === KEYS.UP && slideIndex.value > 0) {
-      targetIndex = slideIndex.value - 1
+      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
     }
     else if (command === KEYS.DOWN && slideIndex.value < slides.value.length - 1) {
-      targetIndex = slideIndex.value + 1
+      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
     }
-    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, targetIndex)
   }
 
   // 将当前页面数据加密后复制到剪贴板
