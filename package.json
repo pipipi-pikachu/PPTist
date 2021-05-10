@@ -11,7 +11,7 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.2.6",
     "animate.css": "^4.1.1",
-    "ant-design-vue": "^2.1.2",
+    "ant-design-vue": "^2.1.4",
     "chartist": "^0.11.4",
     "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
