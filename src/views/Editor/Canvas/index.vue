@@ -2,7 +2,7 @@
   <div 
     class="canvas" 
     ref="canvasRef"
-    @mousewheel="$event => mousewheelScaleCanvas($event)"
+    @mousewheel="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
@@ -82,6 +82,7 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { removeAllRanges } from '@/utils/selection'
+import { KEYS } from '@/configs/hotkey'
 
 import useViewportSize from './hooks/useViewportSize'
 import useMouseSelection from './hooks/useMouseSelection'
@@ -98,6 +99,7 @@ import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
+import useSlideHandler from '@/hooks/useSlideHandler'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -158,6 +160,7 @@ export default defineComponent({
     const { deleteAllElements } = useDeleteElement()
     const { pasteElement } = useCopyAndPasteElement()
     const { enterScreening } = useScreening()
+    const { updateSlideIndex } = useSlideHandler()
 
     // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
     const handleClickBlankArea = (e: MouseEvent) => {
@@ -172,16 +175,24 @@ export default defineComponent({
       if (editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
     }
 
-    // 按住Ctrl键滚动鼠标缩放画布
+    // 滚动鼠标
     const { scaleCanvas } = useScaleCanvas()
     const throttleScaleCanvas = throttle(scaleCanvas, 100, { leading: true, trailing: false })
+    const throttleUpdateSlideIndex = throttle(updateSlideIndex, 300, { leading: true, trailing: false })
 
-    const mousewheelScaleCanvas = (e: WheelEvent) => {
-      if (!ctrlKeyState.value) return
-
+    const handleMousewheelCanvas = (e: WheelEvent) => {
       e.preventDefault()
-      if (e.deltaY > 0) throttleScaleCanvas('-')
-      else if (e.deltaY < 0) throttleScaleCanvas('+')
+
+      // 按住Ctrl键时：缩放画布
+      if (ctrlKeyState.value) {
+        if (e.deltaY > 0) throttleScaleCanvas('-')
+        else if (e.deltaY < 0) throttleScaleCanvas('+')
+      }
+      // 上下翻页
+      else {
+        if (e.deltaY > 0) throttleUpdateSlideIndex(KEYS.DOWN)
+        else if (e.deltaY < 0) throttleUpdateSlideIndex(KEYS.UP)
+      }
     }
 
     // 开关网格线
@@ -247,7 +258,7 @@ export default defineComponent({
       scaleElement,
       dragLineElement,
       scaleMultiElement,
-      mousewheelScaleCanvas,
+      handleMousewheelCanvas,
       contextmenus,
     }
   },
