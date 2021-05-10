@@ -13,7 +13,7 @@ export const slides: Slide[] = [
         height: 362.5,
         viewBox: 200,
         path: 'M 0 0 L 0 200 L 200 200 Z',
-        fill: '#d14424',
+        fill: '#5b9bd5',
         fixedRatio: false,
         opacity: 0.7,
         rotate: 0
@@ -27,7 +27,7 @@ export const slides: Slide[] = [
         height: 320,
         viewBox: 200,
         path: 'M 0 0 L 0 200 L 200 200 Z',
-        fill: '#d14424',
+        fill: '#5b9bd5',
         fixedRatio: false,
         flip: {
           x: 180,
@@ -63,7 +63,7 @@ export const slides: Slide[] = [
         start: [0, 0],
         end: [549, 0],
         points: ['', ''],
-        color: '#d14424',
+        color: '#5b9bd5',
         style: 'solid',
         width: 2,
       },

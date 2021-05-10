@@ -42,7 +42,7 @@ export const state: State = {
   availableFonts: [],
   toolbarState: 'slideStyle',
   theme: {
-    themeColor: '#d14424',
+    themeColor: '#5b9bd5',
     fontColor: '#333',
     fontName: '微软雅黑',
     backgroundColor: '#fff',
