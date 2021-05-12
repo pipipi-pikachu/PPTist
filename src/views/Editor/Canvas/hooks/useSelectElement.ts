@@ -15,7 +15,8 @@ export default (
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
   // 选中元素
-  const selectElement = (e: MouseEvent, element: PPTElement, canMove = true) => {
+  // startMove 表示是否需要再选中操作后进入到开始移动的状态
+  const selectElement = (e: MouseEvent, element: PPTElement, startMove = true) => {
     if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
 
     // 如果目标元素当前未被选中，则将他设为选中状态
@@ -84,7 +85,7 @@ export default (
       }
     }
 
-    if (canMove) moveElement(e, element)
+    if (startMove) moveElement(e, element)
   }
 
   // 选中页面内的全部元素
