@@ -32,7 +32,7 @@ interface PPTBaseElement {
   height: number;
 }
 
-export interface PPTTextElement extends PPTBaseElement{
+export interface PPTTextElement extends PPTBaseElement {
   type: 'text';
   content: string;
   rotate: number;
@@ -61,7 +61,7 @@ export interface ImageElementClip {
   range: [[number, number], [number, number]];
   shape: string;
 }
-export interface PPTImageElement extends PPTBaseElement{
+export interface PPTImageElement extends PPTBaseElement {
   type: 'image';
   fixedRatio: boolean;
   src: string;
@@ -78,7 +78,7 @@ export interface ShapeGradient {
   color: [string, string];
   rotate: number;
 }
-export interface PPTShapeElement extends PPTBaseElement{
+export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape';
   viewBox: number;
   path: string;
@@ -109,7 +109,7 @@ export interface ChartData {
   labels: string[];
   series: number[][];
 }
-export interface PPTChartElement extends PPTBaseElement{
+export interface PPTChartElement extends PPTBaseElement {
   type: 'chart';
   fill?: string;
   chartType: ChartType;
@@ -145,7 +145,7 @@ export interface TableTheme {
   colHeader: boolean;
   colFooter: boolean;
 } 
-export interface PPTTableElement extends PPTBaseElement{
+export interface PPTTableElement extends PPTBaseElement {
   type: 'table';
   outline: PPTElementOutline;
   theme?: TableTheme;
