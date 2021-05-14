@@ -92,7 +92,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   shadow?: PPTElementShadow;
 }
 
-export interface PPTLineElement extends Omit<PPTBaseElement, 'height'>{
+export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
   type: 'line';
   start: [number, number];
   end: [number, number];
