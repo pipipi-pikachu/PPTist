@@ -1,7 +1,8 @@
 import { Slide, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { ToolbarState } from '@/types/toolbar'
-import { slides } from '@/mocks/index'
+import { slides } from '@/mocks/slides'
+import { theme } from '@/mocks/theme'
 import { SYS_FONTS } from '@/configs/font'
 
 export interface State {
@@ -42,6 +43,7 @@ export const state: State = {
   availableFonts: [], // 当前环境可用字体
   toolbarState: 'slideStyle', // 右侧工具栏状态
   viewportRatio: 0.5625, // 可是区域比例，默认16:9
+  theme: theme, // 主题样式
   slides: slides, // 幻灯片页面数据
   slideIndex: 0, // 当前页面索引
   selectedSlidesIndex: [], // 当前被选中的页面索引集合
@@ -50,13 +52,5 @@ export const state: State = {
   ctrlKeyState: false, // ctrl键按下状态
   shiftKeyState: false, // shift键按下状态
   screening: false, // 是否进入放映状态
-  clipingImageElementId: '', // 当前正在裁剪的图片ID
-
-  // 主题样式
-  theme: {
-    themeColor: '#5b9bd5',
-    fontColor: '#333',
-    fontName: '微软雅黑',
-    backgroundColor: '#fff',
-  },
+  clipingImageElementId: '', // 当前正在裁剪的图片ID  
 }
