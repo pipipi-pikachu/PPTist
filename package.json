@@ -71,7 +71,7 @@
     "husky": "^4.3.8",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
-    "sass": "^1.26.5",
+    "sass": "^1.32.13",
     "sass-loader": "^8.0.2",
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
