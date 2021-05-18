@@ -28,7 +28,6 @@
         <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="openDoc()">开发文档</MenuItem>
             <MenuItem @click="hotkeyDrawerVisible = true">快捷键</MenuItem>
           </Menu>
         </template>
@@ -98,10 +97,6 @@ export default defineComponent({
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
-    const openDoc = () => {
-      message.warning('作者努力编写中...')
-    }
-
     const hotkeyDrawerVisible = ref(false)
     const exportDialogVisible = ref(false)
 
@@ -115,7 +110,6 @@ export default defineComponent({
       toggleGridLines,
       showGridLines,
       resetSlides,
-      openDoc,
       hotkeyDrawerVisible,
       exportDialogVisible,
     }
