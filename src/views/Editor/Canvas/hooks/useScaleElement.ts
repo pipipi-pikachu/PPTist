@@ -94,11 +94,11 @@ const getOppositePoint = (direction: string, points: ReturnType<typeof getRotate
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeGroupElementId: Ref<string>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
   const canvasScale = computed(() => store.state.canvasScale)
   const viewportRatio = computed(() => store.state.viewportRatio)
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)

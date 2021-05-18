@@ -31,6 +31,10 @@ export const mutations: MutationTree<State> = {
   [MutationTypes.SET_HANDLE_ELEMENT_ID](state, handleElementId: string) {
     state.handleElementId = handleElementId
   },
+  
+  [MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID](state, activeGroupElementId: string) {
+    state.activeGroupElementId = activeGroupElementId
+  },
 
   [MutationTypes.SET_CANVAS_PERCENTAGE](state, percentage: number) {
     state.canvasPercentage = percentage

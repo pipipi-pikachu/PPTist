@@ -8,6 +8,7 @@ import { SYS_FONTS } from '@/configs/font'
 export interface State {
   activeElementIdList: string[];
   handleElementId: string;
+  activeGroupElementId: string;
   canvasPercentage: number;
   canvasScale: number;
   thumbnailsFocus: boolean;
@@ -33,6 +34,7 @@ export interface State {
 export const state: State = {
   activeElementIdList: [], // 被选中的元素ID集合，包含 handleElementId
   handleElementId: '', // 正在操作的元素ID
+  activeGroupElementId: '', // 组合元素成员中，被选中可独立操作的元素ID
   canvasPercentage: 90, // 画布可视区域百分比
   canvasScale: 1, // 画布缩放比例（基于宽度1000px）
   thumbnailsFocus: false, // 左侧导航缩略图区域聚焦

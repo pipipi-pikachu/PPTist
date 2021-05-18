@@ -5,12 +5,12 @@ import { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeGroupElementId: Ref<string>,
   moveElement: (e: MouseEvent, element: PPTElement) => void,
 ) => {
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const handleElementId = computed(() => store.state.handleElementId)
+  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
@@ -79,7 +79,7 @@ export default (
         const currentPageY = e.pageY
 
         if (startPageX === currentPageX && startPageY === currentPageY) {
-          activeGroupElementId.value = element.id
+          store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, element.id)
           ;(e.target as HTMLElement).onmouseup = null
         }
       }
