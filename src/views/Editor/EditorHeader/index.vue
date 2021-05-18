@@ -11,7 +11,7 @@
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
-            <MenuItem @click="exportDialogVisible = true">导出为</MenuItem>
+            <MenuItem @click="exportDialogVisible = true">导出 JSON</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -76,8 +76,6 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 import ExportDialog from './ExportDialog.vue'
-
-import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'editor-header',
