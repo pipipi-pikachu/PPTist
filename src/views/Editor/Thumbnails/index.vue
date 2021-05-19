@@ -22,7 +22,7 @@
             'active': slideIndex === index,
             'selected': selectedSlidesIndex.includes(index),
           }"
-          @mousedown="handleClickSlideThumbnail(index)"
+          @mousedown="$event => handleClickSlideThumbnail($event, index)"
           v-contextmenu="contextmenusThumbnailItem"
         >
           <div class="label">{{ fillDigit(index + 1, 2) }}</div>
@@ -77,8 +77,10 @@ export default defineComponent({
     }
 
     // 点击缩略图
-    const handleClickSlideThumbnail = (index: number) => {
+    const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
       const isMultiSelected = selectedSlidesIndex.value.length > 1
+
+      if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
 
       // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
       if (ctrlKeyState.value) {
