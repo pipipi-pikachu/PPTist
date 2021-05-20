@@ -4,9 +4,9 @@
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
       @mouseup="handleMouseup()"
-      @touchstart.prevent="$event => { handleTouchdown($event);mouseInCanvas = true }"
-      @touchmove.prevent="$event => handleTouchmove($event)"
-      @touchend="handleMouseup();mouseInCanvas = false"
+      @touchstart="$event => handleMousedown($event)"
+      @touchmove="$event => handleMousemove($event)"
+      @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
     ></canvas>
@@ -70,16 +70,11 @@ export default defineComponent({
       x: 0,
       y: 0,
     })
+
     // 更新鼠标位置坐标
-    const updateMousePosition = (e: MouseEvent | TouchEvent) => {
-      if (e instanceof MouseEvent) {
-        mouse.x = e.pageX
-        mouse.y = e.pageY
-      }
-      else if (e instanceof TouchEvent) {
-        mouse.x = e.targetTouches[0].clientX
-        mouse.y = e.targetTouches[0].clientY
-      }
+    const updateMousePosition = (x: number, y: number) => {
+      mouse.x = x
+      mouse.y = y
     }
     
     // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
@@ -170,15 +165,9 @@ export default defineComponent({
       const v = s / t
       let lineWidth
 
-      if (v <= minV) {
-        lineWidth = maxWidth
-      }
-      else if (v >= maxV) {
-        lineWidth = minWidth
-      }
-      else {
-        lineWidth = maxWidth - v / maxV * maxWidth
-      }
+      if (v <= minV) lineWidth = maxWidth
+      else if (v >= maxV) lineWidth = minWidth
+      else lineWidth = maxWidth - v / maxV * maxWidth
 
       if (lastLineWidth === -1) return lineWidth
       return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
@@ -196,43 +185,36 @@ export default defineComponent({
         draw(x, y, lineWidth)
         lastLineWidth = lineWidth
       }
-      else {
-        erase(x, y)
-      }
+      else erase(x, y)
 
       lastPos = {x, y}
       lastTime = new Date().getTime()
     }
 
-    // 处理触摸事件
-    const handleTouchdown = (e: TouchEvent) => {
-      // mouseInCanvas.value = true
-      isMouseDown = true
-      lastPos = {x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY}
-      lastTime = new Date().getTime()
-    }
-
-    const handleTouchmove = (e: TouchEvent) => {
-      updateMousePosition(e)
-      if (!isMouseDown) return
-      handleMove(e.targetTouches[0].clientX, e.targetTouches[0].clientY)
-    }
-
-    // 处理鼠标事件
-
+    // 处理鼠标（触摸）事件
     // 准备开始绘制/擦除墨迹（落笔）
-    const handleMousedown = (e: MouseEvent) => {
+    const handleMousedown = (e: MouseEvent | TouchEvent) => {
+      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
+      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
+
       isMouseDown = true
-      lastPos = {x: e.offsetX, y: e.offsetY}
+      lastPos = { x, y }
       lastTime = new Date().getTime()
+
+      if (e instanceof TouchEvent) {
+        updateMousePosition(x, y)
+        mouseInCanvas.value = true
+      }
     }
 
     // 开始绘制/擦除墨迹（移动）
-    const handleMousemove = (e: MouseEvent) => {
-      updateMousePosition(e)
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
+      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
+      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
 
-      if (!isMouseDown) return
-      handleMove(e.offsetX, e.offsetY)
+      updateMousePosition(x, y)
+
+      if (isMouseDown) handleMove(x, y)
     }
 
     // 结束绘制/擦除墨迹（停笔）
@@ -258,8 +240,6 @@ export default defineComponent({
       handleMousemove,
       handleMouseup,
       clearCanvas,
-      handleTouchdown,
-      handleTouchmove
     }
   },
 })
