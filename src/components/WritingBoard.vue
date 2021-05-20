@@ -4,6 +4,9 @@
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
       @mouseup="handleMouseup()"
+      @touchstart.prevent="$event => { handleTouchdown($event);mouseInCanvas = true }"
+      @touchmove.prevent="$event => handleTouchmove($event)"
+      @touchend="handleMouseup();mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
     ></canvas>
@@ -68,9 +71,15 @@ export default defineComponent({
       y: 0,
     })
     // 更新鼠标位置坐标
-    const updateMousePosition = (e: MouseEvent) => {
-      mouse.x = e.pageX
-      mouse.y = e.pageY
+    const updateMousePosition = (e: MouseEvent | TouchEvent) => {
+      if (e instanceof MouseEvent) {
+        mouse.x = e.pageX
+        mouse.y = e.pageY
+      }
+      else if (e instanceof TouchEvent) {
+        mouse.x = e.targetTouches[0].clientX
+        mouse.y = e.targetTouches[0].clientY
+      }
     }
     
     // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
@@ -145,13 +154,6 @@ export default defineComponent({
       ctx.restore()
     }
 
-    // 准备开始绘制/擦除墨迹（落笔）
-    const handleMousedown = (e: MouseEvent) => {
-      isMouseDown = true
-      lastPos = { x: e.offsetX, y: e.offsetY }
-      lastTime = new Date().getTime()
-    }
-
     // 计算鼠标两次移动之间的距离
     const getDistance = (posX: number, posY: number) => {
       const lastPosX = lastPos.x
@@ -168,12 +170,61 @@ export default defineComponent({
       const v = s / t
       let lineWidth
 
-      if (v <= minV) lineWidth = maxWidth
-      else if (v >= maxV) lineWidth = minWidth
-      else lineWidth = maxWidth - v / maxV * maxWidth
+      if (v <= minV) {
+        lineWidth = maxWidth
+      }
+      else if (v >= maxV) {
+        lineWidth = minWidth
+      }
+      else {
+        lineWidth = maxWidth - v / maxV * maxWidth
+      }
 
       if (lastLineWidth === -1) return lineWidth
       return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
+    }
+
+    // 路径操作
+    const handleMove = (x: number, y: number) => {
+      const time = new Date().getTime()
+
+      if (props.model === 'pen') {
+        const s = getDistance(x, y)
+        const t = time - lastTime
+        const lineWidth = getLineWidth(s, t)
+
+        draw(x, y, lineWidth)
+        lastLineWidth = lineWidth
+      }
+      else {
+        erase(x, y)
+      }
+
+      lastPos = {x, y}
+      lastTime = new Date().getTime()
+    }
+
+    // 处理触摸事件
+    const handleTouchdown = (e: TouchEvent) => {
+      // mouseInCanvas.value = true
+      isMouseDown = true
+      lastPos = {x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY}
+      lastTime = new Date().getTime()
+    }
+
+    const handleTouchmove = (e: TouchEvent) => {
+      updateMousePosition(e)
+      if (!isMouseDown) return
+      handleMove(e.targetTouches[0].clientX, e.targetTouches[0].clientY)
+    }
+
+    // 处理鼠标事件
+
+    // 准备开始绘制/擦除墨迹（落笔）
+    const handleMousedown = (e: MouseEvent) => {
+      isMouseDown = true
+      lastPos = {x: e.offsetX, y: e.offsetY}
+      lastTime = new Date().getTime()
     }
 
     // 开始绘制/擦除墨迹（移动）
@@ -181,21 +232,7 @@ export default defineComponent({
       updateMousePosition(e)
 
       if (!isMouseDown) return
-      
-      const time = new Date().getTime()
-
-      if (props.model === 'pen') {
-        const s = getDistance(e.offsetX, e.offsetY)
-        const t = time - lastTime
-        const lineWidth = getLineWidth(s, t)
-  
-        draw(e.offsetX, e.offsetY, lineWidth)
-        lastLineWidth = lineWidth
-      }
-      else erase(e.offsetX, e.offsetY)
-
-      lastPos = { x: e.offsetX, y: e.offsetY }
-      lastTime = new Date().getTime()
+      handleMove(e.offsetX, e.offsetY)
     }
 
     // 结束绘制/擦除墨迹（停笔）
@@ -221,6 +258,8 @@ export default defineComponent({
       handleMousemove,
       handleMouseup,
       clearCanvas,
+      handleTouchdown,
+      handleTouchmove
     }
   },
 })
