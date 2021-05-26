@@ -103,6 +103,8 @@ export default defineComponent({
     const realHeightCache = ref(-1)
 
     const scaleElementStateListener = (state: boolean) => {
+      if (handleElementId.value !== props.elementInfo.id) return
+
       isScaling.value = state
 
       if (state) editable.value = false
