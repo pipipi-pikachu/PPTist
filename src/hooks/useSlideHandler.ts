@@ -75,6 +75,7 @@ export default () => {
         color: theme.value.backgroundColor,
       },
     }
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
     store.commit(MutationTypes.ADD_SLIDE, emptySlide)
     addHistorySnapshot()
   }
