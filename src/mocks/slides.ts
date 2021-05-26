@@ -42,6 +42,7 @@ export const slides: Slide[] = [
         top: 65.25,
         width: 585,
         height: 188,
+        lineHeight: 1.2,
         content: '<p style=\'\'><strong><span style=\'font-size:  112px\'>PPTIST</span></strong></p>',
         rotate: 0
       },
