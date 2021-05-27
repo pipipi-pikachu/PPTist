@@ -37,7 +37,7 @@ export default defineComponent({
     
     const color = computed(() => {
       const hsla = tinycolor(props.value).toHsl()
-      hsla.h = props.hue
+      if (props.hue) hsla.h = props.hue
       return hsla
     })
 
