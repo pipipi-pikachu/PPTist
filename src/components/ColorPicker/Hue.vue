@@ -37,7 +37,7 @@ export default defineComponent({
     
     const color = computed(() => {
       const hsla = tinycolor(props.value).toHsl()
-      if (props.hue) hsla.h = props.hue
+      if (props.hue !== -1) hsla.h = props.hue
       return hsla
     })
 
@@ -70,7 +70,7 @@ export default defineComponent({
         percent = left * 100 / containerWidth
         h = 360 * percent / 100
       }
-      if (color.value.h !== h) {
+      if (props.hue === -1 || color.value.h !== h) {
         emit('colorChange', {
           h,
           l: color.value.l,

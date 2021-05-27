@@ -140,7 +140,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const hue = ref(0)
+    const hue = ref(-1)
     const recentColors = ref<string[]>([])
 
     const color = computed({
@@ -162,6 +162,7 @@ export default defineComponent({
     })
 
     const selectPresetColor = (colorString: string) => {
+      hue.value = tinycolor(colorString).toHsl().h
       emit('update:modelValue', colorString)
     }
 
@@ -189,9 +190,14 @@ export default defineComponent({
     })
 
     const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
-      if ('h' in value && 'l' in value) hue.value = value.h
-      if ('h' in value) color.value = tinycolor(value).toRgb()
-      else color.value = value
+      if ('h' in value) {
+        hue.value = value.h
+        color.value = tinycolor(value).toRgb()
+      }
+      else {
+        hue.value = tinycolor(value).toHsl().h
+        color.value = value
+      }
 
       updateRecentColorsCache()
     }
