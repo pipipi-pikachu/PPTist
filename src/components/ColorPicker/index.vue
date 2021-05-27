@@ -189,10 +189,8 @@ export default defineComponent({
     })
 
     const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
-      if ('h' in value) {
-        hue.value = value.h
-        color.value = tinycolor(value).toRgb()
-      }
+      if ('h' in value && 'l' in value) hue.value = value.h
+      if ('h' in value) color.value = tinycolor(value).toRgb()
       else color.value = value
 
       updateRecentColorsCache()
