@@ -45,7 +45,7 @@ module.exports = {
     }],
     'default-case': 'error',
     'consistent-this': ['error', '_this'],
-    'max-depth': ['error', 5],
+    'max-depth': ['error', 6],
     'max-lines': ['error', 800],
     'no-multi-str': 'error',
     'space-infix-ops': 'error',
