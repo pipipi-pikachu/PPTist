@@ -1,7 +1,7 @@
 import { computed, onMounted, onUnmounted } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, Slide } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from './useSlideHandler'
@@ -24,6 +24,7 @@ export default () => {
   const disableHotkeys = computed(() => store.state.disableHotkeys)
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
 
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
@@ -103,15 +104,31 @@ export default () => {
     createSlide()
   }
 
+  const tabActiveElement = () => {
+    if (!currentSlide.value.elements.length) return
+    if (!handleElement.value) {
+      const firstElement = currentSlide.value.elements[0]
+      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [firstElement.id])
+      return
+    }
+
+    const currentIndex = currentSlide.value.elements.findIndex(el => el.id === handleElement.value.id)
+    const nextIndex = currentIndex >= currentSlide.value.elements.length - 1 ? 0 : currentIndex + 1
+    const nextElementId = currentSlide.value.elements[nextIndex].id
+
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [nextElementId])
+  }
+
   const keydownListener = (e: KeyboardEvent) => {
     const { ctrlKey, shiftKey, altKey, metaKey } = e
-
+    const ctrlOrMetaKeyActive = ctrlKey || metaKey
+    
     const key = e.key.toUpperCase()
 
-    if (ctrlKey && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
+    if (ctrlOrMetaKeyActive && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
     if (shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
 
-    if (ctrlKey && key === KEYS.F) {
+    if (ctrlOrMetaKeyActive && key === KEYS.F) {
       e.preventDefault()
       enterScreening()
       store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
@@ -119,47 +136,47 @@ export default () => {
     
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
-    if ((ctrlKey || metaKey) && key === KEYS.C) {
+    if (ctrlOrMetaKeyActive && key === KEYS.C) {
       if (disableHotkeys.value) return
       e.preventDefault()
       copy()
     }
-    if (ctrlKey && key === KEYS.X) {
+    if (ctrlOrMetaKeyActive && key === KEYS.X) {
       if (disableHotkeys.value) return
       e.preventDefault()
       cut()
     }
-    if (ctrlKey && key === KEYS.D) {
+    if (ctrlOrMetaKeyActive && key === KEYS.D) {
       if (disableHotkeys.value) return
       e.preventDefault()
       quickCopy()
     }
-    if (ctrlKey && key === KEYS.Z) {
+    if (ctrlOrMetaKeyActive && key === KEYS.Z) {
       if (disableHotkeys.value) return
       e.preventDefault()
       undo()
     }
-    if (ctrlKey && key === KEYS.Y) {
+    if (ctrlOrMetaKeyActive && key === KEYS.Y) {
       if (disableHotkeys.value) return
       e.preventDefault()
       redo()
     }
-    if (ctrlKey && key === KEYS.A) {
+    if (ctrlOrMetaKeyActive && key === KEYS.A) {
       if (disableHotkeys.value) return
       e.preventDefault()
       selectAll()
     }
-    if (ctrlKey && key === KEYS.L) {
+    if (ctrlOrMetaKeyActive && key === KEYS.L) {
       if (disableHotkeys.value) return
       e.preventDefault()
       lock()
     }
-    if (!shiftKey && ctrlKey && key === KEYS.G) {
+    if (!shiftKey && ctrlOrMetaKeyActive && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       combine()
     }
-    if (shiftKey && ctrlKey && key === KEYS.G) {
+    if (shiftKey && ctrlOrMetaKeyActive && key === KEYS.G) {
       if (disableHotkeys.value) return
       e.preventDefault()
       uncombine()
@@ -218,6 +235,11 @@ export default () => {
       if (disableHotkeys.value) return
       e.preventDefault()
       setCanvasPercentage(90)
+    }
+    if (key === KEYS.TAB) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      tabActiveElement()
     }
   }
   

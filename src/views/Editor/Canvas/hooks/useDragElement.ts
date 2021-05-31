@@ -8,11 +8,11 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeGroupElementId: Ref<string>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
+  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
   const canvasScale = computed(() => store.state.canvasScale)
   const viewportRatio = computed(() => store.state.viewportRatio)
 

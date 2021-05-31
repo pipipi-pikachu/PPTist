@@ -9,9 +9,15 @@
     </teleport>
 
     <div class="tools">
-      <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changePen()">画笔</div>
-      <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeEraser()">橡皮</div>
-      <div class="btn" @click="clearCanvas()">清除墨迹</div>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
+        <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changePen()"><IconWrite class="icon" /></div>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
+        <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeEraser()"><IconErase class="icon" /></div>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
+        <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
+      </Tooltip>
       <div class="colors">
         <div 
           class="color" 
@@ -22,7 +28,9 @@
           @click="changeColor(color)"
         ></div>
       </div>
-      <div class="btn" @click="closeWritingBoard()">退出画笔</div>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="关闭画笔">
+        <div class="btn" @click="closeWritingBoard()"><IconClose class="icon" /></div>
+      </Tooltip>
     </div>
   </div>
 </template>
@@ -91,41 +99,49 @@ export default defineComponent({
   .tools {
     height: 50px;
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 5px;
+    left: 5px;
     z-index: 11;
     padding: 12px;
-    background-color: #fff;
+    background-color: #eee;
+    border-radius: $borderRadius;
     display: flex;
     align-items: center;
   }
   .btn {
-    padding: 6px 10px;
+    padding: 5px 10px;
     cursor: pointer;
 
-    &:hover, &.active {
-      background-color: rgba($color: $themeColor, $alpha: .2);
+    &:hover {
+      color: $themeColor;
     }
+    &.active {
+      background-color: rgba($color: $themeColor, $alpha: .5);
+      color: #fff;
+    }
+  }
+  .icon {
+    font-size: 20px;
   }
   .colors {
     display: flex;
     padding: 0 10px;
   }
   .color {
-    width: 15px;
-    height: 15px;
-    outline: 1px solid #ccc;
+    width: 16px;
+    height: 16px;
+    border-radius: $borderRadius;
     cursor: pointer;
 
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
     }
     &.active {
-      outline: 2px solid $themeColor;
+      transform: scale(1.3);
     }
 
     & + .color {
-      margin-left: 5px;
+      margin-left: 8px;
     }
   }
 }

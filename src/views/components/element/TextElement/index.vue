@@ -8,7 +8,6 @@
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)"
   >
     <div
       class="rotate-wrapper"
@@ -24,6 +23,7 @@
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
         }"
         v-contextmenu="contextmenus"
+        @mousedown="$event => handleSelectElement($event)"
       >
         <ElementOutline
           :width="elementInfo.width"
@@ -108,6 +108,8 @@ export default defineComponent({
     // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
     const scaleElementStateListener = (state: boolean) => {
+      if (handleElementId.value !== props.elementInfo.id) return
+
       isScaling.value = state
 
       if (!state && realHeightCache.value !== -1) {
@@ -323,7 +325,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-text {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -338,6 +339,7 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.5;
   word-break: break-word;
+  cursor: move;
 
   .text {
     position: relative;

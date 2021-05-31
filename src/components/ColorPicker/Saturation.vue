@@ -39,7 +39,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const color = computed(() => {
       const hsva = tinycolor(props.value).toHsv()
-      if (hsva.s === 0) hsva.h = props.hue
+      if (props.hue !== -1) hsva.h = props.hue
       return hsva
     })
 

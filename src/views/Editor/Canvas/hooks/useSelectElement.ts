@@ -5,21 +5,22 @@ import { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  activeGroupElementId: Ref<string>,
   moveElement: (e: MouseEvent, element: PPTElement) => void,
 ) => {
   const store = useStore()
   const activeElementIdList = computed(() => store.state.activeElementIdList)
   const handleElementId = computed(() => store.state.handleElementId)
+  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
   const editorAreaFocus = computed(() => store.state.editorAreaFocus)
   const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
 
   // 选中元素
-  const selectElement = (e: MouseEvent, element: PPTElement, canMove = true) => {
+  // startMove 表示是否需要再选中操作后进入到开始移动的状态
+  const selectElement = (e: MouseEvent, element: PPTElement, startMove = true) => {
     if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
 
     // 如果目标元素当前未被选中，则将他设为选中状态
-    // 此时如果按下Ctrl键或Shift键，则进入多选状态，将当前已选中的元素和目标元素一桶设置为选中状态，否则仅将目标元素设置为选中状态
+    // 此时如果按下Ctrl键或Shift键，则进入多选状态，将当前已选中的元素和目标元素一起设置为选中状态，否则仅将目标元素设置为选中状态
     // 如果目标元素是分组成员，需要将该组合的其他元素一起设置为选中状态
     if (!activeElementIdList.value.includes(element.id)) {
       let newActiveIdList: string[] = []
@@ -78,13 +79,13 @@ export default (
         const currentPageY = e.pageY
 
         if (startPageX === currentPageX && startPageY === currentPageY) {
-          activeGroupElementId.value = element.id
+          store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, element.id)
           ;(e.target as HTMLElement).onmouseup = null
         }
       }
     }
 
-    if (canMove) moveElement(e, element)
+    if (startMove) moveElement(e, element)
   }
 
   // 选中页面内的全部元素

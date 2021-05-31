@@ -63,6 +63,7 @@ export default () => {
         left: (VIEWPORT_SIZE - width) / 2,
         top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
         fixedRatio: true,
+        rotate: 0,
       })
     })
   }
@@ -147,6 +148,7 @@ export default () => {
       width, 
       height,
       content,
+      rotate: 0,
     })
   }
   
@@ -168,6 +170,7 @@ export default () => {
       path: data.path,
       fill: themeColor.value,
       fixedRatio: false,
+      rotate: 0,
     })
   }
   

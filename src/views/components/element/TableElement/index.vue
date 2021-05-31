@@ -103,6 +103,8 @@ export default defineComponent({
     const realHeightCache = ref(-1)
 
     const scaleElementStateListener = (state: boolean) => {
+      if (handleElementId.value !== props.elementInfo.id) return
+
       isScaling.value = state
 
       if (state) editable.value = false
@@ -190,7 +192,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-table {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -201,6 +202,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   position: relative;
+  cursor: move;
 }
 .table-mask {
   position: absolute;

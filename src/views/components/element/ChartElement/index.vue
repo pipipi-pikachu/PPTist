@@ -7,7 +7,6 @@
       width: elementInfo.width + 'px',
       height: elementInfo.height + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)"
   >
     <div 
       class="element-content" 
@@ -15,6 +14,7 @@
         backgroundColor: elementInfo.fill,
       }"
       v-contextmenu="contextmenus"
+      @mousedown="$event => handleSelectElement($event)"
     >
       <ElementOutline
         :width="elementInfo.width"
@@ -79,7 +79,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-chart {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -90,5 +89,6 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   overflow: hidden;
+  cursor: move;
 }
 </style>

@@ -55,8 +55,8 @@ export const HOTKEY_DOC = [
       { label: '放大画布', value: 'Ctrl + =' },
       { label: '缩小画布', value: 'Ctrl + -' },
       { label: '缩放画布到合适大小', value: 'Ctrl + 0' },
-      { label: '编辑上一页', value: '↑ / ←' },
-      { label: '编辑下一页', value: '↓ / →' },
+      { label: '编辑上一页', value: '↑ / ← / 鼠标上滚' },
+      { label: '编辑下一页', value: '↓ / → / 鼠标下滚' },
     ],
   },
   {
@@ -70,6 +70,7 @@ export const HOTKEY_DOC = [
       { label: '置底层', value: 'Alt + B' },
       { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
       { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
+      { label: '切换焦点元素', value: 'Tab' },
       { label: '确认图片裁剪', value: 'Enter' },
     ],
   },

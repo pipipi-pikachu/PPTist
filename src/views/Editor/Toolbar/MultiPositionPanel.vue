@@ -2,24 +2,24 @@
   <div class="multi-position-panel">
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('left')"><IconAlignLeft /></Button>
+        <Button style="flex: 1;" @click="alignElement('left')"><IconAlignLeft /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignActiveElement('horizontal')"><IconAlignVertically /></Button>
+        <Button style="flex: 1;" @click="alignElement('horizontal')"><IconAlignVertically /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('right')"><IconAlignRight /></Button>
+        <Button style="flex: 1;" @click="alignElement('right')"><IconAlignRight /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('top')"><IconAlignTop /></Button>
+        <Button style="flex: 1;" @click="alignElement('top')"><IconAlignTop /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignActiveElement('vertical')"><IconAlignHorizontally /></Button>
+        <Button style="flex: 1;" @click="alignElement('vertical')"><IconAlignHorizontally /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignActiveElement('bottom')"><IconAlignBottom /></Button>
+        <Button style="flex: 1;" @click="alignElement('bottom')"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row" v-if="activeElementList.length > 2">
@@ -40,8 +40,10 @@
 import { computed, defineComponent } from 'vue'
 import { useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
+import { ElementAlignCommand } from '@/types/edit'
 import useCombineElement from '@/hooks/useCombineElement'
 import useAlignActiveElement from '@/hooks/useAlignActiveElement'
+import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useUniformDisplayElement from '@/hooks/useUniformDisplayElement'
 
 export default defineComponent({
@@ -52,6 +54,7 @@ export default defineComponent({
 
     const { combineElements, uncombineElements } = useCombineElement()
     const { alignActiveElement } = useAlignActiveElement()
+    const { alignElementToCanvas } = useAlignElementToCanvas()
     const { uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
 
     // 判断当前多选的几个元素是否可以组合
@@ -63,14 +66,22 @@ export default defineComponent({
       return !inSameGroup
     })
 
+    // 多选元素对齐，需要先判断当前所选中的元素状态：
+    // 如果所选元素为一组组合元素，则将它对齐到画布；
+    // 如果所选元素不是组合元素或不止一组元素（即当前为可组合状态），则将这多个（多组）元素相互对齐。
+    const alignElement = (command: ElementAlignCommand) => {
+      if (canCombine.value) alignActiveElement(command)
+      else alignElementToCanvas(command)
+    }
+
     return {
       activeElementList,
       canCombine,
       combineElements,
       uncombineElements,
-      alignActiveElement,
       uniformHorizontalDisplay,
       uniformVerticalDisplay,
+      alignElement,
     }
   },
 })

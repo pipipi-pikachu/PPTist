@@ -186,6 +186,7 @@ export default defineComponent({
 }
 .handler-item {
   margin: 0 10px;
+  font-size: 14px;
   cursor: pointer;
 
   &.disable {
@@ -202,8 +203,7 @@ export default defineComponent({
   }
 
   .viewport-size {
-    font-size: 12px;
-    margin-top: -1px;
+    font-size: 13px;
   }
 }
 </style>

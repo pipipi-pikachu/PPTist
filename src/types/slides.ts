@@ -32,10 +32,10 @@ interface PPTBaseElement {
   height: number;
 }
 
-export interface PPTTextElement extends PPTBaseElement{
+export interface PPTTextElement extends PPTBaseElement {
   type: 'text';
   content: string;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   fill?: string;
   lineHeight?: number;
@@ -61,11 +61,11 @@ export interface ImageElementClip {
   range: [[number, number], [number, number]];
   shape: string;
 }
-export interface PPTImageElement extends PPTBaseElement{
+export interface PPTImageElement extends PPTBaseElement {
   type: 'image';
   fixedRatio: boolean;
   src: string;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   filters?: ImageElementFilters;
   clip?: ImageElementClip;
@@ -78,21 +78,21 @@ export interface ShapeGradient {
   color: [string, string];
   rotate: number;
 }
-export interface PPTShapeElement extends PPTBaseElement{
+export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape';
   viewBox: number;
   path: string;
   fixedRatio: boolean;
   fill: string;
   gradient?: ShapeGradient;
-  rotate?: number;
+  rotate: number;
   outline?: PPTElementOutline;
   opacity?: number;
   flip?: ImageOrShapeFlip;
   shadow?: PPTElementShadow;
 }
 
-export interface PPTLineElement extends Omit<PPTBaseElement, 'height'>{
+export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
   type: 'line';
   start: [number, number];
   end: [number, number];
@@ -109,7 +109,7 @@ export interface ChartData {
   labels: string[];
   series: number[][];
 }
-export interface PPTChartElement extends PPTBaseElement{
+export interface PPTChartElement extends PPTBaseElement {
   type: 'chart';
   fill?: string;
   chartType: ChartType;
@@ -145,7 +145,7 @@ export interface TableTheme {
   colHeader: boolean;
   colFooter: boolean;
 } 
-export interface PPTTableElement extends PPTBaseElement{
+export interface PPTTableElement extends PPTBaseElement {
   type: 'table';
   outline: PPTElementOutline;
   theme?: TableTheme;

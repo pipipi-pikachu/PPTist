@@ -3,6 +3,7 @@ export const enum MutationTypes {
   // editor
   SET_ACTIVE_ELEMENT_ID_LIST = 'setActiveElementIdList',
   SET_HANDLE_ELEMENT_ID = 'setHandleElementId',
+  SET_ACTIVE_GROUP_ELEMENT_ID = 'setActiveGroupElementId',
   SET_CANVAS_PERCENTAGE = 'setCanvasPercentage',
   SET_CANVAS_SCALE = 'setCanvasScale',
   SET_THUMBNAILS_FOCUS = 'setThumbnailsFocus',

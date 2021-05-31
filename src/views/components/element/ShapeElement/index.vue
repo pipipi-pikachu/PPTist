@@ -8,7 +8,6 @@
       width: elementInfo.width + 'px',
       height: elementInfo.height + 'px',
     }"
-    @mousedown="$event => handleSelectElement($event)"
   >
     <div
       class="rotate-wrapper"
@@ -16,12 +15,13 @@
     >
       <div 
         class="element-content" 
-        v-contextmenu="contextmenus"
         :style="{
           opacity: elementInfo.opacity,
           filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
           transform: flipStyle,
         }"
+        v-contextmenu="contextmenus"
+        @mousedown="$event => handleSelectElement($event)"
       >
         <SvgWrapper 
           overflow="visible" 
@@ -118,7 +118,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-shape {
   position: absolute;
-  cursor: move;
 
   &.lock .element-content {
     cursor: default;
@@ -132,6 +131,7 @@ export default defineComponent({
   width: 100%;
   height: 100%;
   position: relative;
+  cursor: move;
 
   svg {
     transform-origin: 0 0;

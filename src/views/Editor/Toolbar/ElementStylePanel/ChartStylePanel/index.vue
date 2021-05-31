@@ -129,7 +129,7 @@ export default defineComponent({
     const themeColor = ref<string>('')
     const gridColor = ref('')
 
-    const lineSmooth = ref<boolean | Function>(true)
+    const lineSmooth = ref(true)
     const showLine = ref(true)
     const showArea = ref(false)
     const horizontalBars = ref(false)
@@ -148,7 +148,7 @@ export default defineComponent({
           donut: _donut,
         } = handleElement.value.options
 
-        if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth
+        if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth as boolean
         if (_showLine !== undefined) showLine.value = _showLine
         if (_showArea !== undefined) showArea.value = _showArea
         if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
