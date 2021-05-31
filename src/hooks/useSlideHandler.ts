@@ -25,12 +25,17 @@ export default () => {
 
   // 重置幻灯片
   const resetSlides = () => {
-    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.SET_SLIDES, [{
+    const emptySlide = {
       id: createRandomCode(8),
       elements: [],
-    }])
+      background: {
+        type: 'solid',
+        color: theme.value.backgroundColor,
+      },
+    }
+    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0)
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+    store.commit(MutationTypes.SET_SLIDES, [emptySlide])
   }
 
   /**
