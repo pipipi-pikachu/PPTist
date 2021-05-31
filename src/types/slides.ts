@@ -36,6 +36,8 @@ export interface PPTTextElement extends PPTBaseElement {
   type: 'text';
   content: string;
   rotate: number;
+  defaultFontName: string;
+  defaultColor: string;
   outline?: PPTElementOutline;
   fill?: string;
   lineHeight?: number;

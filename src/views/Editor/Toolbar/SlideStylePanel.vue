@@ -310,10 +310,16 @@ export default defineComponent({
           if (el.type === 'shape') el.fill = themeColor
           else if (el.type === 'line') el.color = themeColor
           else if (el.type === 'text') {
+            el.defaultColor = fontColor
             if (el.fill) el.fill = themeColor
           }
           else if (el.type === 'table') {
             if (el.theme) el.theme.color = themeColor
+            for (const rowCells of el.data) {
+              for (const cell of rowCells) {
+                cell.style?.color && (cell.style.color = fontColor)
+              }
+            }
           }
           else if (el.type === 'chart') {
             el.themeColor = themeColor

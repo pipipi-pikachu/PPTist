@@ -21,6 +21,8 @@
           textShadow: shadowStyle,
           lineHeight: elementInfo.lineHeight,
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
+          color: elementInfo.defaultColor,
+          fontFamily: elementInfo.defaultFontName,
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"

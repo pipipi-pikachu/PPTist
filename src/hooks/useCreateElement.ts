@@ -3,7 +3,7 @@ import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { PPTLineElement, ChartType, PPTElement, TableCell } from '@/types/slides'
+import { PPTLineElement, ChartType, PPTElement, TableCell, TableCellStyle } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -26,6 +26,7 @@ export default () => {
   const store = useStore()
   const themeColor = computed(() => store.state.theme.themeColor)
   const fontColor = computed(() => store.state.theme.fontColor)
+  const fontName = computed(() => store.state.theme.fontName)
   const viewportRatio = computed(() => store.state.viewportRatio)
 
   const { addHistorySnapshot } = useHistorySnapshot()
@@ -98,7 +99,11 @@ export default () => {
    * @param col 列数
    */
   const createTableElement = (row: number, col: number) => {
-    const rowCells: TableCell[] = new Array(col).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+    const style: TableCellStyle = {
+      fontname: fontName.value,
+      color: fontColor.value,
+    }
+    const rowCells: TableCell[] = new Array(col).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '', style })
     const data: TableCell[][] = new Array(row).fill(rowCells)
 
     const DEFAULT_CELL_WIDTH = 100
@@ -149,6 +154,8 @@ export default () => {
       height,
       content,
       rotate: 0,
+      defaultFontName: fontName.value,
+      defaultColor: fontColor.value,
     })
   }
   

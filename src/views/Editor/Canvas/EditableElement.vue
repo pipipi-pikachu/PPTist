@@ -5,8 +5,6 @@
     :id="`editable-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
-      color: theme.fontColor,
-      fontFamily: theme.fontName,
     }"
   >
     <component
@@ -20,7 +18,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
@@ -62,9 +59,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const theme = computed(() => store.state.theme)
-
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
         [ElementTypes.IMAGE]: ImageElement,
@@ -177,7 +171,6 @@ export default defineComponent({
     return {
       currentElementComponent,
       contextmenus,
-      theme,
     }
   },
 })

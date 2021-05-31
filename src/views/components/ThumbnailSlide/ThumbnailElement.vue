@@ -3,8 +3,6 @@
     class="base-element"
     :style="{
       zIndex: elementIndex,
-      color: theme.fontColor,
-      fontFamily: theme.fontName,
     }"
   >
     <component
@@ -17,7 +15,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
@@ -40,9 +37,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const theme = computed(() => store.state.theme)
-
     const currentElementComponent = computed(() => {
       const elementTypeMap = {
         [ElementTypes.IMAGE]: BaseImageElement,
@@ -57,7 +51,6 @@ export default defineComponent({
 
     return {
       currentElementComponent,
-      theme,
     }
   },
 })
