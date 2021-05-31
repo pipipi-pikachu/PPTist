@@ -45,8 +45,8 @@ export interface PPTTextElement extends PPTBaseElement {
 }
 
 export interface ImageOrShapeFlip {
-  x?: number;
-  y?: number;
+  flipH?: boolean;
+  flipV?: boolean;
 }
 export interface ImageElementFilters {
   'blur'?: string;
@@ -69,7 +69,8 @@ export interface PPTImageElement extends PPTBaseElement {
   outline?: PPTElementOutline;
   filters?: ImageElementFilters;
   clip?: ImageElementClip;
-  flip?: ImageOrShapeFlip;
+  flipH?: boolean;
+  flipV?: boolean;
   shadow?: PPTElementShadow;
 }
 
@@ -88,7 +89,8 @@ export interface PPTShapeElement extends PPTBaseElement {
   rotate: number;
   outline?: PPTElementOutline;
   opacity?: number;
-  flip?: ImageOrShapeFlip;
+  flipH?: boolean;
+  flipV?: boolean;
   shadow?: PPTElementShadow;
 }
 
