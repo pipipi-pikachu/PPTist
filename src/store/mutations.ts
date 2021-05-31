@@ -5,7 +5,7 @@ import { State } from './state'
 import { Slide, PPTElement, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { SYS_FONTS } from '@/configs/font'
-import { isSupportFontFamily } from '@/utils/fontFamily'
+import { isSupportFont } from '@/utils/font'
 
 interface RemoveElementPropData {
   id: string;
@@ -65,7 +65,7 @@ export const mutations: MutationTree<State> = {
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {
-    state.availableFonts = SYS_FONTS.filter(font => isSupportFontFamily(font.value))
+    state.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
   },
 
   [MutationTypes.SET_TOOLBAR_STATE](state, type) {
