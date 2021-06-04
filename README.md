@@ -142,7 +142,6 @@ A. 设置在线字体时会下载对应的字体文件，该文件较大，需�
 ├── hooks                         // 供多个组件（模块）使用的 hooks 方法
 ├── mocks                         // mocks 数据
 ├── plugins                       // 自定义的 Vue 插件
-├── prosemirror                   // ProseMirror 富文本编辑器相关的文件
 ├── types                         // 类型定义文件
 ├── store                         // Vuex store，参考：https://vuex.vuejs.org/zh/guide/
 ├── utils                         // 通用的工具方法

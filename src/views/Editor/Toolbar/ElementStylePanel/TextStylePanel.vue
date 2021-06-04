@@ -222,7 +222,7 @@ import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
-import { TextAttrs } from '@/prosemirror/utils'
+import { TextAttrs } from '@/utils/prosemirror/utils'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
