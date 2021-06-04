@@ -167,8 +167,9 @@ export default defineComponent({
 
     const handleFocus = () => {
       if (props.elementInfo.content === '请输入内容') {
-        editorView.dom.innerHTML = ''
-        handleInput()
+        setTimeout(() => {
+          selectAll(editorView.state, editorView.dispatch)
+        }, 0)
       }
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
     }
