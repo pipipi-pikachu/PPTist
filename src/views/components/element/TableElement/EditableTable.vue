@@ -55,12 +55,14 @@
             v-contextmenu="el => contextmenus(el)"
           >
             <CustomTextarea 
+              v-if="activedCell === `${rowIndex}_${colIndex}`"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
-              :contenteditable="activedCell === `${rowIndex}_${colIndex}` ? 'plaintext-only' : false"
-              v-model="cell.text"
-              @update:modelValue="handleInput()"
+              contenteditable="plaintext-only"
+              :value="cell.text"
+              @updateValue="value => handleInput(value, rowIndex, colIndex)"
             />
+            <div v-else class="cell-text" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -76,7 +78,7 @@ import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import { createRandomCode } from '@/utils/common'
-import { getTextStyle } from './utils'
+import { getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -428,8 +430,8 @@ export default defineComponent({
 
     // 将焦点移动到下一个单元格
     // 当前行右边有单元格时，焦点右移
-    // 当前行右边无单元格（已处在行末），且存在下一行时，焦点移动下下一行行首
-    // 当前行右边无单元格（已处在行末），且不存在下一行（已处在最后一行）时，新建一行并将焦点移动下下一行行首
+    // 当前行右边无单元格（已处在行末），且存在下一行时，焦点移动至下一行行首
+    // 当前行右边无单元格（已处在行末），且不存在下一行（已处在最后一行）时，新建一行并将焦点移动至下一行行首
     const tabActiveCell = () => {
       const getNextCell = (i: number, j: number): [number, number] | null => {
         if (!tableCells.value[i]) return null
@@ -501,7 +503,8 @@ export default defineComponent({
     })
 
     // 单元格文字输入时更新表格数据
-    const handleInput = debounce(function() {
+    const handleInput = debounce(function(value, rowIndex, colIndex) {
+      tableCells.value = tableCells.value[rowIndex][colIndex].text = value
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
@@ -626,6 +629,7 @@ export default defineComponent({
       contextmenus,
       handleInput,
       subThemeColor,
+      formatText,
     }
   },
 })

@@ -32,3 +32,7 @@ export const getTextStyle = (style?: TableCellStyle) => {
     textAlign: align || 'left',
   }
 }
+
+export const formatText = (text: string) => {
+  return text.replace(/\n/g, '</br>').replace(/ /g, '&nbsp;')
+}
