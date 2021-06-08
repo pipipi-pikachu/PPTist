@@ -195,7 +195,7 @@
 import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import { createRandomCode } from '@/utils/common'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -300,14 +300,14 @@ export default defineComponent({
     }
 
     // 监听并更新当前选中的单元格
-    const updateSelectedCells = (cells: string[]) => {
+    const updateSelectedCells: EmitterHandler = (cells: string[]) => {
       selectedCells.value = cells
       updateTextAttrState()
     }
 
-    emitter.on(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
+    emitter.on(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, updateSelectedCells)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
+      emitter.off(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, updateSelectedCells)
     })
 
     // 设置单元格内容文本样式

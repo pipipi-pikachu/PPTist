@@ -42,7 +42,7 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -102,7 +102,7 @@ export default defineComponent({
     const isScaling = ref(false)
     const realHeightCache = ref(-1)
 
-    const scaleElementStateListener = (state: boolean) => {
+    const scaleElementStateListener: EmitterHandler = (state: boolean) => {
       if (handleElementId.value !== props.elementInfo.id) return
 
       isScaling.value = state
@@ -118,9 +118,9 @@ export default defineComponent({
       }
     }
 
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
+    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
+      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     })
 
     const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {

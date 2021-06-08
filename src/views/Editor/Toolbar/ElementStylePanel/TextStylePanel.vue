@@ -221,7 +221,7 @@
 import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import { TextAttrs } from '@/utils/prosemirror/utils'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -361,11 +361,11 @@ export default defineComponent({
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
     // 接收并更新当前光标所在位置的富文本状态
-    const updateRichTextAttrs = (attr: TextAttrs) => richTextAttrs.value = attr
+    const updateRichTextAttrs: EmitterHandler = (attr: TextAttrs) => richTextAttrs.value = attr
 
-    emitter.on(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
+    emitter.on(EmitterEvents.UPDATE_TEXT_STATE, updateRichTextAttrs)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
+      emitter.off(EmitterEvents.UPDATE_TEXT_STATE, updateRichTextAttrs)
     })
 
     // 发射富文本设置命令

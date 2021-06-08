@@ -1,4 +1,4 @@
-import mitt, { Emitter } from 'mitt'
+import mitt, { Handler, Emitter } from 'mitt'
 
 export const enum EmitterEvents {
   UPDATE_TEXT_STATE = 'UPDATE_TEXT_STATE',
@@ -8,5 +8,7 @@ export const enum EmitterEvents {
 }
 
 const emitter: Emitter = mitt()
+
+export type EmitterHandler = Handler
 
 export default emitter

@@ -52,7 +52,7 @@ import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { initProsemirrorEditor } from '@/utils/prosemirror/'
 import { getTextAttrs } from '@/utils/prosemirror/utils'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -109,7 +109,7 @@ export default defineComponent({
 
     // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-    const scaleElementStateListener = (state: boolean) => {
+    const scaleElementStateListener: EmitterHandler = (state: boolean) => {
       if (handleElementId.value !== props.elementInfo.id) return
 
       isScaling.value = state
@@ -123,9 +123,9 @@ export default defineComponent({
       }
     }
 
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
+    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
+      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     })
 
     const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
@@ -220,7 +220,7 @@ export default defineComponent({
     
     // 执行富文本命令（可以是一个或多个）
     // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
-    const execCommand = (payload: CommandPayload | CommandPayload[]) => {
+    const execCommand: EmitterHandler = (payload: CommandPayload | CommandPayload[]) => {
       if (handleElementId.value !== props.elementInfo.id) return
 
       const commands = ('command' in payload) ? [payload] : payload
@@ -310,9 +310,9 @@ export default defineComponent({
       handleClick()
     }
 
-    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
     })
 
     return {
