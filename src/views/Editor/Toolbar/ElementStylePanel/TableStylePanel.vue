@@ -260,7 +260,7 @@ export default defineComponent({
 
     // 更新当前选中单元格的文本样式状态
     const updateTextAttrState = () => {
-      if (!handleElement.value) return
+      if (!handleElement.value || handleElement.value.type !== 'table') return
 
       let rowIndex = 0
       let colIndex = 0
