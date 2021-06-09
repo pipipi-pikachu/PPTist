@@ -505,7 +505,7 @@ export default defineComponent({
 
     // 单元格文字输入时更新表格数据
     const handleInput = debounce(function(value, rowIndex, colIndex) {
-      tableCells.value = tableCells.value[rowIndex][colIndex].text = value
+      tableCells.value[rowIndex][colIndex].text = value
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
