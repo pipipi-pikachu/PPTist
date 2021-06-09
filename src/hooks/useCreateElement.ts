@@ -103,8 +103,14 @@ export default () => {
       fontname: fontName.value,
       color: fontColor.value,
     }
-    const rowCells: TableCell[] = new Array(col).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '', style })
-    const data: TableCell[][] = new Array(row).fill(rowCells)
+    const data: TableCell[][] = []
+    for (let i = 0; i < row; i++) {
+      const rowCells: TableCell[] = []
+      for (let j = 0; j < col; j++) {
+        rowCells.push({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '', style })
+      }
+      data.push(rowCells)
+    }
 
     const DEFAULT_CELL_WIDTH = 100
     const DEFAULT_CELL_HEIGHT = 36
