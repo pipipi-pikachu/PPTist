@@ -73,6 +73,7 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
+import isEqual from 'lodash/isEqual'
 import { useStore } from '@/store'
 import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -196,7 +197,8 @@ export default defineComponent({
       return selectedCells
     })
 
-    watch(selectedCells, () => {
+    watch(selectedCells, (value, oldValue) => {
+      if (isEqual(value, oldValue)) return
       emit('changeSelectedCells', selectedCells.value)
     })
 
