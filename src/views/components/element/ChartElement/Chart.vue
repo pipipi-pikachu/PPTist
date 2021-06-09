@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, onMounted, PropType, ref, Ref, watch } from 'vue'
-import upperFirst from 'lodash/upperFirst'
+import { upperFirst } from 'lodash'
 import tinycolor from 'tinycolor2'
 import Chartist, {
   IChartistLineChart,

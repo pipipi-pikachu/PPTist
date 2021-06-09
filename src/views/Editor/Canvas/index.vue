@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, provide, ref, watch, watchEffect } from 'vue'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'

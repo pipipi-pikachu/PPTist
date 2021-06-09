@@ -1,5 +1,4 @@
-import startsWith from 'lodash/startsWith'
-import endsWith from 'lodash/endsWith'
+import { startsWith, endsWith } from 'lodash'
 import { Token } from './types'
 import { childlessTags } from './tags'
 

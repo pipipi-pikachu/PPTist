@@ -21,8 +21,7 @@
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, PropType, ref } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
-import throttle from 'lodash/throttle'
-import clamp from 'lodash/clamp'
+import { throttle, clamp } from 'lodash'
 
 export default defineComponent({
   name: 'saturation',

@@ -1,5 +1,5 @@
 import { MutationTree } from 'vuex'
-import omit from 'lodash/omit'
+import { omit } from 'lodash'
 import { MutationTypes } from './constants'
 import { State } from './state'
 import { Slide, PPTElement, SlideTheme } from '@/types/slides'

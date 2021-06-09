@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-import debounce from 'lodash/debounce'
+import { debounce } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'

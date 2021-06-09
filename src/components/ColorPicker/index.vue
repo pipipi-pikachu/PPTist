@@ -73,7 +73,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
-import debounce from 'lodash/debounce'
+import { debounce } from 'lodash'
 
 import Alpha from './Alpha.vue'
 import Checkboard from './Checkboard.vue'

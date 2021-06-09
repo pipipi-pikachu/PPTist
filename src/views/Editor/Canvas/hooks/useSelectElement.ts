@@ -1,5 +1,5 @@
 import { Ref, computed } from 'vue'
-import uniq from 'lodash/uniq'
+import { uniq } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 

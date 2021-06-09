@@ -133,7 +133,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import round from 'lodash/round'
+import { round } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { MIN_SIZE } from '@/configs/element'

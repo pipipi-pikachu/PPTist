@@ -1,4 +1,4 @@
-import padStart from 'lodash/padStart'
+import { padStart } from 'lodash'
 
 /**
  * 生成随机码
