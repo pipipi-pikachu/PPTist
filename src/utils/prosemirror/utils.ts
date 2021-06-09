@@ -1,4 +1,4 @@
-import { Node, NodeType, ResolvedPos } from 'prosemirror-model'
+import { Node, NodeType, ResolvedPos, Mark } from 'prosemirror-model'
 import { EditorState, Selection } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
 
@@ -40,20 +40,21 @@ export const isActiveOfParentNodeType = (nodeType: string, state: EditorState) =
 export const getMarkAttrs = (view: EditorView) => {
   const { selection, doc } = view.state
   const { from } = selection
-  const node = doc.nodeAt(from)
+
+  let node = doc.nodeAt(from) || doc.nodeAt(from - 1)
+  if (node?.lastChild) node = node.lastChild
+
   return node?.marks || []
 }
 
-export const getAttrValue = (view: EditorView, markType: string, attr: string) => {
-  const marks = getMarkAttrs(view)
+export const getAttrValue = (marks: Mark[], markType: string, attr: string) => {
   for (const mark of marks) {
     if (mark.type.name === markType && mark.attrs[attr]) return mark.attrs[attr]
   }
   return null
 }
 
-export const isActiveMark = (view: EditorView, markType: string) => {
-  const marks = getMarkAttrs(view)
+export const isActiveMark = (marks: Mark[], markType: string) => {
   for (const mark of marks) {
     if (mark.type.name === markType) return true
   }
@@ -77,17 +78,19 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
 }
 
 export const getTextAttrs = (view: EditorView) => {
-  const isBold = isActiveMark(view, 'strong')
-  const isEm = isActiveMark(view, 'em')
-  const isUnderline = isActiveMark(view, 'underline')
-  const isStrikethrough = isActiveMark(view, 'strikethrough')
-  const isSuperscript = isActiveMark(view, 'superscript')
-  const isSubscript = isActiveMark(view, 'subscript')
-  const isCode = isActiveMark(view, 'code')
-  const color = getAttrValue(view, 'forecolor', 'color') || '#000'
-  const backcolor = getAttrValue(view, 'backcolor', 'backcolor') || '#000'
-  const fontsize = getAttrValue(view, 'fontsize', 'fontsize') || '20px'
-  const fontname = getAttrValue(view, 'fontname', 'fontname') || '微软雅黑'
+  const marks = getMarkAttrs(view)
+
+  const isBold = isActiveMark(marks, 'strong')
+  const isEm = isActiveMark(marks, 'em')
+  const isUnderline = isActiveMark(marks, 'underline')
+  const isStrikethrough = isActiveMark(marks, 'strikethrough')
+  const isSuperscript = isActiveMark(marks, 'superscript')
+  const isSubscript = isActiveMark(marks, 'subscript')
+  const isCode = isActiveMark(marks, 'code')
+  const color = getAttrValue(marks, 'forecolor', 'color') || '#000'
+  const backcolor = getAttrValue(marks, 'backcolor', 'backcolor') || '#000'
+  const fontsize = getAttrValue(marks, 'fontsize', 'fontsize') || '20px'
+  const fontname = getAttrValue(marks, 'fontname', 'fontname') || '微软雅黑'
   const align = getAttrValueInSelection(view, 'align') || 'left'
   const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)
   const isOrderedList = isActiveOfParentNodeType('ordered_list', view.state)
