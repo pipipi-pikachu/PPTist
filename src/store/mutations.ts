@@ -6,6 +6,8 @@ import { Slide, PPTElement, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { SYS_FONTS } from '@/configs/font'
 import { isSupportFont } from '@/utils/font'
+import { ToolbarState } from '@/types/toolbar'
+import { TextAttrs } from '@/utils/prosemirror/utils'
 
 interface RemoveElementPropData {
   id: string;
@@ -68,12 +70,20 @@ export const mutations: MutationTree<State> = {
     state.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
   },
 
-  [MutationTypes.SET_TOOLBAR_STATE](state, type) {
-    state.toolbarState = type
+  [MutationTypes.SET_TOOLBAR_STATE](state, toolbarState: ToolbarState) {
+    state.toolbarState = toolbarState
   },
 
-  [MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID](state, elId) {
+  [MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID](state, elId: string) {
     state.clipingImageElementId = elId
+  },
+
+  [MutationTypes.SET_RICHTEXT_ATTRS](state, attrs: TextAttrs) {
+    state.richTextAttrs = attrs
+  },
+
+  [MutationTypes.SET_SELECTED_TABLE_CELLS](state, cells: string[]) {
+    state.selectedTableCells = cells
   },
 
   // slides

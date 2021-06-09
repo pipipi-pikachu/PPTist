@@ -172,7 +172,7 @@ export default defineComponent({
 
     // 更新表格当前选中的单元格
     const updateSelectedCells = (cells: string[]) => {
-      nextTick(() => emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells))
+      nextTick(() => store.commit(MutationTypes.SET_SELECTED_TABLE_CELLS, cells))
     }
 
     return {

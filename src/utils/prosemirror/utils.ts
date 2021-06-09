@@ -113,3 +113,21 @@ export const getTextAttrs = (view: EditorView) => {
 }
 
 export type TextAttrs = ReturnType<typeof getTextAttrs>
+
+export const defaultRichTextAttrs: TextAttrs = {
+  bold: false,
+  em: false,
+  underline: false,
+  strikethrough: false,
+  superscript: false,
+  subscript: false,
+  code: false,
+  color: '#000',
+  backcolor: '#000',
+  fontsize: '20px',
+  fontname: '微软雅黑',
+  align: 'left',
+  bulletList: false,
+  orderedList: false,
+  blockquote: false,
+}

@@ -14,6 +14,8 @@ export const enum MutationTypes {
   SET_AVAILABLE_FONTS = 'setAvailableFonts',
   SET_TOOLBAR_STATE = 'setToolbarState',
   SET_CLIPING_IMAGE_ELEMENT_ID = 'setClipingImageElementId',
+  SET_RICHTEXT_ATTRS = 'setRichTextAttrs',
+  SET_SELECTED_TABLE_CELLS = 'setSelectedTableCells',
 
   // slides
   SET_THEME = 'setTheme',

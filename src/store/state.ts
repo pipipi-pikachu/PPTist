@@ -4,6 +4,7 @@ import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/slides'
 import { theme } from '@/mocks/theme'
 import { SYS_FONTS } from '@/configs/font'
+import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 
 export interface State {
   activeElementIdList: string[];
@@ -29,6 +30,8 @@ export interface State {
   shiftKeyState: boolean;
   screening: boolean;
   clipingImageElementId: string;
+  richTextAttrs: TextAttrs;
+  selectedTableCells: string[];
 }
 
 export const state: State = {
@@ -55,4 +58,6 @@ export const state: State = {
   shiftKeyState: false, // shift键按下状态
   screening: false, // 是否进入放映状态
   clipingImageElementId: '', // 当前正在裁剪的图片ID  
+  richTextAttrs: defaultRichTextAttrs, // 富文本状态
+  selectedTableCells: [], // 选中的表格单元格
 }

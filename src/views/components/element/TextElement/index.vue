@@ -179,8 +179,8 @@ export default defineComponent({
     }
 
     const handleClick = debounce(function() {
-      const attr = getTextAttrs(editorView)
-      emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
+      const attrs = getTextAttrs(editorView)
+      store.commit(MutationTypes.SET_RICHTEXT_ATTRS, attrs)
     }, 30, { trailing: true })
 
     const handleKeydown = () => {
