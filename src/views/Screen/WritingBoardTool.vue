@@ -4,6 +4,7 @@
       <WritingBoard 
         ref="writingBoardRef" 
         :color="writingBoardColor" 
+        :blackboard="blackboard" 
         :model="writingBoardModel"
       />
     </teleport>
@@ -17,6 +18,9 @@
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
         <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板">
+        <div class="btn" :class="{ 'active': blackboard }" @click="blackboard = !blackboard"><IconFill class="icon" /></div>
       </Tooltip>
       <div class="colors">
         <div 
@@ -50,6 +54,7 @@ export default defineComponent({
     const writingBoardRef = ref()
     const writingBoardColor = ref('#e2534d')
     const writingBoardModel = ref('pen')
+    const blackboard = ref(false)
 
     // 切换到画笔状态
     const changePen = () => {
@@ -82,6 +87,7 @@ export default defineComponent({
       writingBoardColors,
       writingBoardColor,
       writingBoardModel,
+      blackboard,
       changePen,
       changeEraser,
       clearCanvas,

@@ -1,5 +1,7 @@
 <template>
   <div class="writing-board" ref="writingBoardRef">
+    <div class="blackboard" v-if="blackboard"></div>
+
     <canvas class="canvas" ref="canvasRef"
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
@@ -50,6 +52,10 @@ export default defineComponent({
     model: {
       type: String as PropType<'pen' | 'eraser'>,
       default: 'pen',
+    },
+    blackboard: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {
@@ -254,6 +260,18 @@ export default defineComponent({
   right: 0;
   z-index: 8;
   cursor: none;
+}
+.blackboard {
+  width: 100%;
+  height: 100%;
+  background-color: #0f392b;
+}
+.canvas {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 .eraser, .pen {
   pointer-events: none;
