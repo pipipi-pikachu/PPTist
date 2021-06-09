@@ -151,7 +151,6 @@ export default defineComponent({
 
     // 更新表格内容数据
     const updateTableCells = (data: TableCell[][]) => {
-      console.log(data)
       store.commit(MutationTypes.UPDATE_ELEMENT, {
         id: props.elementInfo.id, 
         props: { data },
