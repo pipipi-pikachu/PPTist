@@ -86,6 +86,10 @@ export const mutations: MutationTree<State> = {
     state.selectedTableCells = cells
   },
 
+  [MutationTypes.SET_SCALING_STATE](state, isScaling: boolean) {
+    state.isScaling = isScaling
+  },
+
   // slides
 
   [MutationTypes.SET_THEME](state, themeProps: Partial<SlideTheme>) {

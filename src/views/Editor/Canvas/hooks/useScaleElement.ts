@@ -2,7 +2,6 @@ import { computed, Ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
-import emitter, { EmitterEvents } from '@/utils/emitter'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
@@ -108,7 +107,7 @@ export default (
   // 缩放元素
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
     let isMouseDown = true
-    emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, true)
+    store.commit(MutationTypes.SET_SCALING_STATE, true)
 
     const elOriginLeft = element.left
     const elOriginTop = element.top
@@ -406,7 +405,7 @@ export default (
       if (startPageX === e.pageX && startPageY === e.pageY) return
       
       store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
-      emitter.emit(EmitterEvents.SCALE_ELEMENT_STATE, false)
+      store.commit(MutationTypes.SET_SCALING_STATE, false)
       
       addHistorySnapshot()
     }

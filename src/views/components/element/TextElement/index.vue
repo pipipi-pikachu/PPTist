@@ -89,9 +89,6 @@ export default defineComponent({
 
     const elementRef = ref<HTMLElement>()
 
-    const isScaling = ref(false)
-    const realHeightCache = ref(-1)
-
     const editorViewRef = ref<HTMLElement>()
     let editorView: EditorView
 
@@ -109,23 +106,20 @@ export default defineComponent({
 
     // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-    const scaleElementStateListener: EmitterHandler = (state: boolean) => {
+    const realHeightCache = ref(-1)
+
+    const isScaling = computed(() => store.state.isScaling)
+
+    watch(isScaling, () => {
       if (handleElementId.value !== props.elementInfo.id) return
 
-      isScaling.value = state
-
-      if (!state && realHeightCache.value !== -1) {
+      if (!isScaling.value && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
         })
         realHeightCache.value = -1
       }
-    }
-
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     })
 
     const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {

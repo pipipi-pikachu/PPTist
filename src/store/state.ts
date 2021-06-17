@@ -32,6 +32,7 @@ export interface State {
   clipingImageElementId: string;
   richTextAttrs: TextAttrs;
   selectedTableCells: string[];
+  isScaling: boolean;
 }
 
 export const state: State = {
@@ -60,4 +61,5 @@ export const state: State = {
   clipingImageElementId: '', // 当前正在裁剪的图片ID  
   richTextAttrs: defaultRichTextAttrs, // 富文本状态
   selectedTableCells: [], // 选中的表格单元格
+  isScaling: false, // 正在进行元素缩放
 }

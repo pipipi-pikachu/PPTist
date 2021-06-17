@@ -42,7 +42,6 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell } from '@/types/slides'
-import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -99,28 +98,22 @@ export default defineComponent({
 
     // 监听表格元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-    const isScaling = ref(false)
     const realHeightCache = ref(-1)
 
-    const scaleElementStateListener: EmitterHandler = (state: boolean) => {
+    const isScaling = computed(() => store.state.isScaling)
+
+    watch(isScaling, () => {
       if (handleElementId.value !== props.elementInfo.id) return
 
-      isScaling.value = state
+      if (isScaling.value) editable.value = false
 
-      if (state) editable.value = false
-
-      if (!state && realHeightCache.value !== -1) {
+      if (!isScaling.value && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
         })
         realHeightCache.value = -1
       }
-    }
-
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, scaleElementStateListener)
     })
 
     const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {
