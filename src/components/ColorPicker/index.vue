@@ -27,7 +27,7 @@
         class="picker-presets-color"
         v-for="c in themeColors"
         :key="c"
-        :style="{background: c}"
+        :style="{ background: c }"
         @click="selectPresetColor(c)"
       ></div>
     </div>
@@ -41,7 +41,7 @@
         <div class="picker-gradient-color"
           v-for="c in col"
           :key="c"
-          :style="{background: c}"
+          :style="{ background: c }"
           @click="selectPresetColor(c)"
         ></div>
       </div>
