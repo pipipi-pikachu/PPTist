@@ -10,7 +10,7 @@
       <Popover trigger="click" v-model:visible="clipPanelVisible">
         <template #content>
           <div class="clip">
-            <div class="title">按形状裁剪：</div>
+            <div class="title">按形状：</div>
             <div class="shape-clip">
               <div 
                 class="shape-clip-item" 
@@ -18,12 +18,12 @@
                 :key="key"
                 @click="presetImageClip(key)"
               >
-                <div class="shape" :style="{ backgroundImage: `url(${handleElement.src})`, clipPath: item.style }"></div>
+                <div class="shape" :style="{ clipPath: item.style }"></div>
               </div>
             </div>
 
             <template v-for="type in ratioClipOptions" :key="type.label">
-              <div class="title" v-if="type.label">{{type.label}}：</div>
+              <div class="title" v-if="type.label">按{{type.label}}：</div>
               <ButtonGroup class="row">
                 <Button 
                   style="flex: 1;"
@@ -398,12 +398,14 @@ export default defineComponent({
 
   @include flex-grid-layout-children(5, 16%);
 
+  &:hover .shape {
+    background-color: #ccc;
+  }
+
   .shape {
     width: 40px;
     height: 40px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #e1e1e1;
   }
 }
 </style>
