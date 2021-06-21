@@ -67,13 +67,10 @@ export default defineComponent({
 .grid-lines {
   width: 100%;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
   overflow: visible;
   z-index: 999;
   pointer-events: none;
+
+  @include absolute-0();
 }
 </style>

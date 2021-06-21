@@ -421,7 +421,7 @@ export default defineComponent({
   align-items: center;
   position: relative;
   cursor: pointer;
-  transition: all .2s;
+  transition: all $transitionDelay;
 
   &:hover {
     border-color: $themeColor;

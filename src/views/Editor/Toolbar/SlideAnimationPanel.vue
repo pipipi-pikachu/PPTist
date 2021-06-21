@@ -115,7 +115,7 @@ export default defineComponent({
     left: 0;
     top: 0;
     background-color: #d9dadb;
-    animation: $animationType .3s linear;
+    animation: $animationType $transitionDelaySlow linear;
   }
 
   &.fade:hover {

@@ -142,7 +142,7 @@ export default defineComponent({
   align-items: center;
   font-size: 14px;
   padding: 0 10px;
-  transition: background-color .2s;
+  transition: background-color $transitionDelay;
   cursor: pointer;
 
   .text {

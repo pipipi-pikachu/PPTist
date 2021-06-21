@@ -68,7 +68,7 @@ $subMenuWidth: 120px;
   padding: 0 20px;
   color: #555;
   font-size: 12px;
-  transition: all .1s;
+  transition: all $transitionDelayFast;
   white-space: nowrap;
   height: $menuHeight;
   line-height: $menuHeight;
@@ -130,7 +130,7 @@ $subMenuWidth: 120px;
     right: 18px;
     top: 3px;
     transform: scale(0);
-    transition: transform .2s;
+    transition: transform $transitionDelay;
   }
 
   .sub-text {

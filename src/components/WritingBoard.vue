@@ -267,11 +267,7 @@ export default defineComponent({
   background-color: #0f392b;
 }
 .canvas {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  @include absolute-0();
 }
 .eraser, .pen {
   pointer-events: none;

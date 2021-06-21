@@ -217,11 +217,11 @@ export default defineComponent({
 .editor-content {
   width: 100%;
   height: 360px;
-  overflow: auto;
-  overflow: overlay;
   position: relative;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+
+  @include overflow-overlay();
 }
 .range-box {
   position: absolute;
@@ -231,17 +231,17 @@ export default defineComponent({
   user-select: none;
 }
 .temp-range {
+  width: 0;
+  height: 0;
   position: absolute;
   top: 0;
   left: 0;
-  width: 0;
-  height: 0;
   background-color: rgba($color: #888, $alpha: .3);
 }
 .range-line {
-  position: absolute;
   width: 0;
   height: 0;
+  position: absolute;
   left: 0;
   top: 0;
   border: 0 solid $themeColor;

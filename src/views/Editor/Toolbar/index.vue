@@ -123,7 +123,7 @@ export default defineComponent({
 .content {
   padding: 12px;
   font-size: 13px;
-  overflow: auto;
-  overflow: overlay;
+
+  @include overflow-overlay();
 }
 </style>

@@ -79,11 +79,6 @@ export default defineComponent({
   textarea {
     width: 100%;
     height: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     overflow-y: auto;
     resize: none;
     border: 0;
@@ -91,6 +86,8 @@ export default defineComponent({
     padding: 8px;
     font-size: 12px;
     background-color: transparent;
+
+    @include absolute-0();
   }
 }
 .resize-handler {

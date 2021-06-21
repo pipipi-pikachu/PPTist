@@ -26,3 +26,16 @@
     margin-right: calc(#{100 - $col * $colWidth} / #{$col - 1});
   }
 }
+
+@mixin overflow-overlay() {
+  overflow: auto;
+  overflow: overlay;
+}
+
+@mixin absolute-0 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

@@ -378,7 +378,7 @@ export default defineComponent({
   border: 1px dashed $borderColor;
   border-radius: $borderRadius;
   position: relative;
-  transition: all .2s;
+  transition: all $transitionDelay;
 
   &:hover {
     border-color: $themeColor;
@@ -386,11 +386,8 @@ export default defineComponent({
   }
 
   .content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    @include absolute-0();
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -413,16 +410,13 @@ export default defineComponent({
   cursor: pointer;
 
   .theme-item-content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    @include absolute-0();
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: box-shadow .2s;
+    transition: box-shadow $transitionDelay;
 
     &:hover {
       box-shadow: 0 0 4px #888;

@@ -79,8 +79,8 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  overflow: auto;
-  overflow: overlay;
+
+  @include overflow-overlay();
 
   .thumbnail {
     width: 150px;
