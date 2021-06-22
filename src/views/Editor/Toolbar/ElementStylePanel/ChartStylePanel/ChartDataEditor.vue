@@ -29,6 +29,7 @@
                 :class="['item', { 'selected': rowIndex <= selectedRange[1] && colIndex <= selectedRange[0] }]"
                 :id="`cell-${rowIndex - 1}-${colIndex - 1}`"
                 autocomplete="off"
+                @focus="focusCell = [rowIndex - 1, colIndex - 1]"
               >
             </td>
           </tr>
@@ -44,8 +45,9 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
 import { ChartData } from '@/types/slides'
-import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
+import { KEYS } from '@/configs/hotkey'
 
 const CELL_WIDTH = 100
 const CELL_HEIGHT = 32
@@ -61,6 +63,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const selectedRange = ref([0, 0])
     const tempRangeSize = ref({ width: 0, height: 0 })
+    const focusCell = ref<[number, number] | null>(null)
 
     // 当前选区的边框线条位置
     const rangeLines = computed(() => {
@@ -109,6 +112,27 @@ export default defineComponent({
     }
 
     onMounted(initData)
+
+    // 快捷键监听：回车移动焦点到下一行
+    const moveNextRow = () => {
+      if (!focusCell.value) return
+
+      const [rowIndex, colIndex] = focusCell.value
+      const inputRef = document.querySelector(`#cell-${rowIndex + 1}-${colIndex}`) as HTMLInputElement
+      inputRef && inputRef.focus()
+    }
+
+    const keyboardListener = (e: KeyboardEvent) => {
+      const key = e.key.toUpperCase()
+      if (key === KEYS.ENTER) moveNextRow()
+    }
+
+    onMounted(() => {
+      document.addEventListener('keydown', keyboardListener)
+    })
+    onUnmounted(() => {
+      document.removeEventListener('keydown', keyboardListener)
+    })
 
     // 获取当前图表DOM中的数据，整理格式化后传递出去
     const getTableData = () => {
@@ -200,8 +224,9 @@ export default defineComponent({
       tempRangeSize,
       rangeLines,
       resizablePointStyle,
-      changeSelectRange,
       selectedRange,
+      focusCell,
+      changeSelectRange,
       getTableData,
       closeEditor,
     }
