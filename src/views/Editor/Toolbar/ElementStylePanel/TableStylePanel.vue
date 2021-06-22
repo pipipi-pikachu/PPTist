@@ -192,7 +192,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
@@ -296,6 +296,10 @@ export default defineComponent({
         }
       }
     }
+
+    onMounted(() => {
+      if (selectedCells.value.length) updateTextAttrState()
+    })
 
     watch(selectedCells, updateTextAttrState)
 
