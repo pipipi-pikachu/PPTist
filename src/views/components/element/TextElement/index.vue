@@ -173,7 +173,10 @@ export default defineComponent({
     }
 
     const handleClick = debounce(function() {
-      const attrs = getTextAttrs(editorView)
+      const attrs = getTextAttrs(editorView, {
+        color: props.elementInfo.defaultColor,
+        fontname: props.elementInfo.defaultFontName,
+      })
       store.commit(MutationTypes.SET_RICHTEXT_ATTRS, attrs)
     }, 30, { trailing: true })
 

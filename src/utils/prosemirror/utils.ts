@@ -77,7 +77,23 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
   return value
 }
 
-export const getTextAttrs = (view: EditorView) => {
+interface DefaultAttrs {
+  color?: string;
+  backcolor?: string;
+  fontsize?: string;
+  fontname?: string;
+  align?: string;
+}
+const _defaultAttrs: DefaultAttrs = {
+  color: '#000',
+  backcolor: '#000',
+  fontsize: '20px',
+  fontname: '微软雅黑',
+  align: 'left',
+}
+export const getTextAttrs = (view: EditorView, defaultAttrs: DefaultAttrs = {}) => {
+  defaultAttrs = { ..._defaultAttrs, ...defaultAttrs }
+
   const marks = getMarkAttrs(view)
 
   const isBold = isActiveMark(marks, 'strong')
@@ -87,11 +103,11 @@ export const getTextAttrs = (view: EditorView) => {
   const isSuperscript = isActiveMark(marks, 'superscript')
   const isSubscript = isActiveMark(marks, 'subscript')
   const isCode = isActiveMark(marks, 'code')
-  const color = getAttrValue(marks, 'forecolor', 'color') || '#000'
-  const backcolor = getAttrValue(marks, 'backcolor', 'backcolor') || '#000'
-  const fontsize = getAttrValue(marks, 'fontsize', 'fontsize') || '20px'
-  const fontname = getAttrValue(marks, 'fontname', 'fontname') || '微软雅黑'
-  const align = getAttrValueInSelection(view, 'align') || 'left'
+  const color = getAttrValue(marks, 'forecolor', 'color') || defaultAttrs.color
+  const backcolor = getAttrValue(marks, 'backcolor', 'backcolor') || defaultAttrs.backcolor
+  const fontsize = getAttrValue(marks, 'fontsize', 'fontsize') || defaultAttrs.fontsize
+  const fontname = getAttrValue(marks, 'fontname', 'fontname') || defaultAttrs.fontname
+  const align = getAttrValueInSelection(view, 'align') || defaultAttrs.align
   const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)
   const isOrderedList = isActiveOfParentNodeType('ordered_list', view.state)
   const isBlockquote = isActiveOfParentNodeType('blockquote', view.state)
