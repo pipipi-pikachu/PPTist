@@ -28,6 +28,7 @@ export default () => {
   const fontColor = computed(() => store.state.theme.fontColor)
   const fontName = computed(() => store.state.theme.fontName)
   const viewportRatio = computed(() => store.state.viewportRatio)
+  const creatingElement = computed(() => store.state.creatingElement)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -35,6 +36,9 @@ export default () => {
   const createElement = (element: PPTElement) => {
     store.commit(MutationTypes.ADD_ELEMENT, element)
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.id])
+
+    if (creatingElement.value) store.commit(MutationTypes.SET_CREATING_ELEMENT, null)
+
     addHistorySnapshot()
   }
 
