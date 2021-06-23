@@ -1,9 +1,14 @@
 <template>
   <div class="writing-board" ref="writingBoardRef">
+    <div class="blackboard" v-if="blackboard"></div>
+
     <canvas class="canvas" ref="canvasRef"
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
       @mouseup="handleMouseup()"
+      @touchstart="$event => handleMousedown($event)"
+      @touchmove="$event => handleMousemove($event)"
+      @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
     ></canvas>
@@ -48,6 +53,10 @@ export default defineComponent({
       type: String as PropType<'pen' | 'eraser'>,
       default: 'pen',
     },
+    blackboard: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     let ctx: CanvasRenderingContext2D | null = null
@@ -67,10 +76,11 @@ export default defineComponent({
       x: 0,
       y: 0,
     })
+
     // 更新鼠标位置坐标
-    const updateMousePosition = (e: MouseEvent) => {
-      mouse.x = e.pageX
-      mouse.y = e.pageY
+    const updateMousePosition = (x: number, y: number) => {
+      mouse.x = x
+      mouse.y = y
     }
     
     // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
@@ -145,13 +155,6 @@ export default defineComponent({
       ctx.restore()
     }
 
-    // 准备开始绘制/擦除墨迹（落笔）
-    const handleMousedown = (e: MouseEvent) => {
-      isMouseDown = true
-      lastPos = { x: e.offsetX, y: e.offsetY }
-      lastTime = new Date().getTime()
-    }
-
     // 计算鼠标两次移动之间的距离
     const getDistance = (posX: number, posY: number) => {
       const lastPosX = lastPos.x
@@ -176,26 +179,48 @@ export default defineComponent({
       return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
     }
 
-    // 开始绘制/擦除墨迹（移动）
-    const handleMousemove = (e: MouseEvent) => {
-      updateMousePosition(e)
-
-      if (!isMouseDown) return
-      
+    // 路径操作
+    const handleMove = (x: number, y: number) => {
       const time = new Date().getTime()
 
       if (props.model === 'pen') {
-        const s = getDistance(e.offsetX, e.offsetY)
+        const s = getDistance(x, y)
         const t = time - lastTime
         const lineWidth = getLineWidth(s, t)
-  
-        draw(e.offsetX, e.offsetY, lineWidth)
+
+        draw(x, y, lineWidth)
         lastLineWidth = lineWidth
       }
-      else erase(e.offsetX, e.offsetY)
+      else erase(x, y)
 
-      lastPos = { x: e.offsetX, y: e.offsetY }
+      lastPos = {x, y}
       lastTime = new Date().getTime()
+    }
+
+    // 处理鼠标（触摸）事件
+    // 准备开始绘制/擦除墨迹（落笔）
+    const handleMousedown = (e: MouseEvent | TouchEvent) => {
+      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
+      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
+
+      isMouseDown = true
+      lastPos = { x, y }
+      lastTime = new Date().getTime()
+
+      if (e instanceof TouchEvent) {
+        updateMousePosition(x, y)
+        mouseInCanvas.value = true
+      }
+    }
+
+    // 开始绘制/擦除墨迹（移动）
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
+      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
+      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
+
+      updateMousePosition(x, y)
+
+      if (isMouseDown) handleMove(x, y)
     }
 
     // 结束绘制/擦除墨迹（停笔）
@@ -235,6 +260,14 @@ export default defineComponent({
   right: 0;
   z-index: 8;
   cursor: none;
+}
+.blackboard {
+  width: 100%;
+  height: 100%;
+  background-color: #0f392b;
+}
+.canvas {
+  @include absolute-0();
 }
 .eraser, .pen {
   pointer-events: none;

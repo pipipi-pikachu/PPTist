@@ -48,6 +48,15 @@ export default defineComponent({
   overflow: hidden;
   text-align: center;
   font-size: 14px;
+
+  &::after {
+    content: '#';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+  }
 }
 .input-content {
   width: 100%;

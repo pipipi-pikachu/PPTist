@@ -1,5 +1,4 @@
-import debounce from 'lodash/debounce'
-import throttle from 'lodash/throttle'
+import { debounce, throttle} from 'lodash'
 import { ActionTypes, useStore } from '@/store'
 
 export default () => {

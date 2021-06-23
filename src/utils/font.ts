@@ -1,12 +1,12 @@
 /**
  * 判断操作系统是否存在某字体
- * @param fontFamily 字体名
+ * @param fontName 字体名
  */
-export const isSupportFontFamily = (fontFamily: string) => {
-  if (typeof fontFamily !== 'string') return false
+export const isSupportFont = (fontName: string) => {
+  if (typeof fontName !== 'string') return false
 
   const arial = 'Arial'
-  if (fontFamily.toLowerCase() === arial.toLowerCase()) return true
+  if (fontName.toLowerCase() === arial.toLowerCase()) return true
 
   const size = 100
   const width = 100
@@ -32,5 +32,5 @@ export const isSupportFontFamily = (fontFamily: string) => {
     return [].slice.call(imageData).filter(item => item !== 0)
   }
 
-  return getDotArray(arial).join('') !== getDotArray(fontFamily).join('')
+  return getDotArray(arial).join('') !== getDotArray(fontName).join('')
 }

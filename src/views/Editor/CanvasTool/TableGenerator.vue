@@ -109,6 +109,7 @@ export default defineComponent({
   font-size: 12px;
   display: flex;
   justify-content: space-between;
+  user-select: none;
 
   .right {
     cursor: pointer;

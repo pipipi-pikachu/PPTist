@@ -21,8 +21,7 @@
 <script lang="ts">
 import { computed, defineComponent, onUnmounted, PropType, ref } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
-import throttle from 'lodash/throttle'
-import clamp from 'lodash/clamp'
+import { throttle, clamp } from 'lodash'
 
 export default defineComponent({
   name: 'saturation',
@@ -39,7 +38,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const color = computed(() => {
       const hsva = tinycolor(props.value).toHsv()
-      if (hsva.s === 0) hsva.h = props.hue
+      if (props.hue !== -1) hsva.h = props.hue
       return hsva
     })
 
@@ -101,11 +100,8 @@ export default defineComponent({
 .saturation,
 .saturation-white,
 .saturation-black {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @include absolute-0();
+
   cursor: pointer;
 }
 .saturation-white {

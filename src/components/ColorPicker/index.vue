@@ -27,7 +27,7 @@
         class="picker-presets-color"
         v-for="c in themeColors"
         :key="c"
-        :style="{background: c}"
+        :style="{ background: c }"
         @click="selectPresetColor(c)"
       ></div>
     </div>
@@ -41,7 +41,7 @@
         <div class="picker-gradient-color"
           v-for="c in col"
           :key="c"
-          :style="{background: c}"
+          :style="{ background: c }"
           @click="selectPresetColor(c)"
         ></div>
       </div>
@@ -73,7 +73,7 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
-import debounce from 'lodash/debounce'
+import { debounce } from 'lodash'
 
 import Alpha from './Alpha.vue'
 import Checkboard from './Checkboard.vue'
@@ -140,7 +140,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const hue = ref(0)
+    const hue = ref(-1)
     const recentColors = ref<string[]>([])
 
     const color = computed({
@@ -162,6 +162,7 @@ export default defineComponent({
     })
 
     const selectPresetColor = (colorString: string) => {
+      hue.value = tinycolor(colorString).toHsl().h
       emit('update:modelValue', colorString)
     }
 
@@ -193,7 +194,10 @@ export default defineComponent({
         hue.value = value.h
         color.value = tinycolor(value).toRgb()
       }
-      else color.value = value
+      else {
+        hue.value = tinycolor(value).toHsl().h
+        color.value = value
+      }
 
       updateRecentColorsCache()
     }
@@ -257,11 +261,8 @@ export default defineComponent({
   }
 }
 .picker-current-color {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @include absolute-0();
+
   z-index: 2;
 }
 

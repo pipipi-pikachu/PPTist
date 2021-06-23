@@ -21,6 +21,8 @@
           textShadow: shadowStyle,
           lineHeight: elementInfo.lineHeight,
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
+          color: elementInfo.defaultColor,
+          fontFamily: elementInfo.defaultFontName,
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
@@ -42,18 +44,18 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-import debounce from 'lodash/debounce'
+import { debounce } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { initProsemirrorEditor } from '@/prosemirror/'
-import { getTextAttrs } from '@/prosemirror/utils'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import { initProsemirrorEditor } from '@/utils/prosemirror/'
+import { getTextAttrs } from '@/utils/prosemirror/utils'
+import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
-import { alignmentCommand } from '@/prosemirror/commands/setTextAlign'
-import { toggleList } from '@/prosemirror/commands/toggleList'
+import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
+import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
@@ -87,9 +89,6 @@ export default defineComponent({
 
     const elementRef = ref<HTMLElement>()
 
-    const isScaling = ref(false)
-    const realHeightCache = ref(-1)
-
     const editorViewRef = ref<HTMLElement>()
     let editorView: EditorView
 
@@ -107,21 +106,20 @@ export default defineComponent({
 
     // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-    const scaleElementStateListener = (state: boolean) => {
-      isScaling.value = state
+    const realHeightCache = ref(-1)
 
-      if (!state && realHeightCache.value !== -1) {
+    const isScaling = computed(() => store.state.isScaling)
+
+    watch(isScaling, () => {
+      if (handleElementId.value !== props.elementInfo.id) return
+
+      if (!isScaling.value && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
         })
         realHeightCache.value = -1
       }
-    }
-
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
     })
 
     const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
@@ -163,8 +161,9 @@ export default defineComponent({
 
     const handleFocus = () => {
       if (props.elementInfo.content === '请输入内容') {
-        editorView.dom.innerHTML = ''
-        handleInput()
+        setTimeout(() => {
+          selectAll(editorView.state, editorView.dispatch)
+        }, 0)
       }
       store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
     }
@@ -174,8 +173,11 @@ export default defineComponent({
     }
 
     const handleClick = debounce(function() {
-      const attr = getTextAttrs(editorView)
-      emitter.emit(EmitterEvents.UPDATE_TEXT_STATE, attr)
+      const attrs = getTextAttrs(editorView, {
+        color: props.elementInfo.defaultColor,
+        fontname: props.elementInfo.defaultFontName,
+      })
+      store.commit(MutationTypes.SET_RICHTEXT_ATTRS, attrs)
     }, 30, { trailing: true })
 
     const handleKeydown = () => {
@@ -215,7 +217,7 @@ export default defineComponent({
     
     // 执行富文本命令（可以是一个或多个）
     // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
-    const execCommand = (payload: CommandPayload | CommandPayload[]) => {
+    const execCommand: EmitterHandler = (payload: CommandPayload | CommandPayload[]) => {
       if (handleElementId.value !== props.elementInfo.id) return
 
       const commands = ('command' in payload) ? [payload] : payload
@@ -305,9 +307,9 @@ export default defineComponent({
       handleClick()
     }
 
-    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, payload => execCommand(payload))
+      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
     })
 
     return {

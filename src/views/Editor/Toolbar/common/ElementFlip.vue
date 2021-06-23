@@ -3,13 +3,13 @@
     <CheckboxButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
-        :checked="flip.x === 180"
-        @click="updateFlip({ x: flip.x === 180 ? 0 : 180, y: flip.y })"
+        :checked="flipH"
+        @click="updateFlip({ flipH: !flipH })"
       ><IconFlipVertically /> 垂直翻转</CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
-        :checked="flip.y === 180"
-        @click="updateFlip({ x: flip.x, y: flip.y === 180 ? 0 : 180 })"
+        :checked="flipV"
+        @click="updateFlip({ flipV: !flipV })"
       ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
     </CheckboxButtonGroup>
   </div>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { PPTImageElement, PPTShapeElement } from '@/types/slides'
+import { PPTImageElement, PPTShapeElement, ImageOrShapeFlip } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default defineComponent({
@@ -27,33 +27,26 @@ export default defineComponent({
     const store = useStore()
     const handleElement = computed<PPTImageElement | PPTShapeElement>(() => store.getters.handleElement)
 
-    const flip = ref({
-      x: 0,
-      y: 0,
-    })
+    const flipH = ref(false)
+    const flipV = ref(false)
 
     watch(handleElement, () => {
       if (!handleElement.value || !['image', 'shape'].includes(handleElement.value.type)) return
 
-      if (handleElement.value.flip) {
-        flip.value = {
-          x: handleElement.value.flip.x || 0,
-          y: handleElement.value.flip.y || 0,
-        }
-      }
-      else flip.value = { x: 0, y: 0 }
+      flipH.value = !!handleElement.value.flipH
+      flipV.value = !!handleElement.value.flipV
     }, { deep: true, immediate: true })
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const updateFlip = (value: number) => {
-      const props = { flip: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+    const updateFlip = (flipProps: ImageOrShapeFlip) => {
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props: flipProps })
       addHistorySnapshot()
     }
 
     return {
-      flip,
+      flipH,
+      flipV,
       updateFlip,
     }
   },

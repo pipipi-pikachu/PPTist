@@ -100,6 +100,7 @@ export default defineComponent({
   font-size: 12px;
   flex-shrink: 0;
   display: flex;
+  user-select: none;
 }
 .tab {
   flex: 1;
@@ -122,7 +123,7 @@ export default defineComponent({
 .content {
   padding: 12px;
   font-size: 13px;
-  overflow: auto;
-  overflow: overlay;
+
+  @include overflow-overlay();
 }
 </style>

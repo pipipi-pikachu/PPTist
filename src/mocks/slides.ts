@@ -29,10 +29,7 @@ export const slides: Slide[] = [
         path: 'M 0 0 L 0 200 L 200 200 Z',
         fill: '#5b9bd5',
         fixedRatio: false,
-        flip: {
-          x: 180,
-          y: 0,
-        },
+        flipH: true,
         rotate: 0
       },
       {
@@ -42,8 +39,11 @@ export const slides: Slide[] = [
         top: 65.25,
         width: 585,
         height: 188,
-        content: '<p style=\'\'><strong><span style=\'font-size:  112px\'>PPTIST</span></strong></p>',
-        rotate: 0
+        lineHeight: 1.2,
+        content: '<p><strong><span style=\'font-size:  112px\'>PPTIST</span></strong></p>',
+        rotate: 0,
+        defaultFontName: 'Microsoft Yahei',
+        defaultColor: '#333'
       },
       {
         type: 'text',
@@ -52,8 +52,10 @@ export const slides: Slide[] = [
         top: 253.25,
         width: 585,
         height: 56,
-        content: '<p style=\'\'><span style=\'font-size:  24px\'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>',
-        rotate: 0
+        content: '<p><span style=\'font-size:  24px\'>基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>',
+        rotate: 0,
+        defaultFontName: 'Microsoft Yahei',
+        defaultColor: '#333'
       },
       {
         type: 'line',

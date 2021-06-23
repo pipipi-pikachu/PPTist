@@ -57,7 +57,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -148,9 +148,11 @@ export default defineComponent({
       const elRef = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
       if (elRef) {
         const animationName = `${prefix}${animation.type}`
+        document.documentElement.style.setProperty('--animate-duration', `${animation.duration}ms`)
         elRef.classList.add(`${prefix}animated`, animationName)
 
         const handleAnimationEnd = () => {
+          document.documentElement.style.removeProperty('--animate-duration')
           elRef.classList.remove(`${prefix}animated`, animationName)
         }
         elRef.addEventListener('animationend', handleAnimationEnd, { once: true })

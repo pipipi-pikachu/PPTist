@@ -1,19 +1,18 @@
 <template>
   <div class="element-positopn-panel">
+    <div class="title">层级：</div>
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置顶层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconSendToBack /></Button>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="置底层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconBringToFrontOne /></Button>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上移一层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconBringToFront /></Button>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下移一层">
-        <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconSentToBack /></Button>
-      </Tooltip>
+      <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
     </ButtonGroup>
+    <ButtonGroup class="row">
+      <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconBringToFront class="btn-icon" /> 上移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconSentToBack class="btn-icon" /> 下移一层</Button>
+    </ButtonGroup>
+
+    <Divider />
+    
+    <div class="title">对齐：</div>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
         <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconAlignLeft /></Button>
@@ -134,7 +133,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import round from 'lodash/round'
+import { round } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { MIN_SIZE } from '@/configs/element'
@@ -260,8 +259,14 @@ export default defineComponent({
   align-items: center;
   margin-bottom: 10px;
 }
+.title {
+  margin-bottom: 10px;
+}
 .label {
   text-align: center;
+}
+.btn-icon {
+  margin-right: 3px;
 }
 .icon-btn {
   cursor: pointer;

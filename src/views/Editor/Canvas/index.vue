@@ -76,7 +76,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, provide, ref, watch, watchEffect } from 'vue'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement, Slide } from '@/types/slides'
@@ -125,6 +125,7 @@ export default defineComponent({
 
     const activeElementIdList = computed(() => store.state.activeElementIdList)
     const handleElementId = computed(() => store.state.handleElementId)
+    const activeGroupElementId = computed(() => store.state.activeGroupElementId)
     const editorAreaFocus = computed(() => store.state.editorAreaFocus)
     const ctrlKeyState = computed(() => store.state.ctrlKeyState)
     const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
@@ -132,8 +133,9 @@ export default defineComponent({
     const viewportRef = ref<HTMLElement>()
     const alignmentLines = ref<AlignmentLineProps[]>([])
 
-    const activeGroupElementId = ref('')
-    watch(handleElementId, () => activeGroupElementId.value = '')
+    watch(handleElementId, () => {
+      store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, '')
+    })
 
     const currentSlide = computed<Slide>(() => store.getters.currentSlide)
     const elementList = ref<PPTElement[]>([])
@@ -150,10 +152,10 @@ export default defineComponent({
 
     const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 
-    const { dragElement } = useDragElement(elementList, activeGroupElementId, alignmentLines)
+    const { dragElement } = useDragElement(elementList, alignmentLines)
     const { dragLineElement } = useDragLineElement(elementList)
-    const { selectElement } = useSelectElement(elementList, activeGroupElementId, dragElement)
-    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, activeGroupElementId, alignmentLines)
+    const { selectElement } = useSelectElement(elementList, dragElement)
+    const { scaleElement, scaleMultiElement } = useScaleElement(elementList, alignmentLines)
     const { rotateElement } = useRotateElement(elementList, viewportRef)
 
     const { selectAllElement } = useSelectAllElement()

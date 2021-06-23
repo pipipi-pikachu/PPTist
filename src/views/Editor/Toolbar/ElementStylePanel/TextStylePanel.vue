@@ -218,11 +218,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
-import { TextAttrs } from '@/prosemirror/utils'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -320,6 +319,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const handleElement = computed<PPTTextElement>(() => store.getters.handleElement)
+    const richTextAttrs = computed(() => store.state.richTextAttrs)
 
     const fill = ref<string>()
     const lineHeight = ref<number>()
@@ -333,24 +333,6 @@ export default defineComponent({
       wordSpace.value = handleElement.value.wordSpace || 0
     }, { deep: true, immediate: true })
 
-    const richTextAttrs = ref<TextAttrs>({
-      bold: false,
-      em: false,
-      underline: false,
-      strikethrough: false,
-      superscript: false,
-      subscript: false,
-      code: false,
-      color: '#000',
-      backcolor: '#000',
-      fontsize: '20px',
-      fontname: '微软雅黑',
-      align: 'left',
-      bulletList: false,
-      orderedList: false,
-      blockquote: false,
-    })
-
     const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
       '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
@@ -359,14 +341,6 @@ export default defineComponent({
     ]
     const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
-
-    // 接收并更新当前光标所在位置的富文本状态
-    const updateRichTextAttrs = (attr: TextAttrs) => richTextAttrs.value = attr
-
-    emitter.on(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.UPDATE_TEXT_STATE, attr => updateRichTextAttrs(attr))
-    })
 
     // 发射富文本设置命令
     const emitRichTextCommand = (command: string, value?: string) => {
@@ -447,7 +421,7 @@ export default defineComponent({
   align-items: center;
   position: relative;
   cursor: pointer;
-  transition: all .2s;
+  transition: all $transitionDelay;
 
   &:hover {
     border-color: $themeColor;

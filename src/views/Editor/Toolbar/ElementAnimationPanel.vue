@@ -30,12 +30,24 @@
           </div>
         </template>
         <Button class="element-animation-btn">
-          <IconEffects style="margin-right: 5px;" /> {{handleElementAnimation || '点击选择动画'}}
+          <IconEffects style="margin-right: 5px;" /> {{handleElementAnimationName || '点击选择动画'}}
         </Button>
       </Popover>
       <Button class="element-animation-btn" v-else disabled>
         <IconEffects style="margin-right: 5px;" /> 图表元素暂不支持动画
       </Button>
+
+      <div class="duration" v-if="handleElementAnimation">
+        <div style="flex: 4;">持续时间（毫秒）：</div>
+        <InputNumber 
+          :min="100"
+          :max="5000"
+          :step="100"
+          :value="handleElementAnimation.duration" 
+          @change="value => updateElementAnimationDuration(value)" 
+          style="flex: 3;" 
+        />
+      </div>
     </div>
 
     <div class="tip" v-else><IconClick /> 选中画布中的元素添加动画</div>
@@ -57,7 +69,7 @@
           <div class="text">【{{element.elType}}】{{element.animationType}}</div>
           <div class="handler">
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-              <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.type)" />
+              <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.type, element.duration)" />
             </Tooltip>
             <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
               <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.elId)" />
@@ -78,6 +90,8 @@ import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
+
+const defaultDuration = 1000
 
 const animationTypes: { [key: string]: string } = {}
 for (const type of ANIMATIONS) {
@@ -128,8 +142,13 @@ export default defineComponent({
       if (!handleElement.value) return null
       const animations = currentSlideAnimations.value || []
       const animation = animations.find(item => item.elId === handleElement.value.id)
-      if (!animation) return null
-      return animationTypes[animation.type]
+      return animation || null
+    })
+
+    // 当前选中元素的入场动画名称
+    const handleElementAnimationName = computed(() => {
+      if (!handleElementAnimation.value) return null
+      return animationTypes[handleElementAnimation.value.type]
     })
 
     // 删除元素入场动画
@@ -154,14 +173,16 @@ export default defineComponent({
     }
 
     // 执行入场动画预览
-    const runAnimation = (elId: string, animationType: string) => {
+    const runAnimation = (elId: string, animationType: string, duration: number) => {
       const prefix = 'animate__'
       const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
       if (elRef) {
         const animationName = `${prefix}${animationType}`
+        document.documentElement.style.setProperty('--animate-duration', `${duration}ms`)
         elRef.classList.add(`${prefix}animated`, animationName)
 
         const handleAnimationEnd = () => {
+          document.documentElement.style.removeProperty('--animate-duration')
           elRef.classList.remove(`${prefix}animated`, animationName)
         }
         elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
@@ -170,7 +191,9 @@ export default defineComponent({
 
     // 修改元素入场动画，并执行一次预览
     const updateElementAnimation = (type: string) => {
-      const animations = (currentSlideAnimations.value as PPTAnimation[]).map(item => {
+      if (!currentSlideAnimations.value) return
+
+      const animations = currentSlideAnimations.value.map(item => {
         if (item.elId === handleElement.value.id) return { ...item, type }
         return item
       })
@@ -178,12 +201,28 @@ export default defineComponent({
       animationPoolVisible.value = false
       addHistorySnapshot()
 
-      runAnimation(handleElement.value.id, type)
+      const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElement.value.id)
+      const duration = animationItem?.duration || defaultDuration
+
+      runAnimation(handleElement.value.id, type, duration)
+    }
+
+    // 修改元素入场动画持续时间
+    const updateElementAnimationDuration = (duration: number) => {
+      if (!currentSlideAnimations.value) return
+      if (duration < 100 || duration > 5000) return
+
+      const animations = currentSlideAnimations.value.map(item => {
+        if (item.elId === handleElement.value.id) return { ...item, duration }
+        return item
+      })
+      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      addHistorySnapshot()
     }
 
     // 添加元素入场动画，并执行一次预览
     const addAnimation = (type: string) => {
-      if (handleElementAnimation.value) {
+      if (handleElementAnimationName.value) {
         updateElementAnimation(type)
         return
       }
@@ -191,13 +230,13 @@ export default defineComponent({
       animations.push({
         elId: handleElement.value.id,
         type,
-        duration: 1000,
+        duration: defaultDuration,
       })
       store.commit(MutationTypes.UPDATE_SLIDE, { animations })
       animationPoolVisible.value = false
       addHistorySnapshot()
 
-      runAnimation(handleElement.value.id, type)
+      runAnimation(handleElement.value.id, type, defaultDuration)
     }
 
     return {
@@ -207,10 +246,12 @@ export default defineComponent({
       animationSequence,
       hoverPreviewAnimation,
       handleElementAnimation,
+      handleElementAnimationName,
       addAnimation,
       deleteAnimation,
       handleDragEnd,
       runAnimation,
+      updateElementAnimationDuration,
     }
   },
 })
@@ -219,6 +260,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .element-animation-btn {
   width: 100%;
+}
+.duration {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
 }
 .tip {
   text-align: center;

@@ -1,11 +1,13 @@
 import { MutationTree } from 'vuex'
-import omit from 'lodash/omit'
+import { omit } from 'lodash'
 import { MutationTypes } from './constants'
 import { State } from './state'
 import { Slide, PPTElement, SlideTheme } from '@/types/slides'
 import { CreatingElement } from '@/types/edit'
 import { SYS_FONTS } from '@/configs/font'
-import { isSupportFontFamily } from '@/utils/fontFamily'
+import { isSupportFont } from '@/utils/font'
+import { ToolbarState } from '@/types/toolbar'
+import { TextAttrs } from '@/utils/prosemirror/utils'
 
 interface RemoveElementPropData {
   id: string;
@@ -30,6 +32,10 @@ export const mutations: MutationTree<State> = {
   
   [MutationTypes.SET_HANDLE_ELEMENT_ID](state, handleElementId: string) {
     state.handleElementId = handleElementId
+  },
+  
+  [MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID](state, activeGroupElementId: string) {
+    state.activeGroupElementId = activeGroupElementId
   },
 
   [MutationTypes.SET_CANVAS_PERCENTAGE](state, percentage: number) {
@@ -61,15 +67,27 @@ export const mutations: MutationTree<State> = {
   },
 
   [MutationTypes.SET_AVAILABLE_FONTS](state) {
-    state.availableFonts = SYS_FONTS.filter(font => isSupportFontFamily(font.value))
+    state.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
   },
 
-  [MutationTypes.SET_TOOLBAR_STATE](state, type) {
-    state.toolbarState = type
+  [MutationTypes.SET_TOOLBAR_STATE](state, toolbarState: ToolbarState) {
+    state.toolbarState = toolbarState
   },
 
-  [MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID](state, elId) {
+  [MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID](state, elId: string) {
     state.clipingImageElementId = elId
+  },
+
+  [MutationTypes.SET_RICHTEXT_ATTRS](state, attrs: TextAttrs) {
+    state.richTextAttrs = attrs
+  },
+
+  [MutationTypes.SET_SELECTED_TABLE_CELLS](state, cells: string[]) {
+    state.selectedTableCells = cells
+  },
+
+  [MutationTypes.SET_SCALING_STATE](state, isScaling: boolean) {
+    state.isScaling = isScaling
   },
 
   // slides

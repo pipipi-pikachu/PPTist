@@ -294,7 +294,7 @@ export default defineComponent({
     // 将当前主题应用到全部页面
     const applyThemeAllSlide = () => {
       const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
-      const { themeColor, backgroundColor, fontColor } = theme.value
+      const { themeColor, backgroundColor, fontColor, fontName } = theme.value
 
       for (const slide of newSlides) {
         if (!slide.background || slide.background.type !== 'image') {
@@ -310,10 +310,20 @@ export default defineComponent({
           if (el.type === 'shape') el.fill = themeColor
           else if (el.type === 'line') el.color = themeColor
           else if (el.type === 'text') {
+            el.defaultColor = fontColor
+            el.defaultFontName = fontName
             if (el.fill) el.fill = themeColor
           }
           else if (el.type === 'table') {
             if (el.theme) el.theme.color = themeColor
+            for (const rowCells of el.data) {
+              for (const cell of rowCells) {
+                if (cell.style) {
+                  cell.style.color = fontColor
+                  cell.style.fontname = fontName
+                }
+              }
+            }
           }
           else if (el.type === 'chart') {
             el.themeColor = themeColor
@@ -368,7 +378,7 @@ export default defineComponent({
   border: 1px dashed $borderColor;
   border-radius: $borderRadius;
   position: relative;
-  transition: all .2s;
+  transition: all $transitionDelay;
 
   &:hover {
     border-color: $themeColor;
@@ -376,11 +386,8 @@ export default defineComponent({
   }
 
   .content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    @include absolute-0();
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -403,16 +410,13 @@ export default defineComponent({
   cursor: pointer;
 
   .theme-item-content {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    @include absolute-0();
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: box-shadow .2s;
+    transition: box-shadow $transitionDelay;
 
     &:hover {
       box-shadow: 0 0 4px #888;

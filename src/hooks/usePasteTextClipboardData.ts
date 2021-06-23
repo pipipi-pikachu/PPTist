@@ -3,6 +3,7 @@ import { MutationTypes, useStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
+import { parseText2Paragraphs } from '@/utils/textParser'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCreateElement from '@/hooks/useCreateElement'
 
@@ -103,7 +104,10 @@ export default () => {
     }
 
     // 普通文本
-    else if (!onlyElements && !onlySlide) pasteText(clipboardData)
+    else if (!onlyElements && !onlySlide) {
+      const string = parseText2Paragraphs(clipboardData)
+      pasteText(string)
+    }
   }
 
   return {

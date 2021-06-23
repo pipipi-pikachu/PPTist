@@ -88,26 +88,15 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .alpha {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  @include absolute-0();
 }
 .alpha-checkboard-wrap {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   overflow: hidden;
+
+  @include absolute-0();
 }
 .alpha-gradient {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  @include absolute-0();
 }
 .alpha-container {
   cursor: pointer;

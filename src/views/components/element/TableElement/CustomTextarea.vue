@@ -16,7 +16,7 @@ import { defineComponent, onUnmounted, ref, watch } from 'vue'
 export default defineComponent({
   name: 'custom-textarea',
   props: {
-    modelValue: {
+    value: {
       type: String,
       default: '',
     },
@@ -32,16 +32,16 @@ export default defineComponent({
 
     // 自定义v-modal，同步数据
     // 当文本框聚焦时，不执行数据同步
-    watch(() => props.modelValue, () => {
+    watch(() => props.value, () => {
       if (isFocus.value) return
-      text.value = props.modelValue
-      if (textareaRef.value) textareaRef.value.innerHTML = props.modelValue
+      text.value = props.value
+      if (textareaRef.value) textareaRef.value.innerHTML = props.value
     }, { immediate: true })
 
     const handleInput = () => {
       if (!textareaRef.value) return
       const text = textareaRef.value.innerHTML
-      emit('update:modelValue', text)
+      emit('updateValue', text)
     }
 
     // 聚焦时更新焦点标记，并监听粘贴事件
@@ -56,7 +56,7 @@ export default defineComponent({
         const clipboardDataFirstItem = e.clipboardData.items[0]
 
         if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
-          clipboardDataFirstItem.getAsString(text => emit('update:modelValue', text))
+          clipboardDataFirstItem.getAsString(text => emit('updateValue', text))
         }
       }
     }

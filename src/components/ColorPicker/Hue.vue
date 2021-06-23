@@ -37,7 +37,7 @@ export default defineComponent({
     
     const color = computed(() => {
       const hsla = tinycolor(props.value).toHsl()
-      if (hsla.s === 0) hsla.h = props.hue
+      if (props.hue !== -1) hsla.h = props.hue
       return hsla
     })
 
@@ -68,9 +68,9 @@ export default defineComponent({
       else if (left > containerWidth) h = 360
       else {
         percent = left * 100 / containerWidth
-        h = (360 * percent / 100)
+        h = 360 * percent / 100
       }
-      if (color.value.h !== h) {
+      if (props.hue === -1 || color.value.h !== h) {
         emit('colorChange', {
           h,
           l: color.value.l,
@@ -103,12 +103,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .hue {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+
+  @include absolute-0();
 }
 .hue-container {
   cursor: pointer;

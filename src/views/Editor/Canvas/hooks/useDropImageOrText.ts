@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, Ref } from 'vue'
 import { useStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
+import { parseText2Paragraphs } from '@/utils/textParser'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (elementRef: Ref<HTMLElement | undefined>) => {
@@ -24,12 +25,13 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
     else if (dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
       dataTransferItem.getAsString(text => {
         if (disableHotkeys.value) return
+        const string = parseText2Paragraphs(text)
         createTextElement({
           left: 0,
           top: 0,
           width: 600,
           height: 50,
-        }, text)
+        }, string)
       })
     }
   }

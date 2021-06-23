@@ -1,20 +1,15 @@
 import { computed, Ref } from 'vue'
-import { ImageOrShapeFlip } from '@/types/slides'
 
 // 计算元素的翻转样式
-export default (flip: Ref<ImageOrShapeFlip | undefined>) => {
+export default (flipH: Ref<boolean | undefined>, flipV: Ref<boolean | undefined>) => {
   const flipStyle = computed(() => {
-    if (flip.value) {
-      let style = ''
-      
-      const { x, y } = flip.value
-      if (x && y) style = `rotateX(${x}deg) rotateY(${y}deg)`
-      else if (x) style = `rotateX(${x}deg)`
-      else if (y) style = `rotateY(${y}deg)`
+    let style = ''
+    
+    if (flipH.value && flipV.value) style = 'rotateX(180deg) rotateY(180deg)'
+    else if (flipH.value) style = 'rotateX(180deg)'
+    else if (flipV.value) style = 'rotateY(180deg)'
 
-      return style
-    }
-    return ''
+    return style
   })
 
   return {

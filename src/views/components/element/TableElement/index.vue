@@ -42,7 +42,6 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -99,26 +98,22 @@ export default defineComponent({
 
     // 监听表格元素的尺寸变化，当高度变化时，更新高度到vuex
     // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
-    const isScaling = ref(false)
     const realHeightCache = ref(-1)
 
-    const scaleElementStateListener = (state: boolean) => {
-      isScaling.value = state
+    const isScaling = computed(() => store.state.isScaling)
 
-      if (state) editable.value = false
+    watch(isScaling, () => {
+      if (handleElementId.value !== props.elementInfo.id) return
 
-      if (!state && realHeightCache.value !== -1) {
+      if (isScaling.value) editable.value = false
+
+      if (!isScaling.value && realHeightCache.value !== -1) {
         store.commit(MutationTypes.UPDATE_ELEMENT, {
           id: props.elementInfo.id,
           props: { height: realHeightCache.value },
         })
         realHeightCache.value = -1
       }
-    }
-
-    emitter.on(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.SCALE_ELEMENT_STATE, state => scaleElementStateListener(state))
     })
 
     const updateTableElementHeight = (entries: ResizeObserverEntry[]) => {
@@ -170,7 +165,7 @@ export default defineComponent({
 
     // 更新表格当前选中的单元格
     const updateSelectedCells = (cells: string[]) => {
-      nextTick(() => emitter.emit(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells))
+      nextTick(() => store.commit(MutationTypes.SET_SELECTED_TABLE_CELLS, cells))
     }
 
     return {
@@ -203,13 +198,10 @@ export default defineComponent({
   cursor: move;
 }
 .table-mask {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  @include absolute-0();
+
   opacity: 0;
-  transition: opacity .2s;
+  transition: opacity $transitionDelay;
 
   .mask-tip {
     position: absolute;

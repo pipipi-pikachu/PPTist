@@ -192,10 +192,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
 import { createRandomCode } from '@/utils/common'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -216,6 +215,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const handleElement = computed<PPTTableElement>(() => store.getters.handleElement)
+    const selectedCells = computed(() => store.state.selectedTableCells)
     
     const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
@@ -256,11 +256,9 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const selectedCells = ref<string[]>([])
-
     // 更新当前选中单元格的文本样式状态
     const updateTextAttrState = () => {
-      if (!handleElement.value) return
+      if (!handleElement.value || handleElement.value.type !== 'table') return
 
       let rowIndex = 0
       let colIndex = 0
@@ -299,16 +297,11 @@ export default defineComponent({
       }
     }
 
-    // 监听并更新当前选中的单元格
-    const updateSelectedCells = (cells: string[]) => {
-      selectedCells.value = cells
-      updateTextAttrState()
-    }
-
-    emitter.on(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.UPDATE_TABLE_SELECTED_CELL, cells => updateSelectedCells(cells))
+    onMounted(() => {
+      if (selectedCells.value.length) updateTextAttrState()
     })
+
+    watch(selectedCells, updateTextAttrState)
 
     // 设置单元格内容文本样式
     const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {

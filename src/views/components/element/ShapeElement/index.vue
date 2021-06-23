@@ -100,8 +100,9 @@ export default defineComponent({
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
-    const flip = computed(() => props.elementInfo.flip)
-    const { flipStyle } = useElementFlip(flip)
+    const flipH = computed(() => props.elementInfo.flipH)
+    const flipV = computed(() => props.elementInfo.flipV)
+    const { flipStyle } = useElementFlip(flipH, flipV)
 
     return {
       handleSelectElement,

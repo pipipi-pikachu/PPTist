@@ -11,7 +11,7 @@
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
-            <MenuItem @click="exportDialogVisible = true">导出为</MenuItem>
+            <MenuItem @click="exportDialogVisible = true">导出 JSON</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -28,7 +28,7 @@
         <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="openDoc()">开发文档</MenuItem>
+            <MenuItem @click="goIssues()">意见反馈</MenuItem>
             <MenuItem @click="hotkeyDrawerVisible = true">快捷键</MenuItem>
           </Menu>
         </template>
@@ -78,8 +78,6 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import HotkeyDoc from './HotkeyDoc.vue'
 import ExportDialog from './ExportDialog.vue'
 
-import { message } from 'ant-design-vue'
-
 export default defineComponent({
   name: 'editor-header',
   components: {
@@ -98,12 +96,12 @@ export default defineComponent({
       store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
     }
 
-    const openDoc = () => {
-      message.warning('作者努力编写中...')
-    }
-
     const hotkeyDrawerVisible = ref(false)
     const exportDialogVisible = ref(false)
+
+    const goIssues = () => {
+      window.open('https://github.com/pipipi-pikachu/PPTist/issues')
+    }
 
     return {
       enterScreening,
@@ -115,9 +113,9 @@ export default defineComponent({
       toggleGridLines,
       showGridLines,
       resetSlides,
-      openDoc,
       hotkeyDrawerVisible,
       exportDialogVisible,
+      goIssues,
     }
   },
 })
@@ -144,7 +142,7 @@ export default defineComponent({
   align-items: center;
   font-size: 14px;
   padding: 0 10px;
-  transition: background-color .2s;
+  transition: background-color $transitionDelay;
   cursor: pointer;
 
   .text {
