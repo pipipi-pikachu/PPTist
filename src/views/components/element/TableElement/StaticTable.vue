@@ -172,7 +172,6 @@ table {
     border: 0;
     outline: 0;
     line-height: 1.5;
-    font-size: 14px;
     user-select: none;
   }
 }
