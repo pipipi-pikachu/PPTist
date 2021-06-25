@@ -169,6 +169,10 @@ export default defineComponent({
     }
     onUnmounted(closeAutoPlay)
 
+    const throttleMassage = throttle(function(msg) {
+      message.success(msg)
+    }, 3000, { leading: true, trailing: false })
+
     // 向上/向下播放
     // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
     // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
@@ -182,7 +186,7 @@ export default defineComponent({
         animationIndex.value = lastIndex
       }
       else {
-        message.success('已经是第一页了')
+        throttleMassage('已经是第一页了')
       }
     }
     const execNext = () => {
@@ -194,7 +198,7 @@ export default defineComponent({
         animationIndex.value = 0
       }
       else {
-        message.success('已经是最后一页了')
+        throttleMassage('已经是最后一页了')
         closeAutoPlay()
       }
     }

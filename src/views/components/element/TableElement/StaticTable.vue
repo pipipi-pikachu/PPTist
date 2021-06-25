@@ -170,7 +170,6 @@ table {
     min-height: 32px;
     padding: 5px;
     line-height: 1.5;
-    user-select: none;
   }
 }
 </style>
