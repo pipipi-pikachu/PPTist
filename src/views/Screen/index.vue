@@ -169,8 +169,8 @@ export default defineComponent({
     }
     onUnmounted(closeAutoPlay)
 
-    const massageThrottle = throttle(function(info) {
-      message.success(info)
+    const throttleMassage = throttle(function(msg) {
+      message.success(msg)
     }, 3000, { leading: true, trailing: false })
 
     // 向上/向下播放
@@ -186,7 +186,7 @@ export default defineComponent({
         animationIndex.value = lastIndex
       }
       else {
-        massageThrottle('已经是第一页了')
+        throttleMassage('已经是第一页了')
       }
     }
     const execNext = () => {
@@ -198,7 +198,7 @@ export default defineComponent({
         animationIndex.value = 0
       }
       else {
-        massageThrottle('已经是最后一页了')
+        throttleMassage('已经是最后一页了')
         closeAutoPlay()
       }
     }
