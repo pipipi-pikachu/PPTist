@@ -14,6 +14,19 @@ export default () => {
   const { addHistorySnapshot } = useHistorySnapshot()
 
   /**
+   * 判断当前选中的元素是否可以组合
+   */
+  const canCombine = computed(() => {
+    if (activeElementList.value.length < 2) return false
+
+    const firstGroupId = activeElementList.value[0].groupId
+    if (!firstGroupId) return true
+
+    const inSameGroup = activeElementList.value.every(el => (el.groupId && el.groupId) === firstGroupId)
+    return !inSameGroup
+  })
+
+  /**
    * 组合当前选中的元素：给当前选中的元素赋予一个相同的分组ID
    */
   const combineElements = () => {
@@ -70,6 +83,7 @@ export default () => {
   }
 
   return {
+    canCombine,
     combineElements,
     uncombineElements,
   }

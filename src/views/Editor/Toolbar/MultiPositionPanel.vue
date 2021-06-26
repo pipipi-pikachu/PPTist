@@ -37,9 +37,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { defineComponent } from 'vue'
 import { ElementAlignCommand } from '@/types/edit'
 import useCombineElement from '@/hooks/useCombineElement'
 import useAlignActiveElement from '@/hooks/useAlignActiveElement'
@@ -49,22 +47,10 @@ import useUniformDisplayElement from '@/hooks/useUniformDisplayElement'
 export default defineComponent({
   name: 'multi-position-panel',
   setup() {
-    const store = useStore()
-    const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
-
-    const { combineElements, uncombineElements } = useCombineElement()
+    const { canCombine, combineElements, uncombineElements } = useCombineElement()
     const { alignActiveElement } = useAlignActiveElement()
     const { alignElementToCanvas } = useAlignElementToCanvas()
     const { displayItemCount, uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
-
-    // 判断当前多选的几个元素是否可以组合
-    const canCombine = computed(() => {
-      const firstGroupId = activeElementList.value[0].groupId
-      if (!firstGroupId) return true
-
-      const inSameGroup = activeElementList.value.every(el => (el.groupId && el.groupId) === firstGroupId)
-      return !inSameGroup
-    })
 
     // 多选元素对齐，需要先判断当前所选中的元素状态：
     // 如果所选元素为一组组合元素，则将它对齐到画布；
@@ -75,8 +61,8 @@ export default defineComponent({
     }
 
     return {
-      displayItemCount,
       canCombine,
+      displayItemCount,
       combineElements,
       uncombineElements,
       uniformHorizontalDisplay,
