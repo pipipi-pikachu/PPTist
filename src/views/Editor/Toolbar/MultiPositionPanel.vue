@@ -22,7 +22,7 @@
         <Button style="flex: 1;" @click="alignElement('bottom')"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
-    <ButtonGroup class="row" v-if="activeElementList.length > 2">
+    <ButtonGroup class="row" v-if="displayItemCount > 2">
       <Button style="flex: 1;" @click="uniformHorizontalDisplay()">水平均匀分布</Button>
       <Button style="flex: 1;" @click="uniformVerticalDisplay()">垂直均匀分布</Button>
     </ButtonGroup>
@@ -55,7 +55,7 @@ export default defineComponent({
     const { combineElements, uncombineElements } = useCombineElement()
     const { alignActiveElement } = useAlignActiveElement()
     const { alignElementToCanvas } = useAlignElementToCanvas()
-    const { uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
+    const { displayItemCount, uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
 
     // 判断当前多选的几个元素是否可以组合
     const canCombine = computed(() => {
@@ -75,7 +75,7 @@ export default defineComponent({
     }
 
     return {
-      activeElementList,
+      displayItemCount,
       canCombine,
       combineElements,
       uncombineElements,
