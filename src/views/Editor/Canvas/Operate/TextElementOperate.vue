@@ -13,6 +13,7 @@
         v-for="point in textElementResizeHandlers"
         :key="point.direction"
         :type="point.direction"
+        :rotate="elementInfo.rotate"
         :style="point.style"
         @mousedown.stop="$event => scaleElement($event, elementInfo, point.direction)"
       />
