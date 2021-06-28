@@ -46,7 +46,7 @@ export default () => {
    * 粘贴元素（一组）
    * @param elements 元素列表数据
    */
-  const pasteElement = (elements: PPTElement[]) => {
+  const addElementsFromClipboard = (elements: PPTElement[]) => {
     const { groupIdMap, elIdMap } = createElementIdMap(elements)
     const currentSlideElementIdList = currentSlide.value.elements.map(el => el.id)
     
@@ -71,7 +71,7 @@ export default () => {
    * 粘贴页面
    * @param slide 页面数据
    */
-  const pasteSlides = (slides: Slide[]) => {
+  const addSlidesFromClipboard = (slides: Slide[]) => {
     const newSlides = slides.map(slide => {
       const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
 
@@ -97,7 +97,7 @@ export default () => {
    * 粘贴普通文本：创建为新的文本元素
    * @param text 文本
    */
-  const pasteText = (text: string) => {
+  const createTextElementFromClipboard = (text: string) => {
     createTextElement({
       left: 0,
       top: 0,
@@ -127,19 +127,19 @@ export default () => {
     if (typeof clipboardData === 'object') {
       const { type, data } = clipboardData
 
-      if (type === 'elements' && !onlySlide) pasteElement(data)
-      else if (type === 'slides' && !onlyElements) pasteSlides(data)
+      if (type === 'elements' && !onlySlide) addElementsFromClipboard(data)
+      else if (type === 'slides' && !onlyElements) addSlidesFromClipboard(data)
     }
 
     // 普通文本
     else if (!onlyElements && !onlySlide) {
       const string = parseText2Paragraphs(clipboardData)
-      pasteText(string)
+      createTextElementFromClipboard(string)
     }
   }
 
   return {
-    pasteSlides,
+    addSlidesFromClipboard,
     pasteTextClipboardData,
   }
 }
