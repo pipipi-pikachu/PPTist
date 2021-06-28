@@ -20,10 +20,13 @@ export default () => {
   const { createTextElement } = useCreateElement()
 
   /**
-   * 粘贴元素（一组）
+   * 以元素列表为基础，为每一个元素生成新的ID，并关联到旧ID形成一个字典
+   * 主要用于复制元素时，维持数据中各处元素ID原有的关系
+   * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId
    * @param elements 元素列表数据
+   * @returns 
    */
-  const pasteElement = (elements: PPTElement[]) => {
+  const createElementIdMap = (elements: PPTElement[]) => {
     const groupIdMap = {}
     const elIdMap = {}
     for (const element of elements) {
@@ -33,6 +36,18 @@ export default () => {
       }
       elIdMap[element.id] = createRandomCode()
     }
+    return {
+      groupIdMap,
+      elIdMap,
+    }
+  }
+
+  /**
+   * 粘贴元素（一组）
+   * @param elements 元素列表数据
+   */
+  const pasteElement = (elements: PPTElement[]) => {
+    const { groupIdMap, elIdMap } = createElementIdMap(elements)
     const currentSlideElementIdList = currentSlide.value.elements.map(el => el.id)
     
     for (const element of elements) {
@@ -57,10 +72,23 @@ export default () => {
    * @param slide 页面数据
    */
   const pasteSlides = (slides: Slide[]) => {
-    const newSlides = slides.map(slide => ({
-      ...slide,
-      id: createRandomCode(8),
-    }))
+    const newSlides = slides.map(slide => {
+      const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
+
+      for (const element of slide.elements) {
+        element.id = elIdMap[element.id]
+        if (element.groupId) element.groupId = groupIdMap[element.groupId]
+      }
+      if (slide.animations) {
+        for (const animation of slide.animations) {
+          animation.elId = elIdMap[animation.elId]
+        }
+      }
+      return {
+        ...slide,
+        id: createRandomCode(8),
+      }
+    })
     store.commit(MutationTypes.ADD_SLIDE, newSlides)
     addHistorySnapshot()
   }
@@ -111,6 +139,7 @@ export default () => {
   }
 
   return {
+    pasteSlides,
     pasteTextClipboardData,
   }
 }
