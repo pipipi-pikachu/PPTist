@@ -5,7 +5,7 @@
         <Button style="flex: 1;" @click="alignElement('left')"><IconAlignLeft /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignElement('horizontal')"><IconAlignVertically /></Button>
+        <Button style="flex: 1;" @click="alignElement('horizontal')"><IconAlignHorizontally /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
         <Button style="flex: 1;" @click="alignElement('right')"><IconAlignRight /></Button>
@@ -16,7 +16,7 @@
         <Button style="flex: 1;" @click="alignElement('top')"><IconAlignTop /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignElement('vertical')"><IconAlignHorizontally /></Button>
+        <Button style="flex: 1;" @click="alignElement('vertical')"><IconAlignVertically /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
         <Button style="flex: 1;" @click="alignElement('bottom')"><IconAlignBottom /></Button>
