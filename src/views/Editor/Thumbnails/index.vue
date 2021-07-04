@@ -21,6 +21,7 @@
       :animation="300"
       :scroll="true"
       :scrollSensitivity="50"
+      :setData="null"
       @end="handleDragEnd"
       itemKey="id"
     >
