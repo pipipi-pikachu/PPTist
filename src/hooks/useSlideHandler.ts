@@ -4,6 +4,7 @@ import { Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
+import { createElementIdMap } from '@/utils/element'
 import { KEYS } from '@/configs/hotkey'
 import { message } from 'ant-design-vue'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
@@ -85,6 +86,23 @@ export default () => {
     addHistorySnapshot()
   }
 
+  // 根据模板创建新页面
+  const createSlideByTemplate = (slide: Slide) => {
+    const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
+
+    for (const element of slide.elements) {
+      element.id = elIdMap[element.id]
+      if (element.groupId) element.groupId = groupIdMap[element.groupId]
+    }
+    const newSlide = {
+      ...slide,
+      id: createRandomCode(8),
+    }
+    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+    store.commit(MutationTypes.ADD_SLIDE, newSlide)
+    addHistorySnapshot()
+  }
+
   // 将当前页复制一份到下一页
   const copyAndPasteSlide = () => {
     const slide = JSON.parse(JSON.stringify(currentSlide.value))
@@ -122,6 +140,7 @@ export default () => {
     copySlide,
     pasteSlide,
     createSlide,
+    createSlideByTemplate,
     copyAndPasteSlide,
     deleteSlide,
     cutSlide,

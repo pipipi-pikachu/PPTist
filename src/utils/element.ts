@@ -1,4 +1,5 @@
 import { PPTElement } from '@/types/slides'
+import { createRandomCode } from '@/utils/common'
 
 interface RotatedElementData {
   left: number;
@@ -148,4 +149,27 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
     }
   })
   return uniqLines
+}
+
+/**
+   * 以元素列表为基础，为每一个元素生成新的ID，并关联到旧ID形成一个字典
+   * 主要用于复制元素时，维持数据中各处元素ID原有的关系
+   * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId
+   * @param elements 元素列表数据
+   * @returns 
+   */
+export const createElementIdMap = (elements: PPTElement[]) => {
+  const groupIdMap = {}
+  const elIdMap = {}
+  for (const element of elements) {
+    const groupId = element.groupId
+    if (groupId && !groupIdMap[groupId]) {
+      groupIdMap[groupId] = createRandomCode()
+    }
+    elIdMap[element.id] = createRandomCode()
+  }
+  return {
+    groupIdMap,
+    elIdMap,
+  }
 }

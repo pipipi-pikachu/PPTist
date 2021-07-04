@@ -3,6 +3,7 @@ import { CreatingElement } from '@/types/edit'
 import { ToolbarState } from '@/types/toolbar'
 import { slides } from '@/mocks/slides'
 import { theme } from '@/mocks/theme'
+import { layouts } from '@/mocks/layout'
 import { SYS_FONTS } from '@/configs/font'
 import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 
@@ -33,6 +34,7 @@ export interface State {
   richTextAttrs: TextAttrs;
   selectedTableCells: string[];
   isScaling: boolean;
+  layouts: Slide[];
 }
 
 export const state: State = {
@@ -62,4 +64,5 @@ export const state: State = {
   richTextAttrs: defaultRichTextAttrs, // 富文本状态
   selectedTableCells: [], // 选中的表格单元格
   isScaling: false, // 正在进行元素缩放
+  layouts: layouts, // 预置版式
 }

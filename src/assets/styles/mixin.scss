@@ -16,6 +16,7 @@
 @mixin flex-grid-layout() {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
 }
 
 @mixin flex-grid-layout-children($col, $colWidth) {

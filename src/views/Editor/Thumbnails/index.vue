@@ -5,7 +5,16 @@
     v-click-outside="() => setThumbnailsFocus(false)"
     v-contextmenu="contextmenusThumbnails"
   >
-    <div class="add-slide" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
+    <div class="add-slide">
+      <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
+      <Popover trigger="click" placement="bottomLeft" v-model:visible="presetLayoutPopoverVisible">
+        <template #content>
+          <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+        </template>
+        <div class="select-btn"><IconDown /></div>
+      </Popover>
+    </div>
+
     <Draggable 
       class="thumbnail-list"
       :modelValue="slides"
@@ -34,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -43,12 +52,14 @@ import useScreening from '@/hooks/useScreening'
 
 import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import LayoutPool from './LayoutPool.vue'
 
 export default defineComponent({
   name: 'thumbnails',
   components: {
     Draggable,
     ThumbnailSlide,
+    LayoutPool,
   },
   setup() {
     const store = useStore()
@@ -58,10 +69,13 @@ export default defineComponent({
     const shiftKeyState = computed(() => store.state.shiftKeyState)
     const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
 
+    const presetLayoutPopoverVisible = ref(false)
+
     const {
       copySlide,
       pasteSlide,
       createSlide,
+      createSlideByTemplate,
       copyAndPasteSlide,
       deleteSlide,
       cutSlide,
@@ -225,11 +239,13 @@ export default defineComponent({
     }
 
     return {
-      setThumbnailsFocus,
       slides,
       slideIndex,
       selectedSlidesIndex,
+      presetLayoutPopoverVisible,
       createSlide,
+      createSlideByTemplate,
+      setThumbnailsFocus,
       handleClickSlideThumbnail,
       contextmenusThumbnails,
       contextmenusThumbnailItem,
@@ -252,11 +268,31 @@ export default defineComponent({
   height: 40px;
   font-size: 12px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-shrink: 0;
   border-bottom: 1px solid $borderColor;
   cursor: pointer;
+
+  .btn {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: $lightGray;
+    }
+  }
+  .select-btn {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid $borderColor;
+
+    &:hover {
+      background-color: $lightGray;
+    }
+  }
 
   .icon {
     margin-right: 3px;
