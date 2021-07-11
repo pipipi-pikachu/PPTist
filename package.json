@@ -11,7 +11,7 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.2.6",
     "animate.css": "^4.1.1",
-    "ant-design-vue": "^2.1.6",
+    "ant-design-vue": "^2.2.1",
     "chartist": "^0.11.4",
     "clipboard": "^2.0.6",
     "core-js": "^3.6.5",
@@ -19,7 +19,7 @@
     "dexie": "^3.0.3",
     "file-saver": "^2.0.5",
     "lodash": "^4.17.20",
-    "mitt": "^2.1.0",
+    "mitt": "^3.0.0",
     "prosemirror-commands": "^1.1.7",
     "prosemirror-dropcursor": "^1.3.2",
     "prosemirror-gapcursor": "^1.1.5",
@@ -31,9 +31,9 @@
     "prosemirror-state": "^1.3.3",
     "prosemirror-view": "^1.18.1",
     "tinycolor2": "^1.4.2",
-    "vue": "^3.0.11",
+    "vue": "^3.1.4",
     "vuedraggable": "^4.0.1",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -61,7 +61,7 @@
     "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.11",
+    "@vue/compiler-sfc": "^3.1.4",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "babel-plugin-import": "^1.13.3",
@@ -75,7 +75,7 @@
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-webpack-plugin": "^2.1.1",
-    "typescript": "^4.2.4",
+    "typescript": "^4.3.5",
     "vue-jest": "^5.0.0-0"
   },
   "husky": {

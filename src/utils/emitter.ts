@@ -1,11 +1,18 @@
-import mitt, { Handler, Emitter } from 'mitt'
+import mitt, { Emitter } from 'mitt'
 
 export const enum EmitterEvents {
-  EXEC_TEXT_COMMAND = 'EXEC_TEXT_COMMAND',
+  RICH_TEXT_COMMAND = 'RICH_TEXT_COMMAND',
 }
 
-const emitter: Emitter = mitt()
+export interface RichTextCommand {
+  command: string;
+  value?: string;
+}
 
-export type EmitterHandler = Handler
+type Events = {
+  [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand | RichTextCommand[];
+} 
+
+const emitter: Emitter<Events> = mitt<Events>()
 
 export default emitter

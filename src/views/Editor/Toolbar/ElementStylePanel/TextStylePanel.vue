@@ -221,7 +221,7 @@
 import { computed, defineComponent, ref, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -304,11 +304,6 @@ const presetStyles = [
 
 const webFonts = WEB_FONTS
 
-interface CommandPayload {
-  command: string;
-  value?: string;
-}
-
 export default defineComponent({
   name: 'text-style-panel',
   components: {
@@ -343,13 +338,14 @@ export default defineComponent({
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
     // 发射富文本设置命令
-    const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, { command, value })
+    const emitRichTextCommand = (payload: RichTextCommand) => {
+      const { command, value } = payload
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
     }
 
     // 发射富文本设置命令（批量）
-    const emitBatchRichTextCommand = (payload: CommandPayload[]) => {
-      emitter.emit(EmitterEvents.EXEC_TEXT_COMMAND, payload)
+    const emitBatchRichTextCommand = (payload: RichTextCommand[]) => {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, payload)
     }
 
     const { addHistorySnapshot } = useHistorySnapshot()

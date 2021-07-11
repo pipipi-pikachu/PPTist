@@ -52,18 +52,13 @@ import { PPTTextElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { initProsemirrorEditor } from '@/utils/prosemirror/'
 import { getTextAttrs } from '@/utils/prosemirror/utils'
-import emitter, { EmitterEvents, EmitterHandler } from '@/utils/emitter'
+import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
-
-interface CommandPayload {
-  command: string;
-  value?: string;
-}
 
 export default defineComponent({
   name: 'editable-element-text',
@@ -217,7 +212,7 @@ export default defineComponent({
     
     // 执行富文本命令（可以是一个或多个）
     // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
-    const execCommand: EmitterHandler = (payload: CommandPayload | CommandPayload[]) => {
+    const execCommand = (payload: RichTextCommand | RichTextCommand[]) => {
       if (handleElementId.value !== props.elementInfo.id) return
 
       const commands = ('command' in payload) ? [payload] : payload
@@ -307,9 +302,9 @@ export default defineComponent({
       handleClick()
     }
 
-    emitter.on(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
+    emitter.on(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
     onUnmounted(() => {
-      emitter.off(EmitterEvents.EXEC_TEXT_COMMAND, execCommand)
+      emitter.off(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
     })
 
     return {
