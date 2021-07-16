@@ -338,8 +338,7 @@ export default defineComponent({
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
     // 发射富文本设置命令
-    const emitRichTextCommand = (payload: RichTextCommand) => {
-      const { command, value } = payload
+    const emitRichTextCommand = (command: string, value?: string) => {
       emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
     }
 
