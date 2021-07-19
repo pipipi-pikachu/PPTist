@@ -1,4 +1,5 @@
 import Clipboard from 'clipboard'
+import { decrypt } from '@/utils/crypto'
 
 /**
  * 复制文本到剪贴板
@@ -37,4 +38,17 @@ export const readClipboard = (): Promise<string> => {
     }
     else reject('浏览器不支持或禁止访问剪贴板，请使用快捷键 Ctrl + V')
   })
+}
+
+// 解析加密后的剪贴板内容
+export const pasteCustomClipboardString = (text: string) => {
+  let clipboardData
+  try {
+    clipboardData = JSON.parse(decrypt(text))
+  }
+  catch {
+    clipboardData = text
+  }
+
+  return clipboardData
 }
