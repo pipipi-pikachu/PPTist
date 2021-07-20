@@ -61,6 +61,7 @@
               contenteditable="plaintext-only"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
+              @updateExlc="exlc => handleExlcInput(exlc, rowIndex, colIndex)"
             />
             <div v-else class="cell-text" v-html="formatText(cell.text)" />
           </td>
@@ -509,6 +510,18 @@ export default defineComponent({
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
+    // 粘贴exlc数据时的更新方法
+    const handleExlcInput = (exlc:string[][], rowIndex:number, colIndex:number) => {
+      for (let i = 0; i < exlc.length; i++) {
+        for (let j = 0; j < exlc[i].length; j++) {
+          if (tableCells.value[rowIndex + i][colIndex + j]) {
+            tableCells.value[rowIndex + i][colIndex + j].text = exlc[i][j]
+          }
+        }
+      }
+      emit('change', tableCells.value)
+    }
+
     // 获取有效的单元格（排除掉被合并的单元格）
     const getEffectiveTableCells = () => {
       const effectiveTableCells = []
@@ -629,6 +642,7 @@ export default defineComponent({
       handleMousedownColHandler,
       contextmenus,
       handleInput,
+      handleExlcInput,
       subThemeColor,
       formatText,
     }

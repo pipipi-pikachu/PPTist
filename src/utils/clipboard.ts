@@ -52,3 +52,30 @@ export const pasteCustomClipboardString = (text: string) => {
 
   return clipboardData
 }
+
+/**
+ * 检查粘贴元素是否为外部exlc表格类型
+ * @param text 
+ * @returns 
+ */
+export const exlcTesting = (text: string): string[][] | boolean => {
+  // 判定一下是不是exl格式
+  const lineList: string[] = text.split('\r\n')
+  // 按照\n拆分表格 最后会多出一个空字串
+  if (lineList[lineList.length - 1] === '') {
+    lineList.splice(length - 1, 1)
+  }
+  let tNum = -1
+  const exlc: string[][] = []
+  for (const index in lineList) {
+    exlc[index] = lineList[index].split('\t')
+    if (exlc[index].length === 1) return false
+    if (tNum === -1) {
+      tNum = exlc[index].length
+    }
+    else if (tNum !== exlc[index].length) {
+      return false
+    }
+  }
+  return exlc
+}
