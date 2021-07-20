@@ -61,7 +61,7 @@
               contenteditable="plaintext-only"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
-              @updateExlc="exlc => handleExlcInput(exlc, rowIndex, colIndex)"
+              @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
             />
             <div v-else class="cell-text" v-html="formatText(cell.text)" />
           </td>
@@ -510,12 +510,18 @@ export default defineComponent({
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
-    // 粘贴exlc数据时的更新方法
-    const handleExlcInput = (exlc:string[][], rowIndex:number, colIndex:number) => {
-      for (let i = 0; i < exlc.length; i++) {
-        for (let j = 0; j < exlc[i].length; j++) {
+    // 插入来自Excel的数据
+    const insertExcelData = (data: string[][], rowIndex: number, colIndex: number) => {
+      let maxRow = data.length
+      let maxCol = data[0].length
+
+      if (rowIndex + maxRow > tableCells.value.length) maxRow = tableCells.value.length - rowIndex
+      if (colIndex + maxCol > tableCells.value[0].length) maxCol = tableCells.value[0].length - colIndex
+
+      for (let i = 0; i < maxRow; i++) {
+        for (let j = 0; j < maxCol; j++) {
           if (tableCells.value[rowIndex + i][colIndex + j]) {
-            tableCells.value[rowIndex + i][colIndex + j].text = exlc[i][j]
+            tableCells.value[rowIndex + i][colIndex + j].text = data[i][j]
           }
         }
       }
@@ -642,7 +648,7 @@ export default defineComponent({
       handleMousedownColHandler,
       contextmenus,
       handleInput,
-      handleExlcInput,
+      insertExcelData,
       subThemeColor,
       formatText,
     }

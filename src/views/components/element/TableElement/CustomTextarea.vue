@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref, watch } from 'vue'
-import { pasteCustomClipboardString, exlcTesting } from '@/utils/clipboard'
+import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 
 export default defineComponent({
   name: 'custom-textarea',
@@ -58,16 +58,16 @@ export default defineComponent({
 
         if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
           clipboardDataFirstItem.getAsString(text => {
-            // exlc数据格式解析
-            const exlc = exlcTesting(text)
-            if (exlc) {
-              emit('updateExlc', exlc)
-              if (textareaRef.value) textareaRef.value.innerHTML = exlc[0][0]
+            const clipboardData = pasteCustomClipboardString(text)
+            if (typeof clipboardData === 'object') return
+ 
+            const excelData = pasteExcelClipboardString(text)
+            if (excelData) {
+              emit('insertExcelData', excelData)
+              if (textareaRef.value) textareaRef.value.innerHTML = excelData[0][0]
               return
             }
 
-            const clipboardData = pasteCustomClipboardString(text)
-            if (typeof clipboardData === 'object') return
             emit('updateValue', text)
             document.execCommand('insertText', false, text)
           })
