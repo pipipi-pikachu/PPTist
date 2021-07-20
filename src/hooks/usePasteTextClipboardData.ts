@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { MutationTypes, useStore } from '@/store'
-import { decrypt } from '@/utils/crypto'
+import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import { createElementIdMap } from '@/utils/element'
@@ -93,13 +93,7 @@ export default () => {
     const onlySlide = options?.onlySlide || false
     const onlyElements = options?.onlyElements || false
 
-    let clipboardData
-    try {
-      clipboardData = JSON.parse(decrypt(text))
-    }
-    catch {
-      clipboardData = text
-    }
+    const clipboardData = pasteCustomClipboardString(text)
 
     // 元素或页面
     if (typeof clipboardData === 'object') {

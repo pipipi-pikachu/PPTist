@@ -12,6 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref, watch } from 'vue'
+import { pasteCustomClipboardString } from '@/utils/clipboard'
 
 export default defineComponent({
   name: 'custom-textarea',
@@ -56,7 +57,12 @@ export default defineComponent({
         const clipboardDataFirstItem = e.clipboardData.items[0]
 
         if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
-          clipboardDataFirstItem.getAsString(text => emit('updateValue', text))
+          clipboardDataFirstItem.getAsString(text => {
+            const clipboardData = pasteCustomClipboardString(text)
+            if (typeof clipboardData === 'object') return
+            emit('updateValue', text)
+            document.execCommand('insertText', false, text)
+          })
         }
       }
     }
