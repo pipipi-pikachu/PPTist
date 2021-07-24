@@ -21,6 +21,7 @@ import SvgWrapper from '@/components/SvgWrapper.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 // antd 组件
 import {
@@ -53,6 +54,7 @@ app.component('SvgWrapper', SvgWrapper)
 app.component('CheckboxButton', CheckboxButton)
 app.component('CheckboxButtonGroup', CheckboxButtonGroup)
 app.component('ColorPicker', ColorPicker)
+app.component('FullscreenSpin', FullscreenSpin)
 
 app.component('InputNumber', InputNumber)
 app.component('Divider', Divider)

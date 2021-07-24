@@ -94,6 +94,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   flipH?: boolean;
   flipV?: boolean;
   shadow?: PPTElementShadow;
+  special?: boolean;
 }
 
 export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
@@ -133,7 +134,7 @@ export interface TableCellStyle {
   backcolor?: string;
   fontsize?: string;
   fontname?: string;
-  align?: string;
+  align?: 'left' | 'center' | 'right';
 }
 export interface TableCell {
   id: string;

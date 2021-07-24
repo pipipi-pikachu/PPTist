@@ -80,6 +80,7 @@ import {
   Logout,
   Erase,
   Clear,
+  FolderClose,
 } from '@icon-park/vue-next'
 
 export default {
@@ -187,5 +188,6 @@ export default {
     app.component('IconArrowCircleLeft', ArrowCircleLeft)
     app.component('IconLogout', Logout)
     app.component('IconClear', Clear)
+    app.component('IconFolderClose', FolderClose)
   }
 }

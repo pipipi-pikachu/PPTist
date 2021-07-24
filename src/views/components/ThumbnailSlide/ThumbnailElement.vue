@@ -1,6 +1,7 @@
 <template>
   <div 
     class="base-element"
+    :id="`base-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
     }"

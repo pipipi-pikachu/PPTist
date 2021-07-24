@@ -2,6 +2,15 @@
   <div class="editor-header">
     <div class="left">
       <Dropdown :trigger="['click']">
+        <div class="menu-item"><IconFolderClose /> <span class="text">文件</span></div>
+        <template #overlay>
+          <Menu>
+            <MenuItem @click="exportJSON()">导出 JSON</MenuItem>
+            <MenuItem @click="exportPPTX()">导出 PPTX</MenuItem>
+          </Menu>
+        </template>
+      </Dropdown>
+      <Dropdown :trigger="['click']">
         <div class="menu-item"><IconEdit /> <span class="text">编辑</span></div>
         <template #overlay>
           <Menu>
@@ -11,7 +20,6 @@
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
-            <MenuItem @click="exportDialogVisible = true">导出 JSON</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -55,16 +63,7 @@
       <HotkeyDoc />
     </Drawer>
 
-    <Modal
-      v-model:visible="exportDialogVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
-      :width="680"
-      destroyOnClose
-    >
-      <ExportDialog @close="exportDialogVisible = false"/>
-    </Modal>
+    <FullscreenSpin :loading="exporting" tip="正在导出..." />
   </div>
 </template>
 
@@ -74,15 +73,14 @@ import { MutationTypes, useStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
-import ExportDialog from './ExportDialog.vue'
 
 export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
-    ExportDialog,
   },
   setup() {
     const store = useStore()
@@ -90,6 +88,7 @@ export default defineComponent({
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
+    const { exporting, exportJSON, exportPPTX } = useExport()
 
     const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
@@ -97,24 +96,25 @@ export default defineComponent({
     }
 
     const hotkeyDrawerVisible = ref(false)
-    const exportDialogVisible = ref(false)
 
     const goIssues = () => {
       window.open('https://github.com/pipipi-pikachu/PPTist/issues')
     }
 
     return {
+      redo,
+      undo,
+      showGridLines,
+      hotkeyDrawerVisible,
+      exporting,
       enterScreening,
       enterScreeningFromStart,
       createSlide,
       deleteSlide,
-      redo,
-      undo,
       toggleGridLines,
-      showGridLines,
       resetSlides,
-      hotkeyDrawerVisible,
-      exportDialogVisible,
+      exportJSON,
+      exportPPTX,
       goIssues,
     }
   },

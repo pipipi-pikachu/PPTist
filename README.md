@@ -1,11 +1,9 @@
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿应用，还原了大部分PPT常用功能，支持 文字、图片、形状、线条、图表、表格 6种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，尽可能还原本地桌面应用的使用体验。
+> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格 6种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，尽可能还原本地桌面应用的使用体验。
 
 在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)
 
-如果网络状态不佳，可以访问国内镜像：[https://pptist.gitee.io/](https://pptist.gitee.io/)
-
-Github仓库：[https://github.com/pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)
+如果网络状态不佳，可以访问国内镜像（非实时更新）：[https://pptist.gitee.io/](https://pptist.gitee.io/)
 
 
 # 🚀 项目运行
@@ -30,6 +28,7 @@ npm run serve
 - 画布缩放
 - 主题设置
 - 幻灯片备注
+- 幻灯片模板
 ### 幻灯片元素编辑
 - 元素添加、删除
 - 元素复制粘贴
@@ -93,7 +92,8 @@ npm run serve
 - 翻页动画
 - 元素入场动画
 - 全部幻灯片预览
-- 画笔工具
+- 画笔、黑板工具
+- 自动放映
 
 
 # 💡 常见问题
@@ -124,6 +124,16 @@ A. 设置预置主题的作用是使新添加的元素和页面应用主题样�
 **Q. 设置在线字体不生效？**
 
 A. 设置在线字体时会下载对应的字体文件，该文件较大，需要等待下载完成后才会应用新的字体。
+
+**Q. 关于导入导出PPTX文件**
+
+A. 作为一个在线幻灯片应用，导出、导入PPTX文件是非常重要的功能，但是经过调研发现，该功能实现起来的复杂度远超过了预期。由于个人能力和时间有限，这部分功能只能借助第三方的轮子来完成。
+
+目前导出功能主要基于 [PptxGenJS](https://github.com/gitbrent/PptxGenJS/) 完成，能够实现大多数基本元素的导出，但还有非常多的缺陷需要一点点完善。同时需要知晓的是：1、该功能依赖 PptxGenJS，对于该库本身无法实现的部分，我也无能为力；2、导出功能的目标只是【导出样式尽可能一致的元素】，而不是一比一将网页还原到PPT，一些样式差异是必然存在的。
+
+导入功能目前暂时没有合适的解决方案，还在调研和观望中。
+
+如果有感兴趣或做过相关内容的朋友，欢迎在 [issues](https://github.com/pipipi-pikachu/PPTist/issues/57) 中讨论。
 
 
 # 📁 项目目录结构
@@ -160,15 +170,6 @@ A. 设置在线字体时会下载对应的字体文件，该文件较大，需�
 - `theme` 表示幻灯片主题数据，包括背景色、主题色、字体颜色、字体等信息
 
 具体类型的定义可见：[https://github.com/pipipi-pikachu/PPTist/blob/master/src/types/slides.ts](https://github.com/pipipi-pikachu/PPTist/blob/master/src/types/slides.ts)
-
-
-# 📃 TODO
-- [ ] 幻灯片模板
-- [ ] 图表缩略图优化
-- [ ] 公式元素
-- [ ] 导出、导入
-
-> 作为一个在线幻灯片，导出、导入PPTX文件是非常重要的功能。但是经过本人一段时间的调研发现，该功能实现起来的复杂度远超过了预期。由于个人时间有限，暂时可能无法集中精力来做该功能，短时间内还是会更多优先去提升其他方面的使用体验。如果有做过相关内容的朋友，也欢迎给我提建议。
 
 
 # 💻 贡献代码

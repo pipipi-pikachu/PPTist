@@ -3,13 +3,13 @@
     <CheckboxButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
-        :checked="flipH"
-        @click="updateFlip({ flipH: !flipH })"
+        :checked="flipV"
+        @click="updateFlip({ flipV: !flipV })"
       ><IconFlipVertically /> 垂直翻转</CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
-        :checked="flipV"
-        @click="updateFlip({ flipV: !flipV })"
+        :checked="flipH"
+        @click="updateFlip({ flipH: !flipH })"
       ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
     </CheckboxButtonGroup>
   </div>

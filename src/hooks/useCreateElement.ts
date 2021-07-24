@@ -3,7 +3,7 @@ import { MutationTypes, useStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { PPTLineElement, ChartType, PPTElement, TableCell, TableCellStyle } from '@/types/slides'
+import { PPTLineElement, ChartType, PPTElement, TableCell, TableCellStyle, PPTShapeElement } from '@/types/slides'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -176,7 +176,7 @@ export default () => {
    */
   const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem) => {
     const { left, top, width, height } = position
-    createElement({
+    const newElement: PPTShapeElement = {
       type: 'shape',
       id: createRandomCode(),
       left, 
@@ -188,7 +188,9 @@ export default () => {
       fill: themeColor.value,
       fixedRatio: false,
       rotate: 0,
-    })
+    }
+    if (data.special) newElement.special = true
+    createElement(newElement)
   }
   
   /**

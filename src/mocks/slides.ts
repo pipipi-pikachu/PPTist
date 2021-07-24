@@ -29,7 +29,7 @@ export const slides: Slide[] = [
         path: 'M 0 0 L 0 200 L 200 200 Z',
         fill: '#5b9bd5',
         fixedRatio: false,
-        flipH: true,
+        flipV: true,
         rotate: 0
       },
       {
