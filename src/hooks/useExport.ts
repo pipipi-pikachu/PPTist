@@ -3,7 +3,7 @@ import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
-import { getElementRange } from '@/utils/element'
+import { getElementRange, getLineElementPath } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { svg2Base64 } from '@/utils/svg2Base64'
@@ -292,19 +292,7 @@ export default () => {
           }
         }
         else if (el.type === 'line') {
-          let path = ''
-          const start = el.start.join(',')
-          const end = el.end.join(',')
-          if (el.broken) {
-            const mid = el.broken.join(',')
-            path = `M${start} L${mid} L${end}`
-          }
-          else if (el.curve) {
-            const mid = el.curve.join(',')
-            path = `M${start} Q${mid} ${end}`
-          }
-          else path = `M${start} L${end}`
-
+          const path = getLineElementPath(el)
           const points = formatPoints(toPoints(path))
           const { minX, maxX, minY, maxY } = getElementRange(el)
 

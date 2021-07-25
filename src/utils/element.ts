@@ -1,4 +1,5 @@
-import { PPTElement } from '@/types/slides'
+import tinycolor from 'tinycolor2'
+import { PPTElement, PPTLineElement } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 
 interface RotatedElementData {
@@ -172,4 +173,38 @@ export const createElementIdMap = (elements: PPTElement[]) => {
     groupIdMap,
     elIdMap,
   }
+}
+
+/**
+ * 根据表格的主题色，获取对应用于配色的子颜色
+ * @param themeColor 主题色
+ * @returns 
+ */
+export const getTableSubThemeColor = (themeColor: string) => {
+  const rgba = tinycolor(themeColor).toRgb()
+  const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
+  const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
+  return [
+    `rgba(${[subRgba1.r, subRgba1.g, subRgba1.b, subRgba1.a].join(',')})`,
+    `rgba(${[subRgba2.r, subRgba2.g, subRgba2.b, subRgba2.a].join(',')})`,
+  ]
+}
+
+/**
+ * 获取线条元素路径字符串
+ * @param element 线条元素
+ * @returns 
+ */
+export const getLineElementPath = (element: PPTLineElement) => {
+  const start = element.start.join(',')
+  const end = element.end.join(',')
+  if (element.broken) {
+    const mid = element.broken.join(',')
+    return `M${start} L${mid} L${end}`
+  }
+  if (element.curve) {
+    const mid = element.curve.join(',')
+    return `M${start} Q${mid} ${end}`
+  }
+  return `M${start} L${end}`
 }

@@ -63,6 +63,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { PPTLineElement } from '@/types/slides'
+import { getLineElementPath } from '@/utils/element'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
@@ -109,17 +110,7 @@ export default defineComponent({
     const lineDashArray = computed(() => props.elementInfo.style === 'dashed' ? '10 6' : '0 0')
 
     const path = computed(() => {
-      const start = props.elementInfo.start.join(',')
-      const end = props.elementInfo.end.join(',')
-      if (props.elementInfo.broken) {
-        const mid = props.elementInfo.broken.join(',')
-        return `M${start} L${mid} L${end}`
-      }
-      if (props.elementInfo.curve) {
-        const mid = props.elementInfo.curve.join(',')
-        return `M${start} Q${mid} ${end}`
-      }
-      return `M${start} L${end}`
+      return getLineElementPath(props.elementInfo)
     })
 
     return {
