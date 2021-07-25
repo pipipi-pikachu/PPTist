@@ -247,7 +247,7 @@ export default () => {
         }
         else if (el.type === 'shape') {
           if (el.special) {
-            const svgRef = document.querySelector(`#base-element-${el.id} svg`) as HTMLElement
+            const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
             const base64SVG = svg2Base64(svgRef)
 
             const options: pptxgen.ImageProps = {

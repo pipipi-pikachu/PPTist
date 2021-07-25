@@ -38,9 +38,11 @@ export default () => {
     store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.id])
 
     if (creatingElement.value) store.commit(MutationTypes.SET_CREATING_ELEMENT, null)
+
     setTimeout(() => {
       store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
     }, 0)
+
     addHistorySnapshot()
   }
 
