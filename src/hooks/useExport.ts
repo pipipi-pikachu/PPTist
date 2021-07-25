@@ -3,7 +3,7 @@ import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
-import { getElementRange, getLineElementPath } from '@/utils/element'
+import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { svg2Base64 } from '@/utils/svg2Base64'
@@ -30,6 +30,8 @@ export default () => {
       color,
     }
   }
+
+  type FormatColor = ReturnType<typeof formatColor>
 
   const formatHTML = (html: string) => {
     const ast = toAST(html)
@@ -227,6 +229,17 @@ export default () => {
           }
           if (el.defaultColor) options.color = formatColor(el.defaultColor).color
           if (el.defaultFontName) options.fontFace = el.defaultFontName
+          if (el.shadow) {
+            const c = formatColor(el.shadow.color)
+            options.shadow = {
+              type: 'outer',
+              color: c.color.replace('#', ''),
+              opacity: c.alpha,
+              blur: el.shadow.blur * 0.75,
+              offset: (el.shadow.h + el.shadow.v) / 2 * 0.75,
+              angle: 45,
+            }
+          }
 
           pptxSlide.addText(textProps, options)
         }
@@ -286,6 +299,17 @@ export default () => {
                 color: formatColor(el.outline?.color || '#000000').color, 
                 width: el.outline.width * 0.75, 
                 dashType: el.outline.style === 'solid' ? 'solid' : 'dash',
+              }
+            }
+            if (el.shadow) {
+              const c = formatColor(el.shadow.color)
+              options.shadow = {
+                type: 'outer',
+                color: c.color.replace('#', ''),
+                opacity: c.alpha,
+                blur: el.shadow.blur * 0.75,
+                offset: (el.shadow.h + el.shadow.v) / 2 * 0.75,
+                angle: 45,
               }
             }
             pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
@@ -375,6 +399,15 @@ export default () => {
           }
 
           const tableData = []
+
+          const theme = el.theme
+          let themeColor: FormatColor | null = null
+          let subThemeColors: FormatColor[] = []
+          if (theme) {
+            themeColor = formatColor(theme.color)
+            subThemeColors = getTableSubThemeColor(theme.color).map(item => formatColor(item))
+          }
+
           for (let i = 0; i < el.data.length; i++) {
             const row = el.data[i]
             const _row = []
@@ -391,6 +424,18 @@ export default () => {
                 valign: 'middle',
                 fontFace: cell.style?.fontname || '微软雅黑',
                 fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) * 0.75,
+              }
+              if (theme && themeColor) {
+                let c: FormatColor
+                if (i % 2 === 0) c = subThemeColors[1]
+                else c = subThemeColors[0]
+
+                if (theme.rowHeader && i === 0) c = themeColor
+                else if (theme.rowFooter && i === el.data.length - 1) c = themeColor
+                else if (theme.colHeader && j === 0) c = themeColor
+                else if (theme.colFooter && j === row.length - 1) c = themeColor
+
+                cellOptions.fill = { color: c.color, transparency: (1 - c.alpha) * 100 }
               }
               if (cell.style?.backcolor) {
                 const c = formatColor(cell.style.backcolor)
