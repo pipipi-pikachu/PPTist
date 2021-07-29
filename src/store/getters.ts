@@ -1,5 +1,6 @@
 import { GetterTree } from 'vuex'
 import { State } from './state'
+import { layouts } from '@/mocks/layout'
 
 export const getters: GetterTree<State, State> = {
   currentSlide(state) {
@@ -15,6 +16,30 @@ export const getters: GetterTree<State, State> = {
     const els = currentSlide.elements
     const elIds = els.map(el => el.id)
     return animations.filter(animation => elIds.includes(animation.elId))
+  },
+
+  layouts(state) {
+    const {
+      themeColor,
+      fontColor,
+      fontName,
+      backgroundColor,
+    } = state.theme
+
+    return layouts.map(layout => {
+      const elements = layout.elements.map(el => {
+        const props = {}
+        for (const key of Object.keys(el)) {
+          if (typeof el[key] === 'string') {
+            props[key] = (el[key] as string).replace('{{themeColor}}', themeColor).replace('{{fontColor}}', fontColor).replace('{{fontName}}', fontName)
+          }
+        }
+        return { ...el, ...props }
+      })
+      const background = { ...layout.background, color: backgroundColor }
+
+      return { ...layout, elements, background }
+    })
   },
 
   activeElementList(state) {

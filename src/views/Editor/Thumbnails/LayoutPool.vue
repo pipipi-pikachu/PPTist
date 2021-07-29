@@ -25,7 +25,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const store = useStore()
-    const layouts = computed(() => store.state.layouts)
+    const layouts = computed<Slide[]>(() => store.getters.layouts)
 
     const selectSlideTemplate = (slide: Slide) => {
       emit('select', slide)
