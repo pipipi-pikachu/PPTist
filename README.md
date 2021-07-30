@@ -189,7 +189,7 @@ A. 作为一个在线幻灯片应用，导出、导入PPTX文件是非常重要�
 
 
 # 📄 开源协议
-[MIT License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE)
+[Apache-2.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE)
 
 
 # 💣 友情提示
