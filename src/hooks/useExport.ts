@@ -240,6 +240,7 @@ export default () => {
               angle: 45,
             }
           }
+          if (el.link) options.hyperlink = { url: el.link }
 
           pptxSlide.addText(textProps, options)
         }
@@ -255,6 +256,7 @@ export default () => {
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate
           if (el.clip && el.clip.shape === 'ellipse') options.rounding = true
+          if (el.link) options.hyperlink = { url: el.link }
 
           pptxSlide.addImage(options)
         }
@@ -271,6 +273,7 @@ export default () => {
               h: el.height / 100,
             }
             if (el.rotate) options.rotate = el.rotate
+            if (el.link) options.hyperlink = { url: el.link }
 
             pptxSlide.addImage(options)
           }
@@ -312,6 +315,8 @@ export default () => {
                 angle: 45,
               }
             }
+            if (el.link) options.hyperlink = { url: el.link }
+
             pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
           }
         }

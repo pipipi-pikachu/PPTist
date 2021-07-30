@@ -26,6 +26,13 @@
     >
       {{elementIndexInAnimation + 1}}
     </div>
+
+    <LinkHandler 
+      :elementInfo="elementInfo" 
+      :openLinkDialog="openLinkDialog" 
+      v-if="isActive && elementInfo.link" 
+      @mousedown.stop 
+    />
   </div>
 </template>
 
@@ -41,9 +48,13 @@ import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
 import ChartElementOperate from './ChartElementOperate.vue'
 import TableElementOperate from './TableElementOperate.vue'
+import LinkHandler from './LinkHandler.vue'
 
 export default defineComponent({
   name: 'operate',
+  components: {
+    LinkHandler,
+  },
   props: {
     elementInfo: {
       type: Object as PropType<PPTElement>,
@@ -75,6 +86,10 @@ export default defineComponent({
     },
     dragLineElement: {
       type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateLineHandler) => void>,
+      required: true,
+    },
+    openLinkDialog: {
+      type: Function as PropType<() => void>,
       required: true,
     },
   },
@@ -134,6 +149,5 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 3px;
 }
 </style>

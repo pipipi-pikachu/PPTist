@@ -43,6 +43,7 @@
           :isMultiSelect="activeElementIdList.length > 1"
           :rotateElement="rotateElement"
           :scaleElement="scaleElement"
+          :openLinkDialog="openLinkDialog"
           :dragLineElement="dragLineElement"
         />
         <ViewportBackground />
@@ -68,9 +69,20 @@
           :elementIndex="index + 1"
           :isMultiSelect="activeElementIdList.length > 1"
           :selectElement="selectElement"
+          :openLinkDialog="openLinkDialog"
         />
       </div>
     </div>
+
+    <Modal
+      v-model:visible="linkDialogVisible" 
+      :footer="null" 
+      centered
+      :width="540"
+      destroyOnClose
+    >
+      <LinkDialog @close="linkDialogVisible = false" />
+    </Modal>
   </div>
 </template>
 
@@ -108,6 +120,7 @@ import AlignmentLine from './AlignmentLine.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
+import LinkDialog from './LinkDialog.vue'
 
 export default defineComponent({
   name: 'editor-canvas',
@@ -119,6 +132,7 @@ export default defineComponent({
     ElementCreateSelection,
     MultiSelectOperate,
     Operate,
+    LinkDialog,
   },
   setup() {
     const store = useStore()
@@ -132,6 +146,9 @@ export default defineComponent({
 
     const viewportRef = ref<HTMLElement>()
     const alignmentLines = ref<AlignmentLineProps[]>([])
+
+    const linkDialogVisible = ref(false)
+    const openLinkDialog = () => linkDialogVisible.value = true
 
     watch(handleElementId, () => {
       store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, '')
@@ -249,12 +266,14 @@ export default defineComponent({
       viewportStyles,
       canvasScale,
       mouseSelectionState,
-      handleClickBlankArea,
-      removeEditorAreaFocus,
       currentSlide,
       creatingElement,
-      insertElementFromCreateSelection,
       alignmentLines,
+      linkDialogVisible,
+      openLinkDialog,
+      handleClickBlankArea,
+      removeEditorAreaFocus,
+      insertElementFromCreateSelection,
       selectElement,
       rotateElement,
       scaleElement,

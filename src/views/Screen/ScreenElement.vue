@@ -1,6 +1,7 @@
 <template>
   <div 
     class="screen-element"
+    :class="{ 'link': elementInfo.link }"
     :id="`screen-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
@@ -8,6 +9,7 @@
       fontFamily: theme.fontName,
       visibility: needWaitAnimation ? 'hidden' : 'visible',
     }"
+    @click="openLink()"
   >
     <component
       :is="currentElementComponent"
@@ -69,11 +71,22 @@ export default defineComponent({
       return false      
     })
 
+    const openLink = () => {
+      if (props.elementInfo.link) window.open(props.elementInfo.link)
+    }
+
     return {
       currentElementComponent,
       needWaitAnimation,
       theme,
+      openLink,
     }
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.link {
+  cursor: pointer;
+}
+</style>

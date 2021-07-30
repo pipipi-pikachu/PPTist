@@ -57,6 +57,10 @@ export default defineComponent({
       type: Function as PropType<(e: MouseEvent, element: PPTElement, canMove?: boolean) => void>,
       required: true,
     },
+    openLinkDialog: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
   },
   setup(props) {
     const currentElementComponent = computed(() => {
@@ -144,6 +148,10 @@ export default defineComponent({
           ],
         },
         { divider: true },
+        {
+          text: '设置链接',
+          handler: props.openLinkDialog,
+        },
         {
           text: props.elementInfo.groupId ? '取消组合' : '组合',
           subText: 'Ctrl + G',

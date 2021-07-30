@@ -30,6 +30,7 @@ interface PPTBaseElement {
   groupId?: string;
   width: number;
   height: number;
+  link?: string;
 }
 
 export interface PPTTextElement extends PPTBaseElement {
