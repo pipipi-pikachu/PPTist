@@ -81,6 +81,9 @@ import {
   Erase,
   Clear,
   FolderClose,
+  AlignTextTopOne,
+  AlignTextBottomOne,
+  AlignTextMiddleOne,
 } from '@icon-park/vue-next'
 
 export default {
@@ -152,6 +155,9 @@ export default {
     app.component('IconUpOne', UpOne)
     app.component('IconDownOne', DownOne)
     app.component('IconFormat', Format)
+    app.component('IconAlignTextTopOne', AlignTextTopOne)
+    app.component('IconAlignTextBottomOne', AlignTextBottomOne)
+    app.component('IconAlignTextMiddleOne', AlignTextMiddleOne)
 
     // 箭头与符号
     app.component('IconDown', Down)

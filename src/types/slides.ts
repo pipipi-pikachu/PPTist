@@ -82,6 +82,12 @@ export interface ShapeGradient {
   color: [string, string];
   rotate: number;
 }
+export interface ShapeText {
+  content: string;
+  defaultFontName: string;
+  defaultColor: string;
+  align: 'top' | 'middle' | 'bottom';
+}
 export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape';
   viewBox: number;
@@ -96,6 +102,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   flipV?: boolean;
   shadow?: PPTElementShadow;
   special?: boolean;
+  text?: ShapeText;
 }
 
 export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {

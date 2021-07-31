@@ -90,6 +90,10 @@ export const mutations: MutationTree<State> = {
     state.isScaling = isScaling
   },
 
+  [MutationTypes.SET_EDITING_SHAPE_ELEMENT_ID](state, ellId: string) {
+    state.editingShapeElementId = ellId
+  },
+
   // slides
 
   [MutationTypes.SET_THEME](state, themeProps: Partial<SlideTheme>) {

@@ -18,6 +18,8 @@
           opacity: elementInfo.opacity,
           filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
           transform: flipStyle,
+          color: text.defaultColor,
+          fontFamily: text.defaultFontName,
         }"
       >
         <SvgWrapper 
@@ -50,6 +52,10 @@
             ></path>
           </g>
         </SvgWrapper>
+
+        <div class="shape-text" :class="text.align">
+          <div class="ProseMirror-static" v-html="text.content"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +63,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { PPTShapeElement } from '@/types/slides'
+import { PPTShapeElement, ShapeText } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
@@ -86,12 +92,25 @@ export default defineComponent({
     const flipV = computed(() => props.elementInfo.flipV)
     const { flipStyle } = useElementFlip(flipH, flipV)
 
+    const text = computed<ShapeText>(() => {
+      const defaultText: ShapeText = {
+        content: '',
+        defaultFontName: '微软雅黑',
+        defaultColor: '#000',
+        align: 'middle',
+      }
+      if (!props.elementInfo.text) return defaultText
+
+      return props.elementInfo.text
+    })
+
     return {
       shadowStyle,
       outlineWidth,
       outlineStyle,
       outlineColor,
       flipStyle,
+      text,
     }
   },
 })
@@ -113,6 +132,28 @@ export default defineComponent({
   svg {
     transform-origin: 0 0;
     overflow: visible;
+  }
+}
+.shape-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  line-height: 1.2;
+  word-break: break-word;
+
+  &.top {
+    justify-content: flex-start;
+  }
+  &.middle {
+    justify-content: center;
+  }
+  &.bottom {
+    justify-content: flex-end;
   }
 }
 </style>

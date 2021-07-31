@@ -19,9 +19,12 @@
           opacity: elementInfo.opacity,
           filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '',
           transform: flipStyle,
+          color: text.defaultColor,
+          fontFamily: text.defaultFontName,
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
+        @dblclick="enterEditing()"
       >
         <SvgWrapper 
           overflow="visible" 
@@ -53,25 +56,47 @@
             ></path>
           </g>
         </SvgWrapper>
+
+        <div class="shape-text" :class="text.align">
+          <ProsemirrorEditor
+            v-if="editable"
+            :elementId="elementInfo.id"
+            :defaultColor="text.defaultColor"
+            :defaultFontName="text.defaultFontName"
+            :editable="!elementInfo.lock"
+            :value="text.content"
+            @update="value => updateText(value)"
+            @mousedown.stop
+          />
+          <div 
+            class="show-text ProseMirror-static"
+            v-else
+            v-html="text.content"
+          ></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import { PPTShapeElement } from '@/types/slides'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
+import { MutationTypes, useStore } from '@/store'
+import { PPTShapeElement, ShapeText } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import GradientDefs from './GradientDefs.vue'
+import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue'
 
 export default defineComponent({
   name: 'editable-element-shape',
   components: {
     GradientDefs,
+    ProsemirrorEditor,
   },
   props: {
     elementInfo: {
@@ -87,6 +112,10 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const store = useStore()
+
+    const { addHistorySnapshot } = useHistorySnapshot()
+
     const handleSelectElement = (e: MouseEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
@@ -104,13 +133,58 @@ export default defineComponent({
     const flipV = computed(() => props.elementInfo.flipV)
     const { flipStyle } = useElementFlip(flipH, flipV)
 
+    const editable = ref(false)
+
+    const enterEditing = () => {
+      editable.value = true
+      store.commit(MutationTypes.SET_EDITING_SHAPE_ELEMENT_ID, props.elementInfo.id)
+    }
+
+    const exitEditing = () => {
+      editable.value = false
+      store.commit(MutationTypes.SET_EDITING_SHAPE_ELEMENT_ID, '')
+    }
+    
+    const handleElementId = computed(() => store.state.handleElementId)
+    watch(handleElementId, () => {
+      if (handleElementId.value !== props.elementInfo.id) {
+        if (editable.value) exitEditing()
+      }
+    })
+
+    const text = computed<ShapeText>(() => {
+      const defaultText: ShapeText = {
+        content: '',
+        defaultFontName: '微软雅黑',
+        defaultColor: '#000',
+        align: 'middle',
+      }
+      if (!props.elementInfo.text) return defaultText
+
+      return props.elementInfo.text
+    })
+
+    const updateText = (content: string) => {
+      const _text = { ...text.value, content }
+      store.commit(MutationTypes.UPDATE_ELEMENT, {
+        id: props.elementInfo.id, 
+        props: { text: _text },
+      })
+      
+      addHistorySnapshot()
+    }
+
     return {
-      handleSelectElement,
       shadowStyle,
       outlineWidth,
       outlineStyle,
       outlineColor,
       flipStyle,
+      editable,
+      text,
+      handleSelectElement,
+      updateText,
+      enterEditing,
     }
   },
 })
@@ -138,5 +212,30 @@ export default defineComponent({
     transform-origin: 0 0;
     overflow: visible;
   }
+}
+.shape-text {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  line-height: 1.2;
+  word-break: break-word;
+
+  &.top {
+    justify-content: flex-start;
+  }
+  &.middle {
+    justify-content: center;
+  }
+  &.bottom {
+    justify-content: flex-end;
+  }
+}
+.show-text {
+  pointer-events: none;
 }
 </style>

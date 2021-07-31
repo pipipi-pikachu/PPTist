@@ -33,6 +33,7 @@ export interface State {
   richTextAttrs: TextAttrs;
   selectedTableCells: string[];
   isScaling: boolean;
+  editingShapeElementId: string;
 }
 
 export const state: State = {
@@ -62,4 +63,5 @@ export const state: State = {
   richTextAttrs: defaultRichTextAttrs, // 富文本状态
   selectedTableCells: [], // 选中的表格单元格
   isScaling: false, // 正在进行元素缩放
+  editingShapeElementId: '', // 当前正处在编辑文字状态的形状ID  
 }

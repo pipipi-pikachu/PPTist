@@ -244,6 +244,7 @@ export default () => {
 
           pptxSlide.addText(textProps, options)
         }
+
         else if (el.type === 'image') {
           const options: pptxgen.ImageProps = {
             path: el.src,
@@ -260,6 +261,7 @@ export default () => {
 
           pptxSlide.addImage(options)
         }
+
         else if (el.type === 'shape') {
           if (el.special) {
             const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
@@ -319,7 +321,27 @@ export default () => {
 
             pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
           }
+          if (el.text) {
+            const textProps = formatHTML(el.text.content)
+
+            const options: pptxgen.TextPropsOptions = {
+              x: el.left / 100,
+              y: el.top / 100,
+              w: el.width / 100,
+              h: el.height / 100,
+              fontSize: 20 * 0.75,
+              fontFace: '微软雅黑',
+              color: '#000000',
+              valign: el.text.align,
+            }
+            if (el.rotate) options.rotate = el.rotate
+            if (el.text.defaultColor) options.color = formatColor(el.text.defaultColor).color
+            if (el.text.defaultFontName) options.fontFace = el.text.defaultFontName
+
+            pptxSlide.addText(textProps, options)
+          }
         }
+
         else if (el.type === 'line') {
           const path = getLineElementPath(el)
           const points = formatPoints(toPoints(path))
@@ -341,6 +363,7 @@ export default () => {
           }
           pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
         }
+
         else if (el.type === 'chart') {
           const chartData = []
           for (let i = 0; i < el.data.series.length; i++) {
@@ -388,6 +411,7 @@ export default () => {
           
           pptxSlide.addChart(type, chartData, options)
         }
+
         else if (el.type === 'table') {
           const hiddenCells = []
           for (let i = 0; i < el.data.length; i++) {

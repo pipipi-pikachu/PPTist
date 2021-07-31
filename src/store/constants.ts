@@ -17,6 +17,7 @@ export const enum MutationTypes {
   SET_RICHTEXT_ATTRS = 'setRichTextAttrs',
   SET_SELECTED_TABLE_CELLS = 'setSelectedTableCells',
   SET_SCALING_STATE = 'setScalingState',
+  SET_EDITING_SHAPE_ELEMENT_ID = 'setEditingShapeElementId',
 
   // slides
   SET_THEME = 'setTheme',
