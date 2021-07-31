@@ -39,6 +39,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    autoFocus: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props, { emit }) {
     const store = useStore()
@@ -107,6 +111,7 @@ export default defineComponent({
         },
         editable: () => props.editable,
       })
+      if (props.autoFocus) editorView.focus()
     })
     onUnmounted(() => {
       editorView && editorView.destroy()

@@ -64,6 +64,7 @@
             :defaultColor="text.defaultColor"
             :defaultFontName="text.defaultFontName"
             :editable="!elementInfo.lock"
+            :autoFocus="true"
             :value="text.content"
             @update="value => updateText(value)"
             @mousedown.stop
