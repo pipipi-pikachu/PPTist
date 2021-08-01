@@ -41,9 +41,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .layout-pool {
-  width: 400px;
+  width: 394px;
   height: 500px;
-  padding: 2px 10px;
+  padding: 2px;
+  margin-right: -12px;
+  padding-right: 12px;
   overflow: auto;
 
   @include flex-grid-layout();
