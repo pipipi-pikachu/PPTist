@@ -99,10 +99,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 import { MutationTypes, useStore } from '@/store'
 import { ChartData, PPTChartElement } from '@/types/slides'
+import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../../common/ElementOutline.vue'
@@ -196,6 +197,13 @@ export default defineComponent({
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
+
+    const openDataEditor = () => chartDataEditorVisible.value = true
+
+    emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
+    onUnmounted(() => {
+      emitter.off(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
+    })
 
     return {
       chartDataEditorVisible,

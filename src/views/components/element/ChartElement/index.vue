@@ -15,6 +15,7 @@
       }"
       v-contextmenu="contextmenus"
       @mousedown="$event => handleSelectElement($event)"
+      @dblclick="openDataEditor()"
     >
       <ElementOutline
         :width="elementInfo.width"
@@ -38,6 +39,7 @@
 import { defineComponent, PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
+import emitter, { EmitterEvents } from '@/utils/emitter'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 import Chart from './Chart.vue'
@@ -69,8 +71,13 @@ export default defineComponent({
       props.selectElement(e, props.elementInfo)
     }
 
+    const openDataEditor = () => {
+      emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR)
+    }
+
     return {
       handleSelectElement,
+      openDataEditor,
     }
   },
 })
