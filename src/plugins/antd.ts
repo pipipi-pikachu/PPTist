@@ -1,5 +1,5 @@
 import { App } from 'vue'
-// antd 组件
+
 import {
   InputNumber,
   Divider,
@@ -21,7 +21,6 @@ import {
 
 export default {
   install(app: App) {
-    // 插入元素
     app.component('InputNumber', InputNumber)
     app.component('Divider', Divider)
     app.component('Button', Button)
