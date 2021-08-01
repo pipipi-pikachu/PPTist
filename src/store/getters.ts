@@ -1,4 +1,5 @@
 import { GetterTree } from 'vuex'
+import tinycolor from 'tinycolor2'
 import { State } from './state'
 import { layouts } from '@/mocks/layout'
 
@@ -26,20 +27,16 @@ export const getters: GetterTree<State, State> = {
       backgroundColor,
     } = state.theme
 
-    return layouts.map(layout => {
-      const elements = layout.elements.map(el => {
-        const props = {}
-        for (const key of Object.keys(el)) {
-          if (typeof el[key] === 'string') {
-            props[key] = (el[key] as string).replace('{{themeColor}}', themeColor).replace('{{fontColor}}', fontColor).replace('{{fontName}}', fontName)
-          }
-        }
-        return { ...el, ...props }
-      })
-      const background = { ...layout.background, color: backgroundColor }
+    const subColor = tinycolor(fontColor).isDark() ? 'rgba(230, 230, 230, 0.5)' : 'rgba(180, 180, 180, 0.5)'
 
-      return { ...layout, elements, background }
-    })
+    const layoutsString = JSON.stringify(layouts)
+      .replaceAll('{{themeColor}}', themeColor)
+      .replaceAll('{{fontColor}}', fontColor)
+      .replaceAll('{{fontName}}', fontName)
+      .replaceAll('{{backgroundColor}}', backgroundColor)
+      .replaceAll('{{subColor}}', subColor)
+    
+    return JSON.parse(layoutsString)
   },
 
   activeElementList(state) {
