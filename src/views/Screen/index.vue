@@ -216,6 +216,11 @@ export default defineComponent({
       else if (e.deltaY > 0) execNext()
     }, 500, { leading: true, trailing: false })
 
+    // Click 翻页
+    const clickLstener = (e: MouseEvent) => {
+      execNext()
+    }
+    
     // 快捷键翻页
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
@@ -230,9 +235,11 @@ export default defineComponent({
 
     onMounted(() => {
       document.addEventListener('keydown', keydownListener)
+      document.addEventListener('click', clickLstener)
     })
     onUnmounted(() => {
       document.removeEventListener('keydown', keydownListener)
+      document.removeEventListener('click', clickLstener)
     })
 
     // 切换到上一张/上一张幻灯片（无视元素的入场动画）
