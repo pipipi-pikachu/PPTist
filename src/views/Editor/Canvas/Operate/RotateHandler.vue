@@ -1,5 +1,5 @@
 <template>
-  <div class="rotate-handler"></div>
+  <IconRotateOne size="10" class="rotate-handler" />
 </template>
 
 <script lang="ts">
@@ -15,9 +15,7 @@ export default {
   height: 10px;
   top: -25px;
   margin-left: -5px;
-  border: 1px solid $themeColor;
-  background-color: #fff;
-  border-radius: 1px;
+  color: $themeColor;
   cursor: grab;
 
   &:active {

@@ -84,6 +84,7 @@ import {
   AlignTextTopOne,
   AlignTextBottomOne,
   AlignTextMiddleOne,
+  RotateOne,
 } from '@icon-park/vue-next'
 
 export default {
@@ -186,6 +187,7 @@ export default {
     app.component('IconErase', Erase)
     app.component('IconEffects', Effects)
     app.component('IconRotate', Rotate)
+    app.component('IconRotateOne', RotateOne)
     app.component('IconEdit', Edit)
     app.component('IconUndo', Undo)
     app.component('IconTransform', Transform)
