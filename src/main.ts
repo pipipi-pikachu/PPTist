@@ -6,15 +6,15 @@ import '@icon-park/vue-next/styles/index.css'
 import 'prosemirror-view/style/prosemirror.css'
 import 'animate.css'
 
-import '@/assets/styles/prosemirror.scss'
-import '@/assets/styles/global.scss'
-import '@/assets/styles/antd.scss'
-import '@/assets/styles/font.scss'
-
 import Icon from '@/plugins/icon'
 import Antd from '@/plugins/antd'
 import Component from '@/plugins/component'
 import Directive from '@/plugins/directive'
+
+import '@/assets/styles/prosemirror.scss'
+import '@/assets/styles/global.scss'
+import '@/assets/styles/antd.scss'
+import '@/assets/styles/font.scss'
 
 const app = createApp(App)
 
