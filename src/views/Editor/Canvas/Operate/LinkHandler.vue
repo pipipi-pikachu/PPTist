@@ -1,5 +1,5 @@
 <template>
-  <div class="link-handler">
+  <div class="link-handler" :style="{ top: elementInfo.height * canvasScale + 10 + 'px' }">
     <a class="link" :href="elementInfo.link" target="_blank">{{elementInfo.link}}</a>
     <div class="btns">
       <div class="btn" @click="openLinkDialog()">更换</div>
@@ -10,7 +10,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
+import { useStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
@@ -27,9 +28,13 @@ export default defineComponent({
     },
   },
   setup() {
+    const store = useStore()
+    const canvasScale = computed(() => store.state.canvasScale)
+
     const { removeLink } = useLink()
 
     return {
+      canvasScale,
       removeLink,
     }
   },
@@ -40,7 +45,6 @@ export default defineComponent({
 .link-handler {
   height: 30px;
   position: absolute;
-  top: -36px;
   left: 0;
   font-size: 12px;
   padding: 0 10px;
@@ -51,9 +55,12 @@ export default defineComponent({
   color: $themeColor;
 }
 .link {
+  max-width: 300px;
   margin-right: 20px;
   word-break: keep-all;
   white-space: nowrap;
+
+  @include ellipsis-oneline();
 }
 .btns {
   display: flex;
