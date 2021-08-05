@@ -48,7 +48,7 @@ export const state: State = {
   showGridLines: false, // 显示网格线
   creatingElement: null, // 正在插入的元素信息，需要绘制插入的元素需要（文字、形状、线条）
   availableFonts: [], // 当前环境可用字体
-  toolbarState: 'slideStyle', // 右侧工具栏状态
+  toolbarState: 'slideDesign', // 右侧工具栏状态
   viewportRatio: 0.5625, // 可是区域比例，默认16:9
   theme: theme, // 主题样式
   slides: slides, // 幻灯片页面数据

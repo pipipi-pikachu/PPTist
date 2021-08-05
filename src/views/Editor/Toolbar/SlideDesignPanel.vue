@@ -1,5 +1,5 @@
 <template>
-  <div class="slide-style-panel">
+  <div class="slide-design-panel">
     <div class="title">背景填充</div>
     <div class="row">
       <Select 
@@ -166,8 +166,10 @@
       </Popover>
     </div>
 
-    <div class="title" style="margin-top: 20px;">预置主题：</div>
-    <div class="theme-list">
+    <div class="title dropdown" :class="{ 'active': showPresetThemes }" @click="togglePresetThemesVisible()" style="margin-top: 20px;">
+      预置主题 <IconDown class="icon" />
+    </div>
+    <div class="theme-list" v-if="showPresetThemes">
       <div 
         class="theme-item" 
         v-for="(item, index) in themes" 
@@ -191,7 +193,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
@@ -205,7 +207,7 @@ const themes = PRESET_THEMES
 const webFonts = WEB_FONTS
 
 export default defineComponent({
-  name: 'slide-style-panel',
+  name: 'slide-design-panel',
   components: {
     ColorButton,
   },
@@ -335,6 +337,12 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 是否显示预设主题
+    const showPresetThemes = ref(true)
+    const togglePresetThemesVisible = () => {
+      showPresetThemes.value = !showPresetThemes.value
+    }
+
     // 设置画布尺寸（宽高比例）
     const updateViewportRatio = (value: number) => {
       store.commit(MutationTypes.SET_VIEWPORT_RATIO, value)
@@ -354,12 +362,17 @@ export default defineComponent({
       applyThemeAllSlide,
       viewportRatio,
       updateViewportRatio,
+      showPresetThemes,
+      togglePresetThemesVisible,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
+.slide-design-panel {
+  user-select: none;
+}
 .row {
   width: 100%;
   display: flex;
@@ -368,6 +381,21 @@ export default defineComponent({
 }
 .title {
   margin-bottom: 10px;
+
+  &.dropdown {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .icon {
+      margin-left: 5px;
+      transition: transform $transitionDelayFast;
+    }
+
+    &:not(.active) .icon {
+      transform: rotate(-90deg);
+    }
+  }
 }
 .background-image-wrapper {
   margin-bottom: 10px;

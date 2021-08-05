@@ -23,7 +23,7 @@ import { ToolbarState, ToolbarStates } from '@/types/toolbar'
 import ElementStylePanel from './ElementStylePanel/index.vue'
 import ElementPositionPanel from './ElementPositionPanel.vue'
 import ElementAnimationPanel from './ElementAnimationPanel.vue'
-import SlideStylePanel from './SlideStylePanel.vue'
+import SlideDesignPanel from './SlideDesignPanel.vue'
 import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 
@@ -39,7 +39,7 @@ export default defineComponent({
       { label: '动画', value: ToolbarStates.EL_ANIMATION },
     ]
     const slideTabs = [
-      { label: '页面样式', value: ToolbarStates.SLIDE_STYLE },
+      { label: '设计', value: ToolbarStates.SLIDE_DESIGN },
       { label: '切换', value: ToolbarStates.SLIDE_ANIMATION },
       { label: '动画', value: ToolbarStates.EL_ANIMATION },
     ]
@@ -71,7 +71,7 @@ export default defineComponent({
         [ToolbarStates.EL_STYLE]: ElementStylePanel,
         [ToolbarStates.EL_POSITION]: ElementPositionPanel,
         [ToolbarStates.EL_ANIMATION]: ElementAnimationPanel,
-        [ToolbarStates.SLIDE_STYLE]: SlideStylePanel,
+        [ToolbarStates.SLIDE_DESIGN]: SlideDesignPanel,
         [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
         [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
       }
