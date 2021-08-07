@@ -47,6 +47,20 @@
           ></path>
         </SvgWrapper>
       </div>
+      <div 
+        :class="['clip-point', '', point]" 
+        v-for="point in ['t', 'b', 'l', 'r']" 
+        :key="point" 
+        @mousedown.stop="$event => scaleClipRange($event, point)"
+      >
+        <SvgWrapper width="16" height="16" fill="#fff" stroke="#333">
+          <path
+            stroke-width="0.3" 
+            shape-rendering="crispEdges"
+            d="M 16 0 L 0 0 L 0 4 L 16 4 Z"
+          ></path>
+        </SvgWrapper>
+      </div>
     </div>
   </div>
 </template>
@@ -389,7 +403,7 @@ export default defineComponent({
           targetLeft = originPositopn.left + moveX
           targetTop = originPositopn.top
         }
-        else {
+        else if (type === 'b-r') {
           if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
             moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
           }
@@ -404,6 +418,54 @@ export default defineComponent({
           }
           targetWidth = originPositopn.width + moveX
           targetHeight = originPositopn.height + moveY
+          targetLeft = originPositopn.left
+          targetTop = originPositopn.top
+        }
+        else if (type === 't') {
+          if (originPositopn.top + moveY < 0) {
+            moveY = -originPositopn.top
+          }
+          if (originPositopn.height - moveY < minHeight) {
+            moveY = originPositopn.height - minHeight
+          }
+          targetWidth = originPositopn.width
+          targetHeight = originPositopn.height - moveY
+          targetLeft = originPositopn.left
+          targetTop = originPositopn.top + moveY
+        }
+        else if (type === 'b') {
+          if (originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
+            moveY = bottomPosition.height - (originPositopn.top + originPositopn.height)
+          }
+          if (originPositopn.height + moveY < minHeight) {
+            moveY = minHeight - originPositopn.height
+          }
+          targetWidth = originPositopn.width
+          targetHeight = originPositopn.height + moveY
+          targetLeft = originPositopn.left
+          targetTop = originPositopn.top
+        }
+        else if (type === 'l') {
+          if (originPositopn.left + moveX < 0) {
+            moveX = -originPositopn.left
+          }
+          if (originPositopn.width - moveX < minWidth) {
+            moveX = originPositopn.width - minWidth
+          }
+          targetWidth = originPositopn.width - moveX
+          targetHeight = originPositopn.height
+          targetLeft = originPositopn.left + moveX
+          targetTop = originPositopn.top
+        }
+        else {
+          if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
+            moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
+          }
+          if (originPositopn.width + moveX < minWidth) {
+            moveX = minWidth - originPositopn.width
+          }
+          targetHeight = originPositopn.height
+          targetWidth = originPositopn.width + moveX
           targetLeft = originPositopn.left
           targetTop = originPositopn.top
         }
@@ -480,12 +542,6 @@ export default defineComponent({
   position: absolute;
   width: 16px;
   height: 16px;
-  left: 0;
-  top: 0;
-  transform-origin: 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   svg {
     overflow: visible;
@@ -500,19 +556,49 @@ export default defineComponent({
     left: 100%;
     top: 0;
     transform: rotate(90deg);
+    transform-origin: 0 0;
     cursor: nesw-resize;
   }
   &.b-l {
     left: 0;
     top: 100%;
     transform: rotate(-90deg);
+    transform-origin: 0 0;
     cursor: nesw-resize;
   }
   &.b-r {
     left: 100%;
     top: 100%;
     transform: rotate(180deg);
+    transform-origin: 0 0;
     cursor: nwse-resize;
+  }
+  &.t {
+    cursor: n-resize;
+    left: 50%;
+    top: 0;
+    margin-left: -8px;
+  }
+  &.b {
+    cursor: n-resize;
+    left: 50%;
+    bottom: 0;
+    margin-left: -8px;
+    transform: rotate(180deg);
+  }
+  &.l {
+    cursor: w-resize;
+    left: 0;
+    top: 50%;
+    margin-top: -8px;
+    transform: rotate(-90deg);
+  }
+  &.r {
+    cursor: w-resize;
+    right: 0;
+    top: 50%;
+    margin-top: -8px;
+    transform: rotate(90deg);
   }
 }
 </style>
