@@ -18,6 +18,7 @@
 <script lang="ts">
 import { computed, defineComponent, watch } from 'vue'
 import { MutationTypes, useStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import { ToolbarState, ToolbarStates } from '@/types/toolbar'
 
 import ElementStylePanel from './ElementStylePanel/index.vue'
@@ -26,18 +27,30 @@ import ElementAnimationPanel from './ElementAnimationPanel.vue'
 import SlideDesignPanel from './SlideDesignPanel.vue'
 import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
+import SymbolPanel from './SymbolPanel.vue'
 
 export default defineComponent({
   name: 'toolbar',
   setup() {
     const store = useStore()
     const toolbarState = computed(() => store.state.toolbarState)
+    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
-    const elementTabs = [
-      { label: '样式', value: ToolbarStates.EL_STYLE },
-      { label: '位置', value: ToolbarStates.EL_POSITION },
-      { label: '动画', value: ToolbarStates.EL_ANIMATION },
-    ]
+    const elementTabs = computed(() => {
+      if (handleElement.value.type === 'text') {
+        return [
+          { label: '样式', value: ToolbarStates.EL_STYLE },
+          { label: '符号', value: ToolbarStates.SYMBOL },
+          { label: '位置', value: ToolbarStates.EL_POSITION },
+          { label: '动画', value: ToolbarStates.EL_ANIMATION },
+        ]
+      }
+      return [
+        { label: '样式', value: ToolbarStates.EL_STYLE },
+        { label: '位置', value: ToolbarStates.EL_POSITION },
+        { label: '动画', value: ToolbarStates.EL_ANIMATION },
+      ]
+    })
     const slideTabs = [
       { label: '设计', value: ToolbarStates.SLIDE_DESIGN },
       { label: '切换', value: ToolbarStates.SLIDE_ANIMATION },
@@ -56,7 +69,7 @@ export default defineComponent({
     const currentTabs = computed(() => {
       if (!activeElementIdList.value.length) return slideTabs
       else if (activeElementIdList.value.length > 1) return multiSelectTabs
-      return elementTabs
+      return elementTabs.value
     })
 
     watch(currentTabs, () => {
@@ -74,6 +87,7 @@ export default defineComponent({
         [ToolbarStates.SLIDE_DESIGN]: SlideDesignPanel,
         [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
         [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
+        [ToolbarStates.SYMBOL]: SymbolPanel,
       }
       return panelMap[toolbarState.value] || null
     })

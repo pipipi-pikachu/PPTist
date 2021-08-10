@@ -204,6 +204,9 @@ export default defineComponent({
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
         }
+        else if (item.command === 'insert' && item.value) {
+          editorView.dispatch(editorView.state.tr.insertText(item.value))
+        }
       }
 
       editorView.focus()
