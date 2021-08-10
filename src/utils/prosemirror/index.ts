@@ -10,7 +10,7 @@ const schema = new Schema({
   marks: schemaMarks,
 })
 
-const createDocument = (content: string) => {
+export const createDocument = (content: string) => {
   const htmlString = `<div>${content}</div>`
   const parser = new window.DOMParser()
   const element = parser.parseFromString(htmlString, 'text/html').body.firstElementChild

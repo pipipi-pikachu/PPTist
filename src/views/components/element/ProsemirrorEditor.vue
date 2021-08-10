@@ -11,7 +11,7 @@ import { debounce } from 'lodash'
 import { MutationTypes, useStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
-import { initProsemirrorEditor } from '@/utils/prosemirror/'
+import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { getTextAttrs } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
@@ -92,7 +92,9 @@ export default defineComponent({
     watch(textContent, () => {
       if (!editorView) return
       if (editorView.hasFocus()) return
-      editorView.dom.innerHTML = textContent.value
+
+      const { doc, tr } = editorView.state
+      editorView.dispatch(tr.replaceRangeWith(0, doc.content.size, createDocument(textContent.value)))
     })
 
     // 打开/关闭编辑器的编辑模式

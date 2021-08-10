@@ -9,6 +9,7 @@
       fontFamily: theme.fontName,
       visibility: needWaitAnimation ? 'hidden' : 'visible',
     }"
+    :title="elementInfo.link || ''"
     @click="openLink()"
   >
     <component
