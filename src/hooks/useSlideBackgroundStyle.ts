@@ -27,7 +27,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
         return {
           backgroundImage: `url(${image}`,
           backgroundRepeat: 'repeat',
-          backgroundSize: 'initial',
+          backgroundSize: 'contain',
         }
       }
       return {

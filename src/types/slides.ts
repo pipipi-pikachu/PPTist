@@ -178,7 +178,7 @@ export interface SlideBackground {
   type: 'solid' | 'image' | 'gradient';
   color?: string;
   image?: string;
-  imageSize?: 'cover' | 'contain' | 'repeat' | 'initial';
+  imageSize?: 'cover' | 'contain' | 'repeat';
   gradientType?: 'linear' | 'radial';
   gradientColor?: [string, string];
   gradientRotate?: number;

@@ -25,11 +25,10 @@
 
       <Select 
         style="flex: 10;" 
-        :value="background.size || 'cover'" 
+        :value="background.imageSize || 'cover'" 
         @change="value => updateBackground({ imageSize: value })"
         v-else-if="background.type === 'image'"
       >
-        <SelectOption value="initial">原始大小</SelectOption>
         <SelectOption value="contain">缩放</SelectOption>
         <SelectOption value="repeat">拼贴</SelectOption>
         <SelectOption value="cover">缩放铺满</SelectOption>
