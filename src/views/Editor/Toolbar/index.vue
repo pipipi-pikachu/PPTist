@@ -37,7 +37,7 @@ export default defineComponent({
     const handleElement = computed<PPTElement>(() => store.getters.handleElement)
 
     const elementTabs = computed(() => {
-      if (handleElement.value.type === 'text') {
+      if (handleElement.value?.type === 'text') {
         return [
           { label: '样式', value: ToolbarStates.EL_STYLE },
           { label: '符号', value: ToolbarStates.SYMBOL },
