@@ -27,6 +27,7 @@ export default defineComponent({
   components: {
     Checkboard,
   },
+  emits: ['colorChange'],
   props: {
     value: {
       type: Object as PropType<ColorFormats.RGBA>,

@@ -58,6 +58,7 @@ import { message } from 'ant-design-vue'
 
 export default defineComponent({
   name: 'table-generator',
+  emits: ['insert', 'close'],
   setup(props, { emit }) {
     const endCell = ref<number[]>([])
     const customRow = ref(3)

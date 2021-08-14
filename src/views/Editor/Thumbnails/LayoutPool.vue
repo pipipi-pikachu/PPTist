@@ -20,6 +20,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
   name: 'layout-pool',
+  emits: ['select'],
   components: {
     ThumbnailSlide,
   },

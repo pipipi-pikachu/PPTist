@@ -87,6 +87,7 @@ import CustomTextarea from './CustomTextarea.vue'
 
 export default defineComponent({
   name: 'editable-table',
+  emits: ['change', 'changeColWidths', 'changeSelectedCells'],
   components: {
     CustomTextarea,
   },

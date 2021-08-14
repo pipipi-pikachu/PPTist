@@ -25,6 +25,7 @@ import { throttle, clamp } from 'lodash'
 
 export default defineComponent({
   name: 'saturation',
+  emits: ['colorChange'],
   props: {
     value: {
       type: Object as PropType<ColorFormats.RGBA>,

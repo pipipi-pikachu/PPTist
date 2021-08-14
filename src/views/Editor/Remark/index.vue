@@ -19,6 +19,7 @@ import { Slide } from '@/types/slides'
 
 export default defineComponent({
   name: 'remark',
+  emits: ['update:height'],
   props: {
     height: {
       type: Number,

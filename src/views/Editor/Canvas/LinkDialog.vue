@@ -17,6 +17,7 @@ import useLink from '@/hooks/useLink'
 
 export default defineComponent({
   name: 'link-dialog',
+  emits: ['close'],
   setup(props, { emit }) {
     const store = useStore()
     const handleElement = computed<PPTElement | null>(() => store.getters.handleElement)

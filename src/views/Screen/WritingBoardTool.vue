@@ -47,6 +47,7 @@ const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d
 
 export default defineComponent({
   name: 'writing-board-tool',
+  emits: ['close'],
   components: {
     WritingBoard,
   },

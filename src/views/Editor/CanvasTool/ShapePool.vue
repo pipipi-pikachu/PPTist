@@ -39,6 +39,7 @@ import { SHAPE_LIST, ShapePoolItem } from '@/configs/shapes'
 
 export default defineComponent({
   name: 'shape-pool',
+  emits: ['select'],
   setup(props, { emit }) {
     const shapeList = SHAPE_LIST
 

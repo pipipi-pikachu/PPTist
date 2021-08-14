@@ -133,6 +133,7 @@ export default defineComponent({
     Saturation,
     EditableInput,
   },
+  emits: ['update:modelValue'],
   props: {
     modelValue: {
       type: String,

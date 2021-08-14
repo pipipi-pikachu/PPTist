@@ -15,6 +15,7 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'chart-pool',
+  emits: ['select'],
   setup(props, { emit }) {
     const chartList = ['bar', 'line', 'pie']
 

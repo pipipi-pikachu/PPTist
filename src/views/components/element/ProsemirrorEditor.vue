@@ -18,6 +18,8 @@ import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 
 export default defineComponent({
+  name: 'prosemirror-editor',
+  emits: ['update', 'focus', 'blur'],
   props: {
     elementId: {
       type: String,

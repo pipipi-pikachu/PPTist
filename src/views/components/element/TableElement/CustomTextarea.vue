@@ -16,6 +16,7 @@ import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/c
 
 export default defineComponent({
   name: 'custom-textarea',
+  emits: ['updateValue', 'insertExcelData'],
   props: {
     value: {
       type: String,

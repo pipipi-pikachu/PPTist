@@ -33,6 +33,7 @@ import { useStore } from '@/store'
 
 export default defineComponent({
   name: 'element-create-selection',
+  emits: ['created'],
   setup(props, { emit }) {
     const store = useStore()
     const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)

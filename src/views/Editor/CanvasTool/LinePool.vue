@@ -59,6 +59,7 @@ import LinePointMarker from '@/views/components/element/LineElement/LinePointMar
 
 export default defineComponent({
   name: 'line-pool',
+  emits: ['select'],
   components: {
     LinePointMarker,
   },

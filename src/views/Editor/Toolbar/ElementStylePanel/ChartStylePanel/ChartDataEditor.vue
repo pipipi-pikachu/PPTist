@@ -54,6 +54,7 @@ const CELL_HEIGHT = 32
 
 export default defineComponent({
   name: 'chart-data-editor',
+  emits: ['save', 'close'],
   props: {
     data: {
       type: Object as PropType<ChartData>,

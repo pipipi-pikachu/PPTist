@@ -34,6 +34,7 @@ const getCheckboard = (white: string, grey: string, size: number) => {
 
 export default defineComponent({
   name: 'checkboard',
+  emits: ['colorChange'],
   props: {
     size: {
       type: Number,

@@ -14,6 +14,7 @@ import tinycolor, { ColorFormats } from 'tinycolor2'
 
 export default defineComponent({
   name: 'editable-input',
+  emits: ['colorChange'],
   props: {
     value: {
       type: Object as PropType<ColorFormats.RGBA>,

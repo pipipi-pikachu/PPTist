@@ -75,6 +75,7 @@ type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
 
 export default defineComponent({
   name: 'image-clip-handler',
+  emits: ['clip'],
   props: {
     src: {
       type: String,
