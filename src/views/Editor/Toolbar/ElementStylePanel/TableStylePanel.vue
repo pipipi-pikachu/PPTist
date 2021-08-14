@@ -216,6 +216,7 @@ export default defineComponent({
     const store = useStore()
     const handleElement = computed<PPTTableElement>(() => store.getters.handleElement)
     const selectedCells = computed(() => store.state.selectedTableCells)
+    const themeColor = computed(() => store.state.theme.themeColor)
     
     const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
@@ -335,7 +336,7 @@ export default defineComponent({
       if (checked) {
         const props = {
           theme: {
-            color: '#d14424',
+            color: themeColor.value,
             rowHeader: true,
             rowFooter: false,
             colHeader: false,
