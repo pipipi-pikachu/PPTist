@@ -64,6 +64,7 @@ import { ImageClipedEmitData } from '@/types/edit'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useClipImage from './useClipImage'
 import useFilter from './useFilter'
 
@@ -93,6 +94,8 @@ export default defineComponent({
     const store = useStore()
     const clipingImageElementId = computed(() => store.state.clipingImageElementId)
     const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
+
+    const { addHistorySnapshot } = useHistorySnapshot()
 
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
@@ -129,6 +132,8 @@ export default defineComponent({
         height: props.elementInfo.height + position.height,
       }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: props.elementInfo.id, props: _props })
+      
+      addHistorySnapshot()
     }
 
     return {
