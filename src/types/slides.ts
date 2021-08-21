@@ -286,6 +286,8 @@ export interface PPTShapeElement extends PPTBaseElement {
 }
 
 
+export type LinePoint = '' | 'arrow' | 'dot' 
+
 /**
  * 线条元素
  * 
@@ -311,9 +313,9 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
   type: 'line';
   start: [number, number];
   end: [number, number];
-  style: string;
+  style: 'solid' | 'dashed';
   color: string;
-  points: [string, string];
+  points: [LinePoint, LinePoint];
   shadow?: PPTElementShadow;
   broken?: [number, number];
   curve?: [number, number];
