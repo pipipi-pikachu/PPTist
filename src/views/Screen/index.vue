@@ -129,6 +129,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      setSlideContentSize()
       window.addEventListener('resize', windowResizeListener)
     })
     onUnmounted(() => {
