@@ -16,11 +16,13 @@ export default () => {
 
   const exporting = ref(false)
   
+  // 导出JSON文件
   const exportJSON = () => {
     const blob = new Blob([JSON.stringify(slides.value)], { type: '' })
     saveAs(blob, 'pptist_slides.json')
   }
 
+  // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
   const formatColor = (_color: string) => {
     const c = tinycolor(_color)
     const alpha = c.getAlpha()
@@ -33,6 +35,8 @@ export default () => {
 
   type FormatColor = ReturnType<typeof formatColor>
 
+  // 将HTML字符串格式化为pptxgenjs所需的格式
+  // 核心思路：将HTML字符串按样式分片平铺，每个片段需要继承祖先元素的样式信息，遇到块级元素需要换行
   const formatHTML = (html: string) => {
     const ast = toAST(html)
 
@@ -134,6 +138,8 @@ export default () => {
     | { x: number; y: number; curve: { type: 'cubic'; x1: number; y1: number; x2: number; y2: number } }
     | { close: true }
   >
+
+  // 将SVG路径信息格式化为pptxgenjs所需要的格式
   const formatPoints = (points: SvgPoints, scale = { x: 1, y: 1 }): Points => {
     return points.map(point => {
       if (point.close !== undefined) {
@@ -179,6 +185,7 @@ export default () => {
     })
   }
 
+  // 导出PPTX文件
   const exportPPTX = () => {
     exporting.value = true
     const pptx = new pptxgen()

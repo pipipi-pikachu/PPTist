@@ -157,7 +157,6 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
    * 主要用于复制元素时，维持数据中各处元素ID原有的关系
    * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId
    * @param elements 元素列表数据
-   * @returns 
    */
 export const createElementIdMap = (elements: PPTElement[]) => {
   const groupIdMap = {}
@@ -178,7 +177,6 @@ export const createElementIdMap = (elements: PPTElement[]) => {
 /**
  * 根据表格的主题色，获取对应用于配色的子颜色
  * @param themeColor 主题色
- * @returns 
  */
 export const getTableSubThemeColor = (themeColor: string) => {
   const rgba = tinycolor(themeColor).toRgb()
@@ -193,7 +191,6 @@ export const getTableSubThemeColor = (themeColor: string) => {
 /**
  * 获取线条元素路径字符串
  * @param element 线条元素
- * @returns 
  */
 export const getLineElementPath = (element: PPTLineElement) => {
   const start = element.start.join(',')

@@ -72,6 +72,7 @@ export default defineComponent({
       return false      
     })
 
+    // 打开元素绑定的超链接
     const openLink = () => {
       if (props.elementInfo.link) window.open(props.elementInfo.link)
     }
