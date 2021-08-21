@@ -3,6 +3,8 @@
     <div 
       class="slide-list"
       @mousewheel="$event => mousewheelListener($event)"
+      @touchstart="$event => touchStartListener($event)"
+      @touchend="$event => touchEndListener($event)"
       v-contextmenu="contextmenus"
     >
       <div 
@@ -217,6 +219,29 @@ export default defineComponent({
       else if (e.deltaY > 0) execNext()
     }, 500, { leading: true, trailing: false })
 
+    // 触摸屏上下滑动翻页
+    const touchInfo = ref<{ x: number; y: number; } | null>(null)
+
+    const touchStartListener = (e: TouchEvent) => {
+      touchInfo.value = {
+        x: e.changedTouches[0].pageX,
+        y: e.changedTouches[0].pageY,
+      }
+    }
+    const touchEndListener = (e: TouchEvent) => {
+      if (!touchInfo.value) return
+
+      const offsetX = Math.abs(touchInfo.value.x - e.changedTouches[0].pageX)
+      const offsetY = e.changedTouches[0].pageY - touchInfo.value.y
+
+      if ( Math.abs(offsetY) > offsetX && Math.abs(offsetY) > 50 ) {
+        touchInfo.value = null
+  
+        if (offsetY > 0) execPrev()
+        else execNext()
+      }
+    }
+
     // 快捷键翻页
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
@@ -314,6 +339,8 @@ export default defineComponent({
       slideHeight,
       scale,
       mousewheelListener,
+      touchStartListener,
+      touchEndListener,
       animationIndex,
       contextmenus,
       execPrev,
