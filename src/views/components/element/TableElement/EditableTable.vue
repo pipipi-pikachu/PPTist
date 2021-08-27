@@ -8,9 +8,7 @@
         class="drag-line" 
         v-for="(pos, index) in dragLinePosition" 
         :key="index"
-        :style="{
-          left: pos + 'px',
-        }"
+        :style="{ left: pos + 'px' }"
         @mousedown="$event => handleMousedownColHandler($event, index)"
       ></div>
     </div>
@@ -28,10 +26,7 @@
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
-        <tr
-          v-for="(rowCells, rowIndex) in tableCells" 
-          :key="rowIndex"
-        >
+        <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex">
           <td 
             class="cell"
             :class="{
@@ -360,6 +355,44 @@ export default defineComponent({
       colSizeList.value.splice(colIndex, 0, 100)
       emit('changeColWidths', colSizeList.value)
     }
+
+    // 填充指定的行/列数
+    const fillTable = (rowCount: number, colCount: number) => {
+      let _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
+      const defaultCell = { colspan: 1, rowspan: 1, text: '' }
+      
+      if (rowCount) {
+        const newRows = []
+        for (let i = 0; i < rowCount; i++) {
+          const rowCells: TableCell[] = []
+          for (let j = 0; j < _tableCells[0].length; j++) {
+            rowCells.push({
+              ...defaultCell,
+              id: createRandomCode(),
+            })
+          }
+          newRows.push(rowCells)
+        }
+        _tableCells = [..._tableCells, ...newRows]
+      }
+      if (colCount) {
+        _tableCells = _tableCells.map(item => {
+          const cells: TableCell[] = []
+          for (let i = 0; i < colCount; i++) {
+            const cell = {
+              ...defaultCell,
+              id: createRandomCode(),
+            }
+            cells.push(cell)
+          }
+          return [...item, ...cells]
+        })
+        colSizeList.value = [...colSizeList.value, ...new Array(colCount).fill(100)]
+        emit('changeColWidths', colSizeList.value)
+      }
+
+      tableCells.value = _tableCells
+    }
     
     // 合并单元格
     const mergeCells = () => {
@@ -511,22 +544,27 @@ export default defineComponent({
       emit('change', tableCells.value)
     }, 300, { trailing: true })
 
-    // 插入来自Excel的数据
+    // 插入来自Excel的数据，表格的行/列数不够时自动补足
     const insertExcelData = (data: string[][], rowIndex: number, colIndex: number) => {
-      let maxRow = data.length
-      let maxCol = data[0].length
+      const maxRow = data.length
+      const maxCol = data[0].length
 
-      if (rowIndex + maxRow > tableCells.value.length) maxRow = tableCells.value.length - rowIndex
-      if (colIndex + maxCol > tableCells.value[0].length) maxCol = tableCells.value[0].length - colIndex
+      let fillRowCount = 0
+      let fillColCount = 0
+      if (rowIndex + maxRow > tableCells.value.length) fillRowCount = rowIndex + maxRow - tableCells.value.length
+      if (colIndex + maxCol > tableCells.value[0].length) fillColCount = colIndex + maxCol - tableCells.value[0].length
+      if (fillRowCount || fillColCount) fillTable(fillRowCount, fillColCount)
 
-      for (let i = 0; i < maxRow; i++) {
-        for (let j = 0; j < maxCol; j++) {
-          if (tableCells.value[rowIndex + i][colIndex + j]) {
-            tableCells.value[rowIndex + i][colIndex + j].text = data[i][j]
+      nextTick(() => {
+        for (let i = 0; i < maxRow; i++) {
+          for (let j = 0; j < maxCol; j++) {
+            if (tableCells.value[rowIndex + i][colIndex + j]) {
+              tableCells.value[rowIndex + i][colIndex + j].text = data[i][j]
+            }
           }
         }
-      }
-      emit('change', tableCells.value)
+        emit('change', tableCells.value)
+      })
     }
 
     // 获取有效的单元格（排除掉被合并的单元格）
