@@ -54,18 +54,6 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">主题配色：</div>
-      <Popover trigger="click">
-        <template #content>
-          <ColorPicker
-            :modelValue="themeColor"
-            @update:modelValue="value => updateTheme(value)"
-          />
-        </template>
-        <ColorButton :color="themeColor" style="flex: 3;" />
-      </Popover>
-    </div>
-    <div class="row">
       <div style="flex: 2;">网格颜色：</div>
       <Popover trigger="click">
         <template #content>
@@ -79,6 +67,33 @@
     </div>
 
     <Divider />
+
+    <div class="row" v-for="(color, index) in themeColor" :key="index">
+      <div style="flex: 2;">{{index === 0 ? '主题配色：' : ''}}</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            :modelValue="color"
+            @update:modelValue="value => updateTheme(value, index)"
+          />
+        </template>
+        <div class="color-btn-wrap" style="flex: 3;">
+          <ColorButton :color="color" style="width: 100%;" />
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
+            <div class="delete-color-btn" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
+          </Tooltip>
+        </div>
+      </Popover>
+    </div>
+    <div class="row" v-if="themeColor.length < 10">
+      <div style="flex: 2;"></div>
+      <Button class="add-color-btn" style="flex: 3;" @click="addThemeColor()">
+        <IconPlus />
+      </Button>  
+    </div>
+
+    <Divider />
+
     <ElementOutline />
 
     <Modal
@@ -120,6 +135,7 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const handleElement = computed<PPTChartElement>(() => store.getters.handleElement)
+    const theme = computed(() => store.state.theme)
 
     const chartDataEditorVisible = ref(false)
 
@@ -127,7 +143,7 @@ export default defineComponent({
 
     const fill = ref<string>()
 
-    const themeColor = ref<string>('')
+    const themeColor = ref<string[]>([])
     const gridColor = ref('')
 
     const lineSmooth = ref(true)
@@ -185,8 +201,28 @@ export default defineComponent({
     }
 
     // 设置主题色
-    const updateTheme = (themeColor: string) => {
-      const props = { themeColor }
+    const updateTheme = (color: string, index: number) => {
+      const props = {
+        themeColor: themeColor.value.map((c, i) => i === index ? color : c),
+      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    // 添加主题色
+    const addThemeColor = () => {
+      const props = {
+        themeColor: [...themeColor.value, theme.value.themeColor],
+      }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
+    // 删除主题色
+    const deleteThemeColor = (index: number) => {
+      const props = {
+        themeColor: themeColor.value.filter((c, i) => i !== index),
+      }
       store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
       addHistorySnapshot()
     }
@@ -220,6 +256,8 @@ export default defineComponent({
       themeColor,
       gridColor,
       updateTheme,
+      addThemeColor,
+      deleteThemeColor,
       updateGridColor,
     }
   },
@@ -238,5 +276,24 @@ export default defineComponent({
 }
 .btn-icon {
   margin-right: 3px;
+}
+
+.add-color-btn {
+  padding: 0 !important;
+}
+.color-btn-wrap {
+  position: relative;
+}
+.delete-color-btn {
+  position: absolute;
+  width: 30px;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  cursor: pointer;
 }
 </style>

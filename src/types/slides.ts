@@ -354,7 +354,7 @@ export interface PPTChartElement extends PPTBaseElement {
   data: ChartData;
   options?: ILineChartOptions & IBarChartOptions & IPieChartOptions;
   outline?: PPTElementOutline;
-  themeColor: string;
+  themeColor: string[];
   gridColor?: string;
 }
 

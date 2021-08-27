@@ -382,7 +382,15 @@ export default () => {
             })
           }
 
-          const chartColors = tinycolor(el.themeColor).analogous(10).map(item => item.toHexString())
+          let chartColors: string[] = []
+          if (el.themeColor.length === 10) chartColors = el.themeColor.map(color => formatColor(color).color)
+          else if (el.themeColor.length === 1) chartColors = tinycolor(el.themeColor[0]).analogous(10).map(color => formatColor(color.toHexString()).color)
+          else {
+            const len = el.themeColor.length
+            const supplement = tinycolor(el.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
+            chartColors = [...el.themeColor.slice(0, len - 1), ...supplement].map(color => formatColor(color).color)
+          }
+          
           const options: pptxgen.IChartOpts = {
             x: el.left / 100,
             y: el.top / 100,

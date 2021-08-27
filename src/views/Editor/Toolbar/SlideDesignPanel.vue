@@ -327,7 +327,7 @@ export default defineComponent({
             }
           }
           else if (el.type === 'chart') {
-            el.themeColor = themeColor
+            el.themeColor = [themeColor]
             el.gridColor = fontColor
           }
         }

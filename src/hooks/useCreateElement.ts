@@ -90,7 +90,7 @@ export default () => {
       top: 81.25,
       width: 400,
       height: 400,
-      themeColor: themeColor.value,
+      themeColor: [themeColor.value],
       gridColor: fontColor.value,
       data: {
         labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],

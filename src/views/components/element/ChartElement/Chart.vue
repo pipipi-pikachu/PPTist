@@ -51,7 +51,7 @@ export default defineComponent({
       type: Object as PropType<ILineChartOptions & IBarChartOptions & IPieChartOptions>,
     },
     themeColor: {
-      type: String,
+      type: Array as PropType<string[]>,
       required: true,
     },
     gridColor: {
@@ -101,14 +101,22 @@ export default defineComponent({
 
     onMounted(renderChart)
 
-    // 更新主题配色：获取主题色的相近颜色作为主题配色
+    // 更新主题配色：
+    // 如果当前所设置的主题色数小于10，剩余部分获取最后一个主题色的相近颜色作为配色
     const updateTheme = () => {
       if (!chartRef.value) return
 
-      const colors = tinycolor(props.themeColor).analogous(10)
+      let colors: string[] = []
+      if (props.themeColor.length === 10) colors = props.themeColor
+      else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toHexString())
+      else {
+        const len = props.themeColor.length
+        const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
+        colors = [...props.themeColor.slice(0, len - 1), ...supplement]
+      }
+
       for (let i = 0; i < 10; i++) {
-        const color = colors[i].toRgbString()
-        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, color)
+        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, colors[i])
       }
     }
 
