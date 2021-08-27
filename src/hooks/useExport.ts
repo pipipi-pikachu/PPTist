@@ -399,6 +399,8 @@ export default () => {
             chartColors: el.chartType === 'pie' ? chartColors : chartColors.slice(0, el.data.series.length),
           }
 
+          if (el.fill) options.fill = formatColor(el.fill).color
+
           let type = pptx.ChartType.bar
           if (el.chartType === 'bar') {
             type = pptx.ChartType.bar
