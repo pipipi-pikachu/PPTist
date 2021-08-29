@@ -94,6 +94,7 @@ export default () => {
       gridColor: fontColor.value,
       data: {
         labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
+        legends: ['系列1'],
         series: [
           [12, 19, 5, 2, 18],
         ],

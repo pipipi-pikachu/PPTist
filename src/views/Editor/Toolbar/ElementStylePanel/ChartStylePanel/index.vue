@@ -42,6 +42,17 @@
     <Divider />
 
     <div class="row">
+      <div style="flex: 2;">图例：</div>
+      <Select style="flex: 3;" :value="legend" @change="value => updateLegend(value)">
+        <SelectOption value="">不显示</SelectOption>
+        <SelectOption value="top">显示在上方</SelectOption>
+        <SelectOption value="bottom">显示在下方</SelectOption>
+      </Select>
+    </div>
+
+    <Divider />
+
+    <div class="row">
       <div style="flex: 2;">背景填充：</div>
       <Popover trigger="click">
         <template #content>
@@ -145,6 +156,7 @@ export default defineComponent({
 
     const themeColor = ref<string[]>([])
     const gridColor = ref('')
+    const legend = ref('')
 
     const lineSmooth = ref(true)
     const showLine = ref(true)
@@ -174,6 +186,7 @@ export default defineComponent({
 
       themeColor.value = handleElement.value.themeColor
       gridColor.value = handleElement.value.gridColor || 'rgba(0, 0, 0, 0.4)'
+      legend.value = handleElement.value.legend || ''
     }, { deep: true, immediate: true })
 
     // 设置图表数据
@@ -234,6 +247,13 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    // 设置图例位置/不显示
+    const updateLegend = (legend: '' | 'top' | 'bottom') => {
+      const props = { legend }
+      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      addHistorySnapshot()
+    }
+
     const openDataEditor = () => chartDataEditorVisible.value = true
 
     emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
@@ -255,10 +275,12 @@ export default defineComponent({
       updateOptions,
       themeColor,
       gridColor,
+      legend,
       updateTheme,
       addThemeColor,
       deleteThemeColor,
       updateGridColor,
+      updateLegend,
     }
   },
 })

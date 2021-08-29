@@ -1,19 +1,33 @@
 <template>
-  <div class="chart">
+  <div 
+    class="chart"
+    :style="{ flexDirection: legend === 'top' ? 'column-reverse' : 'column' }"
+  >
     <div 
       class="chart-content"
       ref="chartRef"
       :style="{
         width: width + 'px',
-        height: height + 'px',
+        height: chartHeight + 'px',
         transform: `scale(${1 / slideScale})`,
       }"
     ></div>
+    <div class="legends" :style="{ transform: `scale(${1 / slideScale})` }" v-if="legend">
+      <div 
+        class="legend" 
+        v-for="(legend, index) in legends" 
+        :key="index"
+        :style="{ color: gridColor }"
+      >
+        <div class="block" :style="{ backgroundColor: themeColors[index] }"></div>
+        {{legend}}
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, PropType, ref, Ref, watch } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, ref, Ref, watch } from 'vue'
 import { upperFirst } from 'lodash'
 import tinycolor from 'tinycolor2'
 import Chartist, {
@@ -54,8 +68,15 @@ export default defineComponent({
       type: Array as PropType<string[]>,
       required: true,
     },
+    legends: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
     gridColor: {
       type: String,
+    },
+    legend: {
+      type: String as PropType<'' | 'top' | 'bottom'>,
     },
   },
   setup(props) {
@@ -64,12 +85,17 @@ export default defineComponent({
 
     let chart: IChartistLineChart | IChartistBarChart | IChartistPieChart | undefined
 
+    const chartHeight = computed(() => {
+      if (props.legend) return props.height - 20
+      return props.height
+    })
+
     const getDataAndOptions = () => {
       const propsOptopns = props.options || {}
       const options = {
         ...propsOptopns,
         width: props.width * slideScale.value,
-        height: props.height * slideScale.value,
+        height: chartHeight.value * slideScale.value,
       }
       const data = props.type === 'pie' ? { ...props.data, series: props.data.series[0] } : props.data
       return { data, options }
@@ -101,11 +127,7 @@ export default defineComponent({
 
     onMounted(renderChart)
 
-    // 更新主题配色：
-    // 如果当前所设置的主题色数小于10，剩余部分获取最后一个主题色的相近颜色作为配色
-    const updateTheme = () => {
-      if (!chartRef.value) return
-
+    const themeColors = computed(() => {
       let colors: string[] = []
       if (props.themeColor.length === 10) colors = props.themeColor
       else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toHexString())
@@ -114,13 +136,20 @@ export default defineComponent({
         const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
         colors = [...props.themeColor.slice(0, len - 1), ...supplement]
       }
+      return colors
+    })
+
+    // 更新主题配色：
+    // 如果当前所设置的主题色数小于10，剩余部分获取最后一个主题色的相近颜色作为配色
+    const updateTheme = () => {
+      if (!chartRef.value) return
 
       for (let i = 0; i < 10; i++) {
-        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, colors[i])
+        chartRef.value.style.setProperty(`--theme-color-${i + 1}`, themeColors.value[i])
       }
     }
 
-    watch(() => props.themeColor, updateTheme)
+    watch(themeColors, updateTheme)
     onMounted(updateTheme)
 
     // 更新网格颜色，包括坐标的文字部分
@@ -133,6 +162,8 @@ export default defineComponent({
     onMounted(updateGridColor)
 
     return {
+      chartHeight,
+      themeColors,
       slideScale,
       chartRef,
     }
@@ -141,6 +172,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.chart {
+  display: flex;
+}
+
 .chart-content {
   transform-origin: 0 0;
 }
@@ -192,6 +227,28 @@ export default defineComponent({
   .ct-label {
     fill: var(--grid-color);
     color: var(--grid-color);
+  }
+}
+
+.legends {
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+.legend {
+  display: flex;
+  align-items: center;
+
+  & + .legend {
+    margin-left: 10px;
+  }
+
+  .block {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
   }
 }
 </style>

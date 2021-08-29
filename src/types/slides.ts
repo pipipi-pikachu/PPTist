@@ -325,6 +325,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
 export type ChartType = 'bar' | 'line' | 'pie'
 export interface ChartData {
   labels: string[];
+  legends: string[];
   series: number[][];
 }
 
@@ -346,6 +347,8 @@ export interface ChartData {
  * themeColor: 主题色
  * 
  * gridColor?: 网格&坐标颜色
+ * 
+ * legend?: 图例/位置
  */
 export interface PPTChartElement extends PPTBaseElement {
   type: 'chart';
@@ -356,6 +359,7 @@ export interface PPTChartElement extends PPTBaseElement {
   outline?: PPTElementOutline;
   themeColor: string[];
   gridColor?: string;
+  legend?: '' | 'top' | 'bottom',
 }
 
 

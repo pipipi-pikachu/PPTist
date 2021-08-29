@@ -400,6 +400,12 @@ export default () => {
           }
 
           if (el.fill) options.fill = formatColor(el.fill).color
+          if (el.legend) {
+            options.showLegend = true
+            options.legendPos = el.legend === 'top' ? 't' : 'b'
+            options.legendColor = formatColor(el.gridColor || '#000000').color
+            options.legendFontSize = 14 * 0.75
+          }
 
           let type = pptx.ChartType.bar
           if (el.chartType === 'bar') {

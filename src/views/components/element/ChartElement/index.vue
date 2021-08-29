@@ -30,6 +30,8 @@
         :options="elementInfo.options"
         :themeColor="elementInfo.themeColor"
         :gridColor="elementInfo.gridColor"
+        :legends="elementInfo.data.legends"
+        :legend="elementInfo.legend || ''"
       />
     </div>
   </div>
