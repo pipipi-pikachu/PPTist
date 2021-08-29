@@ -34,6 +34,7 @@
                 :id="`cell-${rowIndex - 1}-${colIndex - 1}`"
                 autocomplete="off"
                 @focus="focusCell = [rowIndex - 1, colIndex - 1]"
+                @paste="$event => handlePaste($event, rowIndex - 1, colIndex - 1)"
               >
             </td>
           </tr>
@@ -57,6 +58,7 @@
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
 import { ChartData } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
+import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 
 const CELL_WIDTH = 100
 const CELL_HEIGHT = 32
@@ -194,6 +196,35 @@ export default defineComponent({
       }
     }
 
+    // 自定义粘贴事件（尝试读取剪贴板中的表格数据）
+    const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
+      e.preventDefault()
+
+      if (!e.clipboardData) return
+
+      const clipboardDataFirstItem = e.clipboardData.items[0]
+
+      if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
+        clipboardDataFirstItem.getAsString(text => {
+          const clipboardData = pasteCustomClipboardString(text)
+          if (typeof clipboardData === 'object') return
+ 
+          const excelData = pasteExcelClipboardString(text)
+          if (excelData) {
+            const maxRow = rowIndex + excelData.length
+            const maxCol = colIndex + excelData[0].length
+            for (let i = rowIndex; i < maxRow; i++) {
+              for (let j = colIndex; j < maxCol; j++) {
+                const inputRef = document.querySelector(`#cell-${i}-${j}`) as HTMLInputElement
+                if (!inputRef) continue
+                inputRef.value = excelData[i - rowIndex][j - colIndex]
+              }
+            }
+          }
+        })
+      }
+    }
+
     // 关闭图表数据编辑器
     const closeEditor = () => emit('close')
 
@@ -259,6 +290,7 @@ export default defineComponent({
       getTableData,
       closeEditor,
       clear,
+      handlePaste,
     }
   },
 })

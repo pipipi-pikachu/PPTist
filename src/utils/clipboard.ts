@@ -54,7 +54,7 @@ export const pasteCustomClipboardString = (text: string) => {
 }
 
 // 尝试解析剪贴板内容是否为Excel表格（或类似的）数据格式
-export const pasteExcelClipboardString = (text: string): string[][] | boolean => {
+export const pasteExcelClipboardString = (text: string): string[][] | null => {
   const lines: string[] = text.split('\r\n')
 
   if (lines[lines.length - 1] === '') lines.pop()
@@ -64,9 +64,9 @@ export const pasteExcelClipboardString = (text: string): string[][] | boolean =>
   for (const index in lines) {
     data[index] = lines[index].split('\t')
 
-    if (data[index].length === 1) return false
+    if (data[index].length === 1) return null
     if (colCount === -1) colCount = data[index].length
-    else if (colCount !== data[index].length) return false
+    else if (colCount !== data[index].length) return null
   }
   return data
 }
