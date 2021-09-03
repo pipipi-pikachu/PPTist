@@ -222,6 +222,22 @@ export default () => {
     if (data.isCurve) newElement.curve = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
     createElement(newElement)
   }
+  
+  /**
+   * 创建视频元素
+   * @param src 视频地址
+   */
+  const createVideoElement = (src: string) => {
+    createElement({
+      type: 'video',
+      id: createRandomCode(),
+      width: 500,
+      height: 300,
+      left: (VIEWPORT_SIZE - 500) / 2,
+      top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
+      src,
+    })
+  }
 
   return {
     createImageElement,
@@ -230,5 +246,6 @@ export default () => {
     createTextElement,
     createShapeElement,
     createLineElement,
+    createVideoElement,
   }
 }

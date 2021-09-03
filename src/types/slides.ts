@@ -7,6 +7,7 @@ export const enum ElementTypes {
   LINE = 'line',
   CHART = 'chart',
   TABLE = 'table',
+  VIDEO = 'video',
 }
 
 /**
@@ -461,7 +462,23 @@ export interface PPTTableElement extends PPTBaseElement {
 }
 
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement
+/**
+ * 视频元素
+ * 
+ * type: 元素类型（video）
+ * 
+ * src: 视频地址
+ * 
+ * poster: 预览封面
+ */
+export interface PPTVideoElement extends PPTBaseElement {
+  type: 'video';
+  src: string;
+  poster?: string;
+}
+
+
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTVideoElement
 
 
 /**

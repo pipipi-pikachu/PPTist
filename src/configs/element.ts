@@ -5,6 +5,7 @@ export const ELEMENT_TYPE_ZH = {
   line: '线条',
   chart: '图表',
   table: '表格',
+  video: '视频',
 }
 
 export const MIN_SIZE = {
@@ -13,4 +14,5 @@ export const MIN_SIZE = {
   shape: 15,
   chart: 200,
   table: 20,
+  video: 250,
 }

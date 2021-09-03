@@ -53,6 +53,17 @@
           <IconInsertTable class="handler-item" />
         </Tooltip>
       </Popover>
+      <Popover trigger="click" v-model:visible="videoInputVisible">
+        <template #content>
+          <VideoInput 
+            @close="videoInputVisible = false"
+            @insert="src => { createVideoElement(src); videoInputVisible = false }"
+          />
+        </template>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入视频">
+          <IconVideoTwo class="handler-item" />
+        </Tooltip>
+      </Popover>
     </div>
 
     <div class="right-handler">
@@ -80,6 +91,7 @@ import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
 import ChartPool from './ChartPool.vue'
 import TableGenerator from './TableGenerator.vue'
+import VideoInput from './VideoInput.vue'
 
 export default defineComponent({
   name: 'canvas-tool',
@@ -88,6 +100,7 @@ export default defineComponent({
     LinePool,
     ChartPool,
     TableGenerator,
+    VideoInput,
   },
   setup() {
     const store = useStore()
@@ -100,7 +113,7 @@ export default defineComponent({
     const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const { createImageElement, createChartElement, createTableElement } = useCreateElement()
+    const { createImageElement, createChartElement, createTableElement, createVideoElement } = useCreateElement()
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
@@ -112,6 +125,7 @@ export default defineComponent({
     const linePoolVisible = ref(false)
     const chartPoolVisible = ref(false)
     const tableGeneratorVisible = ref(false)
+    const videoInputVisible = ref(false)
 
     // 绘制文字范围
     const drawText = () => {
@@ -152,11 +166,13 @@ export default defineComponent({
       linePoolVisible,
       chartPoolVisible,
       tableGeneratorVisible,
+      videoInputVisible,
       drawText,
       drawShape,
       drawLine,
       createChartElement,
       createTableElement,
+      createVideoElement,
     }
   },
 })

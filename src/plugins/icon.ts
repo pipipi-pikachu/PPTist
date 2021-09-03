@@ -84,6 +84,12 @@ import {
   AlignTextTopOne,
   AlignTextBottomOne,
   AlignTextMiddleOne,
+  Pause,
+  VolumeMute,
+  VolumeNotice,
+  VolumeSmall,
+  LoopOnce,
+  VideoTwo,
 } from '@icon-park/vue-next'
 
 export default {
@@ -95,6 +101,7 @@ export default {
     app.component('IconConnection', Connection)
     app.component('IconChartProportion', ChartProportion)
     app.component('IconInsertTable', InsertTable)
+    app.component('IconVideoTwo', VideoTwo)
 
     // 锁定与解锁
     app.component('IconLock', Lock)
@@ -195,5 +202,12 @@ export default {
     app.component('IconLogout', Logout)
     app.component('IconClear', Clear)
     app.component('IconFolderClose', FolderClose)
+
+    // 视频播放器
+    app.component('IconPause', Pause)
+    app.component('IconVolumeMute', VolumeMute)
+    app.component('IconVolumeNotice', VolumeNotice)
+    app.component('IconVolumeSmall', VolumeSmall)
+    app.component('IconLoopOnce', LoopOnce)
   }
 }
