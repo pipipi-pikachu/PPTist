@@ -135,7 +135,7 @@
         bottom: 0;
         height: 3px;
         will-change: width;
-        background-color: $themeColor;
+        background-color: #fff;
 
         .thumb {
           position: absolute;
@@ -149,7 +149,7 @@
           cursor: pointer;
           transition: all 0.3s ease-in-out;
           transform: scale(0);
-          background-color: $themeColor;
+          background-color: #fff;
         }
       }
     }
@@ -179,7 +179,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
-      font-size: 22px;
+      font-size: 20px;
 
       &.play-icon {
         font-size: 26px;
@@ -190,8 +190,40 @@
         opacity: 0.8;
         color: #fff;
       }
+      &.loop-icon {
+        .icon-content {
+          opacity: 0.6;
+        }
+      }
+      &.speed-icon {
+        font-size: 12px;
+        position: relative;
+      }
+      .speed-menu {
+        width: 70px;
+        position: absolute;
+        bottom: 30px;
+        left: -23px;
+        background-color: #22211b;
+        padding: 5px 0;
+        color: #ddd;
+
+        .speed-menu-item {
+          padding: 8px 0;
+          text-align: center;
+
+          &:hover {
+            background-color: #393833;
+            color: #fff;
+          }
+          &.active {
+            font-weight: 700;
+            color: #fff;
+          }
+        }
+      }
+
       &.active .icon-content {
-        color: $themeColor;
         opacity: 1;
       }
       &:hover .icon-content {
@@ -243,7 +275,7 @@
         height: 100%;
         transition: all 0.1s ease;
         will-change: width;
-        background-color: $themeColor;
+        background-color: #fff;
 
         .thumb {
           position: absolute;
@@ -257,7 +289,7 @@
           cursor: pointer;
           transition: all 0.3s ease-in-out;
           transform: scale(0);
-          background-color: $themeColor;
+          background-color: #fff;
         }
       }
     }

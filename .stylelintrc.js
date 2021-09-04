@@ -4,7 +4,7 @@ module.exports = {
   extends: 'stylelint-config-standard',
   rules: {
     'indentation': 2,
-    'max-nesting-depth': 4,
+    'max-nesting-depth': 5,
     'max-empty-lines': null,
     'no-eol-whitespace': true,
     'no-missing-end-of-source-newline': null,

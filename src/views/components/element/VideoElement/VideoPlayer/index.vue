@@ -71,9 +71,23 @@
       </div>
 
       <div class="icons icons-right">
+        <div class="speed">
+          <div class="icon speed-icon">
+            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">倍速</span>
+            <div class="speed-menu" v-if="speedMenuVisible" @mouseleave="speedMenuVisible = false">
+              <div 
+                class="speed-menu-item" 
+                :class="{ 'active': item.value === playbackRate }"
+                v-for="item in speedOptions" 
+                :key="item.label" 
+                @click="speed(item.value)"
+              >{{item.label}}</div>
+            </div>
+          </div>
+        </div>
         <div class="loop" @click="toggleLoop()">
           <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content"><IconLoopOnce /></span>
+            <span class="icon-content"><IconCycleOne /></span>
           </div>
         </div>
       </div>
@@ -155,6 +169,7 @@ export default defineComponent({
     const loaded = ref(0)
     const loop = ref(false)
     const bezelTransition = ref(false)
+    const playbackRate = ref(1)
 
     const playBarTimeVisible = ref(false)
     const playBarTime = ref('00:00')
@@ -165,6 +180,16 @@ export default defineComponent({
     const playedBarWidth = computed(() => currentTime.value / duration.value * 100 + '%')
     const loadedBarWidth = computed(() => loaded.value / duration.value * 100 + '%')
     const volumeBarWidth = computed(() => volume.value * 100 + '%')
+
+    const speedMenuVisible = ref(false)
+    const speedOptions = [
+      { label: '2x', value: 2 },
+      { label: '1.5x', value: 1.5 },
+      { label: '1.25x', value: 1.25 },
+      { label: '1x', value: 1 },
+      { label: '0.75x', value: 0.75 },
+      { label: '0.5x', value: 0.5 },
+    ]
 
     const seek = (time: number) => {
       if (!videoRef.value) return
@@ -206,6 +231,11 @@ export default defineComponent({
       videoRef.value.volume = percentage
       volume.value = percentage
       if (videoRef.value.muted && percentage !== 0) videoRef.value.muted = false
+    }
+
+    const speed = (rate: number) => {
+      if (videoRef.value) videoRef.value.playbackRate = rate
+      playbackRate.value = rate
     }
 
     const handleDurationchange = () => {
@@ -354,11 +384,15 @@ export default defineComponent({
       volumeBarWidth,
       hideController,
       bezelTransition,
+      playbackRate,
+      speedMenuVisible,
+      speedOptions,
       seek,
       play,
       pause,
       toggle,
       setVolume,
+      speed,
       handleDurationchange,
       handleTimeupdate,
       handleEnded,

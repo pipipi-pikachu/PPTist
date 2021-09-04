@@ -88,7 +88,7 @@ import {
   VolumeMute,
   VolumeNotice,
   VolumeSmall,
-  LoopOnce,
+  CycleOne,
   VideoTwo,
 } from '@icon-park/vue-next'
 
@@ -208,6 +208,6 @@ export default {
     app.component('IconVolumeMute', VolumeMute)
     app.component('IconVolumeNotice', VolumeNotice)
     app.component('IconVolumeSmall', VolumeSmall)
-    app.component('IconLoopOnce', LoopOnce)
+    app.component('IconCycleOne', CycleOne)
   }
 }
