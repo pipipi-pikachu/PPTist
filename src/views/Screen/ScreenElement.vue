@@ -30,6 +30,7 @@ import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeE
 import BaseLineElement from '@/views/components/element/LineElement/BaseLineElement.vue'
 import ScreenChartElement from '@/views/components/element/ChartElement/ScreenChartElement.vue'
 import BaseTableElement from '@/views/components/element/TableElement/BaseTableElement.vue'
+import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import ScreenVideoElement from '@/views/components/element/VideoElement/ScreenVideoElement.vue'
 
 export default defineComponent({
@@ -57,6 +58,7 @@ export default defineComponent({
         [ElementTypes.LINE]: BaseLineElement,
         [ElementTypes.CHART]: ScreenChartElement,
         [ElementTypes.TABLE]: BaseTableElement,
+        [ElementTypes.LATEX]: BaseLatexElement,
         [ElementTypes.VIDEO]: ScreenVideoElement,
       }
       return elementTypeMap[props.elementInfo.type] || null

@@ -18,6 +18,7 @@
     "crypto-js": "^4.0.0",
     "dexie": "^3.0.3",
     "file-saver": "^2.0.5",
+    "hfmath": "0.0.2",
     "lodash": "^4.17.20",
     "mitt": "^3.0.0",
     "pptxgenjs": "^3.7.0",

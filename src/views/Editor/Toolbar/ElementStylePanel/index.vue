@@ -18,6 +18,7 @@ import ShapeStylePanel from './ShapeStylePanel.vue'
 import LineStylePanel from './LineStylePanel.vue'
 import ChartStylePanel from './ChartStylePanel/index.vue'
 import TableStylePanel from './TableStylePanel.vue'
+import LatexStylePanel from './LatexStylePanel.vue'
 import VideoStylePanel from './VideoStylePanel.vue'
 
 export default defineComponent({
@@ -36,6 +37,7 @@ export default defineComponent({
         [ElementTypes.LINE]: LineStylePanel,
         [ElementTypes.CHART]: ChartStylePanel,
         [ElementTypes.TABLE]: TableStylePanel,
+        [ElementTypes.LATEX]: LatexStylePanel,
         [ElementTypes.VIDEO]: VideoStylePanel,
       }
       return panelMap[handleElement.value.type] || null

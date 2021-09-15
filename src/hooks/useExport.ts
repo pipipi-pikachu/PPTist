@@ -522,6 +522,22 @@ export default () => {
 
           pptxSlide.addTable(tableData, options)
         }
+        
+        else if (el.type === 'latex') {
+          const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
+          const base64SVG = svg2Base64(svgRef)
+
+          const options: pptxgen.ImageProps = {
+            data: base64SVG,
+            x: el.left / 100,
+            y: el.top / 100,
+            w: el.width / 100,
+            h: el.height / 100,
+          }
+          if (el.link) options.hyperlink = { url: el.link }
+
+          pptxSlide.addImage(options)
+        }
       }
     }
     pptx.writeFile({ fileName: `pptist.pptx` }).then(() => exporting.value = false).catch(() => {

@@ -53,6 +53,9 @@
           <IconInsertTable class="handler-item" />
         </Tooltip>
       </Popover>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
+        <IconFormula class="handler-item" @click="latexEditorVisible = true" />
+      </Tooltip>
       <Popover trigger="click" v-model:visible="videoInputVisible">
         <template #content>
           <VideoInput 
@@ -74,6 +77,19 @@
         <IconFullScreen class="handler-item viewport-size-adaptation" @click="setCanvasPercentage(90)" />
       </Tooltip>
     </div>
+
+    <Modal
+      v-model:visible="latexEditorVisible" 
+      :footer="null" 
+      centered
+      :width="880"
+      destroyOnClose
+    >
+      <LaTeXEditor 
+        @close="latexEditorVisible = false"
+        @update="data => { createLatexElement(data); latexEditorVisible = false }"
+      />
+    </Modal>
   </div>
 </template>
 
@@ -92,6 +108,7 @@ import LinePool from './LinePool.vue'
 import ChartPool from './ChartPool.vue'
 import TableGenerator from './TableGenerator.vue'
 import VideoInput from './VideoInput.vue'
+import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 
 export default defineComponent({
   name: 'canvas-tool',
@@ -101,6 +118,7 @@ export default defineComponent({
     ChartPool,
     TableGenerator,
     VideoInput,
+    LaTeXEditor,
   },
   setup() {
     const store = useStore()
@@ -113,7 +131,7 @@ export default defineComponent({
     const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const { createImageElement, createChartElement, createTableElement, createVideoElement } = useCreateElement()
+    const { createImageElement, createChartElement, createTableElement, createLatexElement, createVideoElement } = useCreateElement()
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
@@ -126,6 +144,7 @@ export default defineComponent({
     const chartPoolVisible = ref(false)
     const tableGeneratorVisible = ref(false)
     const videoInputVisible = ref(false)
+    const latexEditorVisible = ref(false)
 
     // 绘制文字范围
     const drawText = () => {
@@ -167,11 +186,13 @@ export default defineComponent({
       chartPoolVisible,
       tableGeneratorVisible,
       videoInputVisible,
+      latexEditorVisible,
       drawText,
       drawShape,
       drawLine,
       createChartElement,
       createTableElement,
+      createLatexElement,
       createVideoElement,
     }
   },

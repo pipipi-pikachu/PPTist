@@ -90,6 +90,7 @@ import {
   VolumeSmall,
   CycleOne,
   VideoTwo,
+  Formula,
 } from '@icon-park/vue-next'
 
 export default {
@@ -102,6 +103,7 @@ export default {
     app.component('IconChartProportion', ChartProportion)
     app.component('IconInsertTable', InsertTable)
     app.component('IconVideoTwo', VideoTwo)
+    app.component('IconFormula', Formula)
 
     // 锁定与解锁
     app.component('IconLock', Lock)

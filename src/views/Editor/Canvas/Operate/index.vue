@@ -48,6 +48,7 @@ import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
 import ChartElementOperate from './ChartElementOperate.vue'
 import TableElementOperate from './TableElementOperate.vue'
+import LatexElementOperate from './LatexElementOperate.vue'
 import VideoElementOperate from './VideoElementOperate.vue'
 import LinkHandler from './LinkHandler.vue'
 
@@ -108,6 +109,7 @@ export default defineComponent({
         [ElementTypes.LINE]: LineElementOperate,
         [ElementTypes.CHART]: ChartElementOperate,
         [ElementTypes.TABLE]: TableElementOperate,
+        [ElementTypes.LATEX]: LatexElementOperate,
         [ElementTypes.VIDEO]: VideoElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null

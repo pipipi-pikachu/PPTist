@@ -224,6 +224,27 @@ export default () => {
   }
   
   /**
+   * 创建LaTeX元素
+   * @param svg SVG代码
+   */
+  const createLatexElement = (data: { path: string; latex: string; w: number; h: number; }) => {
+    createElement({
+      type: 'latex',
+      id: createRandomCode(),
+      width: data.w,
+      height: data.h,
+      left: (VIEWPORT_SIZE - data.w) / 2,
+      top: (VIEWPORT_SIZE * viewportRatio.value - data.h) / 2,
+      path: data.path,
+      latex: data.latex,
+      color: fontColor.value,
+      strokeWidth: 2,
+      viewBox: [data.w, data.h],
+      fixedRatio: true,
+    })
+  }
+  
+  /**
    * 创建视频元素
    * @param src 视频地址
    */
@@ -246,6 +267,7 @@ export default () => {
     createTextElement,
     createShapeElement,
     createLineElement,
+    createLatexElement,
     createVideoElement,
   }
 }
