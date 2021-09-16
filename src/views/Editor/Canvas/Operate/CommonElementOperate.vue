@@ -1,5 +1,5 @@
 <template>
-  <div class="video-element-operate">
+  <div class="common-element-operate">
     <BorderLine 
       class="operate-border-line"
       v-for="line in borderLines" 
@@ -24,7 +24,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from '@/store'
 
-import { PPTShapeElement } from '@/types/slides'
+import { PPTShapeElement, PPTVideoElement, PPTLatexElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
@@ -32,7 +32,7 @@ import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
 export default defineComponent({
-  name: 'video-element-operate',
+  name: 'common-element-operate',
   inheritAttrs: false,
   components: {
     ResizeHandler,
@@ -40,7 +40,7 @@ export default defineComponent({
   },
   props: {
     elementInfo: {
-      type: Object as PropType<PPTShapeElement>,
+      type: Object as PropType<PPTShapeElement | PPTVideoElement | PPTLatexElement>,
       required: true,
     },
     isActiveGroupElement: {

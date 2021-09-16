@@ -46,10 +46,8 @@ import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
 import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
-import ChartElementOperate from './ChartElementOperate.vue'
 import TableElementOperate from './TableElementOperate.vue'
-import LatexElementOperate from './LatexElementOperate.vue'
-import VideoElementOperate from './VideoElementOperate.vue'
+import CommonElementOperate from './CommonElementOperate.vue'
 import LinkHandler from './LinkHandler.vue'
 
 export default defineComponent({
@@ -107,10 +105,10 @@ export default defineComponent({
         [ElementTypes.TEXT]: TextElementOperate,
         [ElementTypes.SHAPE]: ShapeElementOperate,
         [ElementTypes.LINE]: LineElementOperate,
-        [ElementTypes.CHART]: ChartElementOperate,
         [ElementTypes.TABLE]: TableElementOperate,
-        [ElementTypes.LATEX]: LatexElementOperate,
-        [ElementTypes.VIDEO]: VideoElementOperate,
+        [ElementTypes.CHART]: CommonElementOperate,
+        [ElementTypes.LATEX]: CommonElementOperate,
+        [ElementTypes.VIDEO]: CommonElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })
