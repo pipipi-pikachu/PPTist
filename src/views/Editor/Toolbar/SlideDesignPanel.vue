@@ -330,6 +330,7 @@ export default defineComponent({
             el.themeColor = [themeColor]
             el.gridColor = fontColor
           }
+          else if (el.type === 'latex') el.color = fontColor
         }
       }
       store.commit(MutationTypes.SET_SLIDES, newSlides)
