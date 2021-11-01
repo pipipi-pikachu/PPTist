@@ -790,9 +790,5 @@ table {
   opacity: 0;
   z-index: 2;
   cursor: col-resize;
-
-  &:hover {
-    opacity: 1;
-  }
 }
 </style>
