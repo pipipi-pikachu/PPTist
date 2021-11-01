@@ -87,7 +87,7 @@
         </div>
         <div class="loop" @click="toggleLoop()">
           <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content"><IconCycleOne /></span>
+            <span class="icon-content">循环</span>
           </div>
         </div>
       </div>

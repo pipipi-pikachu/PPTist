@@ -191,8 +191,10 @@
         color: #fff;
       }
       &.loop-icon {
+        font-size: 12px;
+
         .icon-content {
-          opacity: 0.6;
+          opacity: 0.5;
         }
       }
       &.speed-icon {

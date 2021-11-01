@@ -206,6 +206,5 @@ export default {
     app.component('IconVolumeMute', VolumeMute)
     app.component('IconVolumeNotice', VolumeNotice)
     app.component('IconVolumeSmall', VolumeSmall)
-    app.component('IconCycleOne', CycleOne)
   }
 }
