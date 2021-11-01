@@ -44,10 +44,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, provide, ref } from 'vue'
 import { MutationTypes, useStore } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useScreening from '@/hooks/useScreening'
 
@@ -71,6 +72,9 @@ export default defineComponent({
     const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
 
     const presetLayoutPopoverVisible = ref(false)
+
+    const scale = computed(() => 120 / VIEWPORT_SIZE)
+    provide('slideScale', scale)
 
     const {
       copySlide,

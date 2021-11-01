@@ -179,12 +179,8 @@ export default {
     
     // 图表
     app.component('IconChartHistogram', ChartHistogram)
-    app.component('IconChartHistogramOne', ChartHistogramOne)
     app.component('IconChartLine', ChartLine)
-    app.component('IconChartLineArea', ChartLineArea)
-    app.component('IconChartScatter', ChartScatter)
     app.component('IconChartPie', ChartPie)
-    app.component('IconChartRing', ChartRing)
 
     // 其他
     app.component('IconPlayOne', PlayOne)

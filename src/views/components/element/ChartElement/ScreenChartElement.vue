@@ -1,50 +1,21 @@
 <template>
-  <div class="screen-element-chart"
-    :style="{
-      top: elementInfo.top + 'px',
-      left: elementInfo.left + 'px',
-      width: elementInfo.width + 'px',
-      height: elementInfo.height + 'px',
-    }"
-  >
-    <div 
-      class="element-content"
-      :style="{
-        backgroundColor: elementInfo.fill,
-      }"
-    >
-      <ElementOutline
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
-      <Chart
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :type="elementInfo.chartType"
-        :data="elementInfo.data"
-        :options="elementInfo.options"
-        :themeColor="elementInfo.themeColor"
-        :gridColor="elementInfo.gridColor"
-        :legends="elementInfo.data.legends"
-        :legend="elementInfo.legend || ''"
-      />
-    </div>
-  </div>
+  <BaseChartElement
+    class="screen-element-chart"
+    :elementInfo="elementInfo"
+    :needScaleSize="false"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 
-import ElementOutline from '@/views/components/element/ElementOutline.vue'
-import Chart from './Chart.vue'
+import BaseChartElement from './BaseChartElement.vue'
 
 export default defineComponent({
   name: 'screen-element-chart',
   components: {
-    ElementOutline,
-    Chart,
+    BaseChartElement,
   },
   props: {
     elementInfo: {
@@ -54,14 +25,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style lang="scss" scoped>
-.screen-element-chart {
-  position: absolute;
-}
-
-.element-content {
-  width: 100%;
-  height: 100%;
-}
-</style>
