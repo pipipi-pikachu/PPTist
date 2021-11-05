@@ -1,7 +1,12 @@
 <template>
   <div class="element-animation-panel">
     <div class="element-animation" v-if="handleElement">
-      <Popover trigger="click" v-model:visible="animationPoolVisible" v-if="!['chart', 'video'].includes(handleElement.type)">
+      <Popover 
+        trigger="click" 
+        v-model:visible="animationPoolVisible" 
+        v-if="!['chart', 'video'].includes(handleElement.type)"
+        @visibleChange="visible => handlePopoverVisibleChange(visible)"
+      >
         <template #content>
           <div class="animation-pool">
             <div class="pool-type" v-for="type in animations" :key="type.name">
@@ -27,6 +32,7 @@
                 </div>
               </div>
             </div>
+            <div class="mask" v-if="!popoverMaskHide"></div>
           </div>
         </template>
         <Button class="element-animation-btn">
@@ -239,6 +245,15 @@ export default defineComponent({
       runAnimation(handleElement.value.id, type, defaultDuration)
     }
 
+    // 动画选择面板打开500ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
+    const popoverMaskHide = ref(false)
+    const handlePopoverVisibleChange = (visible: boolean) => {
+      if (visible) {
+        setTimeout(() => popoverMaskHide.value = true, 500)
+      }
+      else popoverMaskHide.value = false
+    }
+
     return {
       handleElement,
       animationPoolVisible,
@@ -247,11 +262,13 @@ export default defineComponent({
       hoverPreviewAnimation,
       handleElementAnimation,
       handleElementAnimationName,
+      popoverMaskHide,
       addAnimation,
       deleteAnimation,
       handleDragEnd,
       runAnimation,
       updateElementAnimationDuration,
+      handlePopoverVisibleChange,
     }
   },
 })
@@ -280,6 +297,15 @@ export default defineComponent({
   font-size: 12px;
   margin-right: -12px;
   padding-right: 12px;
+  position: relative;
+
+  .mask {
+    width: 400px;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 .type-title {
   width: 100%;
