@@ -129,7 +129,7 @@ export default defineComponent({
 
     const themeColors = computed(() => {
       let colors: string[] = []
-      if (props.themeColor.length === 10) colors = props.themeColor
+      if (props.themeColor.length >= 10) colors = props.themeColor
       else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toHexString())
       else {
         const len = props.themeColor.length
