@@ -3,6 +3,7 @@
     class="element-create-selection"
     ref="selectionRef"
     @mousedown.stop="$event => createSelection($event)"
+    @contextmenu.stop.prevent
   >
     <div :class="['selection', creatingElement.type]" v-if="start && end" :style="position">
 
@@ -29,7 +30,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
-import { useStore } from '@/store'
+import { MutationTypes, useStore } from '@/store'
 
 export default defineComponent({
   name: 'element-create-selection',
@@ -104,6 +105,12 @@ export default defineComponent({
       document.onmouseup = e => {
         document.onmousemove = null
         document.onmouseup = null
+
+        if (e.button === 2) {
+          setTimeout(() => store.commit(MutationTypes.SET_CREATING_ELEMENT, null), 0)
+          return
+        }
+
         isMouseDown = false
 
         const endPageX = e.pageX
