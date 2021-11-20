@@ -8,24 +8,29 @@
       height: elementInfo.height + 'px',
     }"
   >
-    <div 
-      class="element-content" 
-      v-contextmenu="contextmenus" 
-      @mousedown="$event => handleSelectElement($event, false)"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <VideoPlayer
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :src="elementInfo.src" 
-        :poster="elementInfo.poster"  
-        :scale="scale" 
-      />
       <div 
-        :class="['handler-border', item]" 
-        v-for="item in ['t', 'b', 'l', 'r']" 
-        :key="item"
-        @mousedown="$event => handleSelectElement($event)"
-      ></div>
+        class="element-content" 
+        v-contextmenu="contextmenus" 
+        @mousedown="$event => handleSelectElement($event, false)"
+      >
+        <VideoPlayer
+          :width="elementInfo.width"
+          :height="elementInfo.height"
+          :src="elementInfo.src" 
+          :poster="elementInfo.poster"  
+          :scale="scale" 
+        />
+        <div 
+          :class="['handler-border', item]" 
+          v-for="item in ['t', 'b', 'l', 'r']" 
+          :key="item"
+          @mousedown="$event => handleSelectElement($event)"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -33,7 +38,7 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
 import { useStore } from '@/store'
-import { PPTTableElement } from '@/types/slides'
+import { PPTVideoElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import VideoPlayer from './VideoPlayer/index.vue'
@@ -45,11 +50,11 @@ export default defineComponent({
   },
   props: {
     elementInfo: {
-      type: Object as PropType<PPTTableElement>,
+      type: Object as PropType<PPTVideoElement>,
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTTableElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTVideoElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
@@ -83,7 +88,10 @@ export default defineComponent({
     cursor: default;
   }
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

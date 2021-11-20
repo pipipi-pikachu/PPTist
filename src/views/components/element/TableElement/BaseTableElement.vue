@@ -7,14 +7,19 @@
       width: elementInfo.width + 'px',
     }"
   >
-    <div class="element-content">
-      <StaticTable
-        :data="elementInfo.data"
-        :width="elementInfo.width"
-        :colWidths="elementInfo.colWidths"
-        :outline="elementInfo.outline"
-        :theme="elementInfo.theme"
-      />
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+    >
+      <div class="element-content">
+        <StaticTable
+          :data="elementInfo.data"
+          :width="elementInfo.width"
+          :colWidths="elementInfo.colWidths"
+          :outline="elementInfo.outline"
+          :theme="elementInfo.theme"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -43,7 +48,10 @@ export default defineComponent({
 .base-element-table {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

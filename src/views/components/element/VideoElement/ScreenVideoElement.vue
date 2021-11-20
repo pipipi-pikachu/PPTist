@@ -7,21 +7,26 @@
       height: elementInfo.height + 'px',
     }"
   >
-    <div class="element-content">
-      <VideoPlayer
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :src="elementInfo.src" 
-        :poster="elementInfo.poster"  
-        :scale="scale" 
-      />
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+    >
+      <div class="element-content">
+        <VideoPlayer
+          :width="elementInfo.width"
+          :height="elementInfo.height"
+          :src="elementInfo.src" 
+          :poster="elementInfo.poster"  
+          :scale="scale" 
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, inject, PropType, Ref, ref } from 'vue'
-import { PPTTableElement } from '@/types/slides'
+import { PPTVideoElement } from '@/types/slides'
 
 import VideoPlayer from './VideoPlayer/index.vue'
 
@@ -32,7 +37,7 @@ export default defineComponent({
   },
   props: {
     elementInfo: {
-      type: Object as PropType<PPTTableElement>,
+      type: Object as PropType<PPTVideoElement>,
       required: true,
     },
   },
@@ -50,7 +55,10 @@ export default defineComponent({
 .screen-element-video {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

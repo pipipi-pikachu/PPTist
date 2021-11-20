@@ -7,14 +7,20 @@
       :type="line.type" 
       :style="line.style"
     />
-    <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
+    <template v-if="handlerVisible">
       <ResizeHandler
         class="operate-resize-handler" 
         v-for="point in resizeHandlers"
         :key="point.direction"
         :type="point.direction"
+        :rotate="elementInfo.rotate"
         :style="point.style"
         @mousedown.stop="$event => scaleElement($event, elementInfo, point.direction)"
+      />
+      <RotateHandler
+        class="operate-rotate-handler" 
+        :style="{ left: scaleWidth / 2 + 'px' }"
+        @mousedown.stop="rotateElement(elementInfo)"
       />
     </template>
   </div>
@@ -28,31 +34,35 @@ import { PPTShapeElement, PPTVideoElement, PPTLatexElement } from '@/types/slide
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
+import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
+
+type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement
 
 export default defineComponent({
   name: 'common-element-operate',
   inheritAttrs: false,
   components: {
+    RotateHandler,
     ResizeHandler,
     BorderLine,
   },
   props: {
     elementInfo: {
-      type: Object as PropType<PPTShapeElement | PPTVideoElement | PPTLatexElement>,
+      type: Object as PropType<PPTElement>,
       required: true,
     },
-    isActiveGroupElement: {
+    handlerVisible: {
       type: Boolean,
       required: true,
     },
-    isMultiSelect: {
-      type: Boolean,
+    rotateElement: {
+      type: Function as PropType<(element: PPTElement) => void>,
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandler) => void>,
       required: true,
     },
   },

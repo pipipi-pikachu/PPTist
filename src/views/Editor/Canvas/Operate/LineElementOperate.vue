@@ -1,6 +1,6 @@
 <template>
   <div class="text-element-operate">
-    <template v-if="!elementInfo.lock && (isActiveGroupElement || !isMultiSelect)">
+    <template v-if="handlerVisible">
       <ResizeHandler
         class="operate-resize-handler" 
         v-for="point in resizeHandlers"
@@ -33,11 +33,7 @@ export default defineComponent({
       type: Object as PropType<PPTLineElement>,
       required: true,
     },
-    isActiveGroupElement: {
-      type: Boolean,
-      required: true,
-    },
-    isMultiSelect: {
+    handlerVisible: {
       type: Boolean,
       required: true,
     },

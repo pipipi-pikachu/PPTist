@@ -99,7 +99,7 @@
       </div>
     </template>
 
-    <template v-if="['text', 'image', 'shape'].includes(handleElement.type)">
+    <template v-if="handleElement.type !== 'line'">
       <Divider />
 
       <div class="row">

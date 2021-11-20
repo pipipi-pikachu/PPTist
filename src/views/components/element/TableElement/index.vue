@@ -9,30 +9,35 @@
       width: elementInfo.width + 'px',
     }"
   >
-    <div 
-      class="element-content" 
-      v-contextmenu="contextmenus"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <EditableTable 
-        @mousedown.stop
-        :data="elementInfo.data"
-        :width="elementInfo.width"
-        :colWidths="elementInfo.colWidths"
-        :outline="elementInfo.outline"
-        :theme="elementInfo.theme"
-        :editable="editable"
-        @change="data => updateTableCells(data)"
-        @changeColWidths="widths => updateColWidths(widths)"
-        @changeSelectedCells="cells => updateSelectedCells(cells)"
-      />
       <div 
-        class="table-mask" 
-        :class="{ 'lock': elementInfo.lock }"
-        v-if="!editable || elementInfo.lock"
-        @dblclick="startEdit()"
-        @mousedown="$event => handleSelectElement($event)"
+        class="element-content" 
+        v-contextmenu="contextmenus"
       >
-        <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
+        <EditableTable 
+          @mousedown.stop
+          :data="elementInfo.data"
+          :width="elementInfo.width"
+          :colWidths="elementInfo.colWidths"
+          :outline="elementInfo.outline"
+          :theme="elementInfo.theme"
+          :editable="editable"
+          @change="data => updateTableCells(data)"
+          @changeColWidths="widths => updateColWidths(widths)"
+          @changeSelectedCells="cells => updateSelectedCells(cells)"
+        />
+        <div 
+          class="table-mask" 
+          :class="{ 'lock': elementInfo.lock }"
+          v-if="!editable || elementInfo.lock"
+          @dblclick="startEdit()"
+          @mousedown="$event => handleSelectElement($event)"
+        >
+          <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
+        </div>
       </div>
     </div>
   </div>
@@ -190,7 +195,10 @@ export default defineComponent({
     cursor: default;
   }
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

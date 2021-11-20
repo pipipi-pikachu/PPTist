@@ -62,6 +62,8 @@ export interface PPTElementOutline {
  * 
  * height: 元素高度
  * 
+ * rotate: 旋转角度
+ * 
  * link?: 超链接地址
  */
 interface PPTBaseElement {
@@ -72,6 +74,7 @@ interface PPTBaseElement {
   groupId?: string;
   width: number;
   height: number;
+  rotate: number;
   link?: string;
 }
 
@@ -82,8 +85,6 @@ interface PPTBaseElement {
  * type: 元素类型（text）
  * 
  * content: 文本内容（HTML字符串）
- * 
- * rotate: 旋转角度
  * 
  * defaultFontName: 默认字体（会被文本内容中的HTML内联样式覆盖）
  * 
@@ -104,7 +105,6 @@ interface PPTBaseElement {
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text';
   content: string;
-  rotate: number;
   defaultFontName: string;
   defaultColor: string;
   outline?: PPTElementOutline;
@@ -178,8 +178,6 @@ export interface ImageElementClip {
  * 
  * src: 图片地址
  * 
- * rotate: 旋转角度
- * 
  * outline?: 边框
  * 
  * filters?: 图片滤镜
@@ -196,7 +194,6 @@ export interface PPTImageElement extends PPTBaseElement {
   type: 'image';
   fixedRatio: boolean;
   src: string;
-  rotate: number;
   outline?: PPTElementOutline;
   filters?: ImageElementFilters;
   clip?: ImageElementClip;
@@ -254,8 +251,6 @@ export interface ShapeText {
  * 
  * gradient?: 渐变，该属性存在时将优先作为填充
  * 
- * rotate: 旋转角度
- * 
  * outline?: 边框
  * 
  * opacity?: 不透明度
@@ -277,7 +272,6 @@ export interface PPTShapeElement extends PPTBaseElement {
   fixedRatio: boolean;
   fill: string;
   gradient?: ShapeGradient;
-  rotate: number;
   outline?: PPTElementOutline;
   opacity?: number;
   flipH?: boolean;
@@ -311,7 +305,7 @@ export type LinePoint = '' | 'arrow' | 'dot'
  * 
  * curve?: 曲线中点位置（[x, y]）
  */
-export interface PPTLineElement extends Omit<PPTBaseElement, 'height'> {
+export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'> {
   type: 'line';
   start: [number, number];
   end: [number, number];

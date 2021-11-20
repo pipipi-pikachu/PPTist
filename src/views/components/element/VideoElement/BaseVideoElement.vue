@@ -7,21 +7,26 @@
       height: elementInfo.height + 'px',
     }"
   >
-    <div class="element-content" :style="{ backgroundImage: `url(${elementInfo.poster})` }">
-      <IconPlayOne class="icon" />
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+    >
+      <div class="element-content" :style="{ backgroundImage: `url(${elementInfo.poster})` }">
+        <IconPlayOne class="icon" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { PPTTableElement } from '@/types/slides'
+import { PPTVideoElement } from '@/types/slides'
 
 export default defineComponent({
   name: 'base-element-video',
   props: {
     elementInfo: {
-      type: Object as PropType<PPTTableElement>,
+      type: Object as PropType<PPTVideoElement>,
       required: true,
     },
   },
@@ -32,7 +37,10 @@ export default defineComponent({
 .base-element-video {
   position: absolute;
 }
-
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
 .element-content {
   width: 100%;
   height: 100%;

@@ -29,7 +29,7 @@ export default (elementList: Ref<PPTElement[]>) => {
     // 获取所有线条以外的未旋转的元素的8个缩放点作为吸附位置
     for (let i = 0; i < elementList.value.length; i++) {
       const _element = elementList.value[i]
-      if (_element.type === 'line' || ('rotate' in _element && _element.rotate)) continue
+      if (_element.type === 'line' || _element.rotate) continue
 
       const left = _element.left
       const top = _element.top

@@ -7,29 +7,34 @@
       height: elementInfo.height + 'px',
     }"
   >
-    <div 
-      class="element-content"
-      :style="{
-        backgroundColor: elementInfo.fill,
-      }"
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <ElementOutline
-        :width="elementInfo.width"
-        :height="elementInfo.height"
-        :outline="elementInfo.outline"
-      />
-      <Chart
-        :class="{ 'need-scale': needScaleSize }"
-        :width="chartWidth"
-        :height="chartHeight"
-        :type="elementInfo.chartType"
-        :data="elementInfo.data"
-        :options="elementInfo.options"
-        :themeColor="elementInfo.themeColor"
-        :gridColor="elementInfo.gridColor"
-        :legends="elementInfo.data.legends"
-        :legend="elementInfo.legend || ''"
-      />
+      <div 
+        class="element-content"
+        :style="{
+          backgroundColor: elementInfo.fill,
+        }"
+      >
+        <ElementOutline
+          :width="elementInfo.width"
+          :height="elementInfo.height"
+          :outline="elementInfo.outline"
+        />
+        <Chart
+          :class="{ 'need-scale': needScaleSize }"
+          :width="chartWidth"
+          :height="chartHeight"
+          :type="elementInfo.chartType"
+          :data="elementInfo.data"
+          :options="elementInfo.options"
+          :themeColor="elementInfo.themeColor"
+          :gridColor="elementInfo.gridColor"
+          :legends="elementInfo.data.legends"
+          :legend="elementInfo.legend || ''"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -69,6 +74,10 @@ export default defineComponent({
 <style lang="scss" scoped>
 .base-element-chart {
   position: absolute;
+}
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
 }
 .element-content {
   width: 100%;
