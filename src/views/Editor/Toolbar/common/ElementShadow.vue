@@ -10,34 +10,34 @@
       <div class="row">
         <div style="flex: 2;">水平阴影：</div>
         <Slider 
+          class="slider"
           :min="0" 
           :max="10" 
           :step="1" 
           :value="shadow.h" 
-          @change="value => updateShadow({ h: value })" 
-          style="flex: 3;" 
+          @change="value => updateShadow({ h: value })"
         />
       </div>
       <div class="row">
         <div style="flex: 2;">垂直阴影：</div>
         <Slider
+          class="slider"
           :min="0"
           :max="10"
           :step="1"
           :value="shadow.v"
-          @change="value => updateShadow({ v: value })" 
-          style="flex: 3;"
+          @change="value => updateShadow({ v: value })"
         />
       </div>
       <div class="row">
         <div style="flex: 2;">模糊距离：</div>
         <Slider
+          class="slider"
           :min="1"
           :max="20"
           :step="1"
           :value="shadow.blur"
-          @change="value => updateShadow({ blur: value })" 
-          style="flex: 3;"
+          @change="value => updateShadow({ blur: value })"
         />
       </div>
       <div class="row">
@@ -123,5 +123,8 @@ export default defineComponent({
 }
 .switch-wrapper {
   text-align: right;
+}
+.slider {
+  flex: 3;
 }
 </style>

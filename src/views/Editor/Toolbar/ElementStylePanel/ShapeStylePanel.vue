@@ -58,11 +58,11 @@
       <div class="row" v-if="gradient.type === 'linear'">
         <div style="flex: 2;">渐变角度：</div>
         <Slider
+          class="slider"
           :min="0"
           :max="360"
           :step="15"
           :value="gradient.rotate"
-          style="flex: 3;"
           @change="value => updateGradient({ rotate: value })" 
         />
       </div>
@@ -332,5 +332,8 @@ export default defineComponent({
   width: 16px;
   height: 3px;
   margin-top: 1px;
+}
+.slider {
+  flex: 3;
 }
 </style>
