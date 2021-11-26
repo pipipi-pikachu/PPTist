@@ -1,14 +1,12 @@
-import { computed, onMounted, onUnmounted } from 'vue'
-import { useStore } from '@/store'
+import { onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import usePasteTextClipboardData from './usePasteTextClipboardData'
 import useCreateElement from './useCreateElement'
 
 export default () => {
-  const store = useStore()
-  const editorAreaFocus = computed(() => store.state.editorAreaFocus)
-  const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
-  const disableHotkeys = computed(() => store.state.disableHotkeys)
+  const { editorAreaFocus, thumbnailsFocus, disableHotkeys } = storeToRefs(useMainStore())
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { createImageElement } = useCreateElement()

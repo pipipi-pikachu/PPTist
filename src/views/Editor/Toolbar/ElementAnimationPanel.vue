@@ -89,8 +89,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTAnimation, PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTAnimation } from '@/types/slides'
 import { ANIMATIONS } from '@/configs/animation'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -112,10 +113,9 @@ export default defineComponent({
     Draggable,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
-    const currentSlideAnimations = computed<PPTAnimation[] | null>(() => store.getters.currentSlideAnimations)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId } = storeToRefs(useMainStore())
+    const { currentSlide, currentSlideAnimations } = storeToRefs(slidesStore)
 
     const hoverPreviewAnimation = ref('')
     const animationPoolVisible = ref(false)
@@ -145,9 +145,8 @@ export default defineComponent({
 
     // 当前选中元素的入场动画信息
     const handleElementAnimation = computed(() => {
-      if (!handleElement.value) return null
       const animations = currentSlideAnimations.value || []
-      const animation = animations.find(item => item.elId === handleElement.value.id)
+      const animation = animations.find(item => item.elId === handleElementId.value)
       return animation || null
     })
 
@@ -160,7 +159,7 @@ export default defineComponent({
     // 删除元素入场动画
     const deleteAnimation = (elId: string) => {
       const animations = (currentSlideAnimations.value as PPTAnimation[]).filter(item => item.elId !== elId)
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      slidesStore.updateSlide({ animations })
       addHistorySnapshot()
     }
 
@@ -174,7 +173,7 @@ export default defineComponent({
       animations.splice(oldIndex, 1)
       animations.splice(newIndex, 0, animation)
       
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      slidesStore.updateSlide({ animations })
       addHistorySnapshot()
     }
 
@@ -200,17 +199,17 @@ export default defineComponent({
       if (!currentSlideAnimations.value) return
 
       const animations = currentSlideAnimations.value.map(item => {
-        if (item.elId === handleElement.value.id) return { ...item, type }
+        if (item.elId === handleElementId.value) return { ...item, type }
         return item
       })
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      slidesStore.updateSlide({ animations })
       animationPoolVisible.value = false
       addHistorySnapshot()
 
-      const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElement.value.id)
+      const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value)
       const duration = animationItem?.duration || defaultDuration
 
-      runAnimation(handleElement.value.id, type, duration)
+      runAnimation(handleElementId.value, type, duration)
     }
 
     // 修改元素入场动画持续时间
@@ -219,10 +218,10 @@ export default defineComponent({
       if (duration < 100 || duration > 5000) return
 
       const animations = currentSlideAnimations.value.map(item => {
-        if (item.elId === handleElement.value.id) return { ...item, duration }
+        if (item.elId === handleElementId.value) return { ...item, duration }
         return item
       })
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      slidesStore.updateSlide({ animations })
       addHistorySnapshot()
     }
 
@@ -234,15 +233,15 @@ export default defineComponent({
       }
       const animations: PPTAnimation[] = currentSlideAnimations.value ? JSON.parse(JSON.stringify(currentSlideAnimations.value)) : []
       animations.push({
-        elId: handleElement.value.id,
+        elId: handleElementId.value,
         type,
         duration: defaultDuration,
       })
-      store.commit(MutationTypes.UPDATE_SLIDE, { animations })
+      slidesStore.updateSlide({ animations })
       animationPoolVisible.value = false
       addHistorySnapshot()
 
-      runAnimation(handleElement.value.id, type, defaultDuration)
+      runAnimation(handleElementId.value, type, defaultDuration)
     }
 
     // 动画选择面板打开500ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动

@@ -1,6 +1,7 @@
 import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import { getElementRange, getElementListRange, getRectRotatedOffset } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
@@ -34,10 +35,9 @@ interface LastPos {
 }
 
 export default () => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList, activeElementList } = storeToRefs(useMainStore())
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -154,7 +154,7 @@ export default () => {
       }
     }
 
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    slidesStore.updateSlide({ elements: newElementList })
     addHistorySnapshot()
   }
 
@@ -249,7 +249,7 @@ export default () => {
       }
     }
 
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    slidesStore.updateSlide({ elements: newElementList })
     addHistorySnapshot()
   }
 

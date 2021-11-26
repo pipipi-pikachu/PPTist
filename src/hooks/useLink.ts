@@ -1,10 +1,10 @@
-import { MutationTypes, useStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { message } from 'ant-design-vue'
 
 export default () => {
-  const store = useStore()
+  const slidesStore = useSlidesStore()
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -15,14 +15,14 @@ export default () => {
       return false
     }
     const props = { link }
-    store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.id, props })
+    slidesStore.updateElement({ id: handleElement.id, props })
     addHistorySnapshot()
 
     return true
   }
 
   const removeLink = (handleElement: PPTElement) => {
-    store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, { id: handleElement.id, propName: 'link' })
+    slidesStore.removeElementProps({ id: handleElement.id, propName: 'link' })
     addHistorySnapshot()
   }
 

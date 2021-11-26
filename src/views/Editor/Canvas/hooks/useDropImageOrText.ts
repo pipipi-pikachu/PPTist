@@ -1,12 +1,12 @@
-import { computed, onMounted, onUnmounted, Ref } from 'vue'
-import { useStore } from '@/store'
+import { onMounted, onUnmounted, Ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (elementRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore()
-  const disableHotkeys = computed(() => store.state.disableHotkeys)
+  const { disableHotkeys } = storeToRefs(useMainStore())
 
   const { createImageElement, createTextElement } = useCreateElement()
 

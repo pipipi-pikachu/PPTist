@@ -95,7 +95,8 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSnapshotStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
@@ -121,10 +122,9 @@ export default defineComponent({
     LaTeXEditor,
   },
   setup() {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
-    const canUndo = computed(() => store.getters.canUndo)
-    const canRedo = computed(() => store.getters.canRedo)
+    const mainStore = useMainStore()
+    const { canvasScale } = storeToRefs(mainStore)
+    const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
     const canvasScalePercentage = computed(() => parseInt(canvasScale.value * 100 + '') + '%')
 
@@ -148,15 +148,14 @@ export default defineComponent({
 
     // 绘制文字范围
     const drawText = () => {
-      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+      mainStore.setCreatingElement({
         type: 'text',
-        data: null,
       })
     }
 
     // 绘制形状范围
     const drawShape = (shape: ShapePoolItem) => {
-      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+      mainStore.setCreatingElement({
         type: 'shape',
         data: shape,
       })
@@ -165,7 +164,7 @@ export default defineComponent({
 
     // 绘制线条路径
     const drawLine = (line: LinePoolItem) => {
-      store.commit(MutationTypes.SET_CREATING_ELEMENT, {
+      mainStore.setCreatingElement({
         type: 'line',
         data: line,
       })

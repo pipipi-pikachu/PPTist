@@ -1,5 +1,5 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -23,24 +23,23 @@ interface LineElementPosition {
 }
 
 export default () => {
-  const store = useStore()
-  const themeColor = computed(() => store.state.theme.themeColor)
-  const fontColor = computed(() => store.state.theme.fontColor)
-  const fontName = computed(() => store.state.theme.fontName)
-  const viewportRatio = computed(() => store.state.viewportRatio)
-  const creatingElement = computed(() => store.state.creatingElement)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { creatingElement } = storeToRefs(mainStore)
+  const { theme, viewportRatio } = storeToRefs(slidesStore)
+  const { themeColor, fontColor, fontName } = theme.value
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 创建（插入）一个元素并将其设置为被选中元素
   const createElement = (element: PPTElement) => {
-    store.commit(MutationTypes.ADD_ELEMENT, element)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [element.id])
+    slidesStore.addElement(element)
+    mainStore.setActiveElementIdList([element.id])
 
-    if (creatingElement.value) store.commit(MutationTypes.SET_CREATING_ELEMENT, null)
+    if (creatingElement.value) mainStore.setCreatingElement(null)
 
     setTimeout(() => {
-      store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+      mainStore.setEditorareaFocus(true)
     }, 0)
 
     addHistorySnapshot()
@@ -91,8 +90,8 @@ export default () => {
       width: 400,
       height: 400,
       rotate: 0,
-      themeColor: [themeColor.value],
-      gridColor: fontColor.value,
+      themeColor: [themeColor],
+      gridColor: fontColor,
       data: {
         labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
         legends: ['系列1'],
@@ -110,8 +109,8 @@ export default () => {
    */
   const createTableElement = (row: number, col: number) => {
     const style: TableCellStyle = {
-      fontname: fontName.value,
-      color: fontColor.value,
+      fontname: fontName,
+      color: fontColor,
     }
     const data: TableCell[][] = []
     for (let i = 0; i < row; i++) {
@@ -146,7 +145,7 @@ export default () => {
         color: '#eeece1',
       },
       theme: {
-        color: themeColor.value,
+        color: themeColor,
         rowHeader: true,
         rowFooter: false,
         colHeader: false,
@@ -171,8 +170,8 @@ export default () => {
       height,
       content,
       rotate: 0,
-      defaultFontName: fontName.value,
-      defaultColor: fontColor.value,
+      defaultFontName: fontName,
+      defaultColor: fontColor,
     })
   }
   
@@ -192,7 +191,7 @@ export default () => {
       height,
       viewBox: data.viewBox,
       path: data.path,
-      fill: themeColor.value,
+      fill: themeColor,
       fixedRatio: false,
       rotate: 0,
     }
@@ -216,7 +215,7 @@ export default () => {
       start,
       end,
       points: data.points,
-      color: themeColor.value,
+      color: themeColor,
       style: data.style,
       width: 2,
     }
@@ -240,7 +239,7 @@ export default () => {
       top: (VIEWPORT_SIZE * viewportRatio.value - data.h) / 2,
       path: data.path,
       latex: data.latex,
-      color: fontColor.value,
+      color: fontColor,
       strokeWidth: 2,
       viewBox: [data.w, data.h],
       fixedRatio: true,

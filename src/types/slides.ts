@@ -545,6 +545,9 @@ export interface SlideBackground {
   gradientRotate?: number;
 }
 
+
+export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY'
+
 /**
  * 幻灯片页面
  * 
@@ -566,7 +569,7 @@ export interface Slide {
   remark?: string;
   background?: SlideBackground;
   animations?: PPTAnimation[];
-  turningMode?: 'no' | 'fade' | 'slideX' | 'slideY';
+  turningMode?: TurningMode;
 }
 
 /**

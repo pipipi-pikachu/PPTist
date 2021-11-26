@@ -28,8 +28,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
-
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTShapeElement, PPTVideoElement, PPTLatexElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
@@ -67,8 +67,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
+    const { canvasScale } = storeToRefs(useMainStore())
 
     const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
     const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)

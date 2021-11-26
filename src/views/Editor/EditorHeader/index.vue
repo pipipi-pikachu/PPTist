@@ -68,8 +68,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { defineComponent, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -83,16 +84,16 @@ export default defineComponent({
     HotkeyDoc,
   },
   setup() {
-    const store = useStore()
+    const mainStore = useMainStore()
+    const { showGridLines } = storeToRefs(mainStore)
 
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
     const { exporting, exportJSON, exportPPTX } = useExport()
 
-    const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
-      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
+      mainStore.setGridLinesState(!showGridLines.value)
     }
 
     const hotkeyDrawerVisible = ref(false)

@@ -87,11 +87,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, provide, ref, watch, watchEffect } from 'vue'
+import { defineComponent, provide, ref, watch, watchEffect } from 'vue'
 import { throttle } from 'lodash'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { PPTElement, Slide } from '@/types/slides'
+import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { removeAllRanges } from '@/utils/selection'
 import { KEYS } from '@/configs/hotkey'
@@ -135,14 +136,18 @@ export default defineComponent({
     LinkDialog,
   },
   setup() {
-    const store = useStore()
-
-    const activeElementIdList = computed(() => store.state.activeElementIdList)
-    const handleElementId = computed(() => store.state.handleElementId)
-    const activeGroupElementId = computed(() => store.state.activeGroupElementId)
-    const editorAreaFocus = computed(() => store.state.editorAreaFocus)
-    const ctrlKeyState = computed(() => store.state.ctrlKeyState)
-    const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
+    const mainStore = useMainStore()
+    const {
+      activeElementIdList,
+      activeGroupElementId,
+      handleElementId,
+      editorAreaFocus,
+      showGridLines,
+      creatingElement,
+      canvasScale,
+    } = storeToRefs(mainStore)
+    const { currentSlide } = storeToRefs(useSlidesStore())
+    const { ctrlKeyState, ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
     const viewportRef = ref<HTMLElement>()
     const alignmentLines = ref<AlignmentLineProps[]>([])
@@ -151,10 +156,9 @@ export default defineComponent({
     const openLinkDialog = () => linkDialogVisible.value = true
 
     watch(handleElementId, () => {
-      store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, '')
+      mainStore.setActiveGroupElementId('')
     })
 
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
     const elementList = ref<PPTElement[]>([])
     const setLocalElementList = () => {
       elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
@@ -162,7 +166,6 @@ export default defineComponent({
     watchEffect(setLocalElementList)
 
     const canvasRef = ref<HTMLElement>()
-    const canvasScale = computed(() => store.state.canvasScale)
     const { viewportStyles } = useViewportSize(canvasRef)
 
     useDropImageOrText(canvasRef)
@@ -183,15 +186,15 @@ export default defineComponent({
 
     // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
     const handleClickBlankArea = (e: MouseEvent) => {
-      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+      mainStore.setActiveElementIdList([])
       if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
-      if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+      if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
       removeAllRanges()
     }
 
     // 移除画布编辑区域焦点
     const removeEditorAreaFocus = () => {
-      if (editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, false)
+      if (editorAreaFocus.value) mainStore.setEditorareaFocus(false)
     }
 
     // 滚动鼠标
@@ -215,13 +218,11 @@ export default defineComponent({
     }
 
     // 开关网格线
-    const showGridLines = computed(() => store.state.showGridLines)
     const toggleGridLines = () => {
-      store.commit(MutationTypes.SET_GRID_LINES_STATE, !showGridLines.value)
+      mainStore.setGridLinesState(!showGridLines.value)
     }
 
     // 在鼠标绘制的范围插入元素
-    const creatingElement = computed(() => store.state.creatingElement)
     const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewportRef)
 
     const contextmenus = (): ContextmenuItem[] => {

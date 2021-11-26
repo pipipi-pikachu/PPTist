@@ -14,8 +14,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
 
 export default defineComponent({
   name: 'remark',
@@ -27,13 +27,14 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const slidesStore = useSlidesStore()
+    const { currentSlide } = storeToRefs(slidesStore)
+    
     const remark = computed(() => currentSlide.value?.remark || '')
 
     const handleInput = (e: InputEvent) => {
       const value = (e.target as HTMLTextAreaElement).value
-      store.commit(MutationTypes.UPDATE_SLIDE, { remark: value })
+      slidesStore.updateSlide({ remark: value })
     }
 
     const resize = (e: MouseEvent) => {

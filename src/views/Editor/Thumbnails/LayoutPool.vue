@@ -12,8 +12,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -25,8 +26,7 @@ export default defineComponent({
     ThumbnailSlide,
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const layouts = computed<Slide[]>(() => store.getters.layouts)
+    const { layouts } = storeToRefs(useSlidesStore())
 
     const selectSlideTemplate = (slide: Slide) => {
       emit('select', slide)

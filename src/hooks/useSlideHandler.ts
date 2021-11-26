@@ -1,5 +1,6 @@
 import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import { copyText, readClipboard } from '@/utils/clipboard'
@@ -11,13 +12,12 @@ import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore()
-  const slideIndex = computed(() => store.state.slideIndex)
-  const theme = computed(() => store.state.theme)
-  const slides = computed(() => store.state.slides)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { selectedSlidesIndex: _selectedSlidesIndex } = storeToRefs(mainStore)
+  const { currentSlide, slides, theme, slideIndex } = storeToRefs(slidesStore)
 
-  const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
+  const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
   const selectedSlides = computed(() => slides.value.filter((item, index) => selectedSlidesIndex.value.includes(index)))
   const selectedSlidesId = computed(() => selectedSlides.value.map(item => item.id))
 
@@ -26,7 +26,7 @@ export default () => {
 
   // 重置幻灯片
   const resetSlides = () => {
-    const emptySlide = {
+    const emptySlide: Slide = {
       id: createRandomCode(8),
       elements: [],
       background: {
@@ -34,9 +34,9 @@ export default () => {
         color: theme.value.backgroundColor,
       },
     }
-    store.commit(MutationTypes.UPDATE_SLIDE_INDEX, 0)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.SET_SLIDES, [emptySlide])
+    slidesStore.updateSlideIndex(0)
+    mainStore.setActiveElementIdList([])
+    slidesStore.setSlides([emptySlide])
   }
 
   /**
@@ -45,10 +45,10 @@ export default () => {
    */
   const updateSlideIndex = (command: string) => {
     if (command === KEYS.UP && slideIndex.value > 0) {
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+      slidesStore.updateSlideIndex(slideIndex.value - 1)
     }
     else if (command === KEYS.DOWN && slideIndex.value < slides.value.length - 1) {
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+      slidesStore.updateSlideIndex(slideIndex.value + 1)
     }
   }
 
@@ -60,7 +60,7 @@ export default () => {
     }))
 
     copyText(text).then(() => {
-      store.commit(MutationTypes.SET_THUMBNAILS_FOCUS, true)
+      mainStore.setThumbnailsFocus(true)
     })
   }
 
@@ -73,7 +73,7 @@ export default () => {
 
   // 创建一页空白页并添加到下一页
   const createSlide = () => {
-    const emptySlide = {
+    const emptySlide: Slide = {
       id: createRandomCode(8),
       elements: [],
       background: {
@@ -81,8 +81,8 @@ export default () => {
         color: theme.value.backgroundColor,
       },
     }
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.ADD_SLIDE, emptySlide)
+    mainStore.setActiveElementIdList([])
+    slidesStore.addSlide(emptySlide)
     addHistorySnapshot()
   }
 
@@ -98,8 +98,8 @@ export default () => {
       ...slide,
       id: createRandomCode(8),
     }
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.ADD_SLIDE, newSlide)
+    mainStore.setActiveElementIdList([])
+    slidesStore.addSlide(newSlide)
     addHistorySnapshot()
   }
 
@@ -112,9 +112,9 @@ export default () => {
   // 删除当前页，若将删除全部页面，则执行重置幻灯片操作
   const deleteSlide = (targetSlidesId = selectedSlidesId.value) => {
     if (slides.value.length === targetSlidesId.length) resetSlides()
-    else store.commit(MutationTypes.DELETE_SLIDE, targetSlidesId)
+    else slidesStore.deleteSlide(targetSlidesId)
 
-    store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
+    mainStore.updateSelectedSlidesIndex([])
 
     addHistorySnapshot()
   }
@@ -130,8 +130,8 @@ export default () => {
   // 选中全部幻灯片
   const selectAllSlide = () => {
     const newSelectedSlidesIndex = Array.from(Array(slides.value.length), (item, index) => index)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+    mainStore.setActiveElementIdList([])
+    mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
   }
 
   return {

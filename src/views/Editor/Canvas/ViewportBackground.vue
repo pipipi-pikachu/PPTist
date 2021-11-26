@@ -9,7 +9,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { SlideBackground } from '@/types/slides'
 import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -20,9 +21,9 @@ export default defineComponent({
     GridLines,
   },
   setup() {
-    const store = useStore()
-    const showGridLines = computed(() => store.state.showGridLines)
-    const background = computed<SlideBackground | undefined>(() => store.getters.currentSlide?.background)
+    const { showGridLines } = storeToRefs(useMainStore())
+    const { currentSlide } = storeToRefs(useSlidesStore())
+    const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
 
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 

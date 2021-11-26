@@ -1,15 +1,15 @@
 import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
-  const handleElementId = computed(() => store.state.handleElementId)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList, activeElementList, handleElementId } = storeToRefs(mainStore)
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -57,7 +57,7 @@ export default () => {
     const insertLevel = combineElementMaxLevel - combineElementList.length + 1
     newElementList.splice(insertLevel, 0, ...combineElementList)
 
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    slidesStore.updateSlide({ elements: newElementList })
     addHistorySnapshot()
   }
 
@@ -73,12 +73,13 @@ export default () => {
     for (const element of newElementList) {
       if (activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
     }
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    slidesStore.updateSlide({ elements: newElementList })
 
     // 取消组合后，需要重置激活元素状态
     // 默认重置为当前正在操作的元素,如果不存在则重置为空
     const handleElementIdList = handleElementId.value ? [handleElementId.value] : []
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, handleElementIdList)
+    mainStore.setActiveElementIdList(handleElementIdList)
+
     addHistorySnapshot()
   }
 

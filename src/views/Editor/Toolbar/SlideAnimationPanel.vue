@@ -18,20 +18,25 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
+import { TurningMode } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+
+interface Animations {
+  label: string;
+  value: TurningMode;
+}
 
 export default defineComponent({
   name: 'slide-animation-panel',
   setup() {
-    const store = useStore()
-    const slides = computed(() => store.state.slides)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const slidesStore = useSlidesStore()
+    const { slides, currentSlide } = storeToRefs(slidesStore)
 
     const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY')
 
-    const animations = [
+    const animations: Animations[] = [
       { label: '无', value: 'no' },
       { label: '淡入淡出', value: 'fade' },
       { label: '左右推移', value: 'slideX' },
@@ -41,9 +46,9 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     // 修改播放时的切换页面方式
-    const updateTurningMode = (mode: string) => {
+    const updateTurningMode = (mode: TurningMode) => {
       if (mode === currentTurningMode.value) return
-      store.commit(MutationTypes.UPDATE_SLIDE, { turningMode: mode })
+      slidesStore.updateSlide({ turningMode: mode })
       addHistorySnapshot()
     }
 
@@ -55,7 +60,7 @@ export default defineComponent({
           turningMode: currentSlide.value.turningMode,
         }
       })
-      store.commit(MutationTypes.SET_SLIDES, newSlides)
+      slidesStore.setSlides(newSlides)
       addHistorySnapshot()
     }
 

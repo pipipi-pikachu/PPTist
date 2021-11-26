@@ -1,5 +1,6 @@
-import { Ref, computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -10,11 +11,9 @@ export default (
   elementList: Ref<PPTElement[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
-  const canvasScale = computed(() => store.state.canvasScale)
-  const viewportRatio = computed(() => store.state.viewportRatio)
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList, activeGroupElementId, canvasScale } = storeToRefs(useMainStore())
+  const { viewportRatio } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -296,7 +295,7 @@ export default (
 
       if (startPageX === currentPageX && startPageY === currentPageY) return
 
-      store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
     }
   }

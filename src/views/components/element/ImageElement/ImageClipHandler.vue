@@ -67,7 +67,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
 
@@ -106,9 +107,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
-    const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
+    const { canvasScale } = storeToRefs(useMainStore())
+    const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
     const clipWrapperPositionStyle = reactive({
       top: '0',

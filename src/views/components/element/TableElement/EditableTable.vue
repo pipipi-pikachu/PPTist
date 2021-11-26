@@ -69,7 +69,8 @@
 <script lang="ts">
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { debounce, isEqual } from 'lodash'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
@@ -112,8 +113,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
+    const { canvasScale } = storeToRefs(useMainStore())
     
     const isStartSelect = ref(false)
     const startCell = ref<number[]>([])

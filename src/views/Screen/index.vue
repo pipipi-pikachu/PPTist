@@ -60,8 +60,8 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, provide, ref } from 'vue'
 import { throttle } from 'lodash'
-import { MutationTypes, useStore } from '@/store'
-import { Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -82,11 +82,8 @@ export default defineComponent({
     WritingBoardTool,
   },
   setup() {
-    const store = useStore()
-    const slides = computed(() => store.state.slides)
-    const slideIndex = computed(() => store.state.slideIndex)
-    const viewportRatio = computed(() => store.state.viewportRatio)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const slidesStore = useSlidesStore()
+    const { slides, slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
 
     const slideWidth = ref(0)
     const slideHeight = ref(0)
@@ -184,7 +181,7 @@ export default defineComponent({
         animationIndex.value -= 1
       }
       else if (slideIndex.value > 0) {
-        store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+        slidesStore.updateSlideIndex(slideIndex.value - 1)
         const lastIndex = animations.value ? animations.value.length : 0
         animationIndex.value = lastIndex
       }
@@ -197,7 +194,7 @@ export default defineComponent({
         runAnimation()
       }
       else if (slideIndex.value < slides.value.length - 1) {
-        store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+        slidesStore.updateSlideIndex(slideIndex.value + 1)
         animationIndex.value = 0
       }
       else {
@@ -263,18 +260,18 @@ export default defineComponent({
 
     // 切换到上一张/上一张幻灯片（无视元素的入场动画）
     const turnPrevSlide = () => {
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value - 1)
+      slidesStore.updateSlideIndex(slideIndex.value - 1)
       animationIndex.value = 0
     }
     const turnNextSlide = () => {
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, slideIndex.value + 1)
+      slidesStore.updateSlideIndex(slideIndex.value + 1)
       animationIndex.value = 0
     }
 
     // 切换幻灯片到指定的页面
     const turnSlideToIndex = (index: number) => {
       slideThumbnailModelVisible.value = false
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
+      slidesStore.updateSlideIndex(index)
       animationIndex.value = 0
     }
 

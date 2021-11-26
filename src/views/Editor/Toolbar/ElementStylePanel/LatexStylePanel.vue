@@ -44,8 +44,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { defineComponent, onUnmounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTLatexElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -60,15 +61,16 @@ export default defineComponent({
     LaTeXEditor,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTLatexElement>(() => store.getters.handleElement)
+    const slidesStore = useSlidesStore()
+    const { handleElement } = storeToRefs(useMainStore())
 
     const latexEditorVisible = ref(false)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateLatex = (props: Partial<PPTLatexElement>) => {
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      if (!handleElement.value) return
+      slidesStore.updateElement({ id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 

@@ -1,20 +1,13 @@
-import { InjectionKey } from 'vue'
-import { createStore, Store, useStore as baseUseStore } from 'vuex'
-import { state, State } from './state'
-import { getters } from './getters'
-import { actions } from './actions'
-import { mutations } from './mutations'
-import { MutationTypes, ActionTypes } from './constants'
+import { useMainStore } from './main'
+import { useSlidesStore } from './slides'
+import { useSnapshotStore } from './snapshot'
+import { useKeyboardStore } from './keyboard'
+import { useScreenStore } from './screen'
 
-export { MutationTypes, ActionTypes }
-
-export const key: InjectionKey<Store<State>> = Symbol()
-
-export const store = createStore<State>({
-  state,
-  getters,
-  mutations,
-  actions,
-})
-
-export const useStore = () => baseUseStore(key)
+export {
+  useMainStore,
+  useSlidesStore,
+  useSnapshotStore,
+  useKeyboardStore,
+  useScreenStore,
+}

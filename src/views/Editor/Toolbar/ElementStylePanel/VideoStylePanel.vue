@@ -15,8 +15,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { defineComponent } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -24,13 +25,14 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default defineComponent({
   name: 'video-style-panel',
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTVideoElement>(() => store.getters.handleElement)
+    const slidesStore = useSlidesStore()
+    const { handleElement } = storeToRefs(useMainStore())
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateVideo = (props: Partial<PPTVideoElement>) => {
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      if (!handleElement.value) return
+      slidesStore.updateElement({ id: handleElement.value.id, props })
       addHistorySnapshot()
     }
 

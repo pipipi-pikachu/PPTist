@@ -1,11 +1,12 @@
-import { Ref, reactive, computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { Ref, reactive } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore()
-  const canvasScale = computed(() => store.state.canvasScale)
+  const mainStore = useMainStore()
+  const { canvasScale } = storeToRefs(mainStore)
 
   const mouseSelectionState = reactive({
     isShow: false,
@@ -127,7 +128,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
         return true
       })
       const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
-      if (inRangeElementIdList.length) store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, inRangeElementIdList)
+      mainStore.setActiveElementIdList(inRangeElementIdList)
 
       mouseSelectionState.isShow = false
     }

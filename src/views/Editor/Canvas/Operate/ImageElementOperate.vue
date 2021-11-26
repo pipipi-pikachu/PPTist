@@ -28,7 +28,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
@@ -64,9 +65,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
-    const clipingImageElementId = computed(() => store.state.clipingImageElementId)
+    const { canvasScale, clipingImageElementId } = storeToRefs(useMainStore())
+
     const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 
     const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)

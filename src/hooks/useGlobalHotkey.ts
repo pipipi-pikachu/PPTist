@@ -1,7 +1,7 @@
-import { computed, onMounted, onUnmounted } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { onMounted, onUnmounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
-import { PPTElement, Slide } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from './useSlideHandler'
@@ -17,17 +17,18 @@ import useScreening from './useScreening'
 import useScaleCanvas from './useScaleCanvas'
 
 export default () => {
-  const store = useStore()
-
-  const ctrlKeyActive = computed(() => store.state.ctrlKeyState)
-  const shiftKeyActive = computed(() => store.state.shiftKeyState)
-  const disableHotkeys = computed(() => store.state.disableHotkeys)
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const handleElement = computed<PPTElement>(() => store.getters.handleElement)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
-
-  const editorAreaFocus = computed(() => store.state.editorAreaFocus)
-  const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
+  const mainStore = useMainStore()
+  const keyboardStore = useKeyboardStore()
+  const {
+    activeElementIdList,
+    disableHotkeys,
+    handleElement,
+    handleElementId,
+    editorAreaFocus,
+    thumbnailsFocus,
+  } = storeToRefs(mainStore)
+  const { currentSlide } = storeToRefs(useSlidesStore())
+  const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
 
   const {
     updateSlideIndex,
@@ -106,17 +107,16 @@ export default () => {
 
   const tabActiveElement = () => {
     if (!currentSlide.value.elements.length) return
-    if (!handleElement.value) {
+    if (!handleElementId.value) {
       const firstElement = currentSlide.value.elements[0]
-      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [firstElement.id])
+      mainStore.setActiveElementIdList([firstElement.id])
       return
     }
-
-    const currentIndex = currentSlide.value.elements.findIndex(el => el.id === handleElement.value.id)
+    const currentIndex = currentSlide.value.elements.findIndex(el => el.id === handleElementId.value)
     const nextIndex = currentIndex >= currentSlide.value.elements.length - 1 ? 0 : currentIndex + 1
     const nextElementId = currentSlide.value.elements[nextIndex].id
 
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [nextElementId])
+    mainStore.setActiveElementIdList([nextElementId])
   }
 
   const keydownListener = (e: KeyboardEvent) => {
@@ -125,13 +125,13 @@ export default () => {
     
     const key = e.key.toUpperCase()
 
-    if (ctrlOrMetaKeyActive && !ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, true)
-    if (shiftKey && !shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, true)
+    if (ctrlOrMetaKeyActive && !ctrlKeyState.value) keyboardStore.setCtrlKeyState(true)
+    if (shiftKey && !shiftKeyState.value) keyboardStore.setShiftKeyState(true)
 
     if (ctrlOrMetaKeyActive && key === KEYS.F) {
       e.preventDefault()
       enterScreening()
-      store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
+      keyboardStore.setCtrlKeyState(false)
     }
     
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
@@ -244,8 +244,8 @@ export default () => {
   }
   
   const keyupListener = () => {
-    if (ctrlKeyActive.value) store.commit(MutationTypes.SET_CTRL_KEY_STATE, false)
-    if (shiftKeyActive.value) store.commit(MutationTypes.SET_SHIFT_KEY_STATE, false)
+    if (ctrlKeyState.value) keyboardStore.setCtrlKeyState(false)
+    if (shiftKeyState.value) keyboardStore.setShiftKeyState(false)
   }
 
   onMounted(() => {

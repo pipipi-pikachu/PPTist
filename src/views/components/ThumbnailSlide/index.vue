@@ -26,7 +26,8 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -49,8 +50,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const viewportRatio = computed(() => store.state.viewportRatio)
+    const { viewportRatio } = storeToRefs(useSlidesStore())
 
     const background = computed(() => props.slide.background)
     const { backgroundStyle } = useSlideBackgroundStyle(background)

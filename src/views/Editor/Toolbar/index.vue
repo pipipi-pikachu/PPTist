@@ -17,8 +17,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { ToolbarState, ToolbarStates } from '@/types/toolbar'
 
 import ElementStylePanel from './ElementStylePanel/index.vue'
@@ -29,14 +29,18 @@ import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 import SymbolPanel from './SymbolPanel.vue'
 
+interface ElementTabs {
+  label: string;
+  value: ToolbarState;
+}
+
 export default defineComponent({
   name: 'toolbar',
   setup() {
-    const store = useStore()
-    const toolbarState = computed(() => store.state.toolbarState)
-    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+    const mainStore = useMainStore()
+    const { activeElementIdList, handleElement, toolbarState } = storeToRefs(mainStore)
 
-    const elementTabs = computed(() => {
+    const elementTabs = computed<ElementTabs[]>(() => {
       if (handleElement.value?.type === 'text') {
         return [
           { label: '样式', value: ToolbarStates.EL_STYLE },
@@ -62,10 +66,9 @@ export default defineComponent({
     ]
 
     const setToolbarState = (value: ToolbarState) => {
-      store.commit(MutationTypes.SET_TOOLBAR_STATE, value)
+      mainStore.setToolbarState(value)
     }
 
-    const activeElementIdList = computed(() => store.state.activeElementIdList)
     const currentTabs = computed(() => {
       if (!activeElementIdList.value.length) return slideTabs
       else if (activeElementIdList.value.length > 1) return multiSelectTabs
@@ -73,9 +76,9 @@ export default defineComponent({
     })
 
     watch(currentTabs, () => {
-      const currentTabsValue = currentTabs.value.map(tab => tab.value)
+      const currentTabsValue: ToolbarState[] = currentTabs.value.map(tab => tab.value)
       if (!currentTabsValue.includes(toolbarState.value)) {
-        store.commit(MutationTypes.SET_TOOLBAR_STATE, currentTabsValue[0])
+        mainStore.setToolbarState(currentTabsValue[0])
       }
     })
 

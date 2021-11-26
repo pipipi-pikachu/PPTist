@@ -82,7 +82,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeText } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
@@ -113,7 +114,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const { handleElementId } = storeToRefs(mainStore)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -138,15 +141,14 @@ export default defineComponent({
 
     const enterEditing = () => {
       editable.value = true
-      store.commit(MutationTypes.SET_EDITING_SHAPE_ELEMENT_ID, props.elementInfo.id)
+      mainStore.setEditingShapeElementId(props.elementInfo.id)
     }
 
     const exitEditing = () => {
       editable.value = false
-      store.commit(MutationTypes.SET_EDITING_SHAPE_ELEMENT_ID, '')
+      mainStore.setEditingShapeElementId('')
     }
     
-    const handleElementId = computed(() => store.state.handleElementId)
     watch(handleElementId, () => {
       if (handleElementId.value !== props.elementInfo.id) {
         if (editable.value) exitEditing()
@@ -167,7 +169,7 @@ export default defineComponent({
 
     const updateText = (content: string) => {
       const _text = { ...text.value, content }
-      store.commit(MutationTypes.UPDATE_ELEMENT, {
+      slidesStore.updateElement({
         id: props.elementInfo.id, 
         props: { text: _text },
       })

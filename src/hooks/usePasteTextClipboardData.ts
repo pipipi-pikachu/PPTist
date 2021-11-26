@@ -1,5 +1,5 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore, useMainStore } from '@/store'
 import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { PPTElement, Slide } from '@/types/slides'
 import { createRandomCode } from '@/utils/common'
@@ -14,8 +14,9 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
-  const store = useStore()
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
   const { createTextElement } = useCreateElement()
@@ -40,8 +41,8 @@ export default () => {
 
       if (element.groupId) element.groupId = groupIdMap[element.groupId]
     }
-    store.commit(MutationTypes.ADD_ELEMENT, elements)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, Object.values(elIdMap))
+    slidesStore.addElement(elements)
+    mainStore.setActiveElementIdList(Object.values(elIdMap))
     addHistorySnapshot()
   }
 
@@ -67,7 +68,7 @@ export default () => {
         id: createRandomCode(8),
       }
     })
-    store.commit(MutationTypes.ADD_SLIDE, newSlides)
+    slidesStore.addSlide(newSlides)
     addHistorySnapshot()
   }
 

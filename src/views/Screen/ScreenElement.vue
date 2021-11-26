@@ -21,8 +21,9 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
-import { ElementTypes, PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
+import { ElementTypes, PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
@@ -64,9 +65,7 @@ export default defineComponent({
       return elementTypeMap[props.elementInfo.type] || null
     })
 
-    const store = useStore()
-    const theme = computed(() => store.state.theme)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const { currentSlide, theme } = storeToRefs(useSlidesStore())
 
     // 判断元素是否需要等待执行入场动画：等待执行的元素需要先隐藏
     const needWaitAnimation = computed(() => {

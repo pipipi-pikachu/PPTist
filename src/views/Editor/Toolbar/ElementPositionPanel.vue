@@ -134,8 +134,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { round } from 'lodash'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { MIN_SIZE } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
@@ -144,8 +144,8 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default defineComponent({
   name: 'element-positopn-panel',
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
     const left = ref(0)
     const top = ref(0)
@@ -182,36 +182,36 @@ export default defineComponent({
     // 设置元素位置
     const updateLeft = (value: number) => {
       const props = { left: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
     const updateTop = (value: number) => {
       const props = { top: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
 
     // 设置元素宽度、高度、旋转角度
     const updateWidth = (value: number) => {
       const props = { width: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
     const updateHeight = (value: number) => {
       const props = { height: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
     const updateRotate = (value: number) => {
       const props = { rotate: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
 
     // 固定元素的宽高比
     const updateFixedRatio = (value: boolean) => {
       const props = { fixedRatio: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
 
@@ -225,7 +225,7 @@ export default defineComponent({
       if (_rotate > 180) _rotate = 180
 
       const props = { rotate: _rotate }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props })
       addHistorySnapshot()
     }
 

@@ -8,7 +8,8 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
 import { debounce } from 'lodash'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
@@ -47,8 +48,8 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const handleElementId = computed(() => store.state.handleElementId)
+    const mainStore = useMainStore()
+    const { handleElementId } = storeToRefs(mainStore)
 
     const editorViewRef = ref<HTMLElement>()
     let editorView: EditorView
@@ -67,12 +68,12 @@ export default defineComponent({
           selectAll(editorView.state, editorView.dispatch)
         }, 0)
       }
-      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, true)
+      mainStore.setDisableHotkeysState(true)
       emit('focus')
     }
 
     const handleBlur = () => {
-      store.commit(MutationTypes.SET_DISABLE_HOTKEYS_STATE, false)
+      mainStore.setDisableHotkeysState(false)
       emit('blur')
     }
 
@@ -81,7 +82,7 @@ export default defineComponent({
         color: props.defaultColor,
         fontname: props.defaultFontName,
       })
-      store.commit(MutationTypes.SET_RICHTEXT_ATTRS, attrs)
+      mainStore.setRichtextAttrs(attrs)
     }, 30, { trailing: true })
 
     const handleKeydown = () => {

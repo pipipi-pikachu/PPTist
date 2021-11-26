@@ -75,9 +75,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTImageElement, Slide } from '@/types/slides'
+import { defineComponent, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTImageElement, SlideBackground } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -148,9 +149,10 @@ export default defineComponent({
     ElementFlip,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTImageElement>(() => store.getters.handleElement)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId } = storeToRefs(mainStore)
+    const { currentSlide } = storeToRefs(slidesStore)
 
     const clipPanelVisible = ref(false)
 
@@ -173,28 +175,30 @@ export default defineComponent({
 
     // 设置滤镜
     const updateFilter = (filter: FilterOption, value: number) => {
-      const originFilters = handleElement.value.filters || {}
+      const _handleElement = handleElement.value as PPTImageElement
+      
+      const originFilters = _handleElement.filters || {}
       const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
-      const props = { filters }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      slidesStore.updateElement({ id: handleElementId.value, props: { filters } })
       addHistorySnapshot()
     }
 
     // 打开自由裁剪
     const clipImage = () => {
-      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, handleElement.value.id)
+      mainStore.setClipingImageElementId(handleElementId.value)
       clipPanelVisible.value = false
     }
 
     // 获取原始图片的位置大小
     const getImageElementDataBeforeClip = () => {
+      const _handleElement = handleElement.value as PPTImageElement
 
       // 图片当前的位置大小和裁剪范围
-      const imgWidth = handleElement.value.width
-      const imgHeight = handleElement.value.height
-      const imgLeft = handleElement.value.left
-      const imgTop = handleElement.value.top
-      const originClipRange = handleElement.value.clip ? handleElement.value.clip.range : [[0, 0], [100, 100]]
+      const imgWidth = _handleElement.width
+      const imgHeight = _handleElement.height
+      const imgLeft = _handleElement.left
+      const imgTop = _handleElement.top
+      const originClipRange: [[number, number], [number, number]] = _handleElement.clip ? _handleElement.clip.range : [[0, 0], [100, 100]]
 
       const originWidth = imgWidth / ((originClipRange[1][0] - originClipRange[0][0]) / 100)
       const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
@@ -212,6 +216,8 @@ export default defineComponent({
 
     // 预设裁剪
     const presetImageClip = (shape: string, ratio = 0) => {
+      const _handleElement = handleElement.value as PPTImageElement
+
       const {
         originClipRange,
         originWidth,
@@ -226,7 +232,7 @@ export default defineComponent({
 
         const min = 0
         const max = 100
-        let range
+        let range: [[number, number], [number, number]]
 
         if (imageRatio > ratio) {
           const distance = ((1 - ratio / imageRatio) / 2) * 100
@@ -236,10 +242,10 @@ export default defineComponent({
           const distance = ((1 - imageRatio / ratio) / 2) * 100
           range = [[distance, min], [max - distance, max]]
         }
-        store.commit(MutationTypes.UPDATE_ELEMENT, {
-          id: handleElement.value.id,
+        slidesStore.updateElement({
+          id: handleElementId.value,
           props: {
-            clip: { ...handleElement.value.clip, shape, range },
+            clip: { ..._handleElement.clip, shape, range },
             left: originLeft + originWidth * (range[0][0] / 100),
             top: originTop + originHeight * (range[0][1] / 100),
             width: originWidth * (range[1][0] - range[0][0]) / 100,
@@ -249,10 +255,10 @@ export default defineComponent({
       }
       // 形状裁剪（保持当前裁剪范围）
       else {
-        store.commit(MutationTypes.UPDATE_ELEMENT, {
-          id: handleElement.value.id,
+        slidesStore.updateElement({
+          id: handleElementId.value,
           props: {
-            clip: { ...handleElement.value.clip, shape, range: originClipRange }
+            clip: { ..._handleElement.clip, shape, range: originClipRange }
           },
         })
       }
@@ -266,14 +272,16 @@ export default defineComponent({
       if (!imageFile) return
       getImageDataURL(imageFile).then(dataURL => {
         const props = { src: dataURL }
-        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+        slidesStore.updateElement({ id: handleElementId.value, props })
       })
       addHistorySnapshot()
     }
 
     // 重置图片：清除全部样式
     const resetImage = () => {
-      if (handleElement.value.clip) {
+      const _handleElement = handleElement.value as PPTImageElement
+
+      if (_handleElement.clip) {
         const {
           originWidth,
           originHeight,
@@ -281,8 +289,8 @@ export default defineComponent({
           originTop,
         } = getImageElementDataBeforeClip()
 
-        store.commit(MutationTypes.UPDATE_ELEMENT, {
-          id: handleElement.value.id,
+        slidesStore.updateElement({
+          id: handleElementId.value,
           props: {
             left: originLeft,
             top: originTop,
@@ -292,8 +300,8 @@ export default defineComponent({
         })
       }
 
-      store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
-        id: handleElement.value.id,
+      slidesStore.removeElementProps({
+        id: handleElementId.value,
         propName: ['clip', 'outline', 'flip', 'shadow', 'filters'],
       })
       addHistorySnapshot()
@@ -301,13 +309,15 @@ export default defineComponent({
 
     // 将图片设置为背景
     const setBackgroundImage = () => {
-      const background = {
+      const _handleElement = handleElement.value as PPTImageElement
+
+      const background: SlideBackground = {
         ...currentSlide.value.background,
         type: 'image',
-        image: handleElement.value.src,
+        image: _handleElement.src,
         imageSize: 'cover',
       }
-      store.commit(MutationTypes.UPDATE_SLIDE, { background })
+      slidesStore.updateSlide({ background })
       addHistorySnapshot()
     }
 

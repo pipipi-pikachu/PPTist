@@ -10,8 +10,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, PropType } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
@@ -28,8 +29,7 @@ export default defineComponent({
     },
   },
   setup() {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
+    const { canvasScale } = storeToRefs(useMainStore())
 
     const { removeLink } = useLink()
 

@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import { store, key } from './store'
 
 import '@icon-park/vue-next/styles/index.css'
 import 'prosemirror-view/style/prosemirror.css'
@@ -65,5 +65,5 @@ app.use(Icon)
 app.use(Component)
 app.use(Directive)
 
-app.use(store, key)
+app.use(createPinia())
 app.mount('#app')

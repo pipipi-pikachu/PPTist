@@ -9,8 +9,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
-import { useStore } from '@/store'
-import { ElementTypes, PPTElement } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
+import { ElementTypes } from '@/types/slides'
 
 import TextStylePanel from './TextStylePanel.vue'
 import ImageStylePanel from './ImageStylePanel.vue'
@@ -24,8 +25,7 @@ import VideoStylePanel from './VideoStylePanel.vue'
 export default defineComponent({
   name: 'element-style-panel',
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+    const { handleElement } = storeToRefs(useMainStore())
 
     const currentPanelComponent = computed(() => {
       if (!handleElement.value) return null

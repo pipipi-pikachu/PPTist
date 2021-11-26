@@ -6,7 +6,8 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { AlignmentLineAxis } from '@/types/edit'
 
 export default defineComponent({
@@ -26,8 +27,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
+    const { canvasScale } = storeToRefs(useMainStore())
 
     // 吸附对齐线的位置
     const left = computed(() => props.axis.x * canvasScale.value + 'px')

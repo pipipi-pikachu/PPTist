@@ -37,8 +37,9 @@
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
-import { useStore } from '@/store'
-import { ElementTypes, PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { ElementTypes, PPTElement } from '@/types/slides'
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
@@ -93,10 +94,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const canvasScale = computed(() => store.state.canvasScale)
-    const toolbarState = computed(() => store.state.toolbarState)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const { canvasScale, toolbarState } = storeToRefs(useMainStore())
+    const { currentSlide } = storeToRefs(useSlidesStore())
 
     const currentOperateComponent = computed(() => {
       const elementTypeMap = {

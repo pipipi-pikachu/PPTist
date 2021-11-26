@@ -1,14 +1,15 @@
 import { ref, computed, onMounted, onUnmounted, Ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportLeft = ref(0)
   const viewportTop = ref(0)
 
-  const store = useStore()
-  const canvasPercentage = computed(() => store.state.canvasPercentage)
-  const viewportRatio = computed(() => store.state.viewportRatio)
+  const mainStore = useMainStore()
+  const { canvasPercentage } = storeToRefs(mainStore)
+  const { viewportRatio } = storeToRefs(useSlidesStore())
 
   // 计算画布可视区域的位置
   const setViewportPosition = () => {
@@ -18,13 +19,13 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
 
     if (canvasHeight / canvasWidth > viewportRatio.value) {
       const viewportActualWidth = canvasWidth * (canvasPercentage.value / 100)
-      store.commit(MutationTypes.SET_CANVAS_SCALE, viewportActualWidth / VIEWPORT_SIZE)
+      mainStore.setCanvasScale(viewportActualWidth / VIEWPORT_SIZE)
       viewportLeft.value = (canvasWidth - viewportActualWidth) / 2
       viewportTop.value = (canvasHeight - viewportActualWidth * viewportRatio.value) / 2
     }
     else {
       const viewportActualHeight = canvasHeight * (canvasPercentage.value / 100)
-      store.commit(MutationTypes.SET_CANVAS_SCALE, viewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
+      mainStore.setCanvasScale(viewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
       viewportLeft.value = (canvasWidth - viewportActualHeight / viewportRatio.value) / 2
       viewportTop.value = (canvasHeight - viewportActualHeight) / 2
     }

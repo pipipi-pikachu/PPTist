@@ -1,23 +1,21 @@
-import { Ref, computed } from 'vue'
+import { Ref } from 'vue'
 import { uniq } from 'lodash'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useKeyboardStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,
   moveElement: (e: MouseEvent, element: PPTElement) => void,
 ) => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const handleElementId = computed(() => store.state.handleElementId)
-  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
-  const editorAreaFocus = computed(() => store.state.editorAreaFocus)
-  const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
+  const mainStore = useMainStore()
+  const { activeElementIdList, activeGroupElementId, handleElementId, editorAreaFocus } = storeToRefs(mainStore)
+  const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   // 选中元素
   // startMove 表示是否需要再选中操作后进入到开始移动的状态
   const selectElement = (e: MouseEvent, element: PPTElement, startMove = true) => {
-    if (!editorAreaFocus.value) store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+    if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
 
     // 如果目标元素当前未被选中，则将他设为选中状态
     // 此时如果按下Ctrl键或Shift键，则进入多选状态，将当前已选中的元素和目标元素一起设置为选中状态，否则仅将目标元素设置为选中状态
@@ -38,8 +36,8 @@ export default (
         newActiveIdList = [...newActiveIdList, ...groupMembersId]
       }
 
-      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, uniq(newActiveIdList))
-      store.commit(MutationTypes.SET_HANDLE_ELEMENT_ID, element.id)
+      mainStore.setActiveElementIdList(uniq(newActiveIdList))
+      mainStore.setHandleElementId(element.id)
     }
 
     // 如果目标元素已被选中，且按下了Ctrl键或Shift键，则取消其被选中状态
@@ -60,13 +58,13 @@ export default (
       }
 
       if (newActiveIdList.length > 0) {
-        store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, newActiveIdList)
+        mainStore.setActiveElementIdList(newActiveIdList)
       }
     }
 
     // 如果目标元素已被选中，同时目标元素不是当前操作元素，则将其设置为当前操作元素
     else if (handleElementId.value !== element.id) {
-      store.commit(MutationTypes.SET_HANDLE_ELEMENT_ID, element.id)
+      mainStore.setHandleElementId(element.id)
     }
 
     // 如果目标元素已被选中，同时也是当前操作元素，那么当目标元素在该状态下再次被点击时，将被设置为多选元素中的激活成员
@@ -79,7 +77,7 @@ export default (
         const currentPageY = e.pageY
 
         if (startPageX === currentPageX && startPageY === currentPageY) {
-          store.commit(MutationTypes.SET_ACTIVE_GROUP_ELEMENT_ID, element.id)
+          mainStore.setActiveGroupElementId(element.id)
           ;(e.target as HTMLElement).onmouseup = null
         }
       }
@@ -92,7 +90,7 @@ export default (
   const selectAllElement = () => {
     const unlockedElements = elementList.value.filter(el => !el.lock)
     const newActiveElementIdList = unlockedElements.map(el => el.id)
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, newActiveElementIdList)
+    mainStore.setActiveElementIdList(newActiveElementIdList)
   }
 
   return {

@@ -196,7 +196,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
 import emitter, { EmitterEvents } from '@/utils/emitter'
@@ -220,13 +221,11 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTShapeElement>(() => store.getters.handleElement)
-    const editingShapeElementId = computed(() => store.state.editingShapeElementId)
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId, editingShapeElementId, richTextAttrs, availableFonts } = storeToRefs(mainStore)
 
-    const showTextTools = computed(() => {
-      return editingShapeElementId.value === handleElement.value.id
-    })
+    const showTextTools = computed(() => editingShapeElementId.value === handleElementId.value)
 
     const fill = ref<string>()
     const gradient = ref<ShapeGradient>()
@@ -235,61 +234,54 @@ export default defineComponent({
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'shape') return
+
       fill.value = handleElement.value.fill || '#000'
-
       gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, color: [fill.value, '#fff'] }
-
       fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
-
       textAlign.value = handleElement.value?.text?.align || 'middle'
     }, { deep: true, immediate: true })
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    const updateElement = (props: Partial<PPTShapeElement>) => {
+      slidesStore.updateElement({ id: handleElementId.value, props })
+      addHistorySnapshot()
+    }
+
     // 设置填充类型：渐变、纯色
     const updateFillType = (type: 'gradient' | 'fill') => {
       if (type === 'fill') {
-        store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, {
-          id: handleElement.value.id,
-          propName: 'gradient',
-        })
+        slidesStore.removeElementProps({ id: handleElementId.value, propName: 'gradient' })
+        addHistorySnapshot()
       }
-      else {
-        const props = { gradient: gradient.value }
-        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      }
-      addHistorySnapshot()
+      else updateElement({ gradient: gradient.value })
     }
 
     // 设置渐变填充
     const updateGradient = (gradientProps: Partial<ShapeGradient>) => {
-      const props = { gradient: { ...gradient.value, ...gradientProps } }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      if (!gradient.value) return
+      const _gradient: ShapeGradient = { ...gradient.value, ...gradientProps }
+      updateElement({ gradient: _gradient })
     }
 
     // 设置填充色
     const updateFill = (value: string) => {
-      const props = { fill: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ fill: value })
     }
 
     const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
+      const _handleElement = handleElement.value as PPTShapeElement
+      
       const defaultText: ShapeText = {
         content: '',
         defaultFontName: '微软雅黑',
         defaultColor: '#000',
         align: 'middle',
       }
-      const _text = handleElement.value.text || defaultText
-      const props = { text: { ..._text, align } }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      const _text = _handleElement.text || defaultText
+      updateElement({ text: { ..._text, align } })
     }
 
-    const richTextAttrs = computed(() => store.state.richTextAttrs)
-    const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
       '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
       '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',

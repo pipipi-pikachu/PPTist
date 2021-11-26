@@ -16,31 +16,33 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTImageElement, PPTShapeElement, ImageOrShapeFlip } from '@/types/slides'
+import { defineComponent, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { ImageOrShapeFlip } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default defineComponent({
   name: 'element-flip',
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTImageElement | PPTShapeElement>(() => store.getters.handleElement)
+    const slidesStore = useSlidesStore()
+    const { handleElement } = storeToRefs(useMainStore())
 
     const flipH = ref(false)
     const flipV = ref(false)
 
     watch(handleElement, () => {
-      if (!handleElement.value || !['image', 'shape'].includes(handleElement.value.type)) return
-
-      flipH.value = !!handleElement.value.flipH
-      flipV.value = !!handleElement.value.flipV
+      if (handleElement.value && (handleElement.value.type === 'image' || handleElement.value.type === 'shape')) {
+        flipH.value = !!handleElement.value.flipH
+        flipV.value = !!handleElement.value.flipV
+      }
     }, { deep: true, immediate: true })
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateFlip = (flipProps: ImageOrShapeFlip) => {
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props: flipProps })
+      if (!handleElement.value) return
+      slidesStore.updateElement({ id: handleElement.value.id, props: flipProps })
       addHistorySnapshot()
     }
 

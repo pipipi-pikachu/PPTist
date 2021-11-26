@@ -10,17 +10,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue'
-import { useStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { defineComponent, onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import useLink from '@/hooks/useLink'
 
 export default defineComponent({
   name: 'link-dialog',
   emits: ['close'],
   setup(props, { emit }) {
-    const store = useStore()
-    const handleElement = computed<PPTElement | null>(() => store.getters.handleElement)
+    const { handleElement } = storeToRefs(useMainStore())
 
     const link = ref('')
 

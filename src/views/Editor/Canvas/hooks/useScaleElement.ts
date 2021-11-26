@@ -1,5 +1,6 @@
-import { computed, Ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -95,19 +96,18 @@ export default (
   elementList: Ref<PPTElement[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
 ) => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
-  const canvasScale = computed(() => store.state.canvasScale)
-  const viewportRatio = computed(() => store.state.viewportRatio)
-  const ctrlOrShiftKeyActive = computed<boolean>(() => store.getters.ctrlOrShiftKeyActive)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList, activeGroupElementId, canvasScale } = storeToRefs(mainStore)
+  const { viewportRatio } = storeToRefs(slidesStore)
+  const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 缩放元素
   const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
     let isMouseDown = true
-    store.commit(MutationTypes.SET_SCALING_STATE, true)
+    mainStore.setScalingState(true)
 
     const elOriginLeft = element.left
     const elOriginTop = element.top
@@ -404,8 +404,8 @@ export default (
       
       if (startPageX === e.pageX && startPageY === e.pageY) return
       
-      store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
-      store.commit(MutationTypes.SET_SCALING_STATE, false)
+      slidesStore.updateSlide({ elements: elementList.value })
+      mainStore.setScalingState(false)
       
       addHistorySnapshot()
     }
@@ -509,7 +509,7 @@ export default (
 
       if (startPageX === e.pageX && startPageY === e.pageY) return
 
-      store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
     }
   }

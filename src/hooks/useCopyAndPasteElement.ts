@@ -1,6 +1,5 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
 import { message } from 'ant-design-vue'
@@ -8,9 +7,8 @@ import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useDeleteElement from './useDeleteElement'
 
 export default () => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeElementList = computed<PPTElement[]>(() => store.getters.activeElementList)
+  const mainStore = useMainStore()
+  const { activeElementIdList, activeElementList } = storeToRefs(mainStore)
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { deleteElement } = useDeleteElement()
@@ -25,7 +23,7 @@ export default () => {
     }))
 
     copyText(text).then(() => {
-      store.commit(MutationTypes.SET_EDITORAREA_FOCUS, true)
+      mainStore.setEditorareaFocus(true)
     })
   }
 

@@ -58,7 +58,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { ImageElementClip, PPTImageElement } from '@/types/slides'
 import { ImageClipedEmitData } from '@/types/edit'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -91,8 +92,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const clipingImageElementId = computed(() => store.state.clipingImageElementId)
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const { clipingImageElementId } = storeToRefs(mainStore)
+
     const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
 
     const { addHistorySnapshot } = useHistorySnapshot()
@@ -117,7 +120,7 @@ export default defineComponent({
     }
 
     const handleClip = (data: ImageClipedEmitData) => {
-      store.commit(MutationTypes.SET_CLIPING_IMAGE_ELEMENT_ID, '')
+      mainStore.setClipingImageElementId('')
       
       if (!data) return
 
@@ -131,7 +134,7 @@ export default defineComponent({
         width: props.elementInfo.width + position.width,
         height: props.elementInfo.height + position.height,
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: props.elementInfo.id, props: _props })
+      slidesStore.updateElement({ id: props.elementInfo.id, props: _props })
       
       addHistorySnapshot()
     }

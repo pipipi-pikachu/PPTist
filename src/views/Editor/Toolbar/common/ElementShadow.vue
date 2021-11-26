@@ -57,9 +57,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, PPTElementShadow } from '@/types/slides'
+import { defineComponent, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElementShadow } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
@@ -70,8 +71,8 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTElement>(() => store.getters.handleElement)
+    const slidesStore = useSlidesStore()
+    const { handleElement } = storeToRefs(useMainStore())
 
     const shadow = ref<PPTElementShadow>()
     const hasShadow = ref(false)
@@ -85,18 +86,20 @@ export default defineComponent({
     const { addHistorySnapshot } = useHistorySnapshot()
 
     const updateShadow = (shadowProps: Partial<PPTElementShadow>) => {
-      const props = { shadow: { ...shadow.value, ...shadowProps } }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+      if (!handleElement.value || !shadow.value) return
+      const _shadow = { ...shadow.value, ...shadowProps }
+      slidesStore.updateElement({ id: handleElement.value.id, props: { shadow: _shadow } })
       addHistorySnapshot()
     }
 
     const toggleShadow = (checked: boolean) => {
+      if (!handleElement.value) return
       if (checked) {
-        const props = { shadow: { h: 1, v: 1, blur: 2, color: '#000' } }
-        store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
+        const _shadow: PPTElementShadow = { h: 1, v: 1, blur: 2, color: '#000' }
+        slidesStore.updateElement({ id: handleElement.value.id, props: { shadow: _shadow } })
       }
       else {
-        store.commit(MutationTypes.REMOVE_ELEMENT_PROPS, { id: handleElement.value.id, propName: 'shadow' })
+        slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'shadow' })
       }
       addHistorySnapshot()
     }

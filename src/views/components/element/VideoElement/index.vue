@@ -22,7 +22,7 @@
           :height="elementInfo.height"
           :src="elementInfo.src" 
           :poster="elementInfo.poster"  
-          :scale="scale" 
+          :scale="canvasScale" 
         />
         <div 
           :class="['handler-border', item]" 
@@ -36,8 +36,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, PropType } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
@@ -62,8 +63,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const scale = computed(() => store.state.canvasScale)
+    const { canvasScale } = storeToRefs(useMainStore())
 
     const handleSelectElement = (e: MouseEvent, canMove = true) => {
       if (props.elementInfo.lock) return
@@ -73,7 +73,7 @@ export default defineComponent({
     }
 
     return {
-      scale,
+      canvasScale,
       handleSelectElement,
     }
   },

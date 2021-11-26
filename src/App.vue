@@ -4,8 +4,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from 'vue'
-import { MutationTypes, ActionTypes, useStore } from '@/store'
+import { defineComponent, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useScreenStore, useMainStore, useSnapshotStore } from '@/store'
 
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
@@ -17,16 +18,17 @@ export default defineComponent({
     Screen,
   },
   setup() {
-    const store = useStore()
-    const screening = computed(() => store.state.screening)
+    const mainStore = useMainStore()
+    const snapshotStore = useSnapshotStore()
+    const { screening } = storeToRefs(useScreenStore())
 
     if (process.env.NODE_ENV === 'production') {
       window.onbeforeunload = () => false
     }
 
     onMounted(() => {
-      store.commit(MutationTypes.SET_AVAILABLE_FONTS)
-      store.dispatch(ActionTypes.INIT_SNAPSHOT_DATABASE)
+      snapshotStore.initSnapshotDatabase()
+      mainStore.setAvailableFonts()
     })
 
     return {

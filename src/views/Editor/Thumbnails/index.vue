@@ -45,7 +45,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, provide, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { fillDigit } from '@/utils/common'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -64,12 +65,14 @@ export default defineComponent({
     LayoutPool,
   },
   setup() {
-    const store = useStore()
-    const slides = computed(() => store.state.slides)
-    const slideIndex = computed(() => store.state.slideIndex)
-    const ctrlKeyState = computed(() => store.state.ctrlKeyState)
-    const shiftKeyState = computed(() => store.state.shiftKeyState)
-    const selectedSlidesIndex = computed(() => [...store.state.selectedSlidesIndex, slideIndex.value])
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const keyboardStore = useKeyboardStore()
+    const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
+    const { slides, slideIndex } = storeToRefs(slidesStore)
+    const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
+
+    const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
     const presetLayoutPopoverVisible = ref(false)
 
@@ -89,10 +92,10 @@ export default defineComponent({
 
     // 切换页面
     const changSlideIndex = (index: number) => {
-      store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+      mainStore.setActiveElementIdList([])
 
       if (slideIndex.value === index) return
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, index)
+      slidesStore.updateSlideIndex(index)
     }
 
     // 点击缩略图
@@ -107,17 +110,17 @@ export default defineComponent({
           if (!isMultiSelected) return
 
           const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-          store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+          mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
           changSlideIndex(selectedSlidesIndex.value[0])
         }
         else {
           if (selectedSlidesIndex.value.includes(index)) {
             const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-            store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+            mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
           }
           else {
             const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
-            store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+            mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
             changSlideIndex(index)
           }
         }
@@ -136,24 +139,22 @@ export default defineComponent({
 
         const newSelectedSlidesIndex = []
         for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
-        store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, newSelectedSlidesIndex)
+        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
         changSlideIndex(index)
       }
       // 正常切换页面
       else {
-        store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
+        mainStore.updateSelectedSlidesIndex([])
         changSlideIndex(index)
       }
     }
 
-    const thumbnailsFocus = computed(() => store.state.thumbnailsFocus)
-
     // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
     const setThumbnailsFocus = (focus: boolean) => {
       if (thumbnailsFocus.value === focus) return
-      store.commit(MutationTypes.SET_THUMBNAILS_FOCUS, focus)
+      mainStore.setThumbnailsFocus(focus)
 
-      if (!focus) store.commit(MutationTypes.UPDATE_SELECTED_SLIDES_INDEX, [])
+      if (!focus) mainStore.updateSelectedSlidesIndex([])
     }
 
     // 拖拽调整顺序后进行数据的同步
@@ -165,8 +166,8 @@ export default defineComponent({
       const _slide = _slides[oldIndex]
       _slides.splice(oldIndex, 1)
       _slides.splice(newIndex, 0, _slide)
-      store.commit(MutationTypes.SET_SLIDES, _slides)
-      store.commit(MutationTypes.UPDATE_SLIDE_INDEX, newIndex)
+      slidesStore.setSlides(_slides)
+      slidesStore.updateSlideIndex(newIndex)
     }
 
     const { enterScreening } = useScreening()

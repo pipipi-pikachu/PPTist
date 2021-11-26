@@ -22,7 +22,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } from 'vue'
-import { useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
 import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
@@ -48,9 +49,8 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const store = useStore()
-    const activeElementIdList = computed(() => store.state.activeElementIdList)
-    const canvasScale = computed(() => store.state.canvasScale)
+    const { activeElementIdList, canvasScale } = storeToRefs(useMainStore())
+
     const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.id)))
 
     const range = reactive({

@@ -1,12 +1,12 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore()
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const slidesStore = useSlidesStore()
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -202,7 +202,7 @@ export default () => {
 
     if (!newElementList) return
 
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    slidesStore.updateSlide({ elements: newElementList })
     addHistorySnapshot()
   }
 

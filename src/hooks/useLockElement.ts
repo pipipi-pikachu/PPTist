@@ -1,12 +1,13 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList } = storeToRefs(mainStore)
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -17,8 +18,8 @@ export default () => {
     for (const element of newElementList) {
       if (activeElementIdList.value.includes(element.id)) element.lock = true
     }
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
+    slidesStore.updateSlide({ elements: newElementList })
+    mainStore.setActiveElementIdList([])
     addHistorySnapshot()
   }
 
@@ -42,8 +43,8 @@ export default () => {
         break
       }
     }
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [handleElement.id])
+    slidesStore.updateSlide({ elements: newElementList })
+    mainStore.setActiveElementIdList([handleElement.id])
     addHistorySnapshot()
   }
 

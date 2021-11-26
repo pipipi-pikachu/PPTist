@@ -125,9 +125,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUnmounted, ref, watch } from 'vue'
+import { defineComponent, onUnmounted, ref, watch } from 'vue'
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { ChartData, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -144,9 +145,10 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTChartElement>(() => store.getters.handleElement)
-    const theme = computed(() => store.state.theme)
+    const mainStore = useMainStore()
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId } = storeToRefs(mainStore)
+    const { theme } = storeToRefs(slidesStore)
 
     const chartDataEditorVisible = ref(false)
 
@@ -189,28 +191,28 @@ export default defineComponent({
       legend.value = handleElement.value.legend || ''
     }, { deep: true, immediate: true })
 
+    const updateElement = (props: Partial<PPTChartElement>) => {
+      slidesStore.updateElement({ id: handleElementId.value, props })
+      addHistorySnapshot()
+    }
+
     // 设置图表数据
     const updateData = (data: ChartData) => {
       chartDataEditorVisible.value = false
-      const props = { data }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ data })
     }
 
     // 设置填充色
     const updateFill = (value: string) => {
-      const props = { fill: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ fill: value })
     }
 
     // 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
     const updateOptions = (optionProps: ILineChartOptions & IBarChartOptions & IPieChartOptions) => {
-      const options = handleElement.value.options || {}
-      const newOptions = { ...options, ...optionProps }
-      const props = { options: newOptions }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      const _handleElement = handleElement.value as PPTChartElement
+
+      const newOptions = { ..._handleElement.options, ...optionProps }
+      updateElement({ options: newOptions })
     }
 
     // 设置主题色
@@ -218,8 +220,7 @@ export default defineComponent({
       const props = {
         themeColor: themeColor.value.map((c, i) => i === index ? color : c),
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement(props)
     }
 
     // 添加主题色
@@ -227,8 +228,7 @@ export default defineComponent({
       const props = {
         themeColor: [...themeColor.value, theme.value.themeColor],
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement(props)
     }
 
     // 删除主题色
@@ -236,22 +236,17 @@ export default defineComponent({
       const props = {
         themeColor: themeColor.value.filter((c, i) => i !== index),
       }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement(props)
     }
 
     // 设置网格颜色
     const updateGridColor = (gridColor: string) => {
-      const props = { gridColor }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ gridColor })
     }
 
     // 设置图例位置/不显示
     const updateLegend = (legend: '' | 'top' | 'bottom') => {
-      const props = { legend }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ legend })
     }
 
     const openDataEditor = () => chartDataEditorVisible.value = true

@@ -193,7 +193,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
@@ -211,12 +212,9 @@ export default defineComponent({
     ColorButton,
   },
   setup() {
-    const store = useStore()
-    const slides = computed(() => store.state.slides)
-    const theme = computed(() => store.state.theme)
-    const availableFonts = computed(() => store.state.availableFonts)
-    const viewportRatio = computed(() => store.state.viewportRatio)
-    const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+    const slidesStore = useSlidesStore()
+    const { availableFonts } = storeToRefs(useMainStore())
+    const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 
     const background = computed(() => {
       if (!currentSlide.value.background) {
@@ -238,7 +236,7 @@ export default defineComponent({
           type: 'solid',
           color: background.value.color || '#fff',
         }
-        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
+        slidesStore.updateSlide({ background: newBackground })
       }
       else if (type === 'image') {
         const newBackground: SlideBackground = {
@@ -247,7 +245,7 @@ export default defineComponent({
           image: background.value.image || '',
           imageSize: background.value.imageSize || 'cover',
         }
-        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
+        slidesStore.updateSlide({ background: newBackground })
       }
       else {
         const newBackground: SlideBackground = {
@@ -257,14 +255,14 @@ export default defineComponent({
           gradientColor: background.value.gradientColor || ['#fff', '#fff'],
           gradientRotate: background.value.gradientRotate || 0,
         }
-        store.commit(MutationTypes.UPDATE_SLIDE, { background: newBackground })
+        slidesStore.updateSlide({ background: newBackground })
       }
       addHistorySnapshot()
     }
 
     // 设置背景图片
     const updateBackground = (props: Partial<SlideBackground>) => {
-      store.commit(MutationTypes.UPDATE_SLIDE, { background: { ...background.value, ...props } })
+      slidesStore.updateSlide({ background: { ...background.value, ...props } })
       addHistorySnapshot()
     }
 
@@ -283,13 +281,13 @@ export default defineComponent({
           background: currentSlide.value.background,
         }
       })
-      store.commit(MutationTypes.SET_SLIDES, newSlides)
+      slidesStore.setSlides(newSlides)
       addHistorySnapshot()
     }
 
     // 设置主题
     const updateTheme = (themeProps: Partial<SlideTheme>) => {
-      store.commit(MutationTypes.SET_THEME, themeProps)
+      slidesStore.setTheme(themeProps)
     }
 
     // 将当前主题应用到全部页面
@@ -333,7 +331,7 @@ export default defineComponent({
           else if (el.type === 'latex') el.color = fontColor
         }
       }
-      store.commit(MutationTypes.SET_SLIDES, newSlides)
+      slidesStore.setSlides(newSlides)
       addHistorySnapshot()
     }
 
@@ -345,7 +343,7 @@ export default defineComponent({
 
     // 设置画布尺寸（宽高比例）
     const updateViewportRatio = (value: number) => {
-      store.commit(MutationTypes.SET_VIEWPORT_RATIO, value)
+      slidesStore.setViewportRatio(value)
     }
 
     return {

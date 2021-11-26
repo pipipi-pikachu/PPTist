@@ -1,18 +1,18 @@
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
+import { useSlidesStore } from '@/store'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { svg2Base64 } from '@/utils/svg2Base64'
-import { useStore } from '@/store'
 import { message } from 'ant-design-vue'
 
 export default () => {
-  const store = useStore()
-  const slides = computed(() => store.state.slides)
+  const { slides } = storeToRefs(useSlidesStore())
 
   const exporting = ref(false)
   

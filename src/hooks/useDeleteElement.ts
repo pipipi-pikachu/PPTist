@@ -1,13 +1,13 @@
-import { computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTElement, Slide } from '@/types/slides'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
-  const store = useStore()
-  const activeElementIdList = computed(() => store.state.activeElementIdList)
-  const activeGroupElementId = computed(() => store.state.activeGroupElementId)
-  const currentSlide = computed<Slide>(() => store.getters.currentSlide)
+  const mainStore = useMainStore()
+  const slidesStore = useSlidesStore()
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(mainStore)
+  const { currentSlide } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -24,16 +24,16 @@ export default () => {
       newElementList = currentSlide.value.elements.filter(el => !activeElementIdList.value.includes(el.id))
     }
 
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: newElementList })
+    mainStore.setActiveElementIdList([])
+    slidesStore.updateSlide({ elements: newElementList })
     addHistorySnapshot()
   }
 
   // 删除内面内全部元素(无论是否选中)
   const deleteAllElements = () => {
     if (!currentSlide.value.elements.length) return
-    store.commit(MutationTypes.SET_ACTIVE_ELEMENT_ID_LIST, [])
-    store.commit(MutationTypes.UPDATE_SLIDE, { elements: [] })
+    mainStore.setActiveElementIdList([])
+    slidesStore.updateSlide({ elements: [] })
     addHistorySnapshot()
   }
 

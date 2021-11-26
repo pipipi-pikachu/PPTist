@@ -18,8 +18,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
-import { useStore } from '@/store'
+import { defineComponent, PropType } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
@@ -35,9 +36,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const store = useStore()
-    const slides = computed(() => store.state.slides)
-    const slideIndex = computed(() => store.state.slideIndex)
+    const { slides, slideIndex } = storeToRefs(useSlidesStore())
 
     const close = () => emit('close')
 

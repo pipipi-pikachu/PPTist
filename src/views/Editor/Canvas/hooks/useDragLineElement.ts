@@ -1,5 +1,6 @@
-import { Ref, computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, PPTLineElement } from '@/types/slides'
 import { OperateLineHandler, OperateLineHandlers } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -10,8 +11,8 @@ interface AdsorptionPoint {
 }
 
 export default (elementList: Ref<PPTElement[]>) => {
-  const store = useStore()
-  const canvasScale = computed(() => store.state.canvasScale)
+  const slidesStore = useSlidesStore()
+  const { canvasScale } = storeToRefs(useMainStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -180,7 +181,7 @@ export default (elementList: Ref<PPTElement[]>) => {
 
       if (startPageX === currentPageX && startPageY === currentPageY) return
 
-      store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
     }
   }

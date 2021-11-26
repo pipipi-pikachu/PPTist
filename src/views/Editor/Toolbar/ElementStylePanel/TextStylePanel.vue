@@ -218,9 +218,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
-import { MutationTypes, useStore } from '@/store'
-import { PPTTextElement } from '@/types/slides'
+import { defineComponent, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -228,6 +228,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
+import { PPTTextElement } from '@/types/slides'
 
 const presetStyles = [
   {
@@ -312,9 +313,8 @@ export default defineComponent({
     ElementShadow,
   },
   setup() {
-    const store = useStore()
-    const handleElement = computed<PPTTextElement>(() => store.getters.handleElement)
-    const richTextAttrs = computed(() => store.state.richTextAttrs)
+    const slidesStore = useSlidesStore()
+    const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(useMainStore())
 
     const fill = ref<string>()
     const lineHeight = ref<number>()
@@ -328,7 +328,6 @@ export default defineComponent({
       wordSpace.value = handleElement.value.wordSpace || 0
     }, { deep: true, immediate: true })
 
-    const availableFonts = computed(() => store.state.availableFonts)
     const fontSizeOptions = [
       '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
       '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
@@ -349,25 +348,24 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
+    const updateElement = (props: Partial<PPTTextElement>) => {
+      slidesStore.updateElement({ id: handleElementId.value, props })
+      addHistorySnapshot()
+    }
+
     // 设置行高
     const updateLineHeight = (value: number) => {
-      const props = { lineHeight: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ lineHeight: value })
     }
 
     // 设置字间距
     const updateWordSpace = (value: number) => {
-      const props = { wordSpace: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ wordSpace: value })
     }
 
     // 设置文本框填充
     const updateFill = (value: string) => {
-      const props = { fill: value }
-      store.commit(MutationTypes.UPDATE_ELEMENT, { id: handleElement.value.id, props })
-      addHistorySnapshot()
+      updateElement({ fill: value })
     }
 
     return {

@@ -23,13 +23,6 @@ module.exports = {
       },
     },
   },
-  chainWebpack: config => {
-    config.module
-      .rule('images')
-      .use('url-loader')
-      .loader('url-loader')
-      .tap(options => Object.assign(options, { limit: 5120 }))
-  },
   configureWebpack: {
     plugins: [
       new StyleLintPlugin({

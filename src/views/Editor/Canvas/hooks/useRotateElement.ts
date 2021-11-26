@@ -1,5 +1,6 @@
-import { Ref, computed } from 'vue'
-import { MutationTypes, useStore } from '@/store'
+import { Ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, PPTTextElement, PPTImageElement, PPTShapeElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -15,8 +16,8 @@ const getAngleFromCoordinate = (x: number, y: number) => {
 }
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
-  const store = useStore()
-  const canvasScale = computed(() => store.state.canvasScale)
+  const slidesStore = useSlidesStore()
+  const { canvasScale } = storeToRefs(useMainStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -71,7 +72,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
       if (elOriginRotate === angle) return
 
-      store.commit(MutationTypes.UPDATE_SLIDE, { elements: elementList.value })
+      slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
     }
   }
