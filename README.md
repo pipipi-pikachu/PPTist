@@ -5,6 +5,16 @@
 
 如果网络状态不佳，可以访问国内镜像（非实时更新）：[https://pptist.gitee.io/](https://pptist.gitee.io/)
 
+# 👀 前排提示
+为了更好的 Typescript 支持，本项目于2021年11月27日起使用 [Pinia](https://pinia.esm.dev/) 替代 Vuex4 作为状态管理方案。原 vuex 版本见：[vuex 分支](https://github.com/pipipi-pikachu/PPTist/tree/vuex)
+
+关于 Pinia 的选择：除了API的设计更加合理、更好的Typescript支持，pinia 本身与 [Vuex 5 提案](https://github.com/vuejs/rfcs/discussions/270) 非常接近，其作者本身也是 Vue 核心团队成员，所以 Pinia 多少有点 Vuex5 前身的意味（至少日后向 Vuex5 迁移是容易的）。同时 Vue devtools 也是支持 Pinia 的，不会影响开发体验。
+
+这是 Pinia 作者在 Vuex5 提案中的回复：
+> A: Hi, I'm confused about how long can we use vuex5? How should I choose Pinia2 and vuex4 in my new vue3 project?
+>
+> Q: It's safe to chose Pinia at the moment, it has the core same API as Vuex 5 and it aims to stay compatible. Vuex 4 is more to be able to migrate Vue 2 apps as it still has the old API with mutations. IMO, I wouldn't choose it for new projects.
+
 
 # 🚀 项目运行
 ```
