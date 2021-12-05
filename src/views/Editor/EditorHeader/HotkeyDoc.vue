@@ -31,6 +31,8 @@ export default defineComponent({
   height: 100%;
   overflow: auto;
   font-size: 12px;
+  margin: 0 -24px;
+  padding: 0 24px;
 }
 .title {
   font-size: 14px;
