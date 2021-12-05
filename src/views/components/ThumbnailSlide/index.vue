@@ -12,6 +12,7 @@
         height: VIEWPORT_SIZE * viewportRatio + 'px',
         transform: `scale(${scale})`,
       }"
+      v-if="visible"
     >
       <div class="background" :style="backgroundStyle"></div>
       <ThumbnailElement
@@ -21,6 +22,7 @@
         :elementIndex="index + 1"
       />
     </div>
+    <div class="placeholder" v-else>加载中 ...</div>
   </div>
 </template>
 
@@ -47,6 +49,10 @@ export default defineComponent({
     size: {
       type: Number,
       required: true,
+    },
+    visible: {
+      type: Boolean,
+      default: true,
     },
   },
   setup(props) {
@@ -80,5 +86,12 @@ export default defineComponent({
   height: 100%;
   background-position: center;
   position: absolute;
+}
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

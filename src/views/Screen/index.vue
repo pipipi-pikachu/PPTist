@@ -27,6 +27,7 @@
             width: slideWidth + 'px',
             height: slideHeight + 'px',
           }"
+          v-if="Math.abs(slideIndex - index) < 2"
         >
           <ScreenSlide 
             :slide="slide" 

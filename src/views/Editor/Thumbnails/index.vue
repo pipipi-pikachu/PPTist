@@ -35,8 +35,8 @@
           @mousedown="$event => handleClickSlideThumbnail($event, index)"
           v-contextmenu="contextmenusThumbnailItem"
         >
-          <div class="label">{{ fillDigit(index + 1, 2) }}</div>
-          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" />
+          <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
+          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
         </div>
       </template>
     </Draggable>
@@ -52,6 +52,7 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useScreening from '@/hooks/useScreening'
+import useLoadSlides from '@/hooks/useLoadSlides'
 
 import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -71,6 +72,8 @@ export default defineComponent({
     const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
     const { slides, slideIndex } = storeToRefs(slidesStore)
     const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
+
+    const { slidesLoadLimit } = useLoadSlides()
 
     const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
@@ -249,6 +252,7 @@ export default defineComponent({
       slideIndex,
       selectedSlidesIndex,
       presetLayoutPopoverVisible,
+      slidesLoadLimit,
       createSlide,
       createSlideByTemplate,
       setThumbnailsFocus,
@@ -339,6 +343,11 @@ export default defineComponent({
   color: #999;
   width: 20px;
   cursor: grab;
+
+  &.offset-left {
+    position: relative;
+    left: -4px;
+  }
 
   &:active {
     cursor: grabbing;
