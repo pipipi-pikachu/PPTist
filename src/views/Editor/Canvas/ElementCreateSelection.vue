@@ -8,7 +8,7 @@
     <div :class="['selection', creatingElement.type]" v-if="start && end" :style="position">
 
       <!-- 绘制线条专用 -->
-      <SvgWrapper
+      <svg
         v-if="creatingElement.type === 'line' && lineData"
         overflow="visible" 
         :width="lineData.svgWidth"
@@ -23,7 +23,7 @@
           stroke-linejoin 
           stroke-miterlimit 
         ></path>
-			</SvgWrapper>
+			</svg>
     </div>
   </div>
 </template>

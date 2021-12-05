@@ -19,7 +19,7 @@
         @mousedown="$event => handleSelectElement($event)"
         @dblclick="openLatexEditor()"
       >
-        <SvgWrapper 
+        <svg 
           overflow="visible" 
           :width="elementInfo.width"
           :height="elementInfo.height"
@@ -34,7 +34,7 @@
           >
             <path :d="elementInfo.path"></path>
           </g>
-        </SvgWrapper>
+        </svg>
       </div>
     </div>
   </div>

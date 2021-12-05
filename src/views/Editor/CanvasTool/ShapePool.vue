@@ -5,7 +5,7 @@
       <div class="shape-list">
         <div class="shape-item" v-for="(shape, index) in item.children" :key="index">
           <div class="shape-content" @click="selectShape(shape)">
-            <SvgWrapper 
+            <svg 
               overflow="visible" 
               width="18"
               height="18"
@@ -25,7 +25,7 @@
                   :d="shape.path"
                 ></path>
               </g>
-            </SvgWrapper>
+            </svg>
           </div>
         </div>
       </div>

@@ -5,7 +5,7 @@
       <div class="line-list">
         <div class="line-item" v-for="(line, index) in item.children" :key="index">
           <div class="line-content" @click="selectLine(line)">
-            <SvgWrapper
+            <svg
               overflow="visible" 
               width="20"
               height="20"
@@ -43,7 +43,7 @@
                 :marker-start="line.points[0] ? `url(#${`preset-line-${index}`}-${line.points[0]}-start)` : ''"
                 :marker-end="line.points[1] ? `url(#${`preset-line-${index}`}-${line.points[1]}-end)` : ''"
               ></path>
-            </SvgWrapper>
+            </svg>
           </div>
         </div>
       </div>

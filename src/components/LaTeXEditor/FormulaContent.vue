@@ -1,5 +1,5 @@
 <template>
-  <SvgWrapper 
+  <svg 
     class="formula-content"
     overflow="visible" 
     :width="box.w + 32"
@@ -16,7 +16,7 @@
     >
       <path :d="pathd"></path>
     </g>
-  </SvgWrapper>
+  </svg>
 </template>
 
 <script lang="ts">

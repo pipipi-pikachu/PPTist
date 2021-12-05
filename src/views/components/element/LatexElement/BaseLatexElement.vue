@@ -13,7 +13,7 @@
       :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
       <div class="element-content">
-        <SvgWrapper 
+        <svg 
           overflow="visible" 
           :width="elementInfo.width"
           :height="elementInfo.height"
@@ -28,7 +28,7 @@
           >
             <path :d="elementInfo.path"></path>
           </g>
-        </SvgWrapper>
+        </svg>
       </div>
     </div>
   </div>

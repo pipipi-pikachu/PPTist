@@ -26,7 +26,7 @@
         @mousedown="$event => handleSelectElement($event)"
         @dblclick="enterEditing()"
       >
-        <SvgWrapper 
+        <svg 
           overflow="visible" 
           :width="elementInfo.width"
           :height="elementInfo.height"
@@ -55,7 +55,7 @@
               :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
             ></path>
           </g>
-        </SvgWrapper>
+        </svg>
 
         <div class="shape-text" :class="text.align">
           <ProsemirrorEditor

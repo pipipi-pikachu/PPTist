@@ -10,7 +10,7 @@
       class="element-content"
       :style="{ filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '' }"
     >
-      <SvgWrapper
+      <svg
         overflow="visible" 
         :width="svgWidth"
         :height="svgHeight"
@@ -45,7 +45,7 @@
           :marker-start="elementInfo.points[0] ? `url(#${elementInfo.id}-${elementInfo.points[0]}-start)` : ''"
           :marker-end="elementInfo.points[1] ? `url(#${elementInfo.id}-${elementInfo.points[1]}-end)` : ''"
         ></path>
-			</SvgWrapper>
+			</svg>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <SvgWrapper class="grid-lines">
+  <svg class="grid-lines">
     <path 
       :style="{
         transform: `scale(${canvasScale})`,
@@ -10,7 +10,7 @@
       stroke-width="0.3" 
       stroke-dasharray="5"
     ></path>
-  </SvgWrapper>
+  </svg>
 </template>
 
 <script lang="ts">

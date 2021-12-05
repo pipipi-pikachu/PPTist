@@ -1,5 +1,5 @@
 <template>
-  <SvgWrapper 
+  <svg 
     class="image-ellipse-outline"
     v-if="outline"
     overflow="visible" 
@@ -20,7 +20,7 @@
       :stroke-width="outlineWidth" 
       :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
     ></ellipse>
-	</SvgWrapper>
+	</svg>
 </template>
 
 <script lang="ts">
