@@ -5,6 +5,8 @@
       :style="{ backgroundImage: `url(${handleElement.src})` }"
     ></div>
 
+    <ElementFlip />
+
     <ButtonGroup class="row">
       <Button style="flex: 5;" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
       <Popover trigger="click" v-model:visible="clipPanelVisible">
@@ -39,27 +41,8 @@
       </Popover>
     </ButtonGroup>
 
-    <Popover trigger="click">
-      <template #content>
-        <div class="filter">
-          <div class="filter-item" v-for="filter in filterOptions" :key="filter.key">
-            <div class="name">{{filter.label}}</div>
-            <Slider
-              class="filter-slider"
-              :max="filter.max"
-              :min="filter.min"
-              :step="filter.step"
-              :value="filter.value"
-              @change="value => updateFilter(filter, value)"
-            />
-            <div class="value">{{filter.value}}</div>
-          </div>
-        </div>
-      </template>
-      <Button class="full-width-btn"><IconColorFilter class="btn-icon" /> 设置滤镜</Button>
-    </Popover>
-  
-    <ElementFlip />
+    <Divider />
+    <ElementFilter />
     <Divider />
     <ElementOutline />
     <Divider />
@@ -75,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTImageElement, SlideBackground } from '@/types/slides'
@@ -86,26 +69,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ElementFlip from '../common/ElementFlip.vue'
-
-interface FilterOption {
-  label: string;
-  key: string;
-  default: number;
-  value: number;
-  unit: string;
-  max: number;
-  step: number;
-}
-
-const defaultFilters: FilterOption[] = [
-  { label: '模糊', key: 'blur', default: 0, value: 0, unit: 'px', max: 10, step: 1 },
-  { label: '亮度', key: 'brightness', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '对比度', key: 'contrast', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '灰度', key: 'grayscale', default: 0, value: 0, unit: '%', max: 100, step: 5 },
-  { label: '饱和度', key: 'saturate', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '色相', key: 'hue-rotate', default: 0, value: 0, unit: 'deg', max: 360, step: 10 },
-  { label: '不透明度', key: 'opacity', default: 100, value: 100, unit: '%', max: 100, step: 5 },
-]
+import ElementFilter from '../common/ElementFilter.vue'
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
@@ -147,6 +111,7 @@ export default defineComponent({
     ElementOutline,
     ElementShadow,
     ElementFlip,
+    ElementFilter,
   },
   setup() {
     const mainStore = useMainStore()
@@ -156,32 +121,7 @@ export default defineComponent({
 
     const clipPanelVisible = ref(false)
 
-    const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
-
-    watch(handleElement, () => {
-      if (!handleElement.value || handleElement.value.type !== 'image') return
-      
-      const filters = handleElement.value.filters
-      if (filters) {
-        filterOptions.value = defaultFilters.map(item => {
-          if (filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
-          return item
-        })
-      }
-      else filterOptions.value = JSON.parse(JSON.stringify(defaultFilters))
-    }, { deep: true, immediate: true })
-
     const { addHistorySnapshot } = useHistorySnapshot()
-
-    // 设置滤镜
-    const updateFilter = (filter: FilterOption, value: number) => {
-      const _handleElement = handleElement.value as PPTImageElement
-      
-      const originFilters = _handleElement.filters || {}
-      const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
-      slidesStore.updateElement({ id: handleElementId.value, props: { filters } })
-      addHistorySnapshot()
-    }
 
     // 打开自由裁剪
     const clipImage = () => {
@@ -325,9 +265,7 @@ export default defineComponent({
       clipPanelVisible,
       shapeClipPathOptions,
       ratioClipOptions,
-      filterOptions,
       handleElement,
-      updateFilter,
       clipImage,
       presetImageClip,
       replaceImage,
@@ -362,29 +300,6 @@ export default defineComponent({
 }
 .btn-icon {
   margin-right: 3px;
-}
-
-.filter {
-  width: 280px;
-  font-size: 12px;
-}
-.filter-item {
-  padding: 8px 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .name {
-    width: 60px;
-  }
-  .filter-slider {
-    flex: 1;
-    margin: 0 6px;
-  }
-  .value {
-    width: 40px;
-    text-align: right;
-  }
 }
 
 .clip {
