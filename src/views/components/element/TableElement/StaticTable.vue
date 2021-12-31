@@ -120,6 +120,7 @@ table {
   border: 0;
   word-wrap: break-word;
   user-select: none;
+  background-color: #fff;
 
   --themeColor: $themeColor;
   --subThemeColor1: $themeColor;

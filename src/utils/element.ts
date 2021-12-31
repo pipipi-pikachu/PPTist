@@ -179,12 +179,10 @@ export const createElementIdMap = (elements: PPTElement[]) => {
  * @param themeColor 主题色
  */
 export const getTableSubThemeColor = (themeColor: string) => {
-  const rgba = tinycolor(themeColor).toRgb()
-  const subRgba1 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.3 }
-  const subRgba2 = { r: rgba.r, g: rgba.g, b: rgba.b, a: rgba.a * 0.1 }
+  const rgba = tinycolor(themeColor)
   return [
-    `rgba(${[subRgba1.r, subRgba1.g, subRgba1.b, subRgba1.a].join(',')})`,
-    `rgba(${[subRgba2.r, subRgba2.g, subRgba2.b, subRgba2.a].join(',')})`,
+    rgba.setAlpha(0.3).toRgbString(),
+    rgba.setAlpha(0.1).toRgbString(),
   ]
 }
 
