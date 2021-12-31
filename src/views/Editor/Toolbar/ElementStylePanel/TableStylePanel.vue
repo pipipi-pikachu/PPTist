@@ -194,8 +194,6 @@ import { createRandomCode } from '@/utils/common'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { message } from 'ant-design-vue'
-
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
 

@@ -512,6 +512,7 @@ export default () => {
             h: el.height / 100,
             colW: el.colWidths.map(item => el.width * item / 100),
           }
+          if (el.theme) options.fill = { color: '#ffffff' }
           if (el.outline.width && el.outline.color) {
             options.border = {
               type: el.outline.style === 'solid' ? 'solid' : 'dash',
