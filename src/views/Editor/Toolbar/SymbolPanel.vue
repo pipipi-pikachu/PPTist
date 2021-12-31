@@ -61,7 +61,7 @@ export default defineComponent({
     margin-bottom: 8px;
   }
   .tab {
-    padding: 6px 10px;
+    padding: 6px 10px 8px;
     border-bottom: 2px solid transparent;
     cursor: pointer;
 

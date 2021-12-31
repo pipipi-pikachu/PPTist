@@ -42,21 +42,9 @@
       <Button class="element-animation-btn" v-else disabled>
         <IconEffects style="margin-right: 5px;" /> 该元素暂不支持动画
       </Button>
-
-      <div class="duration" v-if="handleElementAnimation">
-        <div style="flex: 4;">持续时间（毫秒）：</div>
-        <InputNumber 
-          :min="100"
-          :max="5000"
-          :step="100"
-          :value="handleElementAnimation.duration" 
-          @change="value => updateElementAnimationDuration(value)" 
-          style="flex: 3;" 
-        />
-      </div>
     </div>
 
-    <div class="tip" v-else><IconClick /> 选中画布中的元素添加动画</div>
+    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
     
     <Divider />
 
@@ -84,6 +72,22 @@
         </div>
       </template>
     </Draggable>
+
+    <div class="configs" v-if="handleElementAnimation">
+      <Divider />
+
+      <div class="duration">
+        <div style="flex: 4;">持续时间（毫秒）：</div>
+        <InputNumber 
+          :min="100"
+          :max="5000"
+          :step="100"
+          :value="handleElementAnimation.duration" 
+          @change="value => updateElementAnimationDuration(value)" 
+          style="flex: 3;" 
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -274,6 +278,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.element-animation-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.element-animation {
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
 .element-animation-btn {
   width: 100%;
 }
@@ -281,12 +295,13 @@ export default defineComponent({
   width: 100%;
   display: flex;
   align-items: center;
-  margin: 10px 0;
 }
 .tip {
-  text-align: center;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-style: italic;
-  padding-top: 12px;
 }
 .animation-pool {
   width: 400px;
@@ -330,6 +345,13 @@ export default defineComponent({
   background-color: $lightGray;
 }
 
+.animation-sequence {
+  flex: 1;
+  padding-right: 12px;
+  margin-right: -12px;
+
+  @include overflow-overlay();
+}
 .sequence-item {
   height: 36px;
   display: flex;
