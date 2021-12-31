@@ -117,23 +117,19 @@
 
     <div class="row">
       <div style="flex: 2;">行数：</div>
-      <InputNumber 
-        :min="minRowCount"
-        :max="20"
-        v-model:value="rowCount" 
-        @pressEnter="e => setTableRow(e)"
-        style="flex: 3;" 
-      />
+      <div class="set-count" style="flex: 3;">
+        <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><IconMinus /></Button>
+        <div class="count-text">{{rowCount}}</div>
+        <Button class="btn" :disabled="rowCount >= 30" @click="setTableRow(rowCount + 1)"><IconPlus /></Button>
+      </div>
     </div>
     <div class="row">
       <div style="flex: 2;">列数：</div>
-      <InputNumber 
-        :min="minColCount"
-        :max="20"
-        v-model:value="colCount" 
-        @pressEnter="e => setTableCol(e)"
-        style="flex: 3;" 
-      />
+      <div class="set-count" style="flex: 3;">
+        <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><IconMinus /></Button>
+        <div class="count-text">{{colCount}}</div>
+        <Button class="btn" :disabled="colCount >= 30" @click="setTableCol(colCount + 1)"><IconPlus /></Button>
+      </div>
     </div>
 
     <Divider />
@@ -351,47 +347,50 @@ export default defineComponent({
       }
     }
 
-    // 设置表格行数（只能增加）
-    const setTableRow = (e: KeyboardEvent) => {
+    // 设置表格行数
+    const setTableRow = (value: number) => {
       const _handleElement = handleElement.value as PPTTableElement
-
-      const value = +(e.target as HTMLInputElement).value
       const rowCount = _handleElement.data.length
 
-      if (value === rowCount) return
-      if (value < rowCount) return message.warning('设置行数不能少于当前值')
-
-      const rowCells: TableCell[] = new Array(colCount.value).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
-      const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
-
-      const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
-      tableCells.push(...newTableCells)
-
-      updateElement({ data: tableCells })
+      if (value > rowCount) {
+        const rowCells: TableCell[] = new Array(colCount.value).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+        const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
+  
+        const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
+        tableCells.push(...newTableCells)
+  
+        updateElement({ data: tableCells })
+      }
+      else {
+        const tableCells: TableCell[][] = _handleElement.data.slice(0, value)
+        updateElement({ data: tableCells })
+      }
     }
 
-
-    // 设置表格列数（只能增加）
-    const setTableCol = (e: KeyboardEvent) => {
+    // 设置表格列数
+    const setTableCol = (value: number) => {
       const _handleElement = handleElement.value as PPTTableElement
-
-      const value = +(e.target as HTMLInputElement).value
       const colCount = _handleElement.data[0].length
 
-      if (value === colCount) return
-      if (value < colCount) return message.warning('设置列数不能少于当前值')
+      let tableCells = _handleElement.data
+      let colSizeList = _handleElement.colWidths.map(item => item * _handleElement.width)
 
-      const tableCells = _handleElement.data.map(item => {
-        const cells: TableCell[] = new Array(value - colCount).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
-        item.push(...cells)
-        return item
-      })
+      if (value > colCount) {
+        tableCells = tableCells.map(item => {
+          const cells: TableCell[] = new Array(value - colCount).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+          item.push(...cells)
+          return item
+        })
+  
+        const newColSizeList: number[] = new Array(value - colCount).fill(100)
+        colSizeList.push(...newColSizeList)
+      }
+      else {
+        tableCells = tableCells.map(item => item.slice(0, value))
+        colSizeList = colSizeList.slice(0, value)
+      }
 
-      const colSizeList = _handleElement.colWidths.map(item => item * _handleElement.width)
-      const newColSizeList = new Array(value - colCount).fill(100)
-      colSizeList.push(...newColSizeList)
-
-      const width = _handleElement.width + 100 * (value - colCount)
+      const width = colSizeList.reduce((a, b) => a + b)
       const colWidths = colSizeList.map(item => item / width)
 
       const props = {
@@ -447,5 +446,20 @@ export default defineComponent({
   width: 16px;
   height: 3px;
   margin-top: 1px;
+}
+.set-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .btn {
+    padding: 4px 8px;
+  }
+
+  .count-text {
+    flex: 1;
+    text-align: center;
+    margin: 0 8px;
+  }
 }
 </style>
