@@ -1,5 +1,5 @@
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，尽可能还原本地桌面应用的使用体验。
+> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地PPTX文件，您可以在此基础上搭建自己的在线幻灯片应用。
 
 在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)
 
@@ -7,13 +7,6 @@
 
 # 👀 前排提示
 为了更好的 Typescript 支持，本项目于2021年11月27日起使用 [Pinia](https://pinia.esm.dev/) 替代 Vuex4 作为状态管理方案。原 vuex 版本见：[vuex 分支](https://github.com/pipipi-pikachu/PPTist/tree/vuex)
-
-关于 Pinia 的选择：除了API的设计更加合理、更好的Typescript支持，pinia 本身与 [Vuex 5 提案](https://github.com/vuejs/rfcs/discussions/270) 非常接近，其作者本身也是 Vue 核心团队成员，所以 Pinia 多少有点 Vuex5 前身的意味（至少日后向 Vuex5 迁移是容易的）。同时 Vue devtools 也是支持 Pinia 的，不会影响开发体验。
-
-这是 Pinia 作者在 Vuex5 提案中的回复：
-> A: Hi, I'm confused about how long can we use vuex5? How should I choose Pinia2 and vuex4 in my new vue3 project?
->
-> Q: It's safe to chose Pinia at the moment, it has the core same API as Vuex 5 and it aims to stay compatible. Vuex 4 is more to be able to migrate Vue 2 apps as it still has the old API with mutations. IMO, I wouldn't choose it for new projects.
 
 
 # 🚀 项目运行
@@ -29,6 +22,7 @@ npm run serve
 - 历史记录（撤销、重做）
 - 快捷键
 - 右键菜单
+- 导出本地文件（PPTX、JSON）
 ### 幻灯片页面编辑
 - 页面添加、删除
 - 页面顺序调整
@@ -56,7 +50,7 @@ npm run serve
 - 拖拽添加图文
 - 粘贴外部图片
 - 元素坐标、尺寸和旋转角度设置
-- 元素设置超链接
+- 元素超链接（链接到网页、链接到其他幻灯片页面）
 #### 文字
 - 富文本编辑（颜色、高亮、字体、字号、加粗、斜体、下划线、删除线、角标、行内代码、引用、对齐方式、项目符号、清除格式）
 - 行高
@@ -96,7 +90,6 @@ npm run serve
 - 图例
 #### 表格
 - 行、列添加删除
-- 行列数设置
 - 主题设置（主题色、表头、汇总行、第一列、最后一列）
 - 合并单元格
 - 单元格样式（填充色、文字颜色、加粗、斜体、下划线、删除线、对齐方式）

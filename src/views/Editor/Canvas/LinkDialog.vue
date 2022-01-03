@@ -1,6 +1,34 @@
 <template>
   <div class="link-dialog">
-    <Input v-model:value="link" placeholder="请输入网页链接地址" />
+    <div class="tabs">
+      <div 
+        class="tab" 
+        :class="{ 'active': type === tab.key }" 
+        v-for="tab in tabs" 
+        :key="tab.key"
+        @click="type = tab.key"
+      >{{tab.label}}</div>
+    </div>
+
+    <Input 
+      class="input"
+      v-if="type === 'web'" 
+      v-model:value="address" 
+      placeholder="请输入网页链接地址"
+    />
+
+    <Select 
+      class="input"
+      v-if="type === 'slide'"
+      v-model:value="slideId"
+    >
+      <SelectOption v-for="(slide, index) in slides" :key="slide.id" :value="slide.id">幻灯片 {{index + 1}}</SelectOption>
+    </Select>
+
+    <div class="preview" v-if="type === 'slide' && selectedSlide">
+      <div>预览：</div>
+      <ThumbnailSlide class="thumbnail" :slide="selectedSlide" :size="490" />
+    </div>
 
     <div class="btns">
       <Button @click="close()" style="margin-right: 10px;">取消</Button>
@@ -10,37 +38,71 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
+
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
   name: 'link-dialog',
   emits: ['close'],
+  components: {
+    ThumbnailSlide,
+  },
   setup(props, { emit }) {
     const { handleElement } = storeToRefs(useMainStore())
+    const { slides } = storeToRefs(useSlidesStore())
 
-    const link = ref('')
+    const type = ref<'web' | 'slide'>('web')
+    const address = ref('')
+    const slideId = ref('')
+
+    const selectedSlide = computed(() => {
+      if (!slideId.value) return null
+
+      return slides.value.find(item => item.id === slideId.value) || null
+    })
+
+    const tabs = [
+      { key: 'web', label: '网页链接' },
+      { key: 'slide', label: '幻灯片页面' },
+    ]
 
     const { setLink } = useLink()
 
     onMounted(() => {
-      if (handleElement.value?.link) link.value = handleElement.value.link
+      if (handleElement.value?.link) {
+        if (handleElement.value.link.type === 'web') address.value = handleElement.value.link.target
+        else if (handleElement.value.link.type === 'slide') slideId.value = handleElement.value.link.target
+
+        type.value = handleElement.value.link.type
+      }
     })
 
     const close = () => emit('close')
 
     const save = () => {
+      const link: PPTElementLink = {
+        type: type.value,
+        target: type.value === 'web' ? address.value : slideId.value,
+      }
       if (handleElement.value) {
-        const success = setLink(handleElement.value, link.value)
+        const success = setLink(handleElement.value, link)
         if (success) close()
-        else link.value = ''
+        else address.value = ''
       }
     }
 
     return {
-      link,
+      slides,
+      tabs,
+      type,
+      address,
+      slideId,
+      selectedSlide,
       close,
       save,
     }
@@ -49,11 +111,35 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.link-dialog {
-  padding: 25px 10px 10px 10px;
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid $borderColor;
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 0 10px 8px;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+
+  &.active {
+    border-bottom: 2px solid $themeColor;
+  }
+}
+.input {
+  width: 100%;
+  height: 32px;
+}
+.preview {
+  margin-top: 12px;
+}
+.thumbnail {
+  outline: 1px solid rgba($color: $themeColor, $alpha: .15);
+  margin-top: 5px;
 }
 .btns {
-  margin-top: 10px;
+  margin-top: 20px;
   text-align: right;
 }
 </style>

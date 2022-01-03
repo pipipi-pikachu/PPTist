@@ -14,6 +14,7 @@
       :elementInfo="element"
       :elementIndex="index + 1"
       :animationIndex="animationIndex"
+      :turnSlideToId="turnSlideToId"
     />
   </div>
 </template>
@@ -45,6 +46,10 @@ export default defineComponent({
     animationIndex: {
       type: Number,
       default: -1,
+    },
+    turnSlideToId: {
+      type: Function as PropType<(id: string) => void>,
+      required: true,
     },
   },
   setup(props) {

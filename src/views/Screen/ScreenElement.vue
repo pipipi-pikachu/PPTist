@@ -9,7 +9,7 @@
       fontFamily: theme.fontName,
       visibility: needWaitAnimation ? 'hidden' : 'visible',
     }"
-    :title="elementInfo.link || ''"
+    :title="elementInfo.link?.target || ''"
     @click="openLink()"
   >
     <component
@@ -49,6 +49,10 @@ export default defineComponent({
       type: Number,
       default: -1,
     },
+    turnSlideToId: {
+      type: Function as PropType<(id: string) => void>,
+      required: true,
+    },
   },
   setup(props) {
     const currentElementComponent = computed(() => {
@@ -77,7 +81,11 @@ export default defineComponent({
 
     // 打开元素绑定的超链接
     const openLink = () => {
-      if (props.elementInfo.link) window.open(props.elementInfo.link)
+      const link = props.elementInfo.link
+      if (link) {
+        if (link.type === 'web') window.open(link.target)
+        else if (link.type === 'slide') props.turnSlideToId(link.target)
+      }
     }
 
     return {

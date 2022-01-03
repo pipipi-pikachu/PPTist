@@ -44,6 +44,18 @@ export interface PPTElementOutline {
   color?: string;
 }
 
+/**
+ * 元素超链接
+ * 
+ * type: 链接类型（网页、幻灯片页面）
+ * 
+ * target: 目标地址（网页链接、幻灯片页面ID）
+ */
+export interface PPTElementLink {
+  type: 'web' | 'slide';
+  target: string;
+}
+
 
 /**
  * 元素通用属性
@@ -64,7 +76,7 @@ export interface PPTElementOutline {
  * 
  * rotate: 旋转角度
  * 
- * link?: 超链接地址
+ * link?: 超链接
  */
 interface PPTBaseElement {
   id: string;
@@ -75,7 +87,7 @@ interface PPTBaseElement {
   width: number;
   height: number;
   rotate: number;
-  link?: string;
+  link?: PPTElementLink;
 }
 
 

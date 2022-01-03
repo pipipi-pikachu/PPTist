@@ -247,7 +247,6 @@ export default () => {
               angle: 45,
             }
           }
-          if (el.link) options.hyperlink = { url: el.link }
 
           pptxSlide.addText(textProps, options)
         }
@@ -264,7 +263,14 @@ export default () => {
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate
           if (el.clip && el.clip.shape === 'ellipse') options.rounding = true
-          if (el.link) options.hyperlink = { url: el.link }
+          if (el.link) {
+            const { type, target } = el.link
+            if (type === 'web') options.hyperlink = { url: target }
+            else if (type === 'slide') {
+              const index = slides.value.findIndex(slide => slide.id === target)
+              if (index !== -1) options.hyperlink = { slide: index + 1 }
+            }
+          }
 
           pptxSlide.addImage(options)
         }
@@ -282,7 +288,14 @@ export default () => {
               h: el.height / 100,
             }
             if (el.rotate) options.rotate = el.rotate
-            if (el.link) options.hyperlink = { url: el.link }
+            if (el.link) {
+              const { type, target } = el.link
+              if (type === 'web') options.hyperlink = { url: target }
+              else if (type === 'slide') {
+                const index = slides.value.findIndex(slide => slide.id === target)
+                if (index !== -1) options.hyperlink = { slide: index + 1 }
+              }
+            }
 
             pptxSlide.addImage(options)
           }
@@ -324,7 +337,14 @@ export default () => {
                 angle: 45,
               }
             }
-            if (el.link) options.hyperlink = { url: el.link }
+            if (el.link) {
+              const { type, target } = el.link
+              if (type === 'web') options.hyperlink = { url: target }
+              else if (type === 'slide') {
+                const index = slides.value.findIndex(slide => slide.id === target)
+                if (index !== -1) options.hyperlink = { slide: index + 1 }
+              }
+            }
 
             pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
           }
@@ -535,7 +555,14 @@ export default () => {
             w: el.width / 100,
             h: el.height / 100,
           }
-          if (el.link) options.hyperlink = { url: el.link }
+          if (el.link) {
+            const { type, target } = el.link
+            if (type === 'web') options.hyperlink = { url: target }
+            else if (type === 'slide') {
+              const index = slides.value.findIndex(slide => slide.id === target)
+              if (index !== -1) options.hyperlink = { slide: index + 1 }
+            }
+          }
 
           pptxSlide.addImage(options)
         }

@@ -1,5 +1,5 @@
 import { useSlidesStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, PPTElementLink } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { message } from 'ant-design-vue'
 
@@ -8,9 +8,9 @@ export default () => {
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  const setLink = (handleElement: PPTElement, link: string) => {
+  const setLink = (handleElement: PPTElement, link: PPTElementLink) => {
     const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
-    if (!link || !linkRegExp.test(link)) {
+    if (link.type === 'web' && !linkRegExp.test(link.target)) {
       message.error('不是正确的网页链接地址')
       return false
     }

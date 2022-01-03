@@ -33,6 +33,7 @@
             :slide="slide" 
             :scale="scale"
             :animationIndex="animationIndex"
+            :turnSlideToId="turnSlideToId"
           />
         </div>
       </div>
@@ -275,6 +276,13 @@ export default defineComponent({
       slidesStore.updateSlideIndex(index)
       animationIndex.value = 0
     }
+    const turnSlideToId = (id: string) => {
+      const index = slides.value.findIndex(slide => slide.id === id)
+      if (index !== -1) {
+        slidesStore.updateSlideIndex(index)
+        animationIndex.value = 0
+      }
+    }
 
     const contextmenus = (): ContextmenuItem[] => {
       return [
@@ -345,6 +353,7 @@ export default defineComponent({
       execNext,
       slideThumbnailModelVisible,
       turnSlideToIndex,
+      turnSlideToId,
       writingBoardToolVisible,
       showPageNumber,
     }
