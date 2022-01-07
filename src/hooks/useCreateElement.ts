@@ -27,7 +27,6 @@ export default () => {
   const slidesStore = useSlidesStore()
   const { creatingElement } = storeToRefs(mainStore)
   const { theme, viewportRatio } = storeToRefs(slidesStore)
-  const { themeColor, fontColor, fontName } = theme.value
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -90,8 +89,8 @@ export default () => {
       width: 400,
       height: 400,
       rotate: 0,
-      themeColor: [themeColor],
-      gridColor: fontColor,
+      themeColor: [theme.value.themeColor],
+      gridColor: theme.value.fontColor,
       data: {
         labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
         legends: ['系列1'],
@@ -109,8 +108,8 @@ export default () => {
    */
   const createTableElement = (row: number, col: number) => {
     const style: TableCellStyle = {
-      fontname: fontName,
-      color: fontColor,
+      fontname: theme.value.fontName,
+      color: theme.value.fontColor,
     }
     const data: TableCell[][] = []
     for (let i = 0; i < row; i++) {
@@ -145,7 +144,7 @@ export default () => {
         color: '#eeece1',
       },
       theme: {
-        color: themeColor,
+        color: theme.value.themeColor,
         rowHeader: true,
         rowFooter: false,
         colHeader: false,
@@ -170,8 +169,8 @@ export default () => {
       height,
       content,
       rotate: 0,
-      defaultFontName: fontName,
-      defaultColor: fontColor,
+      defaultFontName: theme.value.fontName,
+      defaultColor: theme.value.fontColor,
     })
   }
   
@@ -191,7 +190,7 @@ export default () => {
       height,
       viewBox: data.viewBox,
       path: data.path,
-      fill: themeColor,
+      fill: theme.value.themeColor,
       fixedRatio: false,
       rotate: 0,
     }
@@ -215,7 +214,7 @@ export default () => {
       start,
       end,
       points: data.points,
-      color: themeColor,
+      color: theme.value.themeColor,
       style: data.style,
       width: 2,
     }
@@ -239,7 +238,7 @@ export default () => {
       top: (VIEWPORT_SIZE * viewportRatio.value - data.h) / 2,
       path: data.path,
       latex: data.latex,
-      color: fontColor,
+      color: theme.value.fontColor,
       strokeWidth: 2,
       viewBox: [data.w, data.h],
       fixedRatio: true,
