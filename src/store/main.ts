@@ -39,7 +39,7 @@ export const useMainStore = defineStore('main', {
     editorAreaFocus: false, //  编辑区域聚焦
     disableHotkeys: false, // 禁用快捷键
     showGridLines: false, // 显示网格线
-    creatingElement: null, // 正在插入的元素信息，需要绘制插入的元素需要（文字、形状、线条）
+    creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     availableFonts: [], // 当前环境可用字体
     toolbarState: 'slideDesign', // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
