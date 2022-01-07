@@ -96,12 +96,26 @@
         </div>
       </Popover>
     </div>
-    <div class="row" v-if="themeColor.length < 10">
-      <div style="flex: 2;"></div>
-      <Button class="add-color-btn" style="flex: 3;" @click="addThemeColor()">
-        <IconPlus />
-      </Button>  
-    </div>
+    <ButtonGroup class="row">
+      <Popover trigger="click" v-model:visible="presetThemesVisible">
+        <template #content>
+          <div class="preset-themes">
+            <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index" @click="applyPresetTheme(item)">
+              <div class="preset-theme-color" v-for="color in item" :key="color" :style="{ backgroundColor: color }"></div>
+            </div>
+          </div>
+        </template>
+        <Button class="no-padding" style="flex: 2;">推荐主题</Button>
+      </Popover>
+      <Button 
+        class="no-padding" 
+        :disabled="themeColor.length >= 10" 
+        style="flex: 3;" 
+        @click="addThemeColor()"
+      >
+        <IconPlus class="btn-icon" /> 添加主题色
+      </Button>
+    </ButtonGroup>
 
     <Divider />
 
@@ -137,6 +151,21 @@ import ElementOutline from '../../common/ElementOutline.vue'
 import ColorButton from '../../common/ColorButton.vue'
 import ChartDataEditor from './ChartDataEditor.vue'
 
+const presetChartThemes = [
+  ['#d87c7c', '#919e8b', '#d7ab82', '#6e7074', '#61a0a8', '#efa18d'],
+  ['#dd6b66', '#759aa0', '#e69d87', '#8dc1a9', '#ea7e53', '#eedd78'],
+  ['#516b91', '#59c4e6', '#edafda', '#93b7e3', '#a5e7f0', '#cbb0e3'],
+  ['#893448', '#d95850', '#eb8146', '#ffb248', '#f2d643', '#ebdba4'],
+  ['#4ea397', '#22c3aa', '#7bd9a5', '#d0648a', '#f58db2', '#f2b3c9'],
+  ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8'],
+  ['#fc97af', '#87f7cf', '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb'],
+  ['#c1232b', '#27727b', '#fcce10', '#e87c25', '#b5c334', '#fe8463'],
+  ['#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80', '#8d98b3'],
+  ['#e01f54', '#001852', '#f5e8c8', '#b8d2c7', '#c6b38e', '#a4d8c2'],
+  ['#c12e34', '#e6b600', '#0098d9', '#2b821d', '#005eaa', '#339ca8'],
+  ['#8a7ca8', '#e098c7', '#8fd3e8', '#71669e', '#cc70af', '#7cb4cc'],
+]
+
 export default defineComponent({
   name: 'chart-style-panel',
   components: {
@@ -151,6 +180,7 @@ export default defineComponent({
     const { theme } = storeToRefs(slidesStore)
 
     const chartDataEditorVisible = ref(false)
+    const presetThemesVisible = ref(false)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -231,6 +261,12 @@ export default defineComponent({
       updateElement(props)
     }
 
+    // 使用预置主题配色
+    const applyPresetTheme = (colors: string[]) => {
+      updateElement({ themeColor: colors })
+      presetThemesVisible.value = false
+    }
+
     // 删除主题色
     const deleteThemeColor = (index: number) => {
       const props = {
@@ -258,6 +294,7 @@ export default defineComponent({
 
     return {
       chartDataEditorVisible,
+      presetThemesVisible,
       handleElement,
       updateData,
       fill,
@@ -276,6 +313,8 @@ export default defineComponent({
       deleteThemeColor,
       updateGridColor,
       updateLegend,
+      presetChartThemes,
+      applyPresetTheme,
     }
   },
 })
@@ -294,10 +333,6 @@ export default defineComponent({
 .btn-icon {
   margin-right: 3px;
 }
-
-.add-color-btn {
-  padding: 0 !important;
-}
 .color-btn-wrap {
   position: relative;
 }
@@ -312,5 +347,22 @@ export default defineComponent({
   align-items: center;
   background-color: #fff;
   cursor: pointer;
+}
+.preset-themes {
+  width: 250px;
+  display: flex;
+  margin-bottom: -10px;
+
+  @include flex-grid-layout();
+}
+.preset-theme {
+  display: flex;
+  cursor: pointer;
+
+  @include flex-grid-layout-children(2, 48%);
+}
+.preset-theme-color {
+  width: 20px;
+  height: 20px;
 }
 </style>
