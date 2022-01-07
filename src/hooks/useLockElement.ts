@@ -31,20 +31,26 @@ export default () => {
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
     if (handleElement.groupId) {
+      const groupElementIdList = []
       for (const element of newElementList) {
-        if (element.groupId === handleElement.groupId) element.lock = false
+        if (element.groupId === handleElement.groupId) {
+          element.lock = false
+          groupElementIdList.push(element.id)
+        }
       }
-      return newElementList
+      slidesStore.updateSlide({ elements: newElementList })
+      mainStore.setActiveElementIdList(groupElementIdList)
     }
-    
-    for (const element of newElementList) {
-      if (element.id === handleElement.id) {
-        element.lock = false
-        break
+    else {
+      for (const element of newElementList) {
+        if (element.id === handleElement.id) {
+          element.lock = false
+          break
+        }
       }
+      slidesStore.updateSlide({ elements: newElementList })
+      mainStore.setActiveElementIdList([handleElement.id])
     }
-    slidesStore.updateSlide({ elements: newElementList })
-    mainStore.setActiveElementIdList([handleElement.id])
     addHistorySnapshot()
   }
 
