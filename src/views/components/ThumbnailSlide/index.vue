@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent } from 'vue'
+import { computed, PropType, defineComponent, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
@@ -62,6 +62,7 @@ export default defineComponent({
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 
     const scale = computed(() => props.size / VIEWPORT_SIZE)
+    provide('slideScale', scale)
 
     return {
       scale,
