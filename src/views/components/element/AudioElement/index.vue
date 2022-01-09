@@ -1,0 +1,143 @@
+<template>
+  <div class="editable-element-audio"
+    :class="{ 'lock': elementInfo.lock }"
+    :style="{
+      top: elementInfo.top + 'px',
+      left: elementInfo.left + 'px',
+      width: elementInfo.width + 'px',
+      height: elementInfo.height + 'px',
+    }"
+  >
+    <div
+      class="rotate-wrapper"
+      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
+    >
+      <div 
+        class="element-content" 
+        v-contextmenu="contextmenus" 
+        @mousedown="$event => handleSelectElement($event)"
+      >
+        <IconVolumeNotice 
+          class="audio-icon" 
+          :style="{
+            fontSize: audioIconSize,
+            color: elementInfo.color,
+          }"
+        />
+        <AudioPlayer
+          class="audio-player"
+          v-if="handleElementId === elementInfo.id"
+          :style="{ ...audioPlayerPosition }"
+          :src="elementInfo.src" 
+          :loop="elementInfo.loop"
+          :scale="canvasScale"
+          @mousedown.stop
+        />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { computed, defineComponent, PropType } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
+import { PPTAudioElement } from '@/types/slides'
+import { ContextmenuItem } from '@/components/Contextmenu/types'
+import { VIEWPORT_SIZE } from '@/configs/canvas'
+
+import AudioPlayer from './AudioPlayer.vue'
+
+export default defineComponent({
+  name: 'editable-element-audio',
+  components: {
+    AudioPlayer,
+  },
+  props: {
+    elementInfo: {
+      type: Object as PropType<PPTAudioElement>,
+      required: true,
+    },
+    selectElement: {
+      type: Function as PropType<(e: MouseEvent, element: PPTAudioElement, canMove?: boolean) => void>,
+      required: true,
+    },
+    contextmenus: {
+      type: Function as PropType<() => ContextmenuItem[]>,
+    },
+  },
+  setup(props) {
+    const { canvasScale, handleElementId } = storeToRefs(useMainStore())
+    const { viewportRatio } = storeToRefs(useSlidesStore())
+
+    const audioIconSize = computed(() => {
+      return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
+    })
+    const audioPlayerPosition = computed(() => {
+      const canvasWidth = VIEWPORT_SIZE
+      const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
+
+      const audioWidth = 280 / canvasScale.value
+      const audioHeight = 50 / canvasScale.value
+
+      const elWidth = props.elementInfo.width
+      const elHeight = props.elementInfo.height
+      const elLeft = props.elementInfo.left
+      const elTop = props.elementInfo.top
+
+      let left = 0
+      let top = elHeight
+      
+      if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth
+      if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight
+
+      return {
+        left: left + 'px',
+        top: top + 'px',
+      }
+    })
+
+    const handleSelectElement = (e: MouseEvent) => {
+      if (props.elementInfo.lock) return
+      e.stopPropagation()
+
+      props.selectElement(e, props.elementInfo)
+    }
+
+    return {
+      canvasScale,
+      handleElementId,
+      audioIconSize,
+      audioPlayerPosition,
+      handleSelectElement,
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.editable-element-audio {
+  position: absolute;
+
+  &.lock .audio-icon {
+    cursor: default;
+  }
+}
+.rotate-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.element-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.audio-icon {
+  cursor: move;
+}
+.audio-player {
+  position: absolute;
+}
+</style>

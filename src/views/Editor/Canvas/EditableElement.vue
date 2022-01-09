@@ -39,6 +39,7 @@ import ChartElement from '@/views/components/element/ChartElement/index.vue'
 import TableElement from '@/views/components/element/TableElement/index.vue'
 import LatexElement from '@/views/components/element/LatexElement/index.vue'
 import VideoElement from '@/views/components/element/VideoElement/index.vue'
+import AudioElement from '@/views/components/element/AudioElement/index.vue'
 
 export default defineComponent({
   name: 'editable-element',
@@ -75,6 +76,7 @@ export default defineComponent({
         [ElementTypes.TABLE]: TableElement,
         [ElementTypes.LATEX]: LatexElement,
         [ElementTypes.VIDEO]: VideoElement,
+        [ElementTypes.AUDIO]: AudioElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

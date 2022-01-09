@@ -329,6 +329,7 @@ export default defineComponent({
             el.gridColor = fontColor
           }
           else if (el.type === 'latex') el.color = fontColor
+          else if (el.type === 'audio') el.color = themeColor
         }
       }
       slidesStore.setSlides(newSlides)

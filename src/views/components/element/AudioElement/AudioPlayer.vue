@@ -1,42 +1,23 @@
 <template>
   <div 
-    class="video-player"
-    :class="{ 'hide-controller': hideController }" 
-    :style="{
-      width: width * scale + 'px',
-      height: height * scale + 'px',
-      transform: `scale(${1 / scale})`,
-    }"
-    @mousemove="autoHideController()"
-    @click="autoHideController()"
+    class="audio-player"
+    :style="{ transform: `scale(${1 / scale})` }"
   >
-    <div class="video-wrap" @click="toggle()">
-      <video
-        class="video"
-        ref="videoRef"
-        :src="src"
-        :poster="poster"
-        webkit-playsinline
-        playsinline
-        @durationchange="handleDurationchange()"
-        @timeupdate="handleTimeupdate()"
-        @ended="handleEnded()"
-        @progress="handleProgress()"
-        @play="autoHideController()"
-        @pause="autoHideController()"
-        @error="handleError()"
-      ></video>
-      <div class="bezel">
-        <span class="bezel-icon" :class="{ 'bezel-transition': bezelTransition }" @animationend="bezelTransition = false">
-          <IconPause v-if="paused" />
-          <IconPlayOne v-else />
-        </span>
-      </div>
-    </div>
+    <audio
+      class="audio"
+      ref="audioRef"
+      :src="src"
+      :autoplay="autoplay"
+      @durationchange="handleDurationchange()"
+      @timeupdate="handleTimeupdate()"
+      @play="handlePlayed()"
+      @ended="handleEnded()"
+      @progress="handleProgress()"
+      @error="handleError()"
+    ></audio>
 
-    <div class="controller-mask"></div>
     <div class="controller">
-      <div class="icons icons-left">
+      <div class="icons">
         <div class="icon play-icon" @click="toggle()">
           <span class="icon-content">
             <IconPlayOne v-if="paused" />
@@ -64,32 +45,11 @@
             </div>
           </div>
         </div>
-        <span class="time">
-          <span class="ptime">{{ptime}}</span> / <span class="dtime">{{dtime}}</span>
-        </span>
       </div>
 
-      <div class="icons icons-right">
-        <div class="speed">
-          <div class="icon speed-icon">
-            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">倍速</span>
-            <div class="speed-menu" v-if="speedMenuVisible" @mouseleave="speedMenuVisible = false">
-              <div 
-                class="speed-menu-item" 
-                :class="{ 'active': item.value === playbackRate }"
-                v-for="item in speedOptions" 
-                :key="item.label" 
-                @click="speed(item.value)"
-              >{{item.label}}</div>
-            </div>
-          </div>
-        </div>
-        <div class="loop" @click="toggleLoop()">
-          <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content">循环</span>
-          </div>
-        </div>
-      </div>
+      <span class="time">
+        <span class="ptime">{{ptime}}</span> / <span class="dtime">{{dtime}}</span>
+      </span>
 
       <div 
         class="bar-wrap"
@@ -114,7 +74,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
-import useMSE from './useMSE'
 import { message } from 'ant-design-vue'
 
 const secondToTime = (second = 0) => {
@@ -132,23 +91,19 @@ const getBoundingClientRectViewLeft = (element: HTMLElement) => {
 }
 
 export default defineComponent({
-  name: 'video-player',
+  name: 'audio-player',
   props: {
-    width: {
-      type: Number,
-      required: true,
-    },
-    height: {
-      type: Number,
-      required: true,
-    },
     src: {
       type: String,
       required: true,
     },
-    poster: {
-      type: String,
-      default: '',
+    loop: {
+      type: Boolean,
+      required: true,
+    },
+    autoplay: {
+      type: Boolean,
+      default: false,
     },
     scale: {
       type: Number,
@@ -156,7 +111,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const videoRef = ref<HTMLVideoElement>()
+    const audioRef = ref<HTMLAudioElement>()
     const playBarWrap = ref<HTMLElement>()
     const volumeBarRef = ref<HTMLElement>()
 
@@ -165,9 +120,6 @@ export default defineComponent({
     const currentTime = ref(0)
     const duration = ref(0)
     const loaded = ref(0)
-    const loop = ref(false)
-    const bezelTransition = ref(false)
-    const playbackRate = ref(1)
 
     const playBarTimeVisible = ref(false)
     const playBarTime = ref('00:00')
@@ -179,40 +131,28 @@ export default defineComponent({
     const loadedBarWidth = computed(() => loaded.value / duration.value * 100 + '%')
     const volumeBarWidth = computed(() => volume.value * 100 + '%')
 
-    const speedMenuVisible = ref(false)
-    const speedOptions = [
-      { label: '2x', value: 2 },
-      { label: '1.5x', value: 1.5 },
-      { label: '1.25x', value: 1.25 },
-      { label: '1x', value: 1 },
-      { label: '0.75x', value: 0.75 },
-      { label: '0.5x', value: 0.5 },
-    ]
-
     const seek = (time: number) => {
-      if (!videoRef.value) return
+      if (!audioRef.value) return
 
       time = Math.max(time, 0)
       time = Math.min(time, duration.value)
 
-      videoRef.value.currentTime = time
+      audioRef.value.currentTime = time
       currentTime.value = time
     }
 
     const play = () => {
-      if (!videoRef.value) return
+      if (!audioRef.value) return
 
       paused.value = false
-      videoRef.value.play()
-      bezelTransition.value = true
+      audioRef.value.play()
     }
 
     const pause = () => {
-      if (!videoRef.value) return
+      if (!audioRef.value) return
 
       paused.value = true
-      videoRef.value.pause()
-      bezelTransition.value = true
+      audioRef.value.pause()
     }
 
     const toggle = () => {
@@ -221,31 +161,30 @@ export default defineComponent({
     }
 
     const setVolume = (percentage: number) => {
-      if (!videoRef.value) return
+      if (!audioRef.value) return
 
       percentage = Math.max(percentage, 0)
       percentage = Math.min(percentage, 1)
 
-      videoRef.value.volume = percentage
+      audioRef.value.volume = percentage
       volume.value = percentage
-      if (videoRef.value.muted && percentage !== 0) videoRef.value.muted = false
-    }
-
-    const speed = (rate: number) => {
-      if (videoRef.value) videoRef.value.playbackRate = rate
-      playbackRate.value = rate
+      if (audioRef.value.muted && percentage !== 0) audioRef.value.muted = false
     }
 
     const handleDurationchange = () => {
-      duration.value = videoRef.value?.duration || 0
+      duration.value = audioRef.value?.duration || 0
     }
 
     const handleTimeupdate = () => {
-      currentTime.value = videoRef.value?.currentTime || 0
+      currentTime.value = audioRef.value?.currentTime || 0
+    }
+
+    const handlePlayed = () => {
+      paused.value = false
     }
 
     const handleEnded = () => {
-      if (!loop.value) pause()
+      if (!props.loop) pause()
       else {
         seek(0)
         play()
@@ -253,25 +192,25 @@ export default defineComponent({
     }
 
     const handleProgress = () => {
-      loaded.value = videoRef.value?.buffered.length ? videoRef.value.buffered.end(videoRef.value.buffered.length - 1) : 0
+      loaded.value = audioRef.value?.buffered.length ? audioRef.value.buffered.end(audioRef.value.buffered.length - 1) : 0
     }
 
     const handleError = () => message.error('视频加载失败')
 
     const thumbMove = (e: MouseEvent | TouchEvent) => {
-      if (!videoRef.value || !playBarWrap.value) return
+      if (!audioRef.value || !playBarWrap.value) return
       const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
       let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
       percentage = Math.max(percentage, 0)
       percentage = Math.min(percentage, 1)
       const time = percentage * duration.value
 
-      videoRef.value.currentTime = time
+      audioRef.value.currentTime = time
       currentTime.value = time
     }
 
     const thumbUp = (e: MouseEvent | TouchEvent) => {
-      if (!videoRef.value || !playBarWrap.value) return
+      if (!audioRef.value || !playBarWrap.value) return
 
       const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
       let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
@@ -279,7 +218,7 @@ export default defineComponent({
       percentage = Math.min(percentage, 1)
       const time = percentage * duration.value
 
-      videoRef.value.currentTime = time
+      audioRef.value.currentTime = time
       currentTime.value = time
 
       document.removeEventListener('mousemove', thumbMove)
@@ -336,40 +275,23 @@ export default defineComponent({
     }
 
     const toggleVolume = () => {
-      if (!videoRef.value) return
+      if (!audioRef.value) return
 
-      if (videoRef.value.muted) {
-        videoRef.value.muted = false
+      if (audioRef.value.muted) {
+        audioRef.value.muted = false
         setVolume(0.5)
       }
       else {
-        videoRef.value.muted = true
+        audioRef.value.muted = true
         setVolume(0)
       }
     }
 
-    const toggleLoop = () => {
-      loop.value = !loop.value
-    }
-
-    const autoHideControllerTimer = ref(-1)
-    const hideController = ref(false)
-    const autoHideController = () => {
-      hideController.value = false
-      clearTimeout(autoHideControllerTimer.value)
-      autoHideControllerTimer.value = setTimeout(() => {
-        if (videoRef.value?.played.length) hideController.value = true
-      }, 3000)
-    }
-    
-    useMSE(props.src, videoRef)
-
     return {
-      videoRef,
+      audioRef,
       playBarWrap,
       volumeBarRef,
       volume,
-      loop,
       paused,
       ptime,
       dtime,
@@ -379,34 +301,243 @@ export default defineComponent({
       playedBarWidth,
       loadedBarWidth,
       volumeBarWidth,
-      hideController,
-      bezelTransition,
-      playbackRate,
-      speedMenuVisible,
-      speedOptions,
-      seek,
       play,
       pause,
       toggle,
       setVolume,
-      speed,
       handleDurationchange,
       handleTimeupdate,
+      handlePlayed,
       handleEnded,
       handleProgress,
+      handleError,
       handleMousedownPlayBar,
       handleMousedownVolumeBar,
       handleClickVolumeBar,
       handleMousemovePlayBar,
       toggleVolume,
-      toggleLoop,
-      autoHideController,
-      handleError,
     }
   },
 })
 </script>
 
 <style scoped lang="scss">
-@import './style.scss';
+
+.audio-player {
+  width: 280px;
+  height: 50px;
+  position: relative;
+  user-select: none;
+  line-height: 1;
+  transform-origin: 0 0;
+  background: #000;
+}
+
+.controller {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 41px;
+  padding: 0 20px;
+  user-select: none;
+  transition: all 0.3s ease;
+
+  .bar-wrap {
+    padding: 5px 0;
+    cursor: pointer;
+    position: absolute;
+    bottom: 35px;
+    width: calc(100% - 40px);
+    height: 3px;
+
+    &:hover .bar .played .thumb {
+      transform: scale(1);
+    }
+
+    .bar-time {
+      position: absolute;
+      left: 0;
+      top: -20px;
+      border-radius: 4px;
+      padding: 5px 7px;
+      background-color: rgba(0, 0, 0, 0.62);
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 0.1s ease-in-out;
+      word-wrap: normal;
+      word-break: normal;
+      z-index: 2;
+      pointer-events: none;
+
+      &.hidden {
+        opacity: 0;
+      }
+    }
+    .bar {
+      position: relative;
+      height: 3px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+
+      .loaded {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.4);
+        height: 3px;
+        transition: all 0.5s ease;
+        will-change: width;
+      }
+      .played {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        height: 3px;
+        will-change: width;
+        background-color: #fff;
+
+        .thumb {
+          position: absolute;
+          top: 0;
+          right: 5px;
+          margin-top: -4px;
+          margin-right: -10px;
+          height: 11px;
+          width: 11px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          transform: scale(0);
+          background-color: #fff;
+        }
+      }
+    }
+  }
+  .icons {
+    height: 38px;
+    position: absolute;
+    bottom: 0;
+    left: 14px;
+    display: flex;
+    align-items: center;
+
+    .icon {
+      width: 36px;
+      height: 100%;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+
+      &.play-icon {
+        font-size: 26px;
+      }
+
+      .icon-content {
+        transition: all 0.2s ease-in-out;
+        opacity: 0.8;
+        color: #fff;
+      }
+
+      &.active .icon-content {
+        opacity: 1;
+      }
+      &:hover .icon-content {
+        opacity: 1;
+      }
+    }
+    .volume {
+      height: 100%;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        .volume-bar-wrap .volume-bar {
+          width: 45px;
+        }
+        .volume-bar-wrap .volume-bar .volume-bar-inner .thumb {
+          transform: scale(1);
+        }
+      }
+      &.volume-active {
+        .volume-bar-wrap .volume-bar {
+          width: 45px;
+        }
+        .volume-bar-wrap .volume-bar .volume-bar-inner .thumb {
+          transform: scale(1);
+        }
+      }
+    }
+    .volume-bar-wrap {
+      display: inline-block;
+      margin: 0 15px 0 -5px;
+      vertical-align: middle;
+      height: 100%;
+    }
+    .volume-bar {
+      position: relative;
+      top: 17px;
+      width: 0;
+      height: 3px;
+      background: #aaa;
+      transition: all 0.3s ease-in-out;
+
+      .volume-bar-inner {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        transition: all 0.1s ease;
+        will-change: width;
+        background-color: #fff;
+
+        .thumb {
+          position: absolute;
+          top: 0;
+          right: 5px;
+          margin-top: -4px;
+          margin-right: -10px;
+          height: 11px;
+          width: 11px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+          transform: scale(0);
+          background-color: #fff;
+        }
+      }
+    }
+  }
+
+  .time {
+    height: 38px;
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    line-height: 38px;
+    color: #eee;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
+    font-size: 13px;
+    cursor: default;
+
+    .ptime {
+      margin-right: 2px;
+    }
+    .dtime {
+      margin-left: 2px;
+    }
+  }
+}
 </style>

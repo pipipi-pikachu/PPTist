@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, PropType, defineComponent } from 'vue'
+import { computed, PropType, defineComponent, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
@@ -57,6 +57,9 @@ export default defineComponent({
 
     const background = computed(() => props.slide.background)
     const { backgroundStyle } = useSlideBackgroundStyle(background)
+
+    const slideId = computed(() => props.slide.id)
+    provide('slideId', slideId)
 
     return {
       backgroundStyle,

@@ -33,6 +33,7 @@ import ScreenChartElement from '@/views/components/element/ChartElement/ScreenCh
 import BaseTableElement from '@/views/components/element/TableElement/BaseTableElement.vue'
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import ScreenVideoElement from '@/views/components/element/VideoElement/ScreenVideoElement.vue'
+import ScreenAudioElement from '@/views/components/element/AudioElement/ScreenAudioElement.vue'
 
 export default defineComponent({
   name: 'screen-element',
@@ -65,6 +66,7 @@ export default defineComponent({
         [ElementTypes.TABLE]: BaseTableElement,
         [ElementTypes.LATEX]: BaseLatexElement,
         [ElementTypes.VIDEO]: ScreenVideoElement,
+        [ElementTypes.AUDIO]: ScreenAudioElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

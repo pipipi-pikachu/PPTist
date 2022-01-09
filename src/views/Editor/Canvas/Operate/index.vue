@@ -107,6 +107,7 @@ export default defineComponent({
         [ElementTypes.CHART]: CommonElementOperate,
         [ElementTypes.LATEX]: CommonElementOperate,
         [ElementTypes.VIDEO]: CommonElementOperate,
+        [ElementTypes.AUDIO]: CommonElementOperate,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })

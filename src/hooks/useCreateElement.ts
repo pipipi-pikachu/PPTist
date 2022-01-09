@@ -261,6 +261,27 @@ export default () => {
       src,
     })
   }
+  
+  /**
+   * 创建音频元素
+   * @param src 音频地址
+   */
+  const createAudioElement = (src: string) => {
+    createElement({
+      type: 'audio',
+      id: createRandomCode(),
+      width: 50,
+      height: 50,
+      rotate: 0,
+      left: (VIEWPORT_SIZE - 50) / 2,
+      top: (VIEWPORT_SIZE * viewportRatio.value - 50) / 2,
+      loop: false,
+      autoplay: false,
+      fixedRatio: true,
+      color: theme.value.themeColor,
+      src,
+    })
+  }
 
   return {
     createImageElement,
@@ -271,5 +292,6 @@ export default () => {
     createLineElement,
     createLatexElement,
     createVideoElement,
+    createAudioElement,
   }
 }

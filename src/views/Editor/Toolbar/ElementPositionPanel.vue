@@ -72,7 +72,7 @@
           @change="value => updateWidth(value)"
           style="flex: 4;"
         />
-        <template v-if="['image', 'shape'].includes(handleElement.type)">
+        <template v-if="['image', 'shape', 'audio'].includes(handleElement.type)">
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
             <IconLock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
           </Tooltip>
@@ -99,7 +99,7 @@
       </div>
     </template>
 
-    <template v-if="handleElement.type !== 'line'">
+    <template v-if="!['line', 'video', 'audio'].includes(handleElement.type)">
       <Divider />
 
       <div class="row">

@@ -19,6 +19,7 @@
       />
       <RotateHandler
         class="operate-rotate-handler" 
+        v-if="!cannotRotate"
         :style="{ left: scaleWidth / 2 + 'px' }"
         @mousedown.stop="rotateElement(elementInfo)"
       />
@@ -30,7 +31,7 @@
 import { computed, defineComponent, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTShapeElement, PPTVideoElement, PPTLatexElement } from '@/types/slides'
+import { PPTShapeElement, PPTVideoElement, PPTLatexElement, PPTAudioElement } from '@/types/slides'
 import { OperateResizeHandler } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
@@ -38,7 +39,7 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement
+type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement | PPTAudioElement
 
 export default defineComponent({
   name: 'common-element-operate',
@@ -73,10 +74,13 @@ export default defineComponent({
     const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
     const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
+    const cannotRotate = computed(() => ['video', 'audio'].includes(props.elementInfo.type))
+
     return {
       scaleWidth,
       resizeHandlers,
       borderLines,
+      cannotRotate,
     }
   },
 })

@@ -9,6 +9,7 @@ export const enum ElementTypes {
   TABLE = 'table',
   LATEX = 'latex',
   VIDEO = 'video',
+  AUDIO = 'audio',
 }
 
 /**
@@ -511,8 +512,32 @@ export interface PPTVideoElement extends PPTBaseElement {
   poster?: string;
 }
 
+/**
+ * 音频元素
+ * 
+ * type: 元素类型（audio）
+ * 
+ * fixedRatio: 固定图标宽高比例
+ * 
+ * color: 图标颜色
+ * 
+ * loop: 循环播放
+ * 
+ * autoplay: 自动播放
+ * 
+ * src: 音频地址
+ */
+export interface PPTAudioElement extends PPTBaseElement {
+  type: 'audio';
+  fixedRatio: boolean;
+  color: string,
+  loop: boolean,
+  autoplay: boolean,
+  src: string;
+}
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTLatexElement | PPTVideoElement
+
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTLatexElement | PPTVideoElement | PPTAudioElement
 
 
 /**

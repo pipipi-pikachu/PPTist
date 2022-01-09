@@ -56,14 +56,15 @@
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
         <IconFormula class="handler-item" @click="latexEditorVisible = true" />
       </Tooltip>
-      <Popover trigger="click" v-model:visible="videoInputVisible">
+      <Popover trigger="click" v-model:visible="mediaInputVisible">
         <template #content>
-          <VideoInput 
-            @close="videoInputVisible = false"
-            @insert="src => { createVideoElement(src); videoInputVisible = false }"
+          <MediaInput 
+            @close="mediaInputVisible = false"
+            @insertVideo="src => { createVideoElement(src); mediaInputVisible = false }"
+            @insertAudio="src => { createAudioElement(src); mediaInputVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入视频">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入音视频">
           <IconVideoTwo class="handler-item" />
         </Tooltip>
       </Popover>
@@ -108,7 +109,7 @@ import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
 import ChartPool from './ChartPool.vue'
 import TableGenerator from './TableGenerator.vue'
-import VideoInput from './VideoInput.vue'
+import MediaInput from './MediaInput.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 
 export default defineComponent({
@@ -118,7 +119,7 @@ export default defineComponent({
     LinePool,
     ChartPool,
     TableGenerator,
-    VideoInput,
+    MediaInput,
     LaTeXEditor,
   },
   setup() {
@@ -131,7 +132,14 @@ export default defineComponent({
     const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
 
-    const { createImageElement, createChartElement, createTableElement, createLatexElement, createVideoElement } = useCreateElement()
+    const {
+      createImageElement,
+      createChartElement,
+      createTableElement,
+      createLatexElement,
+      createVideoElement,
+      createAudioElement,
+    } = useCreateElement()
 
     const insertImageElement = (files: File[]) => {
       const imageFile = files[0]
@@ -143,7 +151,7 @@ export default defineComponent({
     const linePoolVisible = ref(false)
     const chartPoolVisible = ref(false)
     const tableGeneratorVisible = ref(false)
-    const videoInputVisible = ref(false)
+    const mediaInputVisible = ref(false)
     const latexEditorVisible = ref(false)
 
     // 绘制文字范围
@@ -184,7 +192,7 @@ export default defineComponent({
       linePoolVisible,
       chartPoolVisible,
       tableGeneratorVisible,
-      videoInputVisible,
+      mediaInputVisible,
       latexEditorVisible,
       drawText,
       drawShape,
@@ -193,6 +201,7 @@ export default defineComponent({
       createTableElement,
       createLatexElement,
       createVideoElement,
+      createAudioElement,
     }
   },
 })

@@ -26,6 +26,7 @@ import BaseChartElement from '@/views/components/element/ChartElement/BaseChartE
 import BaseTableElement from '@/views/components/element/TableElement/BaseTableElement.vue'
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import BaseVideoElement from '@/views/components/element/VideoElement/BaseVideoElement.vue'
+import BaseAudioElement from '@/views/components/element/AudioElement/BaseAudioElement.vue'
 
 export default defineComponent({
   name: 'base-element',
@@ -50,6 +51,7 @@ export default defineComponent({
         [ElementTypes.TABLE]: BaseTableElement,
         [ElementTypes.LATEX]: BaseLatexElement,
         [ElementTypes.VIDEO]: BaseVideoElement,
+        [ElementTypes.AUDIO]: BaseAudioElement,
       }
       return elementTypeMap[props.elementInfo.type] || null
     })
