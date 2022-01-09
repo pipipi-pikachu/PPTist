@@ -1,12 +1,13 @@
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地PPTX文件，您可以在此基础上搭建自己的在线幻灯片应用。
+> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地PPTX文件，您可以在此基础上搭建自己的在线幻灯片应用。
 
 在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)
 
 如果网络状态不佳，可以访问国内镜像（非实时更新）：[https://pptist.gitee.io/](https://pptist.gitee.io/)
 
+
 # 👀 前排提示
-为了更好的 Typescript 支持，本项目于2021年11月27日起使用 [Pinia](https://pinia.esm.dev/) 替代 Vuex4 作为状态管理方案。原 vuex 版本见：[vuex 分支](https://github.com/pipipi-pikachu/PPTist/tree/vuex)
+为了更好的 Typescript 支持，本项使用 [Pinia](https://pinia.esm.dev/) 替代了原 Vuex4 作为状态管理方案。原 Vuex 版本见：[Vuex 分支](https://github.com/pipipi-pikachu/PPTist/tree/vuex)
 
 
 # 🚀 项目运行
@@ -96,6 +97,10 @@ npm run serve
 - 边框
 #### 视频
 - 预览封面设置
+#### 音频
+- 图标颜色
+- 自动播放
+- 循环播放
 #### 公式
 - LaTeX编辑
 - 颜色设置
@@ -152,6 +157,19 @@ A. 作为一个在线幻灯片应用，导出、导入PPTX文件是非常重要�
 A. 本项目只提供最基础的视频能力，正常状态下可以播放video标签本身支持的格式。
 
 此外，可以额外引入 [hls.js](https://github.com/video-dev/hls.js) 或 [flv.js](https://github.com/Bilibili/flv.js) 来支持对应的格式（.m3u8 .flv），你只需要在项目中引入对应的文件（如cdn）即可，无需其他配置。
+
+
+# 📅 后续规划
+## 重要功能规划
+- 动画功能强化：支持退出、强调动画，单元素支持多个动画；
+- 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
+- 添加强化版基础形状：支持调整圆角矩形弧度、调整三角形顶点位置等操作；
+- 导出相关：包括HTML、PDF等；
+- 导入本地PPTX文件；
+
+## 项目规划
+- 跟进 Vue3 script setup 语法；
+- 将 Vue CLI 更换到 Vite 生态；
 
 
 # 📁 项目目录结构
@@ -212,4 +230,5 @@ A. 本项目只提供最基础的视频能力，正常状态下可以播放video
 
 
 # 💣 友情提示
-本项目不接受任何形式的私人咨询，有任何问题 [欢迎在 github 提交你的 Issues](https://github.com/pipipi-pikachu/PPTist/issues)
+1. 本项目不接受任何形式的私人咨询，有任何问题欢迎在 github 提交你的 [Issues](https://github.com/pipipi-pikachu/PPTist/issues)
+2. 需要注意的是，本项目的目标是打造一个 “在线幻灯片应用” ，而非 “低代码平台” 或 “在线图片编辑工具” 等。
