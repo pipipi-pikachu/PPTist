@@ -38,8 +38,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const type = ref<'video' | 'audio'>('video')
 
-    const videoSrc = ref('https://www.w3school.com.cn/i/movie.ogg')
-    const audioSrc = ref('https://www.w3school.com.cn/i/horse.ogg')
+    const videoSrc = ref('http://128.1.134.170/pptist/test.mp4')
+    const audioSrc = ref('http://128.1.134.170/pptist/test.mp3')
 
     const tabs = [
       { key: 'video', label: '视频' },
