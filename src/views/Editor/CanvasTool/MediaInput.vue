@@ -38,8 +38,8 @@ export default defineComponent({
   setup(props, { emit }) {
     const type = ref<'video' | 'audio'>('video')
 
-    const videoSrc = ref('http://128.1.134.170/pptist/test.mp4')
-    const audioSrc = ref('http://128.1.134.170/pptist/test.mp3')
+    const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_watermarked/181004_04_Dolphins-Whale_06_preview.webm')
+    const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
     const tabs = [
       { key: 'video', label: '视频' },
