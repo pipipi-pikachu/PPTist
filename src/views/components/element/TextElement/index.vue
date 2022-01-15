@@ -42,6 +42,10 @@
           @update="value => updateContent(value)"
           @mousedown="$event => handleSelectElement($event, false)"
         />
+
+        <!-- 当字号过大且行高较小时，会出现文字高度溢出的情况，导致拖拽区域无法被选中，因此添加了以下节点避免该情况 -->
+        <div class="drag-handler top"></div>
+        <div class="drag-handler bottom"></div>
       </div>
     </div>
   </div>
@@ -178,6 +182,19 @@ export default defineComponent({
 
   .text {
     position: relative;
+  }
+}
+.drag-handler {
+  height: 10px;
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  &.top {
+    top: 0;
+  }
+  &.bottom {
+    bottom: 0;
   }
 }
 </style>
