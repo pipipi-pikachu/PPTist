@@ -35,6 +35,7 @@
           />
         </defs>
 				<path
+          class="line-point"
           :d="path" 
           :stroke="elementInfo.color" 
           :stroke-width="elementInfo.width" 
@@ -128,9 +129,12 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-shape {
   position: absolute;
+  pointer-events: none;
 
-  &.lock .line-path {
-    cursor: default;
+  &.lock {
+    .line-path, .line-point {
+      cursor: default;
+    }
   }
 }
 
@@ -144,7 +148,8 @@ export default defineComponent({
     overflow: visible;
   }
 }
-.line-path {
+.line-path, .line-point {
+  pointer-events: all;
   cursor: move;
 }
 </style>
