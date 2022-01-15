@@ -10,6 +10,7 @@
     <div 
       class="element-content" 
       :style="{ filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '' }"
+      @mousedown="$event => handleSelectElement($event)"
     >
       <svg
         overflow="visible" 
@@ -53,7 +54,6 @@
           stroke="transparent" 
           stroke-width="20" 
           fill="none" 
-          @mousedown="$event => handleSelectElement($event)"
           v-contextmenu="contextmenus"
         ></path>
 			</svg>

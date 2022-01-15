@@ -44,6 +44,7 @@
             :transform="`scale(${elementInfo.width / elementInfo.viewBox}, ${elementInfo.height / elementInfo.viewBox}) translate(0,0) matrix(1,0,0,1,0,0)`"
           >
             <path 
+              class="shape-path"
               vector-effect="non-scaling-stroke" 
               stroke-linecap="butt" 
               stroke-miterlimit="8"
@@ -57,7 +58,7 @@
           </g>
         </svg>
 
-        <div class="shape-text" :class="text.align">
+        <div class="shape-text" :class="[text.align, { 'editable': editable }]">
           <ProsemirrorEditor
             v-if="editable"
             :elementId="elementInfo.id"
@@ -196,6 +197,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .editable-element-shape {
   position: absolute;
+  pointer-events: none;
 
   &.lock .element-content {
     cursor: default;
@@ -215,6 +217,10 @@ export default defineComponent({
     transform-origin: 0 0;
     overflow: visible;
   }
+
+  .shape-path {
+    pointer-events: all;
+  }
 }
 .shape-text {
   position: absolute;
@@ -227,6 +233,11 @@ export default defineComponent({
   padding: 10px;
   line-height: 1.2;
   word-break: break-word;
+  pointer-events: none;
+
+  &.editable {
+    pointer-events: all;
+  }
 
   &.top {
     justify-content: flex-start;
