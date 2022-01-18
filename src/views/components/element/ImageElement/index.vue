@@ -126,13 +126,34 @@ export default defineComponent({
 
       const { range, position } = data
       const originClip: ImageElementClip = props.elementInfo.clip || { shape: 'rect', range: [[0, 0], [100, 100]] }
-      
+
+      const left = props.elementInfo.left + position.left
+      const top = props.elementInfo.top + position.top
+      const width = props.elementInfo.width + position.width
+      const height = props.elementInfo.height + position.height
+
+      let centerOffsetX = 0
+      let centerOffsetY = 0
+
+      if (props.elementInfo.rotate) {
+        const centerX = (left + width / 2) - (props.elementInfo.left + props.elementInfo.width / 2)
+        const centerY = -((top + height / 2) - (props.elementInfo.top + props.elementInfo.height / 2))
+
+        const radian = -props.elementInfo.rotate * Math.PI / 180
+
+        const rotatedCenterX = centerX * Math.cos(radian) - centerY * Math.sin(radian)
+        const rotatedCenterY = centerX * Math.sin(radian) + centerY * Math.cos(radian)
+
+        centerOffsetX = rotatedCenterX - centerX
+        centerOffsetY = -(rotatedCenterY - centerY)
+      }
+
       const _props = {
         clip: { ...originClip, range },
-        left: props.elementInfo.left + position.left,
-        top: props.elementInfo.top + position.top,
-        width: props.elementInfo.width + position.width,
-        height: props.elementInfo.height + position.height,
+        left: left + centerOffsetX,
+        top: top + centerOffsetY,
+        width,
+        height,
       }
       slidesStore.updateElement({ id: props.elementInfo.id, props: _props })
       
