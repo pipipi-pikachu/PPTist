@@ -21,6 +21,7 @@
         :height="elementInfo.height"
         :top="elementInfo.top"
         :left="elementInfo.left"
+        :rotate="elementInfo.rotate"
         :clipPath="clipShape.style"
         @clip="range => handleClip(range)"
       />

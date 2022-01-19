@@ -34,8 +34,8 @@
       @mousedown.stop="$event => moveClipRange($event)"
     >
       <div 
-        :class="['clip-point', point]" 
-        v-for="point in ['t-l', 't-r', 'b-l', 'b-r']" 
+        :class="['clip-point', point, rotateClassName]"
+        v-for="point in ['left-top', 'right-top', 'left-bottom', 'right-bottom']" 
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
@@ -48,8 +48,8 @@
         </svg>
       </div>
       <div 
-        :class="['clip-point', '', point]" 
-        v-for="point in ['t', 'b', 'l', 'r']" 
+        :class="['clip-point', point, rotateClassName]"
+        v-for="point in ['top', 'bottom', 'left', 'right']" 
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
@@ -70,9 +70,7 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, 
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { ImageClipData, ImageClipDataRange, ImageClipedEmitData } from '@/types/edit'
-
-type ScaleClipRangeType = 't-l' | 't-r' | 'b-l' | 'b-r'
+import { ImageClipData, ImageClipDataRange, ImageClipedEmitData, OperateResizeHandler, OperateResizeHandlers } from '@/types/edit'
 
 export default defineComponent({
   name: 'image-clip-handler',
@@ -102,6 +100,10 @@ export default defineComponent({
       required: true,
     },
     left: {
+      type: Number,
+      required: true,
+    },
+    rotate: {
       type: Number,
       required: true,
     },
@@ -282,8 +284,21 @@ export default defineComponent({
         const currentPageX = e.pageX
         const currentPageY = e.pageY
 
-        const moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
-        const moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
+        let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
+        let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
+
+        if (props.rotate > 45 && props.rotate < 135) {
+          moveX = (currentPageY - startPageY) / canvasScale.value / props.width * 100
+          moveY = -(currentPageX - startPageX) / canvasScale.value / props.height * 100
+        }
+        if ((props.rotate >= 135 && props.rotate <= 180) || (props.rotate >= -180 && props.rotate <= -135)) {
+          moveX = -moveX
+          moveY = -moveY
+        }
+        if (props.rotate > -135 && props.rotate < -45) {
+          moveX = -(currentPageY - startPageY) / canvasScale.value / props.width * 100
+          moveY = (currentPageX - startPageX) / canvasScale.value / props.height * 100
+        }
 
         let targetLeft = originPositopn.left + moveX
         let targetTop = originPositopn.top + moveY
@@ -315,7 +330,7 @@ export default defineComponent({
     }
 
     // 缩放裁剪区域
-    const scaleClipRange = (e: MouseEvent, type: ScaleClipRangeType) => {
+    const scaleClipRange = (e: MouseEvent, type: OperateResizeHandler) => {
       isSettingClipRange.value = true
       let isMouseDown = true
 
@@ -343,14 +358,27 @@ export default defineComponent({
         let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
         let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
 
+        if (props.rotate > 45 && props.rotate < 135) {
+          moveX = (currentPageY - startPageY) / canvasScale.value / props.width * 100
+          moveY = -(currentPageX - startPageX) / canvasScale.value / props.height * 100
+        }
+        if ((props.rotate >= 135 && props.rotate <= 180) || (props.rotate >= -180 && props.rotate <= -135)) {
+          moveX = -moveX
+          moveY = -moveY
+        }
+        if (props.rotate > -135 && props.rotate < -45) {
+          moveX = -(currentPageY - startPageY) / canvasScale.value / props.width * 100
+          moveY = (currentPageX - startPageX) / canvasScale.value / props.height * 100
+        }
+
         if (ctrlOrShiftKeyActive.value) {
-          if (type === 'b-r' || type === 't-l') moveY = moveX / aspectRatio
-          if (type === 'b-l' || type === 't-r') moveY = -moveX / aspectRatio
+          if (type === OperateResizeHandlers.RIGHT_BOTTOM || type === OperateResizeHandlers.LEFT_TOP) moveY = moveX / aspectRatio
+          if (type === OperateResizeHandlers.LEFT_BOTTOM || type === OperateResizeHandlers.RIGHT_TOP) moveY = -moveX / aspectRatio
         }
 
         let targetLeft, targetTop, targetWidth, targetHeight
 
-        if (type === 't-l') {
+        if (type === OperateResizeHandlers.LEFT_TOP) {
           if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
           }
@@ -368,7 +396,7 @@ export default defineComponent({
           targetLeft = originPositopn.left + moveX
           targetTop = originPositopn.top + moveY
         }
-        else if (type === 't-r') {
+        else if (type === OperateResizeHandlers.RIGHT_TOP) {
           if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
             moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
           }
@@ -386,7 +414,7 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top + moveY
         }
-        else if (type === 'b-l') {
+        else if (type === OperateResizeHandlers.LEFT_BOTTOM) {
           if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
           }
@@ -404,7 +432,7 @@ export default defineComponent({
           targetLeft = originPositopn.left + moveX
           targetTop = originPositopn.top
         }
-        else if (type === 'b-r') {
+        else if (type === OperateResizeHandlers.RIGHT_BOTTOM) {
           if (originPositopn.left + originPositopn.width + moveX > bottomPosition.width) {
             moveX = bottomPosition.width - (originPositopn.left + originPositopn.width)
           }
@@ -422,7 +450,7 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top
         }
-        else if (type === 't') {
+        else if (type === OperateResizeHandlers.TOP) {
           if (originPositopn.top + moveY < 0) {
             moveY = -originPositopn.top
           }
@@ -434,7 +462,7 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top + moveY
         }
-        else if (type === 'b') {
+        else if (type === OperateResizeHandlers.BOTTOM) {
           if (originPositopn.top + originPositopn.height + moveY > bottomPosition.height) {
             moveY = bottomPosition.height - (originPositopn.top + originPositopn.height)
           }
@@ -446,7 +474,7 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top
         }
-        else if (type === 'l') {
+        else if (type === OperateResizeHandlers.LEFT) {
           if (originPositopn.left + moveX < 0) {
             moveX = -originPositopn.left
           }
@@ -488,11 +516,26 @@ export default defineComponent({
       }
     }
 
+    const rotateClassName = computed(() => {
+      const prefix = 'rotate-'
+      const rotate = props.rotate
+      if (rotate > -22.5 && rotate <= 22.5) return prefix + 0
+      else if (rotate > 22.5 && rotate <= 67.5) return prefix + 45
+      else if (rotate > 67.5 && rotate <= 112.5) return prefix + 90
+      else if (rotate > 112.5 && rotate <= 157.5) return prefix + 135
+      else if (rotate > 157.5 || rotate <= -157.5) return prefix + 0
+      else if (rotate > -157.5 && rotate <= -112.5) return prefix + 45
+      else if (rotate > -112.5 && rotate <= -67.5) return prefix + 90
+      else if (rotate > -67.5 && rotate <= -22.5) return prefix + 135
+      return prefix + 0
+    })
+
     return {
       clipWrapperPositionStyle,
       bottomImgPositionStyle,
       topImgWrapperPositionStyle,
       topImgPositionStyle,
+      rotateClassName,
       handleClip,
       moveClipRange,
       scaleClipRange,
@@ -548,58 +591,91 @@ export default defineComponent({
     overflow: visible;
   }
 
-  &.t-l {
+  &.left-top {
     left: 0;
     top: 0;
-    cursor: nwse-resize;
   }
-  &.t-r {
+  &.right-top {
     left: 100%;
     top: 0;
     transform: rotate(90deg);
     transform-origin: 0 0;
-    cursor: nesw-resize;
   }
-  &.b-l {
+  &.left-bottom {
     left: 0;
     top: 100%;
     transform: rotate(-90deg);
     transform-origin: 0 0;
-    cursor: nesw-resize;
   }
-  &.b-r {
+  &.right-bottom {
     left: 100%;
     top: 100%;
     transform: rotate(180deg);
     transform-origin: 0 0;
-    cursor: nwse-resize;
   }
-  &.t {
-    cursor: n-resize;
+  &.top {
     left: 50%;
     top: 0;
     margin-left: -8px;
   }
-  &.b {
-    cursor: n-resize;
+  &.bottom {
     left: 50%;
     bottom: 0;
     margin-left: -8px;
     transform: rotate(180deg);
   }
-  &.l {
-    cursor: w-resize;
+  &.left {
     left: 0;
     top: 50%;
     margin-top: -8px;
     transform: rotate(-90deg);
   }
-  &.r {
-    cursor: w-resize;
+  &.right {
     right: 0;
     top: 50%;
     margin-top: -8px;
     transform: rotate(90deg);
+  }
+
+  &.left-top.rotate-0,
+  &.right-bottom.rotate-0,
+  &.left.rotate-45,
+  &.right.rotate-45,
+  &.left-bottom.rotate-90,
+  &.right-top.rotate-90,
+  &.top.rotate-135,
+  &.bottom.rotate-135 {
+    cursor: nwse-resize;
+  }
+  &.top.rotate-0,
+  &.bottom.rotate-0,
+  &.left-top.rotate-45,
+  &.right-bottom.rotate-45,
+  &.left.rotate-90,
+  &.right.rotate-90,
+  &.left-bottom.rotate-135,
+  &.right-top.rotate-135 {
+    cursor: ns-resize;
+  }
+  &.left-bottom.rotate-0,
+  &.right-top.rotate-0,
+  &.top.rotate-45,
+  &.bottom.rotate-45,
+  &.left-top.rotate-90,
+  &.right-bottom.rotate-90,
+  &.left.rotate-135,
+  &.right.rotate-135 {
+    cursor: nesw-resize;
+  }
+  &.left.rotate-0,
+  &.right.rotate-0,
+  &.left-bottom.rotate-45,
+  &.right-top.rotate-45,
+  &.top.rotate-90,
+  &.bottom.rotate-90,
+  &.left-top.rotate-135,
+  &.right-bottom.rotate-135 {
+    cursor: ew-resize;
   }
 }
 </style>
