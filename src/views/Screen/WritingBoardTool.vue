@@ -54,7 +54,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const writingBoardRef = ref()
     const writingBoardColor = ref('#e2534d')
-    const writingBoardModel = ref('pen')
+    const writingBoardModel = ref<'pen' | 'eraser'>('pen')
     const blackboard = ref(false)
 
     // 切换到画笔状态

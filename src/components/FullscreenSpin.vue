@@ -3,7 +3,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'fullscreen-spin',
   props: {
     loading: {
@@ -15,7 +17,7 @@ export default {
       default: '',
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

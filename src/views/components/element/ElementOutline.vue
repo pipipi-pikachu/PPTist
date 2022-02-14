@@ -10,7 +10,6 @@
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
-      stroke-linejoin
       fill="transparent"
       :d="`M0,0 L${width},0 L${width},${height} L0,${height} Z`" 
       :stroke="outlineColor"

@@ -1,7 +1,7 @@
 <template>
-  <div class="link-handler" :style="{ top: elementInfo.height * canvasScale + 10 + 'px' }">
-    <a class="link" v-if="elementInfo.link.type === 'web'" :href="elementInfo.link.target" target="_blank">{{elementInfo.link.target}}</a>
-    <a class="link" v-else>幻灯片页面 {{elementInfo.link.target}}</a>
+  <div class="link-handler" :style="{ top: height * canvasScale + 10 + 'px' }">
+    <a class="link" v-if="link.type === 'web'" :href="link.target" target="_blank">{{link.target}}</a>
+    <a class="link" v-else>幻灯片页面 {{link.target}}</a>
     <div class="btns">
       <div class="btn" @click="openLinkDialog()">更换</div>
       <Divider type="vertical" />
@@ -11,10 +11,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import { PPTElement, PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
 export default defineComponent({
@@ -24,18 +24,25 @@ export default defineComponent({
       type: Object as PropType<PPTElement>,
       required: true,
     },
+    link: {
+      type: Object as PropType<PPTElementLink>,
+      required: true,
+    },
     openLinkDialog: {
       type: Function as PropType<() => void>,
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const { canvasScale } = storeToRefs(useMainStore())
 
     const { removeLink } = useLink()
 
+    const height = computed(() => props.elementInfo.type === 'line' ? 0 : props.elementInfo.height)
+
     return {
       canvasScale,
+      height,
       removeLink,
     }
   },

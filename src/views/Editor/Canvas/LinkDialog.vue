@@ -46,6 +46,12 @@ import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
+type TypeKey = 'web' | 'slide'
+interface TabItem {
+  key: TypeKey;
+  label: string;
+}
+
 export default defineComponent({
   name: 'link-dialog',
   emits: ['close'],
@@ -56,7 +62,7 @@ export default defineComponent({
     const { handleElement } = storeToRefs(useMainStore())
     const { slides } = storeToRefs(useSlidesStore())
 
-    const type = ref<'web' | 'slide'>('web')
+    const type = ref<TypeKey>('web')
     const address = ref('')
     const slideId = ref('')
 
@@ -66,7 +72,7 @@ export default defineComponent({
       return slides.value.find(item => item.id === slideId.value) || null
     })
 
-    const tabs = [
+    const tabs: TabItem[] = [
       { key: 'web', label: '网页链接' },
       { key: 'slide', label: '幻灯片页面' },
     ]

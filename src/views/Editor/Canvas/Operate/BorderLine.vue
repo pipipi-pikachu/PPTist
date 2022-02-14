@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts">
-import { PropType } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { OperateBorderLine } from '@/types/edit'
 
-export default {
+export default defineComponent({
   name: 'border-line',
   props: {
     type: {
@@ -18,7 +18,7 @@ export default {
       default: false,
     },
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -51,6 +51,7 @@ export default defineComponent({
   border: 1px solid $themeColor;
   background-color: #fff;
   border-radius: 1px;
+  cursor: pointer;
 
   &.left-top.rotate-0,
   &.right-bottom.rotate-0,

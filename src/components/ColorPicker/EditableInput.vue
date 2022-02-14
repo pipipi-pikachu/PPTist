@@ -29,7 +29,7 @@ export default defineComponent({
       return _hex.replace('#', '')
     })
 
-    const handleInput = (e: InputEvent) => {
+    const handleInput = (e: Event) => {
       const value = (e.target as HTMLInputElement).value
       if (value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
     }

@@ -5,11 +5,11 @@
     @mousedown.stop="$event => createSelection($event)"
     @contextmenu.stop.prevent
   >
-    <div :class="['selection', creatingElement.type]" v-if="start && end" :style="position">
+    <div :class="['selection', creatingElement?.type]" v-if="start && end" :style="position">
 
       <!-- 绘制线条专用 -->
       <svg
-        v-if="creatingElement.type === 'line' && lineData"
+        v-if="creatingElement?.type === 'line' && lineData"
         overflow="visible" 
         :width="lineData.svgWidth"
         :height="lineData.svgHeight"
@@ -18,10 +18,7 @@
           :d="lineData.path" 
           stroke="#d14424" 
           fill="none" 
-          stroke-width="1" 
-          stroke-linecap 
-          stroke-linejoin 
-          stroke-miterlimit 
+          stroke-width="2" 
         ></path>
 			</svg>
     </div>
@@ -230,6 +227,10 @@ export default defineComponent({
   height: 100%;
   z-index: 2;
   cursor: crosshair;
+
+  svg {
+    overflow: visible;
+  }
 }
 .selection {
   position: absolute;

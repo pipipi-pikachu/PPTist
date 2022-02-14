@@ -32,7 +32,7 @@ export default defineComponent({
     
     const remark = computed(() => currentSlide.value?.remark || '')
 
-    const handleInput = (e: InputEvent) => {
+    const handleInput = (e: Event) => {
       const value = (e.target as HTMLTextAreaElement).value
       slidesStore.updateSlide({ remark: value })
     }

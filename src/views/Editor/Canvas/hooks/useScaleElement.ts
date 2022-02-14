@@ -2,7 +2,7 @@ import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
-import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
+import { OperateResizeHandlers, OperateResizeHandler, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
@@ -105,7 +105,7 @@ export default (
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 缩放元素
-  const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
+  const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandler) => {
     let isMouseDown = true
     mainStore.setScalingState(true)
 
@@ -412,7 +412,7 @@ export default (
   }
 
   // 多选元素缩放
-  const scaleMultiElement = (e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandlers) => {
+  const scaleMultiElement = (e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandler) => {
     let isMouseDown = true
     
     const { minX, maxX, minY, maxY } = range

@@ -32,16 +32,22 @@
 import { defineComponent, ref } from 'vue'
 import { message } from 'ant-design-vue'
 
+type TypeKey = 'video' | 'audio'
+interface TabItem {
+  key: TypeKey;
+  label: string;
+}
+
 export default defineComponent({
   name: 'media-input',
   emits: ['insertVideo', 'insertAudio', 'close'],
   setup(props, { emit }) {
-    const type = ref<'video' | 'audio'>('video')
+    const type = ref<TypeKey>('video')
 
     const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_watermarked/181004_04_Dolphins-Whale_06_preview.webm')
     const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
-    const tabs = [
+    const tabs: TabItem[] = [
       { key: 'video', label: '视频' },
       { key: 'audio', label: '音频' },
     ]

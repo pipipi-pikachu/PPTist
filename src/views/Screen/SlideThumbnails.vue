@@ -34,6 +34,7 @@ export default defineComponent({
   props: {
     turnSlideToIndex: {
       type: Function as PropType<(index: number) => void>,
+      required: true,
     },
   },
   setup(props, { emit }) {

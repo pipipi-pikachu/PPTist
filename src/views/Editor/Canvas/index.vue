@@ -267,7 +267,6 @@ export default defineComponent({
       viewportStyles,
       canvasScale,
       mouseSelectionState,
-      currentSlide,
       creatingElement,
       alignmentLines,
       linkDialogVisible,

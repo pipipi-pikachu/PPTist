@@ -32,7 +32,7 @@ export default defineComponent({
       inputRef.value.value = ''
       inputRef.value.click()
     }
-    const handleChange = (e: InputEvent) => {
+    const handleChange = (e: Event) => {
       const files = (e.target as HTMLInputElement).files
       if (files) emit('change', files)
     }

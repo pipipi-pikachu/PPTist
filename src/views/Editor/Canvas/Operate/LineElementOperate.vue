@@ -4,8 +4,7 @@
       <ResizeHandler
         class="operate-resize-handler" 
         v-for="point in resizeHandlers"
-        :key="point.direction"
-        :type="point.direction"
+        :key="point.handler"
         :style="point.style"
         @mousedown.stop="$event => dragLineElement($event, elementInfo, point.handler)"
       />

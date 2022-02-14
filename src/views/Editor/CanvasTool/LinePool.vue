@@ -37,9 +37,6 @@
                 fill="none" 
                 stroke-width="2" 
                 :stroke-dasharray="line.style === 'solid' ? '0, 0' : '4, 1'"
-                stroke-linecap 
-                stroke-linejoin 
-                stroke-miterlimit 
                 :marker-start="line.points[0] ? `url(#${`preset-line-${index}`}-${line.points[0]}-start)` : ''"
                 :marker-end="line.points[1] ? `url(#${`preset-line-${index}`}-${line.points[1]}-end)` : ''"
               ></path>

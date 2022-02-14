@@ -10,7 +10,9 @@
 </template>
 
 <script lang="ts">
-export default {
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'mouse-selection',
   props: {
     top: {
@@ -37,7 +39,7 @@ export default {
       },
     },
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -5,8 +5,8 @@
     :style="{
       top: elementInfo.top * canvasScale + 'px',
       left: elementInfo.left * canvasScale + 'px',
-      transform: `rotate(${elementInfo.rotate}deg)`,
-      transformOrigin: `${elementInfo.width * canvasScale / 2}px ${elementInfo.height * canvasScale / 2}px`,
+      transform: `rotate(${rotate}deg)`,
+      transformOrigin: `${elementInfo.width * canvasScale / 2}px ${height * canvasScale / 2}px`,
     }"
   >
     <component
@@ -28,6 +28,7 @@
 
     <LinkHandler 
       :elementInfo="elementInfo" 
+      :link="elementInfo.link"
       :openLinkDialog="openLinkDialog" 
       v-if="isActive && elementInfo.link" 
       @mousedown.stop 
@@ -39,7 +40,7 @@
 import { defineComponent, PropType, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ElementTypes, PPTElement } from '@/types/slides'
+import { ElementTypes, PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
 import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
@@ -77,15 +78,15 @@ export default defineComponent({
       required: true,
     },
     rotateElement: {
-      type: Function as PropType<(element: PPTElement) => void>,
+      type: Function as PropType<(element: Exclude<PPTElement, PPTLineElement | PPTVideoElement | PPTAudioElement>) => void>,
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandler) => void>,
       required: true,
     },
     dragLineElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateLineHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => void>,
       required: true,
     },
     openLinkDialog: {
@@ -117,11 +118,16 @@ export default defineComponent({
       return animations.findIndex(animation => animation.elId === props.elementInfo.id)
     })
 
+    const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
+    const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.height : 0)
+
     return {
       currentOperateComponent,
       canvasScale,
       toolbarState,
       elementIndexInAnimation,
+      rotate,
+      height,
     }
   },
 })
