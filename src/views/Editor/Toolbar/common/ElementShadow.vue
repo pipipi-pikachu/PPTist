@@ -6,7 +6,7 @@
         <Switch :checked="hasShadow" @change="checked => toggleShadow(checked)" />
       </div>
     </div>
-    <template v-if="hasShadow">
+    <template v-if="hasShadow && shadow">
       <div class="row">
         <div style="flex: 2;">水平阴影：</div>
         <Slider 

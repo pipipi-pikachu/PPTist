@@ -15,7 +15,7 @@
         <Slider
           class="filter-slider"
           :max="filter.max"
-          :min="filter.min"
+          :min="0"
           :step="filter.step"
           :value="filter.value"
           @change="value => updateFilter(filter, value)"
