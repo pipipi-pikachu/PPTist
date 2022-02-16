@@ -7,6 +7,7 @@ export interface LinePoolItem {
   points: [LinePoint, LinePoint];
   isBroken?: boolean;
   isCurve?: boolean;
+  isCubic?: boolean;
 }
 
 interface PresetLine {
@@ -30,6 +31,7 @@ export const LINE_LIST: PresetLine[] = [
     children: [
       { path: 'M 0 0 L 0 20 L 20 20', style: 'solid', points: ['', 'arrow'], isBroken: true },
       { path: 'M 0 0 Q 0 20 20 20', style: 'solid', points: ['', 'arrow'], isCurve: true },
+      { path: 'M 0 0 C 20 0 0 20 20 20', style: 'solid', points: ['', 'arrow'], isCubic: true },
     ],
   },
 ]

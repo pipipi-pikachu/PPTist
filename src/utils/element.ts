@@ -197,9 +197,15 @@ export const getLineElementPath = (element: PPTLineElement) => {
     const mid = element.broken.join(',')
     return `M${start} L${mid} L${end}`
   }
-  if (element.curve) {
+  else if (element.curve) {
     const mid = element.curve.join(',')
     return `M${start} Q${mid} ${end}`
+  }
+  else if (element.cubic) {
+    const [c1, c2] = element.cubic
+    const p1 = c1.join(',')
+    const p2 = c2.join(',')
+    return `M${start} C${p1} ${p2} ${end}`
   }
   return `M${start} L${end}`
 }

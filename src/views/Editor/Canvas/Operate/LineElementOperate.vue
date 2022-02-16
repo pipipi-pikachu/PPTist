@@ -63,16 +63,34 @@ export default defineComponent({
       ]
 
       if (props.elementInfo.curve || props.elementInfo.broken) {
-        const midHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
+        const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
 
         handlers.push({
-          handler: OperateLineHandlers.MID,
+          handler: OperateLineHandlers.C,
           style: {
-            left: midHandler[0] * canvasScale.value + 'px',
-            top: midHandler[1] * canvasScale.value + 'px',
+            left: ctrlHandler[0] * canvasScale.value + 'px',
+            top: ctrlHandler[1] * canvasScale.value + 'px',
           }
         })
       }
+      else if (props.elementInfo.cubic) {
+        const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic
+        handlers.push({
+          handler: OperateLineHandlers.C1,
+          style: {
+            left: ctrlHandler1[0] * canvasScale.value + 'px',
+            top: ctrlHandler1[1] * canvasScale.value + 'px',
+          }
+        })
+        handlers.push({
+          handler: OperateLineHandlers.C2,
+          style: {
+            left: ctrlHandler2[0] * canvasScale.value + 'px',
+            top: ctrlHandler2[1] * canvasScale.value + 'px',
+          }
+        })
+      }
+
       return handlers
     })
 

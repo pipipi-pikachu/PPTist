@@ -44,12 +44,14 @@ export const enum OperateResizeHandlers {
   RIGHT_BOTTOM = 'right-bottom',
 }
 
-export type OperateLineHandler = 'start' | 'end' | 'mid'
+export type OperateLineHandler = 'start' | 'end' | 'ctrl' | 'ctrl1' | 'ctrl2'
 
 export const enum OperateLineHandlers {
   START = 'start',
   END = 'end',
-  MID = 'mid',
+  C = 'ctrl',
+  C1 = 'ctrl1',
+  C2 = 'ctrl2',
 }
 
 export interface AlignmentLineAxis {
