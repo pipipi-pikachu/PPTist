@@ -27,7 +27,7 @@ export default () => {
   // 重置幻灯片
   const resetSlides = () => {
     const emptySlide: Slide = {
-      id: createRandomCode(8),
+      id: createRandomCode(),
       elements: [],
       background: {
         type: 'solid',
@@ -74,7 +74,7 @@ export default () => {
   // 创建一页空白页并添加到下一页
   const createSlide = () => {
     const emptySlide: Slide = {
-      id: createRandomCode(8),
+      id: createRandomCode(),
       elements: [],
       background: {
         type: 'solid',
@@ -96,7 +96,7 @@ export default () => {
     }
     const newSlide = {
       ...slide,
-      id: createRandomCode(8),
+      id: createRandomCode(),
     }
     mainStore.setActiveElementIdList([])
     slidesStore.addSlide(newSlide)

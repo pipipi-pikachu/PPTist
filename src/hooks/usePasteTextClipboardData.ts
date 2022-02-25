@@ -65,7 +65,7 @@ export default () => {
       }
       return {
         ...slide,
-        id: createRandomCode(8),
+        id: createRandomCode(),
       }
     })
     slidesStore.addSlide(newSlides)

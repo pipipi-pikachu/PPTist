@@ -4,7 +4,7 @@ import { padStart } from 'lodash'
  * 生成随机码
  * @param len 随机码长度
  */
-export const createRandomCode = (len = 6) => {
+export const createRandomCode = (len = 8) => {
   const charset = `_0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz`
   const maxLen = charset.length
   let ret = ''
