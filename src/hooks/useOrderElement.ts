@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
-import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
+import { ElementOrderCommands } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -192,7 +192,7 @@ export default () => {
    * @param element 需要调整层级的元素
    * @param command 调整命令：上移、下移、置顶、置底
    */
-  const orderElement = (element: PPTElement, command: ElementOrderCommand) => {
+  const orderElement = (element: PPTElement, command: ElementOrderCommands) => {
     let newElementList
     
     if (command === ElementOrderCommands.UP) newElementList = moveUpElement(currentSlide.value.elements, element)

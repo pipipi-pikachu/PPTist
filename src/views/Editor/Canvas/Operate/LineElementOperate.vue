@@ -17,7 +17,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTLineElement } from '@/types/slides'
-import { OperateLineHandler, OperateLineHandlers } from '@/types/edit'
+import { OperateLineHandlers } from '@/types/edit'
 
 import ResizeHandler from './ResizeHandler.vue'
 
@@ -37,7 +37,7 @@ export default defineComponent({
       required: true,
     },
     dragLineElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void>,
       required: true,
     },
   },

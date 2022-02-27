@@ -19,7 +19,7 @@
 import { computed, defineComponent, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { ToolbarState, ToolbarStates } from '@/types/toolbar'
+import { ToolbarStates } from '@/types/toolbar'
 
 import ElementStylePanel from './ElementStylePanel/index.vue'
 import ElementPositionPanel from './ElementPositionPanel.vue'
@@ -31,7 +31,7 @@ import SymbolPanel from './SymbolPanel.vue'
 
 interface ElementTabs {
   label: string;
-  value: ToolbarState;
+  value: ToolbarStates;
 }
 
 export default defineComponent({
@@ -65,7 +65,7 @@ export default defineComponent({
       { label: '样式', value: ToolbarStates.EL_STYLE },
     ]
 
-    const setToolbarState = (value: ToolbarState) => {
+    const setToolbarState = (value: ToolbarStates) => {
       mainStore.setToolbarState(value)
     }
 
@@ -76,7 +76,7 @@ export default defineComponent({
     })
 
     watch(currentTabs, () => {
-      const currentTabsValue: ToolbarState[] = currentTabs.value.map(tab => tab.value)
+      const currentTabsValue: ToolbarStates[] = currentTabs.value.map(tab => tab.value)
       if (!currentTabsValue.includes(toolbarState.value)) {
         mainStore.setToolbarState(currentTabsValue[0])
       }

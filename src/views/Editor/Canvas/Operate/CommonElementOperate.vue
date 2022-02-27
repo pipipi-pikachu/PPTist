@@ -32,7 +32,7 @@ import { computed, defineComponent, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTShapeElement, PPTVideoElement, PPTLatexElement, PPTAudioElement } from '@/types/slides'
-import { OperateResizeHandler } from '@/types/edit'
+import { OperateResizeHandlers } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'
@@ -63,7 +63,7 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void>,
       required: true,
     },
   },

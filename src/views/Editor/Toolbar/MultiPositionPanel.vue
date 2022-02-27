@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ElementAlignCommand } from '@/types/edit'
+import { ElementAlignCommands } from '@/types/edit'
 import useCombineElement from '@/hooks/useCombineElement'
 import useAlignActiveElement from '@/hooks/useAlignActiveElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
@@ -55,7 +55,7 @@ export default defineComponent({
     // 多选元素对齐，需要先判断当前所选中的元素状态：
     // 如果所选元素为一组组合元素，则将它对齐到画布；
     // 如果所选元素不是组合元素或不止一组元素（即当前为可组合状态），则将这多个（多组）元素相互对齐。
-    const alignElement = (command: ElementAlignCommand) => {
+    const alignElement = (command: ElementAlignCommands) => {
       if (canCombine.value) alignActiveElement(command)
       else alignElementToCanvas(command)
     }

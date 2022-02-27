@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
-import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
+import { ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useHistorySnapshot from './useHistorySnapshot'
@@ -17,7 +17,7 @@ export default () => {
    * 将所有选中的元素对齐到画布
    * @param command 对齐方向
    */
-  const alignElementToCanvas = (command: ElementAlignCommand) => {
+  const alignElementToCanvas = (command: ElementAlignCommands) => {
     const viewportWidth = VIEWPORT_SIZE
     const viewportHeight = VIEWPORT_SIZE * viewportRatio.value
     const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)

@@ -2,7 +2,7 @@ import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, PPTLineElement } from '@/types/slides'
-import { OperateLineHandler, OperateLineHandlers } from '@/types/edit'
+import { OperateLineHandlers } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface AdsorptionPoint {
@@ -17,7 +17,7 @@ export default (elementList: Ref<PPTElement[]>) => {
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 拖拽线条端点
-  const dragLineElement = (e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => {
+  const dragLineElement = (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => {
     let isMouseDown = true
 
     const sorptionRange = 8

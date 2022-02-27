@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { CreatingElement } from '@/types/edit'
-import { ToolbarState } from '@/types/toolbar'
+import { ToolbarStates } from '@/types/toolbar'
 import { SYS_FONTS } from '@/configs/font'
 import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { isSupportFont } from '@/utils/font'
@@ -19,7 +19,7 @@ export interface MainState {
   showGridLines: boolean;
   creatingElement: CreatingElement | null;
   availableFonts: typeof SYS_FONTS;
-  toolbarState: ToolbarState;
+  toolbarState: ToolbarStates;
   clipingImageElementId: string;
   isScaling: boolean;
   richTextAttrs: TextAttrs;
@@ -41,7 +41,7 @@ export const useMainStore = defineStore('main', {
     showGridLines: false, // 显示网格线
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     availableFonts: [], // 当前环境可用字体
-    toolbarState: 'slideDesign', // 右侧工具栏状态
+    toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
     richTextAttrs: defaultRichTextAttrs, // 富文本状态
     selectedTableCells: [], // 选中的表格单元格
@@ -114,7 +114,7 @@ export const useMainStore = defineStore('main', {
       this.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
     },
   
-    setToolbarState(toolbarState: ToolbarState) {
+    setToolbarState(toolbarState: ToolbarStates) {
       this.toolbarState = toolbarState
     },
   

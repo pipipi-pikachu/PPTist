@@ -4,13 +4,13 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue'
-import { OperateResizeHandler } from '@/types/edit'
+import { OperateResizeHandlers } from '@/types/edit'
 
 export default defineComponent({
   name: 'resize-handler',
   props: {
     type: {
-      type: String as PropType<OperateResizeHandler>,
+      type: String as PropType<OperateResizeHandlers>,
       default: '',
     },
     rotate: {

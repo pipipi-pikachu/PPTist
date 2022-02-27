@@ -1,5 +1,3 @@
-export type ToolbarState = 'symbol' | 'elAnimation' | 'elStyle' | 'elPosition' | 'slideDesign' | 'slideAnimation' | 'multiPosition'
-
 export const enum ToolbarStates {
   SYMBOL = 'symbol',
   EL_ANIMATION = 'elAnimation',

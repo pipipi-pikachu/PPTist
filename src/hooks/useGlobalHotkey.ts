@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
-import { ElementOrderCommand, ElementOrderCommands } from '@/types/edit'
+import { ElementOrderCommands } from '@/types/edit'
 import { KEYS } from '@/configs/hotkey'
 
 import useSlideHandler from './useSlideHandler'
@@ -95,7 +95,7 @@ export default () => {
     else if (key === KEYS.UP || key === KEYS.DOWN) updateSlideIndex(key)
   }
 
-  const order = (command: ElementOrderCommand) => {
+  const order = (command: ElementOrderCommands) => {
     if (!handleElement.value) return
     orderElement(handleElement.value, command)
   }

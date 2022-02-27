@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
-import { ElementAlignCommand, ElementAlignCommands } from '@/types/edit'
+import { ElementAlignCommands } from '@/types/edit'
 import { getElementListRange, getRectRotatedOffset } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
@@ -16,7 +16,7 @@ export default () => {
    * 对齐选中的元素
    * @param command 对齐方向
    */
-  const alignActiveElement = (command: ElementAlignCommand) => {
+  const alignActiveElement = (command: ElementAlignCommands) => {
     const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)
     const elementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 

@@ -70,7 +70,7 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, 
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { ImageClipData, ImageClipDataRange, ImageClipedEmitData, OperateResizeHandler, OperateResizeHandlers } from '@/types/edit'
+import { ImageClipData, ImageClipDataRange, ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
 
 export default defineComponent({
   name: 'image-clip-handler',
@@ -330,7 +330,7 @@ export default defineComponent({
     }
 
     // 缩放裁剪区域
-    const scaleClipRange = (e: MouseEvent, type: OperateResizeHandler) => {
+    const scaleClipRange = (e: MouseEvent, type: OperateResizeHandlers) => {
       isSettingClipRange.value = true
       let isMouseDown = true
 

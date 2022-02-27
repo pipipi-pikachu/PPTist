@@ -26,7 +26,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
-import { OperateResizeHandler, MultiSelectRange } from '@/types/edit'
+import { OperateResizeHandlers, MultiSelectRange } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import ResizeHandler from './ResizeHandler.vue'
@@ -44,7 +44,7 @@ export default defineComponent({
       required: true,
     },
     scaleMultiElement: {
-      type: Function as PropType<(e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandlers) => void>,
       required: true,
     },
   },

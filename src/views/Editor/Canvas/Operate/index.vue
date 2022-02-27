@@ -41,7 +41,7 @@ import { defineComponent, PropType, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ElementTypes, PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
-import { OperateLineHandler, OperateResizeHandler } from '@/types/edit'
+import { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'
@@ -82,11 +82,11 @@ export default defineComponent({
       required: true,
     },
     scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void>,
       required: true,
     },
     dragLineElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandler) => void>,
+      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void>,
       required: true,
     },
     openLinkDialog: {
