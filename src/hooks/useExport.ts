@@ -301,8 +301,8 @@ export default () => {
           }
           else {
             const scale = {
-              x: el.width / el.viewBox,
-              y: el.height / el.viewBox,
+              x: el.width / el.viewBox[0],
+              y: el.height / el.viewBox[1],
             }
             const points = formatPoints(toPoints(el.path), scale)
   

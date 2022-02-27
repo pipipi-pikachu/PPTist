@@ -254,7 +254,7 @@ export interface ShapeText {
  * 
  * type: 元素类型（shape）
  * 
- * viewBox: SVG的viewBox属性，默认为正方形，例如 1000 表示 '0 0 1000 1000'
+ * viewBox: SVG的viewBox属性，例如 [1000, 1000] 表示 '0 0 1000 1000'
  * 
  * path: 形状路径，SVG path 的 d 属性
  * 
@@ -280,7 +280,7 @@ export interface ShapeText {
  */
 export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape';
-  viewBox: number;
+  viewBox: [number, number];
   path: string;
   fixedRatio: boolean;
   fill: string;
