@@ -5,6 +5,7 @@ import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/
 import { OperateResizeHandlers, OperateResizeHandler, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
+import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -393,7 +394,17 @@ export default (
         }
       }
       
-      elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, left, top, width, height } : el)
+      elementList.value = elementList.value.map(el => {
+        if (element.id !== el.id) return el
+        if (el.type === 'shape' && 'pathFormula' in el && el.pathFormula) {
+          return {
+            ...el, left, top, width, height,
+            viewBox: [width, height],
+            path: SHAPE_PATH_FORMULAS[el.pathFormula](width, height),
+          }
+        }
+        return { ...el, left, top, width, height }
+      })
     }
 
     document.onmouseup = e => {

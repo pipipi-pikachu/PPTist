@@ -1,5 +1,15 @@
 import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 
+export const enum ShapePathFormulasKeys {
+  ROUND_RECT = 'roundRect',
+  ROUND_RECT_DIAGONAL = 'roundRectDiagonal',
+  ROUND_RECT_SINGLE = 'roundRectSingle',
+  ROUND_RECT_SAMESIDE = 'roundRectSameSide',
+  CUT_RECT_DIAGONAL = 'cutRectDiagonal',
+  CUT_RECT_SINGLE = 'cutRectSingle',
+  CUT_RECT_SAMESIDE = 'cutRectSameSide',
+}
+
 export const enum ElementTypes {
   TEXT = 'text',
   IMAGE = 'image',
@@ -277,6 +287,10 @@ export interface ShapeText {
  * special?: 特殊形状（标记一些难以解析的形状，例如路径使用了 L Q C A 以外的类型，该类形状在导出后将变为图片的形式）
  * 
  * text?: 形状内文本
+ * 
+ * pathFormula?: 形状路径计算公式
+ * 一般情况下，形状的大小变化时仅由宽高基于 viewBox 的缩放比例来调整形状，而 viewBox 本身和 path 不会变化，
+ * 但也有一些形状希望能更精确的控制一些关键点的位置，此时就需要提供路径计算公式，通过在缩放时更新 viewBox 并重新计算 path 来重新绘制形状
  */
 export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape';
@@ -292,6 +306,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   shadow?: PPTElementShadow;
   special?: boolean;
   text?: ShapeText;
+  pathFormula?: ShapePathFormulasKeys;
 }
 
 

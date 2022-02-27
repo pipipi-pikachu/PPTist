@@ -1,12 +1,46 @@
+import { ShapePathFormulasKeys } from '@/types/slides'
+
 export interface ShapePoolItem {
   viewBox: [number, number];
   path: string;
   special?: boolean;
+  pathFormula?: ShapePathFormulasKeys;
 }
 
 interface ShapeListItem {
   type: string;
   children: ShapePoolItem[];
+}
+
+export const SHAPE_PATH_FORMULAS = {
+  [ShapePathFormulasKeys.ROUND_RECT]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 8
+    return `M ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+  },
+  [ShapePathFormulasKeys.CUT_RECT_DIAGONAL]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 5
+    return `M 0 ${height - radius} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L ${radius} ${height} Z`
+  },
+  [ShapePathFormulasKeys.CUT_RECT_SINGLE]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 5
+    return `M 0 ${height} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} Z`
+  },
+  [ShapePathFormulasKeys.CUT_RECT_SAMESIDE]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 5
+    return `M 0 ${radius} L ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+  },
+  [ShapePathFormulasKeys.ROUND_RECT_DIAGONAL]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 8
+    return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 0 Z`
+  },
+  [ShapePathFormulasKeys.ROUND_RECT_SINGLE]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 8
+    return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 0 Z`
+  },
+  [ShapePathFormulasKeys.ROUND_RECT_SAMESIDE]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 8
+    return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+  },
 }
 
 export const SHAPE_LIST: ShapeListItem[] = [
@@ -19,31 +53,38 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 20 0 L 180 0 Q 200 0 200 20 L 200 180 Q 200 200 180 200 L 20 200 Q 0 200 0 180 L 0 20 Q 0 0 20 0 Z'
+        path: 'M 50 0 L 150 0 Q 200 0 200 50 L 200 150 Q 200 200 150 200 L 50 200 Q 0 200 0 150 L 0 50 Q 0 0 50 0 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_RECT,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 L 0 150 Z'
+        path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
+        pathFormula: ShapePathFormulasKeys.CUT_RECT_DIAGONAL,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 L 0 200'
+        path: 'M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 Z',
+        pathFormula: ShapePathFormulasKeys.CUT_RECT_SINGLE,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 50 L 50 0 L 150 0 L 200 50 L 200 200 L 0 200 L 0 50 Z'
+        path: 'M 0 50 L 50 0 L 150 0 L 200 50 L 200 200 L 0 200 Z',
+        pathFormula: ShapePathFormulasKeys.CUT_RECT_SAMESIDE,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 140 0 Q 200 0 200 60 L 200 200 L 60 200 Q 0 200 0 140 L 0 0 Z'
+        path: 'M 0 0 L 150 0 Q 200 0 200 50 L 200 200 L 50 200 Q 0 200 0 150 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 140 0 Q 200 0 200 60 L 200 200 L 0 200 L 0 0 Z'
+        path: 'M 0 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_RECT_SINGLE,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 50 Q 0 0 50 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 L 0 50 Z'
+        path: 'M 0 50 Q 0 0 50 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_RECT_SAMESIDE,
       },
     ]
   },

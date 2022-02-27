@@ -4,7 +4,7 @@ import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { PPTLineElement, ChartType, PPTElement, TableCell, TableCellStyle, PPTShapeElement } from '@/types/slides'
-import { ShapePoolItem } from '@/configs/shapes'
+import { ShapePoolItem, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -195,6 +195,11 @@ export default () => {
       rotate: 0,
     }
     if (data.special) newElement.special = true
+    if (data.pathFormula) {
+      newElement.pathFormula = data.pathFormula
+      newElement.viewBox = [width, height]
+      newElement.path = SHAPE_PATH_FORMULAS[data.pathFormula](width, height)
+    }
     createElement(newElement)
   }
   
