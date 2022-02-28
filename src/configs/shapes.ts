@@ -41,6 +41,17 @@ export const SHAPE_PATH_FORMULAS = {
     const radius = Math.min(width, height) / 8
     return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
   },
+  [ShapePathFormulasKeys.MESSAGE]: (width: number, height: number) => {
+    const arrowWidth = width / 5
+    const arrowheight = height / 5
+    return `M 0 0 L ${width} 0 L ${width} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L 0 ${height - arrowheight} Z`
+  },
+  [ShapePathFormulasKeys.ROUND_MESSAGE]: (width: number, height: number) => {
+    const radius = Math.min(width, height) / 8
+    const arrowWidth = width / 5
+    const arrowheight = height / 5
+    return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`
+  },
 }
 
 export const SHAPE_LIST: ShapeListItem[] = [
@@ -210,11 +221,13 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 200 0 L 200 160 L 100 160 L 60 200 L 60 160 L 0 160 L 0 0 Z'
+        path: 'M 0 0 L 200 0 L 200 160 L 100 160 L 60 200 L 60 160 L 0 160 Z',
+        pathFormula: ShapePathFormulasKeys.MESSAGE,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 120 Q 200 160 160 160 L 100 160 L 60 200 L 60 160 L 40 160 Q 0 160 0 120 L 0 40 Z'
+        path: 'M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 120 Q 200 160 160 160 L 100 160 L 60 200 L 60 160 L 40 160 Q 0 160 0 120 L 0 40 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_MESSAGE,
       },
       {
         viewBox: [200, 200],
