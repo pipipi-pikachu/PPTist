@@ -37,9 +37,7 @@ export const WEB_FONTS = [
   { label: '站酷快乐体', value: '站酷快乐体' },
   { label: '字制区喜脉体', value: '字制区喜脉体' },
   { label: '素材集市康康体', value: '素材集市康康体' },
-  { label: '联盟起艺卢帅正锐黑体', value: '联盟起艺卢帅正锐黑体' },
   { label: '素材集市酷方体', value: '素材集市酷方体' },
   { label: '途牛类圆体', value: '途牛类圆体' },
   { label: '锐字真言体', value: '锐字真言体' },
-  { label: '阿里汉仪智能黑体', value: '阿里汉仪智能黑体' },
 ]

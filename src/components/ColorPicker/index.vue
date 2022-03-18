@@ -19,7 +19,8 @@
     </div>
 
     <div class="picker-field">
-      <EditableInput :value="color" @colorChange="value => changeColor(value)" />
+      <EditableInput class="input" :value="color" @colorChange="value => changeColor(value)" />
+      <div class="straw" @click="pickColor()"><IconElectronicPen theme="two-tone" :fill="['#333', '#e2c2c2']" /></div>
     </div>
 
     <div class="picker-presets">
@@ -74,6 +75,7 @@
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 import { debounce } from 'lodash'
+import { toCanvas } from 'html-to-image'
 
 import Alpha from './Alpha.vue'
 import Checkboard from './Checkboard.vue'
@@ -203,6 +205,72 @@ export default defineComponent({
       updateRecentColorsCache()
     }
 
+    const pickColor = () => {
+      const targetRef: HTMLElement | null = document.querySelector('.canvas')
+      if (!targetRef) return
+
+      const maskRef = document.createElement('div')
+      maskRef.style.cssText = 'position: fixed; top: 0; left: 0; bottom: 0; right: 0; z-index: 9999; cursor: wait;'
+      document.body.appendChild(maskRef)
+
+      const colorBlockRef = document.createElement('div')
+      colorBlockRef.style.cssText = 'position: absolute; top: -100px; left: -100px; width: 16px; height: 16px; border: 1px solid #000; z-index: 999'
+      maskRef.appendChild(colorBlockRef)
+
+      const { left, top } = targetRef.getBoundingClientRect()
+
+      const filter = (node: HTMLElement) => !(node.classList && node.classList.contains('operate'))
+
+      toCanvas(targetRef, { filter, fontEmbedCSS: '' }).then(canvasRef => {
+        canvasRef.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; cursor: crosshair;`
+        maskRef.style.cursor = 'default'
+        maskRef.appendChild(canvasRef)
+
+        const ctx = canvasRef.getContext('2d')
+        if (!ctx) return
+
+        let currentColor = ''
+        const handleMousemove = (e: MouseEvent) => {
+          const x = e.x
+          const y = e.y
+
+          const mouseX = x - left
+          const mouseY = y - top
+
+          const [r, g, b, a] = ctx.getImageData(mouseX, mouseY, 1, 1).data
+          currentColor = `rgba(${r}, ${g}, ${b}, ${(a / 255).toFixed(2)})`
+
+          colorBlockRef.style.left = x + 10 + 'px'
+          colorBlockRef.style.top = y + 10 + 'px'
+          colorBlockRef.style.backgroundColor = currentColor
+        }
+        const handleMouseleave = () => {
+          currentColor = ''
+          colorBlockRef.style.left = '-100px'
+          colorBlockRef.style.top = '-100px'
+          colorBlockRef.style.backgroundColor = ''
+        }
+        const handleMousedown = (e: MouseEvent) => {
+          if (currentColor && e.button === 0) {
+            const tColor = tinycolor(currentColor)
+            hue.value = tColor.toHsl().h
+            color.value = tColor.toRgb()
+
+            updateRecentColorsCache()
+          }
+          document.body.removeChild(maskRef)
+          
+          canvasRef.removeEventListener('mousemove', handleMousemove)
+          canvasRef.removeEventListener('mouseleave', handleMouseleave)
+          window.removeEventListener('mousedown', handleMousedown)
+        }
+
+        canvasRef.addEventListener('mousemove', handleMousemove)
+        canvasRef.addEventListener('mouseleave', handleMouseleave)
+        window.addEventListener('mousedown', handleMousedown)
+      })
+    }
+
     return {
       themeColors,
       standardColors,
@@ -213,6 +281,7 @@ export default defineComponent({
       changeColor,
       selectPresetColor,
       recentColors,
+      pickColor,
     }
   },
 })
@@ -268,7 +337,23 @@ export default defineComponent({
 }
 
 .picker-field {
+  display: flex;
   margin-bottom: 8px;
+
+  .straw {
+    width: 24px;
+    height: 24px;
+    margin-top: 4px;
+    margin-left: 4px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  .input {
+    flex: 1;
+  }
 }
 
 .picker-presets {

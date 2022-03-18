@@ -86,6 +86,7 @@ import {
   VolumeSmall,
   VideoTwo,
   Formula,
+  ElectronicPen,
 } from '@icon-park/vue-next'
 
 export default {
@@ -195,6 +196,7 @@ export default {
     app.component('IconLogout', Logout)
     app.component('IconClear', Clear)
     app.component('IconFolderClose', FolderClose)
+    app.component('IconElectronicPen', ElectronicPen)
 
     // 视频播放器
     app.component('IconPause', Pause)

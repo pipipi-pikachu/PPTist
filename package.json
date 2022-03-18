@@ -19,6 +19,7 @@
     "dexie": "^3.0.3",
     "file-saver": "^2.0.5",
     "hfmath": "0.0.2",
+    "html-to-image": "^1.9.0",
     "lodash": "^4.17.20",
     "mitt": "^3.0.0",
     "pinia": "^2.0.11",
