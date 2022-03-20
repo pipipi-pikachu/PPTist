@@ -116,6 +116,12 @@
           @click="emitRichTextCommand('strikethrough')"
         ><IconStrikethrough /></CheckboxButton>
       </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
+        <CheckboxButton
+          style="flex: 1;"
+          @click="emitRichTextCommand('clear')"
+        ><IconFormat /></CheckboxButton>
+      </Tooltip>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
@@ -147,11 +153,23 @@
           @click="emitRichTextCommand('blockquote')"
         ><IconQuote /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
-        <CheckboxButton
-          style="flex: 1;"
-          @click="emitRichTextCommand('clear')"
-        ><IconFormat /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="超链接">
+        <Popover placement="bottomRight" trigger="click" v-model:visible="linkPopoverVisible">
+          <template #content>
+            <div class="link-popover">
+              <Input v-model:value="link" placeholder="请输入超链接" />
+              <div class="btns">
+                <Button size="small" :disabled="!richTextAttrs.link" @click="updateLink()" style="margin-right: 5px;">移除</Button>
+                <Button size="small" type="primary" @click="updateLink(link)">确认</Button>
+              </div>
+            </div>
+          </template>
+          <CheckboxButton
+            style="flex: 1;"
+            :checked="!!richTextAttrs.link"
+            @click="openLinkPopover()"
+          ><IconLinkOne /></CheckboxButton>
+        </Popover>
       </Tooltip>
     </CheckboxButtonGroup>
 
@@ -316,6 +334,13 @@ export default defineComponent({
     const slidesStore = useSlidesStore()
     const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(useMainStore())
 
+    const { addHistorySnapshot } = useHistorySnapshot()
+
+    const updateElement = (props: Partial<PPTTextElement>) => {
+      slidesStore.updateElement({ id: handleElementId.value, props })
+      addHistorySnapshot()
+    }
+
     const fill = ref<string>()
     const lineHeight = ref<number>()
     const wordSpace = ref<number>()
@@ -336,23 +361,6 @@ export default defineComponent({
     const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 
-    // 发射富文本设置命令
-    const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
-    }
-
-    // 发射富文本设置命令（批量）
-    const emitBatchRichTextCommand = (payload: RichTextCommand[]) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, payload)
-    }
-
-    const { addHistorySnapshot } = useHistorySnapshot()
-
-    const updateElement = (props: Partial<PPTTextElement>) => {
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-
     // 设置行高
     const updateLineHeight = (value: number) => {
       updateElement({ lineHeight: value })
@@ -366,6 +374,31 @@ export default defineComponent({
     // 设置文本框填充
     const updateFill = (value: string) => {
       updateElement({ fill: value })
+    }
+
+    // 发射富文本设置命令
+    const emitRichTextCommand = (command: string, value?: string) => {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
+    }
+
+    // 发射富文本设置命令（批量）
+    const emitBatchRichTextCommand = (payload: RichTextCommand[]) => {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, payload)
+    }
+
+    // 设置富文本超链接
+    const link = ref('')
+    const linkPopoverVisible = ref(false)
+
+    watch(richTextAttrs, () => linkPopoverVisible.value = false)
+
+    const openLinkPopover = () => {
+      link.value = richTextAttrs.value.link
+      linkPopoverVisible.value = true
+    }
+    const updateLink = (link: string) => {
+      emitRichTextCommand('link', link)
+      linkPopoverVisible.value = false
     }
 
     return {
@@ -384,6 +417,10 @@ export default defineComponent({
       emitRichTextCommand,
       emitBatchRichTextCommand,
       presetStyles,
+      link,
+      linkPopoverVisible,
+      openLinkPopover,
+      updateLink,
     }
   },
 })
@@ -439,5 +476,13 @@ export default defineComponent({
   width: 16px;
   height: 3px;
   margin-top: 1px;
+}
+.link-popover {
+  width: 240px;
+
+  .btns {
+    margin-top: 10px;
+    text-align: right;
+  }
 }
 </style>

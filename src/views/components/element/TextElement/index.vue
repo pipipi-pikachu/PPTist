@@ -183,6 +183,10 @@ export default defineComponent({
   .text {
     position: relative;
   }
+
+  ::v-deep(a) {
+    cursor: text;
+  }
 }
 .drag-handler {
   height: 10px;

@@ -87,6 +87,7 @@ import {
   VideoTwo,
   Formula,
   ElectronicPen,
+  LinkOne,
 } from '@icon-park/vue-next'
 
 export default {
@@ -163,6 +164,7 @@ export default {
     app.component('IconAlignTextTopOne', AlignTextTopOne)
     app.component('IconAlignTextBottomOne', AlignTextBottomOne)
     app.component('IconAlignTextMiddleOne', AlignTextMiddleOne)
+    app.component('IconLinkOne', LinkOne)
 
     // 箭头与符号
     app.component('IconDown', Down)

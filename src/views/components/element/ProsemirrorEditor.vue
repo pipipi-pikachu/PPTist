@@ -13,7 +13,7 @@ import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
-import { getTextAttrs } from '@/utils/prosemirror/utils'
+import { findNodesWithSameMark, getTextAttrs } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -206,6 +206,23 @@ export default defineComponent({
           if (empty) selectAll(editorView.state, editorView.dispatch)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
+        }
+        else if (item.command === 'link') {
+          const markType = editorView.state.schema.marks.link
+          const { from, to } = editorView.state.selection
+          const result = findNodesWithSameMark(editorView.state.doc, from, to, markType)
+          if (result) {
+            if (item.value) {
+              const mark = editorView.state.schema.marks.link.create({ href: item.value, title: item.value })
+              editorView.dispatch(editorView.state.tr.addMark(result.from.pos, result.to.pos + 1, mark))
+            }
+            else editorView.dispatch(editorView.state.tr.removeMark(result.from.pos, result.to.pos + 1, markType))
+          }
+          else if (item.value) {
+            const { empty } = editorView.state.selection
+            if (empty) selectAll(editorView.state, editorView.dispatch)
+            toggleMark(markType, { href: item.value, title: item.value })(editorView.state, editorView.dispatch)
+          }
         }
         else if (item.command === 'insert' && item.value) {
           editorView.dispatch(editorView.state.tr.insertText(item.value))
