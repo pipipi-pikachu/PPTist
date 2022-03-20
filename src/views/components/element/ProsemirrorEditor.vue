@@ -13,7 +13,7 @@ import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
-import { findNodesWithSameMark, getTextAttrs } from '@/utils/prosemirror/utils'
+import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -132,50 +132,38 @@ export default defineComponent({
       for (const item of commands) {
         if (item.command === 'fontname' && item.value) {
           const mark = editorView.state.schema.marks.fontname.create({ fontname: item.value })
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
-          const { $from, $to } = editorView.state.selection
-          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+          autoSelectAll(editorView)
+          addMark(editorView, mark)
         }
         else if (item.command === 'fontsize' && item.value) {
           const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
-          const { $from, $to } = editorView.state.selection
-          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+          autoSelectAll(editorView)
+          addMark(editorView, mark)
         }
         else if (item.command === 'color' && item.value) {
           const mark = editorView.state.schema.marks.forecolor.create({ color: item.value })
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
-          const { $from, $to } = editorView.state.selection
-          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+          autoSelectAll(editorView)
+          addMark(editorView, mark)
         }
         else if (item.command === 'backcolor' && item.value) {
           const mark = editorView.state.schema.marks.backcolor.create({ backcolor: item.value })
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
-          const { $from, $to } = editorView.state.selection
-          editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+          autoSelectAll(editorView)
+          addMark(editorView, mark)
         }
         else if (item.command === 'bold') {
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
+          autoSelectAll(editorView)
           toggleMark(editorView.state.schema.marks.strong)(editorView.state, editorView.dispatch)
         }
         else if (item.command === 'em') {
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
+          autoSelectAll(editorView)
           toggleMark(editorView.state.schema.marks.em)(editorView.state, editorView.dispatch)
         }
         else if (item.command === 'underline') {
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
+          autoSelectAll(editorView)
           toggleMark(editorView.state.schema.marks.underline)(editorView.state, editorView.dispatch)
         }
         else if (item.command === 'strikethrough') {
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
+          autoSelectAll(editorView)
           toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
         }
         else if (item.command === 'subscript') {
@@ -202,8 +190,7 @@ export default defineComponent({
           toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
         }
         else if (item.command === 'clear') {
-          const { empty } = editorView.state.selection
-          if (empty) selectAll(editorView.state, editorView.dispatch)
+          autoSelectAll(editorView)
           const { $from, $to } = editorView.state.selection
           editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
         }
@@ -214,13 +201,12 @@ export default defineComponent({
           if (result) {
             if (item.value) {
               const mark = editorView.state.schema.marks.link.create({ href: item.value, title: item.value })
-              editorView.dispatch(editorView.state.tr.addMark(result.from.pos, result.to.pos + 1, mark))
+              addMark(editorView, mark, { from: result.from.pos, to: result.to.pos + 1 })
             }
             else editorView.dispatch(editorView.state.tr.removeMark(result.from.pos, result.to.pos + 1, markType))
           }
           else if (item.value) {
-            const { empty } = editorView.state.selection
-            if (empty) selectAll(editorView.state, editorView.dispatch)
+            autoSelectAll(editorView)
             toggleMark(markType, { href: item.value, title: item.value })(editorView.state, editorView.dispatch)
           }
         }

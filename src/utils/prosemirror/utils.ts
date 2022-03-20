@@ -1,6 +1,22 @@
 import { Node, NodeType, ResolvedPos, Mark, MarkType } from 'prosemirror-model'
 import { EditorState, Selection } from 'prosemirror-state'
 import { EditorView } from 'prosemirror-view'
+import { selectAll } from 'prosemirror-commands'
+
+export const autoSelectAll = (view: EditorView) => {
+  const { empty } = view.state.selection
+  if (empty) selectAll(view.state, view.dispatch)
+}
+
+export const addMark = (editorView: EditorView, mark: Mark, selection?: { from: number; to: number; }) => {
+  if (selection) {
+    editorView.dispatch(editorView.state.tr.addMark(selection.from, selection.to, mark))
+  }
+  else {
+    const { $from, $to } = editorView.state.selection
+    editorView.dispatch(editorView.state.tr.addMark($from.pos, $to.pos, mark))
+  }
+}
 
 export const findNodesWithSameMark = (doc: Node, from: number, to: number, markType: MarkType) => {
   let ii = from
