@@ -13,7 +13,7 @@ import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
-import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark } from '@/utils/prosemirror/utils'
+import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -204,6 +204,13 @@ export default defineComponent({
               addMark(editorView, mark, { from: result.from.pos, to: result.to.pos + 1 })
             }
             else editorView.dispatch(editorView.state.tr.removeMark(result.from.pos, result.to.pos + 1, markType))
+          }
+          else if (markActive(editorView.state, markType)) {
+            if (item.value) {
+              const mark = editorView.state.schema.marks.link.create({ href: item.value, title: item.value })
+              addMark(editorView, mark)
+            }
+            else toggleMark(markType)(editorView.state, editorView.dispatch)
           }
           else if (item.value) {
             autoSelectAll(editorView)

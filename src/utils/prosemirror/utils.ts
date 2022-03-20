@@ -137,6 +137,12 @@ export const isActiveMark = (marks: Mark[], markType: string) => {
   return false
 }
 
+export const markActive = (state: EditorState, type: MarkType) => {
+  const { from, $from, to, empty } = state.selection
+  if (empty) return type.isInSet(state.storedMarks || $from.marks())
+  return state.doc.rangeHasMark(from, to, type)
+}
+
 export const getAttrValueInSelection = (view: EditorView, attr: string) => {
   const { selection, doc } = view.state
   const { from, to } = selection

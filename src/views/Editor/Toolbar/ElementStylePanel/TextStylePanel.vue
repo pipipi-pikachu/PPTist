@@ -239,14 +239,15 @@
 import { defineComponent, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
+import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { message } from 'ant-design-vue'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
-import { PPTTextElement } from '@/types/slides'
 
 const presetStyles = [
   {
@@ -397,6 +398,10 @@ export default defineComponent({
       linkPopoverVisible.value = true
     }
     const updateLink = (link: string) => {
+      if (link) {
+        const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
+        if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
+      }
       emitRichTextCommand('link', link)
       linkPopoverVisible.value = false
     }
