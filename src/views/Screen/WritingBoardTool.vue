@@ -107,7 +107,7 @@ export default defineComponent({
     height: 50px;
     position: fixed;
     bottom: 5px;
-    left: 5px;
+    right: 5px;
     z-index: 11;
     padding: 12px;
     background-color: #eee;

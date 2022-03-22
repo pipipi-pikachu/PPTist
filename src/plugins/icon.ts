@@ -88,6 +88,9 @@ import {
   Formula,
   ElectronicPen,
   LinkOne,
+  FullScreenOne,
+  OffScreenOne,
+  Power,
 } from '@icon-park/vue-next'
 
 export default {
@@ -108,6 +111,8 @@ export default {
 
     // 全屏
     app.component('IconFullScreen', FullScreen)
+    app.component('IconFullScreenOne', FullScreenOne)
+    app.component('IconOffScreenOne', OffScreenOne)
 
     // 撤销重做
     app.component('IconBack', Back)
@@ -199,6 +204,7 @@ export default {
     app.component('IconClear', Clear)
     app.component('IconFolderClose', FolderClose)
     app.component('IconElectronicPen', ElectronicPen)
+    app.component('IconPower', Power)
 
     // 视频播放器
     app.component('IconPause', Pause)

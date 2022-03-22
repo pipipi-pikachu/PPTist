@@ -47,14 +47,29 @@
 
     <WritingBoardTool v-if="writingBoardToolVisible" @close="writingBoardToolVisible = false" />
 
-    <div class="tools">
+    <div class="tools-left">
       <IconLeftTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execPrev()" />
       <IconRightTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execNext()" />
-      <IconWrite class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="writingBoardToolVisible = true" />
     </div>
 
-    <div class="page-number" @click="slideThumbnailModelVisible = true" v-if="showPageNumber">
-      {{slideIndex + 1}} / {{slides.length}}
+    <div 
+      class="tools-right" :class="{ 'visible': rightToolsVisible }" 
+      @mouseleave="rightToolsVisible = false"
+      @mouseenter="rightToolsVisible = true"
+    >
+      <div class="content">
+        <div class="tool-btn page-number" @click="slideThumbnailModelVisible = true">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔工具">
+          <IconWrite class="tool-btn" @click="writingBoardToolVisible = true" />
+        </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" :title="fullscreenState ? '退出全屏' : '进入全屏'">
+          <IconOffScreenOne class="tool-btn" v-if="fullscreenState" @click="exitFullscreen()" />
+          <IconFullScreenOne class="tool-btn" v-else @click="enterFullscreen()" />
+        </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="结束放映">
+          <IconPower class="tool-btn" @click="exitScreening()" />
+        </Tooltip>
+      </div>
     </div>
   </div>
 </template>
@@ -67,7 +82,7 @@ import { useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { KEYS } from '@/configs/hotkey'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { isFullscreen } from '@/utils/fullscreen'
+import { isFullscreen, enterFullscreen, exitFullscreen } from '@/utils/fullscreen'
 import useScreening from '@/hooks/useScreening'
 
 import { message } from 'ant-design-vue'
@@ -92,11 +107,11 @@ export default defineComponent({
 
     const scale = computed(() => slideWidth.value / VIEWPORT_SIZE)
 
-    const showPageNumber = ref(false)
-
+    const rightToolsVisible = ref(false)
     const slideThumbnailModelVisible = ref(false)
-
     const writingBoardToolVisible = ref(false)
+
+    const { exitScreening } = useScreening()
 
     // 计算和更新幻灯片内容的尺寸（按比例自适应屏幕）
     const setSlideContentSize = () => {
@@ -121,12 +136,11 @@ export default defineComponent({
     }
 
     // 窗口尺寸变化监听：窗口发生变化时更新幻灯片的大小
-    // 如果退出了全屏，需要返回到编辑模式
-    const { exitScreening } = useScreening()
+    const fullscreenState = ref(true)
 
     const windowResizeListener = () => {
       setSlideContentSize()
-      if (!isFullscreen()) exitScreening()
+      fullscreenState.value = isFullscreen()
     }
 
     onMounted(() => {
@@ -241,10 +255,12 @@ export default defineComponent({
       }
     }
 
-    // 快捷键翻页
+    // 快捷键翻页/退出
     const keydownListener = (e: KeyboardEvent) => {
       const key = e.key.toUpperCase()
-      if (key === KEYS.UP || key === KEYS.LEFT) execPrev()
+
+      if (key === KEYS.ESC) exitScreening()
+      else if (key === KEYS.UP || key === KEYS.LEFT) execPrev()
       else if (
         key === KEYS.DOWN || 
         key === KEYS.RIGHT ||
@@ -310,16 +326,15 @@ export default defineComponent({
         },
         { divider: true },
         {
-          text: '显示页码',
-          subText: showPageNumber.value ? '√' : '',
-          handler: () => showPageNumber.value = !showPageNumber.value,
+          text: '显示工具栏',
+          handler: () => rightToolsVisible.value = true,
         },
         {
           text: '查看所有幻灯片',
           handler: () => slideThumbnailModelVisible.value = true,
         },
         {
-          text: '画笔',
+          text: '画笔工具',
           handler: () => writingBoardToolVisible.value = true,
         },
         { divider: true },
@@ -351,11 +366,15 @@ export default defineComponent({
       contextmenus,
       execPrev,
       execNext,
-      slideThumbnailModelVisible,
       turnSlideToIndex,
       turnSlideToId,
+      slideThumbnailModelVisible,
       writingBoardToolVisible,
-      showPageNumber,
+      rightToolsVisible,
+      fullscreenState,
+      exitScreening,
+      enterFullscreen,
+      exitFullscreen,
     }
   },
 })
@@ -438,34 +457,78 @@ export default defineComponent({
   align-items: center;
 }
 
-.tools {
+.tools-left {
   position: fixed;
   bottom: 8px;
   left: 8px;
   font-size: 25px;
   color: #666;
   z-index: 10;
-  cursor: pointer;
-}
-.tool-btn {
-  opacity: .35;
 
-  &:hover {
-    opacity: .9;
-  }
-  & + .tool-btn {
-    margin-left: 8px;
+  .tool-btn {
+    opacity: .35;
+    cursor: pointer;
+
+    &:hover {
+      opacity: .9;
+    }
+    & + .tool-btn {
+      margin-left: 8px;
+    }
   }
 }
-.page-number {
+.tools-right {
+  height: 66px;
   position: fixed;
-  bottom: 8px;
-  right: 8px;
-  padding: 8px 12px;
-  color: #666;
-  background-color: #eee;
-  border-radius: $borderRadius;
-  z-index: 10;
-  cursor: pointer;
+  bottom: -66px;
+  right: 0;
+  z-index: 5;
+  padding: 8px;
+  transition: bottom $transitionDelay;
+
+  &.visible {
+    bottom: 0;
+  }
+
+  &::after {
+    content: '';
+    width: 100%;
+    height: 66px;
+    position: absolute;
+    left: 0;
+    top: -66px;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: $borderRadius;
+    font-size: 25px;
+    background-color: #fff;
+    color: $textColor;
+    padding: 8px 10px;
+    box-shadow: 0 2px 12px 0 rgb(56 56 56 / 20%);
+    border: 1px solid #e2e6ed;
+  }
+
+  .tool-btn {
+    cursor: pointer;
+
+    &:hover {
+      color: $themeColor;
+    }
+
+    & + .tool-btn {
+      margin-left: 15px;
+    }
+  }
+  .page-number {
+    font-size: 13px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
 }
 </style>
