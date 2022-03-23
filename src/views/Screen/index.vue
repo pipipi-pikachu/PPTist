@@ -45,7 +45,12 @@
       @close="slideThumbnailModelVisible = false"
     />
 
-    <WritingBoardTool v-if="writingBoardToolVisible" @close="writingBoardToolVisible = false" />
+    <WritingBoardTool 
+      :slideWidth="slideWidth"
+      :slideHeight="slideHeight"
+      v-if="writingBoardToolVisible" 
+      @close="writingBoardToolVisible = false" 
+    />
 
     <div class="tools-left">
       <IconLeftTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execPrev()" />

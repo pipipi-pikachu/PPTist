@@ -1,13 +1,18 @@
 <template>
   <div class="writing-board-tool">
-    <teleport to="body">
+    <div class="writing-board-wrap"
+      :style="{
+        width: slideWidth + 'px',
+        height: slideHeight + 'px',
+      }"
+    >
       <WritingBoard 
         ref="writingBoardRef" 
         :color="writingBoardColor" 
         :blackboard="blackboard" 
         :model="writingBoardModel"
       />
-    </teleport>
+    </div>
 
     <div class="tools">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
@@ -50,6 +55,16 @@ export default defineComponent({
   emits: ['close'],
   components: {
     WritingBoard,
+  },
+  props: {
+    slideWidth: {
+      type: Number,
+      required: true,
+    },
+    slideHeight: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const writingBoardRef = ref()
@@ -102,6 +117,15 @@ export default defineComponent({
 <style lang="scss" scoped>
 .writing-board-tool {
   font-size: 12px;
+  z-index: 10;
+  @include absolute-0();
+
+  .writing-board-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   .tools {
     height: 50px;

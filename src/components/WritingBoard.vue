@@ -3,6 +3,10 @@
     <div class="blackboard" v-if="blackboard"></div>
 
     <canvas class="canvas" ref="canvasRef"
+      :style="{
+        width: canvasWidth + 'px',
+        height: canvasHeight + 'px',
+      }"
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
       @mouseup="handleMouseup()"
@@ -37,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, PropType, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
 
 const penSize = 6
 const rubberSize = 80
@@ -86,6 +90,25 @@ export default defineComponent({
     // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
     const mouseInCanvas = ref(false)
 
+    // 监听更新canvas尺寸
+    const canvasWidth = ref(0)
+    const canvasHeight = ref(0)
+
+    const widthScale = computed(() => canvasRef.value ? canvasWidth.value / canvasRef.value.width : 1)
+    const heightScale = computed(() => canvasRef.value ? canvasHeight.value / canvasRef.value.height : 1)
+
+    const updateCanvasSize = () => {
+      if (!writingBoardRef.value) return
+      canvasWidth.value = writingBoardRef.value.clientWidth
+      canvasHeight.value = writingBoardRef.value.clientHeight
+    }
+    const resizeObserver = new ResizeObserver(updateCanvasSize)
+    onMounted(() => {
+      if (writingBoardRef.value) resizeObserver.observe(writingBoardRef.value)
+    })
+    onUnmounted(() => {
+      if (writingBoardRef.value) resizeObserver.unobserve(writingBoardRef.value)
+    })
 
     // 初始化画布
     const initCanvas = () => {
@@ -96,9 +119,6 @@ export default defineComponent({
 
       canvasRef.value.width = writingBoardRef.value.clientWidth
       canvasRef.value.height = writingBoardRef.value.clientHeight
-
-      canvasRef.value.style.width = writingBoardRef.value.clientWidth + 'px'
-      canvasRef.value.style.height = writingBoardRef.value.clientHeight + 'px'
 
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
@@ -197,28 +217,40 @@ export default defineComponent({
       lastTime = new Date().getTime()
     }
 
+    // 获取鼠标在canvas中的相对位置
+    const getMouseOffsetPosition = (e: MouseEvent | TouchEvent) => {
+      if (!canvasRef.value) return [0, 0]
+      const event = e instanceof MouseEvent ? e : e.changedTouches[0]
+      const canvasRect = canvasRef.value.getBoundingClientRect()
+      const x = event.pageX - canvasRect.x
+      const y = event.pageY - canvasRect.y
+      return [x, y]
+    }
+
     // 处理鼠标（触摸）事件
     // 准备开始绘制/擦除墨迹（落笔）
     const handleMousedown = (e: MouseEvent | TouchEvent) => {
-      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
-      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
+      const [mouseX, mouseY] = getMouseOffsetPosition(e)
+      const x = mouseX / widthScale.value
+      const y = mouseY / heightScale.value
 
       isMouseDown = true
       lastPos = { x, y }
       lastTime = new Date().getTime()
 
       if (e instanceof TouchEvent) {
-        updateMousePosition(x, y)
+        updateMousePosition(mouseX, mouseY)
         mouseInCanvas.value = true
       }
     }
 
     // 开始绘制/擦除墨迹（移动）
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
-      const x = e instanceof MouseEvent ? e.offsetX : e.changedTouches[0].pageX
-      const y = e instanceof MouseEvent ? e.offsetY : e.changedTouches[0].pageY
+      const [mouseX, mouseY] = getMouseOffsetPosition(e)
+      const x = mouseX / widthScale.value
+      const y = mouseY / heightScale.value
 
-      updateMousePosition(x, y)
+      updateMousePosition(mouseX, mouseY)
 
       if (isMouseDown) handleMove(x, y)
     }
@@ -242,6 +274,8 @@ export default defineComponent({
       rubberSize,
       writingBoardRef,
       canvasRef,
+      canvasWidth,
+      canvasHeight,
       handleMousedown,
       handleMousemove,
       handleMouseup,
@@ -253,13 +287,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .writing-board {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 8;
   cursor: none;
+  @include absolute-0();
 }
 .blackboard {
   width: 100%;
@@ -267,11 +296,13 @@ export default defineComponent({
   background-color: #0f392b;
 }
 .canvas {
-  @include absolute-0();
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .eraser, .pen {
   pointer-events: none;
-  position: fixed;
+  position: absolute;
   z-index: 9;
 
   .icon {
