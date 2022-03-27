@@ -91,6 +91,7 @@ import {
   FullScreenOne,
   OffScreenOne,
   Power,
+  ListView,
 } from '@icon-park/vue-next'
 
 export default {
@@ -205,6 +206,7 @@ export default {
     app.component('IconFolderClose', FolderClose)
     app.component('IconElectronicPen', ElectronicPen)
     app.component('IconPower', Power)
+    app.component('IconListView', ListView)
 
     // 视频播放器
     app.component('IconPause', Pause)

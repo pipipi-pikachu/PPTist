@@ -14,7 +14,7 @@
       />
     </div>
 
-    <div class="tools">
+    <div class="tools" :style="position">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
         <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changePen()"><IconWrite class="icon" /></div>
       </Tooltip>
@@ -45,10 +45,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import WritingBoard from '@/components/WritingBoard.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
+
+interface Position {
+  left?: number | string;
+  right?: number | string;
+  top?: number | string;
+  bottom?: number | string;
+}
 
 export default defineComponent({
   name: 'writing-board-tool',
@@ -64,6 +71,13 @@ export default defineComponent({
     slideHeight: {
       type: Number,
       required: true,
+    },
+    position: {
+      type: Object as PropType<Position>,
+      default: () => ({
+        right: '5px',
+        bottom: '5px',
+      })
     },
   },
   setup(props, { emit }) {
@@ -130,8 +144,6 @@ export default defineComponent({
   .tools {
     height: 50px;
     position: fixed;
-    bottom: 5px;
-    right: 5px;
     z-index: 11;
     padding: 12px;
     background-color: #eee;

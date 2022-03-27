@@ -76,6 +76,7 @@ export default defineComponent({
   top: 0;
   left: 0;
   transform-origin: 0 0;
+  overflow: hidden;
 }
 .background {
   width: 100%;

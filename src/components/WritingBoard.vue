@@ -287,6 +287,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .writing-board {
+  z-index: 8;
   cursor: none;
   @include absolute-0();
 }
