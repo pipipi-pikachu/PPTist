@@ -77,6 +77,7 @@ export default defineComponent({
   position: relative;
   border-top: 1px solid $borderColor;
   background-color: $lightGray;
+  line-height: 1.5;
 
   textarea {
     width: 100%;
