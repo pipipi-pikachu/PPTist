@@ -9,7 +9,7 @@
         :class="{ 'active': index === slideIndex }"
         v-for="(slide, index) in slides" 
         :key="slide.id"
-        @click="turnSlideToIndex(index)"
+        @click="turnSlide(index)"
       >
         <ThumbnailSlide :slide="slide" :size="150" :visible="index < slidesLoadLimit" />
       </div>
@@ -44,10 +44,16 @@ export default defineComponent({
 
     const close = () => emit('close')
 
+    const turnSlide = (index: number) => {
+      props.turnSlideToIndex(index)
+      close()
+    }
+
     return {
       slides,
       slideIndex,
       slidesLoadLimit,
+      turnSlide,
       close,
     }
   },
