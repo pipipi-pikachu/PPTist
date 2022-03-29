@@ -5,6 +5,7 @@
       :slideHeight="slideHeight"
       :animationIndex="animationIndex"
       :turnSlideToId="turnSlideToId"
+      :manualExitFullscreen="manualExitFullscreen"
       @mousewheel="$event => mousewheelListener($event)"
       @touchstart="$event => touchStartListener($event)"
       @touchend="$event => touchEndListener($event)"
@@ -43,7 +44,7 @@
           <IconListView class="tool-btn" @click="changeViewMode('presenter')" />
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" :title="fullscreenState ? '退出全屏' : '进入全屏'">
-          <IconOffScreenOne class="tool-btn" v-if="fullscreenState" @click="exitFullscreen()" />
+          <IconOffScreenOne class="tool-btn" v-if="fullscreenState" @click="manualExitFullscreen()" />
           <IconFullScreenOne class="tool-btn" v-else @click="enterFullscreen()" />
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="结束放映">
@@ -59,11 +60,11 @@ import { defineComponent, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { enterFullscreen, exitFullscreen } from '@/utils/fullscreen'
+import { enterFullscreen } from '@/utils/fullscreen'
 import useScreening from '@/hooks/useScreening'
 import useExecPlay from './hooks/useExecPlay'
 import useSlideSize from './hooks/useSlideSize'
-import useFullscreenState from './hooks/useFullscreenState'
+import useFullscreen from './hooks/useFullscreen'
 
 import ScreenSlideList from './ScreenSlideList.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
@@ -103,7 +104,7 @@ export default defineComponent({
 
     const { slideWidth, slideHeight } = useSlideSize()
     const { exitScreening } = useScreening()
-    const { fullscreenState } = useFullscreenState()
+    const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
     const rightToolsVisible = ref(false)
     const writingBoardToolVisible = ref(false)
@@ -184,7 +185,7 @@ export default defineComponent({
       fullscreenState,
       exitScreening,
       enterFullscreen,
-      exitFullscreen,
+      manualExitFullscreen,
     }
   },
 })

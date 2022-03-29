@@ -27,6 +27,7 @@
           :scale="scale"
           :animationIndex="animationIndex"
           :turnSlideToId="turnSlideToId"
+          :manualExitFullscreen="manualExitFullscreen"
         />
       </div>
     </div>
@@ -61,6 +62,10 @@ export default defineComponent({
     },
     turnSlideToId: {
       type: Function as PropType<(id: string) => void>,
+      required: true,
+    },
+    manualExitFullscreen: {
+      type: Function as PropType<() => void>,
       required: true,
     },
   },

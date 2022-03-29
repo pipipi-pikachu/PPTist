@@ -3,7 +3,7 @@
     <div class="toolbar">
       <div class="tool-btn" @click="changeViewMode('base')"><IconListView class="tool-icon" /><span>普通视图</span></div>
       <div class="tool-btn" @click="writingBoardToolVisible = !writingBoardToolVisible"><IconWrite class="tool-icon" /><span>画笔</span></div>
-      <div class="tool-btn" @click="() => fullscreenState ? exitFullscreen() : enterFullscreen()">
+      <div class="tool-btn" @click="() => fullscreenState ? manualExitFullscreen() : enterFullscreen()">
         <IconOffScreenOne class="tool-icon" v-if="fullscreenState" />
         <IconOffScreenOne class="tool-icon" v-else />
         <span>{{ fullscreenState ? '退出全屏' : '全屏' }}</span>
@@ -19,6 +19,7 @@
           :slideHeight="slideHeight"
           :animationIndex="animationIndex"
           :turnSlideToId="turnSlideToId"
+          :manualExitFullscreen="manualExitFullscreen"
           @mousewheel="$event => mousewheelListener($event)"
           @touchstart="$event => touchStartListener($event)"
           @touchend="$event => touchEndListener($event)"
@@ -70,13 +71,13 @@ import { computed, defineComponent, nextTick, ref, watch, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
-import { enterFullscreen, exitFullscreen } from '@/utils/fullscreen'
+import { enterFullscreen } from '@/utils/fullscreen'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 import useExecPlay from './hooks/useExecPlay'
 import useSlideSize from './hooks/useSlideSize'
-import useFullscreenState from './hooks/useFullscreenState'
+import useFullscreen from './hooks/useFullscreen'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import ScreenSlideList from './ScreenSlideList.vue'
@@ -116,7 +117,7 @@ export default defineComponent({
     const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
     const { exitScreening } = useScreening()
     const { slidesLoadLimit } = useLoadSlides()
-    const { fullscreenState } = useFullscreenState()
+    const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
     const remarkFontSize = ref(16)
     const currentSlideRemark = computed(() => {
@@ -211,7 +212,7 @@ export default defineComponent({
       exitScreening,
       fullscreenState,
       enterFullscreen,
-      exitFullscreen,
+      manualExitFullscreen,
       writingBoardToolVisible,
     }
   },

@@ -54,6 +54,10 @@ export default defineComponent({
       type: Function as PropType<(id: string) => void>,
       required: true,
     },
+    manualExitFullscreen: {
+      type: Function as PropType<() => void>,
+      required: true,
+    },
   },
   setup(props) {
     const currentElementComponent = computed(() => {
@@ -84,9 +88,14 @@ export default defineComponent({
     // 打开元素绑定的超链接
     const openLink = () => {
       const link = props.elementInfo.link
-      if (link) {
-        if (link.type === 'web') window.open(link.target)
-        else if (link.type === 'slide') props.turnSlideToId(link.target)
+      if (!link) return
+
+      if (link.type === 'web') {
+        props.manualExitFullscreen()
+        window.open(link.target)
+      }
+      else if (link.type === 'slide') {
+        props.turnSlideToId(link.target)
       }
     }
 
