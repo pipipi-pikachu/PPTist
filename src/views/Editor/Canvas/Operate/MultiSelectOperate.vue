@@ -2,8 +2,8 @@
   <div 
     class="multi-select-operate"
     :style="{
-      left: minX * canvasScale + 'px',
-      top: minY * canvasScale + 'px',
+      left: range.minX * canvasScale + 'px',
+      top: range.minY * canvasScale + 'px',
     }"
   >
     <BorderLine v-for="line in borderLines" :key="line.type" :type="line.type" :style="line.style" />
@@ -14,14 +14,14 @@
         :key="point.direction"
         :type="point.direction"
         :style="point.style"
-        @mousedown.stop="scaleMultiElement($event, { minX, maxX, minY, maxY }, point.direction)"
+        @mousedown.stop="scaleMultiElement($event, range, point.direction)"
       />
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive, PropType, watchEffect, toRefs } from 'vue'
+import { computed, defineComponent, ref, PropType, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -53,7 +53,7 @@ export default defineComponent({
 
     const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.id)))
 
-    const range = reactive({
+    const range = ref({
       minX: 0,
       maxX: 0,
       minY: 0,
@@ -61,17 +61,14 @@ export default defineComponent({
     })
 
     // 根据多选元素整体在画布中的范围，计算边框线和缩放点的位置信息
-    const width = computed(() => (range.maxX - range.minX) * canvasScale.value)
-    const height = computed(() => (range.maxY - range.minY) * canvasScale.value)
+    const width = computed(() => (range.value.maxX - range.value.minX) * canvasScale.value)
+    const height = computed(() => (range.value.maxY - range.value.minY) * canvasScale.value)
     const { resizeHandlers, borderLines } = useCommonOperate(width, height)
 
     // 计算多选元素整体在画布中的范围
     const setRange = () => {
       const { minX, maxX, minY, maxY } = getElementListRange(localActiveElementList.value)
-      range.minX = minX
-      range.maxX = maxX
-      range.minY = minY
-      range.maxY = maxY
+      range.value = { minX, maxX, minY, maxY }
     }
     watchEffect(setRange)
 
@@ -87,7 +84,7 @@ export default defineComponent({
     })
 
     return {
-      ...toRefs(range),
+      range,
       canvasScale,
       borderLines,
       disableResize,

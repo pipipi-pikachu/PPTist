@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 
@@ -42,15 +42,14 @@ export default defineComponent({
     const end = ref<[number, number]>()
 
     const selectionRef = ref<HTMLElement>()
-    const offset = reactive({
+    const offset = ref({
       x: 0,
       y: 0,
     })
     onMounted(() => {
       if (!selectionRef.value) return
       const { x, y } = selectionRef.value.getBoundingClientRect()
-      offset.x = x
-      offset.y = y
+      offset.value = { x, y }
     })
 
     // 鼠标拖动创建元素生成位置大小
@@ -198,8 +197,8 @@ export default defineComponent({
       const height = maxY - minY
 
       return {
-        left: minX - offset.x + 'px',
-        top: minY - offset.y + 'px',
+        left: minX - offset.value.x + 'px',
+        top: minY - offset.value.y + 'px',
         width: width + 'px',
         height: height + 'px',
       }

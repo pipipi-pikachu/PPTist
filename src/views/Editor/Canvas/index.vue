@@ -55,12 +55,12 @@
         :style="{ transform: `scale(${canvasScale})` }"
       >
         <MouseSelection 
-          v-if="mouseSelectionState.isShow"
-          :top="mouseSelectionState.top" 
-          :left="mouseSelectionState.left" 
-          :width="mouseSelectionState.width" 
-          :height="mouseSelectionState.height" 
-          :quadrant="mouseSelectionState.quadrant"
+          v-if="mouseSelectionVisible"
+          :top="mouseSelection.top" 
+          :left="mouseSelection.left" 
+          :width="mouseSelection.width" 
+          :height="mouseSelection.height" 
+          :quadrant="mouseSelectionQuadrant"
         />      
         <EditableElement 
           v-for="(element, index) in elementList" 
@@ -170,7 +170,7 @@ export default defineComponent({
 
     useDropImageOrText(canvasRef)
 
-    const { mouseSelectionState, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
+    const { mouseSelection, mouseSelectionVisible, mouseSelectionQuadrant, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 
     const { dragElement } = useDragElement(elementList, alignmentLines)
     const { dragLineElement } = useDragLineElement(elementList)
@@ -266,7 +266,9 @@ export default defineComponent({
       viewportRef,
       viewportStyles,
       canvasScale,
-      mouseSelectionState,
+      mouseSelection,
+      mouseSelectionVisible,
+      mouseSelectionQuadrant,
       creatingElement,
       alignmentLines,
       linkDialogVisible,

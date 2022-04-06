@@ -1,4 +1,4 @@
-import { Ref, reactive } from 'vue'
+import { Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -8,13 +8,13 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
   const mainStore = useMainStore()
   const { canvasScale } = storeToRefs(mainStore)
 
-  const mouseSelectionState = reactive({
-    isShow: false,
+  const mouseSelectionVisible = ref(false)
+  const mouseSelectionQuadrant = ref(1)
+  const mouseSelection = ref({
     top: 0,
     left: 0,
     width: 0,
     height: 0,
-    quadrant: 1,
   })
 
   // 更新鼠标框选范围
@@ -33,12 +33,14 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     const top = (startPageY - viewportRect.y) / canvasScale.value
 
     // 确定框选的起始位置和其他默认值初始化
-    mouseSelectionState.isShow = false
-    mouseSelectionState.quadrant = 4
-    mouseSelectionState.top = top
-    mouseSelectionState.left = left
-    mouseSelectionState.width = 0
-    mouseSelectionState.height = 0
+    mouseSelection.value = {
+      top: top,
+      left: left,
+      width: 0,
+      height: 0,
+    }
+    mouseSelectionVisible.value = false
+    mouseSelectionQuadrant.value = 4
 
     document.onmousemove = e => {
       if (!isMouseDown) return
@@ -63,10 +65,13 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       else if ( offsetWidth < 0 && offsetHeight > 0 ) quadrant = 3
 
       // 更新框选范围
-      mouseSelectionState.isShow = true
-      mouseSelectionState.quadrant = quadrant
-      mouseSelectionState.width = width
-      mouseSelectionState.height = height
+      mouseSelection.value = {
+        ...mouseSelection.value,
+        width: width,
+        height: height,
+      }
+      mouseSelectionVisible.value = true
+      mouseSelectionQuadrant.value = quadrant
     }
 
     document.onmouseup = () => {
@@ -78,36 +83,34 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       let inRangeElementList: PPTElement[] = []
       for (let i = 0; i < elementList.value.length; i++) {
         const element = elementList.value[i]
-        const mouseSelectionLeft = mouseSelectionState.left
-        const mouseSelectionTop = mouseSelectionState.top
-        const mouseSelectionWidth = mouseSelectionState.width
-        const mouseSelectionHeight = mouseSelectionState.height
-
-        const quadrant = mouseSelectionState.quadrant
+        const mouseSelectionLeft = mouseSelection.value.left
+        const mouseSelectionTop = mouseSelection.value.top
+        const mouseSelectionWidth = mouseSelection.value.width
+        const mouseSelectionHeight = mouseSelection.value.height
 
         const { minX, maxX, minY, maxY } = getElementRange(element)
 
         // 计算元素是否处在框选范围内时，四个框选方向的计算方式有差异
         let isInclude = false
-        if (quadrant === 4) {
+        if (mouseSelectionQuadrant.value === 4) {
           isInclude = minX > mouseSelectionLeft && 
                       maxX < mouseSelectionLeft + mouseSelectionWidth && 
                       minY > mouseSelectionTop && 
                       maxY < mouseSelectionTop + mouseSelectionHeight
         }
-        else if (quadrant === 1) {
+        else if (mouseSelectionQuadrant.value === 1) {
           isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
                       maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 
                       maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
         }
-        else if (quadrant === 2) {
+        else if (mouseSelectionQuadrant.value === 2) {
           isInclude = minX > mouseSelectionLeft && 
                       maxX < mouseSelectionLeft + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 
                       maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
         }
-        else if (quadrant === 3) {
+        else if (mouseSelectionQuadrant.value === 3) {
           isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
                       maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
                       minY > mouseSelectionTop && 
@@ -130,12 +133,14 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       const inRangeElementIdList = inRangeElementList.map(inRangeElement => inRangeElement.id)
       mainStore.setActiveElementIdList(inRangeElementIdList)
 
-      mouseSelectionState.isShow = false
+      mouseSelectionVisible.value = false
     }
   }
 
   return {
-    mouseSelectionState,
+    mouseSelection,
+    mouseSelectionVisible,
+    mouseSelectionQuadrant,
     updateMouseSelection,
   }
 }

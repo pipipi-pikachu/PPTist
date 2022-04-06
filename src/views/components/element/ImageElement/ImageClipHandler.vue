@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
@@ -112,7 +112,7 @@ export default defineComponent({
     const { canvasScale } = storeToRefs(useMainStore())
     const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
-    const clipWrapperPositionStyle = reactive({
+    const clipWrapperPositionStyle = ref({
       top: '0',
       left: '0',
     })
@@ -153,7 +153,7 @@ export default defineComponent({
     })
 
     // 顶层图片容器位置大小（裁剪高亮区域）
-    const topImgWrapperPosition = reactive({
+    const topImgWrapperPosition = ref({
       top: 0,
       left: 0,
       width: 0,
@@ -162,11 +162,12 @@ export default defineComponent({
 
     // 顶层图片容器位置大小样式（裁剪高亮区域）
     const topImgWrapperPositionStyle = computed(() => {
+      const { top, left, width, height } = topImgWrapperPosition.value
       return {
-        top: topImgWrapperPosition.top + '%',
-        left: topImgWrapperPosition.left + '%',
-        width: topImgWrapperPosition.width + '%',
-        height: topImgWrapperPosition.height + '%',
+        top: top + '%',
+        left: left + '%',
+        width: width + '%',
+        height: height + '%',
       }
     })
 
@@ -175,29 +176,30 @@ export default defineComponent({
       const bottomWidth = imgPosition.value.width
       const bottomHeight = imgPosition.value.height
       
-      const topLeft = topImgWrapperPosition.left
-      const topTop = topImgWrapperPosition.top
-      const topWidth = topImgWrapperPosition.width
-      const topHeight = topImgWrapperPosition.height
+      const { top, left, width, height } = topImgWrapperPosition.value
       
       return {
-        left: -topLeft * (100 / topWidth) + '%',
-        top: -topTop * (100 / topHeight) + '%',
-        width: bottomWidth / topWidth * 100 + '%',
-        height: bottomHeight / topHeight * 100 + '%',
+        left: -left * (100 / width) + '%',
+        top: -top * (100 / height) + '%',
+        width: bottomWidth / width * 100 + '%',
+        height: bottomHeight / height * 100 + '%',
       }
     })
 
     // 初始化裁剪位置信息
     const initClipPosition = () => {
       const { left, top } = getClipDataTransformInfo()
-      topImgWrapperPosition.left = left
-      topImgWrapperPosition.top = top
-      topImgWrapperPosition.width = 100
-      topImgWrapperPosition.height = 100
+      topImgWrapperPosition.value = {
+        left: left,
+        top: top,
+        width: 100,
+        height: 100,
+      }
       
-      clipWrapperPositionStyle.top = -top + '%'
-      clipWrapperPositionStyle.left = -left + '%'
+      clipWrapperPositionStyle.value = {
+        top: -top + '%',
+        left: -left + '%',
+      }
     }
 
     // 执行裁剪：计算裁剪后的图片位置大小和裁剪信息，并将数据同步出去
@@ -212,10 +214,10 @@ export default defineComponent({
       const { left, top } = getClipDataTransformInfo()
 
       const position = {
-        left: (topImgWrapperPosition.left - left) / 100 * props.width,
-        top: (topImgWrapperPosition.top - top) / 100 * props.height,
-        width: (topImgWrapperPosition.width - 100) / 100 * props.width,
-        height: (topImgWrapperPosition.height - 100) / 100 * props.height,
+        left: (topImgWrapperPosition.value.left - left) / 100 * props.width,
+        top: (topImgWrapperPosition.value.top - top) / 100 * props.height,
+        width: (topImgWrapperPosition.value.width - 100) / 100 * props.width,
+        height: (topImgWrapperPosition.value.height - 100) / 100 * props.height,
       }
 
       const clipedEmitData: ImageClipedEmitData = {
@@ -271,12 +273,7 @@ export default defineComponent({
       const startPageX = e.pageX
       const startPageY = e.pageY
       const bottomPosition = imgPosition.value
-      const originPositopn = {
-        left: topImgWrapperPosition.left,
-        top: topImgWrapperPosition.top,
-        width: topImgWrapperPosition.width,
-        height: topImgWrapperPosition.height,
-      }
+      const originPositopn = { ...topImgWrapperPosition.value }
 
       document.onmousemove = e => {
         if (!isMouseDown) return
@@ -312,8 +309,11 @@ export default defineComponent({
           targetTop = bottomPosition.height - originPositopn.height
         }
         
-        topImgWrapperPosition.left = targetLeft
-        topImgWrapperPosition.top = targetTop
+        topImgWrapperPosition.value = {
+          ...topImgWrapperPosition.value,
+          left: targetLeft,
+          top: targetTop,
+        }
       }
 
       document.onmouseup = () => {
@@ -340,14 +340,9 @@ export default defineComponent({
       const startPageX = e.pageX
       const startPageY = e.pageY
       const bottomPosition = imgPosition.value
-      const originPositopn = {
-        left: topImgWrapperPosition.left,
-        top: topImgWrapperPosition.top,
-        width: topImgWrapperPosition.width,
-        height: topImgWrapperPosition.height,
-      }
+      const originPositopn = { ...topImgWrapperPosition.value }
 
-      const aspectRatio = topImgWrapperPosition.width / topImgWrapperPosition.height
+      const aspectRatio = topImgWrapperPosition.value.width / topImgWrapperPosition.value.height
 
       document.onmousemove = e => {
         if (!isMouseDown) return
@@ -498,11 +493,13 @@ export default defineComponent({
           targetLeft = originPositopn.left
           targetTop = originPositopn.top
         }
-        
-        topImgWrapperPosition.left = targetLeft
-        topImgWrapperPosition.top = targetTop
-        topImgWrapperPosition.width = targetWidth
-        topImgWrapperPosition.height = targetHeight
+
+        topImgWrapperPosition.value = {
+          left: targetLeft,
+          top: targetTop,
+          width: targetWidth,
+          height: targetHeight,
+        }
       }
 
       document.onmouseup = () => {

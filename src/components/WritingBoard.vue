@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
 
 const penSize = 6
 const rubberSize = 80
@@ -76,16 +76,10 @@ export default defineComponent({
     let lastLineWidth = -1
 
     // 鼠标位置坐标：用于画笔或橡皮位置跟随
-    const mouse = reactive({
+    const mouse = ref({
       x: 0,
       y: 0,
     })
-
-    // 更新鼠标位置坐标
-    const updateMousePosition = (x: number, y: number) => {
-      mouse.x = x
-      mouse.y = y
-    }
     
     // 鼠标是否处在画布范围内：处在范围内才会显示画笔或橡皮
     const mouseInCanvas = ref(false)
@@ -239,7 +233,7 @@ export default defineComponent({
       lastTime = new Date().getTime()
 
       if (e instanceof TouchEvent) {
-        updateMousePosition(mouseX, mouseY)
+        mouse.value = { x: mouseX, y: mouseY }
         mouseInCanvas.value = true
       }
     }
@@ -250,7 +244,7 @@ export default defineComponent({
       const x = mouseX / widthScale.value
       const y = mouseY / heightScale.value
 
-      updateMousePosition(mouseX, mouseY)
+      mouse.value = { x: mouseX, y: mouseY }
 
       if (isMouseDown) handleMove(x, y)
     }
