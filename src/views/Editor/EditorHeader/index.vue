@@ -7,6 +7,7 @@
           <Menu>
             <MenuItem @click="exportJSON()">导出 JSON</MenuItem>
             <MenuItem @click="exportPPTX()">导出 PPTX</MenuItem>
+            <MenuItem @click="exportImgDialogVisible = true">导出图片</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -63,6 +64,17 @@
       <HotkeyDoc />
     </Drawer>
 
+    <Modal
+      v-model:visible="exportImgDialogVisible" 
+      :footer="null" 
+      centered
+      :closable="false"
+      :width="680"
+      destroyOnClose
+    >
+      <ExportImgDialog @close="exportImgDialogVisible = false"/>
+    </Modal>
+
     <FullscreenSpin :loading="exporting" tip="正在导出..." />
   </div>
 </template>
@@ -77,11 +89,13 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
+import ExportImgDialog from './ExportImgDialog.vue'
 
 export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
+    ExportImgDialog,
   },
   setup() {
     const mainStore = useMainStore()
@@ -97,6 +111,7 @@ export default defineComponent({
     }
 
     const hotkeyDrawerVisible = ref(false)
+    const exportImgDialogVisible = ref(false)
 
     const goIssues = () => {
       window.open('https://github.com/pipipi-pikachu/PPTist/issues')
@@ -107,6 +122,7 @@ export default defineComponent({
       undo,
       showGridLines,
       hotkeyDrawerVisible,
+      exportImgDialogVisible,
       exporting,
       enterScreening,
       enterScreeningFromStart,

@@ -4,6 +4,7 @@ import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
+import { toPng, toJpeg } from 'html-to-image'
 import { useSlidesStore } from '@/store'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
@@ -11,10 +12,41 @@ import { SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { svg2Base64 } from '@/utils/svg2Base64'
 import { message } from 'ant-design-vue'
 
+interface ExportImageConfig {
+  quality: number;
+  width: number;
+  fontEmbedCSS?: string;
+}
+
 export default () => {
   const { slides } = storeToRefs(useSlidesStore())
 
   const exporting = ref(false)
+
+  // 导出图片
+  const exportImage = (domRef: HTMLElement, format: string, quality: number, ignoreWebfont = true) => {
+    exporting.value = true
+    const toImage = format === 'png' ? toPng : toJpeg
+
+    setTimeout(() => {
+      if (!domRef) return
+
+      const config: ExportImageConfig = {
+        quality,
+        width: 1600,
+      }
+
+      if (ignoreWebfont) config.fontEmbedCSS = ''
+
+      toImage(domRef, config).then(dataUrl => {
+        exporting.value = false
+        saveAs(dataUrl, `pptist_slides.${format}`)
+      }).catch(() => {
+        exporting.value = false
+        message.error('导出图片失败')
+      })
+    }, 200)
+  }
   
   // 导出JSON文件
   const exportJSON = () => {
@@ -576,6 +608,7 @@ export default () => {
 
   return {
     exporting,
+    exportImage,
     exportJSON,
     exportPPTX,
   }
