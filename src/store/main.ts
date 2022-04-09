@@ -40,7 +40,7 @@ export const useMainStore = defineStore('main', {
     disableHotkeys: false, // 禁用快捷键
     showGridLines: false, // 显示网格线
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
-    availableFonts: [], // 当前环境可用字体
+    availableFonts: SYS_FONTS, // 当前环境可用字体
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
     richTextAttrs: defaultRichTextAttrs, // 富文本状态
