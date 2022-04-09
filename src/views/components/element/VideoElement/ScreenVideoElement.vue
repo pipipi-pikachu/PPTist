@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, Ref, ref } from 'vue'
+import { computed, defineComponent, inject, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
