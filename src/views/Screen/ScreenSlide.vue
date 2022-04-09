@@ -25,6 +25,7 @@ import { computed, PropType, defineComponent, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
+import { injectKeySlideId } from '@/types/injectKey'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
@@ -64,7 +65,7 @@ export default defineComponent({
     const { backgroundStyle } = useSlideBackgroundStyle(background)
 
     const slideId = computed(() => props.slide.id)
-    provide('slideId', slideId)
+    provide(injectKeySlideId, slideId)
 
     return {
       backgroundStyle,

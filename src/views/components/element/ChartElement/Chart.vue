@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onMounted, PropType, ref, Ref, watch } from 'vue'
+import { computed, defineComponent, inject, onMounted, PropType, ref, watch } from 'vue'
 import { upperFirst } from 'lodash'
 import tinycolor from 'tinycolor2'
 import Chartist, {
@@ -39,6 +39,7 @@ import Chartist, {
   IPieChartOptions,
 } from 'chartist'
 import { ChartData, ChartType } from '@/types/slides'
+import { injectKeySlideScale } from '@/types/injectKey'
 
 import 'chartist/dist/scss/chartist.scss'
 
@@ -81,7 +82,7 @@ export default defineComponent({
   },
   setup(props) {
     const chartRef = ref<HTMLElement>()
-    const slideScale: Ref<number> = inject('slideScale') || ref(1)
+    const slideScale = inject(injectKeySlideScale) || ref(1)
 
     let chart: IChartistLineChart | IChartistBarChart | IChartistPieChart | undefined
 

@@ -94,6 +94,7 @@ import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
+import { injectKeySlideScale } from '@/types/injectKey'
 import { removeAllRanges } from '@/utils/selection'
 import { KEYS } from '@/configs/hotkey'
 
@@ -255,7 +256,7 @@ export default defineComponent({
       ]
     }
 
-    provide('slideScale', canvasScale)
+    provide(injectKeySlideScale, canvasScale)
 
     return {
       elementList,

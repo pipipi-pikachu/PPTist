@@ -36,10 +36,11 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, PropType, ref, Ref } from 'vue'
+import { computed, defineComponent, inject, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTAudioElement } from '@/types/slides'
+import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import AudioPlayer from './AudioPlayer.vue'
@@ -58,8 +59,8 @@ export default defineComponent({
   setup(props) {
     const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
 
-    const scale: Ref<number> = inject('slideScale') || ref(1)
-    const slideId: Ref<string> = inject('slideId') || ref('')
+    const scale = inject(injectKeySlideScale) || ref(1)
+    const slideId = inject(injectKeySlideId) || ref('')
 
     const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
 
