@@ -123,6 +123,7 @@ export default defineComponent({
       () => props.width,
       () => props.height,
       () => props.data,
+      () => props.options,
       slideScale,
     ], updateChart)
 
