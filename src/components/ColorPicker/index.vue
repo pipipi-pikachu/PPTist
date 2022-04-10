@@ -83,6 +83,8 @@ import Hue from './Hue.vue'
 import Saturation from './Saturation.vue'
 import EditableInput from './EditableInput.vue'
 
+import { message } from 'ant-design-vue'
+
 const RECENT_COLORS = 'RECENT_COLORS'
 
 const presetColorConfig = [
@@ -219,7 +221,11 @@ export default defineComponent({
 
       const { left, top } = targetRef.getBoundingClientRect()
 
-      const filter = (node: HTMLElement) => !(node.classList && node.classList.contains('operate'))
+      const filter = (node: HTMLElement) => {
+        if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
+        if (node.classList && node.classList.contains('operate')) return false
+        return true
+      }
 
       toCanvas(targetRef, { filter, fontEmbedCSS: '' }).then(canvasRef => {
         canvasRef.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; cursor: crosshair;`
@@ -268,6 +274,9 @@ export default defineComponent({
         canvasRef.addEventListener('mousemove', handleMousemove)
         canvasRef.addEventListener('mouseleave', handleMouseleave)
         window.addEventListener('mousedown', handleMousedown)
+      }).catch(() => {
+        message.error('取色吸管初始化失败')
+        document.body.removeChild(maskRef)
       })
     }
 

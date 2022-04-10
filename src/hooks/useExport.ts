@@ -15,6 +15,7 @@ import { message } from 'ant-design-vue'
 interface ExportImageConfig {
   quality: number;
   width: number;
+  filter: (node: HTMLElement) => boolean;
   fontEmbedCSS?: string;
 }
 
@@ -31,9 +32,15 @@ export default () => {
     setTimeout(() => {
       if (!domRef) return
 
+      const filter = (node: HTMLElement) => {
+        if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
+        return true
+      }
+
       const config: ExportImageConfig = {
         quality,
         width: 1600,
+        filter,
       }
 
       if (ignoreWebfont) config.fontEmbedCSS = ''
