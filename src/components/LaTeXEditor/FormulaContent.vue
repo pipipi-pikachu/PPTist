@@ -68,3 +68,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+svg {
+  overflow: hidden;
+}
+</style>
