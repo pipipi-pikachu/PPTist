@@ -112,6 +112,10 @@ export default () => {
           if (item.tagName === 'sub') {
             styleObj['vertical-align'] = 'sub'
           }
+          if (item.tagName === 'a') {
+            const attr = item.attributes.find(attr => attr.key === 'href')
+            styleObj['href'] = attr?.value || ''
+          }
         }
 
         if ('tagName' in item && item.tagName === 'br') {
@@ -160,6 +164,7 @@ export default () => {
           if (styleObj['font-weight']) options.bold = styleObj['font-weight'] === 'bold'
           if (styleObj['font-style']) options.italic = styleObj['font-style'] === 'italic'
           if (styleObj['font-family']) options.fontFace = styleObj['font-family']
+          if (styleObj['href']) options.hyperlink = { url: styleObj['href'] }
 
           slices.push({ text, options })
         }
