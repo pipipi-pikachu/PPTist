@@ -100,8 +100,17 @@
       <Popover trigger="click" v-model:visible="presetThemesVisible">
         <template #content>
           <div class="preset-themes">
-            <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index" @click="applyPresetTheme(item)">
-              <div class="preset-theme-color" v-for="color in item" :key="color" :style="{ backgroundColor: color }"></div>
+            <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index">
+              <div 
+                class="preset-theme-color" 
+                :class="{ 'select': presetThemeColorHoverIndex[0] === index && itemIndex <= presetThemeColorHoverIndex[1] }"
+                v-for="(color, itemIndex) in item" 
+                :key="color" 
+                :style="{ backgroundColor: color }" 
+                @click="applyPresetTheme(item, itemIndex)"
+                @mouseenter="presetThemeColorHoverIndex = [index, itemIndex]"
+                @mouseleave="presetThemeColorHoverIndex = [-1, -1]"
+              ></div>
             </div>
           </div>
         </template>
@@ -181,6 +190,7 @@ export default defineComponent({
 
     const chartDataEditorVisible = ref(false)
     const presetThemesVisible = ref(false)
+    const presetThemeColorHoverIndex = ref<[number, number]>([-1, -1])
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -262,8 +272,9 @@ export default defineComponent({
     }
 
     // 使用预置主题配色
-    const applyPresetTheme = (colors: string[]) => {
-      updateElement({ themeColor: colors })
+    const applyPresetTheme = (colors: string[], index: number) => {
+      const themeColor = colors.slice(0, index + 1)
+      updateElement({ themeColor })
       presetThemesVisible.value = false
     }
 
@@ -295,6 +306,7 @@ export default defineComponent({
     return {
       chartDataEditorVisible,
       presetThemesVisible,
+      presetThemeColorHoverIndex,
       handleElement,
       updateData,
       fill,
@@ -364,5 +376,10 @@ export default defineComponent({
 .preset-theme-color {
   width: 20px;
   height: 20px;
+
+  &.select {
+    transform: scale(1.2);
+    transition: transform $transitionDelayFast;
+  }
 }
 </style>
