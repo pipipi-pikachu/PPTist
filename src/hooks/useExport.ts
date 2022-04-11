@@ -291,6 +291,7 @@ export default () => {
               angle: 45,
             }
           }
+          if (el.opacity !== undefined) options.transparency = (1 - el.opacity) * 100
 
           pptxSlide.addText(textProps, options)
         }
@@ -315,6 +316,7 @@ export default () => {
               if (index !== -1) options.hyperlink = { slide: index + 1 }
             }
           }
+          if (el.filters?.opacity) options.transparency = 100 - parseInt(el.filters?.opacity)
 
           pptxSlide.addImage(options)
         }
