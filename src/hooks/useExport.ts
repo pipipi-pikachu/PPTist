@@ -82,7 +82,7 @@ export default () => {
     const slices: pptxgen.TextProps[] = []
     const parse = (obj: AST[], baseStyleObj = {}) => {
       for (const item of obj) {
-        if ('tagName' in item && ['div', 'ul', 'li', 'p'].includes(item.tagName) && slices.length) {
+        if ('tagName' in item && ['div', 'li', 'p'].includes(item.tagName) && slices.length) {
           const lastSlice = slices[slices.length - 1]
           if (!lastSlice.options) lastSlice.options = {}
           lastSlice.options.breakLine = true
@@ -97,6 +97,11 @@ export default () => {
             const [key, value] = [trim(_key), trim(_value)]
             if (key && value) styleObj[key] = value
           }
+        }
+
+        if ('tagName' in item) {
+          if (item.tagName === 'ul') styleObj['list-type'] = 'ul'
+          if (item.tagName === 'ol') styleObj['list-type'] = 'ol'
         }
 
         if ('tagName' in item) {
@@ -169,6 +174,13 @@ export default () => {
           slices.push({ text, options })
         }
         else if ('children' in item) parse(item.children, styleObj)
+
+        if ('tagName' in item && item.tagName === 'li') {
+          const slice = slices[slices.length - 1]
+          if (!slice.options) slice.options = {}
+          if (styleObj['list-type'] === 'ol') slice.options.bullet = { type: 'number', indent: 20 * 0.75 }
+          if (styleObj['list-type'] === 'ul') slice.options.bullet = { indent: 20 * 0.75 }
+        }
       }
     }
     parse(ast)
