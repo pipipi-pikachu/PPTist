@@ -66,7 +66,7 @@ export default defineComponent({
       if (props.value === '请输入内容') {
         setTimeout(() => {
           selectAll(editorView.state, editorView.dispatch)
-        }, 0)
+        }, 100)
       }
       mainStore.setDisableHotkeysState(true)
       emit('focus')
