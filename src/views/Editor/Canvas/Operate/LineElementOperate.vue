@@ -1,5 +1,5 @@
 <template>
-  <div class="text-element-operate">
+  <div class="line-element-operate">
     <template v-if="handlerVisible">
       <ResizeHandler
         class="operate-resize-handler" 
@@ -8,6 +8,27 @@
         :style="point.style"
         @mousedown.stop="$event => dragLineElement($event, elementInfo, point.handler)"
       />
+
+      <svg 
+        :width="svgWidth" 
+        :height="svgHeight" 
+        :stroke="elementInfo.color"
+        overflow="visible" 
+        :style="{ transform: `scale(${canvasScale})` }"
+      >
+        <template v-if="elementInfo.curve">
+          <g>
+            <line class="anchor-line" :x1="elementInfo.start[0]" :y1="elementInfo.start[1]" :x2="elementInfo.curve[0]" :y2="elementInfo.curve[1]"></line>
+            <line class="anchor-line" :x1="elementInfo.end[0]" :y1="elementInfo.end[1]" :x2="elementInfo.curve[0]" :y2="elementInfo.curve[1]"></line>
+          </g>
+        </template>
+        <template v-if="elementInfo.cubic">
+          <g v-for="(item, index) in elementInfo.cubic" :key="index">
+            <line class="anchor-line" v-if="index === 0" :x1="elementInfo.start[0]" :y1="elementInfo.start[1]" :x2="item[0]" :y2="item[1]"></line>
+            <line class="anchor-line" v-if="index === 1" :x1="elementInfo.end[0]" :y1="elementInfo.end[1]" :x2="item[0]" :y2="item[1]"></line>
+          </g>
+        </template>
+      </svg>
     </template>
   </div>
 </template>
@@ -22,7 +43,7 @@ import { OperateLineHandlers } from '@/types/edit'
 import ResizeHandler from './ResizeHandler.vue'
 
 export default defineComponent({
-  name: 'text-element-operate',
+  name: 'line-element-operate',
   inheritAttrs: false,
   components: {
     ResizeHandler,
@@ -43,6 +64,9 @@ export default defineComponent({
   },
   setup(props) {
     const { canvasScale } = storeToRefs(useMainStore())
+
+    const svgWidth = computed(() => Math.max(props.elementInfo.start[0], props.elementInfo.end[0]))
+    const svgHeight = computed(() => Math.max(props.elementInfo.start[1], props.elementInfo.end[1]))
 
     const resizeHandlers = computed(() => {
       const handlers = [
@@ -95,8 +119,26 @@ export default defineComponent({
     })
 
     return {
+      svgWidth,
+      svgHeight,
+      canvasScale,
       resizeHandlers,
     }
   },
 })
 </script>
+
+<style lang="scss" scoped>
+svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+.anchor-line {
+  stroke-width: 1px;
+  stroke-dasharray: 5 5;
+  opacity: .5;
+}
+</style>
