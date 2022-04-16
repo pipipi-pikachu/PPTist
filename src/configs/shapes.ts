@@ -52,6 +52,18 @@ export const SHAPE_PATH_FORMULAS = {
     const arrowheight = height / 5
     return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`
   },
+  [ShapePathFormulasKeys.L]: (width: number, height: number) => {
+    const lineWidth = Math.min(width, height) / 4
+    return `M 0 0 L 0 ${height} L ${width} ${height} L ${width} ${height - lineWidth} L ${lineWidth} ${height - lineWidth} L ${lineWidth} 0 Z`
+  },
+  [ShapePathFormulasKeys.RING_RECT]: (width: number, height: number) => {
+    const lineWidth = Math.min(width, height) / 4
+    return `M 0 0 ${width} 0 ${width} ${height} L 0 ${height} L 0 0 Z M ${lineWidth} ${lineWidth} L ${lineWidth} ${height - lineWidth} L ${width - lineWidth} ${height - lineWidth} L ${width - lineWidth} ${lineWidth} Z`
+  },
+  [ShapePathFormulasKeys.PLUS]: (width: number, height: number) => {
+    const lineWidth = Math.min(width, height) / 4
+    return `M ${width / 2 - lineWidth / 2} 0 L ${width / 2 - lineWidth / 2} ${height / 2 - lineWidth / 2} L 0 ${height / 2 - lineWidth / 2} L 0 ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width / 2 - lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height} L ${width / 2 + lineWidth / 2} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 + lineWidth / 2} L ${width} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} ${height / 2 - lineWidth / 2} L ${width / 2 + lineWidth / 2} 0 Z`
+  },
 }
 
 export const SHAPE_LIST: ShapeListItem[] = [
@@ -113,7 +125,15 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
+        path: 'M 40 20 A 100 100 0 1 0 200 100 L 100 100 L 40 20 Z'
+      },
+      {
+        viewBox: [200, 200],
         path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 100 L 100 0 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 160 20 A 100 100 0 1 0 200 100 L 100 100 L 160 20 Z',
       },
       {
         viewBox: [200, 200],
@@ -177,6 +197,10 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
+        path: 'M 50 0 A 25 50 0 1 0 50 200 L 150 200 A 25 50 0 1 0 150 0 L 50 0 Z'
+      },
+      {
+        viewBox: [200, 200],
         path: 'M 150 0 A 50 100 0 1 1 150 200 L 0 200 A 50 100 0 0 0 0 0 L 150 0 Z'
       },
       {
@@ -201,19 +225,22 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 0 200 L 200 200 L 200 140 L 60 140 L 60 0 L 0 0 Z'
+        path: 'M 0 0 L 0 200 L 200 200 L 200 140 L 60 140 L 60 0 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.L
       },
       {
         viewBox: [200, 200],
-        path: 'M0 0 L200 0 L200 200 L0 200 L0 0 Z M50 50 L50 150 L150 150 L150 50 Z'
+        path: 'M0 0 L200 0 L200 200 L0 200 L0 0 Z M50 50 L50 150 L150 150 L150 50 Z',
+        pathFormula: ShapePathFormulasKeys.RING_RECT,
       },
       {
         viewBox: [200, 200],
-        path: 'M0 100 A100 100 0 1 1 0 101 Z M150 100 A50 50 0 1 0 150 101 Z'
+        path: 'M0 100 A100 100 0 1 1 0 101 Z M150 100 A50 50 0 1 0 150 101 Z',
       },
       {
         viewBox: [200, 200],
-        path: 'M 70 0 L 70 70 L 0 70 L 0 130 L 70 130 L 70 200 L 130 200 L 130 130 L 200 130 L 200 70 L 130 70 L 130 0 L 70 0 Z'
+        path: 'M 70 0 L 70 70 L 0 70 L 0 130 L 70 130 L 70 200 L 130 200 L 130 130 L 200 130 L 200 70 L 130 70 L 130 0 L 70 0 Z',
+        pathFormula: ShapePathFormulasKeys.PLUS,
       },
       {
         viewBox: [200, 200],
@@ -244,6 +271,22 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 0 20 C 40 -40 60 60 100 20 C 140 -40 160 60 200 20 L 200 180 C 140 240 160 140 100 180 C 40 240 60 140 0 180 L 0 20 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 Q 0 50 0 175 Q 100 225 200 175 Q 200 50 100 0 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 100 A 50 50 0 1 1 200 100 L 100 200 L 0 100 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 L 60 60 L 0 100 L 60 140 L 100 200 L 140 140 L 200 100 L 140 60 L 100 0 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 L 80 40 L 20 20 L 40 80 L 0 100 L 40 120 L 20 180 L 80 160 L 100 200 L 120 160 L 180 180 L 160 120 L 200 100 L 160 80 L 180 20 L 120 40 L 100 0 Z',
       },
     ],
   },
@@ -433,6 +476,11 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [1024, 1024],
         path: 'M927.78951111 340.39277037c-12.01493333-47.81700741 12.01493333-124.03294815 89.08041481-150.97552592l-82.40545184-4.36906667s-31.19028148-109.22666667-174.27721483-118.9357037c-143.08693333-9.8304-236.65777778-3.64088889-236.65777777-3.6408889s106.07122963 67.47780741 63.5941926 187.74850371c-31.06891852 63.71555555-79.85682963 116.02299259-132.04290371 175.61220741-1.57771852 1.57771852-3.03407408 3.15543703-4.2477037 4.49042962C278.25493333 624.86755555 7.13007408 934.34311111 7.13007408 934.34311111c298.43152592 78.15774815 498.43768889-7.64586667 616.76657777-110.56165926 24.87940741-0.24272592 43.5693037-0.36408889 56.19105185-0.36408888 164.8109037 0 304.13558518-142.72284445 298.43152593-301.4656-3.88361482-109.1053037-38.71478518-133.74198518-50.72971852-181.5589926z',
+        special: true,
+      },
+      {
+        viewBox: [1024, 1024],
+        path: 'M997.8886764 504.17210418L537.2729208 43.89182982c-13.97838539-13.97838539-36.56745619-13.97838539-50.5458416 0L26.1113236 504.17210418c-13.41924998 13.41924998-21.02349164 31.64706454-21.02349163 50.65766867 0 39.47496036 32.09437288 71.56933323 71.56933324 71.56933323h48.53295408V954.83524937c0 19.79339373 15.99127289 35.78466661 35.78466663 35.78466662H440.43066677V740.12724968h125.24633315v250.49266631h297.34821416c19.79339373 0 35.78466661-15.99127289 35.78466663-35.78466662V626.39910608h48.53295408c19.01060414 0 37.23841869-7.49241457 50.65766869-21.02349163 27.84494371-27.95677079 27.84494371-73.24673948-0.11182708-101.20351027z',
         special: true,
       },
     ],

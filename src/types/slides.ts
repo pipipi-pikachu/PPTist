@@ -10,6 +10,9 @@ export const enum ShapePathFormulasKeys {
   CUT_RECT_SAMESIDE = 'cutRectSameSide',
   MESSAGE = 'message',
   ROUND_MESSAGE = 'roundMessage',
+  L = 'L',
+  RING_RECT = 'ringRect',
+  PLUS = 'plus',
 }
 
 export const enum ElementTypes {

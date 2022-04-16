@@ -57,7 +57,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .shape-pool {
   width: 340px;
-  max-height: 540px;
+  max-height: 550px;
   overflow: auto;
   margin-bottom: -12px;
   margin-right: -12px;
