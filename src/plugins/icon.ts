@@ -96,6 +96,7 @@ import {
   OffScreenOne,
   Power,
   ListView,
+  Magic,
 } from '@icon-park/vue-next'
 
 export default {
@@ -215,6 +216,7 @@ export default {
     app.component('IconElectronicPen', ElectronicPen)
     app.component('IconPower', Power)
     app.component('IconListView', ListView)
+    app.component('IconMagic', Magic)
 
     // 视频播放器
     app.component('IconPause', Pause)
