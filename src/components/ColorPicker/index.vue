@@ -20,7 +20,7 @@
 
     <div class="picker-field">
       <EditableInput class="input" :value="color" @colorChange="value => changeColor(value)" />
-      <div class="straw" @click="pickColor()"><IconElectronicPen theme="two-tone" :fill="['#333', '#e2c2c2']" /></div>
+      <div class="straw" @click="pickColor()"><IconPlatte /></div>
     </div>
 
     <div class="picker-presets">

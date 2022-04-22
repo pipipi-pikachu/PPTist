@@ -90,7 +90,6 @@ import {
   VolumeSmall,
   VideoTwo,
   Formula,
-  ElectronicPen,
   LinkOne,
   FullScreenOne,
   OffScreenOne,
@@ -213,7 +212,6 @@ export default {
     app.component('IconLogout', Logout)
     app.component('IconClear', Clear)
     app.component('IconFolderClose', FolderClose)
-    app.component('IconElectronicPen', ElectronicPen)
     app.component('IconPower', Power)
     app.component('IconListView', ListView)
     app.component('IconMagic', Magic)
