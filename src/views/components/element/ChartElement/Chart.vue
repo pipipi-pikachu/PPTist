@@ -34,11 +34,8 @@ import Chartist, {
   IChartistLineChart,
   IChartistBarChart,
   IChartistPieChart,
-  ILineChartOptions,
-  IBarChartOptions,
-  IPieChartOptions,
 } from 'chartist'
-import { ChartData, ChartType } from '@/types/slides'
+import { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
 import 'chartist/dist/scss/chartist.scss'
@@ -63,7 +60,7 @@ export default defineComponent({
       required: true,
     },
     options: {
-      type: Object as PropType<ILineChartOptions & IBarChartOptions & IPieChartOptions>,
+      type: Object as PropType<ChartOptions>,
     },
     themeColor: {
       type: Array as PropType<string[]>,

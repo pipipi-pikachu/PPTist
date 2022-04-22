@@ -3,9 +3,10 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { createRandomCode } from '@/utils/common'
 import { getImageSize } from '@/utils/image'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { PPTLineElement, ChartType, PPTElement, TableCell, TableCellStyle, PPTShapeElement } from '@/types/slides'
+import { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, PPTChartElement, ChartOptions, PresetChartType } from '@/types/slides'
 import { ShapePoolItem, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
+import { CHART_TYPES } from '@/configs/chartTypes'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface CommonElementPosition {
@@ -79,11 +80,11 @@ export default () => {
    * 创建图表元素
    * @param chartType 图表类型
    */
-  const createChartElement = (chartType: ChartType) => {
-    createElement({
+  const createChartElement = (type: PresetChartType) => {
+    const newElement: PPTChartElement = {
       type: 'chart',
       id: createRandomCode(),
-      chartType,
+      chartType: CHART_TYPES[type],
       left: 300,
       top: 81.25,
       width: 400,
@@ -98,6 +99,17 @@ export default () => {
           [12, 19, 5, 2, 18],
         ],
       },
+    }
+
+    let options: ChartOptions = {}
+    if (type === 'horizontalBar') options = { horizontalBars: true }
+    else if (type === 'area') options = { showArea: true }
+    else if (type === 'scatter') options = { showLine: false }
+    else if (type === 'ring') options = { donut: true }
+
+    createElement({
+      ...newElement,
+      options,
     })
   }
   

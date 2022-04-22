@@ -31,6 +31,10 @@
         @change="e => updateOptions({ horizontalBars: e.target.checked })" 
         :checked="horizontalBars"
       >条形图样式</Checkbox>
+      <Checkbox 
+        @change="e => updateOptions({ stackBars: e.target.checked })" 
+        :checked="stackBars"
+      >堆叠样式</Checkbox>
     </div>
     <div class="row" v-if="handleElement.chartType === 'pie'">
       <Checkbox 
@@ -149,10 +153,9 @@
 
 <script lang="ts">
 import { defineComponent, onUnmounted, ref, watch } from 'vue'
-import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ChartData, PPTChartElement } from '@/types/slides'
+import { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -205,6 +208,7 @@ export default defineComponent({
     const showArea = ref(false)
     const horizontalBars = ref(false)
     const donut = ref(false)
+    const stackBars = ref(false)
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'chart') return
@@ -217,6 +221,7 @@ export default defineComponent({
           showArea: _showArea,
           horizontalBars: _horizontalBars,
           donut: _donut,
+          stackBars: _stackBars,
         } = handleElement.value.options
 
         if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth as boolean
@@ -224,6 +229,7 @@ export default defineComponent({
         if (_showArea !== undefined) showArea.value = _showArea
         if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
         if (_donut !== undefined) donut.value = _donut
+        if (_stackBars !== undefined) stackBars.value = _stackBars
       }
 
       themeColor.value = handleElement.value.themeColor
@@ -248,7 +254,7 @@ export default defineComponent({
     }
 
     // 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
-    const updateOptions = (optionProps: ILineChartOptions & IBarChartOptions & IPieChartOptions) => {
+    const updateOptions = (optionProps: ChartOptions) => {
       const _handleElement = handleElement.value as PPTChartElement
 
       const newOptions = { ..._handleElement.options, ...optionProps }
@@ -316,6 +322,7 @@ export default defineComponent({
       showArea,
       horizontalBars,
       donut,
+      stackBars,
       updateOptions,
       themeColor,
       gridColor,
@@ -333,6 +340,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.chart-style-panel {
+  user-select: none;
+}
 .row {
   width: 100%;
   display: flex;

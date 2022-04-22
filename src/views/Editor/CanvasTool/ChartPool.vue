@@ -5,21 +5,26 @@
         <IconChartLine size="24" v-if="chart === 'line'" />
         <IconChartHistogram size="24" v-else-if="chart === 'bar'" />
         <IconChartPie size="24" v-else-if="chart === 'pie'" />
+        <IconChartHistogramOne size="24" v-else-if="chart === 'horizontalBar'" />
+        <IconChartLineArea size="24" v-else-if="chart === 'area'" />
+        <IconChartRing size="24" v-else-if="chart === 'ring'" />
+        <IconChartScatter size="24" v-else-if="chart === 'scatter'" />
       </div>
     </li>
   </ul>
 </template>
 
 <script lang="ts">
+import { PresetChartType } from '@/types/slides'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'chart-pool',
   emits: ['select'],
   setup(props, { emit }) {
-    const chartList = ['bar', 'line', 'pie']
+    const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring']
 
-    const selectChart = (chart: string) => {
+    const selectChart = (chart: PresetChartType) => {
       emit('select', chart)
     }
 
@@ -33,16 +38,16 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .chart-pool {
-  width: 120px;
+  width: 200px;
   margin-bottom: -5px;
 
   @include flex-grid-layout();
 }
 .chart-item {
-  @include flex-grid-layout-children(3, 32%);
+  @include flex-grid-layout-children(5, 19%);
 
   height: 0;
-  padding-bottom: 32%;
+  padding-bottom: 19%;
   flex-shrink: 0;
   position: relative;
   cursor: pointer;

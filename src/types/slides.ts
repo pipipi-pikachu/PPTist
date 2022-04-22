@@ -354,7 +354,9 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
 }
 
 
+export type PresetChartType = 'bar' | 'horizontalBar' | 'line' | 'area' | 'scatter' | 'pie' | 'ring'
 export type ChartType = 'bar' | 'line' | 'pie'
+export type ChartOptions = ILineChartOptions & IBarChartOptions & IPieChartOptions
 export interface ChartData {
   labels: string[];
   legends: string[];
@@ -368,7 +370,7 @@ export interface ChartData {
  * 
  * fill?: 填充色
  * 
- * chartType: 图表类型
+ * chartType: 图表基础类型（bar/line/pie），所有图表类型都是由这三种基本类型衍生而来
  * 
  * data: 图表数据
  * 
@@ -387,7 +389,7 @@ export interface PPTChartElement extends PPTBaseElement {
   fill?: string;
   chartType: ChartType;
   data: ChartData;
-  options?: ILineChartOptions & IBarChartOptions & IPieChartOptions;
+  options?: ChartOptions;
   outline?: PPTElementOutline;
   themeColor: string[];
   gridColor?: string;

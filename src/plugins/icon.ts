@@ -56,6 +56,10 @@ import {
   Github,
   ChartProportion,
   ChartHistogram,
+  ChartHistogramOne,
+  ChartLineArea,
+  ChartRing,
+  ChartScatter,
   ChartLine,
   ChartPie,
   Text,
@@ -185,6 +189,10 @@ export default {
     app.component('IconChartHistogram', ChartHistogram)
     app.component('IconChartLine', ChartLine)
     app.component('IconChartPie', ChartPie)
+    app.component('IconChartHistogramOne', ChartHistogramOne)
+    app.component('IconChartLineArea', ChartLineArea)
+    app.component('IconChartRing', ChartRing)
+    app.component('IconChartScatter', ChartScatter)
 
     // 其他
     app.component('IconPlayOne', PlayOne)
