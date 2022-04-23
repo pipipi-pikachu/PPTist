@@ -16,10 +16,13 @@
 
     <div class="tools" :style="position">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
-        <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changePen()"><IconWrite class="icon" /></div>
+        <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
+        <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
-        <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeEraser()"><IconErase class="icon" /></div>
+        <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
         <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
@@ -48,7 +51,7 @@
 import { defineComponent, PropType, ref } from 'vue'
 import WritingBoard from '@/components/WritingBoard.vue'
 
-const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
+const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 
 interface Position {
   left?: number | string;
@@ -56,6 +59,8 @@ interface Position {
   top?: number | string;
   bottom?: number | string;
 }
+
+type WritingBoardModel = 'pen' | 'mark' | 'eraser'
 
 export default defineComponent({
   name: 'writing-board-tool',
@@ -83,17 +88,11 @@ export default defineComponent({
   setup(props, { emit }) {
     const writingBoardRef = ref()
     const writingBoardColor = ref('#e2534d')
-    const writingBoardModel = ref<'pen' | 'eraser'>('pen')
+    const writingBoardModel = ref<WritingBoardModel>('pen')
     const blackboard = ref(false)
 
-    // 切换到画笔状态
-    const changePen = () => {
-      writingBoardModel.value = 'pen'
-    }
-
-    // 切换到橡皮状态
-    const changeEraser = () => {
-      writingBoardModel.value = 'eraser'
+    const changeModel = (model: WritingBoardModel) => {
+      writingBoardModel.value = model
     }
 
     // 清除画布上的墨迹
@@ -101,9 +100,9 @@ export default defineComponent({
       writingBoardRef.value.clearCanvas()
     }
 
-    // 修改画笔颜色，如果当前不处于画笔状态则先切换到画笔状态
+    // 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态
     const changeColor = (color: string) => {
-      if (writingBoardModel.value !== 'pen') writingBoardModel.value = 'pen'
+      if (writingBoardModel.value === 'eraser') writingBoardModel.value = 'pen'
       writingBoardColor.value = color
     }
     
@@ -118,8 +117,7 @@ export default defineComponent({
       writingBoardColor,
       writingBoardModel,
       blackboard,
-      changePen,
-      changeEraser,
+      changeModel,
       clearCanvas,
       changeColor,
       closeWritingBoard,

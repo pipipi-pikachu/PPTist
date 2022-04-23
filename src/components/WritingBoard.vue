@@ -17,34 +17,49 @@
       @mouseenter="mouseInCanvas = true"
     ></canvas>
 
-    <div 
-      class="pen"
-      :style="{
-        left: mouse.x - penSize / 2 + 'px',
-        top: mouse.y - 36 + penSize / 2 + 'px',
-        color: color,
-      }"
-      v-if="mouseInCanvas && model === 'pen'"
-    ><IconWrite class="icon" size="36" /></div>
-    
-    <div 
-      class="eraser"
-      :style="{
-        left: mouse.x - rubberSize / 2 + 'px',
-        top: mouse.y - rubberSize / 2 + 'px',
-        width: rubberSize + 'px',
-        height: rubberSize + 'px',
-      }"
-      v-if="mouseInCanvas && model === 'eraser'"
-    ></div>
+    <template v-if="mouseInCanvas">
+      <div 
+        class="eraser"
+        :style="{
+          left: mouse.x - rubberSize / 2 + 'px',
+          top: mouse.y - rubberSize / 2 + 'px',
+          width: rubberSize + 'px',
+          height: rubberSize + 'px',
+        }"
+        v-if="model === 'eraser'"
+      ></div>
+      <div 
+        class="pen"
+        :style="{
+          left: mouse.x - penSize / 2 + 'px',
+          top: mouse.y - 36 + penSize / 2 + 'px',
+          color: color,
+        }"
+        v-if="model === 'pen'"
+      >
+        <IconWrite class="icon" size="36" v-if="model === 'pen'" />
+      </div>
+      <div 
+        class="pen"
+        :style="{
+          left: mouse.x - markSize / 2 + 'px',
+          top: mouse.y + 'px',
+          color: color,
+        }"
+        v-if="model === 'mark'"
+      >
+        <IconHighLight class="icon" size="36" v-if="model === 'mark'" />
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from 'vue'
+import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 
 const penSize = 6
 const rubberSize = 80
+const markSize = 25
 
 export default defineComponent({
   name: 'writing-board',
@@ -54,7 +69,7 @@ export default defineComponent({
       default: '#ffcc00',
     },
     model: {
-      type: String as PropType<'pen' | 'eraser'>,
+      type: String as PropType<'pen' | 'eraser' | 'mark'>,
       default: 'pen',
     },
     blackboard: {
@@ -118,6 +133,20 @@ export default defineComponent({
       ctx.lineJoin = 'round'
     }
     onMounted(initCanvas)
+
+    // 切换画笔模式时，更新 canvas ctx 配置
+    const updateCtx = () => {
+      if (!ctx) return
+      if (props.model === 'mark') {
+        ctx.globalCompositeOperation = 'xor'
+        ctx.globalAlpha = 0.5
+      }
+      else if (props.model === 'pen') {
+        ctx.globalCompositeOperation = 'source-over'
+        ctx.globalAlpha = 1
+      }
+    }
+    watch(() => props.model, updateCtx)
 
     // 绘制画笔墨迹方法
     const draw = (posX: number, posY: number, lineWidth: number) => {
@@ -205,9 +234,10 @@ export default defineComponent({
         draw(x, y, lineWidth)
         lastLineWidth = lineWidth
       }
+      else if (props.model === 'mark') draw(x, y, markSize)
       else erase(x, y)
 
-      lastPos = {x, y}
+      lastPos = { x, y }
       lastTime = new Date().getTime()
     }
 
@@ -266,6 +296,7 @@ export default defineComponent({
       mouseInCanvas,
       penSize,
       rubberSize,
+      markSize,
       writingBoardRef,
       canvasRef,
       canvasWidth,

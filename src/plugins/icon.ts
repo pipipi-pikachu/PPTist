@@ -96,6 +96,7 @@ import {
   Power,
   ListView,
   Magic,
+  HighLight,
 } from '@icon-park/vue-next'
 
 export default {
@@ -215,6 +216,7 @@ export default {
     app.component('IconPower', Power)
     app.component('IconListView', ListView)
     app.component('IconMagic', Magic)
+    app.component('IconHighLight', HighLight)
 
     // 视频播放器
     app.component('IconPause', Pause)
