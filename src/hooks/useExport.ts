@@ -127,7 +127,7 @@ export default () => {
           slices.push({ text: '', options: { breakLine: true } })
         }
         else if ('content' in item) {
-          const text = item.content.replace(/\n/g, '').replace(/&nbsp;/g, ' ')
+          const text = item.content.replace(/&nbsp;/g, ' ').replace(/&gt;/g, '>').replace(/&lt;/g, '<').replace(/&amp;/g, '&').replace(/\n/g, '')
           const options: pptxgen.TextPropsOptions = {}
 
           if (styleObj['font-size']) {
@@ -281,10 +281,12 @@ export default () => {
             fontFace: '微软雅黑',
             color: '#000000',
             valign: 'middle',
+            margin: 10 * 0.75,
+            lineSpacingMultiple: 1.5 / 1.2,
           }
           if (el.rotate) options.rotate = el.rotate
           if (el.wordSpace) options.charSpacing = el.wordSpace * 0.75
-          if (el.lineHeight) options.lineSpacingMultiple = el.lineHeight * 0.75
+          if (el.lineHeight) options.lineSpacingMultiple = el.lineHeight / 1.2
           if (el.fill) {
             const c = formatColor(el.fill)
             const opacity = el.opacity === undefined ? 1 : el.opacity
@@ -378,8 +380,10 @@ export default () => {
             if (el.flipH) options.flipH = el.flipH
             if (el.flipV) options.flipV = el.flipV
             if (el.outline?.width) {
+              const c = formatColor(el.outline?.color || '#000000')
               options.line = {
-                color: formatColor(el.outline?.color || '#000000').color, 
+                color: c.color, 
+                transparency: (1 - c.alpha) * 100,
                 width: el.outline.width * 0.75, 
                 dashType: el.outline.style === 'solid' ? 'solid' : 'dash',
               }
@@ -431,6 +435,7 @@ export default () => {
           const path = getLineElementPath(el)
           const points = formatPoints(toPoints(path))
           const { minX, maxX, minY, maxY } = getElementRange(el)
+          const c = formatColor(el.color)
 
           const options: pptxgen.ShapeProps = {
             x: el.left / 100,
@@ -438,7 +443,8 @@ export default () => {
             w: (maxX - minX) / 100,
             h: (maxY - minY) / 100,
             line: {
-              color: formatColor(el.color).color, 
+              color: c.color, 
+              transparency: (1 - c.alpha) * 100,
               width: el.width * 0.75, 
               dashType: el.style === 'solid' ? 'solid' : 'dash',
               beginArrowType: el.points[0] ? 'arrow' : 'none',
