@@ -6,6 +6,7 @@ import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
 import { useSlidesStore } from '@/store'
+import { PPTElementOutline, PPTElementShadow } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
@@ -241,6 +242,30 @@ export default () => {
     })
   }
 
+  // 获取阴影配置
+  const getShadowOption = (shadow: PPTElementShadow): pptxgen.ShadowProps => {
+    const c = formatColor(shadow.color)
+    return {
+      type: 'outer',
+      color: c.color.replace('#', ''),
+      opacity: c.alpha,
+      blur: shadow.blur * 0.75,
+      offset: (shadow.h + shadow.v) / 2 * 0.75,
+      angle: 45,
+    }
+  }
+
+  // 获取边框配置
+  const getOutlineOption = (outline: PPTElementOutline): pptxgen.ShapeLineProps => {
+    const c = formatColor(outline?.color || '#000000')
+    return {
+      color: c.color, 
+      transparency: (1 - c.alpha) * 100,
+      width: (outline.width || 1) * 0.75, 
+      dashType: outline.style === 'solid' ? 'solid' : 'dash',
+    }
+  }
+
   // 导出PPTX文件
   const exportPPTX = () => {
     exporting.value = true
@@ -294,17 +319,8 @@ export default () => {
           }
           if (el.defaultColor) options.color = formatColor(el.defaultColor).color
           if (el.defaultFontName) options.fontFace = el.defaultFontName
-          if (el.shadow) {
-            const c = formatColor(el.shadow.color)
-            options.shadow = {
-              type: 'outer',
-              color: c.color.replace('#', ''),
-              opacity: c.alpha,
-              blur: el.shadow.blur * 0.75,
-              offset: (el.shadow.h + el.shadow.v) / 2 * 0.75,
-              angle: 45,
-            }
-          }
+          if (el.shadow) options.shadow = getShadowOption(el.shadow)
+          if (el.outline?.width) options.line = getOutlineOption(el.outline)
           if (el.opacity !== undefined) options.transparency = (1 - el.opacity) * 100
 
           pptxSlide.addText(textProps, options)
@@ -394,26 +410,8 @@ export default () => {
             }
             if (el.flipH) options.flipH = el.flipH
             if (el.flipV) options.flipV = el.flipV
-            if (el.outline?.width) {
-              const c = formatColor(el.outline?.color || '#000000')
-              options.line = {
-                color: c.color, 
-                transparency: (1 - c.alpha) * 100,
-                width: el.outline.width * 0.75, 
-                dashType: el.outline.style === 'solid' ? 'solid' : 'dash',
-              }
-            }
-            if (el.shadow) {
-              const c = formatColor(el.shadow.color)
-              options.shadow = {
-                type: 'outer',
-                color: c.color.replace('#', ''),
-                opacity: c.alpha,
-                blur: el.shadow.blur * 0.75,
-                offset: (el.shadow.h + el.shadow.v) / 2 * 0.75,
-                angle: 45,
-              }
-            }
+            if (el.shadow) options.shadow = getShadowOption(el.shadow)
+            if (el.outline?.width) options.line = getOutlineOption(el.outline)
             if (el.link) {
               const { type, target } = el.link
               if (type === 'web') options.hyperlink = { url: target }
@@ -467,6 +465,8 @@ export default () => {
             },
             points,
           }
+          if (el.shadow) options.shadow = getShadowOption(el.shadow)
+
           pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
         }
 
