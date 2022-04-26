@@ -321,7 +321,6 @@ export default () => {
           if (el.flipH) options.flipH = el.flipH
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate
-          if (el.clip && el.clip.shape === 'ellipse') options.rounding = true
           if (el.link) {
             const { type, target } = el.link
             if (type === 'web') options.hyperlink = { url: target }
@@ -331,6 +330,22 @@ export default () => {
             }
           }
           if (el.filters?.opacity) options.transparency = 100 - parseInt(el.filters?.opacity)
+          if (el.clip) {
+            if (el.clip.shape === 'ellipse') options.rounding = true
+
+            const range = el.clip.range
+
+            const originW = el.width / ((range[1][0] - range[0][0]) / 100)
+            const originH = el.height / ((range[1][1] - range[0][1]) / 100)
+            options.w = originW / 100
+            options.h = originH / 100
+
+            const x = range[0][0] / 100 * originW / 100
+            const y = range[0][1] / 100 * originH / 100
+            const w = (range[1][0] - range[0][0]) / 100 * originW / 100
+            const h = (range[1][1] - range[0][1]) / 100 * originH / 100
+            options.sizing = { type: 'crop', w, h, x, y }
+          }
 
           pptxSlide.addImage(options)
         }
