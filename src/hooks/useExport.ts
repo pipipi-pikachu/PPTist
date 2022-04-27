@@ -6,7 +6,7 @@ import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
 import { useSlidesStore } from '@/store'
-import { PPTElementOutline, PPTElementShadow } from '@/types/slides'
+import { PPTElementOutline, PPTElementShadow, PPTElementLink } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
@@ -79,11 +79,15 @@ export default () => {
   // 核心思路：将HTML字符串按样式分片平铺，每个片段需要继承祖先元素的样式信息，遇到块级元素需要换行
   const formatHTML = (html: string) => {
     const ast = toAST(html)
+    let bulletFlag = false
 
     const slices: pptxgen.TextProps[] = []
     const parse = (obj: AST[], baseStyleObj = {}) => {
+
       for (const item of obj) {
-        if ('tagName' in item && ['div', 'li', 'p'].includes(item.tagName) && slices.length) {
+        const isBlockTag = 'tagName' in item && ['div', 'li', 'p'].includes(item.tagName)
+
+        if (isBlockTag && slices.length) {
           const lastSlice = slices[slices.length - 1]
           if (!lastSlice.options) lastSlice.options = {}
           lastSlice.options.breakLine = true
@@ -98,11 +102,6 @@ export default () => {
             const [key, value] = [trim(_key), trim(_value)]
             if (key && value) styleObj[key] = value
           }
-        }
-
-        if ('tagName' in item) {
-          if (item.tagName === 'ul') styleObj['list-type'] = 'ul'
-          if (item.tagName === 'ol') styleObj['list-type'] = 'ol'
         }
 
         if ('tagName' in item) {
@@ -121,6 +120,15 @@ export default () => {
           if (item.tagName === 'a') {
             const attr = item.attributes.find(attr => attr.key === 'href')
             styleObj['href'] = attr?.value || ''
+          }
+          if (item.tagName === 'ul') {
+            styleObj['list-type'] = 'ul'
+          }
+          if (item.tagName === 'ol') {
+            styleObj['list-type'] = 'ol'
+          }
+          if (item.tagName === 'li') {
+            bulletFlag = true
           }
         }
 
@@ -172,16 +180,18 @@ export default () => {
           if (styleObj['font-family']) options.fontFace = styleObj['font-family']
           if (styleObj['href']) options.hyperlink = { url: styleObj['href'] }
 
+          if (bulletFlag && styleObj['list-type'] === 'ol') {
+            options.bullet = { type: 'number', indent: 20 * 0.75 }
+            bulletFlag = false
+          }
+          if (bulletFlag && styleObj['list-type'] === 'ul') {
+            options.bullet = { indent: 20 * 0.75 }
+            bulletFlag = false
+          }
+
           slices.push({ text, options })
         }
         else if ('children' in item) parse(item.children, styleObj)
-
-        if ('tagName' in item && item.tagName === 'li') {
-          const slice = slices[slices.length - 1]
-          if (!slice.options) slice.options = {}
-          if (styleObj['list-type'] === 'ol') slice.options.bullet = { type: 'number', indent: 20 * 0.75 }
-          if (styleObj['list-type'] === 'ul') slice.options.bullet = { indent: 20 * 0.75 }
-        }
       }
     }
     parse(ast)
@@ -266,6 +276,18 @@ export default () => {
     }
   }
 
+  // 获取超链接配置
+  const getLinkOption = (link: PPTElementLink): pptxgen.HyperlinkProps | null => {
+    const { type, target } = link
+    if (type === 'web') return { url: target }
+    if (type === 'slide') {
+      const index = slides.value.findIndex(slide => slide.id === target)
+      if (index !== -1) return { slide: index + 1 }
+    }
+
+    return null
+  }
+
   // 导出PPTX文件
   const exportPPTX = () => {
     exporting.value = true
@@ -338,29 +360,30 @@ export default () => {
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate
           if (el.link) {
-            const { type, target } = el.link
-            if (type === 'web') options.hyperlink = { url: target }
-            else if (type === 'slide') {
-              const index = slides.value.findIndex(slide => slide.id === target)
-              if (index !== -1) options.hyperlink = { slide: index + 1 }
-            }
+            const linkOption = getLinkOption(el.link)
+            if (linkOption) options.hyperlink = linkOption
           }
           if (el.filters?.opacity) options.transparency = 100 - parseInt(el.filters?.opacity)
           if (el.clip) {
             if (el.clip.shape === 'ellipse') options.rounding = true
 
-            const range = el.clip.range
+            const [start, end] = el.clip.range
+            const [startX, startY] = start
+            const [endX, endY] = end
 
-            const originW = el.width / ((range[1][0] - range[0][0]) / 100)
-            const originH = el.height / ((range[1][1] - range[0][1]) / 100)
+            const originW = el.width / ((endX - startX) / 100)
+            const originH = el.height / ((endY - startY) / 100)
+
             options.w = originW / 100
             options.h = originH / 100
 
-            const x = range[0][0] / 100 * originW / 100
-            const y = range[0][1] / 100 * originH / 100
-            const w = (range[1][0] - range[0][0]) / 100 * originW / 100
-            const h = (range[1][1] - range[0][1]) / 100 * originH / 100
-            options.sizing = { type: 'crop', w, h, x, y }
+            options.sizing = {
+              type: 'crop',
+              x: startX / 100 * originW / 100,
+              y: startY / 100 * originH / 100,
+              w: (endX - startX) / 100 * originW / 100,
+              h: (endY - startY) / 100 * originH / 100,
+            }
           }
 
           pptxSlide.addImage(options)
@@ -380,12 +403,8 @@ export default () => {
             }
             if (el.rotate) options.rotate = el.rotate
             if (el.link) {
-              const { type, target } = el.link
-              if (type === 'web') options.hyperlink = { url: target }
-              else if (type === 'slide') {
-                const index = slides.value.findIndex(slide => slide.id === target)
-                if (index !== -1) options.hyperlink = { slide: index + 1 }
-              }
+              const linkOption = getLinkOption(el.link)
+              if (linkOption) options.hyperlink = linkOption
             }
 
             pptxSlide.addImage(options)
@@ -413,12 +432,8 @@ export default () => {
             if (el.shadow) options.shadow = getShadowOption(el.shadow)
             if (el.outline?.width) options.line = getOutlineOption(el.outline)
             if (el.link) {
-              const { type, target } = el.link
-              if (type === 'web') options.hyperlink = { url: target }
-              else if (type === 'slide') {
-                const index = slides.value.findIndex(slide => slide.id === target)
-                if (index !== -1) options.hyperlink = { slide: index + 1 }
-              }
+              const linkOption = getLinkOption(el.link)
+              if (linkOption) options.hyperlink = linkOption
             }
 
             pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
@@ -635,12 +650,8 @@ export default () => {
             h: el.height / 100,
           }
           if (el.link) {
-            const { type, target } = el.link
-            if (type === 'web') options.hyperlink = { url: target }
-            else if (type === 'slide') {
-              const index = slides.value.findIndex(slide => slide.id === target)
-              if (index !== -1) options.hyperlink = { slide: index + 1 }
-            }
+            const linkOption = getLinkOption(el.link)
+            if (linkOption) options.hyperlink = linkOption
           }
 
           pptxSlide.addImage(options)
