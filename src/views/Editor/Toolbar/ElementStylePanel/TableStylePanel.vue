@@ -188,9 +188,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
-import { createRandomCode } from '@/utils/common'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -351,7 +351,7 @@ export default defineComponent({
       const rowCount = _handleElement.data.length
 
       if (value > rowCount) {
-        const rowCells: TableCell[] = new Array(colCount.value).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+        const rowCells: TableCell[] = new Array(colCount.value).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
         const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
   
         const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
@@ -375,7 +375,7 @@ export default defineComponent({
 
       if (value > colCount) {
         tableCells = tableCells.map(item => {
-          const cells: TableCell[] = new Array(value - colCount).fill({ id: createRandomCode(), colspan: 1, rowspan: 1, text: '' })
+          const cells: TableCell[] = new Array(value - colCount).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
           item.push(...cells)
           return item
         })

@@ -70,11 +70,11 @@
 import { computed, defineComponent, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
 import { debounce, isEqual } from 'lodash'
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useMainStore } from '@/store'
 import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
-import { createRandomCode } from '@/utils/common'
 import { getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
@@ -332,7 +332,7 @@ export default defineComponent({
           colspan: 1,
           rowspan: 1,
           text: '',
-          id: createRandomCode(),
+          id: nanoid(10),
         })
       }
 
@@ -347,7 +347,7 @@ export default defineComponent({
           colspan: 1,
           rowspan: 1,
           text: '',
-          id: createRandomCode(),
+          id: nanoid(10),
         }
         item.splice(colIndex, 0, cell)
         return item
@@ -368,7 +368,7 @@ export default defineComponent({
           for (let j = 0; j < _tableCells[0].length; j++) {
             rowCells.push({
               ...defaultCell,
-              id: createRandomCode(),
+              id: nanoid(10),
             })
           }
           newRows.push(rowCells)
@@ -381,7 +381,7 @@ export default defineComponent({
           for (let i = 0; i < colCount; i++) {
             const cell = {
               ...defaultCell,
-              id: createRandomCode(),
+              id: nanoid(10),
             }
             cells.push(cell)
           }

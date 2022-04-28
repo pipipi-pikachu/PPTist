@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
-import { createRandomCode } from '@/utils/common'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -36,7 +36,7 @@ export default () => {
     let newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
     // 生成分组ID
-    const groupId = createRandomCode()
+    const groupId = nanoid(10)
 
     // 收集需要组合的元素列表，并赋上唯一分组ID
     const combineElementList: PPTElement[] = []

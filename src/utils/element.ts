@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
+import { nanoid } from 'nanoid'
 import { PPTElement, PPTLineElement } from '@/types/slides'
-import { createRandomCode } from '@/utils/common'
 
 interface RotatedElementData {
   left: number;
@@ -164,9 +164,9 @@ export const createElementIdMap = (elements: PPTElement[]) => {
   for (const element of elements) {
     const groupId = element.groupId
     if (groupId && !groupIdMap[groupId]) {
-      groupIdMap[groupId] = createRandomCode()
+      groupIdMap[groupId] = nanoid(10)
     }
-    elIdMap[element.id] = createRandomCode()
+    elIdMap[element.id] = nanoid(10)
   }
   return {
     groupIdMap,

@@ -1,8 +1,8 @@
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useSlidesStore, useMainStore } from '@/store'
 import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { PPTElement, Slide } from '@/types/slides'
-import { createRandomCode } from '@/utils/common'
 import { createElementIdMap } from '@/utils/element'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -65,7 +65,7 @@ export default () => {
       }
       return {
         ...slide,
-        id: createRandomCode(),
+        id: nanoid(10),
       }
     })
     slidesStore.addSlide(newSlides)

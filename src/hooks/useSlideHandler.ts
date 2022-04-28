@@ -1,8 +1,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
-import { createRandomCode } from '@/utils/common'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
 import { createElementIdMap } from '@/utils/element'
@@ -27,7 +27,7 @@ export default () => {
   // 重置幻灯片
   const resetSlides = () => {
     const emptySlide: Slide = {
-      id: createRandomCode(),
+      id: nanoid(10),
       elements: [],
       background: {
         type: 'solid',
@@ -74,7 +74,7 @@ export default () => {
   // 创建一页空白页并添加到下一页
   const createSlide = () => {
     const emptySlide: Slide = {
-      id: createRandomCode(),
+      id: nanoid(10),
       elements: [],
       background: {
         type: 'solid',
@@ -96,7 +96,7 @@ export default () => {
     }
     const newSlide = {
       ...slide,
-      id: createRandomCode(),
+      id: nanoid(10),
     }
     mainStore.setActiveElementIdList([])
     slidesStore.addSlide(newSlide)

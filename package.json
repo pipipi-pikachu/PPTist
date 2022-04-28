@@ -22,6 +22,7 @@
     "html-to-image": "^1.9.0",
     "lodash": "^4.17.20",
     "mitt": "^3.0.0",
+    "nanoid": "^3.3.3",
     "pinia": "^2.0.11",
     "pptxgenjs": "^3.10.0",
     "prosemirror-commands": "^1.1.7",
