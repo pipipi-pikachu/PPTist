@@ -255,13 +255,59 @@ export default () => {
   // 获取阴影配置
   const getShadowOption = (shadow: PPTElementShadow): pptxgen.ShadowProps => {
     const c = formatColor(shadow.color)
+    const { h, v } = shadow
+
+    let offset = 4
+    let angle = 45
+
+    if (h === 0 && v === 0) {
+      offset = 4
+      angle = 45
+    }
+    else if (h === 0) {
+      if (v > 0) {
+        offset = v
+        angle = 90
+      }
+      else {
+        offset = -v
+        angle = 270
+      }
+    }
+    else if (v === 0) {
+      if (h > 0) {
+        offset = h
+        angle = 1
+      }
+      else {
+        offset = -h
+        angle = 180
+      }
+    }
+    else if (h > 0 && v > 0) {
+      offset = Math.max(h, v)
+      angle = 45
+    }
+    else if (h > 0 && v < 0) {
+      offset = Math.max(h, -v)
+      angle = 315
+    }
+    else if (h < 0 && v > 0) {
+      offset = Math.max(-h, v)
+      angle = 135
+    }
+    else if (h < 0 && v < 0) {
+      offset = Math.max(-h, -v)
+      angle = 225
+    }
+
     return {
       type: 'outer',
       color: c.color.replace('#', ''),
       opacity: c.alpha,
       blur: shadow.blur * 0.75,
-      offset: (shadow.h + shadow.v) / 2 * 0.75,
-      angle: 45,
+      offset,
+      angle,
     }
   }
 
