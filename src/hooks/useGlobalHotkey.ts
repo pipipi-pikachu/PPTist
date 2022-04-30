@@ -28,7 +28,7 @@ export default () => {
     thumbnailsFocus,
   } = storeToRefs(mainStore)
   const { currentSlide } = storeToRefs(useSlidesStore())
-  const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
+  const { ctrlKeyState, shiftKeyState, spaceKeyState } = storeToRefs(keyboardStore)
 
   const {
     updateSlideIndex,
@@ -49,7 +49,7 @@ export default () => {
   const { orderElement } = useOrderElement()
   const { redo, undo } = useHistorySnapshot()
   const { enterScreening } = useScreening()
-  const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
+  const { scaleCanvas, resetCanvas } = useScaleCanvas()
 
   const copy = () => {
     if (activeElementIdList.value.length) copyElement()
@@ -127,6 +127,7 @@ export default () => {
 
     if (ctrlOrMetaKeyActive && !ctrlKeyState.value) keyboardStore.setCtrlKeyState(true)
     if (shiftKey && !shiftKeyState.value) keyboardStore.setShiftKeyState(true)
+    if (!disableHotkeys.value && key === KEYS.SPACE) keyboardStore.setSpaceKeyState(true)
 
     if (ctrlOrMetaKeyActive && key === KEYS.F) {
       e.preventDefault()
@@ -234,7 +235,7 @@ export default () => {
     if (key === KEYS.DIGIT_0) {
       if (disableHotkeys.value) return
       e.preventDefault()
-      setCanvasPercentage(90)
+      resetCanvas()
     }
     if (key === KEYS.TAB) {
       if (disableHotkeys.value) return
@@ -246,6 +247,7 @@ export default () => {
   const keyupListener = () => {
     if (ctrlKeyState.value) keyboardStore.setCtrlKeyState(false)
     if (shiftKeyState.value) keyboardStore.setShiftKeyState(false)
+    if (spaceKeyState.value) keyboardStore.setSpaceKeyState(false)
   }
 
   onMounted(() => {

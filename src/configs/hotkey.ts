@@ -52,10 +52,11 @@ export const HOTKEY_DOC = [
     type: '幻灯片编辑',
     children: [
       { label: '新建幻灯片', value: 'Enter' },
+      { label: '移动画布', value: 'Space + 鼠标拖拽' },
       { label: '缩放画布', value: 'Ctrl + 鼠标滚动' },
       { label: '放大画布', value: 'Ctrl + =' },
       { label: '缩小画布', value: 'Ctrl + -' },
-      { label: '缩放画布到合适大小', value: 'Ctrl + 0' },
+      { label: '使画布适应当前屏幕', value: 'Ctrl + 0' },
       { label: '编辑上一页', value: '↑ / ← / 鼠标上滚' },
       { label: '编辑下一页', value: '↓ / → / 鼠标下滚' },
     ],

@@ -72,10 +72,22 @@
 
     <div class="right-handler">
       <IconMinus class="handler-item viewport-size" @click="scaleCanvas('-')" />
-      <span class="text">{{canvasScalePercentage}}</span>
+      <Popover trigger="click" v-model:visible="canvasScaleVisible">
+        <template #content>
+          <div class="viewport-size-preset">
+            <div 
+              class="preset-item" 
+              v-for="item in canvasScalePresetList" 
+              :key="item" 
+              @click="applyCanvasPresetScale(item)"
+            >{{item}}%</div>
+          </div>
+        </template>
+        <span class="text">{{canvasScalePercentage}}</span>
+      </Popover>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="适配屏幕">
-        <IconFullScreen class="handler-item viewport-size-adaptation" @click="setCanvasPercentage(90)" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="适应屏幕">
+        <IconFullScreen class="handler-item viewport-size-adaptation" @click="resetCanvas()" />
       </Tooltip>
     </div>
 
@@ -95,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSnapshotStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
@@ -124,13 +136,24 @@ export default defineComponent({
   },
   setup() {
     const mainStore = useMainStore()
-    const { canvasScale } = storeToRefs(mainStore)
     const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
-    const canvasScalePercentage = computed(() => parseInt(canvasScale.value * 100 + '') + '%')
-
-    const { scaleCanvas, setCanvasPercentage } = useScaleCanvas()
     const { redo, undo } = useHistorySnapshot()
+
+    const {
+      scaleCanvas,
+      setCanvasScalePercentage,
+      resetCanvas,
+      canvasScalePercentage,
+    } = useScaleCanvas()
+    
+    const canvasScalePresetList = [200, 150, 100, 80, 50]
+    const canvasScaleVisible = ref(false)
+
+    const applyCanvasPresetScale = (value: number) => {
+      setCanvasScalePercentage(value)
+      canvasScaleVisible.value = false
+    }
 
     const {
       createImageElement,
@@ -181,8 +204,11 @@ export default defineComponent({
 
     return {
       scaleCanvas,
-      setCanvasPercentage,
+      resetCanvas,
       canvasScalePercentage,
+      canvasScaleVisible,
+      canvasScalePresetList,
+      applyCanvasPresetScale,
       canUndo,
       canRedo,
       redo,
@@ -245,10 +271,20 @@ export default defineComponent({
   .text {
     width: 40px;
     text-align: center;
+    cursor: pointer;
   }
 
   .viewport-size {
     font-size: 13px;
+  }
+}
+.preset-item {
+  padding: 8px 20px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    color: $themeColor;
   }
 }
 </style>

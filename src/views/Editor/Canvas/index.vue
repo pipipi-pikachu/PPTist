@@ -74,6 +74,8 @@
       </div>
     </div>
 
+    <div class="drag-mask" v-if="spaceKeyState"></div>
+
     <Modal
       v-model:visible="linkDialogVisible" 
       :footer="null" 
@@ -148,7 +150,7 @@ export default defineComponent({
       canvasScale,
     } = storeToRefs(mainStore)
     const { currentSlide } = storeToRefs(useSlidesStore())
-    const { ctrlKeyState, ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
+    const { ctrlKeyState, spaceKeyState } = storeToRefs(useKeyboardStore())
 
     const viewportRef = ref<HTMLElement>()
     const alignmentLines = ref<AlignmentLineProps[]>([])
@@ -167,7 +169,7 @@ export default defineComponent({
     watchEffect(setLocalElementList)
 
     const canvasRef = ref<HTMLElement>()
-    const { viewportStyles } = useViewportSize(canvasRef)
+    const { dragViewport, viewportStyles } = useViewportSize(canvasRef)
 
     useDropImageOrText(canvasRef)
 
@@ -188,7 +190,10 @@ export default defineComponent({
     // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
     const handleClickBlankArea = (e: MouseEvent) => {
       mainStore.setActiveElementIdList([])
-      if (!ctrlOrShiftKeyActive.value) updateMouseSelection(e)
+
+      if (!spaceKeyState.value) updateMouseSelection(e)
+      else dragViewport(e)
+
       if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
       removeAllRanges()
     }
@@ -273,6 +278,7 @@ export default defineComponent({
       creatingElement,
       alignmentLines,
       linkDialogVisible,
+      spaceKeyState,
       openLinkDialog,
       handleClickBlankArea,
       removeEditorAreaFocus,
@@ -296,6 +302,10 @@ export default defineComponent({
   overflow: hidden;
   background-color: $lightGray;
   position: relative;
+}
+.drag-mask {
+  cursor: grab;
+  @include absolute-0();
 }
 .viewport-wrapper {
   position: absolute;

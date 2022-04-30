@@ -8,7 +8,7 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportTop = ref(0)
 
   const mainStore = useMainStore()
-  const { canvasPercentage } = storeToRefs(mainStore)
+  const { canvasPercentage, canvasDragged } = storeToRefs(mainStore)
   const { viewportRatio } = storeToRefs(useSlidesStore())
 
   // 计算画布可视区域的位置
@@ -34,6 +34,11 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
   // 可视区域缩放或比例变化时，更新可视区域的位置
   watch([canvasPercentage, viewportRatio], setViewportPosition)
 
+  // 画布拖拽状态改变（复原）时，更新可视区域的位置
+  watch(canvasDragged, () => {
+    if (!canvasDragged.value) setViewportPosition()
+  })
+
   // 画布可视区域位置和大小的样式
   const viewportStyles = computed(() => ({
     width: VIEWPORT_SIZE,
@@ -52,7 +57,37 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
     if (canvasRef.value) resizeObserver.unobserve(canvasRef.value)
   })
 
+  // 拖拽画布
+  const dragViewport = (e: MouseEvent) => {
+    let isMouseDown = true
+
+    const startPageX = e.pageX
+    const startPageY = e.pageY
+
+    const originLeft = viewportLeft.value
+    const originTop = viewportTop.value
+
+    document.onmousemove = e => {
+      if (!isMouseDown) return
+
+      const currentPageX = e.pageX
+      const currentPageY = e.pageY
+
+      viewportLeft.value = originLeft + (currentPageX - startPageX)
+      viewportTop.value = originTop + (currentPageY - startPageY)
+    }
+
+    document.onmouseup = () => {
+      isMouseDown = false
+      document.onmousemove = null
+      document.onmouseup = null
+
+      mainStore.setCanvasDragged(true)
+    }
+  }
+
   return {
     viewportStyles,
+    dragViewport,
   }
 }

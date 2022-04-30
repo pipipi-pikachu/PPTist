@@ -13,6 +13,7 @@ export interface MainState {
   activeGroupElementId: string;
   canvasPercentage: number;
   canvasScale: number;
+  canvasDragged: boolean;
   thumbnailsFocus: boolean;
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
@@ -35,6 +36,7 @@ export const useMainStore = defineStore('main', {
     activeGroupElementId: '', // 组合元素成员中，被选中可独立操作的元素ID
     canvasPercentage: 90, // 画布可视区域百分比
     canvasScale: 1, // 画布缩放比例（基于宽度1000px）
+    canvasDragged: false, // 画布被拖拽移动
     thumbnailsFocus: false, // 左侧导航缩略图区域聚焦
     editorAreaFocus: false, //  编辑区域聚焦
     disableHotkeys: false, // 禁用快捷键
@@ -88,6 +90,10 @@ export const useMainStore = defineStore('main', {
   
     setCanvasScale(scale: number) {
       this.canvasScale = scale
+    },
+  
+    setCanvasDragged(isDragged: boolean) {
+      this.canvasDragged = isDragged
     },
   
     setThumbnailsFocus(isFocus: boolean) {
