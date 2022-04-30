@@ -1,9 +1,5 @@
 <template>
-  <BaseChartElement
-    class="screen-element-chart"
-    :elementInfo="elementInfo"
-    :needScaleSize="false"
-  />
+  <BaseChartElement class="screen-element-chart" :elementInfo="elementInfo" />
 </template>
 
 <script lang="ts">

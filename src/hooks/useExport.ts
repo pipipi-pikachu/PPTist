@@ -16,7 +16,6 @@ import { message } from 'ant-design-vue'
 interface ExportImageConfig {
   quality: number;
   width: number;
-  filter: (node: HTMLElement) => boolean;
   fontEmbedCSS?: string;
 }
 
@@ -30,18 +29,13 @@ export default () => {
     exporting.value = true
     const toImage = format === 'png' ? toPng : toJpeg
 
+    const foreignObjectSpans = domRef.querySelectorAll('foreignObject [xmlns]')
+    foreignObjectSpans.forEach(spanRef => spanRef.removeAttribute('xmlns'))
+
     setTimeout(() => {
-      if (!domRef) return
-
-      const filter = (node: HTMLElement) => {
-        if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
-        return true
-      }
-
       const config: ExportImageConfig = {
         quality,
         width: 1600,
-        filter,
       }
 
       if (ignoreWebfont) config.fontEmbedCSS = ''
