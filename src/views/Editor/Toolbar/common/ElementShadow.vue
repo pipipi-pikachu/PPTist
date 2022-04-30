@@ -11,7 +11,7 @@
         <div style="flex: 2;">水平阴影：</div>
         <Slider 
           class="slider"
-          :min="0" 
+          :min="-10" 
           :max="10" 
           :step="1" 
           :value="shadow.h" 
@@ -22,7 +22,7 @@
         <div style="flex: 2;">垂直阴影：</div>
         <Slider
           class="slider"
-          :min="0"
+          :min="-10"
           :max="10"
           :step="1"
           :value="shadow.v"
