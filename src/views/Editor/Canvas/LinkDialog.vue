@@ -66,6 +66,8 @@ export default defineComponent({
     const address = ref('')
     const slideId = ref('')
 
+    slideId.value = slides.value[0].id
+
     const selectedSlide = computed(() => {
       if (!slideId.value) return null
 

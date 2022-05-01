@@ -23,9 +23,8 @@
           :outline="elementInfo.outline"
         />
         <Chart
-          :class="{ 'need-scale': needScaleSize }"
-          :width="chartWidth"
-          :height="chartHeight"
+          :width="elementInfo.width * zoom"
+          :height="elementInfo.height * zoom"
           :type="elementInfo.chartType"
           :data="elementInfo.data"
           :options="elementInfo.options"
@@ -33,6 +32,7 @@
           :gridColor="elementInfo.gridColor"
           :legends="elementInfo.data.legends"
           :legend="elementInfo.legend || ''"
+          :style="{ zoom: 1 / zoom }"
         />
       </div>
     </div>
@@ -59,17 +59,15 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup() {
     const slideScale = inject(injectKeySlideScale) || ref(1)
 
     const needScaleSize = computed(() => slideScale.value < 1)
-    const chartWidth = computed(() => needScaleSize.value ? props.elementInfo.width * 10 : props.elementInfo.width)
-    const chartHeight = computed(() => needScaleSize.value ? props.elementInfo.height * 10 : props.elementInfo.height)
+    const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1)
 
     return {
       needScaleSize,
-      chartWidth,
-      chartHeight,
+      zoom,
     }
   },
 })
@@ -86,8 +84,5 @@ export default defineComponent({
 .element-content {
   width: 100%;
   height: 100%;
-}
-.need-scale {
-  zoom: .1;
 }
 </style>
