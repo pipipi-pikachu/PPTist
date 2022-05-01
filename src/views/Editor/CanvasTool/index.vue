@@ -11,7 +11,7 @@
 
     <div class="add-element-handler">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
-        <IconFontSize class="handler-item" @click="drawText()" />
+        <IconFontSize class="handler-item" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
@@ -23,7 +23,7 @@
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
-          <IconGraphicDesign class="handler-item" />
+          <IconGraphicDesign class="handler-item" :class="{ 'active': creatingElement?.type === 'shape' }" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="linePoolVisible">
@@ -31,7 +31,7 @@
           <LinePool @select="line => drawLine(line)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条">
-          <IconConnection class="handler-item" />
+          <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:visible="chartPoolVisible">
@@ -136,6 +136,7 @@ export default defineComponent({
   },
   setup() {
     const mainStore = useMainStore()
+    const { creatingElement } = storeToRefs(mainStore)
     const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
     const { redo, undo } = useHistorySnapshot()
@@ -220,6 +221,7 @@ export default defineComponent({
       tableGeneratorVisible,
       mediaInputVisible,
       latexEditorVisible,
+      creatingElement,
       drawText,
       drawShape,
       drawLine,
@@ -262,6 +264,9 @@ export default defineComponent({
 
   &.disable {
     opacity: .5;
+  }
+  &.active {
+    color: $themeColor;
   }
 }
 .right-handler {
