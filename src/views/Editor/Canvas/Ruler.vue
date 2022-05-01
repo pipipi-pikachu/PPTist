@@ -7,7 +7,14 @@
         left: viewportStyles.left + 'px',
       }"
     >
-      <div class="ruler-mark-100" v-for="mark in 10" :key="`mark-100-${mark}`">{{mark * 100}}</div>
+      <div 
+        class="ruler-marker-100" 
+        :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
+        v-for="marker in 10" 
+        :key="`marker-100-${marker}`"
+      >
+        <span>{{marker * 100}}</span>
+      </div>
     </div>
     <div 
       class="v"
@@ -17,11 +24,14 @@
       }"
     >
       <div 
-        class="ruler-mark-100" 
-        v-for="mark in 10" 
-        :key="mark" 
-        :style="{ height: markSize + 'px' }"
-      >{{mark * 100}}</div>
+        class="ruler-marker-100" 
+        :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
+        v-for="marker in 10" 
+        :key="marker" 
+        :style="{ height: markerSize + 'px' }"
+      >
+        <span>{{marker * 100}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -48,13 +58,13 @@ export default defineComponent({
   setup(props) {
     const { canvasScale } = storeToRefs(useMainStore())
 
-    const markSize = computed(() => {
+    const markerSize = computed(() => {
       return props.viewportStyles.width * canvasScale.value / 10
     })
 
     return {
       canvasScale,
-      markSize,
+      markerSize,
     }
   },
 })
@@ -75,13 +85,20 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
 
-  .ruler-mark-100 {
+  .ruler-marker-100 {
     height: 100%;
     line-height: 20px;
     text-align: right;
     flex: 1;
     padding-right: 5px;
     position: relative;
+
+    &.hide span {
+      display: none;
+    }
+    &.omit::before {
+      display: none;
+    }
 
     &:not(:last-child)::after {
       content: '';
@@ -111,13 +128,20 @@ export default defineComponent({
   left: 5px;
   overflow: hidden;
 
-  .ruler-mark-100 {
+  .ruler-marker-100 {
     width: 100%;
     line-height: 20px;
     text-align: right;
     padding-bottom: 5px;
     position: relative;
     writing-mode: vertical-rl;
+
+    &.hide span {
+      display: none;
+    }
+    &.omit::before {
+      display: none;
+    }
 
     &:not(:last-child)::after {
       content: '';
