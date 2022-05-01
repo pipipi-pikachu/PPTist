@@ -76,6 +76,8 @@
 
     <div class="drag-mask" v-if="spaceKeyState"></div>
 
+    <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
+
     <Modal
       v-model:visible="linkDialogVisible" 
       :footer="null" 
@@ -121,6 +123,7 @@ import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import ViewportBackground from './ViewportBackground.vue'
 import AlignmentLine from './AlignmentLine.vue'
+import Ruler from './Ruler.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
@@ -133,6 +136,7 @@ export default defineComponent({
     MouseSelection,
     ViewportBackground,
     AlignmentLine,
+    Ruler,
     ElementCreateSelection,
     MultiSelectOperate,
     Operate,
@@ -146,6 +150,7 @@ export default defineComponent({
       handleElementId,
       editorAreaFocus,
       showGridLines,
+      showRuler,
       creatingElement,
       canvasScale,
     } = storeToRefs(mainStore)
@@ -228,6 +233,11 @@ export default defineComponent({
       mainStore.setGridLinesState(!showGridLines.value)
     }
 
+    // 开关标尺
+    const toggleRuler = () => {
+      mainStore.setRulerState(!showRuler.value)
+    }
+
     // 在鼠标绘制的范围插入元素
     const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewportRef)
 
@@ -247,6 +257,11 @@ export default defineComponent({
           text: '网格线',
           subText: showGridLines.value ? '√' : '',
           handler: toggleGridLines,
+        },
+        {
+          text: '标尺',
+          subText: showRuler.value ? '√' : '',
+          handler: toggleRuler,
         },
         {
           text: '重置当前页',
@@ -279,6 +294,7 @@ export default defineComponent({
       alignmentLines,
       linkDialogVisible,
       spaceKeyState,
+      showRuler,
       openLinkDialog,
       handleClickBlankArea,
       removeEditorAreaFocus,

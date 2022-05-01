@@ -20,6 +20,7 @@
             <MenuItem @click="createSlide()">添加页面</MenuItem>
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
+            <MenuItem @click="toggleRuler()">{{ toggleRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
           </Menu>
         </template>
@@ -99,7 +100,7 @@ export default defineComponent({
   },
   setup() {
     const mainStore = useMainStore()
-    const { showGridLines } = storeToRefs(mainStore)
+    const { showGridLines, showRuler } = storeToRefs(mainStore)
 
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
@@ -108,6 +109,10 @@ export default defineComponent({
 
     const toggleGridLines = () => {
       mainStore.setGridLinesState(!showGridLines.value)
+    }
+
+    const toggleRuler = () => {
+      mainStore.setRulerState(!showRuler.value)
     }
 
     const hotkeyDrawerVisible = ref(false)
@@ -129,6 +134,7 @@ export default defineComponent({
       createSlide,
       deleteSlide,
       toggleGridLines,
+      toggleRuler,
       resetSlides,
       exportJSON,
       exportPPTX,

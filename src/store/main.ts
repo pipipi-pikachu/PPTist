@@ -18,6 +18,7 @@ export interface MainState {
   editorAreaFocus: boolean;
   disableHotkeys: boolean;
   showGridLines: boolean;
+  showRuler: boolean;
   creatingElement: CreatingElement | null;
   availableFonts: typeof SYS_FONTS;
   toolbarState: ToolbarStates;
@@ -41,6 +42,7 @@ export const useMainStore = defineStore('main', {
     editorAreaFocus: false, //  编辑区域聚焦
     disableHotkeys: false, // 禁用快捷键
     showGridLines: false, // 显示网格线
+    showRuler: false, // 显示标尺
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     availableFonts: SYS_FONTS, // 当前环境可用字体
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
@@ -110,6 +112,10 @@ export const useMainStore = defineStore('main', {
   
     setGridLinesState(show: boolean) {
       this.showGridLines = show
+    },
+  
+    setRulerState(show: boolean) {
+      this.showRuler = show
     },
   
     setCreatingElement(element: CreatingElement | null) {
