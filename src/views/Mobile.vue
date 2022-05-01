@@ -24,7 +24,6 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -38,7 +37,6 @@ export default defineComponent({
     const { slides } = storeToRefs(useSlidesStore())
 
     const { slidesLoadLimit } = useLoadSlides()
-    const { enterScreening } = useScreening()
 
     const mobileRef = ref<HTMLElement>()
     const slideWidth = ref(0)
@@ -53,7 +51,6 @@ export default defineComponent({
       slidesLoadLimit,
       mobileRef,
       slideWidth,
-      enterScreening,
     }
   },
 })
