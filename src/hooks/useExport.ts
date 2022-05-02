@@ -20,7 +20,7 @@ interface ExportImageConfig {
 }
 
 export default () => {
-  const { slides } = storeToRefs(useSlidesStore())
+  const { slides, theme } = storeToRefs(useSlidesStore())
 
   const exporting = ref(false)
 
@@ -333,6 +333,12 @@ export default () => {
     exporting.value = true
     const pptx = new pptxgen()
 
+    const { color: bgColor, alpha: bgAlpha } = formatColor(theme.value.backgroundColor)
+    pptx.defineSlideMaster({
+      title: 'PPTIST_MASTER',
+      background: { color: bgColor, transparency: (1 - bgAlpha) * 100 },
+    })
+
     for (const slide of slides.value) {
       const pptxSlide = pptx.addSlide()
 
@@ -352,6 +358,7 @@ export default () => {
           pptxSlide.background = { color: c.color, transparency: (1 - c.alpha) * 100 }
         }
       }
+      if (slide.remark) pptxSlide.addNotes(slide.remark)
 
       if (!slide.elements) continue
 
