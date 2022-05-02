@@ -291,6 +291,21 @@ export default defineComponent({
       ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
     }
 
+    // 获取 DataURL
+    const getImageDataURL = () => {
+      return canvasRef.value?.toDataURL()
+    }
+    
+    // 设置 DataURL（绘制图片到 canvas）
+    const setImageDataURL = (imageDataURL: string) => {
+      const img = new Image()
+      img.src = imageDataURL
+      img.onload = () => {
+        if (!ctx) return
+        ctx.drawImage(img, 0, 0)
+      }
+    }
+
     return {
       mouse,
       mouseInCanvas,
@@ -305,6 +320,8 @@ export default defineComponent({
       handleMousemove,
       handleMouseup,
       clearCanvas,
+      getImageDataURL,
+      setImageDataURL,
     }
   },
 })
