@@ -240,7 +240,7 @@ import { defineComponent, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
-import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
+import emitter, { EmitterEvents, RichTextAction } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { message } from 'ant-design-vue'
@@ -379,12 +379,12 @@ export default defineComponent({
 
     // 发射富文本设置命令
     const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
     }
 
     // 发射富文本设置命令（批量）
-    const emitBatchRichTextCommand = (payload: RichTextCommand[]) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, payload)
+    const emitBatchRichTextCommand = (action: RichTextAction[]) => {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
     }
 
     // 设置富文本超链接

@@ -33,8 +33,8 @@ export default defineComponent({
       return selectedSymbol?.children || []
     })
 
-    const selectSymbol = (item: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command: 'insert', value: item })
+    const selectSymbol = (value: string) => {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } })
     }
 
     return {

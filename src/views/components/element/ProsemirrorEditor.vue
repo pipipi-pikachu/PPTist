@@ -124,12 +124,13 @@ export default defineComponent({
     
     // 执行富文本命令（可以是一个或多个）
     // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
-    const execCommand = (payload: RichTextCommand | RichTextCommand[]) => {
-      if (handleElementId.value !== props.elementId) return
+    const execCommand = ({ target, action }: RichTextCommand) => {
+      if (!target && handleElementId.value !== props.elementId) return
+      if (target && target !== props.elementId) return
 
-      const commands = ('command' in payload) ? [payload] : payload
+      const actions = ('command' in action) ? [action] : action
 
-      for (const item of commands) {
+      for (const item of actions) {
         if (item.command === 'fontname' && item.value) {
           const mark = editorView.state.schema.marks.fontname.create({ fontname: item.value })
           autoSelectAll(editorView)

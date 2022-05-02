@@ -6,13 +6,18 @@ export const enum EmitterEvents {
   OPEN_LATEX_EDITOR = 'OPEN_LATEX_EDITOR',
 }
 
-export interface RichTextCommand {
+export interface RichTextAction {
   command: string;
   value?: string;
 }
 
+export interface RichTextCommand {
+  target?: string;
+  action: RichTextAction | RichTextAction[];
+}
+
 type Events = {
-  [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand | RichTextCommand[];
+  [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand;
   [EmitterEvents.OPEN_CHART_DATA_EDITOR]: void;
   [EmitterEvents.OPEN_LATEX_EDITOR]: void;
 } 

@@ -289,7 +289,7 @@ export default defineComponent({
     ]
 
     const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { command, value })
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
     }
 
     return {
