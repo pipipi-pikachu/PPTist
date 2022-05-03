@@ -71,7 +71,7 @@
     <ElementFlip />
     <Divider />
 
-    <template v-if="showTextTools">
+    <template v-if="handleElement?.text?.content">
       <InputGroup compact class="row">
         <Select
           style="flex: 3;"
@@ -195,7 +195,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
@@ -223,9 +223,7 @@ export default defineComponent({
   setup() {
     const mainStore = useMainStore()
     const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId, editingShapeElementId, richTextAttrs, availableFonts } = storeToRefs(mainStore)
-
-    const showTextTools = computed(() => editingShapeElementId.value === handleElementId.value)
+    const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(mainStore)
 
     const fill = ref<string>()
     const gradient = ref<ShapeGradient>()
@@ -301,7 +299,7 @@ export default defineComponent({
       availableFonts,
       fontSizeOptions,
       webFonts,
-      showTextTools,
+      handleElement,
       emitRichTextCommand,
       updateFillType,
       updateFill,

@@ -24,7 +24,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
-        @dblclick="enterEditing()"
+        @dblclick="editable = true"
       >
         <svg 
           overflow="visible" 
@@ -58,9 +58,9 @@
           </g>
         </svg>
 
-        <div class="shape-text" :class="[text.align, { 'editable': editable }]">
+        <div class="shape-text" :class="[text.align, { 'editable': editable || text.content }]">
           <ProsemirrorEditor
-            v-if="editable"
+            v-if="editable || text.content"
             :elementId="elementInfo.id"
             :defaultColor="text.defaultColor"
             :defaultFontName="text.defaultFontName"
@@ -68,13 +68,8 @@
             :autoFocus="true"
             :value="text.content"
             @update="value => updateText(value)"
-            @mousedown.stop
+            @mousedown="$event => handleSelectElement($event, false)"
           />
-          <div 
-            class="show-text ProseMirror-static"
-            v-else
-            v-html="text.content"
-          ></div>
         </div>
       </div>
     </div>
@@ -121,11 +116,11 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent, canMove = true) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 
-      props.selectElement(e, props.elementInfo)
+      props.selectElement(e, props.elementInfo, canMove)
     }
 
     const outline = computed(() => props.elementInfo.outline)
@@ -139,20 +134,10 @@ export default defineComponent({
     const { flipStyle } = useElementFlip(flipH, flipV)
 
     const editable = ref(false)
-
-    const enterEditing = () => {
-      editable.value = true
-      mainStore.setEditingShapeElementId(props.elementInfo.id)
-    }
-
-    const exitEditing = () => {
-      editable.value = false
-      mainStore.setEditingShapeElementId('')
-    }
     
     watch(handleElementId, () => {
       if (handleElementId.value !== props.elementInfo.id) {
-        if (editable.value) exitEditing()
+        if (editable.value) editable.value = false
       }
     })
 
@@ -188,7 +173,6 @@ export default defineComponent({
       text,
       handleSelectElement,
       updateText,
-      enterEditing,
     }
   },
 })
@@ -248,8 +232,5 @@ export default defineComponent({
   &.bottom {
     justify-content: flex-end;
   }
-}
-.show-text {
-  pointer-events: none;
 }
 </style>
