@@ -20,7 +20,7 @@
             <MenuItem @click="createSlide()">添加页面</MenuItem>
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
             <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
-            <MenuItem @click="toggleRuler()">{{ toggleRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
+            <MenuItem @click="toggleRuler()">{{ showRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
           </Menu>
         </template>
@@ -126,6 +126,7 @@ export default defineComponent({
       redo,
       undo,
       showGridLines,
+      showRuler,
       hotkeyDrawerVisible,
       exportImgDialogVisible,
       exporting,

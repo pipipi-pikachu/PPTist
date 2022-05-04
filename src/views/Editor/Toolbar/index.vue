@@ -61,8 +61,8 @@ export default defineComponent({
       { label: '动画', value: ToolbarStates.EL_ANIMATION },
     ]
     const multiSelectTabs = [
-      { label: '位置', value: ToolbarStates.MULTI_POSITION },
       { label: '样式', value: ToolbarStates.EL_STYLE },
+      { label: '位置', value: ToolbarStates.MULTI_POSITION },
     ]
 
     const setToolbarState = (value: ToolbarStates) => {
