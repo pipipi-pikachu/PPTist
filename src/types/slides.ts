@@ -568,16 +568,28 @@ export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PP
 /**
  * 元素动画
  * 
+ * id: 动画id
+ * 
  * elId: 元素ID
  * 
  * type: 动画类型
  * 
+ * effect: 动画效果
+ * 
  * duration: 动画持续时间
+ * 
+ * delay: 动画延迟时间
+ * 
+ * implement: 动画启动方式(0->单击、1->与上一个一起、2->在上一个之后)
  */
 export interface PPTAnimation {
+  id: string;
   elId: string;
   type: string;
+  effect: string;
   duration: number;
+  delay: number;
+  implement: number;
 }
 
 /**

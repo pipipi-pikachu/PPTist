@@ -81,8 +81,41 @@ export default defineComponent({
     const needWaitAnimation = computed(() => {
       const animations = currentSlide.value.animations || []
       const elementIndexInAnimation = animations.findIndex(animation => animation.elId === props.elementInfo.id)
-      if (elementIndexInAnimation !== -1 && elementIndexInAnimation >= props.animationIndex) return true
-      return false      
+      if (elementIndexInAnimation === -1) {
+        return false
+      }
+
+      // 首先判断是否 effect 为 in 的元素（多动画的第一条）
+      const firstAnimation = animations.find(animation => animation.elId === props.elementInfo.id)
+      if (!firstAnimation) {
+        return false
+      }
+      
+      // 先判断 animationIndex 到哪步 判断动画最后一条如果不是
+      const findAnimationsList = animations.filter((animation, index) => index < props.animationIndex && animation.elId === props.elementInfo.id)
+      if (findAnimationsList.length) {
+        const lastAnimation = findAnimationsList[findAnimationsList.length - 1]
+        const effect = lastAnimation.effect || 'in' // VERSION 2022/5/7 兼容旧数据: effect 为空则为进场动画
+        if (effect === 'out') {
+          return false
+        }
+
+        if (elementIndexInAnimation >= props.animationIndex) {
+          return true
+        }
+        return false
+      }
+
+      // 最后再判断effect
+      const firstEffectAnimation = animations.find(animation => animation.elId === props.elementInfo.id)
+      if (firstEffectAnimation) {
+        const effect = firstEffectAnimation.effect || 'in' // VERSION 2022/5/7 兼容旧数据: effect 为空则为进场动画
+        if (effect === 'out') {
+          return false
+        }
+        return true
+      }
+      return true
     })
 
     // 打开元素绑定的超链接

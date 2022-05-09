@@ -58,8 +58,10 @@ export default () => {
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
       }
+      // 动画id替换
       if (slide.animations) {
         for (const animation of slide.animations) {
+          animation.id = nanoid(10)
           animation.elId = elIdMap[animation.elId]
         }
       }
