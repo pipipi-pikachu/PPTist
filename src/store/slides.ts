@@ -63,17 +63,17 @@ export const useSlidesStore = defineStore('slides', {
 
       const formatedAnimations: FormatedAnimation[] = []
       for (const animation of animations) {
-        if (animation.trigger === 'click') {
+        if (animation.trigger === 'click' || !formatedAnimations.length) {
           formatedAnimations.push({ animations: [animation], autoNext: false })
         }
-        if (animation.trigger === 'meantime') {
-          const last = formatedAnimations[formatedAnimations.length - 1] || { animations: [], autoNext: false }
+        else if (animation.trigger === 'meantime') {
+          const last = formatedAnimations[formatedAnimations.length - 1]
           last.animations = last.animations.filter(item => item.elId !== animation.elId)
           last.animations.push(animation)
           formatedAnimations[formatedAnimations.length - 1] = last
         }
-        if (animation.trigger === 'auto') {
-          const last = formatedAnimations[formatedAnimations.length - 1] || { animations: [], autoNext: false }
+        else if (animation.trigger === 'auto') {
+          const last = formatedAnimations[formatedAnimations.length - 1]
           last.autoNext = true
           formatedAnimations[formatedAnimations.length - 1] = last
           formatedAnimations.push({ animations: [animation], autoNext: false })
