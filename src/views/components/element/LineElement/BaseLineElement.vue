@@ -1,6 +1,6 @@
 <template>
   <div 
-    class="editable-element-shape"
+    class="base-element-line"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -59,7 +59,7 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import LinePointMarker from './LinePointMarker.vue'
 
 export default defineComponent({
-  name: 'editable-element-shape',
+  name: 'base-element-line',
   components: {
     LinePointMarker,
   },
@@ -100,7 +100,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.editable-element-shape {
+.base-element-line {
   position: absolute;
 }
 

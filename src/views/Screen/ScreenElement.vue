@@ -48,7 +48,7 @@ export default defineComponent({
     },
     animationIndex: {
       type: Number,
-      default: -1,
+      required: true,
     },
     turnSlideToId: {
       type: Function as PropType<(id: string) => void>,
@@ -75,47 +75,28 @@ export default defineComponent({
       return elementTypeMap[props.elementInfo.type] || null
     })
 
-    const { currentSlide, theme } = storeToRefs(useSlidesStore())
+    const { formatedAnimations, theme } = storeToRefs(useSlidesStore())
 
-    // 判断元素是否需要等待执行入场动画：等待执行的元素需要先隐藏
+    // 判断元素是否需要等待执行入场动画：等待执行入场的元素需要先隐藏
     const needWaitAnimation = computed(() => {
-      const animations = currentSlide.value.animations || []
-      const elementIndexInAnimation = animations.findIndex(animation => animation.elId === props.elementInfo.id)
-      if (elementIndexInAnimation === -1) {
-        return false
-      }
+      // 该元素在本页动画序列中的位置
+      const elementIndexInAnimation = formatedAnimations.value.findIndex(item => {
+        const elIds = item.animations.map(item => item.elId)
+        return elIds.includes(props.elementInfo.id)
+      })
 
-      // 首先判断是否 effect 为 in 的元素（多动画的第一条）
-      const firstAnimation = animations.find(animation => animation.elId === props.elementInfo.id)
-      if (!firstAnimation) {
-        return false
-      }
-      
-      // 先判断 animationIndex 到哪步 判断动画最后一条如果不是
-      const findAnimationsList = animations.filter((animation, index) => index < props.animationIndex && animation.elId === props.elementInfo.id)
-      if (findAnimationsList.length) {
-        const lastAnimation = findAnimationsList[findAnimationsList.length - 1]
-        const effect = lastAnimation.effect || 'in' // VERSION 2022/5/7 兼容旧数据: effect 为空则为进场动画
-        if (effect === 'out') {
-          return false
-        }
+      // 该元素未设置过动画
+      if (elementIndexInAnimation === -1) return false
 
-        if (elementIndexInAnimation >= props.animationIndex) {
-          return true
-        }
-        return false
-      }
+      // 若该元素已执行过动画，都无须隐藏
+      // 具体来说：若已执行的最后一个动画为入场，显然无须隐藏；若已执行的最后一个动画为退场，由于保留了退场动画结束状态，也无需额外隐藏
+      if (elementIndexInAnimation < props.animationIndex) return false
 
-      // 最后再判断effect
-      const firstEffectAnimation = animations.find(animation => animation.elId === props.elementInfo.id)
-      if (firstEffectAnimation) {
-        const effect = firstEffectAnimation.effect || 'in' // VERSION 2022/5/7 兼容旧数据: effect 为空则为进场动画
-        if (effect === 'out') {
-          return false
-        }
-        return true
-      }
-      return true
+      // 若该元素未执行过动画，获取其将要执行的第一个动画
+      // 若将要执行的第一个动画为入场，则需要隐藏，否则无须隐藏
+      const firstAnimation = formatedAnimations.value[elementIndexInAnimation].animations.find(item => item.elId === props.elementInfo.id)
+      if (firstAnimation?.type === 'in') return true
+      return false
     })
 
     // 打开元素绑定的超链接

@@ -1,93 +1,92 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
+import { ANIMATION_CLASS_PREFIX } from '@/configs/animation'
 
 import { message } from 'ant-design-vue'
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, slideIndex, currentSlide } = storeToRefs(slidesStore)
+  const { slides, slideIndex, formatedAnimations } = storeToRefs(slidesStore)
 
-  // 当前页的元素动画列表和当前执行到的位置
-  const animations = computed(() => currentSlide.value.animations || [])
+  // 当前页的元素动画执行到的位置
   const animationIndex = ref(0)
+  const inAnimation = ref(false)
 
-  const awaitRef = ref<number | null>(-1)
-  const awaitTimer = (delay: number) => {
-    return new Promise((resolve) => {
-      awaitRef.value = window.setTimeout(() => {
-        awaitRef.value = null
-        resolve(delay)
-      }, delay)
-    })
-  }
+  // 执行元素动画
+  const runAnimation = () => {
+    // 正在执行动画时，禁止其他新的动画开始
+    if (inAnimation.value) return
 
-  // 执行元素的入场动画
-  const runAnimation = async () => {
-    const prefix = 'animate__'
-    const animation = animations.value[animationIndex.value]
+    const { animations, autoNext } = formatedAnimations.value[animationIndex.value]
+    animationIndex.value += 1
 
-    const elRef = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-    if (elRef) {
-      if (awaitRef.value) {
-        clearTimeout(awaitRef.value)
-        awaitRef.value = null
+    // 标记开始执行动画
+    inAnimation.value = true
+
+    let endAnimationCount = 0
+
+    // 依次执行该位置中的全部动画
+    for (const animation of animations) {
+      const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
+      if (!elRef) {
+        endAnimationCount += 1
+        continue
       }
-      else if (animation.implement !== 1) {
-        // 判断执行动画 与上一动画在一起则不延迟
-        await awaitTimer(animation.delay || 0)
+
+      const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
+      
+      // 执行动画前先清除原有的动画状态（如果有）
+      elRef.style.removeProperty('--animate-duration')
+      for (const classname of elRef.classList) {
+        if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
       }
       
-      // eslint-disable-next-line require-atomic-updates
-      animationIndex.value += 1
+      // 执行动画
+      elRef.style.setProperty('--animate-duration', `${animation.duration}ms`)
+      elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
 
-      const animationName = `${prefix}${animation.type}`
-      document.documentElement.style.setProperty('--animate-duration', `${animation.duration}ms`)
-
-      // 判断如果存在非进场动画保留，就去除原动画
-      elRef.classList.remove(`${prefix}animated`)
-      for (let i = 0; i < elRef.classList.length; i++) {
-        if (elRef.classList[i].indexOf(prefix) > -1) {
-          elRef.classList.remove(elRef.classList[i])
-        }
-      }
-      elRef.classList.add(animationName, `${prefix}animated`)
-
+      // 执行动画结束，将“退场”以外的动画状态清除
       const handleAnimationEnd = () => {
-        document.documentElement.style.removeProperty('--animate-duration')
-        if (animation.effect === 'in') { // 如果是进场动画就去除动画
-          elRef.classList.remove(`${prefix}animated`)
-          elRef.classList.remove(animationName)
+        if (animation.type !== 'out') {
+          elRef.style.removeProperty('--animate-duration')
+          elRef.classList.remove(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+        }
+
+        // 判断该位置上的全部动画都已经结束后，标记动画执行完成，并尝试继续向下执行（如果有需要）
+        endAnimationCount += 1
+        if (endAnimationCount === animations.length) {
+          inAnimation.value = false
+          if (autoNext) runAnimation()
         }
       }
       elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
-
-      // 判断下个动画
-      if (animations.value.length && animationIndex.value < animations.value.length) {
-        const nextAnimation = animations.value[animationIndex.value]
-        
-        if (nextAnimation.implement === 1) { // 一起
-          runAnimation()
-        }
-        else if (nextAnimation.implement === 2) { // 之后
-          await awaitTimer(animation.duration || 0)
-          runAnimation()
-        }
-      }
     }
-    else {
-      animationIndex.value += 1
-      runAnimation()
+  }
+
+  // 撤销元素动画，除了将索引前移外，还需要清除动画状态
+  const revokeAnimation = () => {
+    animationIndex.value -= 1
+    const { animations } = formatedAnimations.value[animationIndex.value]
+
+    for (const animation of animations) {
+      const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
+      if (!elRef) continue
+      
+      elRef.style.removeProperty('--animate-duration')
+      for (const classname of elRef.classList) {
+        if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
+      }
     }
   }
 
   // 关闭自动播放
-  const autoPlayTimer = ref<number>(0)
+  const autoPlayTimer = ref(0)
   const closeAutoPlay = () => {
     if (autoPlayTimer.value) {
-      window.clearInterval(autoPlayTimer.value)
+      clearInterval(autoPlayTimer.value)
       autoPlayTimer.value = 0
     }
   }
@@ -101,44 +100,32 @@ export default () => {
   // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
   // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
   const execPrev = () => {
-    if (animations.value.length && animationIndex.value > 0) {
-      animationIndex.value -= 1
-      
-      // 判断当前动画是否保留动画效果，有则去除后再上翻
-      const prefix = 'animate__'
-      const animation = animations.value[animationIndex.value]
-      if (animation) {
-        const elRef = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-        if (elRef) {
-          elRef.classList.remove(`${prefix}animated`)
-          for (let i = 0; i < elRef.classList.length; i++) {
-            if (elRef.classList[i].indexOf(prefix) > -1) {
-              elRef.classList.remove(elRef.classList[i])
-            }
-          }
-        }
-      }
+    if (formatedAnimations.value.length && animationIndex.value > 0) {
+      revokeAnimation()
     }
     else if (slideIndex.value > 0) {
       slidesStore.updateSlideIndex(slideIndex.value - 1)
-      const lastIndex = animations.value ? animations.value.length : 0
-      animationIndex.value = lastIndex
+      animationIndex.value = formatedAnimations.value.length
+      inAnimation.value = false
     }
     else {
       throttleMassage('已经是第一页了')
+      inAnimation.value = false
     }
   }
   const execNext = () => {
-    if (animations.value.length && animationIndex.value < animations.value.length) {
+    if (formatedAnimations.value.length && animationIndex.value < formatedAnimations.value.length) {
       runAnimation()
     }
     else if (slideIndex.value < slides.value.length - 1) {
       slidesStore.updateSlideIndex(slideIndex.value + 1)
       animationIndex.value = 0
+      inAnimation.value = false
     }
     else {
       throttleMassage('已经是最后一页了')
       closeAutoPlay()
+      inAnimation.value = false
     }
   }
 
@@ -146,7 +133,7 @@ export default () => {
   const autoPlay = () => {
     closeAutoPlay()
     message.success('开始自动放映')
-    autoPlayTimer.value = window.setInterval(execNext, 2500)
+    autoPlayTimer.value = setInterval(execNext, 2500)
   }
 
   // 鼠标滚动翻页

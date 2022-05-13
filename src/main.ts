@@ -33,7 +33,6 @@ import {
   Drawer,
   Spin,
   Alert,
-  Tabs,
 } from 'ant-design-vue'
 
 const app = createApp(App)
@@ -63,8 +62,6 @@ app.component('Checkbox', Checkbox)
 app.component('Drawer', Drawer)
 app.component('Spin', Spin)
 app.component('Alert', Alert)
-app.component('Tabs', Tabs)
-app.component('TabPane', Tabs.TabPane)
 
 app.use(Icon)
 app.use(Component)

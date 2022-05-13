@@ -1,4 +1,8 @@
-export const ANIMATIONS = [
+export const ANIMATION_DEFAULT_DURATION = 1000
+export const ANIMATION_DEFAULT_TRIGGER = 'click'
+export const ANIMATION_CLASS_PREFIX = 'animate__'
+
+export const ENTER_ANIMATIONS = [
   {
     type: 'bounce',
     name: '弹跳',
@@ -9,7 +13,6 @@ export const ANIMATIONS = [
       { name: '向上弹入', value: 'bounceInUp' },
       { name: '向下弹入', value: 'bounceInDown' },
     ],
-    hiddenElement: []
   },
   {
     type: 'fade',
@@ -29,19 +32,17 @@ export const ANIMATIONS = [
       { name: '从左下浮入', value: 'fadeInBottomLeft' },
       { name: '从右下浮入', value: 'fadeInBottomRight' },
     ],
-    hiddenElement: []
   },
   {
     type: 'rotate',
     name: '旋转',
     children: [
       { name: '旋转进入', value: 'rotateIn' },
-      { name: '绕左下旋转进入', value: 'rotateInDownLeft' },
-      { name: '绕右下旋转进入', value: 'rotateInDownRight' },
-      { name: '绕左上旋转进入', value: 'rotateInUpLeft' },
-      { name: '绕右上旋转进入', value: 'rotateInUpRight' },
+      { name: '绕左下进入', value: 'rotateInDownLeft' },
+      { name: '绕右下进入', value: 'rotateInDownRight' },
+      { name: '绕左上进入', value: 'rotateInUpLeft' },
+      { name: '绕右上进入', value: 'rotateInUpRight' },
     ],
-    hiddenElement: []
   },
   {
     type: 'zoom',
@@ -53,7 +54,6 @@ export const ANIMATIONS = [
       { name: '从右放大进入', value: 'zoomInRight' },
       { name: '向上放大进入', value: 'zoomInUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'slide',
@@ -64,7 +64,6 @@ export const ANIMATIONS = [
       { name: '从左滑入', value: 'slideInRight' },
       { name: '向上滑入', value: 'slideInUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'flip',
@@ -73,7 +72,6 @@ export const ANIMATIONS = [
       { name: 'X轴翻转进入', value: 'flipInX' },
       { name: 'Y轴翻转进入', value: 'flipInY' },
     ],
-    hiddenElement: []
   },
   {
     type: 'back',
@@ -84,7 +82,6 @@ export const ANIMATIONS = [
       { name: '从右放大滑入', value: 'backInRight' },
       { name: '向上放大滑入', value: 'backInUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'lightSpeed',
@@ -93,11 +90,10 @@ export const ANIMATIONS = [
       { name: '从右飞入', value: 'lightSpeedInRight' },
       { name: '从左飞入', value: 'lightSpeedInLeft' },
     ],
-    hiddenElement: []
   },
 ]
 
-export const ANIMATIONS_EXITS = [
+export const EXIT_ANIMATIONS = [
   {
     type: 'bounce',
     name: '弹跳',
@@ -108,7 +104,6 @@ export const ANIMATIONS_EXITS = [
       { name: '向上弹出', value: 'bounceOutUp' },
       { name: '向下弹出', value: 'bounceOutDown' },
     ],
-    hiddenElement: []
   },
   {
     type: 'fade',
@@ -128,19 +123,17 @@ export const ANIMATIONS_EXITS = [
       { name: '从左下浮出', value: 'fadeOutBottomLeft' },
       { name: '从右下浮出', value: 'fadeOutBottomRight' },
     ],
-    hiddenElement: []
   },
   {
     type: 'rotate',
     name: '旋转',
     children: [
       { name: '旋转退出', value: 'rotateOut' },
-      { name: '绕左下旋转退出', value: 'rotateOutDownLeft' },
-      { name: '绕右下旋转退出', value: 'rotateOutDownRight' },
-      { name: '绕左上旋转退出', value: 'rotateOutUpLeft' },
-      { name: '绕右上旋转退出', value: 'rotateOutUpRight' },
+      { name: '绕左下退出', value: 'rotateOutDownLeft' },
+      { name: '绕右下退出', value: 'rotateOutDownRight' },
+      { name: '绕左上退出', value: 'rotateOutUpLeft' },
+      { name: '绕右上退出', value: 'rotateOutUpRight' },
     ],
-    hiddenElement: []
   },
   {
     type: 'zoom',
@@ -152,7 +145,6 @@ export const ANIMATIONS_EXITS = [
       { name: '从右缩小退出', value: 'zoomOutRight' },
       { name: '向上缩小退出', value: 'zoomOutUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'slide',
@@ -163,7 +155,6 @@ export const ANIMATIONS_EXITS = [
       { name: '从右滑出', value: 'slideOutRight' },
       { name: '向上滑出', value: 'slideOutUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'flip',
@@ -172,7 +163,6 @@ export const ANIMATIONS_EXITS = [
       { name: 'X轴翻转退出', value: 'flipOutX' },
       { name: 'Y轴翻转退出', value: 'flipOutY' },
     ],
-    hiddenElement: []
   },
   {
     type: 'back',
@@ -183,7 +173,6 @@ export const ANIMATIONS_EXITS = [
       { name: '从右缩小滑出', value: 'backOutRight' },
       { name: '向上缩小滑出', value: 'backOutUp' },
     ],
-    hiddenElement: []
   },
   {
     type: 'lightSpeed',
@@ -192,6 +181,5 @@ export const ANIMATIONS_EXITS = [
       { name: '从右飞出', value: 'lightSpeedOutRight' },
       { name: '从左飞出', value: 'lightSpeedOutLeft' },
     ],
-    hiddenElement: []
   },
 ]
