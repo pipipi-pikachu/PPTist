@@ -219,7 +219,7 @@ export default defineComponent({
       colorBlockRef.style.cssText = 'position: absolute; top: -100px; left: -100px; width: 16px; height: 16px; border: 1px solid #000; z-index: 999'
       maskRef.appendChild(colorBlockRef)
 
-      const { left, top } = targetRef.getBoundingClientRect()
+      const { left, top, width, height } = targetRef.getBoundingClientRect()
 
       const filter = (node: HTMLElement) => {
         if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
@@ -227,7 +227,7 @@ export default defineComponent({
         return true
       }
 
-      toCanvas(targetRef, { filter, fontEmbedCSS: '' }).then(canvasRef => {
+      toCanvas(targetRef, { filter, fontEmbedCSS: '', width, height, canvasWidth: width, canvasHeight: height, pixelRatio: 1 }).then(canvasRef => {
         canvasRef.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; cursor: crosshair;`
         maskRef.style.cursor = 'default'
         maskRef.appendChild(canvasRef)
