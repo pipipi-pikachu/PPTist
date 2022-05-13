@@ -1,8 +1,8 @@
 ---
 name: 功能请求
-about: 'Feature_request'
-title: "[Feature_request]"
-labels: ''
+about: 'Feature request'
+title: "[Feature request]"
+labels: 'enhancement'
 assignees: ''
 ---
 
