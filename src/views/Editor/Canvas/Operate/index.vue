@@ -21,9 +21,9 @@
 
     <div 
       class="animation-index"
-      v-if="toolbarState === 'elAnimation' && elementIndexInAnimation !== -1"
+      v-if="toolbarState === 'elAnimation' && elementIndexListInAnimation.length"
     >
-      {{elementIndexInAnimation + 1}}
+      <div class="index-item" v-for="index in elementIndexListInAnimation" :key="index">{{index + 1}}</div>
     </div>
 
     <LinkHandler 
@@ -96,7 +96,7 @@ export default defineComponent({
   },
   setup(props) {
     const { canvasScale, toolbarState } = storeToRefs(useMainStore())
-    const { currentSlide } = storeToRefs(useSlidesStore())
+    const { formatedAnimations } = storeToRefs(useSlidesStore())
 
     const currentOperateComponent = computed(() => {
       const elementTypeMap = {
@@ -113,9 +113,13 @@ export default defineComponent({
       return elementTypeMap[props.elementInfo.type] || null
     })
 
-    const elementIndexInAnimation = computed(() => {
-      const animations = currentSlide.value.animations || []
-      return animations.findIndex(animation => animation.elId === props.elementInfo.id)
+    const elementIndexListInAnimation = computed(() => {
+      const indexList = []
+      for (let i = 0; i < formatedAnimations.value.length; i++) {
+        const elIds = formatedAnimations.value[i].animations.map(item => item.elId)
+        if (elIds.includes(props.elementInfo.id)) indexList.push(i)
+      }
+      return indexList
     })
 
     const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
@@ -125,7 +129,7 @@ export default defineComponent({
       currentOperateComponent,
       canvasScale,
       toolbarState,
-      elementIndexInAnimation,
+      elementIndexListInAnimation,
       rotate,
       height,
     }
@@ -148,13 +152,20 @@ export default defineComponent({
   top: 0;
   left: -24px;
   font-size: 12px;
-  width: 18px;
-  height: 18px;
-  background-color: #fff;
-  color: $themeColor;
-  border: 1px solid $themeColor;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  .index-item {
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    color: $themeColor;
+    border: 1px solid $themeColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & + .index-item {
+      margin-top: 5px;
+    }
+  }
 }
 </style>

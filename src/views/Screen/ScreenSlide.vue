@@ -47,7 +47,7 @@ export default defineComponent({
     },
     animationIndex: {
       type: Number,
-      default: -1,
+      required: true,
     },
     turnSlideToId: {
       type: Function as PropType<(id: string) => void>,

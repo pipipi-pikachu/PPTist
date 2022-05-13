@@ -20,7 +20,7 @@
           width: slideWidth + 'px',
           height: slideHeight + 'px',
         }"
-        v-if="Math.abs(slideIndex - index) < 2"
+        v-if="Math.abs(slideIndex - index) < 2 || slide.animations?.length"
       >
         <ScreenSlide 
           :slide="slide" 
@@ -59,7 +59,7 @@ export default defineComponent({
     },
     animationIndex: {
       type: Number,
-      default: -1,
+      required: true,
     },
     turnSlideToId: {
       type: Function as PropType<(id: string) => void>,

@@ -568,16 +568,25 @@ export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PP
 /**
  * 元素动画
  * 
+ * id: 动画id
+ * 
  * elId: 元素ID
  * 
- * type: 动画类型
+ * effect: 动画效果
+ * 
+ * type: 动画类型（入场、退场）
  * 
  * duration: 动画持续时间
+ * 
+ * trigger: 动画触发方式(click - 单击时、meantime - 与上一动画同时、auto - 上一动画之后)
  */
 export interface PPTAnimation {
+  id: string;
   elId: string;
-  type: string;
+  effect: string;
+  type: 'in' | 'out';
   duration: number;
+  trigger: 'click' | 'meantime' | 'auto';
 }
 
 /**

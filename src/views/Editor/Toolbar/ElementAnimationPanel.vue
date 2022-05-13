@@ -4,44 +4,48 @@
       <Popover 
         trigger="click" 
         v-model:visible="animationPoolVisible" 
-        v-if="!['chart', 'video'].includes(handleElement.type)"
         @visibleChange="visible => handlePopoverVisibleChange(visible)"
       >
         <template #content>
-          <div class="animation-pool">
-            <div class="pool-type" v-for="type in animations" :key="type.name">
-              <div class="type-title">{{type.name}}：</div>
-              <div class="pool-item-wrapper">
-                <div 
-                  class="pool-item" 
-                  v-for="item in type.children" :key="item.name"
-                  @mouseenter="hoverPreviewAnimation = item.value"
-                  @mouseleave="hoverPreviewAnimation = ''"
-                  @click="addAnimation(item.value)"
-                >
+          <div class="tabs">
+            <div 
+              :class="['tab', tab.key, { 'active': activeTab === tab.key }]"
+              v-for="tab in tabs" 
+              :key="tab.key"
+              @click="activeTab = tab.key"
+            >{{tab.label}}</div>
+          </div>
+          <template v-for="key in Object.keys(animations)">
+            <div :class="['animation-pool', key]" :key="key" v-if="activeTab === key">
+              <div class="pool-type" :key="effect.name" v-for="effect in animations[key]">
+                <div class="type-title">{{effect.name}}：</div>
+                <div class="pool-item-wrapper">
                   <div 
-                    class="animation-box"
-                    :class="[
-                      'animate__animated',
-                      'animate__faster',
-                      hoverPreviewAnimation === item.value && `animate__${item.value}`,
-                    ]"
+                    class="pool-item" 
+                    v-for="item in effect.children" :key="item.name"
+                    @mouseenter="hoverPreviewAnimation = item.value"
+                    @mouseleave="hoverPreviewAnimation = ''"
+                    @click="addAnimation(key, item.value)"
                   >
-                    {{item.name}}
+                    <div 
+                      class="animation-box"
+                      :class="[
+                        `${prefix}animated`,
+                        `${prefix}faster`,
+                        hoverPreviewAnimation === item.value && `${prefix}${item.value}`,
+                      ]"
+                    >{{item.name}}</div>
                   </div>
                 </div>
               </div>
+              <div class="mask" v-if="!popoverMaskHide"></div>
             </div>
-            <div class="mask" v-if="!popoverMaskHide"></div>
-          </div>
+          </template>
         </template>
-        <Button class="element-animation-btn">
-          <IconEffects style="margin-right: 5px;" /> {{handleElementAnimationName || '点击选择动画'}}
+        <Button class="element-animation-btn" @click="handleAnimationId = ''">
+          <IconEffects style="margin-right: 5px;" /> 添加动画
         </Button>
       </Popover>
-      <Button class="element-animation-btn" v-else disabled>
-        <IconEffects style="margin-right: 5px;" /> 该元素暂不支持动画
-      </Button>
     </div>
 
     <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
@@ -54,61 +58,95 @@
       :animation="300"
       :scroll="true"
       :scrollSensitivity="50"
+      handle=".sequence-content"
       @end="handleDragEnd"
       itemKey="id"
     >
-      <template #item="{ element, index }">
-        <div class="sequence-item" :class="{ 'active': handleElement?.id === element.elId }">
-          <div class="index">{{index + 1}}</div>
-          <div class="text">【{{element.elType}}】{{element.animationType}}</div>
-          <div class="handler">
-            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-              <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.type, element.duration)" />
-            </Tooltip>
-            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-              <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.elId)" />
-            </Tooltip>
+      <template #item="{ element }">
+        <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
+          <div class="sequence-content">
+            <div class="index">{{element.index}}</div>
+            <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
+            <div class="handler">
+              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
+                <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.effect, element.duration)" />
+              </Tooltip>
+              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
+                <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.id)" />
+              </Tooltip>
+            </div>
+          </div>
+
+          <div class="configs" v-if="handleElementAnimation[0]?.elId === element.elId">
+            <Divider style="margin: 16px 0;" />
+
+            <div class="config-item">
+              <div style="flex: 3;">持续时长：</div>
+              <InputNumber 
+                :min="500"
+                :max="3000"
+                :step="500"
+                :value="element.duration" 
+                @change="value => updateElementAnimationDuration(element.id, value)" 
+                style="flex: 5;" 
+              />
+            </div>
+            <div class="config-item">
+              <div style="flex: 3;">触发方式：</div>
+              <Select
+                :value="element.trigger"
+                @change="value => updateElementAnimationTrigger(element.id, value)"
+                style="flex: 5;"
+              >
+                <SelectOption value="click">主动触发</SelectOption>
+                <SelectOption value="meantime">与上一动画同时</SelectOption>
+                <SelectOption value="auto">上一动画之后</SelectOption>
+              </Select>
+            </div>
+            <div class="config-item">
+              <Button style="flex: 1;" @click="openAnimationPool(element.id)">更换动画</Button>
+            </div>
           </div>
         </div>
       </template>
     </Draggable>
-
-    <div class="configs" v-if="handleElementAnimation">
-      <Divider />
-
-      <div class="duration">
-        <div style="flex: 4;">持续时间（毫秒）：</div>
-        <InputNumber 
-          :min="100"
-          :max="5000"
-          :step="100"
-          :value="handleElementAnimation.duration" 
-          @change="value => updateElementAnimationDuration(value)" 
-          style="flex: 3;" 
-        />
-      </div>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
+import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTAnimation } from '@/types/slides'
-import { ANIMATIONS } from '@/configs/animation'
+import { 
+  ENTER_ANIMATIONS,
+  EXIT_ANIMATIONS,
+  ANIMATION_DEFAULT_DURATION,
+  ANIMATION_DEFAULT_TRIGGER,
+  ANIMATION_CLASS_PREFIX,
+} from '@/configs/animation'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
 
-const defaultDuration = 1000
-
-const animationTypes: { [key: string]: string } = {}
-for (const type of ANIMATIONS) {
-  for (const animation of type.children) {
-    animationTypes[animation.value] = animation.name
+const animationEffects: { [key: string]: string } = {}
+for (const effect of ENTER_ANIMATIONS) {
+  for (const animation of effect.children) {
+    animationEffects[animation.value] = animation.name
   }
+}
+for (const effect of EXIT_ANIMATIONS) {
+  for (const animation of effect.children) {
+    animationEffects[animation.value] = animation.name
+  }
+}
+
+type AnimationType = 'in' | 'out'
+interface TabItem {
+  key: AnimationType;
+  label: string;
 }
 
 export default defineComponent({
@@ -119,55 +157,61 @@ export default defineComponent({
   setup() {
     const slidesStore = useSlidesStore()
     const { handleElement, handleElementId } = storeToRefs(useMainStore())
-    const { currentSlide, currentSlideAnimations } = storeToRefs(slidesStore)
+    const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
+
+    const tabs: TabItem[] = [
+      { key: 'in', label: '入场' },
+      { key: 'out', label: '退场' },
+    ]
+    const activeTab = ref('in')
+
+    watch(() => handleElementId.value, () => {
+      animationPoolVisible.value = false
+    })
 
     const hoverPreviewAnimation = ref('')
     const animationPoolVisible = ref(false)
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const animations = ANIMATIONS
-
     // 当前页面的动画列表
     const animationSequence = computed(() => {
-      if (!currentSlideAnimations.value) return []
       const animationSequence = []
-      for (const animation of currentSlideAnimations.value) {
-        const el = currentSlide.value.elements.find(el => el.id === animation.elId)
-        if (!el) continue
-        const elType = ELEMENT_TYPE_ZH[el.type]
-        const animationType = animationTypes[animation.type]
+      for (let i = 0; i < formatedAnimations.value.length; i++) {
+        const item = formatedAnimations.value[i]
+        for (let j = 0; j < item.animations.length; j++) {
+          const animation = item.animations[j]
+          const el = currentSlide.value.elements.find(el => el.id === animation.elId)
+          if (!el) continue
 
-        animationSequence.push({
-          ...animation,
-          elType,
-          animationType,
-        })
+          const elType = ELEMENT_TYPE_ZH[el.type]
+          const animationEffect = animationEffects[animation.effect]
+          animationSequence.push({
+            ...animation,
+            index: j === 0 ? i + 1 : '',
+            elType,
+            animationEffect,
+          })
+        }
       }
       return animationSequence
     })
 
     // 当前选中元素的入场动画信息
     const handleElementAnimation = computed(() => {
-      const animations = currentSlideAnimations.value || []
-      const animation = animations.find(item => item.elId === handleElementId.value)
-      return animation || null
+      const animations = currentSlideAnimations.value
+      const animation = animations.filter(item => item.elId === handleElementId.value)
+      return animation || []
     })
 
-    // 当前选中元素的入场动画名称
-    const handleElementAnimationName = computed(() => {
-      if (!handleElementAnimation.value) return null
-      return animationTypes[handleElementAnimation.value.type]
-    })
-
-    // 删除元素入场动画
-    const deleteAnimation = (elId: string) => {
-      const animations = (currentSlideAnimations.value as PPTAnimation[]).filter(item => item.elId !== elId)
+    // 删除元素动画
+    const deleteAnimation = (id: string) => {
+      const animations = currentSlideAnimations.value.filter(item => item.id !== id)
       slidesStore.updateSlide({ animations })
       addHistorySnapshot()
     }
 
-    // 拖拽修改入场动画顺序后同步数据
+    // 拖拽修改动画顺序后同步数据
     const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
       const { newIndex, oldIndex } = eventData
       if (oldIndex === newIndex) return
@@ -181,29 +225,48 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
-    // 执行入场动画预览
-    const runAnimation = (elId: string, animationType: string, duration: number) => {
-      const prefix = 'animate__'
+    // 执行动画预览
+    const runAnimation = (elId: string, effect: string, duration: number) => {
       const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
       if (elRef) {
-        const animationName = `${prefix}${animationType}`
+        const animationName = `${ANIMATION_CLASS_PREFIX}${effect}`
         document.documentElement.style.setProperty('--animate-duration', `${duration}ms`)
-        elRef.classList.add(`${prefix}animated`, animationName)
+        elRef.classList.add(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
 
         const handleAnimationEnd = () => {
           document.documentElement.style.removeProperty('--animate-duration')
-          elRef.classList.remove(`${prefix}animated`, animationName)
+          elRef.classList.remove(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
         }
         elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
       }
     }
 
-    // 修改元素入场动画，并执行一次预览
-    const updateElementAnimation = (type: string) => {
-      if (!currentSlideAnimations.value) return
+    // 修改元素动画持续时间
+    const updateElementAnimationDuration = (id: string, duration: number) => {
+      if (duration < 100 || duration > 5000) return
 
       const animations = currentSlideAnimations.value.map(item => {
-        if (item.elId === handleElementId.value) return { ...item, type }
+        if (item.id === id) return { ...item, duration }
+        return item
+      })
+      slidesStore.updateSlide({ animations })
+      addHistorySnapshot()
+    }
+
+    // 修改触发方式
+    const updateElementAnimationTrigger = (id: string, trigger: 'click' | 'meantime' | 'auto') => {
+      const animations = currentSlideAnimations.value.map(item => {
+        if (item.id === id) return { ...item, trigger }
+        return item
+      })
+      slidesStore.updateSlide({ animations })
+      addHistorySnapshot()
+    }
+
+    // 修改元素动画，并执行一次预览
+    const updateElementAnimation = (type: AnimationType, effect: string) => {
+      const animations = currentSlideAnimations.value.map(item => {
+        if (item.id === handleAnimationId.value) return { ...item, type, effect }
         return item
       })
       slidesStore.updateSlide({ animations })
@@ -211,41 +274,33 @@ export default defineComponent({
       addHistorySnapshot()
 
       const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value)
-      const duration = animationItem?.duration || defaultDuration
+      const duration = animationItem?.duration || ANIMATION_DEFAULT_DURATION
 
-      runAnimation(handleElementId.value, type, duration)
+      runAnimation(handleElementId.value, effect, duration)
     }
 
-    // 修改元素入场动画持续时间
-    const updateElementAnimationDuration = (duration: number) => {
-      if (!currentSlideAnimations.value) return
-      if (duration < 100 || duration > 5000) return
-
-      const animations = currentSlideAnimations.value.map(item => {
-        if (item.elId === handleElementId.value) return { ...item, duration }
-        return item
-      })
-      slidesStore.updateSlide({ animations })
-      addHistorySnapshot()
-    }
-
-    // 添加元素入场动画，并执行一次预览
-    const addAnimation = (type: string) => {
-      if (handleElementAnimationName.value) {
-        updateElementAnimation(type)
+    const handleAnimationId = ref('')
+    // 添加元素动画，并执行一次预览
+    const addAnimation = (type: AnimationType, effect: string) => {
+      if (handleAnimationId.value) {
+        updateElementAnimation(type, effect)
         return
       }
-      const animations: PPTAnimation[] = currentSlideAnimations.value ? JSON.parse(JSON.stringify(currentSlideAnimations.value)) : []
+
+      const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
       animations.push({
+        id: nanoid(10),
         elId: handleElementId.value,
         type,
-        duration: defaultDuration,
+        effect,
+        duration: ANIMATION_DEFAULT_DURATION,
+        trigger: ANIMATION_DEFAULT_TRIGGER,
       })
       slidesStore.updateSlide({ animations })
       animationPoolVisible.value = false
       addHistorySnapshot()
 
-      runAnimation(handleElementId.value, type, defaultDuration)
+      runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
     }
 
     // 动画选择面板打开500ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
@@ -257,31 +312,72 @@ export default defineComponent({
       else popoverMaskHide.value = false
     }
 
+    const openAnimationPool = (elementId: string) => {
+      animationPoolVisible.value = true
+      handleAnimationId.value = elementId
+      handlePopoverVisibleChange(true)
+    }
+
     return {
+      tabs,
+      activeTab,
+      handleAnimationId,
       handleElement,
       animationPoolVisible,
-      animations,
       animationSequence,
       hoverPreviewAnimation,
       handleElementAnimation,
-      handleElementAnimationName,
       popoverMaskHide,
+      animations: {
+        in: ENTER_ANIMATIONS,
+        out: EXIT_ANIMATIONS,
+      },
+      prefix: ANIMATION_CLASS_PREFIX,
       addAnimation,
       deleteAnimation,
       handleDragEnd,
       runAnimation,
       updateElementAnimationDuration,
+      updateElementAnimationTrigger,
       handlePopoverVisibleChange,
+      openAnimationPool,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
+$inColor: #68a490;
+$outColor: #d86344;
+
 .element-animation-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+.tabs {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px solid $borderColor;
+  margin-bottom: 20px;
+}
+.tab {
+  width: 50%;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  cursor: pointer;
+
+  &.active {
+    border-bottom: 2px solid $themeColor;
+  }
+  &.in.active {
+    border-bottom-color: $inColor;
+  }
+  &.out.active {
+    border-bottom-color: $outColor;
+  }
 }
 .element-animation {
   height: 32px;
@@ -291,10 +387,13 @@ export default defineComponent({
 .element-animation-btn {
   width: 100%;
 }
-.duration {
-  width: 100%;
+.config-item {
   display: flex;
   align-items: center;
+
+  & + .config-item {
+    margin-top: 5px;
+  }
 }
 .tip {
   height: 32px;
@@ -310,15 +409,19 @@ export default defineComponent({
   overflow-x: hidden;
   font-size: 12px;
   margin-right: -12px;
-  padding-right: 12px;
   position: relative;
 
   .mask {
-    width: 400px;
-    height: 500px;
-    position: absolute;
-    top: 0;
-    left: 0;
+    @include absolute-0();
+  }
+
+  &.in .type-title {
+    border-left-color: $inColor;
+    background-color: rgba($color: $inColor, $alpha: .15);
+  }
+  &.out .type-title {
+    border-left-color: $outColor;
+    background-color: rgba($color: $outColor, $alpha: .15);
   }
 }
 .type-title {
@@ -353,37 +456,46 @@ export default defineComponent({
   @include overflow-overlay();
 }
 .sequence-item {
-  height: 36px;
-  display: flex;
-  align-items: center;
   border: 1px solid $borderColor;
-  padding: 6px;
+  padding: 10px 6px;
   border-radius: $borderRadius;
   margin-bottom: 8px;
-  cursor: grab;
+  transition: all .5s;
 
-  &:active {
-    cursor: grabbing;
+  &.in.active {
+    border-color: $inColor;
   }
-
+  &.out.active {
+    border-color: $outColor;
+  }
   &.active {
-    border-color: $themeColor;
+    height: auto;
   }
 
-  .index {
-    flex: 1;
-  }
-  .text {
-    flex: 6;
-  }
-  .handler {
-    flex: 2;
-    font-size: 15px;
-    text-align: right;
-  }
-  .handler-btn {
-    margin-left: 8px;
-    cursor: pointer;
+  .sequence-content {
+    display: flex;
+    align-items: center;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    .index {
+      flex: 1;
+    }
+    .text {
+      flex: 6;
+    }
+    .handler {
+      flex: 2;
+      font-size: 15px;
+      text-align: right;
+    }
+    .handler-btn {
+      margin-left: 8px;
+      cursor: pointer;
+    }
   }
 }
 </style>
