@@ -80,6 +80,9 @@ export default () => {
         if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
       }
     }
+
+    // 如果撤销时该位置有且仅有强调动画，则继续执行一次撤销
+    if (animations.every(item => item.type === 'attention')) execPrev()
   }
 
   // 关闭自动播放

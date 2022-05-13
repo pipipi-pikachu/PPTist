@@ -574,7 +574,7 @@ export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PP
  * 
  * effect: 动画效果
  * 
- * type: 动画类型（入场、退场）
+ * type: 动画类型（入场、退场、强调）
  * 
  * duration: 动画持续时间
  * 
@@ -584,7 +584,7 @@ export interface PPTAnimation {
   id: string;
   elId: string;
   effect: string;
-  type: 'in' | 'out';
+  type: 'in' | 'out' | 'attention';
   duration: number;
   trigger: 'click' | 'meantime' | 'auto';
 }

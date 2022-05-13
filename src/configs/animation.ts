@@ -183,3 +183,30 @@ export const EXIT_ANIMATIONS = [
     ],
   },
 ]
+
+export const ATTENTION_ANIMATIONS = [
+  {
+    type: 'shake',
+    name: '晃动',
+    children: [
+      { name: '左右摇晃', value: 'shakeX' },
+      { name: '上下摇晃', value: 'shakeY' },
+      { name: '摇头', value: 'headShake' },
+      { name: '摆动', value: 'swing' },
+      { name: '晃动', value: 'wobble' },
+      { name: '惊恐', value: 'tada' },
+      { name: '果冻', value: 'jello' },
+    ],
+  },
+  {
+    type: 'other',
+    name: '其他',
+    children: [
+      { name: '弹跳', value: 'bounce' },
+      { name: '闪烁', value: 'flash' },
+      { name: '脉搏', value: 'pulse' },
+      { name: '橡皮筋', value: 'rubberBand' },
+      { name: '心跳（快）', value: 'heartBeat' },
+    ],
+  },
+]

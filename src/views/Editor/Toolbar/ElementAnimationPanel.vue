@@ -31,7 +31,7 @@
                       class="animation-box"
                       :class="[
                         `${prefix}animated`,
-                        `${prefix}faster`,
+                        `${prefix}fast`,
                         hoverPreviewAnimation === item.value && `${prefix}${item.value}`,
                       ]"
                     >{{item.name}}</div>
@@ -122,6 +122,7 @@ import { PPTAnimation } from '@/types/slides'
 import { 
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
+  ATTENTION_ANIMATIONS,
   ANIMATION_DEFAULT_DURATION,
   ANIMATION_DEFAULT_TRIGGER,
   ANIMATION_CLASS_PREFIX,
@@ -142,8 +143,13 @@ for (const effect of EXIT_ANIMATIONS) {
     animationEffects[animation.value] = animation.name
   }
 }
+for (const effect of ATTENTION_ANIMATIONS) {
+  for (const animation of effect.children) {
+    animationEffects[animation.value] = animation.name
+  }
+}
 
-type AnimationType = 'in' | 'out'
+type AnimationType = 'in' | 'out' | 'attention'
 interface TabItem {
   key: AnimationType;
   label: string;
@@ -162,6 +168,7 @@ export default defineComponent({
     const tabs: TabItem[] = [
       { key: 'in', label: '入场' },
       { key: 'out', label: '退场' },
+      { key: 'attention', label: '强调' },
     ]
     const activeTab = ref('in')
 
@@ -303,11 +310,11 @@ export default defineComponent({
       runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
     }
 
-    // 动画选择面板打开500ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
+    // 动画选择面板打开600ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
     const popoverMaskHide = ref(false)
     const handlePopoverVisibleChange = (visible: boolean) => {
       if (visible) {
-        setTimeout(() => popoverMaskHide.value = true, 500)
+        setTimeout(() => popoverMaskHide.value = true, 600)
       }
       else popoverMaskHide.value = false
     }
@@ -331,6 +338,7 @@ export default defineComponent({
       animations: {
         in: ENTER_ANIMATIONS,
         out: EXIT_ANIMATIONS,
+        attention: ATTENTION_ANIMATIONS,
       },
       prefix: ANIMATION_CLASS_PREFIX,
       addAnimation,
@@ -349,6 +357,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 $inColor: #68a490;
 $outColor: #d86344;
+$attentionColor: #e8b76a;
 
 .element-animation-panel {
   height: 100%;
@@ -363,7 +372,7 @@ $outColor: #d86344;
   margin-bottom: 20px;
 }
 .tab {
-  width: 50%;
+  width: 33.33%;
   padding-bottom: 8px;
   border-bottom: 2px solid transparent;
   text-align: center;
@@ -377,6 +386,9 @@ $outColor: #d86344;
   }
   &.out.active {
     border-bottom-color: $outColor;
+  }
+  &.attention.active {
+    border-bottom-color: $attentionColor;
   }
 }
 .element-animation {
@@ -423,6 +435,10 @@ $outColor: #d86344;
     border-left-color: $outColor;
     background-color: rgba($color: $outColor, $alpha: .15);
   }
+  &.attention .type-title {
+    border-left-color: $attentionColor;
+    background-color: rgba($color: $attentionColor, $alpha: .15);
+  }
 }
 .type-title {
   width: 100%;
@@ -467,6 +483,9 @@ $outColor: #d86344;
   }
   &.out.active {
     border-color: $outColor;
+  }
+  &.attention.active {
+    border-color: $attentionColor;
   }
   &.active {
     height: auto;
