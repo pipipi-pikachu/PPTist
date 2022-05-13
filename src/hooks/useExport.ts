@@ -176,10 +176,12 @@ export default () => {
 
           if (bulletFlag && styleObj['list-type'] === 'ol') {
             options.bullet = { type: 'number', indent: 20 * 0.75 }
+            options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
           if (bulletFlag && styleObj['list-type'] === 'ul') {
             options.bullet = { indent: 20 * 0.75 }
+            options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
 
@@ -374,13 +376,15 @@ export default () => {
             fontSize: 20 * 0.75,
             fontFace: '微软雅黑',
             color: '#000000',
-            valign: 'middle',
+            valign: 'top',
             margin: 10 * 0.75,
-            lineSpacingMultiple: 1.5 / 1.2,
+            paraSpaceBefore: 5 * 0.75,
+            lineSpacingMultiple: 1.5 / 1.25,
+            autoFit: true,
           }
           if (el.rotate) options.rotate = el.rotate
           if (el.wordSpace) options.charSpacing = el.wordSpace * 0.75
-          if (el.lineHeight) options.lineSpacingMultiple = el.lineHeight / 1.2
+          if (el.lineHeight) options.lineSpacingMultiple = el.lineHeight / 1.25
           if (el.fill) {
             const c = formatColor(el.fill)
             const opacity = el.opacity === undefined ? 1 : el.opacity
@@ -496,6 +500,7 @@ export default () => {
               fontSize: 20 * 0.75,
               fontFace: '微软雅黑',
               color: '#000000',
+              paraSpaceBefore: 5 * 0.75,
               valign: el.text.align,
             }
             if (el.rotate) options.rotate = el.rotate
