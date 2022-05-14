@@ -148,10 +148,10 @@ export default defineComponent({
       '80px', '88px', '96px', '104px', '112px', '120px',
     ]
 
-    const fill = ref('#000')
+    const fill = ref('transparent')
     const outline = ref<PPTElementOutline>({
       width: 0,
-      color: '#000',
+      color: 'transparent',
       style: 'solid',
     })
 

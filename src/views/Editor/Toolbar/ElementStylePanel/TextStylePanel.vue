@@ -71,20 +71,6 @@
           </Button>
         </Tooltip>
       </Popover>
-      <Popover trigger="click">
-        <template #content>
-          <ColorPicker
-            :modelValue="fill"
-            @update:modelValue="value => updateFill(value)"
-          />
-        </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文本框填充">
-          <Button class="text-color-btn" style="flex: 1;">
-            <IconFill />
-            <div class="text-color-block" :style="{ backgroundColor: fill }"></div>
-          </Button>
-        </Tooltip>
-      </Popover>
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
@@ -225,6 +211,18 @@
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
+    <div class="row">
+      <div style="flex: 2;">文本框填充：</div>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            :modelValue="fill"
+            @update:modelValue="value => updateFill(value)"
+          />
+        </template>
+        <ColorButton :color="fill" style="flex: 3;" />
+      </Popover>
+    </div>
 
     <Divider />
     <ElementOutline />
@@ -248,6 +246,7 @@ import { message } from 'ant-design-vue'
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
+import ColorButton from '../common/ColorButton.vue'
 
 const presetStyles = [
   {
@@ -330,6 +329,7 @@ export default defineComponent({
     ElementOpacity,
     ElementOutline,
     ElementShadow,
+    ColorButton,
   },
   setup() {
     const slidesStore = useSlidesStore()
@@ -349,7 +349,7 @@ export default defineComponent({
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'text') return
 
-      fill.value = handleElement.value.fill || '#000'
+      fill.value = handleElement.value.fill || 'transparent'
       lineHeight.value = handleElement.value.lineHeight || 1.5
       wordSpace.value = handleElement.value.wordSpace || 0
     }, { deep: true, immediate: true })
