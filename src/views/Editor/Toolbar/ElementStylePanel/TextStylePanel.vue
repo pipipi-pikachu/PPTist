@@ -363,7 +363,7 @@ export default defineComponent({
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'text') return
 
-      fill.value = handleElement.value.fill || 'transparent'
+      fill.value = handleElement.value.fill || '#fff'
       lineHeight.value = handleElement.value.lineHeight || 1.5
       wordSpace.value = handleElement.value.wordSpace || 0
     }, { deep: true, immediate: true })

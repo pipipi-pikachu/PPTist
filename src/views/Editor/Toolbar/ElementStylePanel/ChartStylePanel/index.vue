@@ -212,7 +212,7 @@ export default defineComponent({
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'chart') return
-      fill.value = handleElement.value.fill || 'transparent'
+      fill.value = handleElement.value.fill || '#fff'
 
       if (handleElement.value.options) {
         const {

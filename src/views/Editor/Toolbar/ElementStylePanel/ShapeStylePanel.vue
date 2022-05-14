@@ -261,7 +261,7 @@ export default defineComponent({
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'shape') return
 
-      fill.value = handleElement.value.fill || 'transparent'
+      fill.value = handleElement.value.fill || '#fff'
       gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, color: [fill.value, '#fff'] }
       fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
       textAlign.value = handleElement.value?.text?.align || 'middle'
