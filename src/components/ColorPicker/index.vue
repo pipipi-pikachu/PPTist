@@ -63,10 +63,11 @@
       <div
         v-for="c in recentColors"
         :key="c"
-        class="picker-presets-color"
-        :style="{ background: c }"
+        class="picker-presets-color alpha"
         @click="selectPresetColor(c)"
-      ></div>
+      >
+        <div class="picker-presets-color-content" :style="{ background: c }"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -357,7 +358,7 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
   }
   .input {
@@ -376,6 +377,13 @@ export default defineComponent({
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
+
+  &.alpha {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADBJREFUOE9jfPbs2X8GPEBSUhKfNAPjqAHDIgz+//+PNx08f/4cfzoYNYCBceiHAQC5flV5JzgrxQAAAABJRU5ErkJggg==);
+  }
+}
+.picker-presets-color-content {
+  @include absolute-0();
 }
 .picker-gradient-presets {
   @include flex-grid-layout();
