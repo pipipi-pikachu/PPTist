@@ -13,7 +13,7 @@ import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
-import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive } from '@/utils/prosemirror/utils'
+import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -139,6 +139,21 @@ export default defineComponent({
         else if (item.command === 'fontsize' && item.value) {
           const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })
           autoSelectAll(editorView)
+          addMark(editorView, mark)
+        }
+        else if (item.command === 'fontsize-add') {
+          const step = item.value ? +item.value : 2
+          autoSelectAll(editorView)
+          const fontsize = getFontsize(editorView) + step + 'px'
+          const mark = editorView.state.schema.marks.fontsize.create({ fontsize })
+          addMark(editorView, mark)
+        }
+        else if (item.command === 'fontsize-reduce') {
+          const step = item.value ? +item.value : 2
+          autoSelectAll(editorView)
+          let fontsize = getFontsize(editorView) - step
+          if (fontsize < 12) fontsize = 12
+          const mark = editorView.state.schema.marks.fontsize.create({ fontsize: fontsize + 'px' })
           addMark(editorView, mark)
         }
         else if (item.command === 'color' && item.value) {

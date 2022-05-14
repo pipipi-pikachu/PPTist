@@ -87,12 +87,40 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <Button class="text-color-btn" style="flex: 1;">
+          <Button class="text-color-btn" style="flex: 3;">
             <IconText />
             <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
           </Button>
         </Tooltip>
       </Popover>
+      <Popover trigger="click">
+        <template #content>
+          <ColorPicker
+            :modelValue="richTextAttrs.backcolor"
+            @update:modelValue="value => updateFontStyle('backcolor', value)"
+          />
+        </template>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+          <Button class="text-color-btn" style="flex: 3;">
+            <IconHighLight />
+            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
+          </Button>
+        </Tooltip>
+      </Popover>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
+        <Button 
+          class="font-size-btn"
+          style="flex: 2;"
+          @click="updateFontStyle('fontsize-add', '2')"
+        ><IconFontSize />+</Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
+        <Button 
+          class="font-size-btn"
+          style="flex: 2;"
+          @click="updateFontStyle('fontsize-reduce', '2')"
+        ><IconFontSize />-</Button>
+      </Tooltip>
     </ButtonGroup>
     <RadioGroup 
       class="row" 
@@ -244,5 +272,20 @@ export default defineComponent({
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+.text-color-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+.text-color-block {
+  width: 16px;
+  height: 3px;
+  margin-top: 1px;
+}
+.font-size-btn {
+  padding: 0;
 }
 </style>
