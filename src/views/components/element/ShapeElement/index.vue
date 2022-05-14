@@ -68,6 +68,7 @@
             :autoFocus="true"
             :value="text.content"
             @update="value => updateText(value)"
+            @blur="checkEmptyText()"
             @mousedown="$event => handleSelectElement($event, false)"
           />
         </div>
@@ -163,6 +164,16 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const checkEmptyText = () => {
+      if (!props.elementInfo.text) return
+
+      const pureText = props.elementInfo.text.content.replaceAll(/<[^>]+>/g, '')
+      if (!pureText) {
+        slidesStore.removeElementProps({ id: props.elementInfo.id, propName: 'text' })
+        addHistorySnapshot()
+      }
+    }
+
     return {
       shadowStyle,
       outlineWidth,
@@ -173,6 +184,7 @@ export default defineComponent({
       text,
       handleSelectElement,
       updateText,
+      checkEmptyText,
     }
   },
 })
