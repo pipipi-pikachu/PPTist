@@ -108,20 +108,12 @@ export default defineComponent({
   overflow: hidden;
 }
 .thumbnails-view {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  @include absolute-0();
 
   &::after {
     content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     background-color: #fff;
+    @include absolute-0();
   }
 }
 .configs {
