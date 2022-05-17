@@ -155,6 +155,13 @@ export const useSlidesStore = defineStore('slides', {
       const newEls = [...currentSlideEls, ...elements]
       this.slides[this.slideIndex].elements = newEls
     },
+
+    deleteElement(elementId: string | string[]) {
+      const elementIdList = Array.isArray(elementId) ? elementId : [elementId]
+      const currentSlideEls = this.slides[this.slideIndex].elements
+      const newEls = currentSlideEls.filter(item => !elementIdList.includes(item.id))
+      this.slides[this.slideIndex].elements = newEls
+    },
   
     updateElement(data: UpdateElementData) {
       const { id, props } = data

@@ -11,7 +11,7 @@ import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { EditorView } from 'prosemirror-view'
-import { toggleMark, wrapIn, selectAll } from 'prosemirror-commands'
+import { toggleMark, wrapIn } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
@@ -63,11 +63,6 @@ export default defineComponent({
     }, 300, { trailing: true })
 
     const handleFocus = () => {
-      if (props.value === '请输入内容') {
-        setTimeout(() => {
-          selectAll(editorView.state, editorView.dispatch)
-        }, 100)
-      }
       mainStore.setDisableHotkeysState(true)
       emit('focus')
     }

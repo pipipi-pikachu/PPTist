@@ -40,6 +40,7 @@
           :editable="!elementInfo.lock"
           :value="elementInfo.content"
           @update="value => updateContent(value)"
+          @blur="checkEmptyText()"
           @mousedown="$event => handleSelectElement($event, false)"
         />
 
@@ -151,11 +152,17 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
+    const checkEmptyText = () => {
+      const pureText = props.elementInfo.content.replaceAll(/<[^>]+>/g, '')
+      if (!pureText) slidesStore.deleteElement(props.elementInfo.id)
+    }
+
     return {
       elementRef,
       shadowStyle,
       updateContent,
       handleSelectElement,
+      checkEmptyText,
     }
   },
 })
