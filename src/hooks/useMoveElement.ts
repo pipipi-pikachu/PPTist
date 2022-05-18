@@ -35,6 +35,12 @@ export default () => {
         case KEYS.DOWN: 
           top = top + step
           break
+        case KEYS.PAGEUP: 
+          top = top - step
+          break
+        case KEYS.PAGEDOWN: 
+          top = top + step
+          break
         default: break
       }
       return { ...el, left, top }

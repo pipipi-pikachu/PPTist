@@ -22,6 +22,8 @@ export const enum KEYS {
   TAB = 'TAB',
   BACKSPACE = 'BACKSPACE',
   ESC = 'ESCAPE',
+  PAGEUP = 'PAGEUP',
+  PAGEDOWN = 'PAGEDOWN',
 }
 
 export const HOTKEY_DOC = [

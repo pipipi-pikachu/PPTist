@@ -242,6 +242,16 @@ export default () => {
       e.preventDefault()
       tabActiveElement()
     }
+    if (key === KEYS.PAGEUP) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      move(KEYS.UP)
+    }
+    if (key === KEYS.PAGEDOWN) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      move(KEYS.DOWN)
+    }
   }
   
   const keyupListener = () => {
