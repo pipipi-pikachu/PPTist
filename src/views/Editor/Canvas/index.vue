@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide, ref, watch, watchEffect } from 'vue'
+import { defineComponent, onMounted, provide, ref, watch, watchEffect } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
@@ -189,8 +189,14 @@ export default defineComponent({
     const { selectAllElement } = useSelectAllElement()
     const { deleteAllElements } = useDeleteElement()
     const { pasteElement } = useCopyAndPasteElement()
-    const { enterScreening } = useScreening()
+    const { enterScreeningFromStart } = useScreening()
     const { updateSlideIndex } = useSlideHandler()
+
+    // 组件渲染时，如果存在元素焦点，需要清除
+    // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
+    onMounted(() => {
+      if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
+    })
 
     // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
     const handleClickBlankArea = (e: MouseEvent) => {
@@ -269,9 +275,9 @@ export default defineComponent({
         },
         { divider: true },
         {
-          text: '从当前页演示',
-          subText: 'Ctrl+F',
-          handler: enterScreening,
+          text: '幻灯片放映',
+          subText: 'F5',
+          handler: enterScreeningFromStart,
         },
       ]
     }

@@ -169,7 +169,7 @@ export default defineComponent({
       slidesStore.updateSlideIndex(newIndex)
     }
 
-    const { enterScreening } = useScreening()
+    const { enterScreening, enterScreeningFromStart } = useScreening()
 
     const contextmenusThumbnails = (): ContextmenuItem[] => {
       return [
@@ -189,9 +189,9 @@ export default defineComponent({
           handler: createSlide,
         },
         {
-          text: '开始演示',
-          subText: 'Ctrl + F',
-          handler: enterScreening,
+          text: '幻灯片放映',
+          subText: 'F5',
+          handler: enterScreeningFromStart,
         },
       ]
     }
@@ -236,8 +236,8 @@ export default defineComponent({
         },
         { divider: true },
         {
-          text: '从当前页演示',
-          subText: 'Ctrl + F',
+          text: '从当前放映',
+          subText: 'Shift + F5',
           handler: enterScreening,
         },
       ]

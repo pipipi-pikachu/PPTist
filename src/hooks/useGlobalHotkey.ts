@@ -48,7 +48,7 @@ export default () => {
   const { moveElement } = useMoveElement()
   const { orderElement } = useOrderElement()
   const { redo, undo } = useHistorySnapshot()
-  const { enterScreening } = useScreening()
+  const { enterScreening, enterScreeningFromStart } = useScreening()
   const { scaleCanvas, resetCanvas } = useScaleCanvas()
 
   const copy = () => {
@@ -134,10 +134,16 @@ export default () => {
     if (shiftKey && !shiftKeyState.value) keyboardStore.setShiftKeyState(true)
     if (!disableHotkeys.value && key === KEYS.SPACE) keyboardStore.setSpaceKeyState(true)
 
-    if (ctrlOrMetaKeyActive && key === KEYS.F) {
+    if (shiftKey && key === KEYS.F5) {
       e.preventDefault()
       enterScreening()
-      keyboardStore.setCtrlKeyState(false)
+      keyboardStore.setShiftKeyState(false)
+      return
+    }
+    if (key === KEYS.F5) {
+      e.preventDefault()
+      enterScreeningFromStart()
+      return
     }
     
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
