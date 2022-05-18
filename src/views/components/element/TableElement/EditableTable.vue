@@ -505,12 +505,12 @@ export default defineComponent({
           e.preventDefault()
           tabActiveCell()
         }
-        if (e.ctrlKey && (key === KEYS.UP || key === KEYS.PAGEUP)) {
+        if (e.ctrlKey && key === KEYS.UP) {
           e.preventDefault()
           const rowIndex = +selectedCells.value[0].split('_')[0]
           insertRow(rowIndex)
         }
-        if (e.ctrlKey && (key === KEYS.DOWN || key === KEYS.PAGEDOWN)) {
+        if (e.ctrlKey && key === KEYS.DOWN) {
           e.preventDefault()
           const rowIndex = +selectedCells.value[0].split('_')[0]
           insertRow(rowIndex + 1)

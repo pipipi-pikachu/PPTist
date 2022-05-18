@@ -14,7 +14,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default () => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
-  const { selectedSlidesIndex: _selectedSlidesIndex } = storeToRefs(mainStore)
+  const { selectedSlidesIndex: _selectedSlidesIndex, activeElementIdList } = storeToRefs(mainStore)
   const { currentSlide, slides, theme, slideIndex } = storeToRefs(slidesStore)
 
   const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
@@ -45,9 +45,11 @@ export default () => {
    */
   const updateSlideIndex = (command: string) => {
     if (command === KEYS.UP && slideIndex.value > 0) {
+      if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
       slidesStore.updateSlideIndex(slideIndex.value - 1)
     }
     else if (command === KEYS.DOWN && slideIndex.value < slides.value.length - 1) {
+      if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
       slidesStore.updateSlideIndex(slideIndex.value + 1)
     }
   }
