@@ -95,6 +95,11 @@ export default () => {
     else if (key === KEYS.UP || key === KEYS.DOWN) updateSlideIndex(key)
   }
 
+  const moveSlide = (key: string) => {
+    if (key === KEYS.PAGEUP) updateSlideIndex(KEYS.UP)
+    else if (key === KEYS.PAGEDOWN) updateSlideIndex(KEYS.DOWN)
+  }
+
   const order = (command: ElementOrderCommands) => {
     if (!handleElement.value) return
     orderElement(handleElement.value, command)
@@ -216,6 +221,16 @@ export default () => {
       if (disableHotkeys.value) return
       e.preventDefault()
       move(KEYS.RIGHT)
+    }
+    if (key === KEYS.PAGEUP) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      moveSlide(KEYS.PAGEUP)
+    }
+    if (key === KEYS.PAGEDOWN) {
+      if (disableHotkeys.value) return
+      e.preventDefault()
+      moveSlide(KEYS.PAGEDOWN)
     }
     if (key === KEYS.ENTER) {
       if (disableHotkeys.value) return

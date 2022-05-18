@@ -182,12 +182,13 @@ export default () => {
   const keydownListener = (e: KeyboardEvent) => {
     const key = e.key.toUpperCase()
 
-    if (key === KEYS.UP || key === KEYS.LEFT) execPrev()
+    if (key === KEYS.UP || key === KEYS.LEFT || key === KEYS.PAGEUP) execPrev()
     else if (
       key === KEYS.DOWN || 
       key === KEYS.RIGHT ||
       key === KEYS.SPACE || 
-      key === KEYS.ENTER
+      key === KEYS.ENTER ||
+      key === KEYS.PAGEDOWN
     ) execNext()
   }
 
