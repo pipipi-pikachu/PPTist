@@ -15,11 +15,12 @@
               >
                 <path 
                   class="shape-path"
+                  :class="{ 'outlined': shape.outlined }"
                   vector-effect="non-scaling-stroke" 
                   stroke-linecap="butt" 
                   stroke-miterlimit="8"
-                  fill="transparent"
-                  stroke="#999"
+                  :fill="shape.outlined ? '#999' : 'transparent'"
+                  :stroke="shape.outlined ? 'transparent' : '#999'"
                   stroke-width="2" 
                   :d="shape.path"
                 ></path>
@@ -57,11 +58,13 @@ export default defineComponent({
 <style lang="scss" scoped>
 .shape-pool {
   width: 340px;
-  max-height: 550px;
+  max-height: 520px;
   overflow: auto;
+  margin-top: -12px;
   margin-bottom: -12px;
   margin-right: -12px;
   padding-right: 12px;
+  padding-top: 12px;
 }
 .category-name {
   width: 100%;
@@ -93,7 +96,12 @@ export default defineComponent({
   align-items: center;
 
   &:hover .shape-path {
-    stroke: $themeColor;
+    &:not(.outlined) {
+      stroke: $themeColor;
+    }
+    &.outlined {
+      fill: $themeColor;
+    }
   }
 
   svg:not(:root) {
