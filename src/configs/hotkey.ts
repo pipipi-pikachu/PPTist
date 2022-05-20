@@ -51,6 +51,7 @@ export const HOTKEY_DOC = [
       { label: '切换下一页', value: '↓ / → / PgDown' },
       { label: '切换下一页', value: 'Enter / Space' },
       { label: '退出放映', value: 'ESC' },
+      { label: '调整画笔笔触大小', value: '鼠标滚轮' },
     ],
   },
   {
@@ -58,7 +59,7 @@ export const HOTKEY_DOC = [
     children: [
       { label: '新建幻灯片', value: 'Enter' },
       { label: '移动画布', value: 'Space + 鼠标拖拽' },
-      { label: '缩放画布', value: 'Ctrl + 鼠标滚动' },
+      { label: '缩放画布', value: 'Ctrl + 鼠标滚轮' },
       { label: '放大画布', value: 'Ctrl + =' },
       { label: '缩小画布', value: 'Ctrl + -' },
       { label: '使画布适应当前屏幕', value: 'Ctrl + 0' },

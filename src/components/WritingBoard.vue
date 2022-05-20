@@ -15,6 +15,7 @@
       @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
+      @mousewheel="$event => mousewheelListener($event)"
     ></canvas>
 
     <template v-if="mouseInCanvas">
@@ -32,12 +33,12 @@
         class="pen"
         :style="{
           left: mouse.x - penSize / 2 + 'px',
-          top: mouse.y - 36 + penSize / 2 + 'px',
+          top: mouse.y - penSize * 6 + penSize / 2 + 'px',
           color: color,
         }"
         v-if="model === 'pen'"
       >
-        <IconWrite class="icon" size="36" v-if="model === 'pen'" />
+        <IconWrite class="icon" :size="penSize * 6" v-if="model === 'pen'" />
       </div>
       <div 
         class="pen"
@@ -48,7 +49,7 @@
         }"
         v-if="model === 'mark'"
       >
-        <IconHighLight class="icon" size="36" v-if="model === 'mark'" />
+        <IconHighLight class="icon" :size="markSize * 1.5" v-if="model === 'mark'" />
       </div>
     </template>
   </div>
@@ -56,10 +57,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-
-const penSize = 6
-const rubberSize = 80
-const markSize = 25
+import { throttle } from 'lodash'
 
 export default defineComponent({
   name: 'writing-board',
@@ -81,6 +79,10 @@ export default defineComponent({
     let ctx: CanvasRenderingContext2D | null = null
     const writingBoardRef = ref<HTMLElement>()
     const canvasRef = ref<HTMLCanvasElement>()
+
+    const penSize = ref(6)
+    const rubberSize = ref(80)
+    const markSize = ref(24)
 
     let lastPos = {
       x: 0,
@@ -170,7 +172,7 @@ export default defineComponent({
       const lastPosX = lastPos.x
       const lastPosY = lastPos.y
 
-      const radius = rubberSize / 2
+      const radius = rubberSize.value / 2
 
       const sinRadius = radius * Math.sin(Math.atan((posY - lastPosY) / (posX - lastPosX)))
       const cosRadius = radius * Math.cos(Math.atan((posY - lastPosY) / (posX - lastPosX)))
@@ -209,7 +211,7 @@ export default defineComponent({
     const getLineWidth = (s: number, t: number) => {
       const maxV = 10
       const minV = 0.1
-      const maxWidth = penSize
+      const maxWidth = penSize.value
       const minWidth = 3
       const v = s / t
       let lineWidth
@@ -234,7 +236,7 @@ export default defineComponent({
         draw(x, y, lineWidth)
         lastLineWidth = lineWidth
       }
-      else if (props.model === 'mark') draw(x, y, markSize)
+      else if (props.model === 'mark') draw(x, y, markSize.value)
       else erase(x, y)
 
       lastPos = { x, y }
@@ -306,6 +308,22 @@ export default defineComponent({
       }
     }
 
+    // 滚动鼠标滚轮，调整笔触大小
+    const mousewheelListener = throttle(function(e: WheelEvent) {
+      if (props.model === 'eraser') {
+        if (e.deltaY < 0 && rubberSize.value < 200) rubberSize.value += 20
+        else if (e.deltaY > 0 && rubberSize.value > 20) rubberSize.value -= 20
+      }
+      if (props.model === 'pen') {
+        if (e.deltaY < 0 && penSize.value < 10) penSize.value += 2
+        else if (e.deltaY > 0 && penSize.value > 4) penSize.value -= 2
+      }
+      if (props.model === 'mark') {
+        if (e.deltaY < 0 && markSize.value < 40) markSize.value += 4
+        else if (e.deltaY > 0 && markSize.value > 16) markSize.value -= 4
+      }
+    }, 300, { leading: true, trailing: false })
+
     return {
       mouse,
       mouseInCanvas,
@@ -322,6 +340,7 @@ export default defineComponent({
       clearCanvas,
       getImageDataURL,
       setImageDataURL,
+      mousewheelListener,
     }
   },
 })
