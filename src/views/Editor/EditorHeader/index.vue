@@ -8,6 +8,7 @@
             <MenuItem @click="exportJSON()">导出 JSON</MenuItem>
             <MenuItem @click="exportPPTX()">导出 PPTX</MenuItem>
             <MenuItem @click="exportImgDialogVisible = true">导出图片</MenuItem>
+            <MenuItem @click="exportPDFDialogVisible = true">打印 / 导出 PDF</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -76,6 +77,17 @@
       <ExportImgDialog @close="exportImgDialogVisible = false"/>
     </Modal>
 
+    <Modal
+      v-model:visible="exportPDFDialogVisible" 
+      :footer="null" 
+      centered
+      :closable="false"
+      :width="680"
+      destroyOnClose
+    >
+      <ExportPDFDialog @close="exportPDFDialogVisible = false"/>
+    </Modal>
+
     <FullscreenSpin :loading="exporting" tip="正在导出..." />
   </div>
 </template>
@@ -91,12 +103,14 @@ import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 import ExportImgDialog from './ExportImgDialog.vue'
+import ExportPDFDialog from './ExportPDFDialog.vue'
 
 export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
     ExportImgDialog,
+    ExportPDFDialog,
   },
   setup() {
     const mainStore = useMainStore()
@@ -117,6 +131,7 @@ export default defineComponent({
 
     const hotkeyDrawerVisible = ref(false)
     const exportImgDialogVisible = ref(false)
+    const exportPDFDialogVisible = ref(false)
 
     const goIssues = () => {
       window.open('https://github.com/pipipi-pikachu/PPTist/issues')
@@ -129,6 +144,7 @@ export default defineComponent({
       showRuler,
       hotkeyDrawerVisible,
       exportImgDialogVisible,
+      exportPDFDialogVisible,
       exporting,
       enterScreening,
       enterScreeningFromStart,

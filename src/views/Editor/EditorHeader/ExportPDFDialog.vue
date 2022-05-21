@@ -1,0 +1,165 @@
+<template>
+  <div class="export-pdf-dialog">
+    <div class="thumbnails-view">
+      <div class="thumbnails" ref="pdfThumbnailsRef">
+        <ThumbnailSlide 
+          class="thumbnail" 
+          :slide="currentSlide" 
+          :size="1600" 
+          v-if="range === 'current'"
+        />
+        <template v-else>
+          <ThumbnailSlide 
+            class="thumbnail" 
+            :class="{ 'break-page': (index + 1) % count === 0 }"
+            v-for="(slide, index) in slides" 
+            :key="slide.id" 
+            :slide="slide" 
+            :size="1600" 
+          />
+        </template>
+      </div>
+    </div>
+    <div class="configs">
+      <div class="row">
+        <div class="title">导出范围：</div>
+        <RadioGroup
+          class="config-item"
+          v-model:value="range"
+        >
+          <RadioButton style="width: 50%;" value="all">全部幻灯片</RadioButton>
+          <RadioButton style="width: 50%;" value="current">当前幻灯片</RadioButton>
+        </RadioGroup>
+      </div>
+      <div class="row">
+        <div class="title">每页数量：</div>
+        <Select 
+          class="config-item"
+          v-model:value="count"
+        >
+          <SelectOption :value="1">1</SelectOption>
+          <SelectOption :value="2">2</SelectOption>
+          <SelectOption :value="3">3</SelectOption>
+        </Select>
+      </div>
+      <div class="row">
+        <div class="title">边缘留白：</div>
+        <div class="config-item">
+          <Switch v-model:checked="padding" />
+        </div>
+      </div>
+
+      <div class="btns">
+        <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
+        <Button class="btn close" @click="close()">关闭</Button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
+import { print } from '@/utils/print'
+
+import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+
+export default defineComponent({
+  name: 'export-pdf-dialog',
+  components: {
+    ThumbnailSlide,
+  },
+  setup(props, { emit }) {
+    const { slides, currentSlide } = storeToRefs(useSlidesStore())
+
+    const pdfThumbnailsRef = ref<HTMLElement>()
+    const range = ref<'all' | 'current'>('all')
+    const count = ref(1)
+    const padding = ref(true)
+
+    const close = () => emit('close')
+
+    const expPDF = () => {
+      if (!pdfThumbnailsRef.value) return
+      const pageSize = {
+        width: 1600,
+        height: range.value === 'all' ? 900 * count.value : 900,
+        margin: padding.value ? 50 : 0,
+      }
+      print(pdfThumbnailsRef.value, pageSize)
+    }
+    
+    return {
+      pdfThumbnailsRef,
+      slides,
+      currentSlide,
+      range,
+      count,
+      padding,
+      expPDF,
+      close,
+    }
+  },
+})
+</script>
+
+<style lang="scss" scoped>
+.export-pdf-dialog {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.thumbnails-view {
+  @include absolute-0();
+
+  &::after {
+    content: '';
+    background-color: #fff;
+    @include absolute-0();
+  }
+}
+.thumbnail {
+  &.break-page {
+    break-after: page;
+  }
+}
+.configs {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .title {
+    width: 100px;
+  }
+  .config-item {
+    flex: 1;
+  }
+
+  .btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+
+    .export {
+      flex: 1;
+    }
+    .close {
+      width: 100px;
+      margin-left: 10px;
+    }
+  }
+}
+</style>
