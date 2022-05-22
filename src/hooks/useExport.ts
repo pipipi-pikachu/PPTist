@@ -6,7 +6,7 @@ import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
 import { useSlidesStore } from '@/store'
-import { PPTElementOutline, PPTElementShadow, PPTElementLink } from '@/types/slides'
+import { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
@@ -331,7 +331,7 @@ export default () => {
   }
 
   // 导出PPTX文件
-  const exportPPTX = () => {
+  const exportPPTX = (_slides: Slide[] = slides.value) => {
     exporting.value = true
     const pptx = new pptxgen()
 
@@ -341,7 +341,7 @@ export default () => {
       background: { color: bgColor, transparency: (1 - bgAlpha) * 100 },
     })
 
-    for (const slide of slides.value) {
+    for (const slide of _slides) {
       const pptxSlide = pptx.addSlide()
 
       if (slide.background) {

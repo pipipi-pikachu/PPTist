@@ -15,11 +15,24 @@
       <Toolbar class="layout-content-right" />
     </div>
   </div>
+
+  <Modal
+    :visible="!!dialogForExport" 
+    :footer="null" 
+    centered
+    :closable="false"
+    :width="680"
+    destroyOnClose
+    @cancel="closeExportDialog()"
+  >
+    <ExportDialog />
+  </Modal>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 import useGlobalHotkey from '@/hooks/useGlobalHotkey'
 import usePasteEvent from '@/hooks/usePasteEvent'
 
@@ -29,6 +42,7 @@ import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import Remark from './Remark/index.vue'
+import ExportDialog from './ExportDialog/index.vue'
 
 export default defineComponent({
   name: 'editor',
@@ -39,8 +53,13 @@ export default defineComponent({
     Thumbnails,
     Toolbar,
     Remark,
+    ExportDialog,
   },
   setup() {
+    const mainStore = useMainStore()
+    const { dialogForExport } = storeToRefs(mainStore)
+    const closeExportDialog = () => mainStore.setDialogForExport('')
+
     const remarkHeight = ref(40)
 
     useGlobalHotkey()
@@ -48,6 +67,8 @@ export default defineComponent({
 
     return {
       remarkHeight,
+      dialogForExport,
+      closeExportDialog,
     }
   },
 })

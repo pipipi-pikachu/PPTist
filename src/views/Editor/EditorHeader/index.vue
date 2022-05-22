@@ -5,10 +5,10 @@
         <div class="menu-item"><IconFolderClose /> <span class="text">文件</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="exportJSON()">导出 JSON</MenuItem>
-            <MenuItem @click="exportPPTX()">导出 PPTX</MenuItem>
-            <MenuItem @click="exportImgDialogVisible = true">导出图片</MenuItem>
-            <MenuItem @click="exportPDFDialogVisible = true">打印 / 导出 PDF</MenuItem>
+            <MenuItem @click="setDialogForExport('json')">导出 JSON</MenuItem>
+            <MenuItem @click="setDialogForExport('pptx')">导出 PPTX</MenuItem>
+            <MenuItem @click="setDialogForExport('image')">导出图片</MenuItem>
+            <MenuItem @click="setDialogForExport('pdf')">打印 / 导出 PDF</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -65,30 +65,6 @@
     >
       <HotkeyDoc />
     </Drawer>
-
-    <Modal
-      v-model:visible="exportImgDialogVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
-      :width="680"
-      destroyOnClose
-    >
-      <ExportImgDialog @close="exportImgDialogVisible = false"/>
-    </Modal>
-
-    <Modal
-      v-model:visible="exportPDFDialogVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
-      :width="680"
-      destroyOnClose
-    >
-      <ExportPDFDialog @close="exportPDFDialogVisible = false"/>
-    </Modal>
-
-    <FullscreenSpin :loading="exporting" tip="正在导出..." />
   </div>
 </template>
 
@@ -102,15 +78,11 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
-import ExportImgDialog from './ExportImgDialog.vue'
-import ExportPDFDialog from './ExportPDFDialog.vue'
 
 export default defineComponent({
   name: 'editor-header',
   components: {
     HotkeyDoc,
-    ExportImgDialog,
-    ExportPDFDialog,
   },
   setup() {
     const mainStore = useMainStore()
@@ -121,6 +93,8 @@ export default defineComponent({
     const { redo, undo } = useHistorySnapshot()
     const { exporting, exportJSON, exportPPTX } = useExport()
 
+    const setDialogForExport = mainStore.setDialogForExport
+
     const toggleGridLines = () => {
       mainStore.setGridLinesState(!showGridLines.value)
     }
@@ -130,8 +104,6 @@ export default defineComponent({
     }
 
     const hotkeyDrawerVisible = ref(false)
-    const exportImgDialogVisible = ref(false)
-    const exportPDFDialogVisible = ref(false)
 
     const goIssues = () => {
       window.open('https://github.com/pipipi-pikachu/PPTist/issues')
@@ -143,9 +115,8 @@ export default defineComponent({
       showGridLines,
       showRuler,
       hotkeyDrawerVisible,
-      exportImgDialogVisible,
-      exportPDFDialogVisible,
       exporting,
+      setDialogForExport,
       enterScreening,
       enterScreeningFromStart,
       createSlide,

@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import { CreatingElement } from '@/types/edit'
 import { ToolbarStates } from '@/types/toolbar'
+import { DialogForExportTypes } from '@/types/export'
 import { SYS_FONTS } from '@/configs/font'
 import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { isSupportFont } from '@/utils/font'
 
 import { useSlidesStore } from './slides'
+
+
 
 export interface MainState {
   activeElementIdList: string[];
@@ -27,6 +30,7 @@ export interface MainState {
   richTextAttrs: TextAttrs;
   selectedTableCells: string[];
   selectedSlidesIndex: number[];
+  dialogForExport: DialogForExportTypes;
 }
 
 export const useMainStore = defineStore('main', {
@@ -50,6 +54,7 @@ export const useMainStore = defineStore('main', {
     selectedTableCells: [], // 选中的表格单元格
     isScaling: false, // 正在进行元素缩放
     selectedSlidesIndex: [], // 当前被选中的页面索引集合
+    dialogForExport: '', // 导出面板
   }),
 
   getters: {
@@ -146,6 +151,10 @@ export const useMainStore = defineStore('main', {
     
     updateSelectedSlidesIndex(selectedSlidesIndex: number[]) {
       this.selectedSlidesIndex = selectedSlidesIndex
+    },
+
+    setDialogForExport(type: DialogForExportTypes) {
+      this.dialogForExport = type
     },
   },
 })

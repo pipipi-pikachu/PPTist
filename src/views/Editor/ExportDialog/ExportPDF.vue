@@ -6,7 +6,7 @@
           class="thumbnail" 
           :slide="currentSlide" 
           :size="1600" 
-          v-if="range === 'current'"
+          v-if="rangeType === 'current'"
         />
         <template v-else>
           <ThumbnailSlide 
@@ -25,7 +25,7 @@
         <div class="title">导出范围：</div>
         <RadioGroup
           class="config-item"
-          v-model:value="range"
+          v-model:value="rangeType"
         >
           <RadioButton style="width: 50%;" value="all">全部幻灯片</RadioButton>
           <RadioButton style="width: 50%;" value="current">当前幻灯片</RadioButton>
@@ -48,11 +48,11 @@
           <Switch v-model:checked="padding" />
         </div>
       </div>
+    </div>
 
-      <div class="btns">
-        <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
-        <Button class="btn close" @click="close()">关闭</Button>
-      </div>
+    <div class="btns">
+      <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
+      <Button class="btn close" @click="close()">关闭</Button>
     </div>
   </div>
 </template>
@@ -74,7 +74,7 @@ export default defineComponent({
     const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
     const pdfThumbnailsRef = ref<HTMLElement>()
-    const range = ref<'all' | 'current'>('all')
+    const rangeType = ref<'all' | 'current'>('all')
     const count = ref(1)
     const padding = ref(true)
 
@@ -84,7 +84,7 @@ export default defineComponent({
       if (!pdfThumbnailsRef.value) return
       const pageSize = {
         width: 1600,
-        height: range.value === 'all' ? 900 * count.value : 900,
+        height: rangeType.value === 'all' ? 900 * count.value : 900,
         margin: padding.value ? 50 : 0,
       }
       print(pdfThumbnailsRef.value, pageSize)
@@ -94,7 +94,7 @@ export default defineComponent({
       pdfThumbnailsRef,
       slides,
       currentSlide,
-      range,
+      rangeType,
       count,
       padding,
       expPDF,
@@ -106,9 +106,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .export-pdf-dialog {
-  height: 400px;
+  height: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
 }
@@ -128,6 +130,7 @@ export default defineComponent({
 }
 .configs {
   width: 300px;
+  height: calc(100% - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -146,20 +149,20 @@ export default defineComponent({
   .config-item {
     flex: 1;
   }
+}
+.btns {
+  width: 300px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .btns {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 40px;
-
-    .export {
-      flex: 1;
-    }
-    .close {
-      width: 100px;
-      margin-left: 10px;
-    }
+  .export {
+    flex: 1;
+  }
+  .close {
+    width: 100px;
+    margin-left: 10px;
   }
 }
 </style>
