@@ -97,6 +97,8 @@ import {
   ListView,
   Magic,
   HighLight,
+  Printer,
+  Share,
 } from '@icon-park/vue-next'
 
 const icons = {
@@ -195,6 +197,8 @@ const icons = {
   ListView,
   Magic,
   HighLight,
+  Printer,
+  Share,
 }
 
 export default {
