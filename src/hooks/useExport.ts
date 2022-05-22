@@ -20,7 +20,7 @@ interface ExportImageConfig {
 }
 
 export default () => {
-  const { slides, theme } = storeToRefs(useSlidesStore())
+  const { slides, theme, viewportRatio } = storeToRefs(useSlidesStore())
 
   const exporting = ref(false)
 
@@ -334,6 +334,10 @@ export default () => {
   const exportPPTX = (_slides: Slide[] = slides.value) => {
     exporting.value = true
     const pptx = new pptxgen()
+
+    if (viewportRatio.value === 0.625) pptx.layout = 'LAYOUT_16x10'
+    else if (viewportRatio.value === 0.75) pptx.layout = 'LAYOUT_4x3'
+    else pptx.layout = 'LAYOUT_16x9'
 
     const { color: bgColor, alpha: bgAlpha } = formatColor(theme.value.backgroundColor)
     pptx.defineSlideMaster({

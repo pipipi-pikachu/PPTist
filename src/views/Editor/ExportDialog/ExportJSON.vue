@@ -46,13 +46,13 @@ export default defineComponent({
   overflow: hidden;
 }
 .preview {
-  width: calc(100% - 20px);
+  width: 100%;
   height: calc(100% - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #2d2d30;
-  color: #fff;
+  background-color: #f9f9f9;
+  color: #0451a5;
 }
 .btns {
   width: 300px;
@@ -72,9 +72,9 @@ export default defineComponent({
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: #2d2d30;
+  background-color: #f9f9f9;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #777;
+  background-color: #c1c1c1;
 }
 </style>
