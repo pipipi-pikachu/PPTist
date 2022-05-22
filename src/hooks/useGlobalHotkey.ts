@@ -134,6 +134,12 @@ export default () => {
     if (shiftKey && !shiftKeyState.value) keyboardStore.setShiftKeyState(true)
     if (!disableHotkeys.value && key === KEYS.SPACE) keyboardStore.setSpaceKeyState(true)
 
+    
+    if (ctrlOrMetaKeyActive && key === KEYS.P) {
+      e.preventDefault()
+      mainStore.setDialogForExport('pdf')
+      return
+    }
     if (shiftKey && key === KEYS.F5) {
       e.preventDefault()
       enterScreening()
