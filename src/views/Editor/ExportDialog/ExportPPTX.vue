@@ -23,9 +23,15 @@
           v-model:value="range"
         />
       </div>
+      <div class="row">
+        <div class="title">覆盖默认母版：</div>
+        <div class="config-item">
+          <Switch v-model:checked="masterOverwrite" />
+        </div>
+      </div>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportPPTX(selectedSlides)">导出 PPTX</Button>
+      <Button class="btn export" type="primary" @click="exportPPTX(selectedSlides, masterOverwrite)">导出 PPTX</Button>
       <Button class="btn close" @click="close()">关闭</Button>
     </div>
 
@@ -46,6 +52,7 @@ export default defineComponent({
 
     const rangeType = ref<'all' | 'current' | 'custom'>('all')
     const range = ref<[number, number]>([1, slides.value.length])
+    const masterOverwrite = ref(true)
 
     const selectedSlides = computed(() => {
       if (rangeType.value === 'all') return slides.value
@@ -64,6 +71,7 @@ export default defineComponent({
       slides,
       rangeType,
       range,
+      masterOverwrite,
       exporting,
       selectedSlides,
       exportPPTX,

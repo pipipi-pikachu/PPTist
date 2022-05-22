@@ -331,7 +331,7 @@ export default () => {
   }
 
   // 导出PPTX文件
-  const exportPPTX = (_slides: Slide[] = slides.value) => {
+  const exportPPTX = (_slides: Slide[], masterOverwrite: boolean) => {
     exporting.value = true
     const pptx = new pptxgen()
 
@@ -339,11 +339,13 @@ export default () => {
     else if (viewportRatio.value === 0.75) pptx.layout = 'LAYOUT_4x3'
     else pptx.layout = 'LAYOUT_16x9'
 
-    const { color: bgColor, alpha: bgAlpha } = formatColor(theme.value.backgroundColor)
-    pptx.defineSlideMaster({
-      title: 'PPTIST_MASTER',
-      background: { color: bgColor, transparency: (1 - bgAlpha) * 100 },
-    })
+    if (masterOverwrite) {
+      const { color: bgColor, alpha: bgAlpha } = formatColor(theme.value.backgroundColor)
+      pptx.defineSlideMaster({
+        title: 'PPTIST_MASTER',
+        background: { color: bgColor, transparency: (1 - bgAlpha) * 100 },
+      })
+    }
 
     for (const slide of _slides) {
       const pptxSlide = pptx.addSlide()

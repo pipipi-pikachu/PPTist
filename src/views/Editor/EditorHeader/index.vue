@@ -47,9 +47,14 @@
     </div>
 
     <div class="right">
+      <Tooltip :mouseLeaveDelay="0" title="导出">
+        <div class="menu-item" @click="setDialogForExport('pptx')">
+          <IconShare size="18" fill="#666" />
+        </div>
+      </Tooltip>
       <Tooltip :mouseLeaveDelay="0" title="幻灯片放映">
         <div class="menu-item" @click="enterScreening()">
-          <IconPpt size="18" fill="#666" style="margin-top: 2px;" />
+          <IconPpt size="19" fill="#666" style="margin-top: 1px;" />
         </div>
       </Tooltip>
       <a href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
@@ -75,7 +80,6 @@ import { useMainStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 
@@ -91,7 +95,6 @@ export default defineComponent({
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
-    const { exporting, exportJSON, exportPPTX } = useExport()
 
     const setDialogForExport = mainStore.setDialogForExport
 
@@ -115,7 +118,6 @@ export default defineComponent({
       showGridLines,
       showRuler,
       hotkeyDrawerVisible,
-      exporting,
       setDialogForExport,
       enterScreening,
       enterScreeningFromStart,
@@ -124,8 +126,6 @@ export default defineComponent({
       toggleGridLines,
       toggleRuler,
       resetSlides,
-      exportJSON,
-      exportPPTX,
       goIssues,
     }
   },

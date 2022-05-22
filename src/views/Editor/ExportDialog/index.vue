@@ -99,7 +99,7 @@ export default defineComponent({
   }
 }
 .content {
-  height: 500px;
+  height: 460px;
   padding: 12px;
   font-size: 13px;
 
