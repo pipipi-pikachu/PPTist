@@ -10,8 +10,8 @@
       />
 
       <svg 
-        :width="svgWidth" 
-        :height="svgHeight" 
+        :width="svgWidth || 1" 
+        :height="svgHeight || 1" 
         :stroke="elementInfo.color"
         overflow="visible" 
         :style="{ transform: `scale(${canvasScale})` }"
