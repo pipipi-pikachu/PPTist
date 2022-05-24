@@ -15,7 +15,7 @@
       @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
-      @mousewheel="$event => mousewheelListener($event)"
+      @wheel="$event => mousewheelListener($event)"
     ></canvas>
 
     <template v-if="mouseInCanvas">
