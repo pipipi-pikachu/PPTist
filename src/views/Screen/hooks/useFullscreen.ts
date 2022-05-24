@@ -8,7 +8,7 @@ export default () => {
 
   const { exitScreening } = useScreening()
 
-  const windowResizeListener = () => {
+  const handleFullscreenChange = () => {
     fullscreenState.value = isFullscreen()
     if (!fullscreenState.value && escExit.value) exitScreening()
 
@@ -17,9 +17,9 @@ export default () => {
 
   onMounted(() => {
     fullscreenState.value = isFullscreen()
-    window.addEventListener('resize', windowResizeListener)
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
   })
-  onUnmounted(() => window.removeEventListener('resize', windowResizeListener))
+  onUnmounted(() => document.removeEventListener('fullscreenchange', handleFullscreenChange))
 
   const manualExitFullscreen = () => {
     if (!fullscreenState.value) return
