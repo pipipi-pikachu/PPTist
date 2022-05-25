@@ -18,8 +18,12 @@ export default () => {
   onMounted(() => {
     fullscreenState.value = isFullscreen()
     document.addEventListener('fullscreenchange', handleFullscreenChange)
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
   })
-  onUnmounted(() => document.removeEventListener('fullscreenchange', handleFullscreenChange))
+  onUnmounted(() => {
+    document.removeEventListener('fullscreenchange', handleFullscreenChange)
+    document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+  })
 
   const manualExitFullscreen = () => {
     if (!fullscreenState.value) return
