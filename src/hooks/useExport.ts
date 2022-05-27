@@ -74,6 +74,7 @@ export default () => {
   const formatHTML = (html: string) => {
     const ast = toAST(html)
     let bulletFlag = false
+    let indent = 0
 
     const slices: pptxgen.TextProps[] = []
     const parse = (obj: AST[], baseStyleObj = {}) => {
@@ -123,6 +124,12 @@ export default () => {
           }
           if (item.tagName === 'li') {
             bulletFlag = true
+          }
+          if (item.tagName === 'p') {
+            if ('attributes' in item) {
+              const dataIndentAttr = item.attributes.find(attr => attr.key === 'data-indent')
+              if (dataIndentAttr && dataIndentAttr.value) indent = +dataIndentAttr.value
+            }
           }
         }
 
@@ -183,6 +190,10 @@ export default () => {
             options.bullet = { indent: 20 * 0.75 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
+          }
+          if (indent) {
+            options.indentLevel = indent
+            indent = 0
           }
 
           slices.push({ text, options })

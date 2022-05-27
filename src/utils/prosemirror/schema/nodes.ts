@@ -25,6 +25,9 @@ const paragraph: NodeSpec = {
     align: {
       default: '',
     },
+    indent: {
+      default: 0,
+    },
   },
   content: 'inline*',
   group: 'block',
@@ -33,19 +36,25 @@ const paragraph: NodeSpec = {
       tag: 'p',
       getAttrs: dom => {
         const { textAlign } = (dom as HTMLElement).style
+
         let align = (dom as HTMLElement).getAttribute('align') || textAlign || ''
         align = /(left|right|center|justify)/.test(align) ? align : ''
+
+        const indent = +((dom as HTMLElement).getAttribute('data-indent') || 0)
       
-        return { align }
+        return { align, indent }
       }
     }
   ],
   toDOM: (node: Node) => {
-    const { align } = node.attrs
+    const { align, indent } = node.attrs
     let style = ''
     if (align && align !== 'left') style += `text-align: ${align};`
 
-    return ['p', { style }, 0]
+    const attr = { style }
+    if (indent) attr['data-indent'] = indent
+
+    return ['p', attr, 0]
   },
 }
 

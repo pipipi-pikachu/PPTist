@@ -209,6 +209,15 @@
       </Tooltip>
     </CheckboxButtonGroup>
 
+    <ButtonGroup class="row">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小缩进">
+        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大缩进">
+        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
+      </Tooltip>
+    </ButtonGroup>
+
     <Divider />
 
     <div class="row">

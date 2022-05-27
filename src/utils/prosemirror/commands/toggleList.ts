@@ -3,7 +3,7 @@ import { Schema, Node, NodeType } from 'prosemirror-model'
 import { Transaction, EditorState } from 'prosemirror-state'
 import { findParentNode } from '../utils'
 
-const isList = (node: Node, schema: Schema) => {
+export const isList = (node: Node, schema: Schema) => {
   return (
     node.type === schema.nodes.bullet_list ||
     node.type === schema.nodes.ordered_list

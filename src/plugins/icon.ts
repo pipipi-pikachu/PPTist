@@ -98,6 +98,8 @@ import {
   Magic,
   HighLight,
   Share,
+  IndentLeft,
+  IndentRight,
 } from '@icon-park/vue-next'
 
 const icons = {
@@ -197,6 +199,8 @@ const icons = {
   Magic,
   HighLight,
   Share,
+  IndentLeft,
+  IndentRight,
 }
 
 export default {

@@ -16,6 +16,7 @@ import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
+import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 
 export default defineComponent({
@@ -191,6 +192,9 @@ export default defineComponent({
         }
         else if (item.command === 'align' && item.value) {
           alignmentCommand(editorView, item.value)
+        }
+        else if (item.command === 'indent' && item.value) {
+          indentCommand(editorView, +item.value)
         }
         else if (item.command === 'bulletList') {
           const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes

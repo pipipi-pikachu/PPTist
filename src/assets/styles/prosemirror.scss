@@ -54,6 +54,28 @@
     font-style: italic;
     border-left: 5px solid #ccc;
   }
+
+  [data-indent='1'] {
+    padding-left: 48px;
+  }
+  [data-indent='2'] {
+    padding-left: 96px;
+  }
+  [data-indent='3'] {
+    padding-left: 144px;
+  }
+  [data-indent='4'] {
+    padding-left: 192px;
+  }
+  [data-indent='5'] {
+    padding-left: 240px;
+  }
+  [data-indent='6'] {
+    padding-left: 288px;
+  }
+  [data-indent='7'] {
+    padding-left: 336px;
+  }
 }
 
 .ProseMirror-selectednode {
