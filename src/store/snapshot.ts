@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { IndexableTypeArray } from 'dexie'
-import { snapshotDB, Snapshot } from '@/utils/database'
+import { db, deleteDiscardedDB, Snapshot } from '@/utils/database'
 
 import { useSlidesStore } from './slides'
 import { useMainStore } from './main'
@@ -36,18 +36,13 @@ export const useSnapshotStore = defineStore('snapshot', {
     async initSnapshotDatabase() {
       const slidesStore = useSlidesStore()
 
-      const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
-      const lastSnapshot = snapshots.slice(-1)[0]
-  
-      if (lastSnapshot) {
-        snapshotDB.snapshots.clear()
-      }
+      await deleteDiscardedDB()
   
       const newFirstSnapshot = {
         index: slidesStore.slideIndex,
         slides: slidesStore.slides,
       }
-      await snapshotDB.snapshots.add(newFirstSnapshot)
+      await db.snapshots.add(newFirstSnapshot)
       this.setSnapshotCursor(0)
       this.setSnapshotLength(1)
     },
@@ -56,7 +51,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       const slidesStore = useSlidesStore()
 
       // 获取当前indexeddb中全部快照的ID
-      const allKeys = await snapshotDB.snapshots.orderBy('id').keys()
+      const allKeys = await db.snapshots.orderBy('id').keys()
   
       let needDeleteKeys: IndexableTypeArray = []
   
@@ -72,7 +67,7 @@ export const useSnapshotStore = defineStore('snapshot', {
         index: slidesStore.slideIndex,
         slides: slidesStore.slides,
       }
-      await snapshotDB.snapshots.add(snapshot)
+      await db.snapshots.add(snapshot)
   
       // 计算当前快照长度，用于设置快照指针的位置（此时指针应该处在最后一位，即：快照长度 - 1）
       let snapshotLength = allKeys.length - needDeleteKeys.length + 1
@@ -87,10 +82,10 @@ export const useSnapshotStore = defineStore('snapshot', {
       // 快照数大于1时，需要保证撤回操作后维持页面焦点不变：也就是将倒数第二个快照对应的索引设置为当前页的索引
       // https://github.com/pipipi-pikachu/PPTist/issues/27
       if (snapshotLength >= 2) {
-        snapshotDB.snapshots.update(allKeys[snapshotLength - 2] as number, { index: slidesStore.slideIndex })
+        db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: slidesStore.slideIndex })
       }
   
-      await snapshotDB.snapshots.bulkDelete(needDeleteKeys)
+      await db.snapshots.bulkDelete(needDeleteKeys)
   
       this.setSnapshotCursor(snapshotLength - 1)
       this.setSnapshotLength(snapshotLength)
@@ -103,7 +98,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       const mainStore = useMainStore()
   
       const snapshotCursor = this.snapshotCursor - 1
-      const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
+      const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
       const snapshot = snapshots[snapshotCursor]
       const { index, slides } = snapshot
   
@@ -122,7 +117,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       const mainStore = useMainStore()
   
       const snapshotCursor = this.snapshotCursor + 1
-      const snapshots: Snapshot[] = await snapshotDB.snapshots.orderBy('id').toArray()
+      const snapshots: Snapshot[] = await db.snapshots.orderBy('id').toArray()
       const snapshot = snapshots[snapshotCursor]
       const { index, slides } = snapshot
   

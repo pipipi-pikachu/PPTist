@@ -1,3 +1,4 @@
+import { customAlphabet } from 'nanoid'
 import { defineStore } from 'pinia'
 import { CreatingElement } from '@/types/edit'
 import { ToolbarStates } from '@/types/toolbar'
@@ -7,8 +8,6 @@ import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { isSupportFont } from '@/utils/font'
 
 import { useSlidesStore } from './slides'
-
-
 
 export interface MainState {
   activeElementIdList: string[];
@@ -31,7 +30,11 @@ export interface MainState {
   selectedTableCells: string[];
   selectedSlidesIndex: number[];
   dialogForExport: DialogForExportTypes;
+  databaseId: string;
 }
+
+const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+export const databaseId = nanoid(10)
 
 export const useMainStore = defineStore('main', {
   state: (): MainState => ({
@@ -55,6 +58,7 @@ export const useMainStore = defineStore('main', {
     isScaling: false, // 正在进行元素缩放
     selectedSlidesIndex: [], // 当前被选中的页面索引集合
     dialogForExport: '', // 导出面板
+    databaseId, // 标识当前应用的indexedDB数据库ID
   }),
 
   getters: {
