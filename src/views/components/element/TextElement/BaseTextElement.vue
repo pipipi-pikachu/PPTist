@@ -28,7 +28,11 @@
           :height="elementInfo.height"
           :outline="elementInfo.outline"
         />
-        <div class="text ProseMirror-static" v-html="elementInfo.content"></div>
+        <div 
+          class="text ProseMirror-static" 
+          :style="{ '--textIndent': `${elementInfo.textIndent || 0}px` }"
+          v-html="elementInfo.content"
+        ></div>
       </div>
     </div>
   </div>

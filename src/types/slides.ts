@@ -141,6 +141,7 @@ export interface PPTTextElement extends PPTBaseElement {
   wordSpace?: number;
   opacity?: number;
   shadow?: PPTElementShadow;
+  textIndent?: number;
 }
 
 

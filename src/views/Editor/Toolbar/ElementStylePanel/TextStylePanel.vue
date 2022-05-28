@@ -235,6 +235,13 @@
       </Select>
     </div>
     <div class="row">
+      <div style="flex: 2;">首行缩进：</div>
+      <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value)">
+        <template #suffixIcon><IconIndentRight /></template>
+        <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{item}}px</SelectOption>
+      </Select>
+    </div>
+    <div class="row">
       <div style="flex: 2;">文本框填充：</div>
       <Popover trigger="click">
         <template #content>
@@ -368,6 +375,7 @@ export default defineComponent({
     const fill = ref<string>()
     const lineHeight = ref<number>()
     const wordSpace = ref<number>()
+    const textIndent = ref<number>()
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'text') return
@@ -375,6 +383,7 @@ export default defineComponent({
       fill.value = handleElement.value.fill || '#fff'
       lineHeight.value = handleElement.value.lineHeight || 1.5
       wordSpace.value = handleElement.value.wordSpace || 0
+      textIndent.value = handleElement.value.textIndent || 0
     }, { deep: true, immediate: true })
 
     const fontSizeOptions = [
@@ -384,6 +393,7 @@ export default defineComponent({
     ]
     const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
+    const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
 
     // 设置行高
     const updateLineHeight = (value: number) => {
@@ -393,6 +403,11 @@ export default defineComponent({
     // 设置字间距
     const updateWordSpace = (value: number) => {
       updateElement({ wordSpace: value })
+    }
+
+    // 设置字间距
+    const updateTextIndent = (value: number) => {
+      updateElement({ textIndent: value })
     }
 
     // 设置文本框填充
@@ -433,14 +448,17 @@ export default defineComponent({
       fill,
       lineHeight,
       wordSpace,
+      textIndent,
       richTextAttrs,
       availableFonts,
       webFonts,
       fontSizeOptions,
       lineHeightOptions,
       wordSpaceOptions,
+      textIndentOptions,
       updateLineHeight,
       updateWordSpace,
+      updateTextIndent,
       updateFill,
       emitRichTextCommand,
       emitBatchRichTextCommand,

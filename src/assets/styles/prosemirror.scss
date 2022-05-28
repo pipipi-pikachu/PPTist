@@ -15,6 +15,10 @@
     color: inherit;
   }
 
+  p {
+    text-indent: var(--textIndent);
+  }
+
   p + p {
     margin-top: 5px;
   }
