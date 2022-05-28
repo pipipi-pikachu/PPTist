@@ -100,6 +100,7 @@ import {
   Share,
   IndentLeft,
   IndentRight,
+  VerticalSpacingBetweenItems,
 } from '@icon-park/vue-next'
 
 const icons = {
@@ -201,6 +202,7 @@ const icons = {
   Share,
   IndentLeft,
   IndentRight,
+  VerticalSpacingBetweenItems,
 }
 
 export default {

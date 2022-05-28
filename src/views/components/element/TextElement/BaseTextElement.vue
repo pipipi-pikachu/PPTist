@@ -30,7 +30,10 @@
         />
         <div 
           class="text ProseMirror-static" 
-          :style="{ '--textIndent': `${elementInfo.textIndent || 0}px` }"
+          :style="{
+            '--textIndent': `${elementInfo.textIndent || 0}px`,
+            '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
+          }"
           v-html="elementInfo.content"
         ></div>
       </div>

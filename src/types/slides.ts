@@ -129,6 +129,10 @@ interface PPTBaseElement {
  * opacity?: 不透明度，默认1
  * 
  * shadow?: 阴影
+ * 
+ * textIndent?: 段落首行缩进
+ * 
+ * paragraphSpace?: 段间距，默认 5px
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text';
@@ -142,6 +146,7 @@ export interface PPTTextElement extends PPTBaseElement {
   opacity?: number;
   shadow?: PPTElementShadow;
   textIndent?: number;
+  paragraphSpace?: number;
 }
 
 

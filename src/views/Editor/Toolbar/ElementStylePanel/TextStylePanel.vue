@@ -228,6 +228,13 @@
       </Select>
     </div>
     <div class="row">
+      <div style="flex: 2;">段间距：</div>
+      <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value)">
+        <template #suffixIcon><IconVerticalSpacingBetweenItems /></template>
+        <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
+      </Select>
+    </div>
+    <div class="row">
       <div style="flex: 2;">字间距：</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
         <template #suffixIcon><IconFullwidth /></template>
@@ -376,6 +383,7 @@ export default defineComponent({
     const lineHeight = ref<number>()
     const wordSpace = ref<number>()
     const textIndent = ref<number>()
+    const paragraphSpace = ref<number>()
 
     watch(handleElement, () => {
       if (!handleElement.value || handleElement.value.type !== 'text') return
@@ -384,6 +392,7 @@ export default defineComponent({
       lineHeight.value = handleElement.value.lineHeight || 1.5
       wordSpace.value = handleElement.value.wordSpace || 0
       textIndent.value = handleElement.value.textIndent || 0
+      paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
     }, { deep: true, immediate: true })
 
     const fontSizeOptions = [
@@ -394,10 +403,16 @@ export default defineComponent({
     const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
     const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
     const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
+    const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 
     // 设置行高
     const updateLineHeight = (value: number) => {
       updateElement({ lineHeight: value })
+    }
+
+    // 设置段间距
+    const updateParagraphSpace = (value: number) => {
+      updateElement({ paragraphSpace: value })
     }
 
     // 设置字间距
@@ -405,7 +420,7 @@ export default defineComponent({
       updateElement({ wordSpace: value })
     }
 
-    // 设置字间距
+    // 设置首行缩进
     const updateTextIndent = (value: number) => {
       updateElement({ textIndent: value })
     }
@@ -449,6 +464,7 @@ export default defineComponent({
       lineHeight,
       wordSpace,
       textIndent,
+      paragraphSpace,
       richTextAttrs,
       availableFonts,
       webFonts,
@@ -456,7 +472,9 @@ export default defineComponent({
       lineHeightOptions,
       wordSpaceOptions,
       textIndentOptions,
+      paragraphSpaceOptions,
       updateLineHeight,
+      updateParagraphSpace,
       updateWordSpace,
       updateTextIndent,
       updateFill,
