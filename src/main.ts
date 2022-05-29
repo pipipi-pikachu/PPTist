@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
+import './registerServiceWorker'
 
 import '@icon-park/vue-next/styles/index.css'
 import 'prosemirror-view/style/prosemirror.css'
