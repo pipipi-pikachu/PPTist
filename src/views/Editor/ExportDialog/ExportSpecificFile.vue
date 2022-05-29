@@ -116,7 +116,7 @@ export default defineComponent({
     font-size: 12px;
     color: #aaa;
     line-height: 1.8;
-    margin-top: 30px;
+    margin-top: 25px;
   }
 }
 .btns {

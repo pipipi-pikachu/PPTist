@@ -48,6 +48,9 @@
           <Switch v-model:checked="padding" />
         </div>
       </div>
+      <div class="tip">
+        注意：若打印预览与实际样式不一致，请在弹出的打印窗口中勾选【背景图形】选项。
+      </div>
     </div>
 
     <div class="btns">
@@ -148,6 +151,13 @@ export default defineComponent({
   }
   .config-item {
     flex: 1;
+  }
+
+  .tip {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.8;
+    margin-top: 25px;
   }
 }
 .btns {
