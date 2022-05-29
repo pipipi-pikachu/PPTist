@@ -25,6 +25,7 @@ import ExportImage from './ExportImage.vue'
 import ExportJSON from './ExportJSON.vue'
 import ExportPDF from './ExportPDF.vue'
 import ExportPPTX from './ExportPPTX.vue'
+import ExportSpecificFile from './ExportSpecificFile.vue'
 
 interface TabItem {
   key: DialogForExportTypes;
@@ -42,6 +43,7 @@ export default defineComponent({
     const tabs: TabItem[] = [
       { key: 'pptx', label: '导出 PPTX' },
       { key: 'image', label: '导出图片' },
+      { key: 'pptist', label: '导出 .pptist' },
       { key: 'json', label: '导出 JSON' },
       { key: 'pdf', label: '打印 / 导出 PDF' },
     ]
@@ -52,6 +54,7 @@ export default defineComponent({
         'json': ExportJSON,
         'pdf': ExportPDF,
         'pptx': ExportPPTX,
+        'pptist': ExportSpecificFile,
       }
       return dialogMap[dialogForExport.value] || null
     })

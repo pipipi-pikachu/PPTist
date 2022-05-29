@@ -1,12 +1,7 @@
-import { storeToRefs } from 'pinia'
-import { nanoid } from 'nanoid'
-import { useSlidesStore, useMainStore } from '@/store'
 import { pasteCustomClipboardString } from '@/utils/clipboard'
-import { PPTElement, Slide } from '@/types/slides'
-import { createElementIdMap } from '@/utils/element'
 import { parseText2Paragraphs } from '@/utils/textParser'
-import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCreateElement from '@/hooks/useCreateElement'
+import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 interface PasteTextClipboardDataOptions {
   onlySlide?: boolean;
@@ -14,65 +9,8 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
-  const mainStore = useMainStore()
-  const slidesStore = useSlidesStore()
-  const { currentSlide } = storeToRefs(slidesStore)
-
-  const { addHistorySnapshot } = useHistorySnapshot()
   const { createTextElement } = useCreateElement()
-
-  /**
-   * 粘贴元素（一组）
-   * @param elements 元素列表数据
-   */
-  const addElementsFromClipboard = (elements: PPTElement[]) => {
-    const { groupIdMap, elIdMap } = createElementIdMap(elements)
-    const currentSlideElementIdList = currentSlide.value.elements.map(el => el.id)
-    
-    for (const element of elements) {
-      const inCurrentSlide = currentSlideElementIdList.includes(element.id)
-      
-      element.id = elIdMap[element.id]
-
-      if (inCurrentSlide) {
-        element.left = element.left + 10
-        element.top = element.top + 10
-      }
-
-      if (element.groupId) element.groupId = groupIdMap[element.groupId]
-    }
-    slidesStore.addElement(elements)
-    mainStore.setActiveElementIdList(Object.values(elIdMap))
-    addHistorySnapshot()
-  }
-
-  /**
-   * 粘贴页面
-   * @param slide 页面数据
-   */
-  const addSlidesFromClipboard = (slides: Slide[]) => {
-    const newSlides = slides.map(slide => {
-      const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
-
-      for (const element of slide.elements) {
-        element.id = elIdMap[element.id]
-        if (element.groupId) element.groupId = groupIdMap[element.groupId]
-      }
-      // 动画id替换
-      if (slide.animations) {
-        for (const animation of slide.animations) {
-          animation.id = nanoid(10)
-          animation.elId = elIdMap[animation.elId]
-        }
-      }
-      return {
-        ...slide,
-        id: nanoid(10),
-      }
-    })
-    slidesStore.addSlide(newSlides)
-    addHistorySnapshot()
-  }
+  const { addElementsFromData, addSlidesFromData } = useAddSlidesOrElements()
 
   /**
    * 粘贴普通文本：创建为新的文本元素
@@ -102,8 +40,8 @@ export default () => {
     if (typeof clipboardData === 'object') {
       const { type, data } = clipboardData
 
-      if (type === 'elements' && !onlySlide) addElementsFromClipboard(data)
-      else if (type === 'slides' && !onlyElements) addSlidesFromClipboard(data)
+      if (type === 'elements' && !onlySlide) addElementsFromData(data)
+      else if (type === 'slides' && !onlyElements) addSlidesFromData(data)
     }
 
     // 普通文本
@@ -114,7 +52,6 @@ export default () => {
   }
 
   return {
-    addSlidesFromClipboard,
     pasteTextClipboardData,
   }
 }

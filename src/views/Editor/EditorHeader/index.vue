@@ -5,6 +5,9 @@
         <div class="menu-item"><IconFolderClose /> <span class="text">文件</span></div>
         <template #overlay>
           <Menu>
+            <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
+              <MenuItem>导入 .pptist 文件</MenuItem>
+            </FileInput>
             <MenuItem @click="setDialogForExport('pptx')">导出 PPTX</MenuItem>
             <MenuItem @click="setDialogForExport('image')">导出图片</MenuItem>
             <MenuItem @click="setDialogForExport('json')">导出 JSON</MenuItem>
@@ -80,6 +83,7 @@ import { useMainStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 
@@ -95,6 +99,7 @@ export default defineComponent({
     const { enterScreening, enterScreeningFromStart } = useScreening()
     const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
     const { redo, undo } = useHistorySnapshot()
+    const { importSpecificFile } = useExport()
 
     const setDialogForExport = mainStore.setDialogForExport
 
@@ -118,6 +123,7 @@ export default defineComponent({
       showGridLines,
       showRuler,
       hotkeyDrawerVisible,
+      importSpecificFile,
       setDialogForExport,
       enterScreening,
       enterScreeningFromStart,

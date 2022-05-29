@@ -1,5 +1,5 @@
 <template>
-  <div class="export-pptx-dialog">
+  <div class="export-pptist-dialog">
     <div class="configs">
       <div class="row">
         <div class="title">导出范围：</div>
@@ -23,19 +23,14 @@
           v-model:value="range"
         />
       </div>
-      <div class="row">
-        <div class="title">覆盖默认母版：</div>
-        <div class="config-item">
-          <Switch v-model:checked="masterOverwrite" />
-        </div>
+      <div class="tip">
+        提示：.pptist 是本应用的特有文件后缀，支持将该类型的文件导入回应用中。
       </div>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportPPTX(selectedSlides, masterOverwrite)">导出 PPTX</Button>
+      <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)">导出 .pptist 文件</Button>
       <Button class="btn close" @click="close()">关闭</Button>
     </div>
-
-    <FullscreenSpin :loading="exporting" tip="正在导出..." />
   </div>
 </template>
 
@@ -46,13 +41,12 @@ import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
 export default defineComponent({
-  name: 'export-pptx-dialog',
+  name: 'export-pptist-dialog',
   setup(props, { emit }) {
     const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
     const rangeType = ref<'all' | 'current' | 'custom'>('all')
     const range = ref<[number, number]>([1, slides.value.length])
-    const masterOverwrite = ref(true)
 
     const selectedSlides = computed(() => {
       if (rangeType.value === 'all') return slides.value
@@ -65,16 +59,14 @@ export default defineComponent({
 
     const close = () => emit('close')
 
-    const { exportPPTX, exporting } = useExport()
+    const { exportSpecificFile } = useExport()
     
     return {
       slides,
       rangeType,
       range,
-      masterOverwrite,
-      exporting,
       selectedSlides,
-      exportPPTX,
+      exportSpecificFile,
       close,
     }
   },
@@ -82,7 +74,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.export-pptx-dialog {
+.export-pptist-dialog {
   height: 100%;
   display: flex;
   justify-content: center;
@@ -118,6 +110,13 @@ export default defineComponent({
   }
   .config-item {
     flex: 1;
+  }
+
+  .tip {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.8;
+    margin-top: 30px;
   }
 }
 .btns {
