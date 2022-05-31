@@ -67,6 +67,14 @@ module.exports = {
         type: 'image/png',
         purpose: 'maskable'
       }],
+      file_handlers: [
+        {
+          action: '/',
+          accept: {
+            '*': ['.pptist'],
+          }
+        }
+      ],
       start_url: '.',
       display: 'standalone',
       background_color: '#000000',

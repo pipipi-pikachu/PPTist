@@ -10,6 +10,7 @@
             </FileInput>
             <MenuItem @click="setDialogForExport('pptx')">导出 PPTX</MenuItem>
             <MenuItem @click="setDialogForExport('image')">导出图片</MenuItem>
+            <MenuItem @click="setDialogForExport('pptist')">导出 .pptist 文件</MenuItem>
             <MenuItem @click="setDialogForExport('json')">导出 JSON</MenuItem>
             <MenuItem @click="setDialogForExport('pdf')">打印 / 导出 PDF</MenuItem>
           </Menu>

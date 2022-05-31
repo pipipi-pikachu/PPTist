@@ -22,7 +22,8 @@ interface ExportImageConfig {
 }
 
 export default () => {
-  const { slides, theme, viewportRatio } = storeToRefs(useSlidesStore())
+  const slidesStore = useSlidesStore()
+  const { slides, theme, viewportRatio } = storeToRefs(slidesStore)
 
   const { addSlidesFromData } = useAddSlidesOrElements()
 
@@ -61,14 +62,15 @@ export default () => {
   }
   
   // 导入pptist文件
-  const importSpecificFile = (files: File[]) => {
+  const importSpecificFile = (files: File[], cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
         const slides = JSON.parse(decrypt(reader.result as string))
-        addSlidesFromData(slides)
+        if (cover) slidesStore.setSlides(slides)
+        else addSlidesFromData(slides)
       }
       catch {
         message.error('无法正确读取 / 解析该文件')
