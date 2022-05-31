@@ -71,7 +71,9 @@ module.exports = {
         {
           action: '/',
           accept: {
-            'application/vnd.pptist': ['.pptist'],
+            'application/vnd.pptist': '.pptist',
+            '*/*': '.pptist',
+            'application/vnd.openxmlformatsofficedocument.presentationml.presentation': '.pptx',
           }
         }
       ],
