@@ -71,7 +71,7 @@ module.exports = {
         {
           action: '/',
           accept: {
-            '*': ['.pptist'],
+            'application/vnd.pptist': ['.pptist'],
           }
         }
       ],
