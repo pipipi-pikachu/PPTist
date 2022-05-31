@@ -67,16 +67,6 @@ module.exports = {
         type: 'image/png',
         purpose: 'maskable'
       }],
-      file_handlers: [
-        {
-          action: '/',
-          accept: {
-            'application/vnd.pptist': '.pptist',
-            '*/*': '.pptist',
-            'application/vnd.openxmlformatsofficedocument.presentationml.presentation': '.pptx',
-          }
-        }
-      ],
       start_url: '.',
       display: 'standalone',
       background_color: '#000000',
