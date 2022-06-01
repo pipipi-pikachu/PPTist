@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.35449f1aa4b27be41093bb0e8c8dc593.js"
+  "precache-manifest.64bd5d09f02c34de28509a5318ae7011.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "pptist"});
@@ -29,4 +29,4 @@ workbox.core.skipWaiting();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerRoute(/.*/, new workbox.strategies.NetworkOnly(), 'GET');
+workbox.routing.registerRoute(/.*/, new workbox.strategies.NetworkFirst({ "cacheName":"PPTist", plugins: [new workbox.expiration.Plugin({ maxAgeSeconds: 36000, purgeOnQuotaError: false }), new workbox.cacheableResponse.Plugin({ statuses: [ 0, 200 ] })] }), 'GET');
