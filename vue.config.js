@@ -76,6 +76,7 @@ module.exports = {
         urlPattern: new RegExp('.*'),
         handler: 'networkFirst',
       }],
+      skipWaiting: true,
     }
   },
 }
