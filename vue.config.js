@@ -73,8 +73,17 @@ module.exports = {
     },
     workboxOptions: {
       runtimeCaching: [{
-        urlPattern: new RegExp('.*'),
-        handler: 'networkOnly',
+        urlPattern: /.*/,
+        handler: 'networkFirst',
+        options: {
+          cacheName: 'PPTist',
+          expiration: {
+            maxAgeSeconds: 60 * 60 * 10,
+          },
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
       }],
       skipWaiting: true,
     }
