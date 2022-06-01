@@ -71,9 +71,11 @@ module.exports = {
       display: 'standalone',
       background_color: '#000000',
     },
-    workboxPluginMode: 'InjectManifest',
     workboxOptions: {
-      swSrc: 'src/sw.js',
-    },
+      runtimeCaching: [{
+        urlPattern: new RegExp('.*'),
+        handler: 'networkFirst',
+      }],
+    }
   },
 }
