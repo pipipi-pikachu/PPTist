@@ -74,7 +74,7 @@ module.exports = {
     workboxOptions: {
       runtimeCaching: [{
         urlPattern: new RegExp('.*'),
-        handler: 'networkFirst',
+        handler: 'networkOnly',
       }],
       skipWaiting: true,
     }
