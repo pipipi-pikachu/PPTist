@@ -29,4 +29,4 @@ workbox.core.skipWaiting();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerRoute(/.*/, new workbox.strategies.NetworkFirst(), 'GET');
+workbox.routing.registerRoute(/.*/, new workbox.strategies.NetworkOnly(), 'GET');
