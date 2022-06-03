@@ -233,7 +233,7 @@ export default defineComponent({
       }
 
       themeColor.value = handleElement.value.themeColor
-      gridColor.value = handleElement.value.gridColor || 'rgba(0, 0, 0, 0.4)'
+      gridColor.value = handleElement.value.gridColor || '#333'
       legend.value = handleElement.value.legend || ''
     }, { deep: true, immediate: true })
 

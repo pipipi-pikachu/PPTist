@@ -87,7 +87,6 @@ module.exports = {
       }],
       include: [
         /\.ttf$/,
-        /\.png$/,
       ],
       skipWaiting: true,
     }
