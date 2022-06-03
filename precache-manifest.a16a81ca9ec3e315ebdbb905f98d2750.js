@@ -38,33 +38,5 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "1583afec2915e69e132bd21b9eb6b2d9",
     "url": "fonts/锐字真言体.1583afec.ttf"
-  },
-  {
-    "revision": "d37b9356dd9dae4a918bde61ccd57c4f",
-    "url": "icons/android-chrome-192x192.png"
-  },
-  {
-    "revision": "9fd83d6b72bf4cf173ad351e9f2aead1",
-    "url": "icons/android-chrome-512x512.png"
-  },
-  {
-    "revision": "d37b9356dd9dae4a918bde61ccd57c4f",
-    "url": "icons/android-chrome-maskable-192x192.png"
-  },
-  {
-    "revision": "9fd83d6b72bf4cf173ad351e9f2aead1",
-    "url": "icons/android-chrome-maskable-512x512.png"
-  },
-  {
-    "revision": "f080aa022355b4503fcc10734fe34050",
-    "url": "icons/apple-touch-icon-152x152.png"
-  },
-  {
-    "revision": "f4a5ee5eab0218e2d267cc618c6298ca",
-    "url": "icons/favicon-16x16.png"
-  },
-  {
-    "revision": "2eca5c3476997f15100a99402d2e32a5",
-    "url": "icons/favicon-32x32.png"
   }
 ]);

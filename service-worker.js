@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "precache-manifest.1a461af4f7644cad06b9f393cce3616d.js"
+  "precache-manifest.a16a81ca9ec3e315ebdbb905f98d2750.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "pptist"});
