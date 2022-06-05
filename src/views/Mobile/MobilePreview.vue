@@ -1,65 +1,67 @@
 <template>
-  <div class="mobile" ref="mobileRef">
-    <Alert
-      class="tip"
-      message="注意"
-      description="移动设备下仅支持预览，请在PC上进行编辑"
-      type="warning"
-      closable
-      show-icon
-    />
+  <div class="mobile-preview" ref="mobileRef">
     <div class="thumbnail-list">
       <div class="thumbnail-item" v-for="(slide, index) in slides" :key="slide.id">
         <ThumbnailSlide 
           :slide="slide" 
-          :size="slideWidth" 
+          :size="screenWidth - 10" 
           :visible="index < slidesLoadLimit" 
         />
       </div>
+    </div>
+    <div class="menu">
+      <div class="menu-item" @click="changeMode('editor')"><IconEdit class="icon" /> 编辑</div>
+      <Divider type="vertical" style="height: 30px;" />
+      <div class="menu-item" @click="changeMode('player')"><IconFullScreenPlay class="icon" /> 播放</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, PropType, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
+import { Mode } from '@/types/mobile'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 export default defineComponent({
-  name: 'thumbnails',
+  name: 'mobile-preview',
   components: {
     ThumbnailSlide,
   },
+  props: {
+    changeMode: {
+      type: Function as PropType<(mode: Mode) => void>,
+      required: true,
+    },
+  },
   setup() {
     const { slides } = storeToRefs(useSlidesStore())
-
     const { slidesLoadLimit } = useLoadSlides()
 
     const mobileRef = ref<HTMLElement>()
-    const slideWidth = ref(0)
+    const screenWidth = ref(0)
 
     onMounted(() => {
       if (!mobileRef.value) return
-      slideWidth.value = mobileRef.value.clientWidth - 10
+      screenWidth.value = mobileRef.value.clientWidth
     })
 
     return {
       slides,
       slidesLoadLimit,
       mobileRef,
-      slideWidth,
+      screenWidth,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.mobile {
+.mobile-preview {
   height: 100%;
-  overflow: auto;
   background-color: #f9f9f9;
 }
 .tip {
@@ -70,7 +72,9 @@ export default defineComponent({
   z-index: 99;
 }
 .thumbnail-list {
+  height: calc(100% - 50px);
   padding: 10px;
+  overflow: auto;
 }
 .thumbnail-item {
   display: flex;
@@ -80,6 +84,29 @@ export default defineComponent({
 
   & + .thumbnail-item {
     margin-top: 10px;
+  }
+}
+.menu {
+  height: 50px;
+  position: relative;
+  box-shadow: 0 -2px 4px 0 rgba($color: #333, $alpha: 0.05);
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .menu-item {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+
+    .icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
   }
 }
 </style>

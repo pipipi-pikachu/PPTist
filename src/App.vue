@@ -13,7 +13,7 @@ import { isPC } from './utils/common'
 
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
-import Mobile from './views/Mobile.vue'
+import Mobile from './views/Mobile/index.vue'
 
 export default defineComponent({
   name: 'app',

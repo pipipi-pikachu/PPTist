@@ -19,6 +19,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
+        @touchstart="$event => handleSelectElement($event)"
         @dblclick="openDataEditor()"
       >
         <ElementOutline
@@ -63,11 +64,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTChartElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTChartElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

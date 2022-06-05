@@ -35,6 +35,7 @@
           v-if="!editable || elementInfo.lock"
           @dblclick="startEdit()"
           @mousedown="$event => handleSelectElement($event)"
+          @touchstart="$event => handleSelectElement($event)"
         >
           <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
         </div>
@@ -64,11 +65,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTTableElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTTableElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

@@ -34,6 +34,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)" 
+        @touchstart="$event => handleSelectElement($event)" 
       >
         <ImageOutline :elementInfo="elementInfo" />
 
@@ -85,11 +86,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTImageElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTImageElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

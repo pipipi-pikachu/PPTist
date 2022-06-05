@@ -6,8 +6,6 @@
 
 <script lang="ts">
 import { computed, PropType, defineComponent } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
 import { AlignmentLineAxis } from '@/types/edit'
 
 export default defineComponent({
@@ -25,18 +23,20 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    canvasScale: {
+      type: Number,
+      required: true,
+    },
   },
   setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
-
     // 吸附对齐线的位置
-    const left = computed(() => props.axis.x * canvasScale.value + 'px')
-    const top = computed(() => props.axis.y * canvasScale.value + 'px')
+    const left = computed(() => props.axis.x * props.canvasScale + 'px')
+    const top = computed(() => props.axis.y * props.canvasScale + 'px')
 
     // 吸附对齐线的长度
     const sizeStyle = computed(() => {
-      if (props.type === 'vertical') return { height: props.length * canvasScale.value + 'px' }
-      return { width: props.length * canvasScale.value + 'px' }
+      if (props.type === 'vertical') return { height: props.length * props.canvasScale + 'px' }
+      return { width: props.length * props.canvasScale + 'px' }
     })
 
     return {

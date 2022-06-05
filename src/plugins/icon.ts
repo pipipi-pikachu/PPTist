@@ -3,6 +3,7 @@
 import { App } from 'vue'
 import {
   PlayOne,
+  FullScreenPlay,
   Lock,
   Unlock,
   Ppt,
@@ -101,10 +102,15 @@ import {
   IndentLeft,
   IndentRight,
   VerticalSpacingBetweenItems,
+  Copy,
+  Delete,
+  Square,
+  Round,
 } from '@icon-park/vue-next'
 
 const icons = {
   PlayOne,
+  FullScreenPlay,
   Lock,
   Unlock,
   Ppt,
@@ -203,6 +209,10 @@ const icons = {
   IndentLeft,
   IndentRight,
   VerticalSpacingBetweenItems,
+  Copy,
+  Delete,
+  Square,
+  Round,
 }
 
 export default {

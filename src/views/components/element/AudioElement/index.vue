@@ -16,6 +16,7 @@
         class="element-content" 
         v-contextmenu="contextmenus" 
         @mousedown="$event => handleSelectElement($event)"
+        @touchstart="$event => handleSelectElement($event)"
       >
         <IconVolumeNotice 
           class="audio-icon" 
@@ -59,11 +60,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTAudioElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTAudioElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

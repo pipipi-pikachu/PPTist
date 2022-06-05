@@ -24,6 +24,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
+        @touchstart="$event => handleSelectElement($event)"
         @dblclick="editable = true"
       >
         <svg 
@@ -70,6 +71,7 @@
             @update="value => updateText(value)"
             @blur="checkEmptyText()"
             @mousedown="$event => handleSelectElement($event, false)"
+            @touchstart="$event => handleSelectElement($event, false)"
           />
         </div>
       </div>
@@ -103,11 +105,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTShapeElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTShapeElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

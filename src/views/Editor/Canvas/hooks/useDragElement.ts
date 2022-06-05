@@ -10,14 +10,18 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 export default (
   elementList: Ref<PPTElement[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
+  canvasScale: Ref<number>,
 ) => {
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeGroupElementId, canvasScale } = storeToRefs(useMainStore())
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(useMainStore())
   const { viewportRatio } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  const dragElement = (e: MouseEvent, element: PPTElement) => {
+  const dragElement = (e: MouseEvent | TouchEvent, element: PPTElement) => {
+    const isTouchEvent = e instanceof TouchEvent
+    if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
+
     if (!activeElementIdList.value.includes(element.id)) return
     let isMouseDown = true
 
@@ -35,8 +39,8 @@ export default (
     const elOriginHeight = ('height' in element && element.height) ? element.height : 0
     const elOriginRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
   
-    const startPageX = e.pageX
-    const startPageY = e.pageY
+    const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
+    const startPageY = isTouchEvent ? e.changedTouches[0].pageY : e.pageY
 
     let isMisoperation: boolean | null = null
 
@@ -105,10 +109,9 @@ export default (
     horizontalLines = uniqAlignLines(horizontalLines)
     verticalLines = uniqAlignLines(verticalLines)
 
-    // 开始移动
-    document.onmousemove = e => {
-      const currentPageX = e.pageX
-      const currentPageY = e.pageY
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
+      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
+      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
 
       // 如果鼠标滑动距离过小，则将操作判定为误操作：
       // 如果误操作标记为null，表示是第一次触发移动，需要计算当前是否是误操作
@@ -284,19 +287,32 @@ export default (
       }
     }
 
-    document.onmouseup = e => {
+    const handleMouseup = (e: MouseEvent | TouchEvent) => {
       isMouseDown = false
+      
+      document.ontouchmove = null
+      document.ontouchend = null
       document.onmousemove = null
       document.onmouseup = null
+
       alignmentLines.value = []
 
-      const currentPageX = e.pageX
-      const currentPageY = e.pageY
+      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
+      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
 
       if (startPageX === currentPageX && startPageY === currentPageY) return
 
       slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
+    }
+
+    if (isTouchEvent) {
+      document.ontouchmove = handleMousemove
+      document.ontouchend = handleMouseup
+    }
+    else {
+      document.onmousemove = handleMousemove
+      document.onmouseup = handleMouseup
     }
   }
 

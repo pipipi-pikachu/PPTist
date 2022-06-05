@@ -16,6 +16,7 @@
         class="element-content" 
         v-contextmenu="contextmenus" 
         @mousedown="$event => handleSelectElement($event, false)"
+        @touchstart="$event => handleSelectElement($event, false)"
       >
         <VideoPlayer
           :width="elementInfo.width"
@@ -29,6 +30,7 @@
           v-for="item in ['t', 'b', 'l', 'r']" 
           :key="item"
           @mousedown="$event => handleSelectElement($event)"
+          @touchstart="$event => handleSelectElement($event)"
         ></div>
       </div>
     </div>
@@ -55,11 +57,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTVideoElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTVideoElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {

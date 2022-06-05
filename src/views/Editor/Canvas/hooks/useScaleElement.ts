@@ -96,17 +96,21 @@ const getOppositePoint = (direction: string, points: ReturnType<typeof getRotate
 export default (
   elementList: Ref<PPTElement[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
+  canvasScale: Ref<number>,
 ) => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeGroupElementId, canvasScale } = storeToRefs(mainStore)
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(mainStore)
   const { viewportRatio } = storeToRefs(slidesStore)
   const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 缩放元素
-  const scaleElement = (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
+  const scaleElement = (e: MouseEvent | TouchEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
+    const isTouchEvent = e instanceof TouchEvent
+    if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
+
     let isMouseDown = true
     mainStore.setScalingState(true)
 
@@ -121,8 +125,8 @@ export default (
     const fixedRatio = ctrlOrShiftKeyActive.value || ('fixedRatio' in element && element.fixedRatio)
     const aspectRatio = elOriginWidth / elOriginHeight
 
-    const startPageX = e.pageX
-    const startPageY = e.pageY
+    const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
+    const startPageY = isTouchEvent ? e.changedTouches[0].pageY : e.pageY
 
     // 元素最小缩放限制
     const minSize = MIN_SIZE[element.type] || 20
@@ -231,12 +235,11 @@ export default (
       return correctionVal
     }
 
-    // 开始缩放
-    document.onmousemove = e => {
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
       if (!isMouseDown) return
 
-      const currentPageX = e.pageX
-      const currentPageY = e.pageY
+      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
+      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
 
       const x = currentPageX - startPageX
       const y = currentPageY - startPageY
@@ -407,18 +410,34 @@ export default (
       })
     }
 
-    document.onmouseup = e => {
+    const handleMouseup = (e: MouseEvent | TouchEvent) => {
       isMouseDown = false
+      
+      document.ontouchmove = null
+      document.ontouchend = null
       document.onmousemove = null
       document.onmouseup = null
+
       alignmentLines.value = []
+
+      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
+      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
       
-      if (startPageX === e.pageX && startPageY === e.pageY) return
+      if (startPageX === currentPageX && startPageY === currentPageY) return
       
       slidesStore.updateSlide({ elements: elementList.value })
       mainStore.setScalingState(false)
       
       addHistorySnapshot()
+    }
+
+    if (isTouchEvent) {
+      document.ontouchmove = handleMousemove
+      document.ontouchend = handleMouseup
+    }
+    else {
+      document.onmousemove = handleMousemove
+      document.onmouseup = handleMouseup
     }
   }
 

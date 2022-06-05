@@ -30,7 +30,6 @@ declare module 'vue' {
     Checkbox: typeof import('ant-design-vue')['Checkbox'];
     Drawer: typeof import('ant-design-vue')['Drawer'];
     Spin: typeof import('ant-design-vue')['Spin'];
-    Alert: typeof import('ant-design-vue')['Alert'];
 
     FileInput: typeof FileInput;
     CheckboxButton: typeof CheckboxButton;

@@ -26,6 +26,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
+        @touchstart="$event => handleSelectElement($event)"
       >
         <ElementOutline
           :width="elementInfo.width"
@@ -46,6 +47,7 @@
           @update="value => updateContent(value)"
           @blur="checkEmptyText()"
           @mousedown="$event => handleSelectElement($event, false)"
+          @touchstart="$event => handleSelectElement($event)"
         />
 
         <!-- 当字号过大且行高较小时，会出现文字高度溢出的情况，导致拖拽区域无法被选中，因此添加了以下节点避免该情况 -->
@@ -80,11 +82,11 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTTextElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTTextElement, canMove?: boolean) => void>,
       required: true,
     },
     contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[]>,
+      type: Function as PropType<() => ContextmenuItem[] | null>,
     },
   },
   setup(props) {
