@@ -7,13 +7,53 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>PPTIST - 在线演示文稿</title>
+
+    <style>
+      .first-screen-loading {
+        width: 200px;
+        height: 200px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -100px;
+        margin-left: -100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .first-screen-loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 3px solid #d14424;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: spinner .8s linear infinite;
+      }
+      .first-screen-loading-text {
+        margin-top: 20px;
+        color: #d14424;
+      }
+      @keyframes spinner {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <div id="app">
+      <div class="first-screen-loading">
+        <div class="first-screen-loading-spinner"></div>
+        <div class="first-screen-loading-text">正在加载中，请稍等 ...</div>
+      </div>
+    </div>
 
     <script>
       document.oncontextmenu = e => e.preventDefault()
