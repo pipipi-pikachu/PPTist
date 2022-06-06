@@ -67,6 +67,12 @@ module.exports = {
     'no-console': isProduction ? 'error' : 'warn',
     'no-debugger': isProduction ? 'error' : 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/ban-types': ['error', {
+      'extendDefaults': true,
+      'types': {
+        '{}': false,
+      },
+    }],
   },
   overrides: [
     {

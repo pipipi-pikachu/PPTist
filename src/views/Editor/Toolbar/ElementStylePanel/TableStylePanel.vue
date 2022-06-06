@@ -4,7 +4,7 @@
       <Select
         style="flex: 3;"
         :value="textAttrs.fontname"
-        @change="value => updateTextAttrs({ fontname: value })"
+        @change="value => updateTextAttrs({ fontname: value as string })"
       >
         <template #suffixIcon><IconFontSize /></template>
         <SelectOptGroup label="系统字体">
@@ -21,7 +21,7 @@
       <Select
         style="flex: 2;"
         :value="textAttrs.fontsize"
-        @change="value => updateTextAttrs({ fontsize: value })"
+        @change="value => updateTextAttrs({ fontsize: value as string })"
       >
         <template #suffixIcon><IconAddText /></template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
@@ -139,12 +139,12 @@
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
           :checked="hasTheme" 
-          @change="checked => toggleTheme(checked)" 
+          @change="checked => toggleTheme(checked as boolean)" 
         />
       </div>
     </div>
 
-    <template v-if="hasTheme">
+    <template v-if="theme">
       <div class="row">
         <Checkbox 
           @change="e => updateTheme({ rowHeader: e.target.checked })" 
@@ -400,7 +400,6 @@ export default defineComponent({
     }
 
     return {
-      handleElement,
       availableFonts,
       fontSizeOptions,
       textAttrs,

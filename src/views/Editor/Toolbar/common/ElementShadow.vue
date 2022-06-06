@@ -3,7 +3,7 @@
     <div class="row">
       <div style="flex: 2;">启用阴影：</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch :checked="hasShadow" @change="checked => toggleShadow(checked)" />
+        <Switch :checked="hasShadow" @change="checked => toggleShadow(checked as boolean)" />
       </div>
     </div>
     <template v-if="hasShadow && shadow">
@@ -15,7 +15,7 @@
           :max="10" 
           :step="1" 
           :value="shadow.h" 
-          @change="value => updateShadow({ h: value })"
+          @change="value => updateShadow({ h: value as number })"
         />
       </div>
       <div class="row">
@@ -26,7 +26,7 @@
           :max="10"
           :step="1"
           :value="shadow.v"
-          @change="value => updateShadow({ v: value })"
+          @change="value => updateShadow({ v: value as number })"
         />
       </div>
       <div class="row">
@@ -37,7 +37,7 @@
           :max="20"
           :step="1"
           :value="shadow.blur"
-          @change="value => updateShadow({ blur: value })"
+          @change="value => updateShadow({ blur: value as number })"
         />
       </div>
       <div class="row">

@@ -43,9 +43,6 @@
           :stroke-width="elementInfo.width" 
           :stroke-dasharray="lineDashArray"
           fill="none" 
-          stroke-linecap 
-          stroke-linejoin 
-          stroke-miterlimit 
           :marker-start="elementInfo.points[0] ? `url(#${elementInfo.id}-${elementInfo.points[0]}-start)` : ''"
           :marker-end="elementInfo.points[1] ? `url(#${elementInfo.id}-${elementInfo.points[1]}-end)` : ''"
         ></path>
@@ -90,7 +87,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

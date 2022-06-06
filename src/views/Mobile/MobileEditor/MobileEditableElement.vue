@@ -40,7 +40,7 @@ export default defineComponent({
       required: true,
     },
     selectElement: {
-      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTElement, canMove?: boolean) => void>,
+      type: Function as PropType<(e: TouchEvent, element: PPTElement, canMove?: boolean) => void>,
       required: true,
     },
   },

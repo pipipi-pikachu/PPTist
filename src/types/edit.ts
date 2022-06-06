@@ -1,14 +1,15 @@
 import { ShapePoolItem } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
+import { ImageClipDataRange } from './slides'
 
-export const enum ElementOrderCommands {
+export enum ElementOrderCommands {
   UP = 'up',
   DOWN = 'down',
   TOP = 'top',
   BOTTOM = 'bottom',
 }
 
-export const enum ElementAlignCommands {
+export enum ElementAlignCommands {
   TOP = 'top',
   BOTTOM = 'bottom',
   LEFT = 'left',
@@ -60,13 +61,6 @@ export interface MultiSelectRange {
   maxX: number;
   minY: number;
   maxY: number;
-}
-
-export type ImageClipDataRange = [[number, number], [number, number]]
-
-export interface ImageClipData {
-  range: ImageClipDataRange;
-  path: string;
 }
 
 export interface ImageClipedEmitData {

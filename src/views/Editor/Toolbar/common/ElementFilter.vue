@@ -5,7 +5,7 @@
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
           :checked="hasFilters" 
-          @change="checked => toggleFilters(checked)" 
+          @change="checked => toggleFilters(checked as boolean)" 
         />
       </div>
     </div>
@@ -18,7 +18,7 @@
           :min="0"
           :step="filter.step"
           :value="filter.value"
-          @change="value => updateFilter(filter, value)"
+          @change="value => updateFilter(filter, value as number)"
         />
       </div>
     </div>

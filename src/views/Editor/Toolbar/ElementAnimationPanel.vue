@@ -15,7 +15,7 @@
               @click="activeTab = tab.key"
             >{{tab.label}}</div>
           </div>
-          <template v-for="key in Object.keys(animations)">
+          <template v-for="key in animationTypes">
             <div :class="['animation-pool', key]" :key="key" v-if="activeTab === key">
               <div class="pool-type" :key="effect.name" v-for="effect in animations[key]">
                 <div class="type-title">{{effect.name}}：</div>
@@ -87,7 +87,7 @@
                 :max="3000"
                 :step="500"
                 :value="element.duration" 
-                @change="value => updateElementAnimationDuration(element.id, value)" 
+                @change="value => updateElementAnimationDuration(element.id, value as number)" 
                 style="flex: 5;" 
               />
             </div>
@@ -95,7 +95,7 @@
               <div style="flex: 3;">触发方式：</div>
               <Select
                 :value="element.trigger"
-                @change="value => updateElementAnimationTrigger(element.id, value)"
+                @change="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
                 style="flex: 5;"
               >
                 <SelectOption value="click">主动触发</SelectOption>
@@ -154,6 +154,8 @@ interface TabItem {
   key: AnimationType;
   label: string;
 }
+
+const animationTypes: AnimationType[] = ['in', 'out', 'attention']
 
 export default defineComponent({
   name: 'element-animation-panel',
@@ -341,6 +343,7 @@ export default defineComponent({
         attention: ATTENTION_ANIMATIONS,
       },
       prefix: ANIMATION_CLASS_PREFIX,
+      animationTypes,
       addAnimation,
       deleteAnimation,
       handleDragEnd,

@@ -20,7 +20,7 @@
       <Select 
         style="flex: 3;" 
         :value="outline.style"
-        @change="value => updateOutline({ style: value })"
+        @change="value => updateOutline({ style: value as 'solid' | 'dashed' })"
       >
         <SelectOption value="solid">实线边框</SelectOption>
         <SelectOption value="dashed">虚线边框</SelectOption>
@@ -35,14 +35,14 @@
             @update:modelValue="value => updateOutline({ color: value })"
           />
         </template>
-        <ColorButton :color="outline.color" style="flex: 3;" />
+        <ColorButton :color="outline.color || '#000'" style="flex: 3;" />
       </Popover>
     </div>
     <div class="row">
       <div style="flex: 2;">边框粗细：</div>
       <InputNumber 
         :value="outline.width"
-        @change="value => updateOutline({ width: value })" 
+        @change="value => updateOutline({ width: value as number })" 
         style="flex: 3;" 
       />
     </div>
@@ -53,7 +53,7 @@
       <Select
         style="flex: 3;"
         :value="richTextAttrs.fontname"
-        @change="value => updateFontStyle('fontname', value)"
+        @change="value => updateFontStyle('fontname', value as string)"
       >
         <template #suffixIcon><IconFontSize /></template>
         <SelectOptGroup label="系统字体">
@@ -70,7 +70,7 @@
       <Select
         style="flex: 2;"
         :value="richTextAttrs.fontsize"
-        @change="value => updateFontStyle('fontsize', value)"
+        @change="value => updateFontStyle('fontsize', value as string)"
       >
         <template #suffixIcon><IconAddText /></template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">

@@ -72,7 +72,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

@@ -5,10 +5,10 @@
       top: elementInfo.top * canvasScale + 'px',
       left: elementInfo.left * canvasScale + 'px',
       transform: `rotate(${rotate}deg)`,
-      transformOrigin: `${elementInfo.width * canvasScale / 2}px ${height * canvasScale / 2}px`,
+      transformOrigin: `${elementInfo.width * canvasScale / 2}px ${elementInfo.height * canvasScale / 2}px`,
     }"
   >
-    <template v-if="isSelected && elementInfo.type !== 'line'">
+    <template v-if="isSelected">
       <BorderLine 
         class="operate-border-line"
         v-for="line in borderLines" 
@@ -32,7 +32,6 @@
 <script lang="ts">
 import { defineComponent, PropType, computed } from 'vue'
 import { PPTElement, PPTLineElement } from '@/types/slides'
-import { getElementRange } from '@/utils/element'
 import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate'
 import { OperateResizeHandlers } from '@/types/edit'
 
@@ -47,7 +46,7 @@ export default defineComponent({
   },
   props: {
     elementInfo: {
-      type: Object as PropType<PPTElement>,
+      type: Object as PropType<Exclude<PPTElement, PPTLineElement>>,
       required: true,
     },
     isSelected: {
@@ -65,23 +64,9 @@ export default defineComponent({
   },
   setup(props) {
     const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
-    const width = computed(() => {
-      if (props.elementInfo.type === 'line') {
-        const { minX, maxX } = getElementRange(props.elementInfo)
-        return maxX - minX
-      }
-      return props.elementInfo.width
-    })
-    const height = computed(() => {
-      if (props.elementInfo.type === 'line') {
-        const { minY, maxY } = getElementRange(props.elementInfo)
-        return maxY - minY
-      }
-      return props.elementInfo.height
-    })
 
-    const scaleWidth = computed(() => width.value * props.canvasScale)
-    const scaleHeight = computed(() => height.value * props.canvasScale)
+    const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
+    const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
     const {
       borderLines,
       resizeHandlers,
@@ -90,8 +75,6 @@ export default defineComponent({
 
     return {
       rotate,
-      width,
-      height,
       borderLines,
       resizeHandlers: props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : resizeHandlers,
     }

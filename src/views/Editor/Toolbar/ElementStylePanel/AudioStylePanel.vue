@@ -18,7 +18,7 @@
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
           :checked="handleElement.autoplay" 
-          @change="checked => updateAudio({ autoplay: checked })" 
+          @change="checked => updateAudio({ autoplay: checked as boolean })" 
         />
       </div>
     </div>
@@ -28,7 +28,7 @@
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
           :checked="handleElement.loop" 
-          @change="checked => updateAudio({ loop: checked })" 
+          @change="checked => updateAudio({ loop: checked as boolean })" 
         />
       </div>
     </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTAudioElement } from '@/types/slides'
@@ -62,7 +62,7 @@ export default defineComponent({
     }
 
     return {
-      handleElement,
+      handleElement: handleElement as Ref<PPTAudioElement>,
       updateAudio,
     }
   }

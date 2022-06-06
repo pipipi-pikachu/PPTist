@@ -22,7 +22,7 @@
         :min="1"
         :max="3"
         :value="handleElement.strokeWidth" 
-        @change="value => updateLatex({ strokeWidth: value })" 
+        @change="value => updateLatex({ strokeWidth: value as number })" 
         style="flex: 3;" 
       />
     </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref } from 'vue'
+import { defineComponent, onUnmounted, Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTLatexElement } from '@/types/slides'
@@ -92,7 +92,7 @@ export default defineComponent({
     })
 
     return {
-      handleElement,
+      handleElement: handleElement as Ref<PPTLatexElement>,
       latexEditorVisible,
       updateLatex,
       updateLatexData,

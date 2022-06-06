@@ -96,23 +96,23 @@
         <Divider style="margin: 20px 0;" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconSendToBack class="icon" /> 置顶</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconBringToFrontOne class="icon" /> 置底</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconBringToFront class="icon" /> 上移</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconSentToBack class="icon" /> 下移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="icon" /> 置底</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.UP)"><IconBringToFront class="icon" /> 上移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
         </ButtonGroup>
         
         <Divider style="margin: 20px 0;" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconAlignLeft class="icon" /> 左对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')"><IconAlignVertically class="icon" /> 水平居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas('right')"><IconAlignRight class="icon" /> 右对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft class="icon" /> 左对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><IconAlignVertically class="icon" /> 水平居中</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><IconAlignRight class="icon" /> 右对齐</Button>
         </ButtonGroup>
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas('top')"><IconAlignTop class="icon" /> 上对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas('vertical')"><IconAlignHorizontally class="icon" /> 垂直居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas('bottom')"><IconAlignBottom class="icon" /> 下对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><IconAlignTop class="icon" /> 上对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><IconAlignHorizontally class="icon" /> 垂直居中</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><IconAlignBottom class="icon" /> 下对齐</Button>
         </ButtonGroup>
       </div>
     </div>
@@ -120,10 +120,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, TableCell } from '@/types/slides'
+import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
@@ -215,7 +216,7 @@ export default defineComponent({
     }
 
     return {
-      handleElement,
+      handleElement: handleElement as Ref<PPTElement>,
       tabs,
       activeTab,
       richTextAttrs,
@@ -227,6 +228,8 @@ export default defineComponent({
       emitRichTextCommand,
       updateFontColor,
       updateFill,
+      ElementOrderCommands,
+      ElementAlignCommands,
     }
   },
 })

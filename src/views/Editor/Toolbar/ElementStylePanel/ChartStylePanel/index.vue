@@ -47,7 +47,7 @@
 
     <div class="row">
       <div style="flex: 2;">图例：</div>
-      <Select style="flex: 3;" :value="legend" @change="value => updateLegend(value)">
+      <Select style="flex: 3;" :value="legend" @change="value => updateLegend(value as '' | 'top' | 'bottom')">
         <SelectOption value="">不显示</SelectOption>
         <SelectOption value="top">显示在上方</SelectOption>
         <SelectOption value="bottom">显示在下方</SelectOption>
@@ -152,7 +152,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onUnmounted, ref, watch } from 'vue'
+import { defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
@@ -197,7 +197,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const fill = ref<string>()
+    const fill = ref<string>('#000')
 
     const themeColor = ref<string[]>([])
     const gridColor = ref('')
@@ -313,7 +313,7 @@ export default defineComponent({
       chartDataEditorVisible,
       presetThemesVisible,
       presetThemeColorHoverIndex,
-      handleElement,
+      handleElement: handleElement as Ref<PPTChartElement>,
       updateData,
       fill,
       updateFill,

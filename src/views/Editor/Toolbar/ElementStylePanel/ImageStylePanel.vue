@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTImageElement, SlideBackground } from '@/types/slides'
@@ -265,7 +265,7 @@ export default defineComponent({
       clipPanelVisible,
       shapeClipPathOptions,
       ratioClipOptions,
-      handleElement,
+      handleElement: handleElement as Ref<PPTImageElement>,
       clipImage,
       presetImageClip,
       replaceImage,

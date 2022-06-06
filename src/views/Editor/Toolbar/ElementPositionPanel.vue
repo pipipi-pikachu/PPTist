@@ -2,12 +2,12 @@
   <div class="element-positopn-panel">
     <div class="title">层级：</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'top')"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'bottom')"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'up')"><IconBringToFront class="btn-icon" /> 上移一层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, 'down')"><IconSentToBack class="btn-icon" /> 下移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移一层</Button>
     </ButtonGroup>
 
     <Divider />
@@ -15,24 +15,24 @@
     <div class="title">对齐：</div>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('left')"><IconAlignLeft /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas('horizontal')"><IconAlignVertically /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><IconAlignVertically /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('right')"><IconAlignRight /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><IconAlignRight /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('top')"><IconAlignTop /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><IconAlignTop /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas('vertical')"><IconAlignHorizontally /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><IconAlignHorizontally /></Button>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas('bottom')"><IconAlignBottom /></Button>
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
 
@@ -43,14 +43,14 @@
       <InputNumber
         :step="5"
         :value="left"
-        @change="value => updateLeft(value)"
+        @change="value => updateLeft(value as number)"
         style="flex: 4;"
       />
       <div style="flex: 1;"></div>
       <InputNumber
         :step="5"
         :value="top"
-        @change="value => updateTop(value)"
+        @change="value => updateTop(value as number)"
         style="flex: 4;"
       />
     </div>
@@ -69,7 +69,7 @@
           :max="1500"
           :step="5"
           :value="width"
-          @change="value => updateWidth(value)"
+          @change="value => updateWidth(value as number)"
           style="flex: 4;"
         />
         <template v-if="['image', 'shape', 'audio'].includes(handleElement.type)">
@@ -87,7 +87,7 @@
           :step="5"
           :disabled="handleElement.type === 'text'" 
           :value="height" 
-          @change="value => updateHeight(value)"
+          @change="value => updateHeight(value as number)"
           style="flex: 4;"
         />
       </div>
@@ -123,7 +123,7 @@
           :max="180"
           :step="5"
           :value="rotate" 
-          @change="value => updateRotate(value)" 
+          @change="value => updateRotate(value as number)" 
           style="flex: 4;" 
         />
       </div>
@@ -132,10 +132,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, Ref, ref, watch } from 'vue'
 import { round } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
+import { PPTElement } from '@/types/slides'
+import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import { MIN_SIZE } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
@@ -230,7 +232,7 @@ export default defineComponent({
     }
 
     return {
-      handleElement,
+      handleElement: handleElement as Ref<PPTElement>,
       orderElement,
       alignElementToCanvas,
       left,
@@ -247,6 +249,8 @@ export default defineComponent({
       updateRotate,
       updateFixedRatio,
       updateRotate45,
+      ElementOrderCommands,
+      ElementAlignCommands,
     }
   },
 })

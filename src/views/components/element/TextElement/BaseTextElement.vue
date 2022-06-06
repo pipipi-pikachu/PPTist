@@ -30,10 +30,7 @@
         />
         <div 
           class="text ProseMirror-static" 
-          :style="{
-            '--textIndent': `${elementInfo.textIndent || 0}px`,
-            '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
-          }"
+          :style="cssVar"
           v-html="elementInfo.content"
         ></div>
       </div>
@@ -42,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
+import { defineComponent, PropType, computed, StyleValue } from 'vue'
 import { PPTTextElement } from '@/types/slides'
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 
@@ -63,8 +60,14 @@ export default defineComponent({
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
+    const cssVar = computed(() => ({
+      '--textIndent': `${props.elementInfo.textIndent || 0}px`,
+      '--paragraphSpace': `${props.elementInfo.paragraphSpace === undefined ? 5 : props.elementInfo.paragraphSpace}px`,
+    } as StyleValue))
+
     return {
       shadowStyle,
+      cssVar,
     }
   },
 })

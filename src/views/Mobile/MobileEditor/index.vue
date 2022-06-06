@@ -13,14 +13,15 @@
           :length="line.length"
           :canvasScale="canvasScale"
         />
-        <MobileOperate
-          v-for="element in elementList" 
-          :key="element.id"
-          :elementInfo="element"
-          :isSelected="activeElementIdList.includes(element.id)"
-          :canvasScale="canvasScale"
-          :scaleElement="scaleElement"
-        />
+        <template v-for="element in elementList" :key="element.id">
+          <MobileOperate
+            v-if="element.type !== 'line'"
+            :elementInfo="element"
+            :isSelected="activeElementIdList.includes(element.id)"
+            :canvasScale="canvasScale"
+            :scaleElement="scaleElement"
+          />
+        </template>
         <div class="viewport" :style="{ transform: `scale(${canvasScale})` }">
           <MobileEditableElement 
             v-for="(element, index) in elementList" 

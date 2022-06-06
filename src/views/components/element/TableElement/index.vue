@@ -81,7 +81,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

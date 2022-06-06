@@ -43,7 +43,6 @@
               vector-effect="non-scaling-stroke" 
               stroke-linecap="butt" 
               stroke-miterlimit="8"
-              stroke-linejoin="" 
               :d="elementInfo.path" 
               :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : elementInfo.fill"
               :stroke="outlineColor"

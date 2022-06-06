@@ -2,10 +2,9 @@
   <div 
     class="custom-textarea"
     ref="textareaRef"
-    :contenteditable="contenteditable"
     @focus="handleFocus"
     @blur="handleBlur"
-    @input="$event => handleInput($event)"
+    @input="handleInput()"
     v-html="text"
   ></div>
 </template>
@@ -102,5 +101,7 @@ export default defineComponent({
 .custom-textarea {
   border: 0;
   outline: 0;
+  -webkit-user-modify: read-write-plaintext-only;
+  -moz-user-modify: read-write-plaintext-only;
 }
 </style>

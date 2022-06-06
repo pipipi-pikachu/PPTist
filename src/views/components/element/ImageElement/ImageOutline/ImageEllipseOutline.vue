@@ -10,7 +10,6 @@
       vector-effect="non-scaling-stroke" 
       stroke-linecap="butt" 
       stroke-miterlimit="8"
-      stroke-linejoin
       fill="transparent"
       :cx="width / 2" 
       :cy="height / 2"

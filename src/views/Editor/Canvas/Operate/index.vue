@@ -31,7 +31,7 @@
       :link="elementInfo.link"
       :openLinkDialog="openLinkDialog" 
       v-if="isActive && elementInfo.link" 
-      @mousedown.stop 
+      @mousedown.stop=""
     />
   </div>
 </template>

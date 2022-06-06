@@ -115,7 +115,7 @@ export default defineComponent({
     const filters = computed(() => props.elementInfo.filters)
     const { filter } = useFilter(filters)
 
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
       props.selectElement(e, props.elementInfo)

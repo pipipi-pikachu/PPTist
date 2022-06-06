@@ -191,6 +191,8 @@ export interface ImageElementFilters {
   'opacity'?: string;
 }
 
+export type ImageClipDataRange = [[number, number], [number, number]]
+
 /**
  * 图片裁剪
  * 
@@ -199,7 +201,7 @@ export interface ImageElementFilters {
  * shape: 裁剪形状，见 configs/imageClip.ts CLIPPATHS 
  */
 export interface ImageElementClip {
-  range: [[number, number], [number, number]];
+  range: ImageClipDataRange;
   shape: string;
 }
 

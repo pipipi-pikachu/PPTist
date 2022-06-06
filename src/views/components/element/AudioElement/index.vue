@@ -32,7 +32,7 @@
           :src="elementInfo.src" 
           :loop="elementInfo.loop"
           :scale="canvasScale"
-          @mousedown.stop
+          @mousedown.stop=""
         />
       </div>
     </div>
@@ -98,7 +98,7 @@ export default defineComponent({
       }
     })
 
-    const handleSelectElement = (e: MouseEvent) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

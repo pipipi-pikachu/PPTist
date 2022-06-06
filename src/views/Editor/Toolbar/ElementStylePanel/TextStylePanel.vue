@@ -16,7 +16,7 @@
       <Select
         style="flex: 3;"
         :value="richTextAttrs.fontname"
-        @change="value => emitRichTextCommand('fontname', value)"
+        @change="value => emitRichTextCommand('fontname', value as string)"
       >
         <template #suffixIcon><IconFontSize /></template>
         <SelectOptGroup label="系统字体">
@@ -33,7 +33,7 @@
       <Select
         style="flex: 2;"
         :value="richTextAttrs.fontsize"
-        @change="value => emitRichTextCommand('fontsize', value)"
+        @change="value => emitRichTextCommand('fontsize', value as string)"
       >
         <template #suffixIcon><IconAddText /></template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
@@ -222,28 +222,28 @@
 
     <div class="row">
       <div style="flex: 2;">行间距：</div>
-      <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value)">
+      <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value as number)">
         <template #suffixIcon><IconRowHeight /></template>
         <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">段间距：</div>
-      <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value)">
+      <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value as number)">
         <template #suffixIcon><IconVerticalSpacingBetweenItems /></template>
         <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">字间距：</div>
-      <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value)">
+      <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value as number)">
         <template #suffixIcon><IconFullwidth /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
       <div style="flex: 2;">首行缩进：</div>
-      <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value)">
+      <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value as number)">
         <template #suffixIcon><IconIndentRight /></template>
         <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
@@ -379,7 +379,7 @@ export default defineComponent({
       addHistorySnapshot()
     }
 
-    const fill = ref<string>()
+    const fill = ref<string>('#000')
     const lineHeight = ref<number>()
     const wordSpace = ref<number>()
     const textIndent = ref<number>()
@@ -450,7 +450,7 @@ export default defineComponent({
       link.value = richTextAttrs.value.link
       linkPopoverVisible.value = true
     }
-    const updateLink = (link: string) => {
+    const updateLink = (link?: string) => {
       if (link) {
         const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
         if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')

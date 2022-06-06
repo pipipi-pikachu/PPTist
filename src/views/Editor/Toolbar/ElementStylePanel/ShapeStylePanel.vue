@@ -4,7 +4,7 @@
       <Select 
         style="flex: 10;" 
         :value="fillType" 
-        @change="value => updateFillType(value)"
+        @change="value => updateFillType(value as 'fill' | 'gradient')"
       >
         <SelectOption value="fill">纯色填充</SelectOption>
         <SelectOption value="gradient">渐变填充</SelectOption>
@@ -22,7 +22,7 @@
       <Select 
         style="flex: 10;" 
         :value="gradient.type" 
-        @change="value => updateGradient({ type: value })"
+        @change="value => updateGradient({ type: value as 'linear' | 'radial' })"
         v-else
       >
         <SelectOption value="linear">线性渐变</SelectOption>
@@ -63,7 +63,7 @@
           :max="360"
           :step="15"
           :value="gradient.rotate"
-          @change="value => updateGradient({ rotate: value })" 
+          @change="value => updateGradient({ rotate: value as number })" 
         />
       </div>
     </template>
@@ -76,7 +76,7 @@
         <Select
           style="flex: 3;"
           :value="richTextAttrs.fontname"
-          @change="value => emitRichTextCommand('fontname', value)"
+          @change="value => emitRichTextCommand('fontname', value as string)"
         >
           <template #suffixIcon><IconFontSize /></template>
           <SelectOptGroup label="系统字体">
@@ -93,7 +93,7 @@
         <Select
           style="flex: 2;"
           :value="richTextAttrs.fontsize"
-          @change="value => emitRichTextCommand('fontsize', value)"
+          @change="value => emitRichTextCommand('fontsize', value as string)"
         >
           <template #suffixIcon><IconAddText /></template>
           <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
@@ -223,7 +223,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
@@ -253,8 +253,12 @@ export default defineComponent({
     const slidesStore = useSlidesStore()
     const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(mainStore)
 
-    const fill = ref<string>()
-    const gradient = ref<ShapeGradient>()
+    const fill = ref<string>('#000')
+    const gradient = ref<ShapeGradient>({
+      type: 'linear', 
+      rotate: 0,
+      color: ['#fff', '#fff'],
+    })
     const fillType = ref('fill')
     const textAlign = ref('middle')
 
@@ -327,7 +331,7 @@ export default defineComponent({
       availableFonts,
       fontSizeOptions,
       webFonts,
-      handleElement,
+      handleElement: handleElement as Ref<PPTShapeElement>,
       emitRichTextCommand,
       updateFillType,
       updateFill,

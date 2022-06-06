@@ -35,7 +35,7 @@
     >
       <div 
         :class="['clip-point', point, rotateClassName]"
-        v-for="point in ['left-top', 'right-top', 'left-bottom', 'right-bottom']" 
+        v-for="point in cornerPoint" 
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
@@ -49,7 +49,7 @@
       </div>
       <div 
         :class="['clip-point', point, rotateClassName]"
-        v-for="point in ['top', 'bottom', 'left', 'right']" 
+        v-for="point in edgePoints" 
         :key="point" 
         @mousedown.stop="$event => scaleClipRange($event, point)"
       >
@@ -70,7 +70,8 @@ import { computed, defineComponent, onMounted, onUnmounted, PropType, ref } from
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { ImageClipData, ImageClipDataRange, ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
+import { ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
+import { ImageClipDataRange, ImageElementClip } from '@/types/slides'
 
 export default defineComponent({
   name: 'image-clip-handler',
@@ -81,7 +82,7 @@ export default defineComponent({
       required: true,
     },
     clipData: {
-      type: Object as PropType<ImageClipData>,
+      type: Object as PropType<ImageElementClip>,
     },
     clipPath: {
       type: String,
@@ -527,12 +528,27 @@ export default defineComponent({
       return prefix + 0
     })
 
+    const cornerPoint = [
+      OperateResizeHandlers.LEFT_TOP,
+      OperateResizeHandlers.RIGHT_TOP,
+      OperateResizeHandlers.LEFT_BOTTOM,
+      OperateResizeHandlers.RIGHT_BOTTOM,
+    ]
+    const edgePoints = [
+      OperateResizeHandlers.TOP,
+      OperateResizeHandlers.BOTTOM,
+      OperateResizeHandlers.LEFT,
+      OperateResizeHandlers.RIGHT,
+    ]
+
     return {
       clipWrapperPositionStyle,
       bottomImgPositionStyle,
       topImgWrapperPositionStyle,
       topImgPositionStyle,
       rotateClassName,
+      edgePoints,
+      cornerPoint,
       handleClip,
       moveClipRange,
       scaleClipRange,

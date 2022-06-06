@@ -5,7 +5,7 @@
       <Select 
         style="flex: 10;" 
         :value="background.type" 
-        @change="value => updateBackgroundType(value)"
+        @change="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
       >
         <SelectOption value="solid">纯色填充</SelectOption>
         <SelectOption value="image">图片填充</SelectOption>
@@ -26,7 +26,7 @@
       <Select 
         style="flex: 10;" 
         :value="background.imageSize || 'cover'" 
-        @change="value => updateBackground({ imageSize: value })"
+        @change="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
         v-else-if="background.type === 'image'"
       >
         <SelectOption value="contain">缩放</SelectOption>
@@ -37,7 +37,7 @@
       <Select 
         style="flex: 10;" 
         :value="background.gradientType" 
-        @change="value => updateBackground({ gradientType: value })"
+        @change="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
         v-else
       >
         <SelectOption value="linear">线性渐变</SelectOption>
@@ -61,11 +61,11 @@
         <Popover trigger="click">
           <template #content>
             <ColorPicker
-              :modelValue="background.gradientColor[0]"
-              @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor[1]] })"
+              :modelValue="background.gradientColor![0]"
+              @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor![1]] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor[0]" style="flex: 3;" />
+          <ColorButton :color="background.gradientColor![0]" style="flex: 3;" />
         </Popover>
       </div>
       <div class="row">
@@ -73,11 +73,11 @@
         <Popover trigger="click">
           <template #content>
             <ColorPicker
-              :modelValue="background.gradientColor[1]"
-              @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor[0], value] })"
+              :modelValue="background.gradientColor![1]"
+              @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor![0], value] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor[1]" style="flex: 3;" />
+          <ColorButton :color="background.gradientColor![1]" style="flex: 3;" />
         </Popover>
       </div>
       <div class="row" v-if="background.gradientType === 'linear'">
@@ -88,7 +88,7 @@
           :max="360"
           :step="15"
           :value="background.gradientRotate"
-          @change="value => updateBackground({ gradientRotate: value })" 
+          @change="value => updateBackground({ gradientRotate: value as number })" 
         />
       </div>
     </div>
@@ -99,7 +99,7 @@
 
     <div class="row">
       <div style="flex: 2;">画布尺寸：</div>
-      <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value)">
+      <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value as number)">
         <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
         <SelectOption :value="0.625">宽屏 16 ：10</SelectOption>
         <SelectOption :value="0.75">标准 4 ：3</SelectOption>
@@ -114,7 +114,7 @@
       <Select
         style="flex: 3;"
         :value="theme.fontName"
-        @change="value => updateTheme({ fontName: value })"
+        @change="value => updateTheme({ fontName: value as string })"
       >
         <SelectOptGroup label="系统字体">
           <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">

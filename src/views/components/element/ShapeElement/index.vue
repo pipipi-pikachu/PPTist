@@ -49,7 +49,6 @@
               vector-effect="non-scaling-stroke" 
               stroke-linecap="butt" 
               stroke-miterlimit="8"
-              stroke-linejoin="" 
               :d="elementInfo.path" 
               :fill="elementInfo.gradient ? `url(#editabel-gradient-${elementInfo.id})` : elementInfo.fill"
               :stroke="outlineColor"
@@ -119,7 +118,7 @@ export default defineComponent({
 
     const { addHistorySnapshot } = useHistorySnapshot()
 
-    const handleSelectElement = (e: MouseEvent, canMove = true) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

@@ -5,7 +5,7 @@
       <Select 
         style="flex: 3;" 
         :value="handleElement.style" 
-        @change="value => updateLine({ style: value })"
+        @change="value => updateLine({ style: value as 'solid' | 'dashed' })"
       >
         <SelectOption value="solid">实线</SelectOption>
         <SelectOption value="dashed">虚线</SelectOption>
@@ -27,7 +27,7 @@
       <div style="flex: 2;">线条宽度：</div>
       <InputNumber 
         :value="handleElement.width" 
-        @change="value => updateLine({ width: value })" 
+        @change="value => updateLine({ width: value as number })" 
         style="flex: 3;" 
       />
     </div>
@@ -37,7 +37,7 @@
       <Select 
         style="flex: 3;" 
         :value="handleElement.points[0]" 
-        @change="value => updateLine({ points: [value, handleElement.points[1]] })"
+        @change="value => updateLine({ points: [value as 'arrow' | 'dot', handleElement.points[1]] })"
       >
         <SelectOption value="">无</SelectOption>
         <SelectOption value="arrow">箭头</SelectOption>
@@ -49,7 +49,7 @@
       <Select 
         style="flex: 3;" 
         :value="handleElement.points[1]" 
-        @change="value => updateLine({ points: [handleElement.points[0], value] })"
+        @change="value => updateLine({ points: [handleElement.points[0], value as 'arrow' | 'dot'] })"
       >
         <SelectOption value="">无</SelectOption>
         <SelectOption value="arrow">箭头</SelectOption>
@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTLineElement } from '@/types/slides'
@@ -91,7 +91,7 @@ export default defineComponent({
     }
 
     return {
-      handleElement,
+      handleElement: handleElement as Ref<PPTLineElement>,
       updateLine,
     }
   }

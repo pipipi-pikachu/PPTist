@@ -47,13 +47,12 @@
             v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
             @mousedown="$event => handleCellMousedown($event, rowIndex, colIndex)"
             @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
-            v-contextmenu="el => contextmenus(el)"
+            v-contextmenu="(el: HTMLElement) => contextmenus(el)"
           >
             <CustomTextarea 
               v-if="activedCell === `${rowIndex}_${colIndex}`"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
-              contenteditable="plaintext-only"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
               @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"

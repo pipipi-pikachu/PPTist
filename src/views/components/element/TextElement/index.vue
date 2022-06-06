@@ -101,7 +101,7 @@ export default defineComponent({
     const shadow = computed(() => props.elementInfo.shadow)
     const { shadowStyle } = useElementShadow(shadow)
 
-    const handleSelectElement = (e: MouseEvent, canMove = true) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

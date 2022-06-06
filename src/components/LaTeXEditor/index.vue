@@ -73,7 +73,12 @@ import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex'
 import FormulaContent from './FormulaContent.vue'
 import SymbolContent from './SymbolContent.vue'
 
-const tabs = [
+interface Tab {
+  label: string;
+  value: 'symbol' | 'formula';
+}
+
+const tabs: Tab[] = [
   { label: '常用符号', value: 'symbol' },
   { label: '预置公式', value: 'formula' },
 ]
@@ -93,7 +98,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const latex = ref('')
-    const toolbarState = ref('symbol')
+    const toolbarState = ref<'symbol' | 'formula'>('symbol')
     const textAreaRef = ref<HTMLTextAreaElement>()
 
     const selectedSymbolKey = ref(SYMBOL_LIST[0].type)

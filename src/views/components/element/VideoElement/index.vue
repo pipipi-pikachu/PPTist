@@ -67,7 +67,7 @@ export default defineComponent({
   setup(props) {
     const { canvasScale } = storeToRefs(useMainStore())
 
-    const handleSelectElement = (e: MouseEvent, canMove = true) => {
+    const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
       if (props.elementInfo.lock) return
       e.stopPropagation()
 

@@ -1,10 +1,11 @@
+import { CSSProperties } from 'vue'
 import { TableCellStyle } from '@/types/slides'
 
 /**
  * 计算单元格文本样式
  * @param style 单元格文本样式原数据
  */
-export const getTextStyle = (style?: TableCellStyle) => {
+export const getTextStyle = (style?: TableCellStyle): CSSProperties => {
   if (!style) return {}
   const {
     bold,

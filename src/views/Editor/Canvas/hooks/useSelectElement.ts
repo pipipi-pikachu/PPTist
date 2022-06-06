@@ -6,7 +6,7 @@ import { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,
-  moveElement: (e: MouseEvent, element: PPTElement) => void,
+  moveElement: (e: MouseEvent | TouchEvent, element: PPTElement) => void,
 ) => {
   const mainStore = useMainStore()
   const { activeElementIdList, activeGroupElementId, handleElementId, editorAreaFocus } = storeToRefs(mainStore)
@@ -14,7 +14,7 @@ export default (
 
   // 选中元素
   // startMove 表示是否需要再选中操作后进入到开始移动的状态
-  const selectElement = (e: MouseEvent, element: PPTElement, startMove = true) => {
+  const selectElement = (e: MouseEvent | TouchEvent, element: PPTElement, startMove = true) => {
     if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
 
     // 如果目标元素当前未被选中，则将他设为选中状态
@@ -69,8 +69,8 @@ export default (
 
     // 如果目标元素已被选中，同时也是当前操作元素，那么当目标元素在该状态下再次被点击时，将被设置为多选元素中的激活成员
     else if (activeGroupElementId.value !== element.id) {
-      const startPageX = e.pageX
-      const startPageY = e.pageY
+      const startPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
+      const startPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
 
       ;(e.target as HTMLElement).onmouseup = (e: MouseEvent) => {
         const currentPageX = e.pageX
