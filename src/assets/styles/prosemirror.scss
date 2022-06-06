@@ -5,6 +5,7 @@
   border: 0;
   font-size: 20px;
   word-break: break-word;
+  white-space: normal;
 
   &:not(.ProseMirror-static) {
     user-select: text;
