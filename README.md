@@ -263,4 +263,4 @@ A. 首先需要明确的一点，就是移动端无论怎么做，体验上都�
 
 
 # 📄 开源协议
-[GPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE)
+[GPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
