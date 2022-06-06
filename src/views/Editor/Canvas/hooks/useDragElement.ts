@@ -19,7 +19,7 @@ export default (
   const { addHistorySnapshot } = useHistorySnapshot()
 
   const dragElement = (e: MouseEvent | TouchEvent, element: PPTElement) => {
-    const isTouchEvent = e instanceof TouchEvent
+    const isTouchEvent = !(e instanceof MouseEvent)
     if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
 
     if (!activeElementIdList.value.includes(element.id)) return
@@ -110,8 +110,8 @@ export default (
     verticalLines = uniqAlignLines(verticalLines)
 
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
-      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
-      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
+      const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
 
       // 如果鼠标滑动距离过小，则将操作判定为误操作：
       // 如果误操作标记为null，表示是第一次触发移动，需要计算当前是否是误操作
@@ -297,8 +297,8 @@ export default (
 
       alignmentLines.value = []
 
-      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
-      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
+      const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
 
       if (startPageX === currentPageX && startPageY === currentPageY) return
 

@@ -264,7 +264,7 @@ export default defineComponent({
       lastPos = { x, y }
       lastTime = new Date().getTime()
 
-      if (e instanceof TouchEvent) {
+      if (!(e instanceof MouseEvent)) {
         mouse.value = { x: mouseX, y: mouseY }
         mouseInCanvas.value = true
       }

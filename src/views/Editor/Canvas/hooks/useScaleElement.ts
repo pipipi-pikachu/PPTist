@@ -108,7 +108,7 @@ export default (
 
   // 缩放元素
   const scaleElement = (e: MouseEvent | TouchEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => {
-    const isTouchEvent = e instanceof TouchEvent
+    const isTouchEvent = !(e instanceof MouseEvent)
     if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
 
     let isMouseDown = true
@@ -238,8 +238,8 @@ export default (
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
       if (!isMouseDown) return
 
-      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
-      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
+      const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
 
       const x = currentPageX - startPageX
       const y = currentPageY - startPageY
@@ -420,8 +420,8 @@ export default (
 
       alignmentLines.value = []
 
-      const currentPageX = e instanceof TouchEvent ? e.changedTouches[0].pageX : e.pageX
-      const currentPageY = e instanceof TouchEvent ? e.changedTouches[0].pageY : e.pageY
+      const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
       
       if (startPageX === currentPageX && startPageY === currentPageY) return
       
