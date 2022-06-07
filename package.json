@@ -11,12 +11,12 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.4.0",
     "animate.css": "^4.1.1",
-    "ant-design-vue": "^3.1.0",
+    "ant-design-vue": "^3.2.5",
     "chartist": "^0.11.4",
     "clipboard": "^2.0.8",
     "core-js": "^3.6.5",
     "crypto-js": "^4.0.0",
-    "dexie": "^3.0.3",
+    "dexie": "~3.0.3",
     "file-saver": "^2.0.5",
     "hfmath": "0.0.2",
     "html-to-image": "^1.9.0",
@@ -39,7 +39,7 @@
     "svg-arc-to-cubic-bezier": "^3.2.0",
     "svg-pathdata": "^6.0.0",
     "tinycolor2": "^1.4.2",
-    "vue": "^3.2.31",
+    "vue": "^3.2.37",
     "vuedraggable": "^4.0.1"
   },
   "devDependencies": {
@@ -68,7 +68,7 @@
     "@vue/cli-plugin-pwa": "^4.5.15",
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.2.31",
+    "@vue/compiler-sfc": "^3.2.37",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@vue/test-utils": "^2.0.0-0",
     "babel-plugin-import": "^1.13.3",

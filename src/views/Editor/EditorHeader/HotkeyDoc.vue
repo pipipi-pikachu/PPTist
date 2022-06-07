@@ -36,7 +36,11 @@ export default defineComponent({
   font-size: 14px;
   font-weight: 700;
   border-bottom: 1px solid #e5e5e5;
-  padding: 15px 0 5px 0;
+  padding: 24px 0 5px 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
 }
 .hotkey-item {
   border-bottom: 1px solid #e5e5e5;

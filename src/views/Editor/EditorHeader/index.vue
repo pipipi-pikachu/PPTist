@@ -69,6 +69,7 @@
     <Drawer
       width="320"
       placement="right"
+      :closable="false"
       :visible="hotkeyDrawerVisible"
       @close="hotkeyDrawerVisible = false"
     >
