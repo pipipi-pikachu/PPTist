@@ -15,9 +15,11 @@
       </ButtonGroup>
       <ButtonGroup class="row">
         <Button style="flex: 1;" @click="insertTextElement()"><IconFontSize class="icon" /> 文字</Button>
-        <FileInput @change="files => insertImageElement(files)">
-          <Button style="flex: 1;"><IconPicture class="icon" /> 图片</Button>
-        </FileInput>
+        <Button style="flex: 1;">
+          <FileInput @change="files => insertImageElement(files)">
+            <IconPicture class="icon" />图片
+          </FileInput>
+        </Button>
         <Button style="flex: 1;" @click="insertShapeElement('square')"><IconSquare class="icon" /> 矩形</Button>
         <Button style="flex: 1;" @click="insertShapeElement('round')"><IconRound class="icon" /> 圆形</Button>
       </ButtonGroup>
