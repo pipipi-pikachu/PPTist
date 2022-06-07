@@ -2,17 +2,17 @@ import { LinePoint } from '@/types/slides'
 
 
 export interface LinePoolItem {
-  path: string;
-  style: 'solid' | 'dashed';
-  points: [LinePoint, LinePoint];
-  isBroken?: boolean;
-  isCurve?: boolean;
-  isCubic?: boolean;
+  path: string
+  style: 'solid' | 'dashed'
+  points: [LinePoint, LinePoint]
+  isBroken?: boolean
+  isCurve?: boolean
+  isCubic?: boolean
 }
 
 interface PresetLine {
-  type: string;
-  children: LinePoolItem[];
+  type: string
+  children: LinePoolItem[]
 }
 
 export const LINE_LIST: PresetLine[] = [

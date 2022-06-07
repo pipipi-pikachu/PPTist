@@ -46,47 +46,47 @@ export const enum OperateLineHandlers {
 }
 
 export interface AlignmentLineAxis {
-  x: number; 
-  y: number;
+  x: number
+  y: number
 }
 
 export interface AlignmentLineProps {
-  type: 'vertical' | 'horizontal';
-  axis: AlignmentLineAxis;
-  length: number;
+  type: 'vertical' | 'horizontal'
+  axis: AlignmentLineAxis
+  length: number
 }
 
 export interface MultiSelectRange {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
+  minX: number
+  maxX: number
+  minY: number
+  maxY: number
 }
 
 export interface ImageClipedEmitData {
-  range: ImageClipDataRange;
+  range: ImageClipDataRange
   position: {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-  };
+    left: number
+    top: number
+    width: number
+    height: number
+  }
 }
 
 export interface CreateElementSelectionData {
-  start: [number, number];
-  end: [number, number];
+  start: [number, number]
+  end: [number, number]
 }
 
 export interface CreatingTextElement {
-  type: 'text';
+  type: 'text'
 }
 export interface CreatingShapeElement {
-  type: 'shape';
-  data: ShapePoolItem;
+  type: 'shape'
+  data: ShapePoolItem
 }
 export interface CreatingLineElement {
-  type: 'line';
-  data: LinePoolItem;
+  type: 'line'
+  data: LinePoolItem
 }
 export type CreatingElement = CreatingTextElement | CreatingShapeElement | CreatingLineElement

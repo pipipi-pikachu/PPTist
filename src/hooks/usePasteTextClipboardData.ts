@@ -4,8 +4,8 @@ import useCreateElement from '@/hooks/useCreateElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 interface PasteTextClipboardDataOptions {
-  onlySlide?: boolean;
-  onlyElements?: boolean;
+  onlySlide?: boolean
+  onlyElements?: boolean
 }
 
 export default () => {

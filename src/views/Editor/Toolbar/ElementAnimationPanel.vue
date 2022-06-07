@@ -151,8 +151,8 @@ for (const effect of ATTENTION_ANIMATIONS) {
 
 type AnimationType = 'in' | 'out' | 'attention'
 interface TabItem {
-  key: AnimationType;
-  label: string;
+  key: AnimationType
+  label: string
 }
 
 const animationTypes: AnimationType[] = ['in', 'out', 'attention']

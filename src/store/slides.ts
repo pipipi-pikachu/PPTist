@@ -7,25 +7,25 @@ import { theme } from '@/mocks/theme'
 import { layouts } from '@/mocks/layout'
 
 interface RemoveElementPropData {
-  id: string;
-  propName: string | string[];
+  id: string
+  propName: string | string[]
 }
 
 interface UpdateElementData {
-  id: string | string[];
-  props: Partial<PPTElement>;
+  id: string | string[]
+  props: Partial<PPTElement>
 }
 
 interface FormatedAnimation {
-  animations: PPTAnimation[];
-  autoNext: boolean;
+  animations: PPTAnimation[]
+  autoNext: boolean
 }
 
 export interface SlidesState {
-  theme: SlideTheme;
-  slides: Slide[];
-  slideIndex: number;
-  viewportRatio: number;
+  theme: SlideTheme
+  slides: Slide[]
+  slideIndex: number
+  viewportRatio: number
 }
 
 export const useSlidesStore = defineStore('slides', {

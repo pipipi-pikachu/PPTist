@@ -48,17 +48,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, PropType, ref, StyleValue } from 'vue'
 import WritingBoard from '@/components/WritingBoard.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
-
-interface Position {
-  left?: number | string;
-  right?: number | string;
-  top?: number | string;
-  bottom?: number | string;
-}
 
 type WritingBoardModel = 'pen' | 'mark' | 'eraser'
 
@@ -78,7 +71,7 @@ export default defineComponent({
       required: true,
     },
     position: {
-      type: Object as PropType<Position>,
+      type: Object as PropType<StyleValue>,
       default: () => ({
         right: '5px',
         bottom: '5px',

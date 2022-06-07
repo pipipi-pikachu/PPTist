@@ -3,9 +3,9 @@ import { Token } from './types'
 import { childlessTags } from './tags'
 
 interface State {
-  str: string;
-  position: number;
-  tokens: Token[];
+  str: string
+  position: number
+  tokens: Token[]
 }
 
 const jumpPosition = (state: State, end: number) => {

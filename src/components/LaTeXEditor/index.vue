@@ -74,8 +74,8 @@ import FormulaContent from './FormulaContent.vue'
 import SymbolContent from './SymbolContent.vue'
 
 interface Tab {
-  label: string;
-  value: 'symbol' | 'formula';
+  label: string
+  value: 'symbol' | 'formula'
 }
 
 const tabs: Tab[] = [

@@ -48,8 +48,8 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 type TypeKey = 'web' | 'slide'
 interface TabItem {
-  key: TypeKey;
-  label: string;
+  key: TypeKey
+  label: string
 }
 
 export default defineComponent({

@@ -6,8 +6,8 @@ import { useSlidesStore } from './slides'
 import { useMainStore } from './main'
 
 export interface ScreenState {
-  snapshotCursor: number;
-  snapshotLength: number;
+  snapshotCursor: number
+  snapshotLength: number
 }
 
 export const useSnapshotStore = defineStore('snapshot', {

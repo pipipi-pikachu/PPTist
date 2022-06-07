@@ -10,17 +10,17 @@ import { CHART_TYPES } from '@/configs/chartTypes'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface CommonElementPosition {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
+  top: number
+  left: number
+  width: number
+  height: number
 }
 
 interface LineElementPosition {
-  top: number;
-  left: number;
-  start: [number, number];
-  end: [number, number];
+  top: number
+  left: number
+  start: [number, number]
+  end: [number, number]
 }
 
 export default () => {

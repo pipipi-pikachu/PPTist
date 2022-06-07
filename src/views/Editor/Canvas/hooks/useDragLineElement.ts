@@ -6,8 +6,8 @@ import { OperateLineHandlers } from '@/types/edit'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface AdsorptionPoint {
-  x: number;
-  y: number;
+  x: number
+  y: number
 }
 
 export default (elementList: Ref<PPTElement[]>) => {

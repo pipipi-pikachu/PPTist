@@ -42,10 +42,10 @@ import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 
 interface ViewportStyles {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
+  top: number
+  left: number
+  width: number
+  height: number
 }
 
 export default defineComponent({

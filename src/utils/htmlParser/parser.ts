@@ -2,14 +2,14 @@ import { Token, HTMLNode, TagToken, NormalElement, TagEndToken, AttributeToken, 
 import { closingTags, closingTagAncestorBreakers, voidTags } from './tags'
 
 interface StackItem {
-  tagName: string | null;
-  children: HTMLNode[];
+  tagName: string | null
+  children: HTMLNode[]
 }
 
 interface State {
-  stack: StackItem[];
-  cursor: number;
-  tokens: Token[];
+  stack: StackItem[]
+  cursor: number
+  tokens: Token[]
 }
 
 export const parser = (tokens: Token[]) => {

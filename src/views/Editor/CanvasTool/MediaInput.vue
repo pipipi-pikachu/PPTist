@@ -34,8 +34,8 @@ import { message } from 'ant-design-vue'
 
 type TypeKey = 'video' | 'audio'
 interface TabItem {
-  key: TypeKey;
-  label: string;
+  key: TypeKey
+  label: string
 }
 
 export default defineComponent({

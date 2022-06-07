@@ -24,8 +24,8 @@ import { TurningMode } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface Animations {
-  label: string;
-  value: TurningMode;
+  label: string
+  value: TurningMode
 }
 
 export default defineComponent({

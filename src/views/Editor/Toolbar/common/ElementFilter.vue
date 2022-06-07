@@ -33,13 +33,13 @@ import { PPTImageElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface FilterOption {
-  label: string;
-  key: string;
-  default: number;
-  value: number;
-  unit: string;
-  max: number;
-  step: number;
+  label: string
+  key: string
+  default: number
+  value: number
+  unit: string
+  max: number
+  step: number
 }
 
 const defaultFilters: FilterOption[] = [

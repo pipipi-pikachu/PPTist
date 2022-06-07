@@ -7,19 +7,19 @@ export const enum EmitterEvents {
 }
 
 export interface RichTextAction {
-  command: string;
-  value?: string;
+  command: string
+  value?: string
 }
 
 export interface RichTextCommand {
-  target?: string;
-  action: RichTextAction | RichTextAction[];
+  target?: string
+  action: RichTextAction | RichTextAction[]
 }
 
 type Events = {
-  [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand;
-  [EmitterEvents.OPEN_CHART_DATA_EDITOR]: void;
-  [EmitterEvents.OPEN_LATEX_EDITOR]: void;
+  [EmitterEvents.RICH_TEXT_COMMAND]: RichTextCommand
+  [EmitterEvents.OPEN_CHART_DATA_EDITOR]: void
+  [EmitterEvents.OPEN_LATEX_EDITOR]: void
 } 
 
 const emitter: Emitter<Events> = mitt<Events>()

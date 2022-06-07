@@ -28,8 +28,8 @@ import ExportPPTX from './ExportPPTX.vue'
 import ExportSpecificFile from './ExportSpecificFile.vue'
 
 interface TabItem {
-  key: DialogForExportTypes;
-  label: string;
+  key: DialogForExportTypes
+  label: string
 }
 
 export default defineComponent({

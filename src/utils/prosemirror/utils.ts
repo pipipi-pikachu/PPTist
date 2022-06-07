@@ -160,11 +160,11 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
 }
 
 interface DefaultAttrs {
-  color?: string;
-  backcolor?: string;
-  fontsize?: string;
-  fontname?: string;
-  align?: string;
+  color?: string
+  backcolor?: string
+  fontsize?: string
+  fontname?: string
+  align?: string
 }
 const _defaultAttrs: DefaultAttrs = {
   color: '#000',

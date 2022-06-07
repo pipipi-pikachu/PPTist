@@ -16,9 +16,9 @@ import { message } from 'ant-design-vue'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 interface ExportImageConfig {
-  quality: number;
-  width: number;
-  fontEmbedCSS?: string;
+  quality: number
+  width: number
+  fontEmbedCSS?: string
 }
 
 export default () => {

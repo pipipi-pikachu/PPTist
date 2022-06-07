@@ -1,7 +1,7 @@
 interface PageSize {
-  width: number;
-  height: number;
-  margin: number;
+  width: number
+  height: number
+  margin: number
 }
 
 const createIframe = () => {

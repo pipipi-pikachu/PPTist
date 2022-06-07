@@ -30,8 +30,8 @@ import MultiPositionPanel from './MultiPositionPanel.vue'
 import SymbolPanel from './SymbolPanel.vue'
 
 interface ElementTabs {
-  label: string;
-  value: ToolbarStates;
+  label: string
+  value: ToolbarStates
 }
 
 export default defineComponent({

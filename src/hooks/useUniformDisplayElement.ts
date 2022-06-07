@@ -6,32 +6,32 @@ import { getElementRange, getElementListRange, getRectRotatedOffset } from '@/ut
 import useHistorySnapshot from './useHistorySnapshot'
 
 interface ElementItem {
-  min: number;
-  max: number;
-  el: PPTElement;
+  min: number
+  max: number
+  el: PPTElement
 }
 
 interface GroupItem {
-  groupId: string;
-  els: PPTElement[];
+  groupId: string
+  els: PPTElement[]
 }
 
 interface GroupElementsItem {
-  min: number;
-  max: number;
-  els: PPTElement[];
+  min: number
+  max: number
+  els: PPTElement[]
 }
 
 type Item = ElementItem | GroupElementsItem
 
 interface ElementWithPos {
-  pos: number;
-  el: PPTElement;
+  pos: number
+  el: PPTElement
 }
 
 interface LastPos {
-  min: number;
-  max: number;
+  min: number
+  max: number
 }
 
 export default () => {

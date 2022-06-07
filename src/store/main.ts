@@ -10,27 +10,27 @@ import { isSupportFont } from '@/utils/font'
 import { useSlidesStore } from './slides'
 
 export interface MainState {
-  activeElementIdList: string[];
-  handleElementId: string;
-  activeGroupElementId: string;
-  canvasPercentage: number;
-  canvasScale: number;
-  canvasDragged: boolean;
-  thumbnailsFocus: boolean;
-  editorAreaFocus: boolean;
-  disableHotkeys: boolean;
-  showGridLines: boolean;
-  showRuler: boolean;
-  creatingElement: CreatingElement | null;
-  availableFonts: typeof SYS_FONTS;
-  toolbarState: ToolbarStates;
-  clipingImageElementId: string;
-  isScaling: boolean;
-  richTextAttrs: TextAttrs;
-  selectedTableCells: string[];
-  selectedSlidesIndex: number[];
-  dialogForExport: DialogForExportTypes;
-  databaseId: string;
+  activeElementIdList: string[]
+  handleElementId: string
+  activeGroupElementId: string
+  canvasPercentage: number
+  canvasScale: number
+  canvasDragged: boolean
+  thumbnailsFocus: boolean
+  editorAreaFocus: boolean
+  disableHotkeys: boolean
+  showGridLines: boolean
+  showRuler: boolean
+  creatingElement: CreatingElement | null
+  availableFonts: typeof SYS_FONTS
+  toolbarState: ToolbarStates
+  clipingImageElementId: string
+  isScaling: boolean
+  richTextAttrs: TextAttrs
+  selectedTableCells: string[]
+  selectedSlidesIndex: number[]
+  dialogForExport: DialogForExportTypes
+  databaseId: string
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')

@@ -14,9 +14,9 @@ export const setTextAlign = (tr: Transaction, schema: Schema, alignment: string)
   const paragraph = nodes.paragraph
 
   interface Task {
-    node: Node;
-    pos: number;
-    nodeType: NodeType;
+    node: Node
+    pos: number
+    nodeType: NodeType
   }
 
   const tasks: Task[] = []

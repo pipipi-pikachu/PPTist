@@ -4,8 +4,8 @@ import { Slide } from '@/types/slides'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 
 export interface Snapshot {
-  index: number;
-  slides: Slide[];
+  index: number
+  slides: Slide[]
 }
 
 const databaseNamePrefix = 'PPTist'

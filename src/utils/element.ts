@@ -3,11 +3,11 @@ import { nanoid } from 'nanoid'
 import { PPTElement, PPTLineElement } from '@/types/slides'
 
 interface RotatedElementData {
-  left: number;
-  top: number;
-  width: number;
-  height: number;
-  rotate: number;
+  left: number
+  top: number
+  width: number
+  height: number
+  rotate: number
 }
 
 /**
@@ -127,8 +127,8 @@ export const getElementListRange = (elementList: PPTElement[]) => {
 }
 
 export interface AlignLine {
-  value: number;
-  range: [number, number];
+  value: number
+  range: [number, number]
 }
 
 /**

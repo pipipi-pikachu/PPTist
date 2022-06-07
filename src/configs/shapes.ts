@@ -1,16 +1,16 @@
 import { ShapePathFormulasKeys } from '@/types/slides'
 
 export interface ShapePoolItem {
-  viewBox: [number, number];
-  path: string;
-  special?: boolean;
-  pathFormula?: ShapePathFormulasKeys;
-  outlined?: boolean;
+  viewBox: [number, number]
+  path: string
+  special?: boolean
+  pathFormula?: ShapePathFormulasKeys
+  outlined?: boolean
 }
 
 interface ShapeListItem {
-  type: string;
-  children: ShapePoolItem[];
+  type: string
+  children: ShapePoolItem[]
 }
 
 export const SHAPE_PATH_FORMULAS = {
