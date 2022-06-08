@@ -45,7 +45,6 @@
             '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
           }"
           @update="value => updateContent(value)"
-          @blur="checkEmptyText()"
           @mousedown="$event => handleSelectElement($event, false)"
           @touchstart="$event => handleSelectElement($event)"
         />
@@ -162,6 +161,11 @@ export default defineComponent({
       const pureText = props.elementInfo.content.replaceAll(/<[^>]+>/g, '')
       if (!pureText) slidesStore.deleteElement(props.elementInfo.id)
     }
+
+    const isHandleElement = computed(() => handleElementId.value === props.elementInfo.id)
+    watch(isHandleElement, () => {
+      if (!isHandleElement.value) checkEmptyText()
+    })
 
     return {
       elementRef,
