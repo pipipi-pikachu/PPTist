@@ -59,7 +59,7 @@
     </div>
 
     <div class="recent-colors-title" v-if="recentColors.length">最近使用：</div>
-    <div class="recent-colors">
+    <div class="picker-presets">
       <div
         v-for="c in recentColors"
         :key="c"
@@ -129,6 +129,9 @@ const getPresetColors = () => {
   return presetColors
 }
 
+const themeColors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
+const standardColors = ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be', '#00215f', '#72349d']
+
 export default defineComponent({
   name: 'color-picker',
   components: {
@@ -159,8 +162,6 @@ export default defineComponent({
       },
     })
 
-    const themeColors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
-    const standardColors = ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be', '#00215f', '#72349d']
     const presetColors = getPresetColors()
 
     const currentColor = computed(() => {
@@ -396,8 +397,7 @@ export default defineComponent({
 }
 .picker-gradient-color {
   width: 100%;
-  height: 0;
-  padding-bottom: 100%;
+  height: 16px;
   position: relative;
   cursor: pointer;
 }
@@ -405,8 +405,5 @@ export default defineComponent({
 .recent-colors-title {
   font-size: 12px;
   margin-bottom: 4px;
-}
-.recent-colors {
-  @include flex-grid-layout();
 }
 </style>
