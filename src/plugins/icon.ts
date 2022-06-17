@@ -106,6 +106,7 @@ import {
   Delete,
   Square,
   Round,
+  Needle,
 } from '@icon-park/vue-next'
 
 const icons = {
@@ -213,6 +214,7 @@ const icons = {
   Delete,
   Square,
   Round,
+  Needle,
 }
 
 export default {

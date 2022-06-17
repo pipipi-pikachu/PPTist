@@ -20,7 +20,7 @@
 
     <div class="picker-field">
       <EditableInput class="input" :value="color" @colorChange="value => changeColor(value)" />
-      <div class="straw" @click="pickColor()"><IconPlatte /></div>
+      <div class="straw" @click="openEyeDropper()"><IconNeedle /></div>
     </div>
 
     <div class="picker-presets">
@@ -203,7 +203,34 @@ const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats
   updateRecentColorsCache()
 }
 
-const pickColor = () => {
+// 打开取色吸管
+// 检查环境是否支持原生取色吸管，支持则使用原生吸管，否则使用自定义吸管
+const openEyeDropper = () => {
+  const isSupportedEyeDropper = 'EyeDropper' in window
+
+  if (isSupportedEyeDropper) browserEyeDropper()
+  else customEyeDropper()
+}
+
+// 原生取色吸管
+const browserEyeDropper = () => {
+  message.success('按 ESC 键关闭取色吸管')
+
+  // eslint-disable-next-line
+  const eyeDropper = new (window as any).EyeDropper()
+  eyeDropper.open().then((result: { sRGBHex: string }) => {
+    const tColor = tinycolor(result.sRGBHex)
+    hue.value = tColor.toHsl().h
+    color.value = tColor.toRgb()
+
+    updateRecentColorsCache()
+  }).catch(() => {
+    message.success('关闭取色吸管')
+  })
+}
+
+// 基于 Canvas 的自定义取色吸管
+const customEyeDropper = () => {
   const targetRef: HTMLElement | null = document.querySelector('.canvas')
   if (!targetRef) return
 

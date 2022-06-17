@@ -109,6 +109,7 @@ import {
   Delete,
   Square,
   Round,
+  Needle,
 } from '@icon-park/vue-next'
 
 declare module 'vue' {
@@ -252,6 +253,7 @@ declare module 'vue' {
     IconDelete: typeof Delete
     IconSquare: typeof Square
     IconRound: typeof Round
+    IconNeedle: typeof Needle
   }
 }
 
