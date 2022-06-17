@@ -31,7 +31,7 @@
     </div>
 
     <div class="btns">
-      <Button @click="close()" style="margin-right: 10px;">取消</Button>
+      <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
       <Button type="primary" @click="save()">确认</Button>
     </div>
   </div>
@@ -87,8 +87,6 @@ onMounted(() => {
   }
 })
 
-const close = () => emit('close')
-
 const save = () => {
   const link: PPTElementLink = {
     type: type.value,
@@ -96,7 +94,7 @@ const save = () => {
   }
   if (handleElement.value) {
     const success = setLink(handleElement.value, link)
-    if (success) close()
+    if (success) emit('close')
     else address.value = ''
   }
 }

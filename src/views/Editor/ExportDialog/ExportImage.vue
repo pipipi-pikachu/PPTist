@@ -68,7 +68,7 @@
 
     <div class="btns">
       <Button class="btn export" type="primary" @click="expImage()">导出图片</Button>
-      <Button class="btn close" @click="close()">关闭</Button>
+      <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
 
     <FullscreenSpin :loading="exporting" tip="正在导出..." />
@@ -104,8 +104,6 @@ const renderSlides = computed(() => {
     return index >= min - 1 && index <= max - 1
   })
 })
-
-const close = () => emit('close')
 
 const { exportImage, exporting } = useExport()
 

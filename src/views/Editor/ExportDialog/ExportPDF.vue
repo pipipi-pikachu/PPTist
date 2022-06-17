@@ -55,7 +55,7 @@
 
     <div class="btns">
       <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
-      <Button class="btn close" @click="close()">关闭</Button>
+      <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>
 </template>
@@ -78,8 +78,6 @@ const pdfThumbnailsRef = ref<HTMLElement>()
 const rangeType = ref<'all' | 'current'>('all')
 const count = ref(1)
 const padding = ref(true)
-
-const close = () => emit('close')
 
 const expPDF = () => {
   if (!pdfThumbnailsRef.value) return

@@ -59,7 +59,7 @@
       </div>
     </div>
     <div class="footer">
-      <Button class="btn" @click="close()">取消</Button>
+      <Button class="btn" @click="emit('close')">取消</Button>
       <Button class="btn" type="primary" @click="update()">确定</Button>
     </div>
   </div>
@@ -72,6 +72,8 @@ import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex'
 
 import FormulaContent from './FormulaContent.vue'
 import SymbolContent from './SymbolContent.vue'
+
+import { message } from 'ant-design-vue'
 
 interface Tab {
   label: string
@@ -120,7 +122,7 @@ onMounted(() => {
 })
 
 const update = () => {
-  if (!latex.value) return
+  if (!latex.value) return message.error('公式不能为空')
 
   const eq = new hfmath(latex.value)
   const pathd = eq.pathd({})
@@ -133,8 +135,6 @@ const update = () => {
     h: box.h + 32,
   })
 }
-
-const close = () => emit('close')
 
 const insertSymbol = (latex: string) => {
   if (!textAreaRef.value) return

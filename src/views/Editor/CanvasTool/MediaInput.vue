@@ -13,7 +13,7 @@
     <template v-if="type === 'video'">
       <Input v-model:value="videoSrc" placeholder="请输入视频地址，e.g. https://xxx.mp4"></Input>
       <div class="btns">
-        <Button @click="close()" style="margin-right: 10px;">取消</Button>
+        <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
         <Button type="primary" @click="insertVideo()">确认</Button>
       </div>
     </template>
@@ -21,7 +21,7 @@
     <template v-if="type === 'audio'">
       <Input v-model:value="audioSrc" placeholder="请输入音频地址，e.g. https://xxx.mp3"></Input>
       <div class="btns">
-        <Button @click="close()" style="margin-right: 10px;">取消</Button>
+        <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
         <Button type="primary" @click="insertAudio()">确认</Button>
       </div>
     </template>
@@ -63,8 +63,6 @@ const insertAudio = () => {
   if (!audioSrc.value) return message.error('请先输入正确的音频地址')
   emit('insertAudio', audioSrc.value)
 }
-
-const close = () => emit('close')
 </script>
 
 <style lang="scss" scoped>

@@ -29,7 +29,7 @@
     </div>
     <div class="btns">
       <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)">导出 .pptist 文件</Button>
-      <Button class="btn close" @click="close()">关闭</Button>
+      <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>
 </template>
@@ -59,8 +59,6 @@ const selectedSlides = computed(() => {
     return index >= min - 1 && index <= max - 1
   })
 })
-
-const close = () => emit('close')
 </script>
 
 <style lang="scss" scoped>

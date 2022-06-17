@@ -1,7 +1,7 @@
 <template>
   <div class="slide-thumbnails">
     <div class="return-button">
-      <IconArrowCircleLeft class="icon" @click="close()" />
+      <IconArrowCircleLeft class="icon" @click="emit('close')" />
     </div>
     <div class="slide-thumbnails-content">
       <div 
@@ -40,11 +40,9 @@ const { slides, slideIndex } = storeToRefs(useSlidesStore())
 
 const { slidesLoadLimit } = useLoadSlides()
 
-const close = () => emit('close')
-
 const turnSlide = (index: number) => {
   props.turnSlideToIndex(index)
-  close()
+  emit('close')
 }
 </script>
 
