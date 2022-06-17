@@ -60,8 +60,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { PPTShapeElement, ShapeText } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
@@ -69,49 +69,33 @@ import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 
 import GradientDefs from './GradientDefs.vue'
 
-export default defineComponent({
-  name: 'base-element-shape',
-  components: {
-    GradientDefs,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTShapeElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTShapeElement>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const outline = computed(() => props.elementInfo.outline)
-    const { outlineWidth, outlineStyle, outlineColor } = useElementOutline(outline)
-    
-    const shadow = computed(() => props.elementInfo.shadow)
-    const { shadowStyle } = useElementShadow(shadow)
+})
 
-    const flipH = computed(() => props.elementInfo.flipH)
-    const flipV = computed(() => props.elementInfo.flipV)
-    const { flipStyle } = useElementFlip(flipH, flipV)
+const outline = computed(() => props.elementInfo.outline)
+const { outlineWidth, outlineStyle, outlineColor } = useElementOutline(outline)
 
-    const text = computed<ShapeText>(() => {
-      const defaultText: ShapeText = {
-        content: '',
-        defaultFontName: '微软雅黑',
-        defaultColor: '#000',
-        align: 'middle',
-      }
-      if (!props.elementInfo.text) return defaultText
+const shadow = computed(() => props.elementInfo.shadow)
+const { shadowStyle } = useElementShadow(shadow)
 
-      return props.elementInfo.text
-    })
+const flipH = computed(() => props.elementInfo.flipH)
+const flipV = computed(() => props.elementInfo.flipV)
+const { flipStyle } = useElementFlip(flipH, flipV)
 
-    return {
-      shadowStyle,
-      outlineWidth,
-      outlineStyle,
-      outlineColor,
-      flipStyle,
-      text,
-    }
-  },
+const text = computed<ShapeText>(() => {
+  const defaultText: ShapeText = {
+    content: '',
+    defaultFontName: '微软雅黑',
+    defaultColor: '#000',
+    align: 'middle',
+  }
+  if (!props.elementInfo.text) return defaultText
+
+  return props.elementInfo.text
 })
 </script>
 

@@ -43,67 +43,54 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType, ref, watch } from 'vue'
 import { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import { getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
-export default defineComponent({
-  name: 'static-table',
-  props: {
-    data: {
-      type: Array as PropType<TableCell[][]>,
-      required: true,
-    },
-    width: {
-      type: Number,
-      required: true,
-    },
-    colWidths: {
-      type: Array as PropType<number[]>,
-      required: true,
-    },
-    outline: {
-      type: Object as PropType<PPTElementOutline>,
-      required: true,
-    },
-    theme: {
-      type: Object as PropType<TableTheme>,
-    },
-    editable: {
-      type: Boolean,
-      default: true,
-    },
+const props = defineProps({
+  data: {
+    type: Array as PropType<TableCell[][]>,
+    required: true,
   },
-  setup(props) {
-    const colSizeList = ref<number[]>([])
-    const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
-
-    watch([
-      () => props.colWidths,
-      () => props.width,
-    ], () => {
-      colSizeList.value = props.colWidths.map(item => item * props.width)
-    }, { immediate: true })
-
-    const cells = computed(() => props.data)
-    const { hideCells } = useHideCells(cells)
-
-    const theme = computed(() => props.theme)
-    const { subThemeColor } = useSubThemeColor(theme)
-
-    return {
-      colSizeList,
-      totalWidth,
-      hideCells,
-      getTextStyle,
-      formatText,
-      subThemeColor,
-    }
+  width: {
+    type: Number,
+    required: true,
+  },
+  colWidths: {
+    type: Array as PropType<number[]>,
+    required: true,
+  },
+  outline: {
+    type: Object as PropType<PPTElementOutline>,
+    required: true,
+  },
+  theme: {
+    type: Object as PropType<TableTheme>,
+  },
+  editable: {
+    type: Boolean,
+    default: true,
   },
 })
+
+const colSizeList = ref<number[]>([])
+const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
+
+watch([
+  () => props.colWidths,
+  () => props.width,
+], () => {
+  colSizeList.value = props.colWidths.map(item => item * props.width)
+}, { immediate: true })
+
+const cells = computed(() => props.data)
+const { hideCells } = useHideCells(cells)
+
+const theme = computed(() => props.theme)
+const { subThemeColor } = useSubThemeColor(theme)
 </script>
 
 <style lang="scss" scoped>

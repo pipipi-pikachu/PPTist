@@ -17,8 +17,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, onMounted, ref } from 'vue'
+<script lang="ts" setup>
+import { PropType, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
@@ -26,36 +26,22 @@ import { Mode } from '@/types/mobile'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'mobile-preview',
-  components: {
-    ThumbnailSlide,
+const props = defineProps({
+  changeMode: {
+    type: Function as PropType<(mode: Mode) => void>,
+    required: true,
   },
-  props: {
-    changeMode: {
-      type: Function as PropType<(mode: Mode) => void>,
-      required: true,
-    },
-  },
-  setup() {
-    const { slides } = storeToRefs(useSlidesStore())
-    const { slidesLoadLimit } = useLoadSlides()
+})
 
-    const mobileRef = ref<HTMLElement>()
-    const screenWidth = ref(0)
+const { slides } = storeToRefs(useSlidesStore())
+const { slidesLoadLimit } = useLoadSlides()
 
-    onMounted(() => {
-      if (!mobileRef.value) return
-      screenWidth.value = mobileRef.value.clientWidth
-    })
+const mobileRef = ref<HTMLElement>()
+const screenWidth = ref(0)
 
-    return {
-      slides,
-      slidesLoadLimit,
-      mobileRef,
-      screenWidth,
-    }
-  },
+onMounted(() => {
+  if (!mobileRef.value) return
+  screenWidth.value = mobileRef.value.clientWidth
 })
 </script>
 

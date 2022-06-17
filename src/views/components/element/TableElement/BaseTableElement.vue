@@ -24,22 +24,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { PPTTableElement } from '@/types/slides'
 
 import StaticTable from './StaticTable.vue'
 
-export default defineComponent({
-  name: 'base-element-table',
-  components: {
-    StaticTable,
-  },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTTableElement>,
-      required: true,
-    },
+defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTTableElement>,
+    required: true,
   },
 })
 </script>

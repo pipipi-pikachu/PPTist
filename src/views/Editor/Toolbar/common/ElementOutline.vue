@@ -45,8 +45,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElementOutline } from '@/types/slides'
@@ -54,59 +54,45 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
 
-export default defineComponent({
-  name: 'element-outline',
-  components: {
-    ColorButton,
-  },
-  props: {
-    fixed: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement } = storeToRefs(useMainStore())
-
-    const outline = ref<PPTElementOutline>()
-    const hasOutline = ref(false)
-
-    watch(handleElement, () => {
-      if (!handleElement.value) return
-      outline.value = 'outline' in handleElement.value ? handleElement.value.outline : undefined
-      hasOutline.value = !!outline.value
-    }, { deep: true, immediate: true })
-
-    const { addHistorySnapshot } = useHistorySnapshot()
-
-    const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
-      if (!handleElement.value) return
-      const props = { outline: { ...outline.value, ...outlineProps } }
-      slidesStore.updateElement({ id: handleElement.value.id, props })
-      addHistorySnapshot()
-    }
-
-    const toggleOutline = (checked: boolean) => {
-      if (!handleElement.value) return
-      if (checked) {
-        const _outline: PPTElementOutline = { width: 2, color: '#000', style: 'solid' }
-        slidesStore.updateElement({ id: handleElement.value.id, props: { outline: _outline } })
-      }
-      else {
-        slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'outline' })
-      }
-      addHistorySnapshot()
-    }
-
-    return {
-      outline,
-      hasOutline,
-      toggleOutline,
-      updateOutline,
-    }
+defineProps({
+  fixed: {
+    type: Boolean,
+    default: false,
   },
 })
+
+const slidesStore = useSlidesStore()
+const { handleElement } = storeToRefs(useMainStore())
+
+const outline = ref<PPTElementOutline>()
+const hasOutline = ref(false)
+
+watch(handleElement, () => {
+  if (!handleElement.value) return
+  outline.value = 'outline' in handleElement.value ? handleElement.value.outline : undefined
+  hasOutline.value = !!outline.value
+}, { deep: true, immediate: true })
+
+const { addHistorySnapshot } = useHistorySnapshot()
+
+const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
+  if (!handleElement.value) return
+  const props = { outline: { ...outline.value, ...outlineProps } }
+  slidesStore.updateElement({ id: handleElement.value.id, props })
+  addHistorySnapshot()
+}
+
+const toggleOutline = (checked: boolean) => {
+  if (!handleElement.value) return
+  if (checked) {
+    const _outline: PPTElementOutline = { width: 2, color: '#000', style: 'solid' }
+    slidesStore.updateElement({ id: handleElement.value.id, props: { outline: _outline } })
+  }
+  else {
+    slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'outline' })
+  }
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

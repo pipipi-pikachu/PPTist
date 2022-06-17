@@ -28,7 +28,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTShapeElement, PPTVideoElement, PPTLatexElement, PPTAudioElement } from '@/types/slides'
@@ -41,47 +47,30 @@ import BorderLine from './BorderLine.vue'
 
 type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement | PPTAudioElement
 
-export default defineComponent({
-  name: 'common-element-operate',
-  inheritAttrs: false,
-  components: {
-    RotateHandler,
-    ResizeHandler,
-    BorderLine,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTElement>,
-      required: true,
-    },
-    handlerVisible: {
-      type: Boolean,
-      required: true,
-    },
-    rotateElement: {
-      type: Function as PropType<(element: PPTElement) => void>,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void>,
-      required: true,
-    },
+  handlerVisible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
-
-    const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-    const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-    const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-
-    const cannotRotate = computed(() => ['video', 'audio'].includes(props.elementInfo.type))
-
-    return {
-      scaleWidth,
-      resizeHandlers,
-      borderLines,
-      cannotRotate,
-    }
+  rotateElement: {
+    type: Function as PropType<(element: PPTElement) => void>,
+    required: true,
+  },
+  scaleElement: {
+    type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void>,
+    required: true,
   },
 })
+
+const { canvasScale } = storeToRefs(useMainStore())
+
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+
+const cannotRotate = computed(() => ['video', 'audio'].includes(props.elementInfo.type))
 </script>

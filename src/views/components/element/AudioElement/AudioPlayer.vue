@@ -72,9 +72,28 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { message } from 'ant-design-vue'
+
+const props = defineProps({
+  src: {
+    type: String,
+    required: true,
+  },
+  loop: {
+    type: Boolean,
+    required: true,
+  },
+  autoplay: {
+    type: Boolean,
+    default: false,
+  },
+  scale: {
+    type: Number,
+    default: 1,
+  },
+})
 
 const secondToTime = (second = 0) => {
   if (second === 0 || isNaN(second)) return '00:00'
@@ -90,234 +109,184 @@ const getBoundingClientRectViewLeft = (element: HTMLElement) => {
   return element.getBoundingClientRect().left
 }
 
-export default defineComponent({
-  name: 'audio-player',
-  props: {
-    src: {
-      type: String,
-      required: true,
-    },
-    loop: {
-      type: Boolean,
-      required: true,
-    },
-    autoplay: {
-      type: Boolean,
-      default: false,
-    },
-    scale: {
-      type: Number,
-      default: 1,
-    },
-  },
-  setup(props) {
-    const audioRef = ref<HTMLAudioElement>()
-    const playBarWrap = ref<HTMLElement>()
-    const volumeBarRef = ref<HTMLElement>()
+const audioRef = ref<HTMLAudioElement>()
+const playBarWrap = ref<HTMLElement>()
+const volumeBarRef = ref<HTMLElement>()
 
-    const volume = ref(0.5)
-    const paused = ref(true)
-    const currentTime = ref(0)
-    const duration = ref(0)
-    const loaded = ref(0)
+const volume = ref(0.5)
+const paused = ref(true)
+const currentTime = ref(0)
+const duration = ref(0)
+const loaded = ref(0)
 
-    const playBarTimeVisible = ref(false)
-    const playBarTime = ref('00:00')
-    const playBarTimeLeft = ref('0')
+const playBarTimeVisible = ref(false)
+const playBarTime = ref('00:00')
+const playBarTimeLeft = ref('0')
 
-    const ptime = computed(() => secondToTime(currentTime.value))
-    const dtime = computed(() => secondToTime(duration.value))
-    const playedBarWidth = computed(() => currentTime.value / duration.value * 100 + '%')
-    const loadedBarWidth = computed(() => loaded.value / duration.value * 100 + '%')
-    const volumeBarWidth = computed(() => volume.value * 100 + '%')
+const ptime = computed(() => secondToTime(currentTime.value))
+const dtime = computed(() => secondToTime(duration.value))
+const playedBarWidth = computed(() => currentTime.value / duration.value * 100 + '%')
+const loadedBarWidth = computed(() => loaded.value / duration.value * 100 + '%')
+const volumeBarWidth = computed(() => volume.value * 100 + '%')
 
-    const seek = (time: number) => {
-      if (!audioRef.value) return
+const seek = (time: number) => {
+  if (!audioRef.value) return
 
-      time = Math.max(time, 0)
-      time = Math.min(time, duration.value)
+  time = Math.max(time, 0)
+  time = Math.min(time, duration.value)
 
-      audioRef.value.currentTime = time
-      currentTime.value = time
-    }
+  audioRef.value.currentTime = time
+  currentTime.value = time
+}
 
-    const play = () => {
-      if (!audioRef.value) return
+const play = () => {
+  if (!audioRef.value) return
 
-      paused.value = false
-      audioRef.value.play()
-    }
+  paused.value = false
+  audioRef.value.play()
+}
 
-    const pause = () => {
-      if (!audioRef.value) return
+const pause = () => {
+  if (!audioRef.value) return
 
-      paused.value = true
-      audioRef.value.pause()
-    }
+  paused.value = true
+  audioRef.value.pause()
+}
 
-    const toggle = () => {
-      if (paused.value) play() 
-      else pause()
-    }
+const toggle = () => {
+  if (paused.value) play() 
+  else pause()
+}
 
-    const setVolume = (percentage: number) => {
-      if (!audioRef.value) return
+const setVolume = (percentage: number) => {
+  if (!audioRef.value) return
 
-      percentage = Math.max(percentage, 0)
-      percentage = Math.min(percentage, 1)
+  percentage = Math.max(percentage, 0)
+  percentage = Math.min(percentage, 1)
 
-      audioRef.value.volume = percentage
-      volume.value = percentage
-      if (audioRef.value.muted && percentage !== 0) audioRef.value.muted = false
-    }
+  audioRef.value.volume = percentage
+  volume.value = percentage
+  if (audioRef.value.muted && percentage !== 0) audioRef.value.muted = false
+}
 
-    const handleDurationchange = () => {
-      duration.value = audioRef.value?.duration || 0
-    }
+const handleDurationchange = () => {
+  duration.value = audioRef.value?.duration || 0
+}
 
-    const handleTimeupdate = () => {
-      currentTime.value = audioRef.value?.currentTime || 0
-    }
+const handleTimeupdate = () => {
+  currentTime.value = audioRef.value?.currentTime || 0
+}
 
-    const handlePlayed = () => {
-      paused.value = false
-    }
+const handlePlayed = () => {
+  paused.value = false
+}
 
-    const handleEnded = () => {
-      if (!props.loop) pause()
-      else {
-        seek(0)
-        play()
-      }
-    }
+const handleEnded = () => {
+  if (!props.loop) pause()
+  else {
+    seek(0)
+    play()
+  }
+}
 
-    const handleProgress = () => {
-      loaded.value = audioRef.value?.buffered.length ? audioRef.value.buffered.end(audioRef.value.buffered.length - 1) : 0
-    }
+const handleProgress = () => {
+  loaded.value = audioRef.value?.buffered.length ? audioRef.value.buffered.end(audioRef.value.buffered.length - 1) : 0
+}
 
-    const handleError = () => message.error('视频加载失败')
+const handleError = () => message.error('视频加载失败')
 
-    const thumbMove = (e: MouseEvent | TouchEvent) => {
-      if (!audioRef.value || !playBarWrap.value) return
-      const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
-      let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
-      percentage = Math.max(percentage, 0)
-      percentage = Math.min(percentage, 1)
-      const time = percentage * duration.value
+const thumbMove = (e: MouseEvent | TouchEvent) => {
+  if (!audioRef.value || !playBarWrap.value) return
+  const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
+  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
+  percentage = Math.max(percentage, 0)
+  percentage = Math.min(percentage, 1)
+  const time = percentage * duration.value
 
-      audioRef.value.currentTime = time
-      currentTime.value = time
-    }
+  audioRef.value.currentTime = time
+  currentTime.value = time
+}
 
-    const thumbUp = (e: MouseEvent | TouchEvent) => {
-      if (!audioRef.value || !playBarWrap.value) return
+const thumbUp = (e: MouseEvent | TouchEvent) => {
+  if (!audioRef.value || !playBarWrap.value) return
 
-      const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
-      let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
-      percentage = Math.max(percentage, 0)
-      percentage = Math.min(percentage, 1)
-      const time = percentage * duration.value
+  const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
+  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
+  percentage = Math.max(percentage, 0)
+  percentage = Math.min(percentage, 1)
+  const time = percentage * duration.value
 
-      audioRef.value.currentTime = time
-      currentTime.value = time
+  audioRef.value.currentTime = time
+  currentTime.value = time
 
-      document.removeEventListener('mousemove', thumbMove)
-      document.removeEventListener('touchmove', thumbMove)
-      document.removeEventListener('mouseup', thumbUp)
-      document.removeEventListener('touchend', thumbUp)
-    }
+  document.removeEventListener('mousemove', thumbMove)
+  document.removeEventListener('touchmove', thumbMove)
+  document.removeEventListener('mouseup', thumbUp)
+  document.removeEventListener('touchend', thumbUp)
+}
 
-    const handleMousedownPlayBar = () => {
-      document.addEventListener('mousemove', thumbMove)
-      document.addEventListener('touchmove', thumbMove)
-      document.addEventListener('mouseup', thumbUp)
-      document.addEventListener('touchend', thumbUp)
-    }
+const handleMousedownPlayBar = () => {
+  document.addEventListener('mousemove', thumbMove)
+  document.addEventListener('touchmove', thumbMove)
+  document.addEventListener('mouseup', thumbUp)
+  document.addEventListener('touchend', thumbUp)
+}
 
-    const volumeMove = (e: MouseEvent | TouchEvent) => {
-      if (!volumeBarRef.value) return
-      const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
-      const percentage = (clientX - getBoundingClientRectViewLeft(volumeBarRef.value) - 5.5) / 35
-      setVolume(percentage)
-    }
+const volumeMove = (e: MouseEvent | TouchEvent) => {
+  if (!volumeBarRef.value) return
+  const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
+  const percentage = (clientX - getBoundingClientRectViewLeft(volumeBarRef.value)) / 45
+  setVolume(percentage)
+}
 
-    const volumeUp = () => {
-      document.removeEventListener('mousemove', volumeMove)
-      document.removeEventListener('touchmove', volumeMove)
-      document.removeEventListener('mouseup', volumeUp)
-      document.removeEventListener('touchend', volumeUp)
-    }
+const volumeUp = () => {
+  document.removeEventListener('mousemove', volumeMove)
+  document.removeEventListener('touchmove', volumeMove)
+  document.removeEventListener('mouseup', volumeUp)
+  document.removeEventListener('touchend', volumeUp)
+}
 
-    const handleMousedownVolumeBar = () => {
-      document.addEventListener('mousemove', volumeMove)
-      document.addEventListener('touchmove', volumeMove)
-      document.addEventListener('mouseup', volumeUp)
-      document.addEventListener('touchend', volumeUp)
-    }
+const handleMousedownVolumeBar = () => {
+  document.addEventListener('mousemove', volumeMove)
+  document.addEventListener('touchmove', volumeMove)
+  document.addEventListener('mouseup', volumeUp)
+  document.addEventListener('touchend', volumeUp)
+}
 
-    const handleClickVolumeBar = (e: MouseEvent) => {
-      if (!volumeBarRef.value) return
-      const percentage = (e.clientX - getBoundingClientRectViewLeft(volumeBarRef.value) - 5.5) / 35
-      setVolume(percentage)
-    }
+const handleClickVolumeBar = (e: MouseEvent) => {
+  if (!volumeBarRef.value) return
+  const percentage = (e.clientX - getBoundingClientRectViewLeft(volumeBarRef.value)) / 45
+  setVolume(percentage)
+}
 
-    const handleMousemovePlayBar = (e: MouseEvent) => {
-      if (duration.value && playBarWrap.value) {
-        const px = playBarWrap.value.getBoundingClientRect().left
-        const tx = e.clientX - px
-        if (tx < 0 || tx > playBarWrap.value.offsetWidth) return
+const handleMousemovePlayBar = (e: MouseEvent) => {
+  if (duration.value && playBarWrap.value) {
+    const px = playBarWrap.value.getBoundingClientRect().left
+    const tx = e.clientX - px
+    if (tx < 0 || tx > playBarWrap.value.offsetWidth) return
 
-        const time = duration.value * (tx / playBarWrap.value.offsetWidth)
-        playBarTimeLeft.value = `${tx - (time >= 3600 ? 25 : 20)}px`
-        playBarTime.value = secondToTime(time)
-        playBarTimeVisible.value = true
-      }
-    }
+    const time = duration.value * (tx / playBarWrap.value.offsetWidth)
+    playBarTimeLeft.value = `${tx - (time >= 3600 ? 25 : 20)}px`
+    playBarTime.value = secondToTime(time)
+    playBarTimeVisible.value = true
+  }
+}
 
-    const toggleVolume = () => {
-      if (!audioRef.value) return
+const toggleVolume = () => {
+  if (!audioRef.value) return
 
-      if (audioRef.value.muted) {
-        audioRef.value.muted = false
-        setVolume(0.5)
-      }
-      else {
-        audioRef.value.muted = true
-        setVolume(0)
-      }
-    }
+  if (audioRef.value.muted) {
+    audioRef.value.muted = false
+    setVolume(0.5)
+  }
+  else {
+    audioRef.value.muted = true
+    setVolume(0)
+  }
+}
 
-    return {
-      audioRef,
-      playBarWrap,
-      volumeBarRef,
-      volume,
-      paused,
-      ptime,
-      dtime,
-      playBarTime,
-      playBarTimeVisible,
-      playBarTimeLeft,
-      playedBarWidth,
-      loadedBarWidth,
-      volumeBarWidth,
-      play,
-      pause,
-      toggle,
-      setVolume,
-      handleDurationchange,
-      handleTimeupdate,
-      handlePlayed,
-      handleEnded,
-      handleProgress,
-      handleError,
-      handleMousedownPlayBar,
-      handleMousedownVolumeBar,
-      handleClickVolumeBar,
-      handleMousemovePlayBar,
-      toggleVolume,
-    }
-  },
+defineExpose({
+  toggle,
 })
 </script>
 

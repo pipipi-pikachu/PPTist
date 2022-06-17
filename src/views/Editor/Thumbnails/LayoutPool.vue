@@ -11,33 +11,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'layout-pool',
-  emits: ['select'],
-  components: {
-    ThumbnailSlide,
-  },
-  setup(props, { emit }) {
-    const { layouts } = storeToRefs(useSlidesStore())
+const emit = defineEmits<{
+  (event: 'select', payload: Slide): void
+}>()
 
-    const selectSlideTemplate = (slide: Slide) => {
-      emit('select', slide)
-    }
+const { layouts } = storeToRefs(useSlidesStore())
 
-    return {
-      layouts,
-      selectSlideTemplate,
-    }
-  },
-})
+const selectSlideTemplate = (slide: Slide) => {
+  emit('select', slide)
+}
 </script>
 
 <style lang="scss" scoped>

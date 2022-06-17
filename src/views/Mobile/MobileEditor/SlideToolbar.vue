@@ -29,8 +29,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -41,75 +41,56 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import MobileThumbnails from '../MobileThumbnails.vue'
 
-export default defineComponent({
-  name: 'slide-toolbar',
-  components: {
-    MobileThumbnails,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { viewportRatio, currentSlide } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore()
+const { viewportRatio, currentSlide } = storeToRefs(slidesStore)
 
-    const { createSlide, copyAndPasteSlide, deleteSlide, } = useSlideHandler()
-    const { createTextElement, createImageElement, createShapeElement } = useCreateElement()
+const { createSlide, copyAndPasteSlide, deleteSlide, } = useSlideHandler()
+const { createTextElement, createImageElement, createShapeElement } = useCreateElement()
 
-    const insertTextElement = () => {
-      const width = 400
-      const height = 56
+const insertTextElement = () => {
+  const width = 400
+  const height = 56
 
-      createTextElement({
-        left: (VIEWPORT_SIZE - width) / 2,
-        top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
-        width,
-        height,
-      }, '<p><span style=\"font-size: 24px\">新添加文本</span></p>')
-    }
+  createTextElement({
+    left: (VIEWPORT_SIZE - width) / 2,
+    top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
+    width,
+    height,
+  }, '<p><span style=\"font-size: 24px\">新添加文本</span></p>')
+}
 
-    const insertImageElement = (files: File[]) => {
-      if (!files || !files[0]) return
-      getImageDataURL(files[0]).then(dataURL => createImageElement(dataURL))
-    }
+const insertImageElement = (files: FileList) => {
+  if (!files || !files[0]) return
+  getImageDataURL(files[0]).then(dataURL => createImageElement(dataURL))
+}
 
-    const insertShapeElement = (type: 'square' | 'round') => {
-      const square: ShapePoolItem = {
-        viewBox: [200, 200],
-        path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
-      }
-      const round: ShapePoolItem = {
-        viewBox: [200, 200],
-        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z',
-      }
-      const shape = { square, round }
+const insertShapeElement = (type: 'square' | 'round') => {
+  const square: ShapePoolItem = {
+    viewBox: [200, 200],
+    path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
+  }
+  const round: ShapePoolItem = {
+    viewBox: [200, 200],
+    path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z',
+  }
+  const shape = { square, round }
 
-      const size = 200
+  const size = 200
 
-      createShapeElement({
-        left: (VIEWPORT_SIZE - size) / 2,
-        top: (VIEWPORT_SIZE * viewportRatio.value - size) / 2,
-        width: size,
-        height: size,
-      }, shape[type])
-    }
+  createShapeElement({
+    left: (VIEWPORT_SIZE - size) / 2,
+    top: (VIEWPORT_SIZE * viewportRatio.value - size) / 2,
+    width: size,
+    height: size,
+  }, shape[type])
+}
 
-    const remark = computed(() => currentSlide.value?.remark || '')
+const remark = computed(() => currentSlide.value?.remark || '')
 
-    const handleInputMark = (e: Event) => {
-      const value = (e.target as HTMLTextAreaElement).value
-      slidesStore.updateSlide({ remark: value })
-    }
-
-    return {
-      remark,
-      createSlide,
-      copyAndPasteSlide,
-      deleteSlide,
-      insertTextElement,
-      insertImageElement,
-      insertShapeElement,
-      handleInputMark,
-    }
-  },
-})
+const handleInputMark = (e: Event) => {
+  const value = (e.target as HTMLTextAreaElement).value
+  slidesStore.updateSlide({ remark: value })
+}
 </script>
 
 <style lang="scss" scoped>

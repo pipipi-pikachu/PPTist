@@ -29,8 +29,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
+<script lang="ts" setup>
+import { PropType, computed } from 'vue'
 import { PPTElement, PPTLineElement } from '@/types/slides'
 import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate'
 import { OperateResizeHandlers } from '@/types/edit'
@@ -38,48 +38,36 @@ import { OperateResizeHandlers } from '@/types/edit'
 import BorderLine from '@/views/Editor/Canvas/Operate/BorderLine.vue'
 import ResizeHandler from '@/views/Editor/Canvas/Operate/ResizeHandler.vue'
 
-export default defineComponent({
-  name: 'mobile-operate',
-  components: {
-    BorderLine,
-    ResizeHandler,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<Exclude<PPTElement, PPTLineElement>>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<Exclude<PPTElement, PPTLineElement>>,
-      required: true,
-    },
-    isSelected: {
-      type: Boolean,
-      required: true,
-    },
-    canvasScale: {
-      type: Number,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void>,
-      required: true,
-    },
+  isSelected: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
-
-    const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
-    const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
-    const {
-      borderLines,
-      resizeHandlers,
-      textElementResizeHandlers,
-    } = useCommonOperate(scaleWidth, scaleHeight)
-
-    return {
-      rotate,
-      borderLines,
-      resizeHandlers: props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : resizeHandlers,
-    }
+  canvasScale: {
+    type: Number,
+    required: true,
+  },
+  scaleElement: {
+    type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void>,
+    required: true,
   },
 })
+
+const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
+
+const scaleWidth = computed(() => props.elementInfo.width * props.canvasScale)
+const scaleHeight = computed(() => props.elementInfo.height * props.canvasScale)
+const {
+  borderLines,
+  resizeHandlers: _resizeHandlers,
+  textElementResizeHandlers,
+} = useCommonOperate(scaleWidth, scaleHeight)
+
+const resizeHandlers = props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : _resizeHandlers
 </script>
 
 <style lang="scss" scoped>

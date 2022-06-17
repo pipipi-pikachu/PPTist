@@ -60,51 +60,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { print } from '@/utils/print'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'export-pdf-dialog',
-  components: {
-    ThumbnailSlide,
-  },
-  setup(props, { emit }) {
-    const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
 
-    const pdfThumbnailsRef = ref<HTMLElement>()
-    const rangeType = ref<'all' | 'current'>('all')
-    const count = ref(1)
-    const padding = ref(true)
+const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
-    const close = () => emit('close')
+const pdfThumbnailsRef = ref<HTMLElement>()
+const rangeType = ref<'all' | 'current'>('all')
+const count = ref(1)
+const padding = ref(true)
 
-    const expPDF = () => {
-      if (!pdfThumbnailsRef.value) return
-      const pageSize = {
-        width: 1600,
-        height: rangeType.value === 'all' ? 900 * count.value : 900,
-        margin: padding.value ? 50 : 0,
-      }
-      print(pdfThumbnailsRef.value, pageSize)
-    }
-    
-    return {
-      pdfThumbnailsRef,
-      slides,
-      currentSlide,
-      rangeType,
-      count,
-      padding,
-      expPDF,
-      close,
-    }
-  },
-})
+const close = () => emit('close')
+
+const expPDF = () => {
+  if (!pdfThumbnailsRef.value) return
+  const pageSize = {
+    width: 1600,
+    height: rangeType.value === 'all' ? 900 * count.value : 900,
+    margin: padding.value ? 50 : 0,
+  }
+  print(pdfThumbnailsRef.value, pageSize)
+}
 </script>
 
 <style lang="scss" scoped>

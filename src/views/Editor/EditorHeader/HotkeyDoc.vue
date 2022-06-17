@@ -1,6 +1,6 @@
 <template>
   <div class="hotkey-doc">
-    <template v-for="item in hotkeys" :key="item.type">
+    <template v-for="item in HOTKEY_DOC" :key="item.type">
       <div class="title">{{item.type}}</div>
       <div class="hotkey-item" v-for="hotkey in item.children" :key="hotkey.label">
         <div class="label">{{hotkey.label}}</div>
@@ -10,18 +10,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import { HOTKEY_DOC } from '@/configs/hotkey'
-
-export default defineComponent({
-  name: 'hotkey-doc',
-  setup() {
-    return {
-      hotkeys: HOTKEY_DOC,
-    }
-  },
-})
+<script lang="ts" setup>
+import { HOTKEY_DOC } from '@/configs/hotkey' 
 </script>
 
 <style lang="scss" scoped>

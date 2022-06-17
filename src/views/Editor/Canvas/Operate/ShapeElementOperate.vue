@@ -27,7 +27,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTShapeElement } from '@/types/slides'
@@ -38,44 +44,28 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-export default defineComponent({
-  name: 'shape-element-operate',
-  inheritAttrs: false,
-  components: {
-    RotateHandler,
-    ResizeHandler,
-    BorderLine,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTShapeElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTShapeElement>,
-      required: true,
-    },
-    handlerVisible: {
-      type: Boolean,
-      required: true,
-    },
-    rotateElement: {
-      type: Function as PropType<(element: PPTShapeElement) => void>,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void>,
-      required: true,
-    },
+  handlerVisible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
-
-    const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-    const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-    const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-
-    return {
-      scaleWidth,
-      resizeHandlers,
-      borderLines,
-    }
+  rotateElement: {
+    type: Function as PropType<(element: PPTShapeElement) => void>,
+    required: true,
+  },
+  scaleElement: {
+    type: Function as PropType<(e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void>,
+    required: true,
   },
 })
+
+const { canvasScale } = storeToRefs(useMainStore())
+
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 </script>

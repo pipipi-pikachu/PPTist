@@ -43,8 +43,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import emitter, { EmitterEvents } from '@/utils/emitter'
@@ -52,43 +52,30 @@ import emitter, { EmitterEvents } from '@/utils/emitter'
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 import Chart from './Chart.vue'
 
-export default defineComponent({
-  name: 'editable-element-chart',
-  components: {
-    ElementOutline,
-    Chart,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTChartElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTChartElement>,
-      required: true,
-    },
-    selectElement: {
-      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTChartElement, canMove?: boolean) => void>,
-      required: true,
-    },
-    contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[] | null>,
-    },
+  selectElement: {
+    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTChartElement, canMove?: boolean) => void>,
+    required: true,
   },
-  setup(props) {
-    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-      if (props.elementInfo.lock) return
-      e.stopPropagation()
-
-      props.selectElement(e, props.elementInfo)
-    }
-
-    const openDataEditor = () => {
-      emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR)
-    }
-
-    return {
-      handleSelectElement,
-      openDataEditor,
-    }
+  contextmenus: {
+    type: Function as PropType<() => ContextmenuItem[] | null>,
   },
 })
+
+const handleSelectElement = (e: MouseEvent | TouchEvent) => {
+  if (props.elementInfo.lock) return
+  e.stopPropagation()
+
+  props.selectElement(e, props.elementInfo)
+}
+
+const openDataEditor = () => {
+  emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR)
+}
 </script>
 
 <style lang="scss" scoped>

@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { ElementTypes, PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
@@ -28,37 +28,29 @@ import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexE
 import BaseVideoElement from '@/views/components/element/VideoElement/BaseVideoElement.vue'
 import BaseAudioElement from '@/views/components/element/AudioElement/BaseAudioElement.vue'
 
-export default defineComponent({
-  name: 'base-element',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTElement>,
-      required: true,
-    },
-    elementIndex: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTElement>,
+    required: true,
   },
-  setup(props) {
-    const currentElementComponent = computed(() => {
-      const elementTypeMap = {
-        [ElementTypes.IMAGE]: BaseImageElement,
-        [ElementTypes.TEXT]: BaseTextElement,
-        [ElementTypes.SHAPE]: BaseShapeElement,
-        [ElementTypes.LINE]: BaseLineElement,
-        [ElementTypes.CHART]: BaseChartElement,
-        [ElementTypes.TABLE]: BaseTableElement,
-        [ElementTypes.LATEX]: BaseLatexElement,
-        [ElementTypes.VIDEO]: BaseVideoElement,
-        [ElementTypes.AUDIO]: BaseAudioElement,
-      }
-      return elementTypeMap[props.elementInfo.type] || null
-    })
+  elementIndex: {
+    type: Number,
+    required: true,
+  },
+})
 
-    return {
-      currentElementComponent,
-    }
-  },
+const currentElementComponent = computed(() => {
+  const elementTypeMap = {
+    [ElementTypes.IMAGE]: BaseImageElement,
+    [ElementTypes.TEXT]: BaseTextElement,
+    [ElementTypes.SHAPE]: BaseShapeElement,
+    [ElementTypes.LINE]: BaseLineElement,
+    [ElementTypes.CHART]: BaseChartElement,
+    [ElementTypes.TABLE]: BaseTableElement,
+    [ElementTypes.LATEX]: BaseLatexElement,
+    [ElementTypes.VIDEO]: BaseVideoElement,
+    [ElementTypes.AUDIO]: BaseAudioElement,
+  }
+  return elementTypeMap[props.elementInfo.type] || null
 })
 </script>

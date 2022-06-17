@@ -14,8 +14,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { ElementTypes, PPTElement } from '@/types/slides'
 
 import ImageElement from '@/views/components/element/ImageElement/index.vue'
@@ -28,41 +28,33 @@ import LatexElement from '@/views/components/element/LatexElement/index.vue'
 import VideoElement from '@/views/components/element/VideoElement/index.vue'
 import AudioElement from '@/views/components/element/AudioElement/index.vue'
 
-export default defineComponent({
-  name: 'mobile-editable-element',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTElement>,
-      required: true,
-    },
-    elementIndex: {
-      type: Number,
-      required: true,
-    },
-    selectElement: {
-      type: Function as PropType<(e: TouchEvent, element: PPTElement, canMove?: boolean) => void>,
-      required: true,
-    },
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTElement>,
+    required: true,
   },
-  setup(props) {
-    const currentElementComponent = computed(() => {
-      const elementTypeMap = {
-        [ElementTypes.IMAGE]: ImageElement,
-        [ElementTypes.TEXT]: TextElement,
-        [ElementTypes.SHAPE]: ShapeElement,
-        [ElementTypes.LINE]: LineElement,
-        [ElementTypes.CHART]: ChartElement,
-        [ElementTypes.TABLE]: TableElement,
-        [ElementTypes.LATEX]: LatexElement,
-        [ElementTypes.VIDEO]: VideoElement,
-        [ElementTypes.AUDIO]: AudioElement,
-      }
-      return elementTypeMap[props.elementInfo.type] || null
-    })
+  elementIndex: {
+    type: Number,
+    required: true,
+  },
+  selectElement: {
+    type: Function as PropType<(e: TouchEvent, element: PPTElement, canMove?: boolean) => void>,
+    required: true,
+  },
+})
 
-    return {
-      currentElementComponent,
-    }
-  },
+const currentElementComponent = computed(() => {
+  const elementTypeMap = {
+    [ElementTypes.IMAGE]: ImageElement,
+    [ElementTypes.TEXT]: TextElement,
+    [ElementTypes.SHAPE]: ShapeElement,
+    [ElementTypes.LINE]: LineElement,
+    [ElementTypes.CHART]: ChartElement,
+    [ElementTypes.TABLE]: TableElement,
+    [ElementTypes.LATEX]: LatexElement,
+    [ElementTypes.VIDEO]: VideoElement,
+    [ElementTypes.AUDIO]: AudioElement,
+  }
+  return elementTypeMap[props.elementInfo.type] || null
 })
 </script>

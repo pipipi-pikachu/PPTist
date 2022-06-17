@@ -7,16 +7,11 @@
   </Button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'color-button',
-  props: {
-    color: {
-      type: String,
-      required: true,
-    },
+<script lang="ts" setup>
+defineProps({
+  color: {
+    type: String,
+    required: true,
   },
 })
 </script>

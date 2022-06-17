@@ -39,8 +39,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, PropType, ref, watchEffect } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, PropType, ref, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -58,92 +58,65 @@ import SlideToolbar from './SlideToolbar.vue'
 import ElementToolbar from './ElementToolbar.vue'
 import Header from './Header.vue'
 
-export default defineComponent({
-  name: 'mobile-editor',
-  components: {
-    AlignmentLine,
-    MobileEditableElement,
-    MobileOperate,
-    SlideToolbar,
-    ElementToolbar,
-    Header,
-  },
-  props: {
-    changeMode: {
-      type: Function as PropType<(mode: Mode) => void>,
-      required: true,
-    },
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const mainStore = useMainStore()
-    const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
-    const { activeElementIdList, handleElement } = storeToRefs(mainStore)
-
-    const contentRef = ref<HTMLElement>()
-
-    const alignmentLines = ref<AlignmentLineProps[]>([])
-
-    const background = computed(() => currentSlide.value.background)
-    const { backgroundStyle } = useSlideBackgroundStyle(background)
-
-    const canvasScale = computed(() => {
-      if (!contentRef.value) return 1
-      const contentWidth = contentRef.value.clientWidth
-      const contentheight = contentRef.value.clientHeight
-
-      const contentRatio = contentheight / contentWidth
-      if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / VIEWPORT_SIZE
-      return (contentheight - 20) / viewportRatio.value / VIEWPORT_SIZE
-    })
-
-    onMounted(() => {
-      if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
-      if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0)
-    })
-
-    const viewportStyles = computed(() => ({
-      width: VIEWPORT_SIZE * canvasScale.value + 'px',
-      height: VIEWPORT_SIZE * viewportRatio.value * canvasScale.value + 'px',
-    }))
-
-    const elementList = ref<PPTElement[]>([])
-    const setLocalElementList = () => {
-      elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
-    }
-    watchEffect(setLocalElementList)
-
-    const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
-    const { scaleElement } = useScaleElement(elementList, alignmentLines, canvasScale)
-
-    const selectElement = (e: TouchEvent, element: PPTElement, startMove = true) => {
-      if (!activeElementIdList.value.includes(element.id)) {
-        mainStore.setActiveElementIdList([element.id])
-        mainStore.setHandleElementId(element.id)
-      }
-      if (startMove) dragElement(e, element)
-    }
-
-    const handleClickBlankArea = () => {
-      mainStore.setActiveElementIdList([])
-    }
-
-    return {
-      contentRef,
-      slideIndex,
-      elementList,
-      canvasScale,
-      viewportStyles,
-      backgroundStyle,
-      activeElementIdList,
-      alignmentLines,
-      selectElement,
-      handleClickBlankArea,
-      scaleElement,
-      handleElement,
-    }
+defineProps({
+  changeMode: {
+    type: Function as PropType<(mode: Mode) => void>,
+    required: true,
   },
 })
+
+const slidesStore = useSlidesStore()
+const mainStore = useMainStore()
+const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
+const { activeElementIdList, handleElement } = storeToRefs(mainStore)
+
+const contentRef = ref<HTMLElement>()
+
+const alignmentLines = ref<AlignmentLineProps[]>([])
+
+const background = computed(() => currentSlide.value.background)
+const { backgroundStyle } = useSlideBackgroundStyle(background)
+
+const canvasScale = computed(() => {
+  if (!contentRef.value) return 1
+  const contentWidth = contentRef.value.clientWidth
+  const contentheight = contentRef.value.clientHeight
+
+  const contentRatio = contentheight / contentWidth
+  if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / VIEWPORT_SIZE
+  return (contentheight - 20) / viewportRatio.value / VIEWPORT_SIZE
+})
+
+onMounted(() => {
+  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
+  if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0)
+})
+
+const viewportStyles = computed(() => ({
+  width: VIEWPORT_SIZE * canvasScale.value + 'px',
+  height: VIEWPORT_SIZE * viewportRatio.value * canvasScale.value + 'px',
+}))
+
+const elementList = ref<PPTElement[]>([])
+const setLocalElementList = () => {
+  elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
+}
+watchEffect(setLocalElementList)
+
+const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
+const { scaleElement } = useScaleElement(elementList, alignmentLines, canvasScale)
+
+const selectElement = (e: TouchEvent, element: PPTElement, startMove = true) => {
+  if (!activeElementIdList.value.includes(element.id)) {
+    mainStore.setActiveElementIdList([element.id])
+    mainStore.setHandleElementId(element.id)
+  }
+  if (startMove) dragElement(e, element)
+}
+
+const handleClickBlankArea = () => {
+  mainStore.setActiveElementIdList([])
+}
 </script>
 
 <style lang="scss" scoped>

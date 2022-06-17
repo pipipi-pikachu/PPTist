@@ -18,17 +18,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { PPTVideoElement } from '@/types/slides'
 
-export default defineComponent({
-  name: 'base-element-video',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTVideoElement>,
-      required: true,
-    },
+defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTVideoElement>,
+    required: true,
   },
 })
 </script>

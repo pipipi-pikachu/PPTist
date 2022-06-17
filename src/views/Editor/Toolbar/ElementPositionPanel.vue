@@ -2,12 +2,12 @@
   <div class="element-positopn-panel">
     <div class="title">层级：</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移一层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移一层</Button>
     </ButtonGroup>
 
     <Divider />
@@ -61,7 +61,7 @@
       <div style="flex: 4;" class="label">Y</div>
     </div>
 
-    <template v-if="handleElement.type !== 'line'">
+    <template v-if="handleElement!.type !== 'line'">
       <div class="row">
         <div style="flex: 3;">大小：</div>
         <InputNumber
@@ -72,7 +72,7 @@
           @change="value => updateWidth(value as number)"
           style="flex: 4;"
         />
-        <template v-if="['image', 'shape', 'audio'].includes(handleElement.type)">
+        <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
             <IconLock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
           </Tooltip>
@@ -85,7 +85,7 @@
           :min="minSize"
           :max="800"
           :step="5"
-          :disabled="handleElement.type === 'text'" 
+          :disabled="handleElement!.type === 'text'" 
           :value="height" 
           @change="value => updateHeight(value as number)"
           style="flex: 4;"
@@ -99,7 +99,7 @@
       </div>
     </template>
 
-    <template v-if="!['line', 'video', 'audio'].includes(handleElement.type)">
+    <template v-if="!['line', 'video', 'audio'].includes(handleElement!.type)">
       <Divider />
 
       <div class="row">
@@ -131,129 +131,101 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, Ref, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, ref, watch } from 'vue'
 import { round } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTElement } from '@/types/slides'
 import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import { MIN_SIZE } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-export default defineComponent({
-  name: 'element-positopn-panel',
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
-    const left = ref(0)
-    const top = ref(0)
-    const width = ref(0)
-    const height = ref(0)
-    const rotate = ref(0)
-    const fixedRatio = ref(false)
+const left = ref(0)
+const top = ref(0)
+const width = ref(0)
+const height = ref(0)
+const rotate = ref(0)
+const fixedRatio = ref(false)
 
-    const minSize = computed(() => {
-      if (!handleElement.value) return 20
-      return MIN_SIZE[handleElement.value.type] || 20
-    })
-
-    watch(handleElement, () => {
-      if (!handleElement.value) return
-
-      left.value = round(handleElement.value.left, 1)
-      top.value = round(handleElement.value.top, 1)
-
-      fixedRatio.value = 'fixedRatio' in handleElement.value && !!handleElement.value.fixedRatio
-
-      if (handleElement.value.type !== 'line') {
-        width.value = round(handleElement.value.width, 1)
-        height.value = round(handleElement.value.height, 1)
-        rotate.value = 'rotate' in handleElement.value && handleElement.value.rotate !== undefined ? round(handleElement.value.rotate, 1) : 0
-      }
-    }, { deep: true, immediate: true })
-
-    const { orderElement } = useOrderElement()
-    const { alignElementToCanvas } = useAlignElementToCanvas()
-
-    const { addHistorySnapshot } = useHistorySnapshot()
-
-    // 设置元素位置
-    const updateLeft = (value: number) => {
-      const props = { left: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-    const updateTop = (value: number) => {
-      const props = { top: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-
-    // 设置元素宽度、高度、旋转角度
-    const updateWidth = (value: number) => {
-      const props = { width: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-    const updateHeight = (value: number) => {
-      const props = { height: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-    const updateRotate = (value: number) => {
-      const props = { rotate: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-
-    // 固定元素的宽高比
-    const updateFixedRatio = (value: boolean) => {
-      const props = { fixedRatio: value }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-
-    // 将元素旋转45度（顺时针或逆时针）
-    const updateRotate45 = (command: '+' | '-') => {
-      let _rotate = Math.floor(rotate.value / 45) * 45
-      if (command === '+') _rotate = _rotate + 45
-      else if (command === '-') _rotate = _rotate - 45
-
-      if (_rotate < -180) _rotate = -180
-      if (_rotate > 180) _rotate = 180
-
-      const props = { rotate: _rotate }
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
-
-    return {
-      handleElement: handleElement as Ref<PPTElement>,
-      orderElement,
-      alignElementToCanvas,
-      left,
-      top,
-      width,
-      height,
-      rotate,
-      fixedRatio,
-      minSize,
-      updateLeft,
-      updateTop,
-      updateWidth,
-      updateHeight,
-      updateRotate,
-      updateFixedRatio,
-      updateRotate45,
-      ElementOrderCommands,
-      ElementAlignCommands,
-    }
-  },
+const minSize = computed(() => {
+  if (!handleElement.value) return 20
+  return MIN_SIZE[handleElement.value.type] || 20
 })
+
+watch(handleElement, () => {
+  if (!handleElement.value) return
+
+  left.value = round(handleElement.value.left, 1)
+  top.value = round(handleElement.value.top, 1)
+
+  fixedRatio.value = 'fixedRatio' in handleElement.value && !!handleElement.value.fixedRatio
+
+  if (handleElement.value.type !== 'line') {
+    width.value = round(handleElement.value.width, 1)
+    height.value = round(handleElement.value.height, 1)
+    rotate.value = 'rotate' in handleElement.value && handleElement.value.rotate !== undefined ? round(handleElement.value.rotate, 1) : 0
+  }
+}, { deep: true, immediate: true })
+
+const { orderElement } = useOrderElement()
+const { alignElementToCanvas } = useAlignElementToCanvas()
+
+const { addHistorySnapshot } = useHistorySnapshot()
+
+// 设置元素位置
+const updateLeft = (value: number) => {
+  const props = { left: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+const updateTop = (value: number) => {
+  const props = { top: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+
+// 设置元素宽度、高度、旋转角度
+const updateWidth = (value: number) => {
+  const props = { width: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+const updateHeight = (value: number) => {
+  const props = { height: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+const updateRotate = (value: number) => {
+  const props = { rotate: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+
+// 固定元素的宽高比
+const updateFixedRatio = (value: boolean) => {
+  const props = { fixedRatio: value }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+
+// 将元素旋转45度（顺时针或逆时针）
+const updateRotate45 = (command: '+' | '-') => {
+  let _rotate = Math.floor(rotate.value / 45) * 45
+  if (command === '+') _rotate = _rotate + 45
+  else if (command === '-') _rotate = _rotate - 45
+
+  if (_rotate < -180) _rotate = -180
+  if (_rotate > 180) _rotate = 180
+
+  const props = { rotate: _rotate }
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -16,8 +16,30 @@
 	</marker>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
+
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  position: {
+    type: String as PropType<'start' | 'end'>,
+    required: true,
+  },
+  type: {
+    type: String as PropType<'dot' | 'arrow'>,
+    required: true,
+  },
+  color: {
+    type: String,
+  },
+  baseSize: {
+    type: Number,
+    required: true,
+  },
+})
 
 const pathMap = {
   dot: 'm0 5a5 5 0 1 0 10 0a5 5 0 1 0 -10 0z',
@@ -28,39 +50,7 @@ const rotateMap = {
   'arrow-end': 0,
 }
 
-export default defineComponent({
-  name: 'line-point-marker',
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    position: {
-      type: String as PropType<'start' | 'end'>,
-      required: true,
-    },
-    type: {
-      type: String as PropType<'dot' | 'arrow'>,
-      required: true,
-    },
-    color: {
-      type: String,
-    },
-    baseSize: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup(props) {
-    const path = computed(() => pathMap[props.type])
-    const rotate = computed(() => rotateMap[`${props.type}-${props.position}`] || 0)
-    const size = computed(() => props.baseSize < 2 ? 2 : props.baseSize)
-
-    return {
-      path,
-      rotate,
-      size,
-    }
-  },
-})
+const path = computed(() => pathMap[props.type])
+const rotate = computed(() => rotateMap[`${props.type}-${props.position}`] || 0)
+const size = computed(() => props.baseSize < 2 ? 2 : props.baseSize)
 </script>

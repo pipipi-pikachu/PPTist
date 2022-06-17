@@ -39,46 +39,34 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
-export default defineComponent({
-  name: 'export-pptx-dialog',
-  setup(props, { emit }) {
-    const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
 
-    const rangeType = ref<'all' | 'current' | 'custom'>('all')
-    const range = ref<[number, number]>([1, slides.value.length])
-    const masterOverwrite = ref(true)
+const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
-    const selectedSlides = computed(() => {
-      if (rangeType.value === 'all') return slides.value
-      if (rangeType.value === 'current') return [currentSlide.value]
-      return slides.value.filter((item, index) => {
-        const [min, max] = range.value
-        return index >= min - 1 && index <= max - 1
-      })
-    })
+const { exportPPTX, exporting } = useExport()
 
-    const close = () => emit('close')
+const rangeType = ref<'all' | 'current' | 'custom'>('all')
+const range = ref<[number, number]>([1, slides.value.length])
+const masterOverwrite = ref(true)
 
-    const { exportPPTX, exporting } = useExport()
-    
-    return {
-      slides,
-      rangeType,
-      range,
-      masterOverwrite,
-      exporting,
-      selectedSlides,
-      exportPPTX,
-      close,
-    }
-  },
+const selectedSlides = computed(() => {
+  if (rangeType.value === 'all') return slides.value
+  if (rangeType.value === 'current') return [currentSlide.value]
+  return slides.value.filter((item, index) => {
+    const [min, max] = range.value
+    return index >= min - 1 && index <= max - 1
+  })
 })
+
+const close = () => emit('close')
 </script>
 
 <style lang="scss" scoped>

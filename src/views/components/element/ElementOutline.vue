@@ -19,40 +19,31 @@
 	</svg>
 </template>
 
-<script lang="ts">
-import { PropType, defineComponent, toRef } from 'vue'
+<script lang="ts" setup>
+import { PropType, toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
+
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 
-export default defineComponent({
-  name: 'element-outline',
-  props: {
-    width: {
-      type: Number,
-      required: true,
-    },
-    height: {
-      type: Number,
-      required: true,
-    },
-    outline: {
-      type: Object as PropType<PPTElementOutline>
-    },
+const props = defineProps({
+  width: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const {
-      outlineWidth,
-      outlineStyle,
-      outlineColor,
-    } = useElementOutline(toRef(props, 'outline'))
-
-    return {
-      outlineWidth,
-      outlineStyle,
-      outlineColor,
-    }
+  height: {
+    type: Number,
+    required: true,
+  },
+  outline: {
+    type: Object as PropType<PPTElementOutline>
   },
 })
+
+const {
+  outlineWidth,
+  outlineStyle,
+  outlineColor,
+} = useElementOutline(toRef(props, 'outline'))
 </script>
 
 <style lang="scss" scoped>

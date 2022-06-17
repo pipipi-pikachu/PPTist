@@ -35,8 +35,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, inject, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTAudioElement } from '@/types/slides'
@@ -45,68 +45,52 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import AudioPlayer from './AudioPlayer.vue'
 
-export default defineComponent({
-  name: 'screen-element-audio',
-  components: {
-    AudioPlayer,
-  },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTAudioElement>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
-
-    const scale = inject(injectKeySlideScale) || ref(1)
-    const slideId = inject(injectKeySlideId) || ref('')
-
-    const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
-
-    const audioIconSize = computed(() => {
-      return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
-    })
-    const audioPlayerPosition = computed(() => {
-      const canvasWidth = VIEWPORT_SIZE
-      const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
-
-      const audioWidth = 280 / scale.value
-      const audioHeight = 50 / scale.value
-
-      const elWidth = props.elementInfo.width
-      const elHeight = props.elementInfo.height
-      const elLeft = props.elementInfo.left
-      const elTop = props.elementInfo.top
-
-      let left = 0
-      let top = elHeight
-      
-      if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth
-      if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight
-
-      return {
-        left: left + 'px',
-        top: top + 'px',
-      }
-    })
-
-    const audioPlayerRef = ref()
-    const toggle = () => {
-      if (!audioPlayerRef.value) return
-      audioPlayerRef.value.toggle()
-    }
-
-    return {
-      scale,
-      inCurrentSlide,
-      audioIconSize,
-      audioPlayerPosition,
-      audioPlayerRef,
-      toggle,
-    }
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTAudioElement>,
+    required: true,
   },
 })
+
+const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
+
+const scale = inject(injectKeySlideScale) || ref(1)
+const slideId = inject(injectKeySlideId) || ref('')
+
+const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
+
+const audioIconSize = computed(() => {
+  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
+})
+const audioPlayerPosition = computed(() => {
+  const canvasWidth = VIEWPORT_SIZE
+  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
+
+  const audioWidth = 280 / scale.value
+  const audioHeight = 50 / scale.value
+
+  const elWidth = props.elementInfo.width
+  const elHeight = props.elementInfo.height
+  const elLeft = props.elementInfo.left
+  const elTop = props.elementInfo.top
+
+  let left = 0
+  let top = elHeight
+  
+  if (elLeft + audioWidth >= canvasWidth) left = elWidth - audioWidth
+  if (elTop + elHeight + audioHeight >= canvasHeight) top = -audioHeight
+
+  return {
+    left: left + 'px',
+    top: top + 'px',
+  }
+})
+
+const audioPlayerRef = ref()
+const toggle = () => {
+  if (!audioPlayerRef.value) return
+  audioPlayerRef.value.toggle()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -18,83 +18,73 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onUnmounted, PropType, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, onUnmounted, PropType, ref } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 import { throttle, clamp } from 'lodash'
 
-export default defineComponent({
-  name: 'saturation',
-  emits: ['colorChange'],
-  props: {
-    value: {
-      type: Object as PropType<ColorFormats.RGBA>,
-      required: true,
-    },
-    hue: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  value: {
+    type: Object as PropType<ColorFormats.RGBA>,
+    required: true,
   },
-  setup(props, { emit }) {
-    const color = computed(() => {
-      const hsva = tinycolor(props.value).toHsv()
-      if (props.hue !== -1) hsva.h = props.hue
-      return hsva
-    })
-
-    const bgColor = computed(() => `hsl(${color.value.h}, 100%, 50%)`)
-    const pointerTop = computed(() => (-(color.value.v * 100) + 1) + 100 + '%')
-    const pointerLeft = computed(() => color.value.s * 100 + '%')
-
-    const emitChangeEvent = throttle(function(param) {
-      emit('colorChange', param)
-    }, 20, { leading: true, trailing: false })
-
-    const saturationRef = ref<HTMLElement>()
-    const handleChange = (e: MouseEvent) => {
-      e.preventDefault()
-      if (!saturationRef.value) return
-      
-      const containerWidth = saturationRef.value.clientWidth
-      const containerHeight = saturationRef.value.clientHeight
-      const xOffset = saturationRef.value.getBoundingClientRect().left + window.pageXOffset
-      const yOffset = saturationRef.value.getBoundingClientRect().top + window.pageYOffset
-      const left = clamp(e.pageX - xOffset, 0, containerWidth)
-      const top = clamp(e.pageY - yOffset, 0, containerHeight)
-      const saturation = left / containerWidth
-      const bright = clamp(-(top / containerHeight) + 1, 0, 1)
-
-      emitChangeEvent({
-        h: color.value.h,
-        s: saturation,
-        v: bright,
-        a: color.value.a,
-      })
-    }
-
-    
-    const unbindEventListeners = () => {
-      window.removeEventListener('mousemove', handleChange)
-      window.removeEventListener('mouseup', unbindEventListeners)
-    }
-    const handleMouseDown = (e: MouseEvent) => {
-      handleChange(e)
-      window.addEventListener('mousemove', handleChange)
-      window.addEventListener('mouseup', unbindEventListeners)
-    }
-
-    onUnmounted(unbindEventListeners)
-
-    return {
-      saturationRef,
-      bgColor,
-      handleMouseDown,
-      pointerTop,
-      pointerLeft,
-    }
+  hue: {
+    type: Number,
+    required: true,
   },
 })
+
+const emit = defineEmits<{
+  (event: 'colorChange', payload: ColorFormats.HSVA): void
+}>()
+
+const color = computed(() => {
+  const hsva = tinycolor(props.value).toHsv()
+  if (props.hue !== -1) hsva.h = props.hue
+  return hsva
+})
+
+const bgColor = computed(() => `hsl(${color.value.h}, 100%, 50%)`)
+const pointerTop = computed(() => (-(color.value.v * 100) + 1) + 100 + '%')
+const pointerLeft = computed(() => color.value.s * 100 + '%')
+
+const emitChangeEvent = throttle(function(param: ColorFormats.HSVA) {
+  emit('colorChange', param)
+}, 20, { leading: true, trailing: false })
+
+const saturationRef = ref<HTMLElement>()
+const handleChange = (e: MouseEvent) => {
+  e.preventDefault()
+  if (!saturationRef.value) return
+  
+  const containerWidth = saturationRef.value.clientWidth
+  const containerHeight = saturationRef.value.clientHeight
+  const xOffset = saturationRef.value.getBoundingClientRect().left + window.pageXOffset
+  const yOffset = saturationRef.value.getBoundingClientRect().top + window.pageYOffset
+  const left = clamp(e.pageX - xOffset, 0, containerWidth)
+  const top = clamp(e.pageY - yOffset, 0, containerHeight)
+  const saturation = left / containerWidth
+  const bright = clamp(-(top / containerHeight) + 1, 0, 1)
+
+  emitChangeEvent({
+    h: color.value.h,
+    s: saturation,
+    v: bright,
+    a: color.value.a,
+  })
+}
+
+
+const unbindEventListeners = () => {
+  window.removeEventListener('mousemove', handleChange)
+  window.removeEventListener('mouseup', unbindEventListeners)
+}
+const handleMouseDown = (e: MouseEvent) => {
+  handleChange(e)
+  window.addEventListener('mousemove', handleChange)
+  window.addEventListener('mouseup', unbindEventListeners)
+}
+onUnmounted(unbindEventListeners)
 </script>
 
 <style lang="scss" scoped>

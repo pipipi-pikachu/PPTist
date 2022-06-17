@@ -34,7 +34,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTLineElement } from '@/types/slides'
@@ -42,89 +48,74 @@ import { OperateLineHandlers } from '@/types/edit'
 
 import ResizeHandler from './ResizeHandler.vue'
 
-export default defineComponent({
-  name: 'line-element-operate',
-  inheritAttrs: false,
-  components: {
-    ResizeHandler,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTLineElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTLineElement>,
-      required: true,
-    },
-    handlerVisible: {
-      type: Boolean,
-      required: true,
-    },
-    dragLineElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void>,
-      required: true,
-    },
+  handlerVisible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
+  dragLineElement: {
+    type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void>,
+    required: true,
+  },
+})
 
-    const svgWidth = computed(() => Math.max(props.elementInfo.start[0], props.elementInfo.end[0]))
-    const svgHeight = computed(() => Math.max(props.elementInfo.start[1], props.elementInfo.end[1]))
+const { canvasScale } = storeToRefs(useMainStore())
 
-    const resizeHandlers = computed(() => {
-      const handlers = [
-        {
-          handler: OperateLineHandlers.START,
-          style: {
-            left: props.elementInfo.start[0] * canvasScale.value + 'px',
-            top: props.elementInfo.start[1] * canvasScale.value + 'px',
-          }
-        },
-        {
-          handler: OperateLineHandlers.END,
-          style: {
-            left: props.elementInfo.end[0] * canvasScale.value + 'px',
-            top: props.elementInfo.end[1] * canvasScale.value + 'px',
-          }
-        },
-      ]
+const svgWidth = computed(() => Math.max(props.elementInfo.start[0], props.elementInfo.end[0]))
+const svgHeight = computed(() => Math.max(props.elementInfo.start[1], props.elementInfo.end[1]))
 
-      if (props.elementInfo.curve || props.elementInfo.broken) {
-        const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
-
-        handlers.push({
-          handler: OperateLineHandlers.C,
-          style: {
-            left: ctrlHandler[0] * canvasScale.value + 'px',
-            top: ctrlHandler[1] * canvasScale.value + 'px',
-          }
-        })
+const resizeHandlers = computed(() => {
+  const handlers = [
+    {
+      handler: OperateLineHandlers.START,
+      style: {
+        left: props.elementInfo.start[0] * canvasScale.value + 'px',
+        top: props.elementInfo.start[1] * canvasScale.value + 'px',
       }
-      else if (props.elementInfo.cubic) {
-        const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic
-        handlers.push({
-          handler: OperateLineHandlers.C1,
-          style: {
-            left: ctrlHandler1[0] * canvasScale.value + 'px',
-            top: ctrlHandler1[1] * canvasScale.value + 'px',
-          }
-        })
-        handlers.push({
-          handler: OperateLineHandlers.C2,
-          style: {
-            left: ctrlHandler2[0] * canvasScale.value + 'px',
-            top: ctrlHandler2[1] * canvasScale.value + 'px',
-          }
-        })
+    },
+    {
+      handler: OperateLineHandlers.END,
+      style: {
+        left: props.elementInfo.end[0] * canvasScale.value + 'px',
+        top: props.elementInfo.end[1] * canvasScale.value + 'px',
       }
+    },
+  ]
 
-      return handlers
+  if (props.elementInfo.curve || props.elementInfo.broken) {
+    const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
+
+    handlers.push({
+      handler: OperateLineHandlers.C,
+      style: {
+        left: ctrlHandler[0] * canvasScale.value + 'px',
+        top: ctrlHandler[1] * canvasScale.value + 'px',
+      }
     })
+  }
+  else if (props.elementInfo.cubic) {
+    const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic
+    handlers.push({
+      handler: OperateLineHandlers.C1,
+      style: {
+        left: ctrlHandler1[0] * canvasScale.value + 'px',
+        top: ctrlHandler1[1] * canvasScale.value + 'px',
+      }
+    })
+    handlers.push({
+      handler: OperateLineHandlers.C2,
+      style: {
+        left: ctrlHandler2[0] * canvasScale.value + 'px',
+        top: ctrlHandler2[1] * canvasScale.value + 'px',
+      }
+    })
+  }
 
-    return {
-      svgWidth,
-      svgHeight,
-      canvasScale,
-      resizeHandlers,
-    }
-  },
+  return handlers
 })
 </script>
 

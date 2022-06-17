@@ -10,43 +10,31 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTElement, PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
-export default defineComponent({
-  name: 'link-handler',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTElement>,
-      required: true,
-    },
-    link: {
-      type: Object as PropType<PPTElementLink>,
-      required: true,
-    },
-    openLinkDialog: {
-      type: Function as PropType<() => void>,
-      required: true,
-    },
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTElement>,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
-
-    const { removeLink } = useLink()
-
-    const height = computed(() => props.elementInfo.type === 'line' ? 0 : props.elementInfo.height)
-
-    return {
-      canvasScale,
-      height,
-      removeLink,
-    }
+  link: {
+    type: Object as PropType<PPTElementLink>,
+    required: true,
+  },
+  openLinkDialog: {
+    type: Function as PropType<() => void>,
+    required: true,
   },
 })
+
+const { canvasScale } = storeToRefs(useMainStore())
+const { removeLink } = useLink()
+const height = computed(() => props.elementInfo.type === 'line' ? 0 : props.elementInfo.height)
 </script>
 
 <style lang="scss" scoped>

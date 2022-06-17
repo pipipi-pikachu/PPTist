@@ -2,20 +2,15 @@
   <div class="fullscreen-spin" v-if="loading"><Spin :tip="tip" size="large" /></div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'fullscreen-spin',
-  props: {
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-    tip: {
-      type: String,
-      default: '',
-    },
+<script lang="ts" setup>
+const props = defineProps({
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  tip: {
+    type: String,
+    default: '',
   },
 })
 </script>

@@ -25,8 +25,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
@@ -52,63 +52,51 @@ const defaultFilters: FilterOption[] = [
   { label: '不透明度', key: 'opacity', default: 100, value: 100, unit: '%', max: 100, step: 5 },
 ]
 
-export default defineComponent({
-  name: 'element-filter',
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
-    const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
-    const hasFilters = ref(false)
+const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
+const hasFilters = ref(false)
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    watch(handleElement, () => {
-      if (!handleElement.value || handleElement.value.type !== 'image') return
-      
-      const filters = handleElement.value.filters
-      if (filters) {
-        filterOptions.value = defaultFilters.map(item => {
-          if (filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
-          return item
-        })
-        hasFilters.value = true
-      }
-      else {
-        filterOptions.value = JSON.parse(JSON.stringify(defaultFilters))
-        hasFilters.value = false
-      }
-    }, { deep: true, immediate: true })
+watch(handleElement, () => {
+  if (!handleElement.value || handleElement.value.type !== 'image') return
+  
+  const filters = handleElement.value.filters
+  if (filters) {
+    filterOptions.value = defaultFilters.map(item => {
+      if (filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
+      return item
+    })
+    hasFilters.value = true
+  }
+  else {
+    filterOptions.value = JSON.parse(JSON.stringify(defaultFilters))
+    hasFilters.value = false
+  }
+}, { deep: true, immediate: true })
 
-    // 设置滤镜
-    const updateFilter = (filter: FilterOption, value: number) => {
-      const _handleElement = handleElement.value as PPTImageElement
-      
-      const originFilters = _handleElement.filters || {}
-      const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
-      slidesStore.updateElement({ id: handleElementId.value, props: { filters } })
-      addHistorySnapshot()
-    }
+// 设置滤镜
+const updateFilter = (filter: FilterOption, value: number) => {
+  const _handleElement = handleElement.value as PPTImageElement
+  
+  const originFilters = _handleElement.filters || {}
+  const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
+  slidesStore.updateElement({ id: handleElementId.value, props: { filters } })
+  addHistorySnapshot()
+}
 
-    const toggleFilters = (checked: boolean) => {
-      if (!handleElement.value) return
-      if (checked) {
-        slidesStore.updateElement({ id: handleElement.value.id, props: { filters: {} } })
-      }
-      else {
-        slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'filters' })
-      }
-      addHistorySnapshot()
-    }
-
-    return {
-      filterOptions,
-      hasFilters,
-      toggleFilters,
-      updateFilter,
-    }
-  },
-})
+const toggleFilters = (checked: boolean) => {
+  if (!handleElement.value) return
+  if (checked) {
+    slidesStore.updateElement({ id: handleElement.value.id, props: { filters: {} } })
+  }
+  else {
+    slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'filters' })
+  }
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

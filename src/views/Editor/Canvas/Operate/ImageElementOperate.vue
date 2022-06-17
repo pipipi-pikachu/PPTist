@@ -27,7 +27,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
@@ -38,49 +44,32 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-export default defineComponent({
-  name: 'image-element-operate',
-  inheritAttrs: false,
-  components: {
-    RotateHandler,
-    ResizeHandler,
-    BorderLine,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTImageElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTImageElement>,
-      required: true,
-    },
-    handlerVisible: {
-      type: Boolean,
-      required: true,
-    },
-    rotateElement: {
-      type: Function as PropType<(element: PPTImageElement) => void>,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTImageElement, command: OperateResizeHandlers) => void>,
-      required: true,
-    },
+  handlerVisible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale, clipingImageElementId } = storeToRefs(useMainStore())
-
-    const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
-
-    const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
-    const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-    const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-
-    return {
-      isCliping,
-      scaleWidth,
-      resizeHandlers,
-      borderLines,
-    }
+  rotateElement: {
+    type: Function as PropType<(element: PPTImageElement) => void>,
+    required: true,
+  },
+  scaleElement: {
+    type: Function as PropType<(e: MouseEvent, element: PPTImageElement, command: OperateResizeHandlers) => void>,
+    required: true,
   },
 })
+
+const { canvasScale, clipingImageElementId } = storeToRefs(useMainStore())
+
+const isCliping = computed(() => clipingImageElementId.value === props.elementInfo.id)
+
+const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 </script>
 
 <style lang="scss" scoped>

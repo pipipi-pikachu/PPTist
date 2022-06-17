@@ -29,8 +29,8 @@
   </Modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import useGlobalHotkey from '@/hooks/useGlobalHotkey'
@@ -44,34 +44,14 @@ import Toolbar from './Toolbar/index.vue'
 import Remark from './Remark/index.vue'
 import ExportDialog from './ExportDialog/index.vue'
 
-export default defineComponent({
-  name: 'editor',
-  components: {
-    EditorHeader,
-    Canvas,
-    CanvasTool,
-    Thumbnails,
-    Toolbar,
-    Remark,
-    ExportDialog,
-  },
-  setup() {
-    const mainStore = useMainStore()
-    const { dialogForExport } = storeToRefs(mainStore)
-    const closeExportDialog = () => mainStore.setDialogForExport('')
+const mainStore = useMainStore()
+const { dialogForExport } = storeToRefs(mainStore)
+const closeExportDialog = () => mainStore.setDialogForExport('')
 
-    const remarkHeight = ref(40)
+const remarkHeight = ref(40)
 
-    useGlobalHotkey()
-    usePasteEvent()
-
-    return {
-      remarkHeight,
-      dialogForExport,
-      closeExportDialog,
-    }
-  },
-})
+useGlobalHotkey()
+usePasteEvent()
 </script>
 
 <style lang="scss" scoped>

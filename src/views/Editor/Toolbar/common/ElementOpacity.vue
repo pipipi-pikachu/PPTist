@@ -14,40 +14,30 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-export default defineComponent({
-  name: 'element-opacity',
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore()
+const { handleElement } = storeToRefs(useMainStore())
 
-    const opacity = ref<number>(1)
+const opacity = ref<number>(1)
 
-    watch(handleElement, () => {
-      if (!handleElement.value) return
-      opacity.value = 'opacity' in handleElement.value && handleElement.value.opacity !== undefined ? handleElement.value.opacity : 1
-    }, { deep: true, immediate: true })
+watch(handleElement, () => {
+  if (!handleElement.value) return
+  opacity.value = 'opacity' in handleElement.value && handleElement.value.opacity !== undefined ? handleElement.value.opacity : 1
+}, { deep: true, immediate: true })
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    const updateOpacity = (value: number) => {
-      if (!handleElement.value) return
-      const props = { opacity: value }
-      slidesStore.updateElement({ id: handleElement.value.id, props })
-      addHistorySnapshot()
-    }
-
-    return {
-      opacity,
-      updateOpacity,
-    }
-  },
-})
+const updateOpacity = (value: number) => {
+  if (!handleElement.value) return
+  const props = { opacity: value }
+  slidesStore.updateElement({ id: handleElement.value.id, props })
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -8,33 +8,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSnapshotStore } from '@/store'
 import { Mode } from '@/types/mobile'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-export default defineComponent({
-  name: 'mobile-editor-header',
-  props: {
-    changeMode: {
-      type: Function as PropType<(mode: Mode) => void>,
-      required: true,
-    },
-  },
-  setup() {
-    const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
-    const { redo, undo } = useHistorySnapshot()
-
-    return {
-      redo,
-      undo,
-      canUndo,
-      canRedo,
-    }
+defineProps({
+  changeMode: {
+    type: Function as PropType<(mode: Mode) => void>,
+    required: true,
   },
 })
+
+const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
+const { redo, undo } = useHistorySnapshot()
 </script>
 
 <style lang="scss" scoped>

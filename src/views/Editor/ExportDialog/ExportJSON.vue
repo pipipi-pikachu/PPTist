@@ -11,28 +11,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
-export default defineComponent({
-  name: 'export-json-dialog',
-  setup(props, { emit }) {
-    const close = () => emit('close')
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
 
-    const { slides } = storeToRefs(useSlidesStore())
-
-    const { exportJSON } = useExport()
-    
-    return {
-      slides,
-      exportJSON,
-      close,
-    }
-  },
-})
+const { slides } = storeToRefs(useSlidesStore())
+const { exportJSON } = useExport()
+const close = () => emit('close')
 </script>
 
 <style lang="scss" scoped>

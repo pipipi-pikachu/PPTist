@@ -17,47 +17,35 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'slide-thumbnails',
-  emits: ['close'],
-  components: {
-    ThumbnailSlide,
-  },
-  props: {
-    turnSlideToIndex: {
-      type: Function as PropType<(index: number) => void>,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const { slides, slideIndex } = storeToRefs(useSlidesStore())
-
-    const { slidesLoadLimit } = useLoadSlides()
-
-    const close = () => emit('close')
-
-    const turnSlide = (index: number) => {
-      props.turnSlideToIndex(index)
-      close()
-    }
-
-    return {
-      slides,
-      slideIndex,
-      slidesLoadLimit,
-      turnSlide,
-      close,
-    }
+const props = defineProps({
+  turnSlideToIndex: {
+    type: Function as PropType<(index: number) => void>,
+    required: true,
   },
 })
+
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
+
+const { slides, slideIndex } = storeToRefs(useSlidesStore())
+
+const { slidesLoadLimit } = useLoadSlides()
+
+const close = () => emit('close')
+
+const turnSlide = (index: number) => {
+  props.turnSlideToIndex(index)
+  close()
+}
 </script>
 
 <style lang="scss" scoped>

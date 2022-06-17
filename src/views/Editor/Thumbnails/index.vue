@@ -43,8 +43,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { fillDigit } from '@/utils/common'
@@ -57,209 +57,183 @@ import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
 
-export default defineComponent({
-  name: 'thumbnails',
-  components: {
-    Draggable,
-    ThumbnailSlide,
-    LayoutPool,
-  },
-  setup() {
-    const mainStore = useMainStore()
-    const slidesStore = useSlidesStore()
-    const keyboardStore = useKeyboardStore()
-    const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
-    const { slides, slideIndex } = storeToRefs(slidesStore)
-    const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
+const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
+const keyboardStore = useKeyboardStore()
+const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
+const { slides, slideIndex } = storeToRefs(slidesStore)
+const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
 
-    const { slidesLoadLimit } = useLoadSlides()
+const { slidesLoadLimit } = useLoadSlides()
 
-    const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
+const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
-    const presetLayoutPopoverVisible = ref(false)
+const presetLayoutPopoverVisible = ref(false)
 
-    const {
-      copySlide,
-      pasteSlide,
-      createSlide,
-      createSlideByTemplate,
-      copyAndPasteSlide,
-      deleteSlide,
-      cutSlide,
-      selectAllSlide,
-    } = useSlideHandler()
+const {
+  copySlide,
+  pasteSlide,
+  createSlide,
+  createSlideByTemplate,
+  copyAndPasteSlide,
+  deleteSlide,
+  cutSlide,
+  selectAllSlide,
+} = useSlideHandler()
 
-    // 切换页面
-    const changSlideIndex = (index: number) => {
-      mainStore.setActiveElementIdList([])
+// 切换页面
+const changSlideIndex = (index: number) => {
+  mainStore.setActiveElementIdList([])
 
-      if (slideIndex.value === index) return
-      slidesStore.updateSlideIndex(index)
+  if (slideIndex.value === index) return
+  slidesStore.updateSlideIndex(index)
+}
+
+// 点击缩略图
+const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
+  const isMultiSelected = selectedSlidesIndex.value.length > 1
+
+  if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
+
+  // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
+  if (ctrlKeyState.value) {
+    if (slideIndex.value === index) {
+      if (!isMultiSelected) return
+
+      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+      mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
+      changSlideIndex(selectedSlidesIndex.value[0])
     }
-
-    // 点击缩略图
-    const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
-      const isMultiSelected = selectedSlidesIndex.value.length > 1
-
-      if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
-
-      // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
-      if (ctrlKeyState.value) {
-        if (slideIndex.value === index) {
-          if (!isMultiSelected) return
-
-          const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-          mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-          changSlideIndex(selectedSlidesIndex.value[0])
-        }
-        else {
-          if (selectedSlidesIndex.value.includes(index)) {
-            const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-            mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-          }
-          else {
-            const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
-            mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-            changSlideIndex(index)
-          }
-        }
+    else {
+      if (selectedSlidesIndex.value.includes(index)) {
+        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
+        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
       }
-      // 按住Shift键，选择范围内的全部幻灯片
-      else if (shiftKeyState.value) {
-        if (slideIndex.value === index && !isMultiSelected) return
-
-        let minIndex = Math.min(...selectedSlidesIndex.value)
-        let maxIndex = index
-
-        if (index < minIndex) {
-          maxIndex = Math.max(...selectedSlidesIndex.value)
-          minIndex = index
-        }
-
-        const newSelectedSlidesIndex = []
-        for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
+      else {
+        const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
         mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
         changSlideIndex(index)
       }
-      // 正常切换页面
-      else {
-        mainStore.updateSelectedSlidesIndex([])
-        changSlideIndex(index)
-      }
+    }
+  }
+  // 按住Shift键，选择范围内的全部幻灯片
+  else if (shiftKeyState.value) {
+    if (slideIndex.value === index && !isMultiSelected) return
+
+    let minIndex = Math.min(...selectedSlidesIndex.value)
+    let maxIndex = index
+
+    if (index < minIndex) {
+      maxIndex = Math.max(...selectedSlidesIndex.value)
+      minIndex = index
     }
 
-    // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
-    const setThumbnailsFocus = (focus: boolean) => {
-      if (thumbnailsFocus.value === focus) return
-      mainStore.setThumbnailsFocus(focus)
+    const newSelectedSlidesIndex = []
+    for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
+    mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
+    changSlideIndex(index)
+  }
+  // 正常切换页面
+  else {
+    mainStore.updateSelectedSlidesIndex([])
+    changSlideIndex(index)
+  }
+}
 
-      if (!focus) mainStore.updateSelectedSlidesIndex([])
-    }
+// 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
+const setThumbnailsFocus = (focus: boolean) => {
+  if (thumbnailsFocus.value === focus) return
+  mainStore.setThumbnailsFocus(focus)
 
-    // 拖拽调整顺序后进行数据的同步
-    const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
-      const { newIndex, oldIndex } = eventData
-      if (oldIndex === newIndex) return
+  if (!focus) mainStore.updateSelectedSlidesIndex([])
+}
 
-      const _slides = JSON.parse(JSON.stringify(slides.value))
-      const _slide = _slides[oldIndex]
-      _slides.splice(oldIndex, 1)
-      _slides.splice(newIndex, 0, _slide)
-      slidesStore.setSlides(_slides)
-      slidesStore.updateSlideIndex(newIndex)
-    }
+// 拖拽调整顺序后进行数据的同步
+const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
+  const { newIndex, oldIndex } = eventData
+  if (oldIndex === newIndex) return
 
-    const { enterScreening, enterScreeningFromStart } = useScreening()
+  const _slides = JSON.parse(JSON.stringify(slides.value))
+  const _slide = _slides[oldIndex]
+  _slides.splice(oldIndex, 1)
+  _slides.splice(newIndex, 0, _slide)
+  slidesStore.setSlides(_slides)
+  slidesStore.updateSlideIndex(newIndex)
+}
 
-    const contextmenusThumbnails = (): ContextmenuItem[] => {
-      return [
-        {
-          text: '粘贴',
-          subText: 'Ctrl + V',
-          handler: pasteSlide,
-        },
-        {
-          text: '全选',
-          subText: 'Ctrl + A',
-          handler: selectAllSlide,
-        },
-        {
-          text: '新建页面',
-          subText: 'Enter',
-          handler: createSlide,
-        },
-        {
-          text: '幻灯片放映',
-          subText: 'F5',
-          handler: enterScreeningFromStart,
-        },
-      ]
-    }
+const { enterScreening, enterScreeningFromStart } = useScreening()
 
-    const contextmenusThumbnailItem = (): ContextmenuItem[] => {
-      return [
-        {
-          text: '剪切',
-          subText: 'Ctrl + X',
-          handler: cutSlide,
-        },
-        {
-          text: '复制',
-          subText: 'Ctrl + C',
-          handler: copySlide,
-        },
-        {
-          text: '粘贴',
-          subText: 'Ctrl + V',
-          handler: pasteSlide,
-        },
-        {
-          text: '全选',
-          subText: 'Ctrl + A',
-          handler: selectAllSlide,
-        },
-        { divider: true },
-        {
-          text: '新建页面',
-          subText: 'Enter',
-          handler: createSlide,
-        },
-        {
-          text: '复制页面',
-          subText: 'Ctrl + D',
-          handler: copyAndPasteSlide,
-        },
-        {
-          text: '删除页面',
-          subText: 'Delete',
-          handler: () => deleteSlide(),
-        },
-        { divider: true },
-        {
-          text: '从当前放映',
-          subText: 'Shift + F5',
-          handler: enterScreening,
-        },
-      ]
-    }
+const contextmenusThumbnails = (): ContextmenuItem[] => {
+  return [
+    {
+      text: '粘贴',
+      subText: 'Ctrl + V',
+      handler: pasteSlide,
+    },
+    {
+      text: '全选',
+      subText: 'Ctrl + A',
+      handler: selectAllSlide,
+    },
+    {
+      text: '新建页面',
+      subText: 'Enter',
+      handler: createSlide,
+    },
+    {
+      text: '幻灯片放映',
+      subText: 'F5',
+      handler: enterScreeningFromStart,
+    },
+  ]
+}
 
-    return {
-      slides,
-      slideIndex,
-      selectedSlidesIndex,
-      presetLayoutPopoverVisible,
-      slidesLoadLimit,
-      createSlide,
-      createSlideByTemplate,
-      setThumbnailsFocus,
-      handleClickSlideThumbnail,
-      contextmenusThumbnails,
-      contextmenusThumbnailItem,
-      fillDigit,
-      handleDragEnd,
-    }
-  },
-})
+const contextmenusThumbnailItem = (): ContextmenuItem[] => {
+  return [
+    {
+      text: '剪切',
+      subText: 'Ctrl + X',
+      handler: cutSlide,
+    },
+    {
+      text: '复制',
+      subText: 'Ctrl + C',
+      handler: copySlide,
+    },
+    {
+      text: '粘贴',
+      subText: 'Ctrl + V',
+      handler: pasteSlide,
+    },
+    {
+      text: '全选',
+      subText: 'Ctrl + A',
+      handler: selectAllSlide,
+    },
+    { divider: true },
+    {
+      text: '新建页面',
+      subText: 'Enter',
+      handler: createSlide,
+    },
+    {
+      text: '复制页面',
+      subText: 'Ctrl + D',
+      handler: copyAndPasteSlide,
+    },
+    {
+      text: '删除页面',
+      subText: 'Delete',
+      handler: () => deleteSlide(),
+    },
+    { divider: true },
+    {
+      text: '从当前放映',
+      subText: 'Shift + F5',
+      handler: enterScreening,
+    },
+  ]
+}
 </script>
 
 <style lang="scss" scoped>

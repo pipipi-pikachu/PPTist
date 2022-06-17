@@ -36,8 +36,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 
@@ -48,25 +48,17 @@ interface ViewportStyles {
   height: number
 }
 
-export default defineComponent({
-  props: {
-    viewportStyles: {
-      type: Object as PropType<ViewportStyles>,
-      required: true,
-    },
+const props = defineProps({
+  viewportStyles: {
+    type: Object as PropType<ViewportStyles>,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
+})
 
-    const markerSize = computed(() => {
-      return props.viewportStyles.width * canvasScale.value / 10
-    })
+const { canvasScale } = storeToRefs(useMainStore())
 
-    return {
-      canvasScale,
-      markerSize,
-    }
-  },
+const markerSize = computed(() => {
+  return props.viewportStyles.width * canvasScale.value / 10
 })
 </script>
 

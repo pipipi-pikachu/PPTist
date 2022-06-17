@@ -15,8 +15,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { DialogForExportTypes } from '@/types/export'
@@ -32,40 +32,28 @@ interface TabItem {
   label: string
 }
 
-export default defineComponent({
-  name: 'export-dialog',
-  setup() {
-    const mainStore = useMainStore()
-    const { dialogForExport } = storeToRefs(mainStore)
+const mainStore = useMainStore()
+const { dialogForExport } = storeToRefs(mainStore)
 
-    const setDialogForExport = mainStore.setDialogForExport
+const setDialogForExport = mainStore.setDialogForExport
 
-    const tabs: TabItem[] = [
-      { key: 'pptist', label: '导出 pptist 文件' },
-      { key: 'pptx', label: '导出 PPTX' },
-      { key: 'image', label: '导出图片' },
-      { key: 'json', label: '导出 JSON' },
-      { key: 'pdf', label: '打印 / 导出 PDF' },
-    ]
+const tabs: TabItem[] = [
+  { key: 'pptist', label: '导出 pptist 文件' },
+  { key: 'pptx', label: '导出 PPTX' },
+  { key: 'image', label: '导出图片' },
+  { key: 'json', label: '导出 JSON' },
+  { key: 'pdf', label: '打印 / 导出 PDF' },
+]
 
-    const currentDialogComponent = computed(() => {
-      const dialogMap = {
-        'image': ExportImage,
-        'json': ExportJSON,
-        'pdf': ExportPDF,
-        'pptx': ExportPPTX,
-        'pptist': ExportSpecificFile,
-      }
-      return dialogMap[dialogForExport.value] || null
-    })
-
-    return {
-      currentDialogComponent,
-      tabs,
-      dialogForExport,
-      setDialogForExport,
-    }
-  },
+const currentDialogComponent = computed(() => {
+  const dialogMap = {
+    'image': ExportImage,
+    'json': ExportJSON,
+    'pdf': ExportPDF,
+    'pptx': ExportPPTX,
+    'pptist': ExportSpecificFile,
+  }
+  return dialogMap[dialogForExport.value] || null
 })
 </script>
 

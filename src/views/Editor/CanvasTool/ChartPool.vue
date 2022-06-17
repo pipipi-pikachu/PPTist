@@ -14,26 +14,18 @@
   </ul>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import { PresetChartType } from '@/types/slides'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'chart-pool',
-  emits: ['select'],
-  setup(props, { emit }) {
-    const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring']
+const emit = defineEmits<{
+  (event: 'select', payload: PresetChartType): void
+}>()
 
-    const selectChart = (chart: PresetChartType) => {
-      emit('select', chart)
-    }
+const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring']
 
-    return {
-      chartList,
-      selectChart,
-    }
-  },
-})
+const selectChart = (chart: PresetChartType) => {
+  emit('select', chart)
+}
 </script>
 
 <style lang="scss" scoped>

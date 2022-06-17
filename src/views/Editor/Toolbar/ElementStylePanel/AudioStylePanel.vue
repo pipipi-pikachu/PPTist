@@ -5,11 +5,11 @@
       <Popover trigger="click">
         <template #content>
           <ColorPicker
-            :modelValue="handleElement.color"
+            :modelValue="handleAudioElement.color"
             @update:modelValue="value => updateAudio({ color: value })"
           />
         </template>
-        <ColorButton :color="handleElement.color" style="flex: 3;" />
+        <ColorButton :color="handleAudioElement.color" style="flex: 3;" />
       </Popover>
     </div>
 
@@ -17,7 +17,7 @@
       <div style="flex: 2;">自动播放：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="handleElement.autoplay" 
+          :checked="handleAudioElement.autoplay" 
           @change="checked => updateAudio({ autoplay: checked as boolean })" 
         />
       </div>
@@ -27,7 +27,7 @@
       <div style="flex: 2;">循环播放：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="handleElement.loop" 
+          :checked="handleAudioElement.loop" 
           @change="checked => updateAudio({ loop: checked as boolean })" 
         />
       </div>
@@ -35,8 +35,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref } from 'vue'
+<script lang="ts" setup>
+import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTAudioElement } from '@/types/slides'
@@ -44,29 +44,18 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
 
-export default defineComponent({
-  name: 'audio-style-panel',
-  components: {
-    ColorButton,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore()
+const { handleElement } = storeToRefs(useMainStore())
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const handleAudioElement = handleElement as Ref<PPTAudioElement>
 
-    const updateAudio = (props: Partial<PPTAudioElement>) => {
-      if (!handleElement.value) return
-      slidesStore.updateElement({ id: handleElement.value.id, props })
-      addHistorySnapshot()
-    }
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    return {
-      handleElement: handleElement as Ref<PPTAudioElement>,
-      updateAudio,
-    }
-  }
-})
+const updateAudio = (props: Partial<PPTAudioElement>) => {
+  if (!handleElement.value) return
+  slidesStore.updateElement({ id: handleElement.value.id, props })
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

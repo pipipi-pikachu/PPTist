@@ -71,8 +71,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, nextTick, ref, watch, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, nextTick, ref, watch, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -88,142 +88,105 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import ScreenSlideList from './ScreenSlideList.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 
-export default defineComponent({
-  name: 'presenter-view',
-  components: {
-    ScreenSlideList,
-    ThumbnailSlide,
-    WritingBoardTool,
-  },
-  props: {
-    changeViewMode: {
-      type: Function as PropType<(mode: 'base' | 'presenter') => void>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
-
-    const slideListWrapRef = ref<HTMLElement>()
-    const thumbnailsRef = ref<HTMLElement>()
-    const writingBoardToolVisible = ref(false)
-    const laserPen = ref(false)
-
-    const {
-      mousewheelListener,
-      touchStartListener,
-      touchEndListener,
-      turnPrevSlide,
-      turnNextSlide,
-      turnSlideToIndex,
-      turnSlideToId,
-      animationIndex,
-    } = useExecPlay()
-
-    const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
-    const { exitScreening } = useScreening()
-    const { slidesLoadLimit } = useLoadSlides()
-    const { fullscreenState, manualExitFullscreen } = useFullscreen()
-
-    const remarkFontSize = ref(16)
-    const currentSlideRemark = computed(() => {
-      return parseText2Paragraphs(currentSlide.value.remark || '无备注')
-    })
-
-    const handleMousewheelThumbnails = (e: WheelEvent) => {
-      if (!thumbnailsRef.value) return
-      thumbnailsRef.value.scrollBy(e.deltaY, 0)
-    }
-
-    const setRemarkFontSize = (fontSize: number) => {
-      if (fontSize < 12 || fontSize > 40) return
-      remarkFontSize.value = fontSize
-    }
-
-    watch(slideIndex, () => {
-      nextTick(() => {
-        if (!thumbnailsRef.value) return
-
-        const activeThumbnailRef: HTMLElement | null = thumbnailsRef.value.querySelector('.thumbnail.active')
-        if (!activeThumbnailRef) return
-
-        const width = thumbnailsRef.value.offsetWidth
-        const offsetLeft = activeThumbnailRef.offsetLeft
-        thumbnailsRef.value.scrollTo({ left: offsetLeft - width / 2, behavior: 'smooth' })
-      })
-    })
-
-    const contextmenus = (): ContextmenuItem[] => {
-      return [
-        {
-          text: '上一页',
-          subText: '↑ ←',
-          disable: slideIndex.value <= 0,
-          handler: () => turnPrevSlide(),
-        },
-        {
-          text: '下一页',
-          subText: '↓ →',
-          disable: slideIndex.value >= slides.value.length - 1,
-          handler: () => turnNextSlide(),
-        },
-        {
-          text: '第一页',
-          disable: slideIndex.value === 0,
-          handler: () => turnSlideToIndex(0),
-        },
-        {
-          text: '最后一页',
-          disable: slideIndex.value === slides.value.length - 1,
-          handler: () => turnSlideToIndex(slides.value.length - 1),
-        },
-        { divider: true },
-        {
-          text: '画笔工具',
-          handler: () => writingBoardToolVisible.value = true,
-        },
-        {
-          text: '普通视图',
-          handler: () => props.changeViewMode('base'),
-        },
-        { divider: true },
-        {
-          text: '结束放映',
-          subText: 'ESC',
-          handler: exitScreening,
-        },
-      ]
-    }
-
-    return {
-      slides,
-      slideIndex,
-      viewportRatio,
-      remarkFontSize,
-      currentSlideRemark,
-      setRemarkFontSize,
-      slideListWrapRef,
-      thumbnailsRef,
-      slideWidth,
-      slideHeight,
-      animationIndex,
-      turnSlideToId,
-      mousewheelListener,
-      touchStartListener,
-      touchEndListener,
-      turnSlideToIndex,
-      contextmenus,
-      slidesLoadLimit,
-      handleMousewheelThumbnails,
-      exitScreening,
-      fullscreenState,
-      enterFullscreen,
-      manualExitFullscreen,
-      writingBoardToolVisible,
-      laserPen,
-    }
+const props = defineProps({
+  changeViewMode: {
+    type: Function as PropType<(mode: 'base' | 'presenter') => void>,
+    required: true,
   },
 })
+
+const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
+
+const slideListWrapRef = ref<HTMLElement>()
+const thumbnailsRef = ref<HTMLElement>()
+const writingBoardToolVisible = ref(false)
+const laserPen = ref(false)
+
+const {
+  mousewheelListener,
+  touchStartListener,
+  touchEndListener,
+  turnPrevSlide,
+  turnNextSlide,
+  turnSlideToIndex,
+  turnSlideToId,
+  animationIndex,
+} = useExecPlay()
+
+const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
+const { exitScreening } = useScreening()
+const { slidesLoadLimit } = useLoadSlides()
+const { fullscreenState, manualExitFullscreen } = useFullscreen()
+
+const remarkFontSize = ref(16)
+const currentSlideRemark = computed(() => {
+  return parseText2Paragraphs(currentSlide.value.remark || '无备注')
+})
+
+const handleMousewheelThumbnails = (e: WheelEvent) => {
+  if (!thumbnailsRef.value) return
+  thumbnailsRef.value.scrollBy(e.deltaY, 0)
+}
+
+const setRemarkFontSize = (fontSize: number) => {
+  if (fontSize < 12 || fontSize > 40) return
+  remarkFontSize.value = fontSize
+}
+
+watch(slideIndex, () => {
+  nextTick(() => {
+    if (!thumbnailsRef.value) return
+
+    const activeThumbnailRef: HTMLElement | null = thumbnailsRef.value.querySelector('.thumbnail.active')
+    if (!activeThumbnailRef) return
+
+    const width = thumbnailsRef.value.offsetWidth
+    const offsetLeft = activeThumbnailRef.offsetLeft
+    thumbnailsRef.value.scrollTo({ left: offsetLeft - width / 2, behavior: 'smooth' })
+  })
+})
+
+const contextmenus = (): ContextmenuItem[] => {
+  return [
+    {
+      text: '上一页',
+      subText: '↑ ←',
+      disable: slideIndex.value <= 0,
+      handler: () => turnPrevSlide(),
+    },
+    {
+      text: '下一页',
+      subText: '↓ →',
+      disable: slideIndex.value >= slides.value.length - 1,
+      handler: () => turnNextSlide(),
+    },
+    {
+      text: '第一页',
+      disable: slideIndex.value === 0,
+      handler: () => turnSlideToIndex(0),
+    },
+    {
+      text: '最后一页',
+      disable: slideIndex.value === slides.value.length - 1,
+      handler: () => turnSlideToIndex(slides.value.length - 1),
+    },
+    { divider: true },
+    {
+      text: '画笔工具',
+      handler: () => writingBoardToolVisible.value = true,
+    },
+    {
+      text: '普通视图',
+      handler: () => props.changeViewMode('base'),
+    },
+    { divider: true },
+    {
+      text: '结束放映',
+      subText: 'ESC',
+      handler: exitScreening,
+    },
+  ]
+}
 </script>
 
 <style lang="scss" scoped>

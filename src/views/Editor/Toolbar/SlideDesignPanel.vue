@@ -122,7 +122,7 @@
           </SelectOption>
         </SelectOptGroup>
         <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
@@ -171,7 +171,7 @@
     <div class="theme-list" v-if="showPresetThemes">
       <div 
         class="theme-item" 
-        v-for="(item, index) in themes" 
+        v-for="(item, index) in PRESET_THEMES" 
         :key="index"
         :style="{ backgroundColor: item.background }"
         @click="updateTheme({
@@ -191,8 +191,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
@@ -203,169 +203,140 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from './common/ColorButton.vue'
 import { getImageDataURL } from '@/utils/image'
 
-const themes = PRESET_THEMES
-const webFonts = WEB_FONTS
+const slidesStore = useSlidesStore()
+const { availableFonts } = storeToRefs(useMainStore())
+const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 
-export default defineComponent({
-  name: 'slide-design-panel',
-  components: {
-    ColorButton,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { availableFonts } = storeToRefs(useMainStore())
-    const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
+const background = computed(() => {
+  if (!currentSlide.value.background) {
+    return {
+      type: 'solid',
+      value: '#fff',
+    } as SlideBackground
+  }
+  return currentSlide.value.background
+})
 
-    const background = computed(() => {
-      if (!currentSlide.value.background) {
-        return {
-          type: 'solid',
-          value: '#fff',
-        } as SlideBackground
+const { addHistorySnapshot } = useHistorySnapshot()
+
+// 设置背景模式：纯色、图片、渐变色
+const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
+  if (type === 'solid') {
+    const newBackground: SlideBackground = {
+      ...background.value,
+      type: 'solid',
+      color: background.value.color || '#fff',
+    }
+    slidesStore.updateSlide({ background: newBackground })
+  }
+  else if (type === 'image') {
+    const newBackground: SlideBackground = {
+      ...background.value,
+      type: 'image',
+      image: background.value.image || '',
+      imageSize: background.value.imageSize || 'cover',
+    }
+    slidesStore.updateSlide({ background: newBackground })
+  }
+  else {
+    const newBackground: SlideBackground = {
+      ...background.value,
+      type: 'gradient',
+      gradientType: background.value.gradientType || 'linear',
+      gradientColor: background.value.gradientColor || ['#fff', '#fff'],
+      gradientRotate: background.value.gradientRotate || 0,
+    }
+    slidesStore.updateSlide({ background: newBackground })
+  }
+  addHistorySnapshot()
+}
+
+// 设置背景图片
+const updateBackground = (props: Partial<SlideBackground>) => {
+  slidesStore.updateSlide({ background: { ...background.value, ...props } })
+  addHistorySnapshot()
+}
+
+// 上传背景图片
+const uploadBackgroundImage = (files: FileList) => {
+  const imageFile = files[0]
+  if (!imageFile) return
+  getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
+}
+
+// 应用当前页背景到全部页面
+const applyBackgroundAllSlide = () => {
+  const newSlides = slides.value.map(slide => {
+    return {
+      ...slide,
+      background: currentSlide.value.background,
+    }
+  })
+  slidesStore.setSlides(newSlides)
+  addHistorySnapshot()
+}
+
+// 设置主题
+const updateTheme = (themeProps: Partial<SlideTheme>) => {
+  slidesStore.setTheme(themeProps)
+}
+
+// 将当前主题应用到全部页面
+const applyThemeAllSlide = () => {
+  const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
+  const { themeColor, backgroundColor, fontColor, fontName } = theme.value
+
+  for (const slide of newSlides) {
+    if (!slide.background || slide.background.type !== 'image') {
+      slide.background = {
+        ...slide.background,
+        type: 'solid',
+        color: backgroundColor
       }
-      return currentSlide.value.background
-    })
+    }
 
-    const { addHistorySnapshot } = useHistorySnapshot()
-
-    // 设置背景模式：纯色、图片、渐变色
-    const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
-      if (type === 'solid') {
-        const newBackground: SlideBackground = {
-          ...background.value,
-          type: 'solid',
-          color: background.value.color || '#fff',
-        }
-        slidesStore.updateSlide({ background: newBackground })
+    const elements = slide.elements
+    for (const el of elements) {
+      if (el.type === 'shape') el.fill = themeColor
+      else if (el.type === 'line') el.color = themeColor
+      else if (el.type === 'text') {
+        el.defaultColor = fontColor
+        el.defaultFontName = fontName
+        if (el.fill) el.fill = themeColor
       }
-      else if (type === 'image') {
-        const newBackground: SlideBackground = {
-          ...background.value,
-          type: 'image',
-          image: background.value.image || '',
-          imageSize: background.value.imageSize || 'cover',
-        }
-        slidesStore.updateSlide({ background: newBackground })
-      }
-      else {
-        const newBackground: SlideBackground = {
-          ...background.value,
-          type: 'gradient',
-          gradientType: background.value.gradientType || 'linear',
-          gradientColor: background.value.gradientColor || ['#fff', '#fff'],
-          gradientRotate: background.value.gradientRotate || 0,
-        }
-        slidesStore.updateSlide({ background: newBackground })
-      }
-      addHistorySnapshot()
-    }
-
-    // 设置背景图片
-    const updateBackground = (props: Partial<SlideBackground>) => {
-      slidesStore.updateSlide({ background: { ...background.value, ...props } })
-      addHistorySnapshot()
-    }
-
-    // 上传背景图片
-    const uploadBackgroundImage = (files: File[]) => {
-      const imageFile = files[0]
-      if (!imageFile) return
-      getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
-    }
-
-    // 应用当前页背景到全部页面
-    const applyBackgroundAllSlide = () => {
-      const newSlides = slides.value.map(slide => {
-        return {
-          ...slide,
-          background: currentSlide.value.background,
-        }
-      })
-      slidesStore.setSlides(newSlides)
-      addHistorySnapshot()
-    }
-
-    // 设置主题
-    const updateTheme = (themeProps: Partial<SlideTheme>) => {
-      slidesStore.setTheme(themeProps)
-    }
-
-    // 将当前主题应用到全部页面
-    const applyThemeAllSlide = () => {
-      const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
-      const { themeColor, backgroundColor, fontColor, fontName } = theme.value
-
-      for (const slide of newSlides) {
-        if (!slide.background || slide.background.type !== 'image') {
-          slide.background = {
-            ...slide.background,
-            type: 'solid',
-            color: backgroundColor
-          }
-        }
-
-        const elements = slide.elements
-        for (const el of elements) {
-          if (el.type === 'shape') el.fill = themeColor
-          else if (el.type === 'line') el.color = themeColor
-          else if (el.type === 'text') {
-            el.defaultColor = fontColor
-            el.defaultFontName = fontName
-            if (el.fill) el.fill = themeColor
-          }
-          else if (el.type === 'table') {
-            if (el.theme) el.theme.color = themeColor
-            for (const rowCells of el.data) {
-              for (const cell of rowCells) {
-                if (cell.style) {
-                  cell.style.color = fontColor
-                  cell.style.fontname = fontName
-                }
-              }
+      else if (el.type === 'table') {
+        if (el.theme) el.theme.color = themeColor
+        for (const rowCells of el.data) {
+          for (const cell of rowCells) {
+            if (cell.style) {
+              cell.style.color = fontColor
+              cell.style.fontname = fontName
             }
           }
-          else if (el.type === 'chart') {
-            el.themeColor = [themeColor]
-            el.gridColor = fontColor
-          }
-          else if (el.type === 'latex') el.color = fontColor
-          else if (el.type === 'audio') el.color = themeColor
         }
       }
-      slidesStore.setSlides(newSlides)
-      addHistorySnapshot()
+      else if (el.type === 'chart') {
+        el.themeColor = [themeColor]
+        el.gridColor = fontColor
+      }
+      else if (el.type === 'latex') el.color = fontColor
+      else if (el.type === 'audio') el.color = themeColor
     }
+  }
+  slidesStore.setSlides(newSlides)
+  addHistorySnapshot()
+}
 
-    // 是否显示预设主题
-    const showPresetThemes = ref(true)
-    const togglePresetThemesVisible = () => {
-      showPresetThemes.value = !showPresetThemes.value
-    }
+// 是否显示预设主题
+const showPresetThemes = ref(true)
+const togglePresetThemesVisible = () => {
+  showPresetThemes.value = !showPresetThemes.value
+}
 
-    // 设置画布尺寸（宽高比例）
-    const updateViewportRatio = (value: number) => {
-      slidesStore.setViewportRatio(value)
-    }
-
-    return {
-      availableFonts,
-      background,
-      updateBackgroundType,
-      updateBackground,
-      uploadBackgroundImage,
-      applyBackgroundAllSlide,
-      themes,
-      theme,
-      webFonts,
-      updateTheme,
-      applyThemeAllSlide,
-      viewportRatio,
-      updateViewportRatio,
-      showPresetThemes,
-      togglePresetThemesVisible,
-    }
-  },
-})
+// 设置画布尺寸（宽高比例）
+const updateViewportRatio = (value: number) => {
+  slidesStore.setViewportRatio(value)
+}
 </script>
 
 <style lang="scss" scoped>

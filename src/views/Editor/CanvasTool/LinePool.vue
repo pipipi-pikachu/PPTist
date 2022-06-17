@@ -1,6 +1,6 @@
 <template>
   <div class="line-pool">
-    <div class="category" v-for="(item, i) in lineList" :key="item.type">
+    <div class="category" v-for="(item, i) in LINE_LIST" :key="item.type">
       <div class="category-name">{{item.type}}</div>
       <div class="line-list">
         <div class="line-item" v-for="(line, j) in item.children" :key="j">
@@ -48,31 +48,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { LINE_LIST, LinePoolItem } from '@/configs/lines'
 
 import LinePointMarker from '@/views/components/element/LineElement/LinePointMarker.vue'
 
-export default defineComponent({
-  name: 'line-pool',
-  emits: ['select'],
-  components: {
-    LinePointMarker,
-  },
-  setup(props, { emit }) {
-    const lineList = LINE_LIST
+const emit = defineEmits<{
+  (event: 'select', payload: LinePoolItem): void
+}>()
 
-    const selectLine = (line: LinePoolItem) => {
-      emit('select', line)
-    }
-
-    return {
-      lineList,
-      selectLine,
-    }
-  },
-})
+const selectLine = (line: LinePoolItem) => {
+  emit('select', line)
+}
 </script>
 
 <style lang="scss" scoped>

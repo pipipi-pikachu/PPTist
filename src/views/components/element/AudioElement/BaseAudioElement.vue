@@ -24,27 +24,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { PPTAudioElement } from '@/types/slides'
 
-export default defineComponent({
-  name: 'base-element-audio',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTAudioElement>,
-      required: true,
-    },
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTAudioElement>,
+    required: true,
   },
-  setup(props) {
-    const audioIconSize = computed(() => {
-      return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
-    })
+})
 
-    return {
-      audioIconSize,
-    }
-  },
+const audioIconSize = computed(() => {
+  return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
 })
 </script>
 

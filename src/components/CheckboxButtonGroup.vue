@@ -4,12 +4,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 
-export default defineComponent({
-  name: 'checkbox-button-group',
-})
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <template>
   <div class="shape-pool">
-    <div class="category" v-for="item in shapeList" :key="item.type">
+    <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
       <div class="category-name">{{item.type}}</div>
       <div class="shape-list">
         <div class="shape-item" v-for="(shape, index) in item.children" :key="index">
@@ -33,26 +33,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { SHAPE_LIST, ShapePoolItem } from '@/configs/shapes'
 
-export default defineComponent({
-  name: 'shape-pool',
-  emits: ['select'],
-  setup(props, { emit }) {
-    const shapeList = SHAPE_LIST
+const emit = defineEmits<{
+  (event: 'select', payload: ShapePoolItem): void
+}>()
 
-    const selectShape = (shape: ShapePoolItem) => {
-      emit('select', shape)
-    }
-
-    return {
-      shapeList,
-      selectShape,
-    }
-  },
-})
+const selectShape = (shape: ShapePoolItem) => {
+  emit('select', shape)
+}
 </script>
 
 <style lang="scss" scoped>

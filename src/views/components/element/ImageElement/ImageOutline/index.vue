@@ -23,8 +23,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { PPTImageElement } from '@/types/slides'
 import useClipImage from '../useClipImage'
 
@@ -32,26 +32,13 @@ import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'
 import ImagePolygonOutline from './ImagePolygonOutline.vue'
 
-export default defineComponent({
-  name: 'image-outline',
-  components: {
-    ImageRectOutline,
-    ImageEllipseOutline,
-    ImagePolygonOutline,
-  },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTImageElement>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const clip = computed(() => props.elementInfo.clip)
-    const { clipShape } = useClipImage(clip)
-
-    return {
-      clipShape,
-    }
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTImageElement>,
+    required: true,
   },
 })
+
+const clip = computed(() => props.elementInfo.clip)
+const { clipShape } = useClipImage(clip)
 </script>

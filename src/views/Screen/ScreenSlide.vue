@@ -20,8 +20,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, PropType, defineComponent, provide } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
@@ -31,49 +31,36 @@ import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 import ScreenElement from './ScreenElement.vue'
 
-export default defineComponent({
-  name: 'screen-slide',
-  components: {
-    ScreenElement,
+const props = defineProps({
+  slide: {
+    type: Object as PropType<Slide>,
+    required: true,
   },
-  props: {
-    slide: {
-      type: Object as PropType<Slide>,
-      required: true,
-    },
-    scale: {
-      type: Number,
-      required: true,
-    },
-    animationIndex: {
-      type: Number,
-      required: true,
-    },
-    turnSlideToId: {
-      type: Function as PropType<(id: string) => void>,
-      required: true,
-    },
-    manualExitFullscreen: {
-      type: Function as PropType<() => void>,
-      required: true,
-    },
+  scale: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const { viewportRatio } = storeToRefs(useSlidesStore())
-
-    const background = computed(() => props.slide.background)
-    const { backgroundStyle } = useSlideBackgroundStyle(background)
-
-    const slideId = computed(() => props.slide.id)
-    provide(injectKeySlideId, slideId)
-
-    return {
-      backgroundStyle,
-      VIEWPORT_SIZE,
-      viewportRatio,
-    }
+  animationIndex: {
+    type: Number,
+    required: true,
+  },
+  turnSlideToId: {
+    type: Function as PropType<(id: string) => void>,
+    required: true,
+  },
+  manualExitFullscreen: {
+    type: Function as PropType<() => void>,
+    required: true,
   },
 })
+
+const { viewportRatio } = storeToRefs(useSlidesStore())
+
+const background = computed(() => props.slide.background)
+const { backgroundStyle } = useSlideBackgroundStyle(background)
+
+const slideId = computed(() => props.slide.id)
+provide(injectKeySlideId, slideId)
 </script>
 
 <style lang="scss" scoped>

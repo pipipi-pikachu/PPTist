@@ -78,8 +78,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
@@ -89,55 +89,29 @@ import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 
-export default defineComponent({
-  name: 'editor-header',
-  components: {
-    HotkeyDoc,
-  },
-  setup() {
-    const mainStore = useMainStore()
-    const { showGridLines, showRuler } = storeToRefs(mainStore)
+const mainStore = useMainStore()
+const { showGridLines, showRuler } = storeToRefs(mainStore)
 
-    const { enterScreening, enterScreeningFromStart } = useScreening()
-    const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
-    const { redo, undo } = useHistorySnapshot()
-    const { importSpecificFile } = useExport()
+const { enterScreening, enterScreeningFromStart } = useScreening()
+const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
+const { redo, undo } = useHistorySnapshot()
+const { importSpecificFile } = useExport()
 
-    const setDialogForExport = mainStore.setDialogForExport
+const setDialogForExport = mainStore.setDialogForExport
 
-    const toggleGridLines = () => {
-      mainStore.setGridLinesState(!showGridLines.value)
-    }
+const toggleGridLines = () => {
+  mainStore.setGridLinesState(!showGridLines.value)
+}
 
-    const toggleRuler = () => {
-      mainStore.setRulerState(!showRuler.value)
-    }
+const toggleRuler = () => {
+  mainStore.setRulerState(!showRuler.value)
+}
 
-    const hotkeyDrawerVisible = ref(false)
+const hotkeyDrawerVisible = ref(false)
 
-    const goIssues = () => {
-      window.open('https://github.com/pipipi-pikachu/PPTist/issues')
-    }
-
-    return {
-      redo,
-      undo,
-      showGridLines,
-      showRuler,
-      hotkeyDrawerVisible,
-      importSpecificFile,
-      setDialogForExport,
-      enterScreening,
-      enterScreeningFromStart,
-      createSlide,
-      deleteSlide,
-      toggleGridLines,
-      toggleRuler,
-      resetSlides,
-      goIssues,
-    }
-  },
-})
+const goIssues = () => {
+  window.open('https://github.com/pipipi-pikachu/PPTist/issues')
+}
 </script>
 
 <style lang="scss" scoped>

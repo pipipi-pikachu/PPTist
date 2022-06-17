@@ -7,32 +7,19 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { SlideBackground } from '@/types/slides'
 import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
-export default defineComponent({
-  name: 'viewport-background',
-  components: {
-    GridLines,
-  },
-  setup() {
-    const { showGridLines } = storeToRefs(useMainStore())
-    const { currentSlide } = storeToRefs(useSlidesStore())
-    const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
+const { showGridLines } = storeToRefs(useMainStore())
+const { currentSlide } = storeToRefs(useSlidesStore())
+const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
 
-    const { backgroundStyle } = useSlideBackgroundStyle(background)
-
-    return {
-      showGridLines,
-      backgroundStyle,
-    }
-  },
-})
+const { backgroundStyle } = useSlideBackgroundStyle(background)
 </script>
 
 <style lang="scss" scoped>

@@ -4,7 +4,7 @@
     <div class="background-image-wrapper">
       <FileInput @change="files => setVideoPoster(files)">
         <div class="background-image">
-          <div class="content" :style="{ backgroundImage: `url(${handleElement.poster})` }">
+          <div class="content" :style="{ backgroundImage: `url(${handleVideoElement.poster})` }">
             <IconPlus />
           </div>
         </div>
@@ -14,42 +14,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
+import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-export default defineComponent({
-  name: 'video-style-panel',
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement } = storeToRefs(useMainStore())
+const slidesStore = useSlidesStore()
+const { handleElement } = storeToRefs(useMainStore())
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const handleVideoElement = handleElement as Ref<PPTVideoElement>
 
-    const updateVideo = (props: Partial<PPTVideoElement>) => {
-      if (!handleElement.value) return
-      slidesStore.updateElement({ id: handleElement.value.id, props })
-      addHistorySnapshot()
-    }
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    // 设置视频预览封面
-    const setVideoPoster = (files: File[]) => {
-      const imageFile = files[0]
-      if (!imageFile) return
-      getImageDataURL(imageFile).then(dataURL => updateVideo({ poster: dataURL }))
-    }
+const updateVideo = (props: Partial<PPTVideoElement>) => {
+  if (!handleElement.value) return
+  slidesStore.updateElement({ id: handleElement.value.id, props })
+  addHistorySnapshot()
+}
 
-    return {
-      handleElement,
-      updateVideo,
-      setVideoPoster,
-    }
-  }
-})
+// 设置视频预览封面
+const setVideoPoster = (files: FileList) => {
+  const imageFile = files[0]
+  if (!imageFile) return
+  getImageDataURL(imageFile).then(dataURL => updateVideo({ poster: dataURL }))
+}
 </script>
 
 <style lang="scss" scoped>

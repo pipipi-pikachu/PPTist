@@ -62,7 +62,7 @@
           </SelectOption>
         </SelectOptGroup>
         <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
@@ -141,8 +141,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, PPTElementOutline, TableCell } from '@/types/slides'
@@ -152,118 +152,96 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
 
-const webFonts = WEB_FONTS
+const slidesStore = useSlidesStore()
+const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())
 
-export default defineComponent({
-  name: 'multi-style-panel',
-  components: {
-    ColorButton,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const updateElement = (id: string, props: Partial<PPTElement>) => {
+  slidesStore.updateElement({ id, props })
+  addHistorySnapshot()
+}
 
-    const updateElement = (id: string, props: Partial<PPTElement>) => {
-      slidesStore.updateElement({ id, props })
-      addHistorySnapshot()
-    }
+const fontSizeOptions = [
+  '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
+  '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
+  '80px', '88px', '96px', '104px', '112px', '120px',
+]
 
-    const fontSizeOptions = [
-      '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
-      '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
-      '80px', '88px', '96px', '104px', '112px', '120px',
-    ]
+const fill = ref('#fff')
+const outline = ref<PPTElementOutline>({
+  width: 0,
+  color: '#fff',
+  style: 'solid',
+})
 
-    const fill = ref('#fff')
-    const outline = ref<PPTElementOutline>({
-      width: 0,
-      color: '#fff',
-      style: 'solid',
-    })
+// 批量修改填充色（表格元素为单元格填充、音频元素为图标颜色）
+const updateFill = (value: string) => {
+  for (const el of activeElementList.value) {
+    if (
+      el.type === 'text' ||
+      el.type === 'shape' ||
+      el.type === 'chart'
+    ) updateElement(el.id, { fill: value })
 
-    // 批量修改填充色（表格元素为单元格填充、音频元素为图标颜色）
-    const updateFill = (value: string) => {
-      for (const el of activeElementList.value) {
-        if (
-          el.type === 'text' ||
-          el.type === 'shape' ||
-          el.type === 'chart'
-        ) updateElement(el.id, { fill: value })
-
-        if (el.type === 'table') {
-          const data: TableCell[][] = JSON.parse(JSON.stringify(el.data))
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < data[i].length; j++) {
-              const style = data[i][j].style || {}
-              data[i][j].style = { ...style, backcolor: value }
-            }
-          }
-          updateElement(el.id, { data })
-        }
-
-        if (el.type === 'audio') updateElement(el.id, { color: value })
-      }
-      fill.value = value
-    }
-
-    // 修改边框/线条样式
-    const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
-
-      for (const el of activeElementList.value) {
-        if (
-          el.type === 'text' ||
-          el.type === 'image' ||
-          el.type === 'shape' ||
-          el.type === 'table' ||
-          el.type === 'chart'
-        ) {
-          const outline = el.outline || { width: 2, color: '#000', style: 'solid' }
-          const props = { outline: { ...outline, ...outlineProps } }
-          updateElement(el.id, props)
-        }
-
-        if (el.type === 'line') updateElement(el.id, outlineProps)
-      }
-      outline.value = { ...outline.value, ...outlineProps }
-    }
-
-    // 修改文字样式
-    const updateFontStyle = (command: string, value: string) => {
-      for (const el of activeElementList.value) {
-        if (el.type === 'text' || (el.type === 'shape' && el.text?.content)) {
-          emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { target: el.id, action: { command, value } })
-        }
-        if (el.type === 'table') {
-          const data: TableCell[][] = JSON.parse(JSON.stringify(el.data))
-          for (let i = 0; i < data.length; i++) {
-            for (let j = 0; j < data[i].length; j++) {
-              const style = data[i][j].style || {}
-              data[i][j].style = { ...style, [command]: value }
-            }
-          }
-          updateElement(el.id, { data })
-        }
-        if (el.type === 'latex' && command === 'color') {
-          updateElement(el.id, { color: value })
+    if (el.type === 'table') {
+      const data: TableCell[][] = JSON.parse(JSON.stringify(el.data))
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+          const style = data[i][j].style || {}
+          data[i][j].style = { ...style, backcolor: value }
         }
       }
+      updateElement(el.id, { data })
     }
 
-    return {
-      webFonts,
-      richTextAttrs,
-      availableFonts,
-      fontSizeOptions,
-      fill,
-      outline,
-      updateFill,
-      updateOutline,
-      updateFontStyle,
+    if (el.type === 'audio') updateElement(el.id, { color: value })
+  }
+  fill.value = value
+}
+
+// 修改边框/线条样式
+const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
+
+  for (const el of activeElementList.value) {
+    if (
+      el.type === 'text' ||
+      el.type === 'image' ||
+      el.type === 'shape' ||
+      el.type === 'table' ||
+      el.type === 'chart'
+    ) {
+      const outline = el.outline || { width: 2, color: '#000', style: 'solid' }
+      const props = { outline: { ...outline, ...outlineProps } }
+      updateElement(el.id, props)
+    }
+
+    if (el.type === 'line') updateElement(el.id, outlineProps)
+  }
+  outline.value = { ...outline.value, ...outlineProps }
+}
+
+// 修改文字样式
+const updateFontStyle = (command: string, value: string) => {
+  for (const el of activeElementList.value) {
+    if (el.type === 'text' || (el.type === 'shape' && el.text?.content)) {
+      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { target: el.id, action: { command, value } })
+    }
+    if (el.type === 'table') {
+      const data: TableCell[][] = JSON.parse(JSON.stringify(el.data))
+      for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+          const style = data[i][j].style || {}
+          data[i][j].style = { ...style, [command]: value }
+        }
+      }
+      updateElement(el.id, { data })
+    }
+    if (el.type === 'latex' && command === 'color') {
+      updateElement(el.id, { color: value })
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>

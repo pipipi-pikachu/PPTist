@@ -4,47 +4,37 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, PropType, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { AlignmentLineAxis } from '@/types/edit'
 
-export default defineComponent({
-  name: 'alignment-line',
-  props: {
-    type: {
-      type: String as PropType<'vertical' | 'horizontal'>,
-      required: true,
-    },
-    axis: {
-      type: Object as PropType<AlignmentLineAxis>,
-      required: true,
-    },
-    length: {
-      type: Number,
-      required: true,
-    },
-    canvasScale: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  type: {
+    type: String as PropType<'vertical' | 'horizontal'>,
+    required: true,
   },
-  setup(props) {
-    // 吸附对齐线的位置
-    const left = computed(() => props.axis.x * props.canvasScale + 'px')
-    const top = computed(() => props.axis.y * props.canvasScale + 'px')
-
-    // 吸附对齐线的长度
-    const sizeStyle = computed(() => {
-      if (props.type === 'vertical') return { height: props.length * props.canvasScale + 'px' }
-      return { width: props.length * props.canvasScale + 'px' }
-    })
-
-    return {
-      left,
-      top,
-      sizeStyle,
-    }
+  axis: {
+    type: Object as PropType<AlignmentLineAxis>,
+    required: true,
   },
+  length: {
+    type: Number,
+    required: true,
+  },
+  canvasScale: {
+    type: Number,
+    required: true,
+  },
+})
+
+// 吸附对齐线的位置
+const left = computed(() => props.axis.x * props.canvasScale + 'px')
+const top = computed(() => props.axis.y * props.canvasScale + 'px')
+
+// 吸附对齐线的长度
+const sizeStyle = computed(() => {
+  if (props.type === 'vertical') return { height: props.length * props.canvasScale + 'px' }
+  return { width: props.length * props.canvasScale + 'px' }
 })
 </script>
 

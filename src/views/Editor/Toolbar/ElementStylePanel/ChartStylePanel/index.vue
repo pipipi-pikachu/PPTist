@@ -6,7 +6,7 @@
 
     <Divider />
 
-    <template v-if="handleElement.chartType === 'line'">
+    <template v-if="handleChartElement.chartType === 'line'">
       <div class="row">
         <Checkbox 
           @change="e => updateOptions({ showArea: e.target.checked })"
@@ -26,7 +26,7 @@
         >使用平滑曲线</Checkbox>
       </div>
     </template>
-    <div class="row" v-if="handleElement.chartType === 'bar'">
+    <div class="row" v-if="handleChartElement.chartType === 'bar'">
       <Checkbox 
         @change="e => updateOptions({ horizontalBars: e.target.checked })" 
         :checked="horizontalBars"
@@ -36,7 +36,7 @@
         :checked="stackBars"
       >堆叠样式</Checkbox>
     </div>
-    <div class="row" v-if="handleElement.chartType === 'pie'">
+    <div class="row" v-if="handleChartElement.chartType === 'pie'">
       <Checkbox 
         @change="e => updateOptions({ donut: e.target.checked })" 
         :checked="donut"
@@ -143,7 +143,7 @@
       destroyOnClose
     >
       <ChartDataEditor 
-        :data="handleElement.data"
+        :data="handleChartElement.data"
         @close="chartDataEditorVisible = false"
         @save="value => updateData(value)"
       />
@@ -151,8 +151,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onUnmounted, Ref, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { onUnmounted, Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
@@ -178,165 +178,132 @@ const presetChartThemes = [
   ['#8a7ca8', '#e098c7', '#8fd3e8', '#71669e', '#cc70af', '#7cb4cc'],
 ]
 
-export default defineComponent({
-  name: 'chart-style-panel',
-  components: {
-    ElementOutline,
-    ChartDataEditor,
-    ColorButton,
-  },
-  setup() {
-    const mainStore = useMainStore()
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId } = storeToRefs(mainStore)
-    const { theme } = storeToRefs(slidesStore)
+const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId } = storeToRefs(mainStore)
+const { theme } = storeToRefs(slidesStore)
 
-    const chartDataEditorVisible = ref(false)
-    const presetThemesVisible = ref(false)
-    const presetThemeColorHoverIndex = ref<[number, number]>([-1, -1])
+const handleChartElement = handleElement as Ref<PPTChartElement>
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const chartDataEditorVisible = ref(false)
+const presetThemesVisible = ref(false)
+const presetThemeColorHoverIndex = ref<[number, number]>([-1, -1])
 
-    const fill = ref<string>('#000')
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    const themeColor = ref<string[]>([])
-    const gridColor = ref('')
-    const legend = ref('')
+const fill = ref<string>('#000')
 
-    const lineSmooth = ref(true)
-    const showLine = ref(true)
-    const showArea = ref(false)
-    const horizontalBars = ref(false)
-    const donut = ref(false)
-    const stackBars = ref(false)
+const themeColor = ref<string[]>([])
+const gridColor = ref('')
+const legend = ref('')
 
-    watch(handleElement, () => {
-      if (!handleElement.value || handleElement.value.type !== 'chart') return
-      fill.value = handleElement.value.fill || '#fff'
+const lineSmooth = ref(true)
+const showLine = ref(true)
+const showArea = ref(false)
+const horizontalBars = ref(false)
+const donut = ref(false)
+const stackBars = ref(false)
 
-      if (handleElement.value.options) {
-        const {
-          lineSmooth: _lineSmooth,
-          showLine: _showLine,
-          showArea: _showArea,
-          horizontalBars: _horizontalBars,
-          donut: _donut,
-          stackBars: _stackBars,
-        } = handleElement.value.options
+watch(handleElement, () => {
+  if (!handleElement.value || handleElement.value.type !== 'chart') return
+  fill.value = handleElement.value.fill || '#fff'
 
-        if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth as boolean
-        if (_showLine !== undefined) showLine.value = _showLine
-        if (_showArea !== undefined) showArea.value = _showArea
-        if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
-        if (_donut !== undefined) donut.value = _donut
-        if (_stackBars !== undefined) stackBars.value = _stackBars
-      }
+  if (handleElement.value.options) {
+    const {
+      lineSmooth: _lineSmooth,
+      showLine: _showLine,
+      showArea: _showArea,
+      horizontalBars: _horizontalBars,
+      donut: _donut,
+      stackBars: _stackBars,
+    } = handleElement.value.options
 
-      themeColor.value = handleElement.value.themeColor
-      gridColor.value = handleElement.value.gridColor || '#333'
-      legend.value = handleElement.value.legend || ''
-    }, { deep: true, immediate: true })
+    if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth as boolean
+    if (_showLine !== undefined) showLine.value = _showLine
+    if (_showArea !== undefined) showArea.value = _showArea
+    if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
+    if (_donut !== undefined) donut.value = _donut
+    if (_stackBars !== undefined) stackBars.value = _stackBars
+  }
 
-    const updateElement = (props: Partial<PPTChartElement>) => {
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
+  themeColor.value = handleElement.value.themeColor
+  gridColor.value = handleElement.value.gridColor || '#333'
+  legend.value = handleElement.value.legend || ''
+}, { deep: true, immediate: true })
 
-    // 设置图表数据
-    const updateData = (data: ChartData) => {
-      chartDataEditorVisible.value = false
-      updateElement({ data })
-    }
+const updateElement = (props: Partial<PPTChartElement>) => {
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
 
-    // 设置填充色
-    const updateFill = (value: string) => {
-      updateElement({ fill: value })
-    }
+// 设置图表数据
+const updateData = (data: ChartData) => {
+  chartDataEditorVisible.value = false
+  updateElement({ data })
+}
 
-    // 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
-    const updateOptions = (optionProps: ChartOptions) => {
-      const _handleElement = handleElement.value as PPTChartElement
+// 设置填充色
+const updateFill = (value: string) => {
+  updateElement({ fill: value })
+}
 
-      const newOptions = { ..._handleElement.options, ...optionProps }
-      updateElement({ options: newOptions })
-    }
+// 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
+const updateOptions = (optionProps: ChartOptions) => {
+  const _handleElement = handleElement.value as PPTChartElement
 
-    // 设置主题色
-    const updateTheme = (color: string, index: number) => {
-      const props = {
-        themeColor: themeColor.value.map((c, i) => i === index ? color : c),
-      }
-      updateElement(props)
-    }
+  const newOptions = { ..._handleElement.options, ...optionProps }
+  updateElement({ options: newOptions })
+}
 
-    // 添加主题色
-    const addThemeColor = () => {
-      const props = {
-        themeColor: [...themeColor.value, theme.value.themeColor],
-      }
-      updateElement(props)
-    }
+// 设置主题色
+const updateTheme = (color: string, index: number) => {
+  const props = {
+    themeColor: themeColor.value.map((c, i) => i === index ? color : c),
+  }
+  updateElement(props)
+}
 
-    // 使用预置主题配色
-    const applyPresetTheme = (colors: string[], index: number) => {
-      const themeColor = colors.slice(0, index + 1)
-      updateElement({ themeColor })
-      presetThemesVisible.value = false
-    }
+// 添加主题色
+const addThemeColor = () => {
+  const props = {
+    themeColor: [...themeColor.value, theme.value.themeColor],
+  }
+  updateElement(props)
+}
 
-    // 删除主题色
-    const deleteThemeColor = (index: number) => {
-      const props = {
-        themeColor: themeColor.value.filter((c, i) => i !== index),
-      }
-      updateElement(props)
-    }
+// 使用预置主题配色
+const applyPresetTheme = (colors: string[], index: number) => {
+  const themeColor = colors.slice(0, index + 1)
+  updateElement({ themeColor })
+  presetThemesVisible.value = false
+}
 
-    // 设置网格颜色
-    const updateGridColor = (gridColor: string) => {
-      updateElement({ gridColor })
-    }
+// 删除主题色
+const deleteThemeColor = (index: number) => {
+  const props = {
+    themeColor: themeColor.value.filter((c, i) => i !== index),
+  }
+  updateElement(props)
+}
 
-    // 设置图例位置/不显示
-    const updateLegend = (legend: '' | 'top' | 'bottom') => {
-      updateElement({ legend })
-    }
+// 设置网格颜色
+const updateGridColor = (gridColor: string) => {
+  updateElement({ gridColor })
+}
 
-    const openDataEditor = () => chartDataEditorVisible.value = true
+// 设置图例位置/不显示
+const updateLegend = (legend: '' | 'top' | 'bottom') => {
+  updateElement({ legend })
+}
 
-    emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
-    onUnmounted(() => {
-      emitter.off(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
-    })
+const openDataEditor = () => chartDataEditorVisible.value = true
 
-    return {
-      chartDataEditorVisible,
-      presetThemesVisible,
-      presetThemeColorHoverIndex,
-      handleElement: handleElement as Ref<PPTChartElement>,
-      updateData,
-      fill,
-      updateFill,
-      lineSmooth,
-      showLine,
-      showArea,
-      horizontalBars,
-      donut,
-      stackBars,
-      updateOptions,
-      themeColor,
-      gridColor,
-      legend,
-      updateTheme,
-      addThemeColor,
-      deleteThemeColor,
-      updateGridColor,
-      updateLegend,
-      presetChartThemes,
-      applyPresetTheme,
-    }
-  },
+emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
+onUnmounted(() => {
+  emitter.off(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
 })
+
+// handleElement: handleElement as Ref<PPTChartElement>,
 </script>
 
 <style lang="scss" scoped>

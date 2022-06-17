@@ -34,17 +34,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { PPTLatexElement } from '@/types/slides'
 
-export default defineComponent({
-  name: 'base-element-latex',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTLatexElement>,
-      required: true,
-    },
+defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTLatexElement>,
+    required: true,
   },
 })
 </script>

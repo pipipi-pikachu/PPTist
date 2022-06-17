@@ -47,76 +47,60 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType, ref, StyleValue } from 'vue'
+<script lang="ts" setup>
+import { PropType, ref, StyleValue } from 'vue'
 import WritingBoard from '@/components/WritingBoard.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 
 type WritingBoardModel = 'pen' | 'mark' | 'eraser'
 
-export default defineComponent({
-  name: 'writing-board-tool',
-  emits: ['close'],
-  components: {
-    WritingBoard,
+defineProps({
+  slideWidth: {
+    type: Number,
+    required: true,
   },
-  props: {
-    slideWidth: {
-      type: Number,
-      required: true,
-    },
-    slideHeight: {
-      type: Number,
-      required: true,
-    },
-    position: {
-      type: Object as PropType<StyleValue>,
-      default: () => ({
-        right: '5px',
-        bottom: '5px',
-      })
-    },
+  slideHeight: {
+    type: Number,
+    required: true,
   },
-  setup(props, { emit }) {
-    const writingBoardRef = ref()
-    const writingBoardColor = ref('#e2534d')
-    const writingBoardModel = ref<WritingBoardModel>('pen')
-    const blackboard = ref(false)
-
-    const changeModel = (model: WritingBoardModel) => {
-      writingBoardModel.value = model
-    }
-
-    // 清除画布上的墨迹
-    const clearCanvas = () => {
-      writingBoardRef.value.clearCanvas()
-    }
-
-    // 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态
-    const changeColor = (color: string) => {
-      if (writingBoardModel.value === 'eraser') writingBoardModel.value = 'pen'
-      writingBoardColor.value = color
-    }
-    
-    // 关闭写字板
-    const closeWritingBoard = () => {
-      emit('close')
-    }
-
-    return {
-      writingBoardRef,
-      writingBoardColors,
-      writingBoardColor,
-      writingBoardModel,
-      blackboard,
-      changeModel,
-      clearCanvas,
-      changeColor,
-      closeWritingBoard,
-    }
+  position: {
+    type: Object as PropType<StyleValue>,
+    default: () => ({
+      right: '5px',
+      bottom: '5px',
+    })
   },
 })
+
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
+
+const writingBoardRef = ref()
+const writingBoardColor = ref('#e2534d')
+const writingBoardModel = ref<WritingBoardModel>('pen')
+const blackboard = ref(false)
+
+const changeModel = (model: WritingBoardModel) => {
+  writingBoardModel.value = model
+}
+
+// 清除画布上的墨迹
+const clearCanvas = () => {
+  writingBoardRef.value.clearCanvas()
+}
+
+// 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态
+const changeColor = (color: string) => {
+  if (writingBoardModel.value === 'eraser') writingBoardModel.value = 'pen'
+  writingBoardColor.value = color
+}
+
+// 关闭写字板
+const closeWritingBoard = () => {
+  emit('close')
+}
 </script>
 
 <style lang="scss" scoped>

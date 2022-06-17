@@ -2,8 +2,23 @@
   <div class="checkerboard" :style="bgStyle"></div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  size: {
+    type: Number,
+    default: 8,
+  },
+  white: {
+    type: String,
+    default: '#fff',
+  },
+  grey: {
+    type: String,
+    default: '#e6e6e6',
+  },
+})
 
 const checkboardCache = {}
 
@@ -32,33 +47,9 @@ const getCheckboard = (white: string, grey: string, size: number) => {
   return checkboard
 }
 
-export default defineComponent({
-  name: 'checkboard',
-  emits: ['colorChange'],
-  props: {
-    size: {
-      type: Number,
-      default: 8,
-    },
-    white: {
-      type: String,
-      default: '#fff',
-    },
-    grey: {
-      type: String,
-      default: '#e6e6e6',
-    },
-  },
-  setup(props) {
-    const bgStyle = computed(() => {
-      const checkboard = getCheckboard(props.white, props.grey, props.size)
-      return { backgroundImage: `url(${checkboard})` }
-    })
-
-    return {
-      bgStyle,
-    }
-  },
+const bgStyle = computed(() => {
+  const checkboard = getCheckboard(props.white, props.grey, props.size)
+  return { backgroundImage: `url(${checkboard})` }
 })
 </script>
 

@@ -28,8 +28,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 
 type TypeKey = 'video' | 'audio'
@@ -38,43 +38,33 @@ interface TabItem {
   label: string
 }
 
-export default defineComponent({
-  name: 'media-input',
-  emits: ['insertVideo', 'insertAudio', 'close'],
-  setup(props, { emit }) {
-    const type = ref<TypeKey>('video')
+const emit = defineEmits<{
+  (event: 'insertVideo', payload: string): void
+  (event: 'insertAudio', payload: string): void
+  (event: 'close'): void
+}>()
 
-    const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_watermarked/181004_04_Dolphins-Whale_06_preview.webm')
-    const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
+const type = ref<TypeKey>('video')
 
-    const tabs: TabItem[] = [
-      { key: 'video', label: '视频' },
-      { key: 'audio', label: '音频' },
-    ]
+const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_watermarked/181004_04_Dolphins-Whale_06_preview.webm')
+const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
-    const insertVideo = () => {
-      if (!videoSrc.value) return message.error('请先输入正确的视频地址')
-      emit('insertVideo', videoSrc.value)
-    }
+const tabs: TabItem[] = [
+  { key: 'video', label: '视频' },
+  { key: 'audio', label: '音频' },
+]
 
-    const insertAudio = () => {
-      if (!audioSrc.value) return message.error('请先输入正确的音频地址')
-      emit('insertAudio', audioSrc.value)
-    }
+const insertVideo = () => {
+  if (!videoSrc.value) return message.error('请先输入正确的视频地址')
+  emit('insertVideo', videoSrc.value)
+}
 
-    const close = () => emit('close')
+const insertAudio = () => {
+  if (!audioSrc.value) return message.error('请先输入正确的音频地址')
+  emit('insertAudio', audioSrc.value)
+}
 
-    return {
-      type,
-      videoSrc,
-      audioSrc,
-      tabs,
-      insertVideo,
-      insertAudio,
-      close,
-    }
-  },
-})
+const close = () => emit('close')
 </script>
 
 <style lang="scss" scoped>

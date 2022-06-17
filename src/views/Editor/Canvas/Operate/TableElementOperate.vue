@@ -27,7 +27,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+export default {
+  inheritAttrs: false,
+}
+</script>
+
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTTableElement } from '@/types/slides'
@@ -38,47 +44,31 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-export default defineComponent({
-  name: 'table-element-operate',
-  inheritAttrs: false,
-  components: {
-    RotateHandler,
-    ResizeHandler,
-    BorderLine,
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTTableElement>,
+    required: true,
   },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTTableElement>,
-      required: true,
-    },
-    handlerVisible: {
-      type: Boolean,
-      required: true,
-    },
-    rotateElement: {
-      type: Function as PropType<(element: PPTTableElement) => void>,
-      required: true,
-    },
-    scaleElement: {
-      type: Function as PropType<(e: MouseEvent, element: PPTTableElement, command: OperateResizeHandlers) => void>,
-      required: true,
-    },
+  handlerVisible: {
+    type: Boolean,
+    required: true,
   },
-  setup(props) {
-    const { canvasScale } = storeToRefs(useMainStore())
-
-    const outlineWidth = computed(() => props.elementInfo.outline.width || 1)
-
-    const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value)
-    const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
-
-    const { textElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-
-    return {
-      scaleWidth,
-      textElementResizeHandlers,
-      borderLines,
-    }
+  rotateElement: {
+    type: Function as PropType<(element: PPTTableElement) => void>,
+    required: true,
+  },
+  scaleElement: {
+    type: Function as PropType<(e: MouseEvent, element: PPTTableElement, command: OperateResizeHandlers) => void>,
+    required: true,
   },
 })
+
+const { canvasScale } = storeToRefs(useMainStore())
+
+const outlineWidth = computed(() => props.elementInfo.outline.width || 1)
+
+const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value)
+const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
+
+const { textElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 </script>

@@ -4,7 +4,7 @@
       <div 
         class="tab" 
         :class="{ 'active': selectedSymbolKey === item.key }" 
-        v-for="item in symbolPoolList" 
+        v-for="item in SYMBOL_LIST" 
         :key="item.key"
         @click="selectedSymbolKey = item.key"
       >{{item.label}}</div>
@@ -17,34 +17,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { SYMBOL_LIST } from '@/configs/symbol'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 
-const symbolPoolList = SYMBOL_LIST
-
-export default defineComponent({
-  name: 'symbol-panel',
-  setup() {
-    const selectedSymbolKey = ref(symbolPoolList[0].key)
-    const symbolPool = computed(() => {
-      const selectedSymbol = symbolPoolList.find(item => item.key === selectedSymbolKey.value)
-      return selectedSymbol?.children || []
-    })
-
-    const selectSymbol = (value: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } })
-    }
-
-    return {
-      symbolPoolList,
-      symbolPool,
-      selectedSymbolKey,
-      selectSymbol,
-    }
-  },
+const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
+const symbolPool = computed(() => {
+  const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value)
+  return selectedSymbol?.children || []
 })
+
+const selectSymbol = (value: string) => {
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,10 +2,8 @@
   <div class="rotate-handler"></div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'rotate-handler',
-}
+<script lang="ts" setup>
+
 </script>
 
 <style lang="scss" scoped>

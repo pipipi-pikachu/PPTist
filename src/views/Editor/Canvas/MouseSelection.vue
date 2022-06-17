@@ -9,36 +9,31 @@
   ></div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'mouse-selection',
-  props: {
-    top: {
-      type: Number,
-      required: true,
+<script lang="ts" setup>
+defineProps({
+  top: {
+    type: Number,
+    required: true,
+  },
+  left: {
+    type: Number,
+    required: true,
+  },
+  width: {
+    type: Number,
+    required: true,
+  },
+  height: {
+    type: Number,
+    required: true,
+  },
+  quadrant: {
+    type: Number,
+    required: true,
+    validator(value: number) {
+      return [1, 2, 3, 4].includes(value)
     },
-    left: {
-      type: Number,
-      required: true,
-    },
-    width: {
-      type: Number,
-      required: true,
-    },
-    height: {
-      type: Number,
-      required: true,
-    },
-    quadrant: {
-      type: Number,
-      required: true,
-      validator(value: number) {
-        return [1, 2, 3, 4].includes(value)
-      },
-    },
-  }
+  },
 })
 </script>
 

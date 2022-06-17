@@ -2,41 +2,33 @@
   <div :class="['resize-handler', rotateClassName, type]"></div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType } from 'vue'
 import { OperateResizeHandlers } from '@/types/edit'
 
-export default defineComponent({
-  name: 'resize-handler',
-  props: {
-    type: {
-      type: String as PropType<OperateResizeHandlers>,
-      default: '',
-    },
-    rotate: {
-      type: Number,
-      default: 0,
-    },
+const props = defineProps({
+  type: {
+    type: String as PropType<OperateResizeHandlers>,
+    default: '',
   },
-  setup(props) {
-    const rotateClassName = computed(() => {
-      const prefix = 'rotate-'
-      const rotate = props.rotate
-      if (rotate > -22.5 && rotate <= 22.5) return prefix + 0
-      else if (rotate > 22.5 && rotate <= 67.5) return prefix + 45
-      else if (rotate > 67.5 && rotate <= 112.5) return prefix + 90
-      else if (rotate > 112.5 && rotate <= 157.5) return prefix + 135
-      else if (rotate > 157.5 || rotate <= -157.5) return prefix + 0
-      else if (rotate > -157.5 && rotate <= -112.5) return prefix + 45
-      else if (rotate > -112.5 && rotate <= -67.5) return prefix + 90
-      else if (rotate > -67.5 && rotate <= -22.5) return prefix + 135
-      return prefix + 0
-    })
+  rotate: {
+    type: Number,
+    default: 0,
+  },
+})
 
-    return {
-      rotateClassName,
-    }
-  },
+const rotateClassName = computed(() => {
+  const prefix = 'rotate-'
+  const rotate = props.rotate
+  if (rotate > -22.5 && rotate <= 22.5) return prefix + 0
+  else if (rotate > 22.5 && rotate <= 67.5) return prefix + 45
+  else if (rotate > 67.5 && rotate <= 112.5) return prefix + 90
+  else if (rotate > 112.5 && rotate <= 157.5) return prefix + 135
+  else if (rotate > 157.5 || rotate <= -157.5) return prefix + 0
+  else if (rotate > -157.5 && rotate <= -112.5) return prefix + 45
+  else if (rotate > -112.5 && rotate <= -67.5) return prefix + 90
+  else if (rotate > -67.5 && rotate <= -22.5) return prefix + 135
+  return prefix + 0
 })
 </script>
 

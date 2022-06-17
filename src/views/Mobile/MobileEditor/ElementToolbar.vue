@@ -96,10 +96,10 @@
         <Divider style="margin: 20px 0;" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="icon" /> 置底</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.UP)"><IconBringToFront class="icon" /> 上移</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="icon" /> 置底</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="icon" /> 上移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
         </ButtonGroup>
         
         <Divider style="margin: 20px 0;" />
@@ -119,8 +119,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, TableCell } from '@/types/slides'
@@ -139,100 +139,78 @@ interface TabItem {
 
 const colors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57']
 
-export default defineComponent({
-  name: 'element-toolbar',
-  setup() {
-    const mainStore = useMainStore()
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId, richTextAttrs } = storeToRefs(mainStore)
+const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId, richTextAttrs } = storeToRefs(mainStore)
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    const updateElement = (id: string, props: Partial<PPTElement>) => {
-      slidesStore.updateElement({ id, props })
-      addHistorySnapshot()
-    }
+const updateElement = (id: string, props: Partial<PPTElement>) => {
+  slidesStore.updateElement({ id, props })
+  addHistorySnapshot()
+}
 
-    const tabs: TabItem[] = [
-      { key: 'style', label: '样式' },
-      { key: 'common', label: '布局' },
-    ]
-    const activeTab = ref('common')
+const tabs: TabItem[] = [
+  { key: 'style', label: '样式' },
+  { key: 'common', label: '布局' },
+]
+const activeTab = ref('common')
 
-    const { orderElement } = useOrderElement()
-    const { alignElementToCanvas } = useAlignElementToCanvas()
-    const { addElementsFromData } = useAddSlidesOrElements()
-    const { deleteElement } = useDeleteElement()
+const { orderElement } = useOrderElement()
+const { alignElementToCanvas } = useAlignElementToCanvas()
+const { addElementsFromData } = useAddSlidesOrElements()
+const { deleteElement } = useDeleteElement()
 
-    const copyElement = () => {
-      const element: PPTElement = JSON.parse(JSON.stringify(handleElement.value))
-      addElementsFromData([element])
-    }
+const copyElement = () => {
+  const element: PPTElement = JSON.parse(JSON.stringify(handleElement.value))
+  addElementsFromData([element])
+}
 
-    const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
-    }
+const emitRichTextCommand = (command: string, value?: string) => {
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
+}
 
-    const updateFontColor = (color: string) => {
-      if (!handleElement.value) return
-      if (handleElement.value.type === 'text' || (handleElement.value.type === 'shape' && handleElement.value.text?.content)) {
-        emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'color', value: color } })
-      }
-      if (handleElement.value.type === 'table') {
-        const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
-        for (let i = 0; i < data.length; i++) {
-          for (let j = 0; j < data[i].length; j++) {
-            const style = data[i][j].style || {}
-            data[i][j].style = { ...style, color }
-          }
-        }
-        updateElement(handleElementId.value, { data })
-      }
-      if (handleElement.value.type === 'latex') {
-        updateElement(handleElementId.value, { color })
+const updateFontColor = (color: string) => {
+  if (!handleElement.value) return
+  if (handleElement.value.type === 'text' || (handleElement.value.type === 'shape' && handleElement.value.text?.content)) {
+    emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'color', value: color } })
+  }
+  if (handleElement.value.type === 'table') {
+    const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        const style = data[i][j].style || {}
+        data[i][j].style = { ...style, color }
       }
     }
+    updateElement(handleElementId.value, { data })
+  }
+  if (handleElement.value.type === 'latex') {
+    updateElement(handleElementId.value, { color })
+  }
+}
 
-    const updateFill = (color: string) => {
-      if (!handleElement.value) return
-      if (
-        handleElement.value.type === 'text' ||
-        handleElement.value.type === 'shape' ||
-        handleElement.value.type === 'chart'
-      ) updateElement(handleElementId.value, { fill: color })
+const updateFill = (color: string) => {
+  if (!handleElement.value) return
+  if (
+    handleElement.value.type === 'text' ||
+    handleElement.value.type === 'shape' ||
+    handleElement.value.type === 'chart'
+  ) updateElement(handleElementId.value, { fill: color })
 
-      if (handleElement.value.type === 'table') {
-        const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
-        for (let i = 0; i < data.length; i++) {
-          for (let j = 0; j < data[i].length; j++) {
-            const style = data[i][j].style || {}
-            data[i][j].style = { ...style, backcolor: color }
-          }
-        }
-        updateElement(handleElementId.value, { data })
+  if (handleElement.value.type === 'table') {
+    const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j++) {
+        const style = data[i][j].style || {}
+        data[i][j].style = { ...style, backcolor: color }
       }
-
-      if (handleElement.value.type === 'audio') updateElement(handleElementId.value, { color })
     }
+    updateElement(handleElementId.value, { data })
+  }
 
-    return {
-      handleElement: handleElement as Ref<PPTElement>,
-      tabs,
-      activeTab,
-      richTextAttrs,
-      colors,
-      orderElement,
-      alignElementToCanvas,
-      copyElement,
-      deleteElement,
-      emitRichTextCommand,
-      updateFontColor,
-      updateFill,
-      ElementOrderCommands,
-      ElementAlignCommands,
-    }
-  },
-})
+  if (handleElement.value.type === 'audio') updateElement(handleElementId.value, { color })
+}
 </script>
 
 <style lang="scss" scoped>

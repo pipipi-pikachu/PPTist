@@ -39,38 +39,25 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, inject, PropType, ref } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 import Chart from './Chart.vue'
 
-export default defineComponent({
-  name: 'base-element-chart',
-  components: {
-    ElementOutline,
-    Chart,
-  },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTChartElement>,
-      required: true,
-    },
-  },
-  setup() {
-    const slideScale = inject(injectKeySlideScale) || ref(1)
-
-    const needScaleSize = computed(() => slideScale.value < 1)
-    const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1)
-
-    return {
-      needScaleSize,
-      zoom,
-    }
+defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTChartElement>,
+    required: true,
   },
 })
+
+const slideScale = inject(injectKeySlideScale) || ref(1)
+
+const needScaleSize = computed(() => slideScale.value < 1)
+const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1)
 </script>
 
 <style lang="scss" scoped>

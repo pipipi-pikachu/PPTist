@@ -73,7 +73,7 @@
     "@vue/test-utils": "^2.0.0-0",
     "babel-plugin-import": "^1.13.3",
     "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^7.1.0",
+    "eslint-plugin-vue": "^9.1.0",
     "husky": "^7.0.2",
     "less": "^4.1.1",
     "less-loader": "^7.1.0",

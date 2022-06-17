@@ -62,7 +62,7 @@ export default () => {
   }
   
   // 导入pptist文件
-  const importSpecificFile = (files: File[], cover = false) => {
+  const importSpecificFile = (files: FileList, cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()

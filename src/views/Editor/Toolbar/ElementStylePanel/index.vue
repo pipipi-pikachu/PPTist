@@ -4,8 +4,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { ElementTypes } from '@/types/slides'
@@ -33,26 +33,16 @@ const panelMap = {
   [ElementTypes.AUDIO]: AudioStylePanel,
 }
 
-export default defineComponent({
-  name: 'element-style-panel',
-  setup() {
-    const { activeElementIdList, activeElementList, handleElement, activeGroupElementId } = storeToRefs(useMainStore())
+const { activeElementIdList, activeElementList, handleElement, activeGroupElementId } = storeToRefs(useMainStore())
 
-    const currentPanelComponent = computed(() => {
-      if (activeElementIdList.value.length > 1) {
-        if (!activeGroupElementId.value) return MultiStylePanel
+const currentPanelComponent = computed(() => {
+  if (activeElementIdList.value.length > 1) {
+    if (!activeGroupElementId.value) return MultiStylePanel
 
-        const activeGroupElement = activeElementList.value.find(item => item.id === activeGroupElementId.value)
-        return activeGroupElement ? (panelMap[activeGroupElement.type] || null) : null
-      }
+    const activeGroupElement = activeElementList.value.find(item => item.id === activeGroupElementId.value)
+    return activeGroupElement ? (panelMap[activeGroupElement.type] || null) : null
+  }
 
-      return handleElement.value ? (panelMap[handleElement.value.type] || null) : null
-    })
-
-    return {
-      handleElement,
-      currentPanelComponent,
-    }
-  },
+  return handleElement.value ? (panelMap[handleElement.value.type] || null) : null
 })
 </script>

@@ -75,62 +75,44 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'export-img-dialog',
-  components: {
-    ThumbnailSlide,
-  },
-  setup(props, { emit }) {
-    const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
 
-    const imageThumbnailsRef = ref<HTMLElement>()
-    const rangeType = ref<'all' | 'current' | 'custom'>('all')
-    const range = ref<[number, number]>([1, slides.value.length])
-    const format = ref<'jpeg' | 'png'>('jpeg')
-    const quality = ref(1)
-    const ignoreWebfont = ref(true)
+const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
-    const renderSlides = computed(() => {
-      if (rangeType.value === 'all') return slides.value
-      if (rangeType.value === 'current') return [currentSlide.value]
-      return slides.value.filter((item, index) => {
-        const [min, max] = range.value
-        return index >= min - 1 && index <= max - 1
-      })
-    })
+const imageThumbnailsRef = ref<HTMLElement>()
+const rangeType = ref<'all' | 'current' | 'custom'>('all')
+const range = ref<[number, number]>([1, slides.value.length])
+const format = ref<'jpeg' | 'png'>('jpeg')
+const quality = ref(1)
+const ignoreWebfont = ref(true)
 
-    const close = () => emit('close')
-
-    const { exportImage, exporting } = useExport()
-
-    const expImage = () => {
-      if (!imageThumbnailsRef.value) return
-      exportImage(imageThumbnailsRef.value, format.value, quality.value, ignoreWebfont.value)
-    }
-    
-    return {
-      imageThumbnailsRef,
-      slides,
-      rangeType,
-      range,
-      format,
-      quality,
-      ignoreWebfont,
-      renderSlides,
-      exporting,
-      expImage,
-      close,
-    }
-  },
+const renderSlides = computed(() => {
+  if (rangeType.value === 'all') return slides.value
+  if (rangeType.value === 'current') return [currentSlide.value]
+  return slides.value.filter((item, index) => {
+    const [min, max] = range.value
+    return index >= min - 1 && index <= max - 1
+  })
 })
+
+const close = () => emit('close')
+
+const { exportImage, exporting } = useExport()
+
+const expImage = () => {
+  if (!imageThumbnailsRef.value) return
+  exportImage(imageThumbnailsRef.value, format.value, quality.value, ignoreWebfont.value)
+}
 </script>
 
 <style lang="scss" scoped>

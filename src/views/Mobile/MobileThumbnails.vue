@@ -13,36 +13,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-export default defineComponent({
-  name: 'mobile-thumbnails',
-  components: {
-    ThumbnailSlide,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { slides, slideIndex } = storeToRefs(slidesStore)
+const slidesStore = useSlidesStore()
+const { slides, slideIndex } = storeToRefs(slidesStore)
 
-    const { slidesLoadLimit } = useLoadSlides()
-    const changeSlideIndex = (index: number) => {
-      slidesStore.updateSlideIndex(index)
-    }
-
-    return {
-      slides,
-      slideIndex,
-      slidesLoadLimit,
-      changeSlideIndex,
-    }
-  },
-})
+const { slidesLoadLimit } = useLoadSlides()
+const changeSlideIndex = (index: number) => {
+  slidesStore.updateSlideIndex(index)
+}
 </script>
 
 <style lang="scss" scoped>

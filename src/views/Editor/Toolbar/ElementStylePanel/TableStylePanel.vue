@@ -13,7 +13,7 @@
           </SelectOption>
         </SelectOptGroup>
         <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
@@ -185,8 +185,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -197,24 +197,63 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
 
-const webFonts = WEB_FONTS
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())
+const themeColor = computed(() => slidesStore.theme.themeColor)
 
-export default defineComponent({
-  name: 'table-style-panel',
-  components: {
-    ElementOutline,
-    ColorButton,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())
-    const themeColor = computed(() => slidesStore.theme.themeColor)
-    
-    const fontSizeOptions = [
-      '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
-    ]
+const fontSizeOptions = [
+  '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
+]
 
-    const textAttrs = ref({
+const textAttrs = ref({
+  bold: false,
+  em: false,
+  underline: false,
+  strikethrough: false,
+  color: '#000',
+  backcolor: '#000',
+  fontsize: '12px',
+  fontname: '微软雅黑',
+  align: 'left',
+})
+
+const theme = ref<TableTheme>()
+const hasTheme = ref(false)
+const rowCount = ref(0)
+const colCount = ref(0)
+const minRowCount = ref(0)
+const minColCount = ref(0)
+
+watch(handleElement, () => {
+  if (!handleElement.value || handleElement.value.type !== 'table') return
+  
+  theme.value = handleElement.value.theme
+  hasTheme.value = !!theme.value
+
+  rowCount.value = handleElement.value.data.length
+  colCount.value = handleElement.value.data[0].length
+
+  minRowCount.value = handleElement.value.data.length
+  minColCount.value = handleElement.value.data[0].length
+}, { deep: true, immediate: true })
+
+const { addHistorySnapshot } = useHistorySnapshot()
+
+// 更新当前选中单元格的文本样式状态
+const updateTextAttrState = () => {
+  if (!handleElement.value || handleElement.value.type !== 'table') return
+
+  let rowIndex = 0
+  let colIndex = 0
+  if (selectedCells.value.length) {
+    const selectedCell = selectedCells.value[0]
+    rowIndex = +selectedCell.split('_')[0]
+    colIndex = +selectedCell.split('_')[1]
+  }
+  const style = handleElement.value.data[rowIndex][colIndex].style
+
+  if (!style) {
+    textAttrs.value = {
       bold: false,
       em: false,
       underline: false,
@@ -224,200 +263,132 @@ export default defineComponent({
       fontsize: '12px',
       fontname: '微软雅黑',
       align: 'left',
-    })
-
-    const theme = ref<TableTheme>()
-    const hasTheme = ref(false)
-    const rowCount = ref(0)
-    const colCount = ref(0)
-    const minRowCount = ref(0)
-    const minColCount = ref(0)
-
-    watch(handleElement, () => {
-      if (!handleElement.value || handleElement.value.type !== 'table') return
-      
-      theme.value = handleElement.value.theme
-      hasTheme.value = !!theme.value
-
-      rowCount.value = handleElement.value.data.length
-      colCount.value = handleElement.value.data[0].length
-
-      minRowCount.value = handleElement.value.data.length
-      minColCount.value = handleElement.value.data[0].length
-    }, { deep: true, immediate: true })
-
-    const { addHistorySnapshot } = useHistorySnapshot()
-
-    // 更新当前选中单元格的文本样式状态
-    const updateTextAttrState = () => {
-      if (!handleElement.value || handleElement.value.type !== 'table') return
-
-      let rowIndex = 0
-      let colIndex = 0
-      if (selectedCells.value.length) {
-        const selectedCell = selectedCells.value[0]
-        rowIndex = +selectedCell.split('_')[0]
-        colIndex = +selectedCell.split('_')[1]
-      }
-      const style = handleElement.value.data[rowIndex][colIndex].style
-
-      if (!style) {
-        textAttrs.value = {
-          bold: false,
-          em: false,
-          underline: false,
-          strikethrough: false,
-          color: '#000',
-          backcolor: '#000',
-          fontsize: '12px',
-          fontname: '微软雅黑',
-          align: 'left',
-        }
-      }
-      else {
-        textAttrs.value = {
-          bold: !!style.bold,
-          em: !!style.em,
-          underline: !!style.underline,
-          strikethrough: !!style.strikethrough,
-          color: style.color || '#000',
-          backcolor: style.backcolor || '#000',
-          fontsize: style.fontsize || '12px',
-          fontname: style.fontname || '微软雅黑',
-          align: style.align || 'left',
-        }
-      }
     }
-
-    onMounted(() => {
-      if (selectedCells.value.length) updateTextAttrState()
-    })
-
-    watch(selectedCells, updateTextAttrState)
-
-    const updateElement = (props: Partial<PPTTableElement>) => {
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
+  }
+  else {
+    textAttrs.value = {
+      bold: !!style.bold,
+      em: !!style.em,
+      underline: !!style.underline,
+      strikethrough: !!style.strikethrough,
+      color: style.color || '#000',
+      backcolor: style.backcolor || '#000',
+      fontsize: style.fontsize || '12px',
+      fontname: style.fontname || '微软雅黑',
+      align: style.align || 'left',
     }
+  }
+}
 
-    // 设置单元格内容文本样式
-    const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
-      const _handleElement = handleElement.value as PPTTableElement
-
-      const data: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
-
-      for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < data[i].length; j++) {
-          if (!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
-            const style = data[i][j].style || {}
-            data[i][j].style = { ...style, ...textAttrProp }
-          }
-        }
-      }
-      updateElement({ data })
-      updateTextAttrState()
-    }
-
-    // 更新表格主题：主题色、标题行、汇总行、第一列、最后一列
-    const updateTheme = (themeProp: Partial<TableTheme>) => {
-      if (!theme.value) return
-      const _theme = { ...theme.value, ...themeProp }
-      updateElement({ theme: _theme })
-    }
-
-    // 开启/关闭表格主题
-    const toggleTheme = (checked: boolean) => {
-      if (checked) {
-        const props = {
-          theme: {
-            color: themeColor.value,
-            rowHeader: true,
-            rowFooter: false,
-            colHeader: false,
-            colFooter: false,
-          }
-        }
-        updateElement(props)
-      }
-      else {
-        slidesStore.removeElementProps({ id: handleElementId.value, propName: 'theme' })
-        addHistorySnapshot()
-      }
-    }
-
-    // 设置表格行数
-    const setTableRow = (value: number) => {
-      const _handleElement = handleElement.value as PPTTableElement
-      const rowCount = _handleElement.data.length
-
-      if (value > rowCount) {
-        const rowCells: TableCell[] = new Array(colCount.value).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
-        const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
-  
-        const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
-        tableCells.push(...newTableCells)
-  
-        updateElement({ data: tableCells })
-      }
-      else {
-        const tableCells: TableCell[][] = _handleElement.data.slice(0, value)
-        updateElement({ data: tableCells })
-      }
-    }
-
-    // 设置表格列数
-    const setTableCol = (value: number) => {
-      const _handleElement = handleElement.value as PPTTableElement
-      const colCount = _handleElement.data[0].length
-
-      let tableCells = _handleElement.data
-      let colSizeList = _handleElement.colWidths.map(item => item * _handleElement.width)
-
-      if (value > colCount) {
-        tableCells = tableCells.map(item => {
-          const cells: TableCell[] = new Array(value - colCount).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
-          item.push(...cells)
-          return item
-        })
-  
-        const newColSizeList: number[] = new Array(value - colCount).fill(100)
-        colSizeList.push(...newColSizeList)
-      }
-      else {
-        tableCells = tableCells.map(item => item.slice(0, value))
-        colSizeList = colSizeList.slice(0, value)
-      }
-
-      const width = colSizeList.reduce((a, b) => a + b)
-      const colWidths = colSizeList.map(item => item / width)
-
-      const props = {
-        width,
-        data: tableCells,
-        colWidths,
-      }
-      updateElement(props)
-    }
-
-    return {
-      availableFonts,
-      fontSizeOptions,
-      textAttrs,
-      updateTextAttrs,
-      theme,
-      rowCount,
-      colCount,
-      minRowCount,
-      minColCount,
-      hasTheme,
-      toggleTheme,
-      updateTheme,
-      setTableRow,
-      setTableCol,
-      webFonts,
-    }
-  },
+onMounted(() => {
+  if (selectedCells.value.length) updateTextAttrState()
 })
+
+watch(selectedCells, updateTextAttrState)
+
+const updateElement = (props: Partial<PPTTableElement>) => {
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+
+// 设置单元格内容文本样式
+const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
+  const _handleElement = handleElement.value as PPTTableElement
+
+  const data: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
+
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].length; j++) {
+      if (!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
+        const style = data[i][j].style || {}
+        data[i][j].style = { ...style, ...textAttrProp }
+      }
+    }
+  }
+  updateElement({ data })
+  updateTextAttrState()
+}
+
+// 更新表格主题：主题色、标题行、汇总行、第一列、最后一列
+const updateTheme = (themeProp: Partial<TableTheme>) => {
+  if (!theme.value) return
+  const _theme = { ...theme.value, ...themeProp }
+  updateElement({ theme: _theme })
+}
+
+// 开启/关闭表格主题
+const toggleTheme = (checked: boolean) => {
+  if (checked) {
+    const props = {
+      theme: {
+        color: themeColor.value,
+        rowHeader: true,
+        rowFooter: false,
+        colHeader: false,
+        colFooter: false,
+      }
+    }
+    updateElement(props)
+  }
+  else {
+    slidesStore.removeElementProps({ id: handleElementId.value, propName: 'theme' })
+    addHistorySnapshot()
+  }
+}
+
+// 设置表格行数
+const setTableRow = (value: number) => {
+  const _handleElement = handleElement.value as PPTTableElement
+  const rowCount = _handleElement.data.length
+
+  if (value > rowCount) {
+    const rowCells: TableCell[] = new Array(colCount.value).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
+    const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
+  
+    const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
+    tableCells.push(...newTableCells)
+  
+    updateElement({ data: tableCells })
+  }
+  else {
+    const tableCells: TableCell[][] = _handleElement.data.slice(0, value)
+    updateElement({ data: tableCells })
+  }
+}
+
+// 设置表格列数
+const setTableCol = (value: number) => {
+  const _handleElement = handleElement.value as PPTTableElement
+  const colCount = _handleElement.data[0].length
+
+  let tableCells = _handleElement.data
+  let colSizeList = _handleElement.colWidths.map(item => item * _handleElement.width)
+
+  if (value > colCount) {
+    tableCells = tableCells.map(item => {
+      const cells: TableCell[] = new Array(value - colCount).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
+      item.push(...cells)
+      return item
+    })
+  
+    const newColSizeList: number[] = new Array(value - colCount).fill(100)
+    colSizeList.push(...newColSizeList)
+  }
+  else {
+    tableCells = tableCells.map(item => item.slice(0, value))
+    colSizeList = colSizeList.slice(0, value)
+  }
+
+  const width = colSizeList.reduce((a, b) => a + b)
+  const colWidths = colSizeList.map(item => item / width)
+
+  const props = {
+    width,
+    data: tableCells,
+    colWidths,
+  }
+  updateElement(props)
+}
 </script>
 
 <style lang="scss" scoped>

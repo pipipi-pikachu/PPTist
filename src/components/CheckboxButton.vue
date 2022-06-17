@@ -4,16 +4,11 @@
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'checkbox-button',
-  props: {
-    checked: {
-      type: Boolean,
-      default: false,
-    },
+<script lang="ts" setup>
+defineProps({
+  checked: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>

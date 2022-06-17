@@ -15,91 +15,83 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onUnmounted, PropType, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, onUnmounted, PropType, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 
-export default defineComponent({
-  name: 'hue',
-  emits: ['colorChange'],
-  props: {
-    value: {
-      type: Object as PropType<ColorFormats.RGBA>,
-      required: true,
-    },
-    hue: {
-      type: Number,
-      required: true,
-    },
+const props = defineProps({
+  value: {
+    type: Object as PropType<ColorFormats.RGBA>,
+    required: true,
   },
-  setup(props, { emit }) {
-    const oldHue = ref(0)
-    const pullDirection = ref('')
-    
-    const color = computed(() => {
-      const hsla = tinycolor(props.value).toHsl()
-      if (props.hue !== -1) hsla.h = props.hue
-      return hsla
-    })
-
-    const pointerLeft = computed(() => {
-      if (color.value.h === 0 && pullDirection.value === 'right') return '100%'
-      return color.value.h * 100 / 360 + '%'
-    })
-
-    watch(() => props.value, () => {
-      const hsla = tinycolor(props.value).toHsl()
-      const h = hsla.s === 0 ? props.hue : hsla.h
-      if (h !== 0 && h - oldHue.value > 0) pullDirection.value = 'right'
-      if (h !== 0 && h - oldHue.value < 0) pullDirection.value = 'left'
-      oldHue.value = h
-    })
-
-    const hueRef = ref<HTMLElement>()
-    const handleChange = (e: MouseEvent) => {
-      e.preventDefault()
-      if (!hueRef.value) return
-
-      const containerWidth = hueRef.value.clientWidth
-      const xOffset = hueRef.value.getBoundingClientRect().left + window.pageXOffset
-      const left = e.pageX - xOffset
-      let h, percent
-      
-      if (left < 0) h = 0
-      else if (left > containerWidth) h = 360
-      else {
-        percent = left * 100 / containerWidth
-        h = 360 * percent / 100
-      }
-      if (props.hue === -1 || color.value.h !== h) {
-        emit('colorChange', {
-          h,
-          l: color.value.l,
-          s: color.value.s,
-          a: color.value.a,
-        })
-      }
-    }
-
-    const unbindEventListeners = () => {
-      window.removeEventListener('mousemove', handleChange)
-      window.removeEventListener('mouseup', unbindEventListeners)
-    }
-    const handleMouseDown = (e: MouseEvent) => {
-      handleChange(e)
-      window.addEventListener('mousemove', handleChange)
-      window.addEventListener('mouseup', unbindEventListeners)
-    }
-
-    onUnmounted(unbindEventListeners)
-
-    return {
-      hueRef,
-      handleMouseDown,
-      pointerLeft,
-    }
+  hue: {
+    type: Number,
+    required: true,
   },
 })
+
+const emit = defineEmits<{
+  (event: 'colorChange', payload: ColorFormats.HSLA): void
+}>()
+
+const oldHue = ref(0)
+const pullDirection = ref('')
+
+const color = computed(() => {
+  const hsla = tinycolor(props.value).toHsl()
+  if (props.hue !== -1) hsla.h = props.hue
+  return hsla
+})
+
+const pointerLeft = computed(() => {
+  if (color.value.h === 0 && pullDirection.value === 'right') return '100%'
+  return color.value.h * 100 / 360 + '%'
+})
+
+watch(() => props.value, () => {
+  const hsla = tinycolor(props.value).toHsl()
+  const h = hsla.s === 0 ? props.hue : hsla.h
+  if (h !== 0 && h - oldHue.value > 0) pullDirection.value = 'right'
+  if (h !== 0 && h - oldHue.value < 0) pullDirection.value = 'left'
+  oldHue.value = h
+})
+
+const hueRef = ref<HTMLElement>()
+const handleChange = (e: MouseEvent) => {
+  e.preventDefault()
+  if (!hueRef.value) return
+
+  const containerWidth = hueRef.value.clientWidth
+  const xOffset = hueRef.value.getBoundingClientRect().left + window.pageXOffset
+  const left = e.pageX - xOffset
+  let h, percent
+  
+  if (left < 0) h = 0
+  else if (left > containerWidth) h = 360
+  else {
+    percent = left * 100 / containerWidth
+    h = 360 * percent / 100
+  }
+  if (props.hue === -1 || color.value.h !== h) {
+    emit('colorChange', {
+      h,
+      l: color.value.l,
+      s: color.value.s,
+      a: color.value.a,
+    })
+  }
+}
+
+const unbindEventListeners = () => {
+  window.removeEventListener('mousemove', handleChange)
+  window.removeEventListener('mouseup', unbindEventListeners)
+}
+const handleMouseDown = (e: MouseEvent) => {
+  handleChange(e)
+  window.addEventListener('mousemove', handleChange)
+  window.addEventListener('mouseup', unbindEventListeners)
+}
+onUnmounted(unbindEventListeners)
 </script>
 
 <style lang="scss" scoped>

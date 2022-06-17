@@ -34,8 +34,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, PropType, provide } from 'vue'
+<script lang="ts" setup>
+import { computed, PropType, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
@@ -43,47 +43,33 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import ScreenSlide from './ScreenSlide.vue'
 
-export default defineComponent({
-  name: 'screen-slide-list',
-  components: {
-    ScreenSlide,
+const props = defineProps({
+  slideWidth: {
+    type: Number,
+    required: true,
   },
-  props: {
-    slideWidth: {
-      type: Number,
-      required: true,
-    },
-    slideHeight: {
-      type: Number,
-      required: true,
-    },
-    animationIndex: {
-      type: Number,
-      required: true,
-    },
-    turnSlideToId: {
-      type: Function as PropType<(id: string) => void>,
-      required: true,
-    },
-    manualExitFullscreen: {
-      type: Function as PropType<() => void>,
-      required: true,
-    },
+  slideHeight: {
+    type: Number,
+    required: true,
   },
-  setup(props) {
-    const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
-
-    const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
-    provide(injectKeySlideScale, scale)
-
-    return {
-      slides,
-      slideIndex,
-      currentSlide,
-      scale,
-    }
+  animationIndex: {
+    type: Number,
+    required: true,
+  },
+  turnSlideToId: {
+    type: Function as PropType<(id: string) => void>,
+    required: true,
+  },
+  manualExitFullscreen: {
+    type: Function as PropType<() => void>,
+    required: true,
   },
 })
+
+const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
+
+const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
+provide(injectKeySlideScale, scale)
 </script>
 
 <style lang="scss" scoped>

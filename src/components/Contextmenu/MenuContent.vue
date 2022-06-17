@@ -30,21 +30,18 @@
   </ul>
 </template>
 
-<script lang="ts">
-import { PropType, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { ContextmenuItem } from './types'
 
-export default defineComponent({
-  name: 'menu-content',
-  props: {
-    menus: {
-      type: Array as PropType<ContextmenuItem[]>,
-      required: true,
-    },
-    handleClickMenuItem: {
-      type: Function,
-      required: true,
-    },
+defineProps({
+  menus: {
+    type: Array as PropType<ContextmenuItem[]>,
+    required: true,
+  },
+  handleClickMenuItem: {
+    type: Function,
+    required: true,
   },
 })
 </script>

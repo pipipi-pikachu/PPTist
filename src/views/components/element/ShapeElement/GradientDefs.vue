@@ -18,31 +18,28 @@
   </radialGradient>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 
-export default defineComponent({
-  name: 'gradient-defs',
-  props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String as PropType<'linear' | 'radial'>,
-    },
-    color1: {
-      type: String,
-      required: true,
-    },
-    color2: {
-      type: String,
-      required: true,
-    },
-    rotate: {
-      type: Number,
-      default: 0,
-    },
+defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  type: {
+    type: String as PropType<'linear' | 'radial'>,
+  },
+  color1: {
+    type: String,
+    required: true,
+  },
+  color2: {
+    type: String,
+    required: true,
+  },
+  rotate: {
+    type: Number,
+    default: 0,
   },
 })
 </script>

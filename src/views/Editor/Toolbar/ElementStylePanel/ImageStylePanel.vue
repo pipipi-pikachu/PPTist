@@ -2,7 +2,7 @@
   <div class="image-style-panel">
     <div 
       class="origin-image"
-      :style="{ backgroundImage: `url(${handleElement.src})` }"
+      :style="{ backgroundImage: `url(${handleImageElement.src})` }"
     ></div>
 
     <ElementFlip />
@@ -57,8 +57,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, Ref, ref } from 'vue'
+<script lang="ts" setup>
+import { Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTImageElement, SlideBackground } from '@/types/slides'
@@ -105,175 +105,154 @@ const ratioClipOptions = [
   },
 ]
 
-export default defineComponent({
-  name: 'image-style-panel',
-  components: {
-    ElementOutline,
-    ElementShadow,
-    ElementFlip,
-    ElementFilter,
-  },
-  setup() {
-    const mainStore = useMainStore()
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId } = storeToRefs(mainStore)
-    const { currentSlide } = storeToRefs(slidesStore)
+const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId } = storeToRefs(mainStore)
+const { currentSlide } = storeToRefs(slidesStore)
 
-    const clipPanelVisible = ref(false)
+const handleImageElement = handleElement as Ref<PPTImageElement>
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const clipPanelVisible = ref(false)
 
-    // 打开自由裁剪
-    const clipImage = () => {
-      mainStore.setClipingImageElementId(handleElementId.value)
-      clipPanelVisible.value = false
+const { addHistorySnapshot } = useHistorySnapshot()
+
+// 打开自由裁剪
+const clipImage = () => {
+  mainStore.setClipingImageElementId(handleElementId.value)
+  clipPanelVisible.value = false
+}
+
+// 获取原始图片的位置大小
+const getImageElementDataBeforeClip = () => {
+  const _handleElement = handleElement.value as PPTImageElement
+
+  // 图片当前的位置大小和裁剪范围
+  const imgWidth = _handleElement.width
+  const imgHeight = _handleElement.height
+  const imgLeft = _handleElement.left
+  const imgTop = _handleElement.top
+  const originClipRange: [[number, number], [number, number]] = _handleElement.clip ? _handleElement.clip.range : [[0, 0], [100, 100]]
+
+  const originWidth = imgWidth / ((originClipRange[1][0] - originClipRange[0][0]) / 100)
+  const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
+  const originLeft = imgLeft - originWidth * (originClipRange[0][0] / 100)
+  const originTop = imgTop - originHeight * (originClipRange[0][1] / 100)
+
+  return {
+    originClipRange,
+    originWidth,
+    originHeight,
+    originLeft,
+    originTop,
+  }
+}
+
+// 预设裁剪
+const presetImageClip = (shape: string, ratio = 0) => {
+  const _handleElement = handleElement.value as PPTImageElement
+
+  const {
+    originClipRange,
+    originWidth,
+    originHeight,
+    originLeft,
+    originTop,
+  } = getImageElementDataBeforeClip()
+  
+  // 纵横比裁剪（形状固定为矩形）
+  if (ratio) {
+    const imageRatio = originHeight / originWidth
+
+    const min = 0
+    const max = 100
+    let range: [[number, number], [number, number]]
+
+    if (imageRatio > ratio) {
+      const distance = ((1 - ratio / imageRatio) / 2) * 100
+      range = [[min, distance], [max, max - distance]]
     }
-
-    // 获取原始图片的位置大小
-    const getImageElementDataBeforeClip = () => {
-      const _handleElement = handleElement.value as PPTImageElement
-
-      // 图片当前的位置大小和裁剪范围
-      const imgWidth = _handleElement.width
-      const imgHeight = _handleElement.height
-      const imgLeft = _handleElement.left
-      const imgTop = _handleElement.top
-      const originClipRange: [[number, number], [number, number]] = _handleElement.clip ? _handleElement.clip.range : [[0, 0], [100, 100]]
-
-      const originWidth = imgWidth / ((originClipRange[1][0] - originClipRange[0][0]) / 100)
-      const originHeight = imgHeight / ((originClipRange[1][1] - originClipRange[0][1]) / 100)
-      const originLeft = imgLeft - originWidth * (originClipRange[0][0] / 100)
-      const originTop = imgTop - originHeight * (originClipRange[0][1] / 100)
-
-      return {
-        originClipRange,
-        originWidth,
-        originHeight,
-        originLeft,
-        originTop,
-      }
+    else {
+      const distance = ((1 - imageRatio / ratio) / 2) * 100
+      range = [[distance, min], [max - distance, max]]
     }
+    slidesStore.updateElement({
+      id: handleElementId.value,
+      props: {
+        clip: { ..._handleElement.clip, shape, range },
+        left: originLeft + originWidth * (range[0][0] / 100),
+        top: originTop + originHeight * (range[0][1] / 100),
+        width: originWidth * (range[1][0] - range[0][0]) / 100,
+        height: originHeight * (range[1][1] - range[0][1]) / 100,
+      },
+    })
+  }
+  // 形状裁剪（保持当前裁剪范围）
+  else {
+    slidesStore.updateElement({
+      id: handleElementId.value,
+      props: {
+        clip: { ..._handleElement.clip, shape, range: originClipRange }
+      },
+    })
+  }
+  clipImage()
+  addHistorySnapshot()
+}
 
-    // 预设裁剪
-    const presetImageClip = (shape: string, ratio = 0) => {
-      const _handleElement = handleElement.value as PPTImageElement
+// 替换图片（保持当前的样式）
+const replaceImage = (files: FileList) => {
+  const imageFile = files[0]
+  if (!imageFile) return
+  getImageDataURL(imageFile).then(dataURL => {
+    const props = { src: dataURL }
+    slidesStore.updateElement({ id: handleElementId.value, props })
+  })
+  addHistorySnapshot()
+}
 
-      const {
-        originClipRange,
-        originWidth,
-        originHeight,
-        originLeft,
-        originTop,
-      } = getImageElementDataBeforeClip()
-      
-      // 纵横比裁剪（形状固定为矩形）
-      if (ratio) {
-        const imageRatio = originHeight / originWidth
+// 重置图片：清除全部样式
+const resetImage = () => {
+  const _handleElement = handleElement.value as PPTImageElement
 
-        const min = 0
-        const max = 100
-        let range: [[number, number], [number, number]]
+  if (_handleElement.clip) {
+    const {
+      originWidth,
+      originHeight,
+      originLeft,
+      originTop,
+    } = getImageElementDataBeforeClip()
 
-        if (imageRatio > ratio) {
-          const distance = ((1 - ratio / imageRatio) / 2) * 100
-          range = [[min, distance], [max, max - distance]]
-        }
-        else {
-          const distance = ((1 - imageRatio / ratio) / 2) * 100
-          range = [[distance, min], [max - distance, max]]
-        }
-        slidesStore.updateElement({
-          id: handleElementId.value,
-          props: {
-            clip: { ..._handleElement.clip, shape, range },
-            left: originLeft + originWidth * (range[0][0] / 100),
-            top: originTop + originHeight * (range[0][1] / 100),
-            width: originWidth * (range[1][0] - range[0][0]) / 100,
-            height: originHeight * (range[1][1] - range[0][1]) / 100,
-          },
-        })
-      }
-      // 形状裁剪（保持当前裁剪范围）
-      else {
-        slidesStore.updateElement({
-          id: handleElementId.value,
-          props: {
-            clip: { ..._handleElement.clip, shape, range: originClipRange }
-          },
-        })
-      }
-      clipImage()
-      addHistorySnapshot()
-    }
+    slidesStore.updateElement({
+      id: handleElementId.value,
+      props: {
+        left: originLeft,
+        top: originTop,
+        width: originWidth,
+        height: originHeight,
+      },
+    })
+  }
 
-    // 替换图片（保持当前的样式）
-    const replaceImage = (files: File[]) => {
-      const imageFile = files[0]
-      if (!imageFile) return
-      getImageDataURL(imageFile).then(dataURL => {
-        const props = { src: dataURL }
-        slidesStore.updateElement({ id: handleElementId.value, props })
-      })
-      addHistorySnapshot()
-    }
+  slidesStore.removeElementProps({
+    id: handleElementId.value,
+    propName: ['clip', 'outline', 'flip', 'shadow', 'filters'],
+  })
+  addHistorySnapshot()
+}
 
-    // 重置图片：清除全部样式
-    const resetImage = () => {
-      const _handleElement = handleElement.value as PPTImageElement
+// 将图片设置为背景
+const setBackgroundImage = () => {
+  const _handleElement = handleElement.value as PPTImageElement
 
-      if (_handleElement.clip) {
-        const {
-          originWidth,
-          originHeight,
-          originLeft,
-          originTop,
-        } = getImageElementDataBeforeClip()
-
-        slidesStore.updateElement({
-          id: handleElementId.value,
-          props: {
-            left: originLeft,
-            top: originTop,
-            width: originWidth,
-            height: originHeight,
-          },
-        })
-      }
-
-      slidesStore.removeElementProps({
-        id: handleElementId.value,
-        propName: ['clip', 'outline', 'flip', 'shadow', 'filters'],
-      })
-      addHistorySnapshot()
-    }
-
-    // 将图片设置为背景
-    const setBackgroundImage = () => {
-      const _handleElement = handleElement.value as PPTImageElement
-
-      const background: SlideBackground = {
-        ...currentSlide.value.background,
-        type: 'image',
-        image: _handleElement.src,
-        imageSize: 'cover',
-      }
-      slidesStore.updateSlide({ background })
-      addHistorySnapshot()
-    }
-
-    return {
-      clipPanelVisible,
-      shapeClipPathOptions,
-      ratioClipOptions,
-      handleElement: handleElement as Ref<PPTImageElement>,
-      clipImage,
-      presetImageClip,
-      replaceImage,
-      resetImage,
-      setBackgroundImage,
-    }
-  },
-})
+  const background: SlideBackground = {
+    ...currentSlide.value.background,
+    type: 'image',
+    image: _handleElement.src,
+    imageSize: 'cover',
+  }
+  slidesStore.updateSlide({ background })
+  addHistorySnapshot()
+}
 </script>
 
 <style lang="scss" scoped>

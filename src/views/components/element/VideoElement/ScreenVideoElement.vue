@@ -25,8 +25,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, inject, PropType, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, inject, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
@@ -34,31 +34,19 @@ import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 
 import VideoPlayer from './VideoPlayer/index.vue'
 
-export default defineComponent({
-  name: 'screen-element-video',
-  components: {
-    VideoPlayer,
-  },
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTVideoElement>,
-      required: true,
-    },
-  },
-  setup() {
-    const { currentSlide } = storeToRefs(useSlidesStore())
-
-    const scale = inject(injectKeySlideScale) || ref(1)
-    const slideId = inject(injectKeySlideId) || ref('')
-
-    const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
-
-    return {
-      scale,
-      inCurrentSlide,
-    }
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTVideoElement>,
+    required: true,
   },
 })
+
+const { currentSlide } = storeToRefs(useSlidesStore())
+
+const scale = inject(injectKeySlideScale) || ref(1)
+const slideId = inject(injectKeySlideId) || ref('')
+
+const inCurrentSlide = computed(() => currentSlide.value.id === slideId.value)
 </script>
 
 <style lang="scss" scoped>

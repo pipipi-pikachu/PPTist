@@ -51,8 +51,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, PropType, ref } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, PropType, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Mode } from '@/types/mobile'
@@ -60,89 +60,70 @@ import { Mode } from '@/types/mobile'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import MobileThumbnails from './MobileThumbnails.vue'
 
-export default defineComponent({
-  name: 'mobile-player',
-  components: {
-    ThumbnailSlide,
-    MobileThumbnails,
-  },
-  props: {
-    changeMode: {
-      type: Function as PropType<(mode: Mode) => void>,
-      required: true,
-    },
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { slides, slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
-
-    const toolVisible = ref(false)
-
-    const playerSize = ref({ width: 0, height: 0 })
-
-    onMounted(() => {
-      if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0)
-
-      playerSize.value = {
-        width: document.body.clientHeight,
-        height: document.body.clientWidth,
-      }
-    })
-
-    const slideSize = computed(() => {
-      const playerRatio = playerSize.value.height / playerSize.value.width
-
-      let slideWidth = 0
-      let slideHeight = 0
-
-      if (playerRatio >= viewportRatio.value) {
-        slideWidth = playerSize.value.width
-        slideHeight = slideWidth * viewportRatio.value
-      }
-      else {
-        slideHeight = playerSize.value.height
-        slideWidth = slideHeight / viewportRatio.value
-      }
-
-      return {
-        width: slideWidth,
-        height: slideHeight,
-      }
-    })
-
-    const touchInfo = ref<{ x: number; y: number; } | null>(null)
-    const touchStartListener = (e: TouchEvent) => {
-      touchInfo.value = {
-        x: e.changedTouches[0].pageX,
-        y: e.changedTouches[0].pageY,
-      }
-    }
-    const touchEndListener = (e: TouchEvent) => {
-      if (!touchInfo.value) return
-
-      const offsetY = Math.abs(touchInfo.value.y - e.changedTouches[0].pageY)
-      const offsetX = e.changedTouches[0].pageX - touchInfo.value.x
-
-      if ( Math.abs(offsetX) > offsetY && Math.abs(offsetX) > 50 ) {
-        touchInfo.value = null
-
-        if (offsetX < 0 && slideIndex.value > 0) slidesStore.updateSlideIndex(slideIndex.value - 1)
-        if (offsetX > 0 && slideIndex.value < slides.value.length - 1) slidesStore.updateSlideIndex(slideIndex.value + 1)
-      }
-    }
-
-    return {
-      slides,
-      slideIndex,
-      currentSlide,
-      playerSize,
-      slideSize,
-      toolVisible,
-      touchStartListener,
-      touchEndListener,
-    }
+defineProps({
+  changeMode: {
+    type: Function as PropType<(mode: Mode) => void>,
+    required: true,
   },
 })
+
+const slidesStore = useSlidesStore()
+const { slides, slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
+
+const toolVisible = ref(false)
+
+const playerSize = ref({ width: 0, height: 0 })
+
+onMounted(() => {
+  if (slideIndex.value !== 0) slidesStore.updateSlideIndex(0)
+
+  playerSize.value = {
+    width: document.body.clientHeight,
+    height: document.body.clientWidth,
+  }
+})
+
+const slideSize = computed(() => {
+  const playerRatio = playerSize.value.height / playerSize.value.width
+
+  let slideWidth = 0
+  let slideHeight = 0
+
+  if (playerRatio >= viewportRatio.value) {
+    slideWidth = playerSize.value.width
+    slideHeight = slideWidth * viewportRatio.value
+  }
+  else {
+    slideHeight = playerSize.value.height
+    slideWidth = slideHeight / viewportRatio.value
+  }
+
+  return {
+    width: slideWidth,
+    height: slideHeight,
+  }
+})
+
+const touchInfo = ref<{ x: number; y: number; } | null>(null)
+const touchStartListener = (e: TouchEvent) => {
+  touchInfo.value = {
+    x: e.changedTouches[0].pageX,
+    y: e.changedTouches[0].pageY,
+  }
+}
+const touchEndListener = (e: TouchEvent) => {
+  if (!touchInfo.value) return
+
+  const offsetY = Math.abs(touchInfo.value.y - e.changedTouches[0].pageY)
+  const offsetX = e.changedTouches[0].pageX - touchInfo.value.x
+
+  if ( Math.abs(offsetX) > offsetY && Math.abs(offsetX) > 50 ) {
+    touchInfo.value = null
+
+    if (offsetX < 0 && slideIndex.value > 0) slidesStore.updateSlideIndex(slideIndex.value - 1)
+    if (offsetX > 0 && slideIndex.value < slides.value.length - 1) slidesStore.updateSlideIndex(slideIndex.value + 1)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

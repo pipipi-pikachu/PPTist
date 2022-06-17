@@ -12,64 +12,57 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
-export default defineComponent({
-  name: 'remark',
-  emits: ['update:height'],
-  props: {
-    height: {
-      type: Number,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const slidesStore = useSlidesStore()
-    const { currentSlide } = storeToRefs(slidesStore)
-    
-    const remark = computed(() => currentSlide.value?.remark || '')
-
-    const handleInput = (e: Event) => {
-      const value = (e.target as HTMLTextAreaElement).value
-      slidesStore.updateSlide({ remark: value })
-    }
-
-    const resize = (e: MouseEvent) => {
-      let isMouseDown = true
-      const startPageY = e.pageY
-      const originHeight = props.height
-
-      document.onmousemove = e => {
-        if (!isMouseDown) return
-
-        const currentPageY = e.pageY
-
-        const moveY = currentPageY - startPageY
-        let newHeight = -moveY + originHeight
-
-        if (newHeight < 40) newHeight = 40
-        if (newHeight > 120) newHeight = 120
-
-        emit('update:height', newHeight)
-      }
-
-      document.onmouseup = () => {
-        isMouseDown = false
-        document.onmousemove = null
-        document.onmouseup = null
-      }
-    }
-
-    return {
-      remark,
-      handleInput,
-      resize,
-    }
+const props = defineProps({
+  height: {
+    type: Number,
+    required: true,
   },
 })
+
+const emit = defineEmits<{
+  (event: 'update:height', payload: number): void
+}>()
+
+const slidesStore = useSlidesStore()
+const { currentSlide } = storeToRefs(slidesStore)
+
+const remark = computed(() => currentSlide.value?.remark || '')
+
+const handleInput = (e: Event) => {
+  const value = (e.target as HTMLTextAreaElement).value
+  slidesStore.updateSlide({ remark: value })
+}
+
+const resize = (e: MouseEvent) => {
+  let isMouseDown = true
+  const startPageY = e.pageY
+  const originHeight = props.height
+
+  document.onmousemove = e => {
+    if (!isMouseDown) return
+
+    const currentPageY = e.pageY
+
+    const moveY = currentPageY - startPageY
+    let newHeight = -moveY + originHeight
+
+    if (newHeight < 40) newHeight = 40
+    if (newHeight > 120) newHeight = 120
+
+    emit('update:height', newHeight)
+  }
+
+  document.onmouseup = () => {
+    isMouseDown = false
+    document.onmousemove = null
+    document.onmouseup = null
+  }
+}
 </script>
 
 <style lang="scss" scoped>

@@ -72,8 +72,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { computed, onMounted, ref, watch } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 import { debounce } from 'lodash'
 import { toCanvas } from 'html-to-image'
@@ -85,6 +85,17 @@ import Saturation from './Saturation.vue'
 import EditableInput from './EditableInput.vue'
 
 import { message } from 'ant-design-vue'
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '#e86b99',
+  },
+})
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', payload: string): void
+}>()
 
 const RECENT_COLORS = 'RECENT_COLORS'
 
@@ -132,170 +143,138 @@ const getPresetColors = () => {
 const themeColors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c']
 const standardColors = ['#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57', '#00afee', '#0071be', '#00215f', '#72349d']
 
-export default defineComponent({
-  name: 'color-picker',
-  components: {
-    Alpha,
-    Checkboard,
-    Hue,
-    Saturation,
-    EditableInput,
+const hue = ref(-1)
+const recentColors = ref<string[]>([])
+
+const color = computed({
+  get() {
+    return tinycolor(props.modelValue).toRgb()
   },
-  emits: ['update:modelValue'],
-  props: {
-    modelValue: {
-      type: String,
-      default: '#e86b99',
-    },
-  },
-  setup(props, { emit }) {
-    const hue = ref(-1)
-    const recentColors = ref<string[]>([])
-
-    const color = computed({
-      get() {
-        return tinycolor(props.modelValue).toRgb()
-      },
-      set(rgba: ColorFormats.RGBA) {
-        const rgbaString = `rgba(${[rgba.r, rgba.g, rgba.b, rgba.a].join(',')})`
-        emit('update:modelValue', rgbaString)
-      },
-    })
-
-    const presetColors = getPresetColors()
-
-    const currentColor = computed(() => {
-      return `rgba(${[color.value.r, color.value.g, color.value.b, color.value.a].join(',')})`
-    })
-
-    const selectPresetColor = (colorString: string) => {
-      hue.value = tinycolor(colorString).toHsl().h
-      emit('update:modelValue', colorString)
-    }
-
-    // 每次选择非预设颜色时，需要将该颜色加入到最近使用列表中
-    const updateRecentColorsCache = debounce(function() {
-      const _color = tinycolor(color.value).toRgbString()
-      if (!recentColors.value.includes(_color)) {
-        recentColors.value = [_color, ...recentColors.value]
-
-        const maxLength = 10
-        if (recentColors.value.length > maxLength) {
-          recentColors.value = recentColors.value.slice(0, maxLength)
-        }
-      }
-    }, 300, { trailing: true })
-
-    onMounted(() => {
-      const recentColorsCache = localStorage.getItem(RECENT_COLORS)
-      if (recentColorsCache) recentColors.value = JSON.parse(recentColorsCache)
-    })
-
-    watch(recentColors, () => {
-      const recentColorsCache = JSON.stringify(recentColors.value)
-      localStorage.setItem(RECENT_COLORS, recentColorsCache)
-    })
-
-    const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
-      if ('h' in value) {
-        hue.value = value.h
-        color.value = tinycolor(value).toRgb()
-      }
-      else {
-        hue.value = tinycolor(value).toHsl().h
-        color.value = value
-      }
-
-      updateRecentColorsCache()
-    }
-
-    const pickColor = () => {
-      const targetRef: HTMLElement | null = document.querySelector('.canvas')
-      if (!targetRef) return
-
-      const maskRef = document.createElement('div')
-      maskRef.style.cssText = 'position: fixed; top: 0; left: 0; bottom: 0; right: 0; z-index: 9999; cursor: wait;'
-      document.body.appendChild(maskRef)
-
-      const colorBlockRef = document.createElement('div')
-      colorBlockRef.style.cssText = 'position: absolute; top: -100px; left: -100px; width: 16px; height: 16px; border: 1px solid #000; z-index: 999'
-      maskRef.appendChild(colorBlockRef)
-
-      const { left, top, width, height } = targetRef.getBoundingClientRect()
-
-      const filter = (node: HTMLElement) => {
-        if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
-        if (node.classList && node.classList.contains('operate')) return false
-        return true
-      }
-
-      toCanvas(targetRef, { filter, fontEmbedCSS: '', width, height, canvasWidth: width, canvasHeight: height, pixelRatio: 1 }).then(canvasRef => {
-        canvasRef.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; cursor: crosshair;`
-        maskRef.style.cursor = 'default'
-        maskRef.appendChild(canvasRef)
-
-        const ctx = canvasRef.getContext('2d')
-        if (!ctx) return
-
-        let currentColor = ''
-        const handleMousemove = (e: MouseEvent) => {
-          const x = e.x
-          const y = e.y
-
-          const mouseX = x - left
-          const mouseY = y - top
-
-          const [r, g, b, a] = ctx.getImageData(mouseX, mouseY, 1, 1).data
-          currentColor = `rgba(${r}, ${g}, ${b}, ${(a / 255).toFixed(2)})`
-
-          colorBlockRef.style.left = x + 10 + 'px'
-          colorBlockRef.style.top = y + 10 + 'px'
-          colorBlockRef.style.backgroundColor = currentColor
-        }
-        const handleMouseleave = () => {
-          currentColor = ''
-          colorBlockRef.style.left = '-100px'
-          colorBlockRef.style.top = '-100px'
-          colorBlockRef.style.backgroundColor = ''
-        }
-        const handleMousedown = (e: MouseEvent) => {
-          if (currentColor && e.button === 0) {
-            const tColor = tinycolor(currentColor)
-            hue.value = tColor.toHsl().h
-            color.value = tColor.toRgb()
-
-            updateRecentColorsCache()
-          }
-          document.body.removeChild(maskRef)
-          
-          canvasRef.removeEventListener('mousemove', handleMousemove)
-          canvasRef.removeEventListener('mouseleave', handleMouseleave)
-          window.removeEventListener('mousedown', handleMousedown)
-        }
-
-        canvasRef.addEventListener('mousemove', handleMousemove)
-        canvasRef.addEventListener('mouseleave', handleMouseleave)
-        window.addEventListener('mousedown', handleMousedown)
-      }).catch(() => {
-        message.error('取色吸管初始化失败')
-        document.body.removeChild(maskRef)
-      })
-    }
-
-    return {
-      themeColors,
-      standardColors,
-      presetColors,
-      color,
-      hue,
-      currentColor,
-      changeColor,
-      selectPresetColor,
-      recentColors,
-      pickColor,
-    }
+  set(rgba: ColorFormats.RGBA) {
+    const rgbaString = `rgba(${[rgba.r, rgba.g, rgba.b, rgba.a].join(',')})`
+    emit('update:modelValue', rgbaString)
   },
 })
+
+const presetColors = getPresetColors()
+
+const currentColor = computed(() => {
+  return `rgba(${[color.value.r, color.value.g, color.value.b, color.value.a].join(',')})`
+})
+
+const selectPresetColor = (colorString: string) => {
+  hue.value = tinycolor(colorString).toHsl().h
+  emit('update:modelValue', colorString)
+}
+
+// 每次选择非预设颜色时，需要将该颜色加入到最近使用列表中
+const updateRecentColorsCache = debounce(function() {
+  const _color = tinycolor(color.value).toRgbString()
+  if (!recentColors.value.includes(_color)) {
+    recentColors.value = [_color, ...recentColors.value]
+
+    const maxLength = 10
+    if (recentColors.value.length > maxLength) {
+      recentColors.value = recentColors.value.slice(0, maxLength)
+    }
+  }
+}, 300, { trailing: true })
+
+onMounted(() => {
+  const recentColorsCache = localStorage.getItem(RECENT_COLORS)
+  if (recentColorsCache) recentColors.value = JSON.parse(recentColorsCache)
+})
+
+watch(recentColors, () => {
+  const recentColorsCache = JSON.stringify(recentColors.value)
+  localStorage.setItem(RECENT_COLORS, recentColorsCache)
+})
+
+const changeColor = (value: ColorFormats.RGBA | ColorFormats.HSLA | ColorFormats.HSVA) => {
+  if ('h' in value) {
+    hue.value = value.h
+    color.value = tinycolor(value).toRgb()
+  }
+  else {
+    hue.value = tinycolor(value).toHsl().h
+    color.value = value
+  }
+
+  updateRecentColorsCache()
+}
+
+const pickColor = () => {
+  const targetRef: HTMLElement | null = document.querySelector('.canvas')
+  if (!targetRef) return
+
+  const maskRef = document.createElement('div')
+  maskRef.style.cssText = 'position: fixed; top: 0; left: 0; bottom: 0; right: 0; z-index: 9999; cursor: wait;'
+  document.body.appendChild(maskRef)
+
+  const colorBlockRef = document.createElement('div')
+  colorBlockRef.style.cssText = 'position: absolute; top: -100px; left: -100px; width: 16px; height: 16px; border: 1px solid #000; z-index: 999'
+  maskRef.appendChild(colorBlockRef)
+
+  const { left, top, width, height } = targetRef.getBoundingClientRect()
+
+  const filter = (node: HTMLElement) => {
+    if (node.tagName && node.tagName.toUpperCase() === 'FOREIGNOBJECT') return false
+    if (node.classList && node.classList.contains('operate')) return false
+    return true
+  }
+
+  toCanvas(targetRef, { filter, fontEmbedCSS: '', width, height, canvasWidth: width, canvasHeight: height, pixelRatio: 1 }).then(canvasRef => {
+    canvasRef.style.cssText = `position: absolute; top: ${top}px; left: ${left}px; cursor: crosshair;`
+    maskRef.style.cursor = 'default'
+    maskRef.appendChild(canvasRef)
+
+    const ctx = canvasRef.getContext('2d')
+    if (!ctx) return
+
+    let currentColor = ''
+    const handleMousemove = (e: MouseEvent) => {
+      const x = e.x
+      const y = e.y
+
+      const mouseX = x - left
+      const mouseY = y - top
+
+      const [r, g, b, a] = ctx.getImageData(mouseX, mouseY, 1, 1).data
+      currentColor = `rgba(${r}, ${g}, ${b}, ${(a / 255).toFixed(2)})`
+
+      colorBlockRef.style.left = x + 10 + 'px'
+      colorBlockRef.style.top = y + 10 + 'px'
+      colorBlockRef.style.backgroundColor = currentColor
+    }
+    const handleMouseleave = () => {
+      currentColor = ''
+      colorBlockRef.style.left = '-100px'
+      colorBlockRef.style.top = '-100px'
+      colorBlockRef.style.backgroundColor = ''
+    }
+    const handleMousedown = (e: MouseEvent) => {
+      if (currentColor && e.button === 0) {
+        const tColor = tinycolor(currentColor)
+        hue.value = tColor.toHsl().h
+        color.value = tColor.toRgb()
+
+        updateRecentColorsCache()
+      }
+      document.body.removeChild(maskRef)
+      
+      canvasRef.removeEventListener('mousemove', handleMousemove)
+      canvasRef.removeEventListener('mouseleave', handleMouseleave)
+      window.removeEventListener('mousedown', handleMousedown)
+    }
+
+    canvasRef.addEventListener('mousemove', handleMousemove)
+    canvasRef.addEventListener('mouseleave', handleMouseleave)
+    window.addEventListener('mousedown', handleMousedown)
+  }).catch(() => {
+    message.error('取色吸管初始化失败')
+    document.body.removeChild(maskRef)
+  })
+}
 </script>
 
 <style lang="scss" scoped>

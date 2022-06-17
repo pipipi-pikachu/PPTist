@@ -41,45 +41,36 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { PropType } from 'vue'
 import { PPTLatexElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 
-export default defineComponent({
-  name: 'editable-element-latex',
-  props: {
-    elementInfo: {
-      type: Object as PropType<PPTLatexElement>,
-      required: true,
-    },
-    selectElement: {
-      type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTLatexElement, canMove?: boolean) => void>,
-      required: true,
-    },
-    contextmenus: {
-      type: Function as PropType<() => ContextmenuItem[] | null>,
-    },
+const props = defineProps({
+  elementInfo: {
+    type: Object as PropType<PPTLatexElement>,
+    required: true,
   },
-  setup(props) {
-    const handleSelectElement = (e: MouseEvent | TouchEvent) => {
-      if (props.elementInfo.lock) return
-      e.stopPropagation()
-
-      props.selectElement(e, props.elementInfo)
-    }
-
-    const openLatexEditor = () => {
-      emitter.emit(EmitterEvents.OPEN_LATEX_EDITOR)
-    }
-
-    return {
-      handleSelectElement,
-      openLatexEditor,
-    }
+  selectElement: {
+    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTLatexElement, canMove?: boolean) => void>,
+    required: true,
+  },
+  contextmenus: {
+    type: Function as PropType<() => ContextmenuItem[] | null>,
   },
 })
+
+const handleSelectElement = (e: MouseEvent | TouchEvent) => {
+  if (props.elementInfo.lock) return
+  e.stopPropagation()
+
+  props.selectElement(e, props.elementInfo)
+}
+
+const openLatexEditor = () => {
+  emitter.emit(EmitterEvents.OPEN_LATEX_EDITOR)
+}
 </script>
 
 <style lang="scss" scoped>

@@ -25,7 +25,7 @@
           </SelectOption>
         </SelectOptGroup>
         <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in webFonts" :key="font.value" :value="font.value">
+          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
@@ -270,8 +270,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
@@ -358,136 +358,95 @@ const presetStyles = [
   },
 ]
 
-const webFonts = WEB_FONTS
+const slidesStore = useSlidesStore()
+const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(useMainStore())
 
-export default defineComponent({
-  name: 'text-style-panel',
-  components: {
-    ElementOpacity,
-    ElementOutline,
-    ElementShadow,
-    ColorButton,
-  },
-  setup() {
-    const slidesStore = useSlidesStore()
-    const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(useMainStore())
+const { addHistorySnapshot } = useHistorySnapshot()
 
-    const { addHistorySnapshot } = useHistorySnapshot()
+const updateElement = (props: Partial<PPTTextElement>) => {
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
 
-    const updateElement = (props: Partial<PPTTextElement>) => {
-      slidesStore.updateElement({ id: handleElementId.value, props })
-      addHistorySnapshot()
-    }
+const fill = ref<string>('#000')
+const lineHeight = ref<number>()
+const wordSpace = ref<number>()
+const textIndent = ref<number>()
+const paragraphSpace = ref<number>()
 
-    const fill = ref<string>('#000')
-    const lineHeight = ref<number>()
-    const wordSpace = ref<number>()
-    const textIndent = ref<number>()
-    const paragraphSpace = ref<number>()
+watch(handleElement, () => {
+  if (!handleElement.value || handleElement.value.type !== 'text') return
 
-    watch(handleElement, () => {
-      if (!handleElement.value || handleElement.value.type !== 'text') return
+  fill.value = handleElement.value.fill || '#fff'
+  lineHeight.value = handleElement.value.lineHeight || 1.5
+  wordSpace.value = handleElement.value.wordSpace || 0
+  textIndent.value = handleElement.value.textIndent || 0
+  paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
+}, { deep: true, immediate: true })
 
-      fill.value = handleElement.value.fill || '#fff'
-      lineHeight.value = handleElement.value.lineHeight || 1.5
-      wordSpace.value = handleElement.value.wordSpace || 0
-      textIndent.value = handleElement.value.textIndent || 0
-      paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
-    }, { deep: true, immediate: true })
+const fontSizeOptions = [
+  '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
+  '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
+  '80px', '88px', '96px', '104px', '112px', '120px',
+]
+const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
+const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
+const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
+const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 
-    const fontSizeOptions = [
-      '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
-      '36px', '40px', '44px', '48px', '54px', '60px', '66px', '72px', '76px',
-      '80px', '88px', '96px', '104px', '112px', '120px',
-    ]
-    const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
-    const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
-    const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
-    const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
+// 设置行高
+const updateLineHeight = (value: number) => {
+  updateElement({ lineHeight: value })
+}
 
-    // 设置行高
-    const updateLineHeight = (value: number) => {
-      updateElement({ lineHeight: value })
-    }
+// 设置段间距
+const updateParagraphSpace = (value: number) => {
+  updateElement({ paragraphSpace: value })
+}
 
-    // 设置段间距
-    const updateParagraphSpace = (value: number) => {
-      updateElement({ paragraphSpace: value })
-    }
+// 设置字间距
+const updateWordSpace = (value: number) => {
+  updateElement({ wordSpace: value })
+}
 
-    // 设置字间距
-    const updateWordSpace = (value: number) => {
-      updateElement({ wordSpace: value })
-    }
+// 设置首行缩进
+const updateTextIndent = (value: number) => {
+  updateElement({ textIndent: value })
+}
 
-    // 设置首行缩进
-    const updateTextIndent = (value: number) => {
-      updateElement({ textIndent: value })
-    }
+// 设置文本框填充
+const updateFill = (value: string) => {
+  updateElement({ fill: value })
+}
 
-    // 设置文本框填充
-    const updateFill = (value: string) => {
-      updateElement({ fill: value })
-    }
+// 发射富文本设置命令
+const emitRichTextCommand = (command: string, value?: string) => {
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
+}
 
-    // 发射富文本设置命令
-    const emitRichTextCommand = (command: string, value?: string) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
-    }
+// 发射富文本设置命令（批量）
+const emitBatchRichTextCommand = (action: RichTextAction[]) => {
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
+}
 
-    // 发射富文本设置命令（批量）
-    const emitBatchRichTextCommand = (action: RichTextAction[]) => {
-      emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
-    }
+// 设置富文本超链接
+const link = ref('')
+const linkPopoverVisible = ref(false)
 
-    // 设置富文本超链接
-    const link = ref('')
-    const linkPopoverVisible = ref(false)
+watch(richTextAttrs, () => linkPopoverVisible.value = false)
 
-    watch(richTextAttrs, () => linkPopoverVisible.value = false)
-
-    const openLinkPopover = () => {
-      link.value = richTextAttrs.value.link
-      linkPopoverVisible.value = true
-    }
-    const updateLink = (link?: string) => {
-      if (link) {
-        const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
-        if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
-      }
-      emitRichTextCommand('link', link)
-      linkPopoverVisible.value = false
-    }
-
-    return {
-      fill,
-      lineHeight,
-      wordSpace,
-      textIndent,
-      paragraphSpace,
-      richTextAttrs,
-      availableFonts,
-      webFonts,
-      fontSizeOptions,
-      lineHeightOptions,
-      wordSpaceOptions,
-      textIndentOptions,
-      paragraphSpaceOptions,
-      updateLineHeight,
-      updateParagraphSpace,
-      updateWordSpace,
-      updateTextIndent,
-      updateFill,
-      emitRichTextCommand,
-      emitBatchRichTextCommand,
-      presetStyles,
-      link,
-      linkPopoverVisible,
-      openLinkPopover,
-      updateLink,
-    }
-  },
-})
+const openLinkPopover = () => {
+  link.value = richTextAttrs.value.link
+  linkPopoverVisible.value = true
+}
+const updateLink = (link?: string) => {
+  if (link) {
+    const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
+    if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
+  }
+  emitRichTextCommand('link', link)
+  linkPopoverVisible.value = false
+}
 </script>
 
 <style lang="scss" scoped>
