@@ -25,7 +25,7 @@
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
         @touchstart="$event => handleSelectElement($event)"
-        @dblclick="editable = true"
+        @dblclick="startEdit()"
       >
         <svg 
           overflow="visible" 
@@ -60,12 +60,12 @@
 
         <div class="shape-text" :class="[text.align, { 'editable': editable || text.content }]">
           <ProsemirrorEditor
+            ref="prosemirrorEditorRef"
             v-if="editable || text.content"
             :elementId="elementInfo.id"
             :defaultColor="text.defaultColor"
             :defaultFontName="text.defaultFontName"
             :editable="!elementInfo.lock"
-            :autoFocus="true"
             :value="text.content"
             @update="value => updateText(value)"
             @blur="checkEmptyText()"
@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, ref, watch } from 'vue'
+import { computed, nextTick, PropType, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeText } from '@/types/slides'
@@ -167,6 +167,12 @@ const checkEmptyText = () => {
     slidesStore.removeElementProps({ id: props.elementInfo.id, propName: 'text' })
     addHistorySnapshot()
   }
+}
+
+const prosemirrorEditorRef = ref<typeof ProsemirrorEditor>()
+const startEdit = () => {
+  editable.value = true
+  nextTick(() => prosemirrorEditorRef.value && prosemirrorEditorRef.value.focus())
 }
 </script>
 

@@ -121,6 +121,10 @@ onUnmounted(() => {
   editorView && editorView.destroy()
 })
 
+// 暴露 focus 方法
+const focus = () => editorView.focus()
+defineExpose({ focus })
+
 // 执行富文本命令（可以是一个或多个）
 // 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
 const execCommand = ({ target, action }: RichTextCommand) => {
