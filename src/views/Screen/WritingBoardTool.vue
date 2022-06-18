@@ -77,7 +77,7 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const writingBoardRef = ref()
+const writingBoardRef = ref<typeof WritingBoard>()
 const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
 const blackboard = ref(false)
@@ -88,7 +88,7 @@ const changeModel = (model: WritingBoardModel) => {
 
 // 清除画布上的墨迹
 const clearCanvas = () => {
-  writingBoardRef.value.clearCanvas()
+  writingBoardRef.value!.clearCanvas()
 }
 
 // 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态

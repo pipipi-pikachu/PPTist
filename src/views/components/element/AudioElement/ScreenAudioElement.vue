@@ -86,7 +86,7 @@ const audioPlayerPosition = computed(() => {
   }
 })
 
-const audioPlayerRef = ref()
+const audioPlayerRef = ref<typeof AudioPlayer>()
 const toggle = () => {
   if (!audioPlayerRef.value) return
   audioPlayerRef.value.toggle()
