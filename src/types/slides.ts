@@ -25,6 +25,7 @@ export const enum ElementTypes {
   LATEX = 'latex',
   VIDEO = 'video',
   AUDIO = 'audio',
+  FRAME = 'frame',
 }
 
 /**
@@ -570,7 +571,18 @@ export interface PPTAudioElement extends PPTBaseElement {
 }
 
 
-export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTLatexElement | PPTVideoElement | PPTAudioElement
+export interface PPTFrameElement extends PPTBaseElement {
+  type: 'frame'
+  id: string;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  url: string; // 网页链接地址
+}
+
+
+export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTLatexElement | PPTVideoElement | PPTAudioElement | PPTFrameElement
 
 
 /**

@@ -309,6 +309,19 @@ export default () => {
     })
   }
 
+  const createFrameElement = (url: string) => {
+    createElement({
+      type: 'frame',
+      id: nanoid(10),
+      width: 800,
+      height: 480,
+      rotate: 0,
+      left: (VIEWPORT_SIZE - 800) / 2,
+      top: (VIEWPORT_SIZE * viewportRatio.value - 480) / 2,
+      url,
+    })
+  }
+
   return {
     createImageElement,
     createChartElement,
@@ -319,5 +332,6 @@ export default () => {
     createLatexElement,
     createVideoElement,
     createAudioElement,
+    createFrameElement,
   }
 }

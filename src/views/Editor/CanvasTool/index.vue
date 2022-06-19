@@ -68,6 +68,7 @@
           <IconVideoTwo class="handler-item" />
         </Tooltip>
       </Popover>
+      <span class="handler-item" @click="createFrameElement('https://v3.cn.vuejs.org/')">插入网页</span>
     </div>
 
     <div class="right-handler">
@@ -152,6 +153,7 @@ const {
   createLatexElement,
   createVideoElement,
   createAudioElement,
+  createFrameElement,
 } = useCreateElement()
 
 const insertImageElement = (files: FileList) => {

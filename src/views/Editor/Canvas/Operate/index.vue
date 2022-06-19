@@ -104,6 +104,7 @@ const currentOperateComponent = computed(() => {
     [ElementTypes.LATEX]: CommonElementOperate,
     [ElementTypes.VIDEO]: CommonElementOperate,
     [ElementTypes.AUDIO]: CommonElementOperate,
+    [ElementTypes.FRAME]: CommonElementOperate,
   }
   return elementTypeMap[props.elementInfo.type] || null
 })
