@@ -77,6 +77,7 @@ export const print = (printNode: HTMLElement, size: PageSize) => {
   }
 
   const handleAfterprint = () => {
+    iframe.removeEventListener('load', handleLoadIframe)
     iframeContentWindow.removeEventListener('afterprint', handleAfterprint)
     document.body.removeChild(iframe)
   }
