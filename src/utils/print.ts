@@ -5,7 +5,13 @@ interface PageSize {
 }
 
 const createIframe = () => {
+  const preIframe = document.querySelector('#PrintIframe')
+  if (preIframe) {
+    document.body.removeChild(preIframe)
+  }
+
   const iframe = document.createElement('iframe')
+  iframe.id = 'PrintIframe'
   iframe.style.width = '0'
   iframe.style.height = '0'
   iframe.style.position = 'absolute'
@@ -74,7 +80,7 @@ export const print = (printNode: HTMLElement, size: PageSize) => {
   const handleLoadIframe = () => {
     iframeContentWindow.focus()
     iframeContentWindow.print()
-    document.body.removeChild(iframe)
+    // document.body.removeChild(iframe)
   }
 
   iframe.addEventListener('load', handleLoadIframe)
