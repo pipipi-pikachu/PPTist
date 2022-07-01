@@ -119,12 +119,11 @@ export default () => {
         playedSlidesMinIndex.value = slideIndex.value
       }
       else animationIndex.value = formatedAnimations.value.length
-      inAnimation.value = false
     }
     else {
       throttleMassage('已经是第一页了')
-      inAnimation.value = false
     }
+    inAnimation.value = false
   }
   const execNext = () => {
     if (formatedAnimations.value.length && animationIndex.value < formatedAnimations.value.length) {
