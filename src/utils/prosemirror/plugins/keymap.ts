@@ -7,8 +7,8 @@ import {
   selectParentNode,
   joinUp,
   joinDown,
-  Command,
 } from 'prosemirror-commands'
+import { Command } from 'prosemirror-state'
 
 export const buildKeymap = (schema: Schema) => {
   const keys = {}

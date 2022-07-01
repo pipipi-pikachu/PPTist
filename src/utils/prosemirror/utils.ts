@@ -176,7 +176,7 @@ const _defaultAttrs: DefaultAttrs = {
 export const getTextAttrs = (view: EditorView, defaultAttrs: DefaultAttrs = {}) => {
   defaultAttrs = { ..._defaultAttrs, ...defaultAttrs }
 
-  const marks = getMarkAttrs(view)
+  const marks = getMarkAttrs(view) as Mark[]
 
   const isBold = isActiveMark(marks, 'strong')
   const isEm = isActiveMark(marks, 'em')
@@ -218,7 +218,7 @@ export const getTextAttrs = (view: EditorView, defaultAttrs: DefaultAttrs = {}) 
 export type TextAttrs = ReturnType<typeof getTextAttrs>
 
 export const getFontsize = (view: EditorView) => {
-  const marks = getMarkAttrs(view)
+  const marks = getMarkAttrs(view) as Mark[]
   const fontsize = getAttrValue(marks, 'fontsize', 'fontsize') || _defaultAttrs.fontsize
   return parseInt(fontsize)
 }
