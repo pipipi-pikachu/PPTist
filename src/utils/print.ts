@@ -74,8 +74,14 @@ export const print = (printNode: HTMLElement, size: PageSize) => {
   const handleLoadIframe = () => {
     iframeContentWindow.focus()
     iframeContentWindow.print()
+  }
+
+  const handleAfterprint = () => {
+    iframe.removeEventListener('load', handleLoadIframe)
+    iframeContentWindow.removeEventListener('afterprint', handleAfterprint)
     document.body.removeChild(iframe)
   }
 
   iframe.addEventListener('load', handleLoadIframe)
+  iframeContentWindow.addEventListener('afterprint', handleAfterprint)
 }
