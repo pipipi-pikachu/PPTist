@@ -22,6 +22,12 @@
         :style="{ left: scaleWidth / 2 + 'px' }"
         @mousedown.stop="rotateElement(elementInfo)"
       />
+      <div 
+        class="operate-keypoint-handler" 
+        v-if="elementInfo.keypoint !== undefined"
+        :style="keypointStyle"
+        @mousedown.stop="$event => moveShapeKeypoint($event, elementInfo)"
+      ></div>
     </template>
   </div>
 </template>
@@ -38,6 +44,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTShapeElement } from '@/types/slides'
 import { OperateResizeHandlers } from '@/types/edit'
+import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'
@@ -61,6 +68,10 @@ const props = defineProps({
     type: Function as PropType<(e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void>,
     required: true,
   },
+  moveShapeKeypoint: {
+    type: Function as PropType<(e: MouseEvent, element: PPTShapeElement) => void>,
+    required: true,
+  },
 })
 
 const { canvasScale } = storeToRefs(useMainStore())
@@ -68,4 +79,33 @@ const { canvasScale } = storeToRefs(useMainStore())
 const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+
+const keypointStyle = computed(() => {
+  if (!props.elementInfo.pathFormula || !props.elementInfo.keypoint) return {}
+
+  const pathFormula = SHAPE_PATH_FORMULAS[props.elementInfo.pathFormula]
+  if ('editable' in pathFormula) {
+    const keypointPos = pathFormula.getBaseSize(props.elementInfo.width, props.elementInfo.height) * props.elementInfo.keypoint
+    if (pathFormula.relative === 'left') return { left: keypointPos * canvasScale.value + 'px' }
+    if (pathFormula.relative === 'right') return { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px' }
+    if (pathFormula.relative === 'center') return { left: (props.elementInfo.width - keypointPos) / 2 * canvasScale.value + 'px' }
+    if (pathFormula.relative === 'top') return { top: keypointPos * canvasScale.value + 'px' }
+    if (pathFormula.relative === 'bottom') return { top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' }
+  }
+  return {}
+})
 </script>
+
+<style lang="scss" scoped>
+.operate-keypoint-handler {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 0;
+  top: 0;
+  margin: -5px 0 0 -5px;
+  border: 1px solid $themeColor;
+  background-color: #ffe873;
+  border-radius: 1px;
+}
+</style>

@@ -400,10 +400,16 @@ export default (
       elementList.value = elementList.value.map(el => {
         if (element.id !== el.id) return el
         if (el.type === 'shape' && 'pathFormula' in el && el.pathFormula) {
+          const pathFormula = SHAPE_PATH_FORMULAS[el.pathFormula]
+
+          let path = ''
+          if ('editable' in pathFormula) path = pathFormula.formula(width, height, el.keypoint!)
+          else path = pathFormula.formula(width, height)
+
           return {
             ...el, left, top, width, height,
             viewBox: [width, height],
-            path: SHAPE_PATH_FORMULAS[el.pathFormula](width, height),
+            path,
           }
         }
         return { ...el, left, top, width, height }

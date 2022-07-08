@@ -138,6 +138,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import { MIN_SIZE } from '@/configs/element'
+import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -190,13 +191,35 @@ const updateTop = (value: number) => {
 }
 
 // 设置元素宽度、高度、旋转角度
+// 对形状设置宽高时，需要检查是否需要更新形状路径
+const updateShapePathData = (width: number, height: number) => {
+  if (handleElement.value && handleElement.value.type === 'shape' && 'pathFormula' in handleElement.value && handleElement.value.pathFormula) {
+    const pathFormula = SHAPE_PATH_FORMULAS[handleElement.value.pathFormula]
+
+    let path = ''
+    if ('editable' in pathFormula) path = pathFormula.formula(width, height, handleElement.value.keypoint!)
+    else path = pathFormula.formula(width, height)
+
+    return {
+      viewBox: [width, height],
+      path,
+    }
+  }
+  return null
+}
 const updateWidth = (value: number) => {
-  const props = { width: value }
+  let props = { width: value }
+  const shapePathData = updateShapePathData(value, height.value)
+  if (shapePathData) props = { ...props, ...shapePathData }
+
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }
 const updateHeight = (value: number) => {
-  const props = { height: value }
+  let props = { height: value }
+  const shapePathData = updateShapePathData(width.value, value)
+  if (shapePathData) props = { ...props, ...shapePathData }
+
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }

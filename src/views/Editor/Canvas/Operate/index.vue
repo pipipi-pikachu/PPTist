@@ -17,6 +17,7 @@
       :rotateElement="rotateElement"
       :scaleElement="scaleElement"
       :dragLineElement="dragLineElement"
+      :moveShapeKeypoint="moveShapeKeypoint"
     ></component>
 
     <div 
@@ -40,7 +41,7 @@
 import { PropType, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ElementTypes, PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
+import { ElementTypes, PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement, PPTShapeElement } from '@/types/slides'
 import { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
@@ -82,6 +83,10 @@ const props = defineProps({
   },
   dragLineElement: {
     type: Function as PropType<(e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void>,
+    required: true,
+  },
+  moveShapeKeypoint: {
+    type: Function as PropType<(e: MouseEvent, element: PPTShapeElement) => void>,
     required: true,
   },
   openLinkDialog: {

@@ -46,6 +46,7 @@
           :scaleElement="scaleElement"
           :openLinkDialog="openLinkDialog"
           :dragLineElement="dragLineElement"
+          :moveShapeKeypoint="moveShapeKeypoint"
         />
         <ViewportBackground />
       </div>
@@ -111,6 +112,7 @@ import useScaleElement from './hooks/useScaleElement'
 import useSelectElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
 import useDragLineElement from './hooks/useDragLineElement'
+import useMoveShapeKeypoint from './hooks/useMoveShapeKeypoint'
 import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection'
 
 import useDeleteElement from '@/hooks/useDeleteElement'
@@ -172,6 +174,7 @@ const { dragLineElement } = useDragLineElement(elementList)
 const { selectElement } = useSelectElement(elementList, dragElement)
 const { scaleElement, scaleMultiElement } = useScaleElement(elementList, alignmentLines, canvasScale)
 const { rotateElement } = useRotateElement(elementList, viewportRef)
+const { moveShapeKeypoint } = useMoveShapeKeypoint(elementList, canvasScale)
 
 const { selectAllElement } = useSelectAllElement()
 const { deleteAllElements } = useDeleteElement()
