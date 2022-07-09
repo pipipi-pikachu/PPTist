@@ -56,7 +56,7 @@ const insertTextElement = () => {
     top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
     width,
     height,
-  }, '<p><span style=\"font-size: 24px\">新添加文本</span></p>')
+  }, '<p>新添加文本</p>')
 }
 
 const insertImageElement = (files: FileList) => {
@@ -100,6 +100,8 @@ const handleInputMark = (e: Event) => {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
 }
 .remark {
   position: relative;
@@ -116,7 +118,6 @@ const handleInputMark = (e: Event) => {
     outline: 0;
     padding: 8px 10px;
     font-size: 12px;
-    background-color: transparent;
 
     @include absolute-0();
   }
