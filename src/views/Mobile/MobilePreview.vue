@@ -4,7 +4,7 @@
       <div class="thumbnail-item" v-for="(slide, index) in slides" :key="slide.id">
         <ThumbnailSlide 
           :slide="slide" 
-          :size="screenWidth - 10" 
+          :size="screenWidth - 20" 
           :visible="index < slidesLoadLimit" 
         />
       </div>
