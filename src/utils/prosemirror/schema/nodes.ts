@@ -58,8 +58,11 @@ const paragraph: NodeSpec = {
   },
 }
 
+// https://github.com/pipipi-pikachu/PPTist/issues/134
+const { hard_break, ...otherNodes } = nodes
+
 export default {
-  ...nodes,
+  ...otherNodes,
   'ordered_list': _orderedList,
   'bullet_list': _bulletList,
   'list_item': _listItem,
