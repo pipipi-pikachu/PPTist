@@ -50,13 +50,6 @@ onMounted(() => {
   height: 100%;
   background-color: #f9f9f9;
 }
-.tip {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
-}
 .thumbnail-list {
   height: calc(100% - 50px);
   padding: 10px;
