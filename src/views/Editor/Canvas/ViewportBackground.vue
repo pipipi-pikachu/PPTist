@@ -3,7 +3,7 @@
     class="viewport-background"
     :style="backgroundStyle"
   >
-    <GridLines v-if="showGridLines" />
+    <GridLines v-if="gridLineSize" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import { SlideBackground } from '@/types/slides'
 import GridLines from './GridLines.vue'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
-const { showGridLines } = storeToRefs(useMainStore())
+const { gridLineSize } = storeToRefs(useMainStore())
 const { currentSlide } = storeToRefs(useSlidesStore())
 const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
 

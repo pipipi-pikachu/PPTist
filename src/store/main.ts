@@ -19,7 +19,7 @@ export interface MainState {
   thumbnailsFocus: boolean
   editorAreaFocus: boolean
   disableHotkeys: boolean
-  showGridLines: boolean
+  gridLineSize: number
   showRuler: boolean
   creatingElement: CreatingElement | null
   availableFonts: typeof SYS_FONTS
@@ -47,7 +47,7 @@ export const useMainStore = defineStore('main', {
     thumbnailsFocus: false, // 左侧导航缩略图区域聚焦
     editorAreaFocus: false, //  编辑区域聚焦
     disableHotkeys: false, // 禁用快捷键
-    showGridLines: false, // 显示网格线
+    gridLineSize: 0, // 网格线尺寸（0表示不显示网格线）
     showRuler: false, // 显示标尺
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     availableFonts: SYS_FONTS, // 当前环境可用字体
@@ -117,8 +117,8 @@ export const useMainStore = defineStore('main', {
       this.disableHotkeys = disable
     },
   
-    setGridLinesState(show: boolean) {
-      this.showGridLines = show
+    setGridLineSize(size: number) {
+      this.gridLineSize = size
     },
   
     setRulerState(show: boolean) {

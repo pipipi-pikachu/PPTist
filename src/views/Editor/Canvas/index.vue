@@ -138,7 +138,7 @@ const {
   activeGroupElementId,
   handleElementId,
   editorAreaFocus,
-  showGridLines,
+  gridLineSize,
   showRuler,
   creatingElement,
   canvasScale,
@@ -224,11 +224,6 @@ const handleMousewheelCanvas = (e: WheelEvent) => {
   }
 }
 
-// 开关网格线
-const toggleGridLines = () => {
-  mainStore.setGridLinesState(!showGridLines.value)
-}
-
 // 开关标尺
 const toggleRuler = () => {
   mainStore.setRulerState(!showRuler.value)
@@ -250,14 +245,35 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: selectAllElement,
     },
     {
-      text: '网格线',
-      subText: showGridLines.value ? '√' : '',
-      handler: toggleGridLines,
-    },
-    {
       text: '标尺',
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
+    },
+    {
+      text: '网格线',
+      handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
+      children: [
+        {
+          text: '无',
+          subText: gridLineSize.value === 0 ? '√' : '',
+          handler: () => mainStore.setGridLineSize(0),
+        },
+        {
+          text: '小',
+          subText: gridLineSize.value === 25 ? '√' : '',
+          handler: () => mainStore.setGridLineSize(25),
+        },
+        {
+          text: '中',
+          subText: gridLineSize.value === 50 ? '√' : '',
+          handler: () => mainStore.setGridLineSize(50),
+        },
+        {
+          text: '大',
+          subText: gridLineSize.value === 100 ? '√' : '',
+          handler: () => mainStore.setGridLineSize(100),
+        },
+      ],
     },
     {
       text: '重置当前页',

@@ -21,7 +21,7 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { SlideBackground } from '@/types/slides'
 
-const { canvasScale } = storeToRefs(useMainStore())
+const { canvasScale, gridLineSize } = storeToRefs(useMainStore())
 const { currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
 const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
@@ -33,24 +33,20 @@ const gridColor = computed(() => {
   return tinycolor.mostReadable(bgColor, colorList, { includeFallbackColors: true }).setAlpha(.5).toRgbString()
 })
 
-const gridSize = 50
-
-// 计算网格路径
-const getPath = () => {
+// 网格路径
+const path = computed(() => {
   const maxX = VIEWPORT_SIZE
   const maxY = VIEWPORT_SIZE * viewportRatio.value
 
-  let path = ''
-  for (let i = 0; i <= Math.floor(maxY / gridSize); i++) {
-    path += `M0 ${i * gridSize} L${maxX} ${i * gridSize} `
+  let p = ''
+  for (let i = 0; i <= Math.floor(maxY / gridLineSize.value); i++) {
+    p += `M0 ${i * gridLineSize.value} L${maxX} ${i * gridLineSize.value} `
   }
-  for (let i = 0; i <= Math.floor(maxX / gridSize); i++) {
-    path += `M${i * gridSize} 0 L${i * gridSize} ${maxY} `
+  for (let i = 0; i <= Math.floor(maxX / gridLineSize.value); i++) {
+    p += `M${i * gridLineSize.value} 0 L${i * gridLineSize.value} ${maxY} `
   }
-  return path
-}
-
-const path = getPath()
+  return p
+})
 </script>
 
 <style lang="scss" scoped>

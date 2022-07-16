@@ -24,7 +24,7 @@
             <MenuItem @click="redo()">重做</MenuItem>
             <MenuItem @click="createSlide()">添加页面</MenuItem>
             <MenuItem @click="deleteSlide()">删除页面</MenuItem>
-            <MenuItem @click="toggleGridLines()">{{ showGridLines ? '关闭网格线' : '打开网格线' }}</MenuItem>
+            <MenuItem @click="toggleGridLines()">{{ gridLineSize ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="toggleRuler()">{{ showRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
           </Menu>
@@ -90,7 +90,7 @@ import useExport from '@/hooks/useExport'
 import HotkeyDoc from './HotkeyDoc.vue'
 
 const mainStore = useMainStore()
-const { showGridLines, showRuler } = storeToRefs(mainStore)
+const { gridLineSize, showRuler } = storeToRefs(mainStore)
 
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
@@ -100,7 +100,7 @@ const { importSpecificFile } = useExport()
 const setDialogForExport = mainStore.setDialogForExport
 
 const toggleGridLines = () => {
-  mainStore.setGridLinesState(!showGridLines.value)
+  mainStore.setGridLineSize(gridLineSize.value ? 0 : 50)
 }
 
 const toggleRuler = () => {
