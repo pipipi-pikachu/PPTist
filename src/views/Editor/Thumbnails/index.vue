@@ -40,6 +40,8 @@
         </div>
       </template>
     </Draggable>
+
+    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
   </div>
 </template>
 
@@ -322,5 +324,13 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   &:active {
     cursor: grabbing;
   }
+}
+.page-number {
+  height: 40px;
+  font-size: 12px;
+  border-top: 1px solid $borderColor;
+  line-height: 40px;
+  text-align: center;
+  color: #666;
 }
 </style>
