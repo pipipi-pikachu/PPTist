@@ -34,6 +34,13 @@
             }" 
             alt=""
           />
+          <div class="color-mask"
+            v-if="elementInfo.colorMask"
+            :style="{
+              backgroundColor: elementInfo.colorMask.color,
+              opacity: elementInfo.colorMask.opacity,
+            }"
+          ></div>
         </div>
       </div>
     </div>
@@ -94,5 +101,12 @@ const { filter } = useFilter(filters)
   img {
     position: absolute;
   }
+}
+.color-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 </style>

@@ -42,6 +42,8 @@
     </ButtonGroup>
 
     <Divider />
+    <ElementColorMask />
+    <Divider />
     <ElementFilter />
     <Divider />
     <ElementOutline />
@@ -70,6 +72,7 @@ import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ElementFlip from '../common/ElementFlip.vue'
 import ElementFilter from '../common/ElementFilter.vue'
+import ElementColorMask from '../common/ElementColorMask.vue'
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
@@ -235,7 +238,7 @@ const resetImage = () => {
 
   slidesStore.removeElementProps({
     id: handleElementId.value,
-    propName: ['clip', 'outline', 'flip', 'shadow', 'filters'],
+    propName: ['clip', 'outline', 'flip', 'shadow', 'filters', 'colorMask'],
   })
   addHistorySnapshot()
 }
