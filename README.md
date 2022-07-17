@@ -3,8 +3,6 @@
 
 <b>在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
 
-<em>国内镜像（注意此镜像为旧版本，且由于 Gitee 的某些原因，不再更新此镜像，不建议继续使用）：[https://pptist.gitee.io/](https://pptist.gitee.io/)</em>
-
 
 # 👀 前排提示
 1. 本项目的目标是打造一个 “在线幻灯片应用” ，而非 “低代码平台”、“H5 编辑器” 或 “图片编辑工具” 等。
