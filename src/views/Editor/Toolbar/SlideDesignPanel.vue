@@ -165,29 +165,34 @@
       </Popover>
     </div>
 
-    <div class="title dropdown" :class="{ 'active': showPresetThemes }" @click="togglePresetThemesVisible()" style="margin-top: 20px;">
-      预置主题 <IconDown class="icon" />
-    </div>
-    <div class="theme-list" v-if="showPresetThemes">
+    <div class="row"><Button style="flex: 1;" @click="applyThemeToAllSlides()">应用主题到全部</Button></div>
+
+    <Divider />
+
+    <div class="title">预置主题</div>
+    <div class="theme-list">
       <div 
         class="theme-item" 
         v-for="(item, index) in PRESET_THEMES" 
         :key="index"
-        :style="{ backgroundColor: item.background }"
-        @click="updateTheme({
-          fontColor: item.text,
+        :style="{
           backgroundColor: item.background,
-          themeColor: item.color,
-        })"
+          fontFamily: item.fontname,
+        }"
       >
         <div class="theme-item-content">
-          <div class="text" :style="{ color: item.text }">Aa</div>
-          <div class="color-block" :style="{ backgroundColor: item.color }"></div>
+          <div class="text" :style="{ color: item.fontColor }">文字 Aa</div>
+          <div class="colors">
+            <div class="color-block" v-for="(color, index) in item.colors" :key="index" :style="{ backgroundColor: color}"></div>
+          </div>
+
+          <div class="btns">
+            <div class="btn" @click="applyPresetThemeToSingleSlide(item)">应用</div>
+            <div class="btn" @click="applyPresetThemeToAllSlides(item)">应用全局</div>
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="row"><Button style="flex: 1;" @click="applyThemeAllSlide()">应用主题到全部</Button></div>
   </div>
 </template>
 
@@ -195,10 +200,11 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { Slide, SlideBackground, SlideTheme } from '@/types/slides'
+import { SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useSlideTheme from '@/hooks/useSlideTheme'
 
 import ColorButton from './common/ColorButton.vue'
 import { getImageDataURL } from '@/utils/image'
@@ -218,6 +224,11 @@ const background = computed(() => {
 })
 
 const { addHistorySnapshot } = useHistorySnapshot()
+const {
+  applyPresetThemeToSingleSlide,
+  applyPresetThemeToAllSlides,
+  applyThemeToAllSlides,
+} = useSlideTheme()
 
 // 设置背景模式：纯色、图片、渐变色
 const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
@@ -281,58 +292,6 @@ const updateTheme = (themeProps: Partial<SlideTheme>) => {
   slidesStore.setTheme(themeProps)
 }
 
-// 将当前主题应用到全部页面
-const applyThemeAllSlide = () => {
-  const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
-  const { themeColor, backgroundColor, fontColor, fontName } = theme.value
-
-  for (const slide of newSlides) {
-    if (!slide.background || slide.background.type !== 'image') {
-      slide.background = {
-        ...slide.background,
-        type: 'solid',
-        color: backgroundColor
-      }
-    }
-
-    const elements = slide.elements
-    for (const el of elements) {
-      if (el.type === 'shape') el.fill = themeColor
-      else if (el.type === 'line') el.color = themeColor
-      else if (el.type === 'text') {
-        el.defaultColor = fontColor
-        el.defaultFontName = fontName
-        if (el.fill) el.fill = themeColor
-      }
-      else if (el.type === 'table') {
-        if (el.theme) el.theme.color = themeColor
-        for (const rowCells of el.data) {
-          for (const cell of rowCells) {
-            if (cell.style) {
-              cell.style.color = fontColor
-              cell.style.fontname = fontName
-            }
-          }
-        }
-      }
-      else if (el.type === 'chart') {
-        el.themeColor = [themeColor]
-        el.gridColor = fontColor
-      }
-      else if (el.type === 'latex') el.color = fontColor
-      else if (el.type === 'audio') el.color = themeColor
-    }
-  }
-  slidesStore.setSlides(newSlides)
-  addHistorySnapshot()
-}
-
-// 是否显示预设主题
-const showPresetThemes = ref(true)
-const togglePresetThemesVisible = () => {
-  showPresetThemes.value = !showPresetThemes.value
-}
-
 // 设置画布尺寸（宽高比例）
 const updateViewportRatio = (value: number) => {
   slidesStore.setViewportRatio(value)
@@ -351,21 +310,6 @@ const updateViewportRatio = (value: number) => {
 }
 .title {
   margin-bottom: 10px;
-
-  &.dropdown {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-
-    .icon {
-      margin-left: 5px;
-      transition: transform $transitionDelayFast;
-    }
-
-    &:not(.active) .icon {
-      transform: rotate(-90deg);
-    }
-  }
 }
 .background-image-wrapper {
   margin-bottom: 10px;
@@ -400,9 +344,9 @@ const updateViewportRatio = (value: number) => {
   @include flex-grid-layout();
 }
 .theme-item {
-  @include flex-grid-layout-children(4, 22%);
+  @include flex-grid-layout-children(2, 48%);
 
-  padding-bottom: 22%;
+  padding-bottom: 30%;
   border-radius: $borderRadius;
   position: relative;
   cursor: pointer;
@@ -413,22 +357,52 @@ const updateViewportRatio = (value: number) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    transition: box-shadow $transitionDelay;
-
-    &:hover {
-      box-shadow: 0 0 4px #888;
-    }
+    padding: 8px;
+    border: 1px solid $borderColor;
   }
 
   .text {
     font-size: 16px;
   }
-
+  .colors {
+    display: flex;
+  }
   .color-block {
-    width: 28px;
-    height: 10px;
-    margin-top: 5px;
+    margin-top: 8px;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+  }
+
+  &:hover .btns {
+    display: flex;
+  }
+
+  .btns {
+    @include absolute-0();
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    background-color: rgba($color: #000, $alpha: .25);
+  }
+  .btn {
+    width: 72px;
+    padding: 5px 0;
+    text-align: center;
+    background-color: $themeColor;
+    color: #fff;
+    font-size: 12px;
+    border-radius: $borderRadius;
+
+    &:hover {
+      background-color: #c42f19;
+    }
+
+    & + .btn {
+      margin-top: 5px;
+    }
   }
 }
 .slider {
