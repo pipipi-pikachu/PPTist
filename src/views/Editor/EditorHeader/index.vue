@@ -135,7 +135,6 @@ const goIssues = () => {
   align-items: center;
   font-size: 14px;
   padding: 0 10px;
-  transition: background-color $transitionDelay;
   cursor: pointer;
 
   .text {
@@ -144,6 +143,6 @@ const goIssues = () => {
 }
 
 .left .menu-item:hover {
-  background-color: $lightGray;
+  background-color: #f9f9f9;
 }
 </style>

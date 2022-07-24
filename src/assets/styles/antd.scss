@@ -16,11 +16,11 @@
 }
 
 // dropdown
-.ant-dropdown {
-  min-width: 120px;
-}
 .ant-dropdown-menu {
+  min-width: 150px;
   box-shadow: $boxShadow;
+  border: 1px solid $borderColor;
+  margin-top: -4px;
 }
 .ant-dropdown-menu-item {
 
