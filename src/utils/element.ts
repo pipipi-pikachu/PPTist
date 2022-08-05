@@ -153,6 +153,19 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
 }
 
 /**
+ * 以页面列表为基础，为每一个页面生成新的ID，并关联到旧ID形成一个字典
+ * 主要用于页面元素时，维持数据中各处页面ID原有的关系
+ * @param slides 页面列表
+ */
+export const createSlideIdMap = (slides: Slide[]) => {
+  const slideIdMap = {}
+  for (const slide of slides) {
+    slideIdMap[slide.id] = nanoid(10)
+  }
+  return slideIdMap
+}
+
+/**
    * 以元素列表为基础，为每一个元素生成新的ID，并关联到旧ID形成一个字典
    * 主要用于复制元素时，维持数据中各处元素ID原有的关系
    * 例如：原本两个组合的元素拥有相同的groupId，复制后依然会拥有另一个相同的groupId

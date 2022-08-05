@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useSlidesStore, useMainStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
-import { createElementIdMap } from '@/utils/element'
+import { createSlideIdMap, createElementIdMap } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -42,12 +42,23 @@ export default () => {
    * @param slide 页面数据
    */
   const addSlidesFromData = (slides: Slide[]) => {
+    const slideIdMap = createSlideIdMap(slides)
     const newSlides = slides.map(slide => {
       const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
 
       for (const element of slide.elements) {
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
+		
+        // 判断element跳转链接,如为slide且复制页面含target则替换,否则重置为undefined
+        if (element?.link && element.link.type === 'slide') {
+          if (slideIdMap[element.link.target]) {
+            element.link.target = slideIdMap[element.link.target]
+          }
+          else {
+            element.link = undefined
+          }
+        }
       }
       // 动画id替换
       if (slide.animations) {
