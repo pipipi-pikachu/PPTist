@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import { nanoid } from 'nanoid'
-import { PPTElement, PPTLineElement } from '@/types/slides'
+import { PPTElement, PPTLineElement, Slide } from '@/types/slides'
 
 interface RotatedElementData {
   left: number
@@ -150,6 +150,19 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
     }
   })
   return uniqLines
+}
+
+/**
+ * 以页面列表为基础，为每一个页面生成新的ID，并关联到旧ID形成一个字典
+ * 主要用于页面元素时，维持数据中各处页面ID原有的关系
+ * @param slides 页面列表
+ */
+export const createSlideIdMap = (slides: Slide[]) => {
+  const slideIdMap = {}
+  for (const slide of slides) {
+    slideIdMap[slide.id] = nanoid(10)
+  }
+  return slideIdMap
 }
 
 /**

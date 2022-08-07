@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useSlidesStore, useMainStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
-import { createElementIdMap } from '@/utils/element'
+import { createSlideIdMap, createElementIdMap } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -42,12 +42,24 @@ export default () => {
    * @param slide 页面数据
    */
   const addSlidesFromData = (slides: Slide[]) => {
+    const slideIdMap = createSlideIdMap(slides)
     const newSlides = slides.map(slide => {
       const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
 
       for (const element of slide.elements) {
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
+		
+        // 若元素绑定了页面跳转链接
+        if (element.link && element.link.type === 'slide') {
+
+          // 待添加页面中包含该页面，则替换相关绑定关系
+          if (slideIdMap[element.link.target]) {
+            element.link.target = slideIdMap[element.link.target]
+          }
+          // 待添加页面中不包含该页面，则删除该元素绑定的页面跳转
+          else delete element.link
+        }
       }
       // 动画id替换
       if (slide.animations) {
@@ -58,7 +70,7 @@ export default () => {
       }
       return {
         ...slide,
-        id: nanoid(10),
+        id: slideIdMap[slide.id],
       }
     })
     slidesStore.addSlide(newSlides)
