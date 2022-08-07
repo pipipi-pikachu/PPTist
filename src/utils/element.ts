@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import { nanoid } from 'nanoid'
-import { PPTElement, PPTLineElement } from '@/types/slides'
+import { PPTElement, PPTLineElement, Slide } from '@/types/slides'
 
 interface RotatedElementData {
   left: number

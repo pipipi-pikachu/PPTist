@@ -50,14 +50,15 @@ export default () => {
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
 		
-        // 判断element跳转链接,如为slide且复制页面含target则替换,否则重置为undefined
-        if (element?.link && element.link.type === 'slide') {
+        // 若元素绑定了页面跳转链接
+        if (element.link && element.link.type === 'slide') {
+
+          // 待添加页面中包含该页面，则替换相关绑定关系
           if (slideIdMap[element.link.target]) {
             element.link.target = slideIdMap[element.link.target]
           }
-          else {
-            element.link = undefined
-          }
+          // 待添加页面中不包含该页面，则删除该元素绑定的页面跳转
+          else delete element.link
         }
       }
       // 动画id替换
@@ -69,7 +70,7 @@ export default () => {
       }
       return {
         ...slide,
-        id: nanoid(10),
+        id: slideIdMap[slide.id],
       }
     })
     slidesStore.addSlide(newSlides)
