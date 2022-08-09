@@ -28,17 +28,12 @@
 
 <script lang="ts" setup>
 import { computed, inject, onMounted, PropType, ref, watch } from 'vue'
-import { upperFirst } from 'lodash'
 import tinycolor from 'tinycolor2'
-import Chartist, {
-  IChartistLineChart,
-  IChartistBarChart,
-  IChartistPieChart,
-} from 'chartist'
+import { BarChart, LineChart, PieChart } from 'chartist'
 import { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
-import 'chartist/dist/scss/chartist.scss'
+import 'chartist/dist/index.css'
 
 const props = defineProps({
   width: {
@@ -79,30 +74,31 @@ const props = defineProps({
 const chartRef = ref<HTMLElement>()
 const slideScale = inject(injectKeySlideScale) || ref(1)
 
-let chart: IChartistLineChart | IChartistBarChart | IChartistPieChart | undefined
+let chart: LineChart | BarChart | PieChart | undefined
 
 const chartHeight = computed(() => {
   if (props.legend) return props.height - 20
   return props.height
 })
 
-const getDataAndOptions = () => {
+const getPieChartData = () => ({ ...props.data, series: props.data.series[0] })
+
+const getOptions = () => {
   const propsOptopns = props.options || {}
-  const options = {
+  return {
     ...propsOptopns,
     width: props.width * slideScale.value,
     height: chartHeight.value * slideScale.value,
   }
-  const data = props.type === 'pie' ? { ...props.data, series: props.data.series[0] } : props.data
-  return { data, options }
 }
 
 const renderChart = () => {
   if (!chartRef.value) return
 
-  const type = upperFirst(props.type)
-  const { data, options } = getDataAndOptions()
-  chart = new Chartist[type](chartRef.value, data, options)
+  const options = getOptions()
+  if (props.type === 'bar') chart = new BarChart(chartRef.value, props.data, options)
+  if (props.type === 'line') chart = new LineChart(chartRef.value, props.data, options)
+  if (props.type === 'pie') chart = new PieChart(chartRef.value, getPieChartData(), options)
 }
 
 const updateChart = () => {
@@ -110,7 +106,8 @@ const updateChart = () => {
     renderChart()
     return
   }
-  const { data, options } = getDataAndOptions()
+  const options = getOptions()
+  const data = props.type === 'pie' ? getPieChartData() : props.data
   chart.update(data, options)
 }
 

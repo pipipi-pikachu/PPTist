@@ -302,8 +302,6 @@ emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
 onUnmounted(() => {
   emitter.off(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
 })
-
-// handleElement: handleElement as Ref<PPTChartElement>,
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,4 @@
-import { IBarChartOptions, ILineChartOptions, IPieChartOptions } from 'chartist'
+import { BarChartOptions, LineChartOptions, PieChartOptions } from 'chartist'
 
 export const enum ShapePathFormulasKeys {
   ROUND_RECT = 'roundRect',
@@ -386,7 +386,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
 
 export type PresetChartType = 'bar' | 'horizontalBar' | 'line' | 'area' | 'scatter' | 'pie' | 'ring'
 export type ChartType = 'bar' | 'line' | 'pie'
-export type ChartOptions = ILineChartOptions & IBarChartOptions & IPieChartOptions
+export type ChartOptions = LineChartOptions & BarChartOptions & PieChartOptions
 export interface ChartData {
   labels: string[]
   legends: string[]
