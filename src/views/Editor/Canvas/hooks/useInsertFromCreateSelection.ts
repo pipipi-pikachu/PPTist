@@ -75,15 +75,15 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
     const type = creatingElement.value.type
     if (type === 'text') {
       const position = formatCreateSelection(selectionData)
-      position && createTextElement(position)
+      position && createTextElement(position, { vertical: creatingElement.value.vertical })
     }
     else if (type === 'shape') {
       const position = formatCreateSelection(selectionData)
-      position && createShapeElement(position, (creatingElement.value as CreatingShapeElement).data)
+      position && createShapeElement(position, creatingElement.value.data)
     }
     else if (type === 'line') {
       const position = formatCreateSelectionForLine(selectionData)
-      position && createLineElement(position, (creatingElement.value as CreatingLineElement).data)
+      position && createLineElement(position, creatingElement.value.data)
     }
     mainStore.setCreatingElement(null)
   }

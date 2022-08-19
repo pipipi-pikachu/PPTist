@@ -1,12 +1,12 @@
 <template>
   <div 
     class="editable-element-text" 
-    ref="elementRef"
     :class="{ 'lock': elementInfo.lock }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
-      width: elementInfo.width + 'px',
+      width: elementInfo.vertical ? 'auto' : elementInfo.width + 'px',
+      height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
     }"
   >
     <div
@@ -15,7 +15,10 @@
     >
       <div 
         class="element-content"
+        ref="elementRef"
         :style="{
+          width: elementInfo.vertical ? 'auto' : elementInfo.width + 'px',
+          height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
           backgroundColor: elementInfo.fill,
           opacity: elementInfo.opacity,
           textShadow: shadowStyle,
@@ -23,6 +26,7 @@
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
           color: elementInfo.defaultColor,
           fontFamily: elementInfo.defaultFontName,
+          writingMode: elementInfo.vertical ? 'vertical-rl' : 'horizontal-tb',
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
@@ -104,16 +108,26 @@ const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
 // 监听文本元素的尺寸变化，当高度变化时，更新高度到vuex
 // 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
 const realHeightCache = ref(-1)
+const realWidthCache = ref(-1)
 
 watch(isScaling, () => {
   if (handleElementId.value !== props.elementInfo.id) return
 
-  if (!isScaling.value && realHeightCache.value !== -1) {
-    slidesStore.updateElement({
-      id: props.elementInfo.id,
-      props: { height: realHeightCache.value },
-    })
-    realHeightCache.value = -1
+  if (!isScaling.value) {
+    if (!props.elementInfo.vertical && realHeightCache.value !== -1) {
+      slidesStore.updateElement({
+        id: props.elementInfo.id,
+        props: { height: realHeightCache.value },
+      })
+      realHeightCache.value = -1
+    }
+    if (props.elementInfo.vertical && realWidthCache.value !== -1) {
+      slidesStore.updateElement({
+        id: props.elementInfo.id,
+        props: { width: realWidthCache.value },
+      })
+      realWidthCache.value = -1
+    }
   }
 })
 
@@ -121,9 +135,10 @@ const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
   const contentRect = entries[0].contentRect
   if (!elementRef.value) return
 
-  const realHeight = contentRect.height
+  const realHeight = contentRect.height + 20
+  const realWidth = contentRect.width + 20
 
-  if (props.elementInfo.height !== realHeight) {
+  if (!props.elementInfo.vertical && props.elementInfo.height !== realHeight) {
     if (!isScaling.value) {
       slidesStore.updateElement({
         id: props.elementInfo.id,
@@ -131,6 +146,15 @@ const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
       })
     }
     else realHeightCache.value = realHeight
+  }
+  if (props.elementInfo.vertical && props.elementInfo.width !== realWidth) {
+    if (!isScaling.value) {
+      slidesStore.updateElement({
+        id: props.elementInfo.id,
+        props: { width: realWidth },
+      })
+    }
+    else realWidthCache.value = realWidth
   }
 }
 const resizeObserver = new ResizeObserver(updateTextElementHeight)

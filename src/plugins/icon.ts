@@ -107,6 +107,8 @@ import {
   Square,
   Round,
   Needle,
+  TextRotationNone,
+  TextRotationDown,
 } from '@icon-park/vue-next'
 
 export const icons = {
@@ -215,6 +217,8 @@ export const icons = {
   IconSquare: Square,
   IconRound: Round,
   IconNeedle: Needle,
+  IconTextRotationNone: TextRotationNone,
+  IconTextRotationDown: TextRotationDown,
 }
 
 export default {

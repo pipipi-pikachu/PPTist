@@ -22,7 +22,7 @@ export default () => {
       top: 0,
       width: 600,
       height: 50,
-    }, text)
+    }, { content: text })
   }
 
   /**

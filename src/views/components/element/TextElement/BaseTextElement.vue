@@ -4,7 +4,8 @@
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
-      width: elementInfo.width + 'px',
+      width: elementInfo.vertical ? 'auto' : elementInfo.width + 'px',
+      height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
     }"
   >
     <div
@@ -14,6 +15,8 @@
       <div 
         class="element-content"
         :style="{
+          width: elementInfo.vertical ? 'auto' : elementInfo.width + 'px',
+          height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
           backgroundColor: elementInfo.fill,
           opacity: elementInfo.opacity,
           textShadow: shadowStyle,
@@ -21,6 +24,7 @@
           letterSpacing: (elementInfo.wordSpace || 0) + 'px',
           color: elementInfo.defaultColor,
           fontFamily: elementInfo.defaultFontName,
+          writingMode: elementInfo.vertical ? 'vertical-rl' : 'horizontal-tb',
         }"
       >
         <ElementOutline

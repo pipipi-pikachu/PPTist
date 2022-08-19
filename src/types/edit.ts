@@ -80,6 +80,7 @@ export interface CreateElementSelectionData {
 
 export interface CreatingTextElement {
   type: 'text'
+  vertical?: boolean
 }
 export interface CreatingShapeElement {
   type: 'shape'

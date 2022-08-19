@@ -172,8 +172,16 @@ export default () => {
    * @param position 位置大小信息
    * @param content 文本内容
    */
-  const createTextElement = (position: CommonElementPosition, content = '') => {
+  
+  interface CreateTextData {
+    content?: string
+    vertical?: boolean
+  }
+  const createTextElement = (position: CommonElementPosition, data?: CreateTextData) => {
     const { left, top, width, height } = position
+    const content = data?.content || ''
+    const vertical = data?.vertical || false
+
     const id = nanoid(10)
     createElement({
       type: 'text',
@@ -186,6 +194,7 @@ export default () => {
       rotate: 0,
       defaultFontName: theme.value.fontName,
       defaultColor: theme.value.fontColor,
+      vertical,
     }, () => {
       setTimeout(() => {
         const editorRef: HTMLElement | null = document.querySelector(`#editable-element-${id} .ProseMirror`)

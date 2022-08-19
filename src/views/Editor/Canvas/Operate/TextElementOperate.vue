@@ -10,7 +10,7 @@
     <template v-if="handlerVisible">
       <ResizeHandler
         class="operate-resize-handler" 
-        v-for="point in textElementResizeHandlers"
+        v-for="point in resizeHandlers"
         :key="point.direction"
         :type="point.direction"
         :rotate="elementInfo.rotate"
@@ -68,5 +68,6 @@ const { canvasScale } = storeToRefs(useMainStore())
 const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 
-const { textElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const { textElementResizeHandlers, verticalTextElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const resizeHandlers = computed(() => props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value)
 </script>

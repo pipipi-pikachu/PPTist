@@ -442,6 +442,7 @@ export default () => {
           if (el.outline?.width) options.line = getOutlineOption(el.outline)
           if (el.opacity !== undefined) options.transparency = (1 - el.opacity) * 100
           if (el.paragraphSpace !== undefined) options.paraSpaceBefore = el.paragraphSpace * 0.75
+          if (el.vertical) options.vert = 'eaVert'
 
           pptxSlide.addText(textProps, options)
         }

@@ -1,11 +1,21 @@
 import { icons } from '@/plugins/icon'
 import { components } from '@/plugins/component'
 
+import FileInput from '@/components/FileInput.vue'
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import FullscreenSpin from '@/components/FullscreenSpin.vue'
+
 type Icon = typeof icons
-type CustomComponent = typeof components
 
 declare module 'vue' {
-  export interface GlobalComponents extends Icon, CustomComponent {
+  export interface GlobalComponents extends Icon {
+    FileInput: typeof FileInput
+    CheckboxButton: typeof CheckboxButton
+    CheckboxButtonGroup: typeof CheckboxButtonGroup
+    ColorPicker: typeof ColorPicker
+    FullscreenSpin: typeof FullscreenSpin
 
     // antd 组件
     InputNumber: typeof import('ant-design-vue')['InputNumber']

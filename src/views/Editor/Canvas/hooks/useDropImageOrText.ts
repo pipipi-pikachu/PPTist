@@ -31,7 +31,7 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
           top: 0,
           width: 600,
           height: 50,
-        }, string)
+        }, { content: string })
       })
     }
   }

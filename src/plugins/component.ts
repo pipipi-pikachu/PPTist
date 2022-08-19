@@ -6,7 +6,7 @@ import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
-export const components = {
+const components = {
   FileInput,
   CheckboxButton,
   CheckboxButtonGroup,

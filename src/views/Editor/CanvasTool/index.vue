@@ -11,7 +11,17 @@
 
     <div class="add-element-handler">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
-        <IconFontSize class="handler-item" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
+        <div class="handler-item group-btn">
+          <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
+          
+          <Popover trigger="click" v-model:visible="textTypeSelectVisible">
+            <template #content>
+              <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
+              <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
+            </template>
+            <IconDown class="arrow" />
+          </Popover>
+        </div>
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
@@ -166,11 +176,13 @@ const chartPoolVisible = ref(false)
 const tableGeneratorVisible = ref(false)
 const mediaInputVisible = ref(false)
 const latexEditorVisible = ref(false)
+const textTypeSelectVisible = ref(false)
 
 // 绘制文字范围
-const drawText = () => {
+const drawText = (vertical = false) => {
   mainStore.setCreatingElement({
     type: 'text',
+    vertical,
   })
 }
 
@@ -214,17 +226,68 @@ const drawLine = (line: LinePoolItem) => {
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+
+  .handler-item {
+    width: 32px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2px;
+    border-radius: $borderRadius;
+
+    &:not(.group-btn):hover {
+      background-color: #f1f1f1;
+    }
+
+    &.active {
+      color: $themeColor;
+    }
+
+    &.group-btn {
+      width: auto;
+      margin-right: 4px;
+
+      &:hover {
+        background-color: #f3f3f3;
+      }
+
+      .icon, .arrow {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon {
+        width: 26px;
+        padding: 0 2px;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+        &.active {
+          color: $themeColor;
+        }
+      }
+      .arrow {
+        font-size: 12px;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+      }
+    }
+  }
 }
 .handler-item {
   margin: 0 10px;
   font-size: 14px;
+  overflow: hidden;
   cursor: pointer;
 
   &.disable {
     opacity: .5;
-  }
-  &.active {
-    color: $themeColor;
   }
 }
 .right-handler {
@@ -248,6 +311,18 @@ const drawLine = (line: LinePoolItem) => {
 
   &:hover {
     color: $themeColor;
+  }
+}
+.text-type-item {
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+
+  & + .text-type-item {
+    margin-top: 3px;
   }
 }
 </style>

@@ -23,6 +23,12 @@ export default (width: Ref<number>, height: Ref<number>) => {
       { direction: OperateResizeHandlers.RIGHT, style: {left: width.value + 'px', top: height.value / 2 + 'px'} },
     ]
   })
+  const verticalTextElementResizeHandlers = computed(() => {
+    return [
+      { direction: OperateResizeHandlers.TOP, style: {left: width.value / 2 + 'px'} },
+      { direction: OperateResizeHandlers.BOTTOM, style: {left: width.value / 2 + 'px', top: height.value + 'px'} },
+    ]
+  })
 
   // 元素选中边框线
   const borderLines = computed(() => {
@@ -37,6 +43,7 @@ export default (width: Ref<number>, height: Ref<number>) => {
   return {
     resizeHandlers,
     textElementResizeHandlers,
+    verticalTextElementResizeHandlers,
     borderLines,
   }
 }
