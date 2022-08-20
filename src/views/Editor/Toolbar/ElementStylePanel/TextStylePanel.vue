@@ -285,6 +285,8 @@ import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
 
+// 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
+// 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
 const presetStyles = [
   {
     label: '大标题',
@@ -294,9 +296,9 @@ const presetStyles = [
     },
     cmd: [
       { command: 'clear' },
+      { command: 'bold' },
       { command: 'fontsize', value: '48px' },
       { command: 'align', value: 'center' },
-      { command: 'bold' },
     ],
   },
   {
@@ -307,9 +309,9 @@ const presetStyles = [
     },
     cmd: [
       { command: 'clear' },
+      { command: 'bold' },
       { command: 'fontsize', value: '36px' },
       { command: 'align', value: 'center' },
-      { command: 'bold' },
     ],
   },
   {
