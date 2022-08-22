@@ -37,7 +37,7 @@ const strikethrough: MarkSpec = {
       getAttrs: value => value === 'line-through' && null
     },
   ],
-  toDOM: () => ['span', { style: 'text-decoration-line: line-through' }, 0],
+  toDOM: () => ['span', { style: 'display: inline-flex;text-decoration-line: line-through' }, 0],
 }
 
 const underline: MarkSpec = {
@@ -52,7 +52,7 @@ const underline: MarkSpec = {
       getAttrs: value => value === 'underline' && null
     },
   ],
-  toDOM: () => ['span', { style: 'text-decoration: underline' }, 0],
+  toDOM: () => ['span', { style: 'display: inline-flex;text-decoration: underline' }, 0],
 }
 
 const forecolor: MarkSpec = {
@@ -60,7 +60,7 @@ const forecolor: MarkSpec = {
     color: {},
   },
   inline: true,
-  group: 'inline',
+  group: 'inline-flex',
   parseDOM: [
     {
       style: 'color',
@@ -69,7 +69,7 @@ const forecolor: MarkSpec = {
   ],
   toDOM: mark => {
     const { color } = mark.attrs
-    let style = ''
+    let style = 'display: inline-flex;'
     if (color) style += `color: ${color};`
     return ['span', { style }, 0]
   },
@@ -80,7 +80,7 @@ const backcolor: MarkSpec = {
     backcolor: {},
   },
   inline: true,
-  group: 'inline',
+  group: 'inline-flex',
   parseDOM: [
     {
       style: 'background-color',
@@ -89,7 +89,7 @@ const backcolor: MarkSpec = {
   ],
   toDOM: mark => {
     const { backcolor } = mark.attrs
-    let style = ''
+    let style = 'display: inline-flex;'
     if (backcolor) style += `background-color: ${backcolor};`
     return ['span', { style }, 0]
   },
@@ -100,7 +100,7 @@ const fontsize: MarkSpec = {
     fontsize: {},
   },
   inline: true,
-  group: 'inline',
+  group: 'inline-flex',
   parseDOM: [
     {
       style: 'font-size',
@@ -109,7 +109,7 @@ const fontsize: MarkSpec = {
   ],
   toDOM: mark => {
     const { fontsize } = mark.attrs
-    let style = ''
+    let style = 'display: inline-flex;'
     if (fontsize) style += `font-size: ${fontsize}`
     return ['span', { style }, 0]
   },
@@ -120,7 +120,7 @@ const fontname: MarkSpec = {
     fontname: {},
   },
   inline: true,
-  group: 'inline',
+  group: 'inline-flex',
   parseDOM: [
     {
       style: 'font-family',
@@ -131,7 +131,7 @@ const fontname: MarkSpec = {
   ],
   toDOM: mark => {
     const { fontname } = mark.attrs
-    let style = ''
+    let style = 'display: inline-flex;'
     if (fontname) style += `font-family: ${fontname}`
     return ['span', { style }, 0]
   },
