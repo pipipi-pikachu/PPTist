@@ -4,8 +4,8 @@
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
-      width: elementInfo.vertical ? 'auto' : elementInfo.width + 'px',
-      height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
+      width: elementInfo.width + 'px',
+      height: elementInfo.height + 'px',
     }"
   >
     <div

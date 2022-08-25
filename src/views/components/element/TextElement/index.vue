@@ -6,7 +6,7 @@
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
       width: elementInfo.width + 'px',
-      height: elementInfo.vertical ? elementInfo.height + 'px' : 'auto',
+      height: elementInfo.height + 'px',
     }"
   >
     <div
