@@ -1,15 +1,28 @@
 <template>
   <div class="mobile-thumbnails">
-    <div
-      class="thumbnail-item"
-      v-for="(slide, index) in slides"
-      :key="slide.id"
-      :class="{ 'active': slideIndex === index }"
-      @click="changeSlideIndex(index)"
+    <Draggable 
+      class="thumbnail-list"
+      :modelValue="slides"
+      :animation="300"
+      :scroll="true"
+      :scrollSensitivity="50"
+      :setData="null"
+      itemKey="id"
+      :delayOnTouchOnly="true"
+      :delay="800"
+      @end="handleDragEnd"
     >
-      <div class="label">{{ index + 1 }}</div>
-      <ThumbnailSlide class="thumbnail" :slide="slide" :size="120" :visible="index < slidesLoadLimit" />
-    </div>
+      <template #item="{ element, index }">
+        <div
+          class="thumbnail-item"
+          :class="{ 'active': slideIndex === index }"
+          @click="changeSlideIndex(index)"
+        >
+          <div class="label">{{ index + 1 }}</div>
+          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+        </div>
+      </template>
+    </Draggable>
   </div>
 </template>
 
@@ -17,15 +30,25 @@
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
+import useSlideHandler from '@/hooks/useSlideHandler'
 
+import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 const slidesStore = useSlidesStore()
 const { slides, slideIndex } = storeToRefs(slidesStore)
 
+const { sortSlides } = useSlideHandler()
+
 const { slidesLoadLimit } = useLoadSlides()
 const changeSlideIndex = (index: number) => {
   slidesStore.updateSlideIndex(index)
+}
+
+// 拖拽调整顺序后进行数据的同步
+const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
+  const { newIndex, oldIndex } = eventData
+  sortSlides(newIndex, oldIndex)
 }
 </script>
 
@@ -66,6 +89,9 @@ const changeSlideIndex = (index: number) => {
     text-align: center;
     padding: 0 5px;
   }
+}
+.sortable-chosen {
+  top: -5px;
 }
 
 ::-webkit-scrollbar {

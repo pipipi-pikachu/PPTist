@@ -81,6 +81,7 @@ const {
   deleteSlide,
   cutSlide,
   selectAllSlide,
+  sortSlides,
 } = useSlideHandler()
 
 // 切换页面
@@ -153,14 +154,7 @@ const setThumbnailsFocus = (focus: boolean) => {
 // 拖拽调整顺序后进行数据的同步
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
-  if (oldIndex === newIndex) return
-
-  const _slides = JSON.parse(JSON.stringify(slides.value))
-  const _slide = _slides[oldIndex]
-  _slides.splice(oldIndex, 1)
-  _slides.splice(newIndex, 0, _slide)
-  slidesStore.setSlides(_slides)
-  slidesStore.updateSlideIndex(newIndex)
+  sortSlides(newIndex, oldIndex)
 }
 
 const { enterScreening, enterScreeningFromStart } = useScreening()

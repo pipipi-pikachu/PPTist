@@ -138,6 +138,18 @@ export default () => {
     mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
   }
 
+  // 拖拽调整幻灯片顺序同步数据
+  const sortSlides = (newIndex: number, oldIndex: number) => {
+    if (oldIndex === newIndex) return
+  
+    const _slides = JSON.parse(JSON.stringify(slides.value))
+    const _slide = _slides[oldIndex]
+    _slides.splice(oldIndex, 1)
+    _slides.splice(newIndex, 0, _slide)
+    slidesStore.setSlides(_slides)
+    slidesStore.updateSlideIndex(newIndex)
+  }
+
   return {
     resetSlides,
     updateSlideIndex,
@@ -149,5 +161,6 @@ export default () => {
     deleteSlide,
     cutSlide,
     selectAllSlide,
+    sortSlides,
   }
 }
