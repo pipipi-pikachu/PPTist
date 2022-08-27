@@ -2,12 +2,12 @@ import { splitListItem, liftListItem, sinkListItem } from 'prosemirror-schema-li
 import { Schema } from 'prosemirror-model'
 import { undo, redo } from 'prosemirror-history'
 import { undoInputRule } from 'prosemirror-inputrules'
+import { Command } from 'prosemirror-state'
 import {
   toggleMark,
   selectParentNode,
   joinUp,
   joinDown,
-  Command,
 } from 'prosemirror-commands'
 
 export const buildKeymap = (schema: Schema) => {
