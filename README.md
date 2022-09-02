@@ -1,3 +1,22 @@
+<p>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/stargazers" target="_black">
+        <img src="https://img.shields.io/github/stars/pipipi-pikachu/PPTist?logo=github" alt="stars" />
+    </a>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/network/members" target="_black">
+        <img src="https://img.shields.io/github/forks/pipipi-pikachu/PPTist?logo=github" alt="forks" />
+    </a>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black">
+        <img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist?color=%232DCE89&logo=github" alt="license" />
+    </a>
+    <a href="https://www.typescriptlang.org" target="_black">
+        <img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language">
+    </a>
+    <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black">
+        <img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue">
+    </a>
+</p>
+
+
 # 🎨 PPTist
 > 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地 PPTX 文件，支持移动端基础编辑和预览，支持 PWA。您可以在此基础上搭建自己的在线幻灯片应用。
 
@@ -71,6 +90,7 @@ npm run serve
 - 边框
 - 阴影
 - 透明度
+- 竖向文本
 #### 图片
 - 裁剪（自定义、按形状、按纵横比）
 - 滤镜
@@ -136,6 +156,7 @@ npm run serve
 # 📅 后续规划
 - 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
 - 导入本地PPTX文件；
+- 导出HTML文件；
 - 将 Vue CLI 更换到 Vite 生态；
 
 
