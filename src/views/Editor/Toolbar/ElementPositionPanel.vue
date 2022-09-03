@@ -2,12 +2,12 @@
   <div class="element-positopn-panel">
     <div class="title">层级：</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置于顶层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置于底层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置顶</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置底</Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移一层</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移一层</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移</Button>
     </ButtonGroup>
 
     <Divider />
@@ -39,8 +39,8 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 3;">位置：</div>
       <InputNumber
+        prefix="水平："
         :step="5"
         :value="left"
         @change="value => updateLeft(value as number)"
@@ -48,23 +48,18 @@
       />
       <div style="flex: 1;"></div>
       <InputNumber
+        prefix="垂直："
         :step="5"
         :value="top"
         @change="value => updateTop(value as number)"
         style="flex: 4;"
       />
     </div>
-    <div class="row">
-      <div style="flex: 3;"></div>
-      <div style="flex: 4;" class="label">X</div>
-      <div style="flex: 1;"></div>
-      <div style="flex: 4;" class="label">Y</div>
-    </div>
 
     <template v-if="handleElement!.type !== 'line'">
       <div class="row">
-        <div style="flex: 3;">大小：</div>
         <InputNumber
+          prefix="宽度："
           :min="minSize"
           :max="1500"
           :step="5"
@@ -83,6 +78,7 @@
         </template>
         <div style="flex: 1;" v-else></div>
         <InputNumber 
+          prefix="高度："
           :min="minSize"
           :max="800"
           :step="5"
@@ -92,41 +88,24 @@
           style="flex: 4;"
         />
       </div>
-      <div class="row">
-        <div style="flex: 3;"></div>
-        <div style="flex: 4;" class="label">宽</div>
-        <div style="flex: 1;"></div>
-        <div style="flex: 4;" class="label">高</div>
-      </div>
     </template>
 
     <template v-if="!['line', 'video', 'audio'].includes(handleElement!.type)">
       <Divider />
 
       <div class="row">
-        <div style="flex: 3;">旋转：</div>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="逆时针旋转">
-          <IconRotate class="icon-btn" @click="updateRotate45('-')" style="flex: 2;" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顺时针旋转">
-          <IconRotate 
-            class="icon-btn" 
-            @click="updateRotate45('+')" 
-            :style="{
-              flex: 2,
-              transform: 'rotateY(180deg)',
-            }" 
-          />
-        </Tooltip>
-        <div style="flex: 1;"></div>
         <InputNumber 
+          prefix="旋转："
           :min="-180"
           :max="180"
           :step="5"
           :value="rotate" 
           @change="value => updateRotate(value as number)" 
-          style="flex: 4;" 
+          style="flex: 8;" 
         />
+        <div style="flex: 1;"></div>
+        <div class="text-btn" @click="updateRotate45('-')" style="flex: 5;"><IconRotate /> -45°</div>
+        <div class="text-btn" @click="updateRotate45('+')"  style="flex: 5;"><IconRotate :style="{ transform: 'rotateY(180deg)' }" /> +45°</div>
       </div>
     </template>
   </div>
@@ -277,5 +256,16 @@ const updateRotate45 = (command: '+' | '-') => {
 }
 .icon-btn {
   cursor: pointer;
+}
+.text-btn {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #efefef;
+    border-radius: $borderRadius;
+  }
 }
 </style>
