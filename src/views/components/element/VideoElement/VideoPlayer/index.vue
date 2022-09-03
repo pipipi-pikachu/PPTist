@@ -11,6 +11,8 @@
     @click="autoHideController()"
   >
     <div class="video-wrap" @click="toggle()">
+      <div class="load-error" v-if="loadError">视频加载失败</div>
+
       <video
         class="video"
         ref="videoRef"
@@ -72,7 +74,7 @@
       <div class="icons icons-right">
         <div class="speed">
           <div class="icon speed-icon">
-            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">倍速</span>
+            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">{{playbackRate === 1 ? '倍速' : (playbackRate + 'x')}}</span>
             <div class="speed-menu" v-if="speedMenuVisible" @mouseleave="speedMenuVisible = false">
               <div 
                 class="speed-menu-item" 
@@ -86,7 +88,7 @@
         </div>
         <div class="loop" @click="toggleLoop()">
           <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content">循环</span>
+            <span class="icon-content">循环{{loop ? '开' : '关'}}</span>
           </div>
         </div>
       </div>
@@ -115,7 +117,6 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import useMSE from './useMSE'
-import { message } from 'ant-design-vue'
 
 const props = defineProps({
   width: {
@@ -254,7 +255,8 @@ const handleProgress = () => {
   loaded.value = videoRef.value?.buffered.length ? videoRef.value.buffered.end(videoRef.value.buffered.length - 1) : 0
 }
 
-const handleError = () => message.error('视频加载失败')
+const loadError = ref(false)
+const handleError = () => loadError.value = true
 
 const thumbMove = (e: MouseEvent | TouchEvent) => {
   if (!videoRef.value || !playBarWrap.value) return

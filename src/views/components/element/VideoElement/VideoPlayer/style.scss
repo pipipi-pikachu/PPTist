@@ -161,7 +161,7 @@
     align-items: center;
 
     &.icons-right {
-      right: 8px;
+      right: 15px;
     }
     .time {
       line-height: 38px;
@@ -383,4 +383,18 @@
       }
     }
   }
+}
+
+.load-error {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 15px;
+  color: #fff;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
