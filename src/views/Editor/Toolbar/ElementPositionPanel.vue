@@ -68,6 +68,7 @@
           :min="minSize"
           :max="1500"
           :step="5"
+          :disabled="isVerticalText"
           :value="width"
           @change="value => updateWidth(value as number)"
           style="flex: 4;"
@@ -85,7 +86,7 @@
           :min="minSize"
           :max="800"
           :step="5"
-          :disabled="handleElement!.type === 'text'" 
+          :disabled="isHorizontalText" 
           :value="height" 
           @change="value => updateHeight(value as number)"
           style="flex: 4;"
@@ -156,6 +157,13 @@ const fixedRatio = ref(false)
 const minSize = computed(() => {
   if (!handleElement.value) return 20
   return MIN_SIZE[handleElement.value.type] || 20
+})
+
+const isHorizontalText = computed(() => {
+  return handleElement.value?.type === 'text' && !handleElement.value.vertical
+})
+const isVerticalText = computed(() => {
+  return handleElement.value?.type === 'text' && handleElement.value.vertical
 })
 
 watch(handleElement, () => {
