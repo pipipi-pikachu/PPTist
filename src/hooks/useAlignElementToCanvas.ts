@@ -3,13 +3,12 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useHistorySnapshot from './useHistorySnapshot'
 
 export default () => {
   const slidesStore = useSlidesStore()
   const { activeElementIdList, activeElementList } = storeToRefs(useMainStore())
-  const { currentSlide, viewportRatio } = storeToRefs(slidesStore)
+  const { currentSlide, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -18,8 +17,8 @@ export default () => {
    * @param command 对齐方向
    */
   const alignElementToCanvas = (command: ElementAlignCommands) => {
-    const viewportWidth = VIEWPORT_SIZE
-    const viewportHeight = VIEWPORT_SIZE * viewportRatio.value
+    const viewportWidth = viewportSize.value
+    const viewportHeight = viewportSize.value * viewportRatio.value
     const { minX, maxX, minY, maxY } = getElementListRange(activeElementList.value)
   
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))

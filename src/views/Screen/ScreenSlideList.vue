@@ -39,7 +39,6 @@ import { computed, PropType, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import ScreenSlide from './ScreenSlide.vue'
 
@@ -66,9 +65,9 @@ const props = defineProps({
   },
 })
 
-const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
+const { slides, slideIndex, currentSlide, viewportSize } = storeToRefs(useSlidesStore())
 
-const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
+const scale = computed(() => props.slideWidth / viewportSize.value)
 provide(injectKeySlideScale, scale)
 </script>
 

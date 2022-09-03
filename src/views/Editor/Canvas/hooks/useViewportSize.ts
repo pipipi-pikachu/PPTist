@@ -1,7 +1,6 @@
 import { ref, computed, onMounted, onUnmounted, Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportLeft = ref(0)
@@ -9,7 +8,7 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
 
   const mainStore = useMainStore()
   const { canvasPercentage, canvasDragged } = storeToRefs(mainStore)
-  const { viewportRatio } = storeToRefs(useSlidesStore())
+  const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
   // 计算画布可视区域的位置
   const setViewportPosition = () => {
@@ -19,13 +18,13 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
 
     if (canvasHeight / canvasWidth > viewportRatio.value) {
       const viewportActualWidth = canvasWidth * (canvasPercentage.value / 100)
-      mainStore.setCanvasScale(viewportActualWidth / VIEWPORT_SIZE)
+      mainStore.setCanvasScale(viewportActualWidth / viewportSize.value)
       viewportLeft.value = (canvasWidth - viewportActualWidth) / 2
       viewportTop.value = (canvasHeight - viewportActualWidth * viewportRatio.value) / 2
     }
     else {
       const viewportActualHeight = canvasHeight * (canvasPercentage.value / 100)
-      mainStore.setCanvasScale(viewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
+      mainStore.setCanvasScale(viewportActualHeight / (viewportSize.value * viewportRatio.value))
       viewportLeft.value = (canvasWidth - viewportActualHeight / viewportRatio.value) / 2
       viewportTop.value = (canvasHeight - viewportActualHeight) / 2
     }
@@ -41,8 +40,8 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
 
   // 画布可视区域位置和大小的样式
   const viewportStyles = computed(() => ({
-    width: VIEWPORT_SIZE,
-    height: VIEWPORT_SIZE * viewportRatio.value,
+    width: viewportSize.value,
+    height: viewportSize.value * viewportRatio.value,
     left: viewportLeft.value,
     top: viewportTop.value,
   }))

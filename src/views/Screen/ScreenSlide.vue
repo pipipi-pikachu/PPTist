@@ -2,8 +2,8 @@
   <div 
     class="screen-slide"
     :style="{
-      width: VIEWPORT_SIZE + 'px',
-      height: VIEWPORT_SIZE * viewportRatio + 'px',
+      width: viewportSize + 'px',
+      height: viewportSize * viewportRatio + 'px',
       transform: `scale(${scale})`,
     }"
   >
@@ -26,7 +26,6 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Slide } from '@/types/slides'
 import { injectKeySlideId } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 import ScreenElement from './ScreenElement.vue'
@@ -54,7 +53,7 @@ const props = defineProps({
   },
 })
 
-const { viewportRatio } = storeToRefs(useSlidesStore())
+const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const background = computed(() => props.slide.background)
 const { backgroundStyle } = useSlideBackgroundStyle(background)

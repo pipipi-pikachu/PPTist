@@ -2,7 +2,6 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { getImageSize } from '@/utils/image'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, PPTChartElement, ChartOptions, PresetChartType } from '@/types/slides'
 import { ShapePoolItem, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { LinePoolItem } from '@/configs/lines'
@@ -27,7 +26,7 @@ export default () => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
   const { creatingElement } = storeToRefs(mainStore)
-  const { theme, viewportRatio } = storeToRefs(slidesStore)
+  const { theme, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -55,12 +54,12 @@ export default () => {
     getImageSize(src).then(({ width, height }) => {
       const scale = height / width
   
-      if (scale < viewportRatio.value && width > VIEWPORT_SIZE) {
-        width = VIEWPORT_SIZE
+      if (scale < viewportRatio.value && width > viewportSize.value) {
+        width = viewportSize.value
         height = width * scale
       }
-      else if (height > VIEWPORT_SIZE * viewportRatio.value) {
-        height = VIEWPORT_SIZE * viewportRatio.value
+      else if (height > viewportSize.value * viewportRatio.value) {
+        height = viewportSize.value * viewportRatio.value
         width = height / scale
       }
 
@@ -70,8 +69,8 @@ export default () => {
         src,
         width,
         height,
-        left: (VIEWPORT_SIZE - width) / 2,
-        top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
+        left: (viewportSize.value - width) / 2,
+        top: (viewportSize.value * viewportRatio.value - height) / 2,
         fixedRatio: true,
         rotate: 0,
       })
@@ -150,8 +149,8 @@ export default () => {
       colWidths,
       rotate: 0,
       data,
-      left: (VIEWPORT_SIZE - width) / 2,
-      top: (VIEWPORT_SIZE * viewportRatio.value - height) / 2,
+      left: (viewportSize.value - width) / 2,
+      top: (viewportSize.value * viewportRatio.value - height) / 2,
       outline: {
         width: 2,
         style: 'solid',
@@ -275,8 +274,8 @@ export default () => {
       width: data.w,
       height: data.h,
       rotate: 0,
-      left: (VIEWPORT_SIZE - data.w) / 2,
-      top: (VIEWPORT_SIZE * viewportRatio.value - data.h) / 2,
+      left: (viewportSize.value - data.w) / 2,
+      top: (viewportSize.value * viewportRatio.value - data.h) / 2,
       path: data.path,
       latex: data.latex,
       color: theme.value.fontColor,
@@ -297,8 +296,8 @@ export default () => {
       width: 500,
       height: 300,
       rotate: 0,
-      left: (VIEWPORT_SIZE - 500) / 2,
-      top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
+      left: (viewportSize.value - 500) / 2,
+      top: (viewportSize.value * viewportRatio.value - 300) / 2,
       src,
     })
   }
@@ -314,8 +313,8 @@ export default () => {
       width: 50,
       height: 50,
       rotate: 0,
-      left: (VIEWPORT_SIZE - 50) / 2,
-      top: (VIEWPORT_SIZE * viewportRatio.value - 50) / 2,
+      left: (viewportSize.value - 50) / 2,
+      top: (viewportSize.value * viewportRatio.value - 50) / 2,
       loop: false,
       autoplay: false,
       fixedRatio: true,

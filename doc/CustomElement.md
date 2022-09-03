@@ -374,8 +374,8 @@ const createFrameElement = (url: string) => {
     width: 800,
     height: 480,
     rotate: 0,
-    left: (VIEWPORT_SIZE - 800) / 2,
-    top: (VIEWPORT_SIZE * viewportRatio.value - 480) / 2,
+    left: (viewportSize.value - 800) / 2,
+    top: (viewportSize.value * viewportRatio.value - 480) / 2,
     url,
   })
 }

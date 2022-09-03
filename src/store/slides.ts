@@ -26,6 +26,7 @@ export interface SlidesState {
   slides: Slide[]
   slideIndex: number
   viewportRatio: number
+  viewportSize: number
 }
 
 export const useSlidesStore = defineStore('slides', {
@@ -34,6 +35,7 @@ export const useSlidesStore = defineStore('slides', {
     slides: slides, // 幻灯片页面数据
     slideIndex: 0, // 当前页面索引
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
+    viewportSize: 1920, // 可视区域大小，默认1920
   }),
 
   getters: {
@@ -110,6 +112,10 @@ export const useSlidesStore = defineStore('slides', {
   
     setViewportRatio(viewportRatio: number) {
       this.viewportRatio = viewportRatio
+    },
+
+    setViewportSize(viewportSize: number) {
+      this.viewportSize = viewportSize
     },
   
     setSlides(slides: Slide[]) {
