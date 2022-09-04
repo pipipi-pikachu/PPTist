@@ -65,6 +65,7 @@ provide(injectKeySlideScale, scale)
 .thumbnail-slide {
   background-color: #fff;
   overflow: hidden;
+  user-select: none;
 }
 .elements {
   transform-origin: 0 0;
