@@ -22,7 +22,12 @@
       v-if="type === 'slide'"
       v-model:value="slideId"
     >
-      <SelectOption v-for="(slide, index) in slides" :key="slide.id" :value="slide.id">幻灯片 {{index + 1}}</SelectOption>
+      <SelectOption 
+        v-for="(slide, index) in slides" 
+        :key="slide.id" 
+        :value="slide.id" 
+        :disabled="currentSlide.id === slide.id"
+      >幻灯片 {{index + 1}}</SelectOption>
     </Select>
 
     <div class="preview" v-if="type === 'slide' && selectedSlide">
@@ -57,13 +62,13 @@ const emit = defineEmits<{
 }>()
 
 const { handleElement } = storeToRefs(useMainStore())
-const { slides } = storeToRefs(useSlidesStore())
+const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
 const type = ref<TypeKey>('web')
 const address = ref('')
 const slideId = ref('')
 
-slideId.value = slides.value[0].id
+slideId.value = slides.value.find(item => item.id !== currentSlide.value.id)?.id || ''
 
 const selectedSlide = computed(() => {
   if (!slideId.value) return null
