@@ -85,7 +85,7 @@ const {
 } = useSlideHandler()
 
 // 切换页面
-const changSlideIndex = (index: number) => {
+const changeSlideIndex = (index: number) => {
   mainStore.setActiveElementIdList([])
 
   if (slideIndex.value === index) return
@@ -105,7 +105,7 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
 
       const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
       mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      changSlideIndex(selectedSlidesIndex.value[0])
+      changeSlideIndex(selectedSlidesIndex.value[0])
     }
     else {
       if (selectedSlidesIndex.value.includes(index)) {
@@ -115,7 +115,7 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
       else {
         const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
         mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-        changSlideIndex(index)
+        changeSlideIndex(index)
       }
     }
   }
@@ -134,12 +134,12 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
     const newSelectedSlidesIndex = []
     for (let i = minIndex; i <= maxIndex; i++) newSelectedSlidesIndex.push(i)
     mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-    changSlideIndex(index)
+    changeSlideIndex(index)
   }
   // 正常切换页面
   else {
     mainStore.updateSelectedSlidesIndex([])
-    changSlideIndex(index)
+    changeSlideIndex(index)
   }
 }
 
