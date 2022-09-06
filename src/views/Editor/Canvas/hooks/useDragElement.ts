@@ -1,6 +1,6 @@
 import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
@@ -14,6 +14,7 @@ export default (
 ) => {
   const slidesStore = useSlidesStore()
   const { activeElementIdList, activeGroupElementId } = storeToRefs(useMainStore())
+  const { shiftKeyState } = storeToRefs(useKeyboardStore())
   const { viewportRatio } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
@@ -122,9 +123,14 @@ export default (
                          Math.abs(startPageY - currentPageY) < sorptionRange
       }
       if (!isMouseDown || isMisoperation) return
+      
+      let moveX = (currentPageX - startPageX) / canvasScale.value
+      let moveY = (currentPageY - startPageY) / canvasScale.value
 
-      const moveX = (currentPageX - startPageX) / canvasScale.value
-      const moveY = (currentPageY - startPageY) / canvasScale.value
+      if (shiftKeyState.value) {
+        if (Math.abs(moveX) > Math.abs(moveY)) moveY = 0
+        if (Math.abs(moveX) < Math.abs(moveY)) moveX = 0
+      }
 
       // 基础目标位置
       let targetLeft = elOriginLeft + moveX
