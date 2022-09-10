@@ -11,6 +11,7 @@
         :color="writingBoardColor" 
         :blackboard="blackboard" 
         :model="writingBoardModel"
+        @end="hanldeWritingEnd()"
       />
     </div>
 
@@ -48,7 +49,10 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, ref, StyleValue } from 'vue'
+import { PropType, ref, StyleValue, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSlidesStore } from '@/store'
+import { db } from '@/utils/database'
 import WritingBoard from '@/components/WritingBoard.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
@@ -77,6 +81,8 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
+const { currentSlide } = storeToRefs(useSlidesStore())
+
 const writingBoardRef = ref<typeof WritingBoard>()
 const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
@@ -100,6 +106,24 @@ const changeColor = (color: string) => {
 // 关闭写字板
 const closeWritingBoard = () => {
   emit('close')
+}
+
+// 打开画笔工具或切换页面时，将数据库中存储的墨迹绘制到画布上
+watch(currentSlide, () => {
+  db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
+    const currentImg = ret[0]
+    writingBoardRef.value!.setImageDataURL(currentImg?.dataURL || '')
+  })
+}, { immediate: true })
+
+// 每次绘制完成后将绘制完的图片更新到数据库
+const hanldeWritingEnd = () => {
+  const dataURL = writingBoardRef.value!.getImageDataURL()
+  db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
+    const currentImg = ret[0]
+    if (currentImg) db.writingBoardImgs.update(currentImg, { dataURL })
+    else db.writingBoardImgs.add({ id: currentSlide.value.id, dataURL })
+  })
 }
 </script>
 

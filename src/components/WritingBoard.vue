@@ -74,6 +74,10 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits<{
+  (event: 'end'): void
+}>()
+
 let ctx: CanvasRenderingContext2D | null = null
 const writingBoardRef = ref<HTMLElement>()
 const canvasRef = ref<HTMLCanvasElement>()
@@ -283,12 +287,14 @@ const handleMousemove = (e: MouseEvent | TouchEvent) => {
 const handleMouseup = () => {
   if (!isMouseDown) return
   isMouseDown = false
+  emit('end')
 }
 
 // 清空画布
 const clearCanvas = () => {
   if (!ctx || !canvasRef.value) return
   ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
+  emit('end')
 }
 
 // 获取 DataURL
@@ -298,11 +304,20 @@ const getImageDataURL = () => {
 
 // 设置 DataURL（绘制图片到 canvas）
 const setImageDataURL = (imageDataURL: string) => {
-  const img = new Image()
-  img.src = imageDataURL
-  img.onload = () => {
-    if (!ctx) return
-    ctx.drawImage(img, 0, 0)
+  if (!ctx || !canvasRef.value) return
+  
+  ctx.clearRect(0, 0, canvasRef.value.width, canvasRef.value.height)
+
+  if (imageDataURL) {
+    ctx.globalCompositeOperation = 'source-over'
+    ctx.globalAlpha = 1
+
+    const img = new Image()
+    img.src = imageDataURL
+    img.onload = () => {
+      ctx!.drawImage(img, 0, 0)
+      updateCtx()
+    }
   }
 }
 

@@ -3,6 +3,11 @@ import { databaseId } from '@/store/main'
 import { Slide } from '@/types/slides'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 
+export interface writingBoardImg {
+  id: string
+  dataURL: string
+}
+
 export interface Snapshot {
   index: number
   slides: Slide[]
@@ -38,13 +43,16 @@ export const deleteDiscardedDB = async () => {
 
 class PPTistDB extends Dexie {
   public snapshots: Dexie.Table<Snapshot, number>
+  public writingBoardImgs: Dexie.Table<writingBoardImg, number>
 
   public constructor() {
     super(`${databaseNamePrefix}_${databaseId}_${new Date().getTime()}`)
     this.version(1).stores({
-      snapshots: '++id'
+      snapshots: '++id',
+      writingBoardImgs: '++id',
     })
     this.snapshots = this.table('snapshots')
+    this.writingBoardImgs = this.table('writingBoardImgs')
   }
 }
 
