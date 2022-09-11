@@ -82,7 +82,7 @@
           :min="minSize"
           :max="800"
           :step="5"
-          :disabled="isHorizontalText" 
+          :disabled="isHorizontalText || handleElement!.type === 'table'" 
           :value="height" 
           @change="value => updateHeight(value as number)"
           style="flex: 4;"

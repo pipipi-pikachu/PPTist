@@ -10,7 +10,7 @@
     <template v-if="handlerVisible">
       <ResizeHandler
         class="operate-resize-handler" 
-        v-for="point in textElementResizeHandlers"
+        v-for="point in resizeHandlers"
         :key="point.direction"
         :type="point.direction"
         :rotate="elementInfo.rotate"
@@ -70,5 +70,5 @@ const outlineWidth = computed(() => props.elementInfo.outline.width || 1)
 const scaleWidth = computed(() => (props.elementInfo.width + outlineWidth.value) * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 
-const { textElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 </script>

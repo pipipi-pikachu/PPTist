@@ -26,7 +26,7 @@
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
-        <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex">
+        <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
           <td 
             class="cell"
             :class="{
@@ -53,11 +53,12 @@
               v-if="activedCell === `${rowIndex}_${colIndex}`"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
+              :style="{ minHeight: (cellMinHeight - 4) + 'px' }"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
               @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
             />
-            <div v-else class="cell-text" v-html="formatText(cell.text)" />
+            <div v-else class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -86,6 +87,10 @@ const props = defineProps({
     required: true,
   },
   width: {
+    type: Number,
+    required: true,
+  },
+  cellMinHeight: {
     type: Number,
     required: true,
   },
@@ -700,10 +705,6 @@ table {
     }
   }
 
-  tr {
-    height: 36px;
-  }
-
   .cell {
     position: relative;
     white-space: normal;
@@ -724,7 +725,6 @@ table {
   }
 
   .cell-text {
-    min-height: 32px;
     padding: 5px;
     line-height: 1.5;
     user-select: none;

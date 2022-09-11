@@ -164,6 +164,7 @@ export default () => {
         colHeader: false,
         colFooter: false,
       },
+      cellMinHeight: 36,
     })
   }
   

@@ -17,10 +17,7 @@
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
-        <tr
-          v-for="(rowCells, rowIndex) in data" 
-          :key="rowIndex"
-        >
+        <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
           <td 
             class="cell"
             :style="{
@@ -35,7 +32,7 @@
             :colspan="cell.colspan"
             v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
           >
-            <div class="cell-text" v-html="formatText(cell.text)" />
+            <div class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -56,6 +53,10 @@ const props = defineProps({
     required: true,
   },
   width: {
+    type: Number,
+    required: true,
+  },
+  cellMinHeight: {
     type: Number,
     required: true,
   },
@@ -144,10 +145,6 @@ table {
     }
   }
 
-  tr {
-    height: 36px;
-  }
-
   .cell {
     position: relative;
     white-space: normal;
@@ -156,7 +153,6 @@ table {
   }
 
   .cell-text {
-    min-height: 32px;
     padding: 5px;
     line-height: 1.5;
   }

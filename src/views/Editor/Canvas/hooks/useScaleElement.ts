@@ -118,6 +118,8 @@ export default (
     const elOriginTop = element.top
     const elOriginWidth = element.width
     const elOriginHeight = element.height
+
+    const originTableCellMinHeight = element.type === 'table' ? element.cellMinHeight : 0
     
     const elRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
     const rotateRadian = Math.PI * elRotate / 180
@@ -410,6 +412,16 @@ export default (
             ...el, left, top, width, height,
             viewBox: [width, height],
             path,
+          }
+        }
+        if (el.type === 'table') {
+          let cellMinHeight = originTableCellMinHeight + (height - elOriginHeight) / el.data.length
+          cellMinHeight = cellMinHeight < 36 ? 36 : cellMinHeight
+
+          if (cellMinHeight === originTableCellMinHeight) return { ...el, left, width }
+          return {
+            ...el, left, top, width, height,
+            cellMinHeight: cellMinHeight < 36 ? 36 : cellMinHeight,
           }
         }
         return { ...el, left, top, width, height }

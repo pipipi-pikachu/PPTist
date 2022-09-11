@@ -21,6 +21,7 @@
           @mousedown.stop
           :data="elementInfo.data"
           :width="elementInfo.width"
+          :cellMinHeight="elementInfo.cellMinHeight"
           :colWidths="elementInfo.colWidths"
           :outline="elementInfo.outline"
           :theme="elementInfo.theme"
