@@ -203,27 +203,6 @@ const activedCell = computed(() => {
   return selectedCells.value[0]
 })
 
-// 当前选中的单元格位置范围
-const selectedRange = computed(() => {
-  if (!startCell.value.length) return null
-  const [startX, startY] = startCell.value
-
-  if (!endCell.value.length) return { row: [startX, startX], col: [startY, startY] }
-  const [endX, endY] = endCell.value
-
-  if (startX === endX && startY === endY) return { row: [startX, startX], col: [startY, startY] }
-
-  const minX = Math.min(startX, endX)
-  const minY = Math.min(startY, endY)
-  const maxX = Math.max(startX, endX)
-  const maxY = Math.max(startY, endY)
-
-  return {
-    row: [minX, maxX],
-    col: [minY, maxY],
-  }
-})
-
 // 设置选中单元格状态（鼠标点击或拖选）
 const handleMouseup = () => isStartSelect.value = false
 
