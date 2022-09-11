@@ -9,6 +9,7 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useScreenStore, useMainStore, useSnapshotStore } from '@/store'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
+import { deleteDiscardedDB } from '@/utils/database'
 import { isPC } from './utils/common'
 
 import Editor from './views/Editor/index.vue'
@@ -26,7 +27,8 @@ if (process.env.NODE_ENV === 'production') {
   window.onbeforeunload = () => false
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
   mainStore.setAvailableFonts()
 })
