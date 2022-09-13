@@ -77,7 +77,7 @@ watch(currentTabs, () => {
   if (!currentTabsValue.includes(toolbarState.value)) {
     mainStore.setToolbarState(currentTabsValue[0])
   }
-})
+}, { immediate: true })
 
 const currentPanelComponent = computed(() => {
   const panelMap = {
