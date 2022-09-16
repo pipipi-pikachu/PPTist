@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, provide, ref, watch, watchEffect } from 'vue'
+import { nextTick, onMounted, provide, ref, watch, watchEffect } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
@@ -185,7 +185,9 @@ const { updateSlideIndex } = useSlideHandler()
 // 组件渲染时，如果存在元素焦点，需要清除
 // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
 onMounted(() => {
-  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
+  if (activeElementIdList.value.length) {
+    nextTick(() => mainStore.setActiveElementIdList([]))
+  }
 })
 
 // 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
