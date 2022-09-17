@@ -111,10 +111,9 @@
             />
           </template>
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-            <Button class="text-color-btn" style="flex: 3;">
+            <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
               <IconText />
-              <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
-            </Button>
+            </TextColorButton>
           </Tooltip>
         </Popover>
         <Popover trigger="click">
@@ -125,10 +124,9 @@
             />
           </template>
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
-            <Button class="text-color-btn" style="flex: 3;">
+            <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
               <IconHighLight />
-              <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
-            </Button>
+            </TextColorButton>
           </Tooltip>
         </Popover>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
@@ -169,13 +167,32 @@
             @click="emitRichTextCommand('underline')"
           ><IconTextUnderline /></CheckboxButton>
         </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
+          <CheckboxButton 
+            style="flex: 1;"
+            :checked="richTextAttrs.strikethrough"
+            @click="emitRichTextCommand('strikethrough')"
+          ><IconStrikethrough /></CheckboxButton>
+        </Tooltip>
+      </CheckboxButtonGroup>
+
+      <CheckboxButtonGroup class="row">
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
           <CheckboxButton
             style="flex: 1;"
             @click="emitRichTextCommand('clear')"
           ><IconFormat /></CheckboxButton>
         </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
+          <CheckboxButton
+            style="flex: 1;"
+            :checked="!!textFormatPainter"
+            @click="toggleFormatPainter()"
+          ><IconFormatBrush /></CheckboxButton>
+        </Tooltip>
       </CheckboxButtonGroup>
+
+      <Divider  />
 
       <RadioGroup 
         class="row" 
@@ -230,16 +247,18 @@ import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ElementFlip from '../common/ElementFlip.vue'
 import ColorButton from '../common/ColorButton.vue'
+import TextColorButton from '../common/TextColorButton.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(mainStore)
+const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore)
 
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
@@ -262,6 +281,7 @@ watch(handleElement, () => {
 }, { deep: true, immediate: true })
 
 const { addHistorySnapshot } = useHistorySnapshot()
+const { toggleFormatPainter } = useTextFormatPainter()
 
 const updateElement = (props: Partial<PPTShapeElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })
@@ -322,18 +342,6 @@ const emitRichTextCommand = (command: string, value?: string) => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-}
-.text-color-btn {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-.text-color-block {
-  width: 16px;
-  height: 3px;
-  margin-top: 1px;
 }
 .font-size-btn {
   padding: 0;

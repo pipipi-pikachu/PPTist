@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, provide, ref, watch, watchEffect } from 'vue'
+import { nextTick, onMounted, onUnmounted, provide, ref, watch, watchEffect } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
@@ -142,6 +142,7 @@ const {
   showRuler,
   creatingElement,
   canvasScale,
+  textFormatPainter,
 } = storeToRefs(mainStore)
 const { currentSlide } = storeToRefs(useSlidesStore())
 const { ctrlKeyState, spaceKeyState } = storeToRefs(useKeyboardStore())
@@ -190,16 +191,22 @@ onMounted(() => {
   }
 })
 
-// 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区
+// 点击画布的空白区域：清空焦点元素、设置画布焦点、清除文字选区、清空格式刷状态
 const handleClickBlankArea = (e: MouseEvent) => {
-  mainStore.setActiveElementIdList([])
+  if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
 
   if (!spaceKeyState.value) updateMouseSelection(e)
   else dragViewport(e)
 
   if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
+  if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
   removeAllRanges()
 }
+
+// 画布注销时清空格式刷状态
+onUnmounted(() => {
+  if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
+})
 
 // 移除画布编辑区域焦点
 const removeEditorAreaFocus = () => {

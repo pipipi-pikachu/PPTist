@@ -51,10 +51,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <Button class="text-color-btn" style="flex: 3;">
+          <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
             <IconText />
-            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
       <Popover trigger="click">
@@ -65,10 +64,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
-          <Button class="text-color-btn" style="flex: 3;">
+          <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
             <IconHighLight />
-            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
@@ -116,12 +114,6 @@
           @click="emitRichTextCommand('strikethrough')"
         ><IconStrikethrough /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
-        <CheckboxButton
-          style="flex: 1;"
-          @click="emitRichTextCommand('clear')"
-        ><IconFormat /></CheckboxButton>
-      </Tooltip>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
@@ -152,6 +144,22 @@
           :checked="richTextAttrs.blockquote"
           @click="emitRichTextCommand('blockquote')"
         ><IconQuote /></CheckboxButton>
+      </Tooltip>
+    </CheckboxButtonGroup>
+
+    <CheckboxButtonGroup class="row">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
+        <CheckboxButton
+          style="flex: 1;"
+          @click="emitRichTextCommand('clear')"
+        ><IconFormat /></CheckboxButton>
+      </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="!!textFormatPainter"
+          @click="toggleFormatPainter()"
+        ><IconFormatBrush /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="超链接">
         <Popover placement="bottomRight" trigger="click" v-model:visible="linkPopoverVisible">
@@ -278,12 +286,15 @@ import { PPTTextElement } from '@/types/slides'
 import emitter, { EmitterEvents, RichTextAction } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useTextFormatPainter from '@/hooks/useTextFormatPainter'
+
 import { message } from 'ant-design-vue'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
+import TextColorButton from '../common/TextColorButton.vue'
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
@@ -360,10 +371,12 @@ const presetStyles = [
   },
 ]
 
+const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, richTextAttrs, availableFonts } = storeToRefs(useMainStore())
+const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
+const { toggleFormatPainter } = useTextFormatPainter()
 
 const updateElement = (props: Partial<PPTTextElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })
@@ -490,18 +503,6 @@ const updateLink = (link?: string) => {
   &:nth-child(n+3) {
     margin-top: -1px;
   }
-}
-.text-color-btn {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-.text-color-block {
-  width: 16px;
-  height: 3px;
-  margin-top: 1px;
 }
 .font-size-btn {
   padding: 0;

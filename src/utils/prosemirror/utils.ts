@@ -159,16 +159,18 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
   return value
 }
 
+type Align = 'left' | 'right' | 'center'
+
 interface DefaultAttrs {
   color?: string
   backcolor?: string
   fontsize?: string
   fontname?: string
-  align?: string
+  align?: Align
 }
 const _defaultAttrs: DefaultAttrs = {
   color: '#000',
-  backcolor: '#000',
+  backcolor: '',
   fontsize: '20px',
   fontname: '微软雅黑',
   align: 'left',
@@ -190,7 +192,7 @@ export const getTextAttrs = (view: EditorView, defaultAttrs: DefaultAttrs = {}) 
   const fontsize = getAttrValue(marks, 'fontsize', 'fontsize') || defaultAttrs.fontsize
   const fontname = getAttrValue(marks, 'fontname', 'fontname') || defaultAttrs.fontname
   const link = getAttrValue(marks, 'link', 'href') || ''
-  const align = getAttrValueInSelection(view, 'align') || defaultAttrs.align
+  const align = (getAttrValueInSelection(view, 'align') || defaultAttrs.align) as Align
   const isBulletList = isActiveOfParentNodeType('bullet_list', view.state)
   const isOrderedList = isActiveOfParentNodeType('ordered_list', view.state)
   const isBlockquote = isActiveOfParentNodeType('blockquote', view.state)
@@ -232,7 +234,7 @@ export const defaultRichTextAttrs: TextAttrs = {
   subscript: false,
   code: false,
   color: '#000',
-  backcolor: '#000',
+  backcolor: '',
   fontsize: '20px',
   fontname: '微软雅黑',
   link: '',

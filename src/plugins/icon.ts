@@ -109,6 +109,7 @@ import {
   Needle,
   TextRotationNone,
   TextRotationDown,
+  FormatBrush,
 } from '@icon-park/vue-next'
 
 export const icons = {
@@ -219,6 +220,7 @@ export const icons = {
   IconNeedle: Needle,
   IconTextRotationNone: TextRotationNone,
   IconTextRotationDown: TextRotationDown,
+  IconFormatBrush: FormatBrush,
 }
 
 export default {

@@ -39,10 +39,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <Button class="text-color-btn" style="flex: 1;">
+          <TextColorButton :color="textAttrs.color" style="flex: 1;">
             <IconText />
-            <div class="text-color-block" :style="{ backgroundColor: textAttrs.color }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
       <Popover trigger="click">
@@ -53,10 +52,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="单元格填充">
-          <Button class="text-color-btn" style="flex: 1;">
+          <TextColorButton :color="textAttrs.backcolor" style="flex: 1;">
             <IconFill />
-            <div class="text-color-block" :style="{ backgroundColor: textAttrs.backcolor }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
     </ButtonGroup>
@@ -196,6 +194,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
+import TextColorButton from '../common/TextColorButton.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())
@@ -211,7 +210,7 @@ const textAttrs = ref({
   underline: false,
   strikethrough: false,
   color: '#000',
-  backcolor: '#000',
+  backcolor: '',
   fontsize: '12px',
   fontname: '微软雅黑',
   align: 'left',
@@ -259,7 +258,7 @@ const updateTextAttrState = () => {
       underline: false,
       strikethrough: false,
       color: '#000',
-      backcolor: '#000',
+      backcolor: '',
       fontsize: '12px',
       fontname: '微软雅黑',
       align: 'left',
@@ -272,7 +271,7 @@ const updateTextAttrState = () => {
       underline: !!style.underline,
       strikethrough: !!style.strikethrough,
       color: style.color || '#000',
-      backcolor: style.backcolor || '#000',
+      backcolor: style.backcolor || '',
       fontsize: style.fontsize || '12px',
       fontname: style.fontname || '微软雅黑',
       align: style.align || 'left',
@@ -403,17 +402,6 @@ const setTableCol = (value: number) => {
 }
 .switch-wrapper {
   text-align: right;
-}
-.text-color-btn {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.text-color-block {
-  width: 16px;
-  height: 3px;
-  margin-top: 1px;
 }
 .set-count {
   display: flex;

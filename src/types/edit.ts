@@ -91,3 +91,15 @@ export interface CreatingLineElement {
   data: LinePoolItem
 }
 export type CreatingElement = CreatingTextElement | CreatingShapeElement | CreatingLineElement
+
+export interface TextFormatPainter {
+  bold?: boolean
+  em?: boolean
+  underline?: boolean
+  strikethrough?: boolean
+  color?: string
+  backcolor?: string
+  fontsize?: string
+  fontname?: string
+  align?: 'left' | 'right' | 'center'
+}

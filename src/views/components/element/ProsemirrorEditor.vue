@@ -1,6 +1,7 @@
 <template>
   <div 
     class="prosemirror-editor" 
+    :class="{ 'format-painter': textFormatPainter }"
     ref="editorViewRef"
   ></div>
 </template>
@@ -14,7 +15,7 @@ import { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
-import emitter, { EmitterEvents, RichTextCommand } from '@/utils/emitter'
+import emitter, { EmitterEvents, RichTextAction, RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
@@ -53,7 +54,7 @@ const emit = defineEmits<{
 }>()
 
 const mainStore = useMainStore()
-const { handleElementId } = storeToRefs(mainStore)
+const { handleElementId, textFormatPainter } = storeToRefs(mainStore)
 
 const editorViewRef = ref<HTMLElement>()
 let editorView: EditorView
@@ -102,23 +103,6 @@ watch(textContent, () => {
 // 打开/关闭编辑器的编辑模式
 watch(() => props.editable, () => {
   editorView.setProps({ editable: () => props.editable })
-})
-
-// Prosemirror编辑器的初始化和卸载
-onMounted(() => {
-  editorView = initProsemirrorEditor((editorViewRef.value as Element), textContent.value, {
-    handleDOMEvents: {
-      focus: handleFocus,
-      blur: handleBlur,
-      keydown: handleKeydown,
-      click: handleClick,
-    },
-    editable: () => props.editable,
-  })
-  if (props.autoFocus) editorView.focus()
-})
-onUnmounted(() => {
-  editorView && editorView.destroy()
 })
 
 // 暴露 focus 方法
@@ -249,6 +233,38 @@ const execCommand = ({ target, action }: RichTextCommand) => {
   handleClick()
 }
 
+// 鼠标抬起时，执行格式刷命令
+const handleMouseup = () => {
+  if (!textFormatPainter.value) return
+
+  const actions: RichTextAction[] = [{ command: 'clear' }]
+  for (const key of Object.keys(textFormatPainter.value)) {
+    const command = key
+    const value = textFormatPainter.value[key]
+    if (value) actions.push({ command, value })
+  }
+  execCommand({ action: actions })
+  mainStore.setTextFormatPainter(null)
+}
+
+// Prosemirror编辑器的初始化和卸载
+onMounted(() => {
+  editorView = initProsemirrorEditor((editorViewRef.value as Element), textContent.value, {
+    handleDOMEvents: {
+      focus: handleFocus,
+      blur: handleBlur,
+      keydown: handleKeydown,
+      click: handleClick,
+      mouseup: handleMouseup,
+    },
+    editable: () => props.editable,
+  })
+  if (props.autoFocus) editorView.focus()
+})
+onUnmounted(() => {
+  editorView && editorView.destroy()
+})
+
 emitter.on(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
 onUnmounted(() => {
   emitter.off(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
@@ -258,5 +274,9 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .prosemirror-editor {
   cursor: text;
+
+  &.format-painter {
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAVCAYAAACzK0UYAAAABHNCSVQICAgIfAhkiAAAAVRJREFUSInt1DFuwjAYBeCXUrFavgBN9yB6AKR6Bi7AVLrlBpFYgAUpp2i37AysVDIXcCIuwJRMEEYk9LrQDlVQ7EiVOvSt/v1/tmUbeZ7TGMPL5WLgEJLzNE2ptabWmsfjkTeLjTGUUvJ8Pjsjo9GIUkpKKam1voncuTRumn/EKfd1BSQnAF4qhvyK2k1VD88YQ6UUiqJI2+12r2LiPI7j2Xa7rV9yRZbLpRWiAKhGwjW1x3XN828jD9PpVK3X60bAarWy20lZltjv940QwO4KPzbu7oCgLMu/g3Q6ncZI73Q6WSFhGDZGnrIss0LG4zGEEG4ISZUkiW8DDAYDCCEQBIEbAmAWx7GNgSiKAOB1OBzaIyQnSZIom/cRRRG63e7C87z3MAw/fu7Gy/OcRVEgCIK01Wp9/10k37Ism9TdLCHEFzC/zvMPh8Nmt9v5ANDv9/EJD8ykxYswZDkAAAAASUVORK5CYII=) 1 10, default !important;
+  }
 }
 </style>

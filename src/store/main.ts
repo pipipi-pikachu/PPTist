@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid'
 import { defineStore } from 'pinia'
-import { CreatingElement } from '@/types/edit'
+import { CreatingElement, TextFormatPainter } from '@/types/edit'
 import { ToolbarStates } from '@/types/toolbar'
 import { DialogForExportTypes } from '@/types/export'
 import { SYS_FONTS } from '@/configs/font'
@@ -31,6 +31,7 @@ export interface MainState {
   selectedSlidesIndex: number[]
   dialogForExport: DialogForExportTypes
   databaseId: string
+  textFormatPainter: TextFormatPainter | null
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -59,6 +60,7 @@ export const useMainStore = defineStore('main', {
     selectedSlidesIndex: [], // 当前被选中的页面索引集合
     dialogForExport: '', // 导出面板
     databaseId, // 标识当前应用的indexedDB数据库ID
+    textFormatPainter: null, // 文字格式刷
   }),
 
   getters: {
@@ -159,6 +161,10 @@ export const useMainStore = defineStore('main', {
 
     setDialogForExport(type: DialogForExportTypes) {
       this.dialogForExport = type
+    },
+
+    setTextFormatPainter(textFormatPainter: TextFormatPainter | null) {
+      this.textFormatPainter = textFormatPainter
     },
   },
 })

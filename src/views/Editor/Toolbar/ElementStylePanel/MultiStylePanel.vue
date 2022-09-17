@@ -87,10 +87,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <Button class="text-color-btn" style="flex: 3;">
+          <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
             <IconText />
-            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.color }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
       <Popover trigger="click">
@@ -101,10 +100,9 @@
           />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
-          <Button class="text-color-btn" style="flex: 3;">
+          <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
             <IconHighLight />
-            <div class="text-color-block" :style="{ backgroundColor: richTextAttrs.backcolor }"></div>
-          </Button>
+          </TextColorButton>
         </Tooltip>
       </Popover>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
@@ -151,6 +149,7 @@ import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
+import TextColorButton from '../common/TextColorButton.vue'
 
 const slidesStore = useSlidesStore()
 const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())
@@ -250,18 +249,6 @@ const updateFontStyle = (command: string, value: string) => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-}
-.text-color-btn {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-.text-color-block {
-  width: 16px;
-  height: 3px;
-  margin-top: 1px;
 }
 .font-size-btn {
   padding: 0;
