@@ -122,14 +122,14 @@
           style="flex: 1;"
           :checked="richTextAttrs.superscript"
           @click="emitRichTextCommand('superscript')"
-        ><IconUpOne /></CheckboxButton>
+        >A²</CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.subscript"
           @click="emitRichTextCommand('subscript')"
-        ><IconDownOne /></CheckboxButton>
+        >A₂</CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="行内代码">
         <CheckboxButton
