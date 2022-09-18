@@ -159,13 +159,13 @@ const link: MarkSpec = {
 
 export default {
   ...marks,
+  fontsize,
+  fontname,
   subscript,
   superscript,
   strikethrough,
   underline,
   forecolor,
   backcolor,
-  fontsize,
-  fontname,
   link,
 }
