@@ -15,7 +15,7 @@ export default () => {
         strikethrough: richTextAttrs.value.strikethrough,
         color: richTextAttrs.value.color,
         backcolor: richTextAttrs.value.backcolor,
-        fontname: richTextAttrs.value.fontsize,
+        fontname: richTextAttrs.value.fontname,
         fontsize: richTextAttrs.value.fontsize,
         align: richTextAttrs.value.align,
       })
