@@ -123,7 +123,7 @@ export const getMarkAttrs = (view: EditorView) => {
   return node?.marks || []
 }
 
-export const getAttrValue = (marks: readonly Mark[], markType: string, attr: string) => {
+export const getAttrValue = (marks: readonly Mark[], markType: string, attr: string): string | null => {
   for (const mark of marks) {
     if (mark.type.name === markType && mark.attrs[attr]) return mark.attrs[attr]
   }
@@ -162,11 +162,11 @@ export const getAttrValueInSelection = (view: EditorView, attr: string) => {
 type Align = 'left' | 'right' | 'center'
 
 interface DefaultAttrs {
-  color?: string
-  backcolor?: string
-  fontsize?: string
-  fontname?: string
-  align?: Align
+  color: string
+  backcolor: string
+  fontsize: string
+  fontname: string
+  align: Align
 }
 const _defaultAttrs: DefaultAttrs = {
   color: '#000',
@@ -175,8 +175,8 @@ const _defaultAttrs: DefaultAttrs = {
   fontname: '微软雅黑',
   align: 'left',
 }
-export const getTextAttrs = (view: EditorView, defaultAttrs: DefaultAttrs = {}) => {
-  defaultAttrs = { ..._defaultAttrs, ...defaultAttrs }
+export const getTextAttrs = (view: EditorView, attrs: Partial<DefaultAttrs> = {}) => {
+  const defaultAttrs: DefaultAttrs = { ..._defaultAttrs, ...attrs }
 
   const marks = getMarkAttrs(view)
 
