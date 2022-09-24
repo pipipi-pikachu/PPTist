@@ -161,11 +161,11 @@ export default {
   ...marks,
   fontsize,
   fontname,
+  forecolor,
+  backcolor,
   subscript,
   superscript,
   strikethrough,
   underline,
-  forecolor,
-  backcolor,
   link,
 }
