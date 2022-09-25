@@ -133,7 +133,7 @@ const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.
   user-select: none;
 
   &.multi-select {
-    opacity: 0;
+    opacity: 0.2;
   }
 }
 .animation-index {
