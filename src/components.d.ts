@@ -6,6 +6,7 @@ import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+import MoveablePanel from '@/components/MoveablePanel.vue'
 
 type Icon = typeof icons
 
@@ -16,6 +17,7 @@ declare module 'vue' {
     CheckboxButtonGroup: typeof CheckboxButtonGroup
     ColorPicker: typeof ColorPicker
     FullscreenSpin: typeof FullscreenSpin
+    MoveablePanel: typeof MoveablePanel
 
     // antd 组件
     InputNumber: typeof import('ant-design-vue')['InputNumber']

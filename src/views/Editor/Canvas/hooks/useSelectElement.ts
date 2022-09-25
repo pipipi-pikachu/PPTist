@@ -86,15 +86,7 @@ export default (
     if (startMove) moveElement(e, element)
   }
 
-  // 选中页面内的全部元素
-  const selectAllElement = () => {
-    const unlockedElements = elementList.value.filter(el => !el.lock)
-    const newActiveElementIdList = unlockedElements.map(el => el.id)
-    mainStore.setActiveElementIdList(newActiveElementIdList)
-  }
-
   return {
     selectElement,
-    selectAllElement,
   }
 }
