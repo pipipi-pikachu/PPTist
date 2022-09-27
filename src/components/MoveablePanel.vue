@@ -107,7 +107,7 @@ const startMove = (e: MouseEvent) => {
   border-radius: $borderRadius;
   display: flex;
   flex-direction: column;
-  z-index: 99999;
+  z-index: 999;
 }
 .header {
   height: 40px;

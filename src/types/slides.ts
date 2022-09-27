@@ -99,6 +99,8 @@ export interface PPTElementLink {
  * rotate: 旋转角度
  * 
  * link?: 超链接
+ * 
+ * name?: 元素名
  */
 interface PPTBaseElement {
   id: string
@@ -110,6 +112,7 @@ interface PPTBaseElement {
   height: number
   rotate: number
   link?: PPTElementLink
+  name?: string
 }
 
 

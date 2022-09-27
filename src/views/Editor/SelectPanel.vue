@@ -25,8 +25,18 @@
             v-for="groupItem in item.elements" 
             :key="groupItem.id" 
             @click="selectGroupEl(item, groupItem.id)"
+            @dblclick="enterEdit(groupItem.id)"
           >
-            <div class="name">{{ELEMENT_TYPE_ZH[groupItem.type]}}</div>
+            <input 
+              :id="`input-${groupItem.id}`" 
+              :value="groupItem.name || ELEMENT_TYPE_ZH[groupItem.type]" 
+              class="input" 
+              type="text" 
+              v-if="editingElId === groupItem.id" 
+              @blur="$event => saveElementName($event, groupItem.id)"
+              @keydown.enter="$event => saveElementName($event, groupItem.id)"
+            >
+            <div v-else class="name">{{groupItem.name || ELEMENT_TYPE_ZH[groupItem.type]}}</div>
             <div class="icons">
               <IconPreviewClose style="font-size: 17px;" @click.stop="hideElement(groupItem.id)" v-if="hiddenElementIdList.includes(groupItem.id)" />
               <IconPreviewOpen style="font-size: 17px;" @click.stop="hideElement(groupItem.id)" v-else />
@@ -38,8 +48,18 @@
           :class="{ 'active': activeElementIdList.includes(item.id) }"
           v-else 
           @click="selectEl(item.id)"
+          @dblclick="enterEdit(item.id)"
         >
-          <div class="name">{{ELEMENT_TYPE_ZH[item.type]}}</div>
+          <input 
+            :id="`input-${item.id}`" 
+            :value="item.name || ELEMENT_TYPE_ZH[item.type]" 
+            class="input" 
+            type="text" 
+            v-if="editingElId === item.id" 
+            @blur="$event => saveElementName($event, item.id)"
+            @keydown.enter="$event => saveElementName($event, item.id)"
+          >
+          <div v-else class="name">{{item.name || ELEMENT_TYPE_ZH[item.type]}}</div>
           <div class="icons">
             <IconPreviewClose style="font-size: 17px;" @click.stop="hideElement(item.id)" v-if="hiddenElementIdList.includes(item.id)" />
             <IconPreviewOpen style="font-size: 17px;" @click.stop="hideElement(item.id)" v-else />
@@ -51,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore, useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -121,6 +141,22 @@ const hideAll = () => {
   if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
 }
 
+const editingElId = ref('')
+
+const saveElementName = (e: FocusEvent | KeyboardEvent, id: string) => {
+  const name = (e.target as HTMLInputElement).value
+  slidesStore.updateElement({ id, props: { name } })
+  editingElId.value = ''
+}
+
+const enterEdit = (id: string) => {
+  editingElId.value = id
+  nextTick(() => {
+    const inputRef = document.querySelector(`#input-${id}`) as HTMLInputElement
+    inputRef.focus()
+  })
+}
+
 const close = () => {
   mainStore.setSelectPanelState(false)
 }
@@ -146,7 +182,6 @@ const close = () => {
   font-size: 12px;
   border-radius: $borderRadius;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 
@@ -160,11 +195,18 @@ const close = () => {
     background-color: rgba($color: $themeColor, $alpha: .25);
   }
 
+  .name {
+    height: 18px;
+    line-height: 18px;
+    flex: 1;
+    @include ellipsis-oneline();
+  }
   .icons {
     width: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: 5px;
   }
 }
 .group-els {
@@ -177,5 +219,15 @@ const close = () => {
   .item {
     margin-left: 15px;
   }
+}
+.input {
+  width: 100%;
+  height: 18px;
+  line-height: 18px;
+  border: 0;
+  outline: 0;
+  padding-left: 0;
+  padding-right: 0;
+  flex: 1;
 }
 </style>
