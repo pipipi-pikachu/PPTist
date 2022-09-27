@@ -13,6 +13,7 @@ export interface MainState {
   activeElementIdList: string[]
   handleElementId: string
   activeGroupElementId: string
+  hiddenElementIdList: string[]
   canvasPercentage: number
   canvasScale: number
   canvasDragged: boolean
@@ -32,6 +33,7 @@ export interface MainState {
   dialogForExport: DialogForExportTypes
   databaseId: string
   textFormatPainter: TextFormatPainter | null
+  showSelectPanel: boolean
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -42,6 +44,7 @@ export const useMainStore = defineStore('main', {
     activeElementIdList: [], // 被选中的元素ID集合，包含 handleElementId
     handleElementId: '', // 正在操作的元素ID
     activeGroupElementId: '', // 组合元素成员中，被选中可独立操作的元素ID
+    hiddenElementIdList: [], // 被隐藏的元素ID集合
     canvasPercentage: 90, // 画布可视区域百分比
     canvasScale: 1, // 画布缩放比例（基于宽度1000px）
     canvasDragged: false, // 画布被拖拽移动
@@ -61,6 +64,7 @@ export const useMainStore = defineStore('main', {
     dialogForExport: '', // 导出面板
     databaseId, // 标识当前应用的indexedDB数据库ID
     textFormatPainter: null, // 文字格式刷
+    showSelectPanel: false, // 打开选择面板
   }),
 
   getters: {
@@ -93,6 +97,10 @@ export const useMainStore = defineStore('main', {
     
     setActiveGroupElementId(activeGroupElementId: string) {
       this.activeGroupElementId = activeGroupElementId
+    },
+    
+    setHiddenElementIdList(hiddenElementIdList: string[]) {
+      this.hiddenElementIdList = hiddenElementIdList
     },
   
     setCanvasPercentage(percentage: number) {
@@ -165,6 +173,10 @@ export const useMainStore = defineStore('main', {
 
     setTextFormatPainter(textFormatPainter: TextFormatPainter | null) {
       this.textFormatPainter = textFormatPainter
+    },
+
+    setSelectPanelState(show: boolean) {
+      this.showSelectPanel = show
     },
   },
 })

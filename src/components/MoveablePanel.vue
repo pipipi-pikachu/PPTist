@@ -10,7 +10,7 @@
   >
     <div class="header" @mousedown="$event => startMove($event)">
       <div class="title">{{title}}</div>
-      <div class="close-btn"><IconClose /></div>
+      <div class="close-btn" @click="emit('close')"><IconClose /></div>
     </div>
 
     <div class="content">
@@ -44,6 +44,10 @@ const props = defineProps({
     default: '',
   },
 })
+
+const emit = defineEmits<{
+  (event: 'close'): void
+}>()
 
 const x = ref(0)
 const y = ref(0)

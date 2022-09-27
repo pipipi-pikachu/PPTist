@@ -47,6 +47,7 @@
           :openLinkDialog="openLinkDialog"
           :dragLineElement="dragLineElement"
           :moveShapeKeypoint="moveShapeKeypoint"
+          v-show="!hiddenElementIdList.includes(element.id)"
         />
         <ViewportBackground />
       </div>
@@ -72,6 +73,7 @@
           :isMultiSelect="activeElementIdList.length > 1"
           :selectElement="selectElement"
           :openLinkDialog="openLinkDialog"
+          v-show="!hiddenElementIdList.includes(element.id)"
         />
       </div>
     </div>
@@ -137,6 +139,7 @@ const {
   activeElementIdList,
   activeGroupElementId,
   handleElementId,
+  hiddenElementIdList,
   editorAreaFocus,
   gridLineSize,
   showRuler,

@@ -27,6 +27,7 @@
             <MenuItem @click="toggleGridLines()">{{ gridLineSize ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="toggleRuler()">{{ showRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
+            <MenuItem @click="openSelectPanel()">打开选择面板</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -105,6 +106,10 @@ const toggleGridLines = () => {
 
 const toggleRuler = () => {
   mainStore.setRulerState(!showRuler.value)
+}
+
+const openSelectPanel = () => {
+  mainStore.setSelectPanelState(true)
 }
 
 const hotkeyDrawerVisible = ref(false)

@@ -16,6 +16,8 @@
     </div>
   </div>
 
+  <SelectPanel v-if="showSelectPanel" />
+
   <Modal
     :visible="!!dialogForExport" 
     :footer="null" 
@@ -43,9 +45,10 @@ import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import Remark from './Remark/index.vue'
 import ExportDialog from './ExportDialog/index.vue'
+import SelectPanel from './SelectPanel.vue'
 
 const mainStore = useMainStore()
-const { dialogForExport } = storeToRefs(mainStore)
+const { dialogForExport, showSelectPanel } = storeToRefs(mainStore)
 const closeExportDialog = () => mainStore.setDialogForExport('')
 
 const remarkHeight = ref(40)

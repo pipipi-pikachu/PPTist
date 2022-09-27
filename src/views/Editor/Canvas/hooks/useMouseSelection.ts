@@ -6,7 +6,7 @@ import { getElementRange } from '@/utils/element'
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
   const mainStore = useMainStore()
-  const { canvasScale } = storeToRefs(mainStore)
+  const { canvasScale, hiddenElementIdList } = storeToRefs(mainStore)
 
   const mouseSelectionVisible = ref(false)
   const mouseSelectionQuadrant = ref(1)
@@ -117,8 +117,8 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
                       maxY < mouseSelectionTop + mouseSelectionHeight
         }
 
-        // 被锁定的元素即使在范围内，也不需要设置为选中状态
-        if (isInclude && !element.lock) inRangeElementList.push(element)
+        // 被锁定或被隐藏的元素即使在范围内，也不需要设置为选中状态
+        if (isInclude && !element.lock && !hiddenElementIdList.value.includes(element.id)) inRangeElementList.push(element)
       }
 
       // 如果范围内有组合元素的成员，需要该组全部成员都处在范围内，才会被设置为选中状态
