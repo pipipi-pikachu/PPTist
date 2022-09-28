@@ -144,10 +144,13 @@ const hideElement = (id: string) => {
 }
 
 const showAll = () => {
-  if (hiddenElementIdList.value.length) mainStore.setHiddenElementIdList([])
+  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id)
+  const needHiddenElementIdList = hiddenElementIdList.value.filter(item => !currentSlideElIdList.includes(item))
+  mainStore.setHiddenElementIdList(needHiddenElementIdList)
 }
 const hideAll = () => {
-  mainStore.setHiddenElementIdList(currentSlide.value.elements.map(item => item.id))
+  const currentSlideElIdList = currentSlide.value.elements.map(item => item.id)
+  mainStore.setHiddenElementIdList([...hiddenElementIdList.value, ...currentSlideElIdList])
   if (activeElementIdList.value.length) mainStore.setActiveElementIdList([])
 }
 
