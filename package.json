@@ -41,7 +41,7 @@
     "svg-pathdata": "^6.0.0",
     "tinycolor2": "^1.4.2",
     "vue": "^3.2.37",
-    "vuedraggable": "^4.0.1"
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.0",

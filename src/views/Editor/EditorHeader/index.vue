@@ -27,7 +27,7 @@
             <MenuItem @click="toggleGridLines()">{{ gridLineSize ? '关闭网格线' : '打开网格线' }}</MenuItem>
             <MenuItem @click="toggleRuler()">{{ showRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
             <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
-            <MenuItem @click="openSelectPanel()">打开选择面板</MenuItem>
+            <MenuItem @click="openSelectPanel()">{{ showSelectPanel ? '关闭选择面板' : '打开选择面板' }}</MenuItem>
           </Menu>
         </template>
       </Dropdown>
@@ -91,7 +91,7 @@ import useExport from '@/hooks/useExport'
 import HotkeyDoc from './HotkeyDoc.vue'
 
 const mainStore = useMainStore()
-const { gridLineSize, showRuler } = storeToRefs(mainStore)
+const { gridLineSize, showRuler, showSelectPanel } = storeToRefs(mainStore)
 
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
@@ -109,7 +109,8 @@ const toggleRuler = () => {
 }
 
 const openSelectPanel = () => {
-  mainStore.setSelectPanelState(true)
+  if (!showSelectPanel.value) mainStore.setSelectPanelState(true)
+  else mainStore.setSelectPanelState(false)
 }
 
 const hotkeyDrawerVisible = ref(false)

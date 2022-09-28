@@ -8,9 +8,15 @@
     :top="90"
     @close="close()"
   >
-    <div class="btns" v-if="elements.length">
-      <Button size="small" style="margin-right: 5px;" @click="showAll()">全部显示</Button>
-      <Button size="small" @click="hideAll()">全部隐藏</Button>
+    <div class="handler" v-if="elements.length">
+      <div class="btns">
+        <Button size="small" style="margin-right: 5px;" @click="showAll()">全部显示</Button>
+        <Button size="small" @click="hideAll()">全部隐藏</Button>
+      </div>
+      <div class="icon-btns" v-if="handleElement">
+        <IconDown class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.UP)" />
+        <IconUp class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)" />
+      </div>
     </div>
     <div class="element-list">
       <template v-for="item in elements" :key="item.id">
@@ -76,11 +82,15 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore, useMainStore } from '@/store'
 import { PPTElement } from '@/types/slides'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
+import useOrderElement from '@/hooks/useOrderElement'
+import { ElementOrderCommands } from '@/types/edit'
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
 const { currentSlide } = storeToRefs(slidesStore)
-const { handleElementId, activeElementIdList, activeGroupElementId, hiddenElementIdList } = storeToRefs(mainStore)
+const { handleElement, handleElementId, activeElementIdList, activeGroupElementId, hiddenElementIdList } = storeToRefs(mainStore)
+
+const { orderElement } = useOrderElement()
 
 interface GroupElements {
   type: 'group'
@@ -168,11 +178,35 @@ const close = () => {
   font-size: 12px;
   user-select: none;
 }
-.btns {
-  margin-bottom: 6px;
+.handler {
+  height: 24px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .icon-btns {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .icon-btn {
+    width: 16px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover {
+      color: $themeColor;
+    }
+  }
 }
 .element-list {
-  height: calc(100% - 30px);
+  height: calc(100% - 32px);
   padding-right: 10px;
   margin-right: -10px;
   overflow: auto;

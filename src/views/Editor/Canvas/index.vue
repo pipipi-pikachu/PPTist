@@ -143,6 +143,7 @@ const {
   editorAreaFocus,
   gridLineSize,
   showRuler,
+  showSelectPanel,
   creatingElement,
   canvasScale,
   textFormatPainter,
@@ -286,6 +287,13 @@ const contextmenus = (): ContextmenuItem[] => {
           handler: () => mainStore.setGridLineSize(100),
         },
       ],
+    },
+    {
+      text: showSelectPanel.value ? '关闭选择面板' : '打开选择面板',
+      handler: () => {
+        if (!showSelectPanel.value) mainStore.setSelectPanelState(true)
+        else mainStore.setSelectPanelState(false)
+      },
     },
     {
       text: '重置当前页',
