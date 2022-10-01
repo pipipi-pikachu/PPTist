@@ -8,12 +8,18 @@
       top: y + 'px',
     }"
   >
-    <div class="header" @mousedown="$event => startMove($event)">
-      <div class="title">{{title}}</div>
-      <div class="close-btn" @click="emit('close')"><IconClose /></div>
-    </div>
+    <template v-if="title">
+      <div class="header" @mousedown="$event => startMove($event)">
+        <div class="title">{{title}}</div>
+        <div class="close-btn" @click="emit('close')"><IconClose /></div>
+      </div>
 
-    <div class="content">
+      <div class="content">
+        <slot></slot>
+      </div>
+    </template>
+
+    <div v-else class="content" @mousedown="$event => startMove($event)">
       <slot></slot>
     </div>
   </div>

@@ -33,10 +33,8 @@
         <WritingBoardTool 
           :slideWidth="slideWidth"
           :slideHeight="slideHeight"
-          :position="{
-            left: '75px',
-            top: '5px',
-          }"
+          :left="75"
+          :top="5"
           v-if="writingBoardToolVisible" 
           @close="writingBoardToolVisible = false" 
         />

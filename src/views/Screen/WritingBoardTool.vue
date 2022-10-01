@@ -15,41 +15,51 @@
       />
     </div>
 
-    <div class="tools" :style="position">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
-        <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
-        <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
-        <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
-        <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板">
-        <div class="btn" :class="{ 'active': blackboard }" @click="blackboard = !blackboard"><IconFill class="icon" /></div>
-      </Tooltip>
-      <div class="colors">
-        <div 
-          class="color" 
-          :class="{ 'active': color === writingBoardColor }"
-          v-for="color in writingBoardColors"
-          :key="color"
-          :style="{ backgroundColor: color }"
-          @click="changeColor(color)"
-        ></div>
+    <MoveablePanel 
+      class="tools-panel" 
+      :width="520" 
+      :height="50"
+      :left="left" 
+      :top="top"
+    >
+      <div class="tools">
+        <div class="tool-content">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
+            <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
+          </Tooltip>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
+            <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
+          </Tooltip>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
+            <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
+          </Tooltip>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
+            <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
+          </Tooltip>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板">
+            <div class="btn" :class="{ 'active': blackboard }" @click="blackboard = !blackboard"><IconFill class="icon" /></div>
+          </Tooltip>
+          <div class="colors">
+            <div 
+              class="color" 
+              :class="{ 'active': color === writingBoardColor }"
+              v-for="color in writingBoardColors"
+              :key="color"
+              :style="{ backgroundColor: color }"
+              @click="changeColor(color)"
+            ></div>
+          </div>
+        </div>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="关闭画笔">
+          <div class="btn" @click="closeWritingBoard()"><IconClose class="icon" /></div>
+        </Tooltip>
       </div>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="关闭画笔">
-        <div class="btn" @click="closeWritingBoard()"><IconClose class="icon" /></div>
-      </Tooltip>
-    </div>
+    </MoveablePanel>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { PropType, ref, StyleValue, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { db } from '@/utils/database'
@@ -68,12 +78,13 @@ defineProps({
     type: Number,
     required: true,
   },
-  position: {
-    type: Object as PropType<StyleValue>,
-    default: () => ({
-      right: '5px',
-      bottom: '5px',
-    })
+  left: {
+    type: Number,
+    default: -5,
+  },
+  top: {
+    type: Number,
+    default: -5,
   },
 })
 
@@ -141,12 +152,13 @@ const hanldeWritingEnd = () => {
   }
 
   .tools {
-    height: 50px;
-    position: fixed;
-    z-index: 11;
-    padding: 12px;
-    background-color: #eee;
-    border-radius: $borderRadius;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tool-content {
     display: flex;
     align-items: center;
   }
