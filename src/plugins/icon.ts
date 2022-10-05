@@ -111,6 +111,7 @@ import {
   FormatBrush,
   PreviewOpen,
   PreviewClose,
+  StopwatchStart,
 } from '@icon-park/vue-next'
 
 export const icons = {
@@ -223,6 +224,7 @@ export const icons = {
   IconFormatBrush: FormatBrush,
   IconPreviewOpen: PreviewOpen,
   IconPreviewClose: PreviewClose,
+  IconStopwatchStart: StopwatchStart,
 }
 
 export default {

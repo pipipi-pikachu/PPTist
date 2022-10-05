@@ -25,6 +25,11 @@
       @close="writingBoardToolVisible = false" 
     />
 
+    <CountdownTimer 
+      v-if="timerlVisible" 
+      @close="timerlVisible = false" 
+    />
+
     <div class="tools-left">
       <IconLeftTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execPrev()" />
       <IconRightTwo class="tool-btn" theme="two-tone" :fill="['#111', '#fff']" @click="execNext()" />
@@ -42,6 +47,9 @@
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="激光笔">
           <IconMagic class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
+        </Tooltip>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="计时器">
+          <IconStopwatchStart class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
         </Tooltip>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="演讲者视图">
           <IconListView class="tool-btn" @click="changeViewMode('presenter')" />
@@ -72,6 +80,7 @@ import useFullscreen from './hooks/useFullscreen'
 import ScreenSlideList from './ScreenSlideList.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
+import CountdownTimer from './CountdownTimer.vue'
 
 const props = defineProps({
   changeViewMode: {
@@ -104,6 +113,7 @@ const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
 const rightToolsVisible = ref(false)
 const writingBoardToolVisible = ref(false)
+const timerlVisible = ref(false)
 const slideThumbnailModelVisible = ref(false)
 const laserPen = ref(false)
 
