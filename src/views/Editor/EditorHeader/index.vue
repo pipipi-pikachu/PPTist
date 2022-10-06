@@ -44,7 +44,8 @@
         <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="goIssues()">意见反馈</MenuItem>
+            <MenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">意见反馈</MenuItem>
+            <MenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">常见问题</MenuItem>
             <MenuItem @click="hotkeyDrawerVisible = true">快捷键</MenuItem>
           </Menu>
         </template>
@@ -115,9 +116,7 @@ const openSelectPanel = () => {
 
 const hotkeyDrawerVisible = ref(false)
 
-const goIssues = () => {
-  window.open('https://github.com/pipipi-pikachu/PPTist/issues')
-}
+const goLink = (url: string) => window.open(url)
 </script>
 
 <style lang="scss" scoped>
