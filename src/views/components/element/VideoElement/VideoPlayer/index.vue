@@ -117,6 +117,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import useMSE from './useMSE'
+import { throttle } from 'lodash'
 
 const props = defineProps({
   width: {
@@ -214,10 +215,10 @@ const pause = () => {
   bezelTransition.value = true
 }
 
-const toggle = () => {
+const toggle = throttle(function() {
   if (paused.value) play() 
   else pause()
-}
+}, 1000, { trailing: true })
 
 const setVolume = (percentage: number) => {
   if (!videoRef.value) return
