@@ -74,6 +74,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { throttle } from 'lodash'
 import { message } from 'ant-design-vue'
 
 const props = defineProps({
@@ -153,10 +154,10 @@ const pause = () => {
   audioRef.value.pause()
 }
 
-const toggle = () => {
+const toggle = throttle(function() {
   if (paused.value) play() 
   else pause()
-}
+}, 1000, { trailing: true })
 
 const setVolume = (percentage: number) => {
   if (!audioRef.value) return
