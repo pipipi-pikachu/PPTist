@@ -374,7 +374,7 @@ export type LinePoint = '' | 'arrow' | 'dot'
  * 
  * curve?: 二次曲线控制点位置（[x, y]）
  * 
- * curve?: 三次曲线控制点位置（[[x1, y1], [x2, y2]]）
+ * cubic?: 三次曲线控制点位置（[[x1, y1], [x2, y2]]）
  */
 export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'> {
   type: 'line'
