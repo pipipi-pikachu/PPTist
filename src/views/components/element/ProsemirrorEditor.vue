@@ -3,6 +3,8 @@
     class="prosemirror-editor" 
     :class="{ 'format-painter': textFormatPainter }"
     ref="editorViewRef"
+    @mousedown="$event => emit('mousedown', $event)"
+    @touchstart="$event => emit('touchstart', $event)"
   ></div>
 </template>
 
@@ -51,6 +53,8 @@ const emit = defineEmits<{
   (event: 'update', payload: string): void
   (event: 'focus'): void
   (event: 'blur'): void
+  (event: 'mousedown', payload: MouseEvent): void
+  (event: 'touchstart', payload: TouchEvent): void
 }>()
 
 const mainStore = useMainStore()
