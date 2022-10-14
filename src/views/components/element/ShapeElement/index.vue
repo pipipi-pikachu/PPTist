@@ -70,7 +70,6 @@
             @update="value => updateText(value)"
             @blur="checkEmptyText()"
             @mousedown="$event => handleSelectElement($event, false)"
-            @touchstart="$event => handleSelectElement($event, false)"
           />
         </div>
       </div>

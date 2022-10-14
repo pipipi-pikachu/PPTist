@@ -50,7 +50,6 @@
           }"
           @update="value => updateContent(value)"
           @mousedown="$event => handleSelectElement($event, false)"
-          @touchstart="$event => handleSelectElement($event)"
         />
 
         <!-- 当字号过大且行高较小时，会出现文字高度溢出的情况，导致拖拽区域无法被选中，因此添加了以下节点避免该情况 -->
