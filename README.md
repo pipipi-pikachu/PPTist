@@ -31,7 +31,7 @@
 1. 本项目的目标是打造一个 “在线幻灯片应用” ，而非 “低代码平台”、“H5 编辑器” 或 “图片编辑工具” 等。
 2. 本项目的目标受众是<b>有【Web 幻灯片】开发需求的开发者</b>，提供的链接只是一个演示地址，不提供任何在线服务。你不应该直接将本项目作为工具使用，也不支持一键部署。
 如果你只是需要一个服务或工具，可以选择更优秀和成熟的产品，例如：[石墨文档](https://shimo.im/)、[金山文档](https://www.kdocs.cn/)、[Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/) 等。
-3. 本项目是基于 DOM 的渲染方案，好处是简单。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的参考方向。
+3. 本项目是基于 DOM 的渲染方案，好处是简单易上手。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
 4. 这里总结了一些[常见问题](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md)，第一次提 Issues 和 PR 时，务必提前阅读此文档。
 
 
@@ -195,3 +195,5 @@ npm run serve
 
 # 📄 开源协议
 [GPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
+
+闭源商用请先邮件联系作者
