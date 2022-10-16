@@ -380,6 +380,10 @@ export default () => {
 
     if (viewportRatio.value === 0.625) pptx.layout = 'LAYOUT_16x10'
     else if (viewportRatio.value === 0.75) pptx.layout = 'LAYOUT_4x3'
+    else if (viewportRatio.value === 0.70710678) {
+      pptx.defineLayout({ name: 'A3', width: 10, height: 7.0710678 })
+      pptx.layout = 'A3'
+    }
     else pptx.layout = 'LAYOUT_16x9'
 
     if (masterOverwrite) {

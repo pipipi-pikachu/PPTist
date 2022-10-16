@@ -103,6 +103,7 @@
         <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
         <SelectOption :value="0.625">宽屏 16 ：10</SelectOption>
         <SelectOption :value="0.75">标准 4 ：3</SelectOption>
+        <SelectOption :value="0.70710678">A3 / A4</SelectOption>
       </Select>
     </div>
 
