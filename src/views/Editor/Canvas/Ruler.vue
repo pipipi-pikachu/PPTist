@@ -10,10 +10,10 @@
       <div 
         class="ruler-marker-100" 
         :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
-        v-for="marker in 10" 
+        v-for="marker in 20" 
         :key="`marker-100-${marker}`"
       >
-        <span>{{marker * 100}}</span>
+        <span>{{marker}}</span>
       </div>
     </div>
     <div 
@@ -26,11 +26,11 @@
       <div 
         class="ruler-marker-100" 
         :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
-        v-for="marker in 10" 
+        v-for="marker in 20" 
         :key="marker" 
         :style="{ height: markerSize + 'px' }"
       >
-        <span>{{marker * 100}}</span>
+        <span>{{marker}}</span>
       </div>
     </div>
   </div>
@@ -76,12 +76,14 @@ const markerSize = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  overflow: hidden;
 
   .ruler-marker-100 {
     height: 100%;
+    width: 10%;
     line-height: 20px;
     text-align: right;
-    flex: 1;
+    flex-shrink: 0;
     padding-right: 5px;
     position: relative;
 
