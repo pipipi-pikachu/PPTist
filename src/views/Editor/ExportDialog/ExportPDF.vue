@@ -72,7 +72,7 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const { slides, currentSlide } = storeToRefs(useSlidesStore())
+const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
 const pdfThumbnailsRef = ref<HTMLElement>()
 const rangeType = ref<'all' | 'current'>('all')
@@ -83,7 +83,7 @@ const expPDF = () => {
   if (!pdfThumbnailsRef.value) return
   const pageSize = {
     width: 1600,
-    height: rangeType.value === 'all' ? 900 * count.value : 900,
+    height: rangeType.value === 'all' ? 1600 * viewportRatio.value * count.value : 1600 * viewportRatio.value,
     margin: padding.value ? 50 : 0,
   }
   print(pdfThumbnailsRef.value, pageSize)
