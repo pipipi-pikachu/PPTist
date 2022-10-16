@@ -49,6 +49,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  moveable: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const emit = defineEmits<{
@@ -67,6 +71,8 @@ onMounted(() => {
 })
 
 const startMove = (e: MouseEvent) => {
+  if (!props.moveable) return
+
   let isMouseDown = true
 
   const windowWidth = document.body.clientWidth

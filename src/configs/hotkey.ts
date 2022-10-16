@@ -54,7 +54,6 @@ export const HOTKEY_DOC = [
       { label: '切换下一页', value: '↓ / → / PgDown' },
       { label: '切换下一页', value: 'Enter / Space' },
       { label: '退出放映', value: 'ESC' },
-      { label: '调整画笔笔触大小', value: '鼠标滚轮' },
     ],
   },
   {

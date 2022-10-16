@@ -34,8 +34,8 @@
         <WritingBoardTool 
           :slideWidth="slideWidth"
           :slideHeight="slideHeight"
-          :left="75"
-          :top="5"
+          :left="-365"
+          :top="-155"
           v-if="writingBoardToolVisible" 
           @close="writingBoardToolVisible = false" 
         />

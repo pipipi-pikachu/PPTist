@@ -15,7 +15,6 @@
       @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"
       @mouseenter="mouseInCanvas = true"
-      @wheel="$event => mousewheelListener($event)"
     ></canvas>
 
     <template v-if="mouseInCanvas">
@@ -57,7 +56,6 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
-import { throttle } from 'lodash'
 
 const props = defineProps({
   color: {
@@ -72,6 +70,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  penSize: {
+    type: Number,
+    default: 6,
+  },
+  markSize: {
+    type: Number,
+    default: 24,
+  },
+  rubberSize: {
+    type: Number,
+    default: 80,
+  },
 })
 
 const emit = defineEmits<{
@@ -81,10 +91,6 @@ const emit = defineEmits<{
 let ctx: CanvasRenderingContext2D | null = null
 const writingBoardRef = ref<HTMLElement>()
 const canvasRef = ref<HTMLCanvasElement>()
-
-const penSize = ref(6)
-const rubberSize = ref(80)
-const markSize = ref(24)
 
 let lastPos = {
   x: 0,
@@ -174,7 +180,7 @@ const erase = (posX: number, posY: number) => {
   const lastPosX = lastPos.x
   const lastPosY = lastPos.y
 
-  const radius = rubberSize.value / 2
+  const radius = props.rubberSize / 2
 
   const sinRadius = radius * Math.sin(Math.atan((posY - lastPosY) / (posX - lastPosX)))
   const cosRadius = radius * Math.cos(Math.atan((posY - lastPosY) / (posX - lastPosX)))
@@ -213,7 +219,7 @@ const getDistance = (posX: number, posY: number) => {
 const getLineWidth = (s: number, t: number) => {
   const maxV = 10
   const minV = 0.1
-  const maxWidth = penSize.value
+  const maxWidth = props.penSize
   const minWidth = 3
   const v = s / t
   let lineWidth
@@ -238,7 +244,7 @@ const handleMove = (x: number, y: number) => {
     draw(x, y, lineWidth)
     lastLineWidth = lineWidth
   }
-  else if (props.model === 'mark') draw(x, y, markSize.value)
+  else if (props.model === 'mark') draw(x, y, props.markSize)
   else erase(x, y)
 
   lastPos = { x, y }
@@ -320,22 +326,6 @@ const setImageDataURL = (imageDataURL: string) => {
     }
   }
 }
-
-// 滚动鼠标滚轮，调整笔触大小
-const mousewheelListener = throttle(function(e: WheelEvent) {
-  if (props.model === 'eraser') {
-    if (e.deltaY < 0 && rubberSize.value < 200) rubberSize.value += 20
-    else if (e.deltaY > 0 && rubberSize.value > 20) rubberSize.value -= 20
-  }
-  if (props.model === 'pen') {
-    if (e.deltaY < 0 && penSize.value < 10) penSize.value += 2
-    else if (e.deltaY > 0 && penSize.value > 4) penSize.value -= 2
-  }
-  if (props.model === 'mark') {
-    if (e.deltaY < 0 && markSize.value < 40) markSize.value += 4
-    else if (e.deltaY > 0 && markSize.value > 16) markSize.value -= 4
-  }
-}, 300, { leading: true, trailing: false })
 
 defineExpose({
   clearCanvas,

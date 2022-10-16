@@ -11,6 +11,9 @@
         :color="writingBoardColor" 
         :blackboard="blackboard" 
         :model="writingBoardModel"
+        :penSize="penSize"
+        :markSize="markSize"
+        :rubberSize="rubberSize"
         @end="hanldeWritingEnd()"
       />
     </div>
@@ -21,18 +24,43 @@
       :height="50"
       :left="left" 
       :top="top"
+      :moveable="sizePopoverType === ''"
     >
-      <div class="tools">
+      <div class="tools" @mousedown.stop>
         <div class="tool-content">
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
-            <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
-          </Tooltip>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
-            <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
-          </Tooltip>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
-            <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
-          </Tooltip>
+          <Popover trigger="click" :visible="sizePopoverType === 'pen'">
+            <template #content>
+              <div class="size">
+                <div class="label">墨迹粗细：</div>
+                <Slider class="size-slider" :min="4" :max="10" :step="2" v-model:value="penSize" />
+              </div>
+            </template>
+            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
+              <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
+            </Tooltip>
+          </Popover>
+          <Popover trigger="click" :visible="sizePopoverType === 'mark'">
+            <template #content>
+              <div class="size">
+                <div class="label">墨迹粗细：</div>
+                <Slider class="size-slider" :min="16" :max="40" :step="4" v-model:value="markSize" />
+              </div>
+            </template>
+            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
+              <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
+            </Tooltip>
+          </Popover>
+          <Popover trigger="click" :visible="sizePopoverType === 'eraser'">
+            <template #content>
+              <div class="size">
+                <div class="label">橡皮大小：</div>
+                <Slider class="size-slider" :min="20" :max="200" :step="20" v-model:value="rubberSize" />
+              </div>
+            </template>
+            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
+              <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
+            </Tooltip>
+          </Popover>
           <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
             <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
           </Tooltip>
@@ -98,9 +126,20 @@ const writingBoardRef = ref<typeof WritingBoard>()
 const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
 const blackboard = ref(false)
+const sizePopoverType = ref<'' | WritingBoardModel>('')
+
+const penSize = ref(6)
+const markSize = ref(24)
+const rubberSize = ref(80)
 
 const changeModel = (model: WritingBoardModel) => {
-  writingBoardModel.value = model
+  if (writingBoardModel.value === model) {
+    sizePopoverType.value = sizePopoverType.value === model ? '' : model
+  }
+  else {
+    if (sizePopoverType.value) sizePopoverType.value = ''
+    writingBoardModel.value = model
+  }
 }
 
 // 清除画布上的墨迹
@@ -197,6 +236,19 @@ const hanldeWritingEnd = () => {
     & + .color {
       margin-left: 8px;
     }
+  }
+}
+.size {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+
+  .label {
+    width: 70px;
+  }
+  .size-slider {
+    flex: 1;
   }
 }
 </style>
