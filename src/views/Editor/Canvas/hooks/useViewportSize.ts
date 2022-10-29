@@ -11,8 +11,8 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const { canvasPercentage, canvasDragged } = storeToRefs(mainStore)
   const { viewportRatio } = storeToRefs(useSlidesStore())
 
-  // 计算画布可视区域的位置
-  const setViewportPosition = () => {
+  // 初始化画布可视区域的位置
+  const initViewportPosition = () => {
     if (!canvasRef.value) return
     const canvasWidth = canvasRef.value.clientWidth
     const canvasHeight = canvasRef.value.clientHeight
@@ -31,12 +31,29 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
     }
   }
 
-  // 可视区域缩放或比例变化时，更新可视区域的位置
-  watch([canvasPercentage, viewportRatio], setViewportPosition)
+  // 更新画布可视区域的位置
+  const setViewportPosition = (newValue: number, oldValue: number) => {
+    if (!canvasRef.value) return
+    const canvasWidth = canvasRef.value.clientWidth
+    const canvasHeight = canvasRef.value.clientHeight
 
-  // 画布拖拽状态改变（复原）时，更新可视区域的位置
+    const newViewportActualWidth = canvasWidth * (newValue / 100)
+    const oldViewportActualWidth = canvasWidth * (oldValue / 100)
+    const newViewportActualHeight = canvasHeight * (newValue / 100)
+    const oldViewportActualHeight = canvasHeight * (oldValue / 100)
+
+    mainStore.setCanvasScale(newViewportActualWidth / VIEWPORT_SIZE)
+    viewportLeft.value = viewportLeft.value - (newViewportActualWidth - oldViewportActualWidth) / 2
+    viewportTop.value = viewportTop.value - (newViewportActualHeight - oldViewportActualHeight) / 2
+  }
+
+  // 可视区域缩放或比例变化时，重置/更新可视区域的位置
+  watch(canvasPercentage, setViewportPosition)
+  watch(viewportRatio, initViewportPosition)
+
+  // 画布拖拽状态改变（复原）时，重置可视区域的位置
   watch(canvasDragged, () => {
-    if (!canvasDragged.value) setViewportPosition()
+    if (!canvasDragged.value) initViewportPosition()
   })
 
   // 画布可视区域位置和大小的样式
@@ -47,8 +64,8 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
     top: viewportTop.value,
   }))
 
-  // 监听画布尺寸发生变化时，更新可视区域的位置
-  const resizeObserver = new ResizeObserver(setViewportPosition)
+  // 监听画布尺寸发生变化时，重置可视区域的位置
+  const resizeObserver = new ResizeObserver(initViewportPosition)
 
   onMounted(() => {
     if (canvasRef.value) resizeObserver.observe(canvasRef.value)
