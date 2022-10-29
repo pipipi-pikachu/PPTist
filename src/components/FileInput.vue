@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-const props = defineProps({
+defineProps({
   accept: {
     type: String,
     default: 'image/*',
