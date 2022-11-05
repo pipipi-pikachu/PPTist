@@ -200,22 +200,57 @@
       </Tooltip>
     </RadioGroup>
 
-    <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="项目符号">
-        <CheckboxButton 
-          style="flex: 1;" 
-          :checked="richTextAttrs.bulletList"
-          @click="emitRichTextCommand('bulletList')"
-        ><IconList /></CheckboxButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
-        <CheckboxButton 
-          style="flex: 1;" 
-          :checked="richTextAttrs.orderedList"
-          @click="emitRichTextCommand('orderedList')"
-        ><IconOrderedList /></CheckboxButton>
-      </Tooltip>
-    </CheckboxButtonGroup>
+    <div class="row">
+      <ButtonGroup style="flex: 15;">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="项目符号">
+          <Button
+            :type="richTextAttrs.bulletList ? 'primary' : 'default'"
+            style="flex: 1;"
+            @click="emitRichTextCommand('bulletList')"
+          ><IconList /></Button>
+        </Tooltip>
+        <Popover trigger="click" v-model:visible="bulletListPanelVisible">
+          <template #content>
+            <div class="list-wrap">
+              <ul class="list" 
+                v-for="item in bulletListStyleTypeOption" 
+                :key="item" 
+                :style="{ listStyleType: item }"
+                @click="emitRichTextCommand('bulletList', item)"
+              >
+                <li class="list-item" v-for="key in 3" :key="key"><span></span></li>
+              </ul>
+            </div>
+          </template>
+          <Button class="popover-btn"><IconDown /></Button>
+        </Popover>
+      </ButtonGroup>
+      <div style="flex: 1;"></div>
+      <ButtonGroup style="flex: 15;">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
+          <Button
+            :type="richTextAttrs.orderedList ? 'primary' : 'default'"
+            style="flex: 1;"
+            @click="emitRichTextCommand('orderedList')"
+          ><IconOrderedList /></Button>
+        </Tooltip>
+        <Popover trigger="click" v-model:visible="orderedListPanelVisible">
+          <template #content>
+            <div class="list-wrap">
+              <ul class="list" 
+                v-for="item in orderedListStyleTypeOption" 
+                :key="item" 
+                :style="{ listStyleType: item }"
+                @click="emitRichTextCommand('orderedList', item)"
+              >
+                <li class="list-item" v-for="key in 3" :key="key"><span></span></li>
+              </ul>
+            </div>
+          </template>
+          <Button class="popover-btn"><IconDown /></Button>
+        </Popover>
+      </ButtonGroup>
+    </div>
 
     <ButtonGroup class="row">
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小缩进">
@@ -383,6 +418,12 @@ const updateElement = (props: Partial<PPTTextElement>) => {
   addHistorySnapshot()
 }
 
+const bulletListPanelVisible = ref(false)
+const orderedListPanelVisible = ref(false)
+
+const bulletListStyleTypeOption = ref(['disc', 'circle', 'square'])
+const orderedListStyleTypeOption = ref(['decimal', 'lower-roman', 'upper-roman', 'lower-alpha', 'upper-alpha', 'lower-greek'])
+
 const fill = ref<string>('#000')
 const lineHeight = ref<number>()
 const wordSpace = ref<number>()
@@ -514,5 +555,56 @@ const updateLink = (link?: string) => {
     margin-top: 10px;
     text-align: right;
   }
+}
+
+.list-wrap {
+  width: 176px;
+  color: #666;
+  padding: 8px;
+  margin: -12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+.list {
+  background-color: $lightGray;
+  padding: 4px 4px 4px 20px;
+  cursor: pointer;
+
+  &:not(:nth-child(3n)) {
+    margin-right: 8px;
+  }
+
+  &:nth-child(4),
+  &:nth-child(5),
+  &:nth-child(6) {
+    margin-top: 8px;
+  }
+
+  &:hover {
+    color: $themeColor;
+
+    span {
+      background-color: $themeColor;
+    }
+  }
+}
+.list-item {
+  width: 24px;
+  height: 12px;
+  position: relative;
+  top: -5px;
+
+  span {
+    width: 100%;
+    height: 2px;
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    background-color: #666;
+  }
+}
+.popover-btn {
+  padding: 0 3px;
 }
 </style>

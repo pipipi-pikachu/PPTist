@@ -1,21 +1,73 @@
 import { nodes } from 'prosemirror-schema-basic'
 import { Node, NodeSpec } from 'prosemirror-model'
-import { orderedList, bulletList, listItem } from 'prosemirror-schema-list'
+import { listItem as _listItem } from 'prosemirror-schema-list'
 
-const _orderedList: NodeSpec = {
-  ...orderedList,
+const orderedList: NodeSpec = {
+  attrs: {
+    order: {
+      default: 1,
+    },
+    listStyleType: {
+      default: '',
+    },
+  },
   content: 'list_item+',
   group: 'block',
+  parseDOM: [
+    { 
+      tag: 'ol', 
+      getAttrs: dom => {
+        const order = ((dom as HTMLElement).hasAttribute('start') ? (dom as HTMLElement).getAttribute('start') : 1) || 1
+        const attr = { order: +order }
+
+        const { listStyleType } = (dom as HTMLElement).style
+        if (listStyleType) attr['listStyleType'] = listStyleType
+
+        return attr
+      }
+    }
+  ],
+  toDOM: (node: Node) => {
+    const { order, listStyleType } = node.attrs
+    let style = ''
+    if (listStyleType) style += `list-style-type: ${listStyleType};`
+
+    const attr = { style }
+    if (order !== 1) attr['start'] = order
+
+
+    return ['ol', attr, 0]
+  },
 }
 
-const _bulletList: NodeSpec = {
-  ...bulletList,
+const bulletList: NodeSpec = {
+  attrs: {
+    listStyleType: {
+      default: '',
+    },
+  },
   content: 'list_item+',
   group: 'block',
+  parseDOM: [
+    {
+      tag: 'ul',
+      getAttrs: dom => {
+        const { listStyleType } = (dom as HTMLElement).style
+        return listStyleType ? { listStyleType } : {}
+      }
+    }
+  ],
+  toDOM: (node: Node) => {
+    const { listStyleType } = node.attrs
+    let style = ''
+    if (listStyleType) style += `list-style-type: ${listStyleType};`
+
+    return ['ul', { style }, 0]
+  },
 }
 
-const _listItem: NodeSpec = {
-  ...listItem,
+const listItem: NodeSpec = {
+  ..._listItem,
   content: 'paragraph block*',
   group: 'block',
 }
@@ -63,8 +115,8 @@ const { hard_break, ...otherNodes } = nodes
 
 export default {
   ...otherNodes,
-  'ordered_list': _orderedList,
-  'bullet_list': _bulletList,
-  'list_item': _listItem,
+  'ordered_list': orderedList,
+  'bullet_list': bulletList,
+  'list_item': listItem,
   paragraph,
 }

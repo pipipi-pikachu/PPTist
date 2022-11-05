@@ -190,12 +190,14 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       indentCommand(editorView, +item.value)
     }
     else if (item.command === 'bulletList') {
+      const listStyleType = item.value || ''
       const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
-      toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
+      toggleList(bulletList, listItem, listStyleType)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'orderedList') {
+      const listStyleType = item.value || ''
       const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
-      toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
+      toggleList(orderedList, listItem, listStyleType)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'clear') {
       autoSelectAll(editorView)
