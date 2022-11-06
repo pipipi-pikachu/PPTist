@@ -1,10 +1,13 @@
 <template>
-  <div class="fullscreen-spin" v-if="loading"><Spin :tip="tip" size="large" /></div>
+  <div class="fullscreen-spin" v-if="loading">
+    <div class="spin">
+      <div class="spinner"></div>
+      <div class="text">{{tip}}</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-import { Spin } from 'ant-design-vue'
-
 defineProps({
   loading: {
     type: Boolean,
@@ -29,5 +32,38 @@ defineProps({
   justify-content: center;
   align-items: center;
   background-color: rgba($color: #f1f1f1, $alpha: .7);
+}
+.spin {
+  width: 200px;
+  height: 200px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #d14424;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spinner .8s linear infinite;
+}
+.text {
+  margin-top: 20px;
+  color: #d14424;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
