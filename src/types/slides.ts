@@ -8,6 +8,7 @@ export const enum ShapePathFormulasKeys {
   CUT_RECT_DIAGONAL = 'cutRectDiagonal',
   CUT_RECT_SINGLE = 'cutRectSingle',
   CUT_RECT_SAMESIDE = 'cutRectSameSide',
+  CUT_ROUND_RECT = 'cutRoundRect',
   MESSAGE = 'message',
   ROUND_MESSAGE = 'roundMessage',
   L = 'L',

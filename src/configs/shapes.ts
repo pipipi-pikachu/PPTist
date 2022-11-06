@@ -1,3 +1,5 @@
+// 非专业设计人士可以用该应用绘制基本形状：https://github.com/pipipi-pikachu/svgPathCreator
+
 import { ShapePathFormulasKeys } from '@/types/slides'
 
 export interface ShapePoolItem {
@@ -62,11 +64,11 @@ export const SHAPE_PATH_FORMULAS = {
     editable: true,
     defaultValue: 0.125,
     range: [0, 1],
-    relative: 'right',
+    relative: 'left',
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
       const radius = Math.min(width, height) * value
-      return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 0 Z`
+      return `M ${radius} 0 L ${width} 0 L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_SINGLE]: {
@@ -89,6 +91,17 @@ export const SHAPE_PATH_FORMULAS = {
     formula: (width: number, height: number, value: number) => {
       const radius = Math.min(width, height) * value
       return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.CUT_ROUND_RECT]: {
+    editable: true,
+    defaultValue: 0.125,
+    range: [0, 0.5],
+    relative: 'left',
+    getBaseSize: (width: number, height: number) => Math.min(width, height),
+    formula: (width: number, height: number, value: number) => {
+      const radius = Math.min(width, height) * value
+      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
     }
   },
   [ShapePathFormulasKeys.MESSAGE]: {
@@ -222,11 +235,6 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
-        pathFormula: ShapePathFormulasKeys.CUT_RECT_DIAGONAL,
-      },
-      {
-        viewBox: [200, 200],
         path: 'M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 Z',
         pathFormula: ShapePathFormulasKeys.CUT_RECT_SINGLE,
       },
@@ -237,8 +245,13 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 150 0 Q 200 0 200 50 L 200 200 L 50 200 Q 0 200 0 150 L 0 0 Z',
-        pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
+        path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
+        pathFormula: ShapePathFormulasKeys.CUT_RECT_DIAGONAL,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 50 0 L 150 0 L 200 50 L 200 200 L 0 200 L 0 50 Q 0 0 50 0 Z',
+        pathFormula: ShapePathFormulasKeys.CUT_ROUND_RECT,
       },
       {
         viewBox: [200, 200],
@@ -249,6 +262,11 @@ export const SHAPE_LIST: ShapeListItem[] = [
         viewBox: [200, 200],
         path: 'M 0 50 Q 0 0 50 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_SAMESIDE,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 50 0 L 200 0 L 200 150 Q 200 200 150 200 L 0 200 L 0 50 Q 0 0 50 0 Z',
+        pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
       },
     ]
   },
@@ -268,6 +286,10 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 0 0 L 0 200 L 200 200 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 70 20 L 0 160 Q 0 200 40 200 L 160 200 Q 200 200 200 160 L 130 20 Q 100 -20 70 20 Z'
       },
       {
         viewBox: [200, 200],
@@ -297,6 +319,14 @@ export const SHAPE_LIST: ShapeListItem[] = [
         viewBox: [200, 200],
         path: 'M 200 100 L 150 0 L 0 0 L 50 100 L 0 200 L 150 200 L 200 100 Z',
         pathFormula: ShapePathFormulasKeys.INDICATOR,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 0 C 80 20 120 20 200 0 C 180 80 180 120 200 200 C 80 180 120 180 0 200 C 20 120 20 80 0 0 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 10 10 C 60 0 140 0 190 10 C 200 60 200 140 190 190 C 140 200 60 200 10 190 C 0 140 0 60 10 10 Z',
       },
       {
         viewBox: [200, 200],
@@ -429,11 +459,23 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
+        path: 'M 100 0 L 120 80 L 200 100 L 120 120 L 100 200 L 80 120 L 0 100 L 80 80 L 100 0 Z',
+      },
+      {
+        viewBox: [200, 200],
         path: 'M 100 0 L 60 60 L 0 100 L 60 140 L 100 200 L 140 140 L 200 100 L 140 60 L 100 0 Z',
       },
       {
         viewBox: [200, 200],
+        path: 'M 100 0 L 140 60 L 200 60 L 160 100 L 200 140 L 140 140 L 100 200 L 60 140 L 0 140 L 40 100 L 0 60 L 60 60 L 100 0 Z',
+      },
+      {
+        viewBox: [200, 200],
         path: 'M 100 0 L 80 40 L 20 20 L 40 80 L 0 100 L 40 120 L 20 180 L 80 160 L 100 200 L 120 160 L 180 180 L 160 120 L 200 100 L 160 80 L 180 20 L 120 40 L 100 0 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 200 0 C 80 40 80 160 200 200 C -60 200 -60 0 200 0 Z',
       },
     ],
   },
