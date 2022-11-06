@@ -3,7 +3,9 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps({
+import { Spin } from 'ant-design-vue'
+
+defineProps({
   loading: {
     type: Boolean,
     default: false,

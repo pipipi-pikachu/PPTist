@@ -81,6 +81,7 @@ import ScreenSlideList from './ScreenSlideList.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
+import { Tooltip } from 'ant-design-vue'
 
 const props = defineProps({
   changeViewMode: {

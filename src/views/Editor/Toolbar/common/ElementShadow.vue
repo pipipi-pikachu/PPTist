@@ -64,6 +64,12 @@ import { PPTElementShadow } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  Popover,
+  Slider,
+  Switch,
+} from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

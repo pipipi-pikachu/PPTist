@@ -93,6 +93,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import ScreenSlideList from './ScreenSlideList.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
+import { Divider } from 'ant-design-vue'
 
 const props = defineProps({
   changeViewMode: {

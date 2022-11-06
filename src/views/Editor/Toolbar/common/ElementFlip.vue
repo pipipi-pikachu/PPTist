@@ -22,6 +22,9 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { ImageOrShapeFlip } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

@@ -22,6 +22,9 @@ import { PPTVideoElement } from '@/types/slides'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import FileInput from '@/components/FileInput.vue'
+import { Button } from 'ant-design-vue'
+
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

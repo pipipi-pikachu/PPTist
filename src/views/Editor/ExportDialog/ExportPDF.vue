@@ -67,6 +67,14 @@ import { useSlidesStore } from '@/store'
 import { print } from '@/utils/print'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import {
+  Button,
+  Select,
+  Switch,
+  Radio,
+} from 'ant-design-vue'
+const { Group: RadioGroup, Button: RadioButton } = Radio
+const SelectOption = Select.Option
 
 const emit = defineEmits<{
   (event: 'close'): void

@@ -195,6 +195,24 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  Divider,
+  Button,
+  Tooltip,
+  Popover,
+  Select,
+  Switch,
+  Checkbox,
+  Radio,
+  Input,
+} from 'ant-design-vue'
+const { Group: RadioGroup, Button: RadioButton } = Radio
+const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
+const InputGroup = Input.Group
+const ButtonGroup = Button.Group
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())

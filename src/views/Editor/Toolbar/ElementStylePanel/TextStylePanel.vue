@@ -323,13 +323,28 @@ import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 
-import { message } from 'ant-design-vue'
-
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  Divider,
+  Button,
+  Tooltip,
+  Popover,
+  Select,
+  Radio,
+  Input,
+  message,
+} from 'ant-design-vue'
+const { Group: RadioGroup, Button: RadioButton } = Radio
+const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
+const InputGroup = Input.Group
+const ButtonGroup = Button.Group
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗

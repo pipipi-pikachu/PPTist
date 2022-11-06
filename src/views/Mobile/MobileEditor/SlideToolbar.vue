@@ -40,6 +40,9 @@ import { ShapePoolItem } from '@/configs/shapes'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import MobileThumbnails from '../MobileThumbnails.vue'
+import FileInput from '@/components/FileInput.vue'
+import { Button } from 'ant-design-vue'
+const ButtonGroup = Button.Group
 
 const slidesStore = useSlidesStore()
 const { viewportRatio, currentSlide } = storeToRefs(slidesStore)

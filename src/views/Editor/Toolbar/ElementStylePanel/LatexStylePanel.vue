@@ -53,6 +53,14 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  InputNumber,
+  Divider,
+  Button,
+  Popover,
+  Modal,
+} from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

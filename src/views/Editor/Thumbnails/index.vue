@@ -58,6 +58,7 @@ import useLoadSlides from '@/hooks/useLoadSlides'
 import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
+import { Popover } from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

@@ -123,6 +123,14 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import {
+  InputNumber,
+  Divider,
+  Button,
+  Tooltip,
+} from 'ant-design-vue'
+const ButtonGroup = Button.Group
+
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
 

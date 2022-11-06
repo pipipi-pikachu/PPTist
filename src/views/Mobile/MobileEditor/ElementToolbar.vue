@@ -132,6 +132,16 @@ import useDeleteElement from '@/hooks/useDeleteElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import CheckboxButton from '@/components/CheckboxButton.vue'
+import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import {
+  Divider,
+  Button,
+  Radio,
+} from 'ant-design-vue'
+const { Group: RadioGroup, Button: RadioButton } = Radio
+const ButtonGroup = Button.Group
+
 interface TabItem {
   key: 'style' | 'common'
   label: string

@@ -131,6 +131,15 @@ import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Draggable from 'vuedraggable'
+import {
+  InputNumber,
+  Divider,
+  Button,
+  Tooltip,
+  Popover,
+  Select,
+} from 'ant-design-vue'
+const SelectOption = Select.Option
 
 const animationEffects: { [key: string]: string } = {}
 for (const effect of ENTER_ANIMATIONS) {

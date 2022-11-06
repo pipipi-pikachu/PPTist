@@ -40,6 +40,13 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
+import {
+  Button,
+  Slider,
+  Radio,
+} from 'ant-design-vue'
+const { Group: RadioGroup, Button: RadioButton } = Radio
+
 const emit = defineEmits<{
   (event: 'close'): void
 }>()

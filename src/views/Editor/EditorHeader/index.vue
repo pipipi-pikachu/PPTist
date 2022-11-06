@@ -90,6 +90,14 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useExport from '@/hooks/useExport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
+import FileInput from '@/components/FileInput.vue'
+import {
+  Tooltip,
+  Dropdown,
+  Menu,
+  Drawer,
+} from 'ant-design-vue'
+const MenuItem = Menu.Item
 
 const mainStore = useMainStore()
 const { gridLineSize, showRuler, showSelectPanel } = storeToRefs(mainStore)

@@ -23,6 +23,8 @@ import { useSlidesStore } from '@/store'
 import { TurningMode } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import { Button } from 'ant-design-vue'
+
 interface Animations {
   label: string
   value: TurningMode

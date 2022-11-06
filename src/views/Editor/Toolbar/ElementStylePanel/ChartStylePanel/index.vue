@@ -162,6 +162,18 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementOutline from '../../common/ElementOutline.vue'
 import ColorButton from '../../common/ColorButton.vue'
 import ChartDataEditor from './ChartDataEditor.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  Divider,
+  Button,
+  Tooltip,
+  Popover,
+  Select,
+  Modal,
+  Checkbox,
+} from 'ant-design-vue'
+const ButtonGroup = Button.Group
+const SelectOption = Select.Option
 
 const presetChartThemes = [
   ['#d87c7c', '#919e8b', '#d7ab82', '#6e7074', '#61a0a8', '#efa18d'],

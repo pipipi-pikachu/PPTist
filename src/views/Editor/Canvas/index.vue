@@ -133,6 +133,7 @@ import ElementCreateSelection from './ElementCreateSelection.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
+import { Modal } from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const {

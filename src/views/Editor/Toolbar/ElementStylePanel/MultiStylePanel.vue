@@ -150,6 +150,21 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  InputNumber,
+  Divider,
+  Button,
+  Tooltip,
+  Popover,
+  Select,
+  Radio,
+  Input,
+} from 'ant-design-vue'
+const { Button: RadioButton, Group: RadioGroup } = Radio
+const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
+const InputGroup = Input.Group
+const ButtonGroup = Button.Group
 
 const slidesStore = useSlidesStore()
 const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())

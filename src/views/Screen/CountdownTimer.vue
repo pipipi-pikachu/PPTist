@@ -45,6 +45,8 @@
 import { computed, onUnmounted, ref } from 'vue'
 import { fillDigit } from '@/utils/common'
 
+import MoveablePanel from '@/components/MoveablePanel.vue'
+
 defineProps({
   left: {
     type: Number,

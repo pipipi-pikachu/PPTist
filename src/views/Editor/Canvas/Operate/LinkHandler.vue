@@ -17,6 +17,8 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement, PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
+import { Divider } from 'ant-design-vue'
+
 const props = defineProps({
   elementInfo: {
     type: Object as PropType<PPTElement>,

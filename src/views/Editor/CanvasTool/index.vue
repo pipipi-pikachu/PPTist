@@ -133,6 +133,12 @@ import ChartPool from './ChartPool.vue'
 import TableGenerator from './TableGenerator.vue'
 import MediaInput from './MediaInput.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
+import FileInput from '@/components/FileInput.vue'
+import {
+  Tooltip,
+  Popover,
+  Modal,
+} from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const { creatingElement } = storeToRefs(mainStore)

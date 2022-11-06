@@ -25,8 +25,9 @@ import useLoadSlides from '@/hooks/useLoadSlides'
 import { Mode } from '@/types/mobile'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import { Divider } from 'ant-design-vue'
 
-const props = defineProps({
+defineProps({
   changeMode: {
     type: Function as PropType<(mode: Mode) => void>,
     required: true,

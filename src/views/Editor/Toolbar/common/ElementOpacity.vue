@@ -20,6 +20,8 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import { Slider } from 'ant-design-vue'
+
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

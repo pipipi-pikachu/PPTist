@@ -206,9 +206,19 @@ import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useSlideTheme from '@/hooks/useSlideTheme'
+import { getImageDataURL } from '@/utils/image'
 
 import ColorButton from './common/ColorButton.vue'
-import { getImageDataURL } from '@/utils/image'
+import FileInput from '@/components/FileInput.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import {
+  Divider,
+  Button,
+  Popover,
+  Slider,
+  Select,
+} from 'ant-design-vue'
+const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 
 const slidesStore = useSlidesStore()
 const { availableFonts } = storeToRefs(useMainStore())

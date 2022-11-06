@@ -43,6 +43,13 @@ import useAlignActiveElement from '@/hooks/useAlignActiveElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useUniformDisplayElement from '@/hooks/useUniformDisplayElement'
 
+import {
+  Divider,
+  Button,
+  Tooltip,
+} from 'ant-design-vue'
+const ButtonGroup = Button.Group
+
 const { canCombine, combineElements, uncombineElements } = useCombineElement()
 const { alignActiveElement } = useAlignActiveElement()
 const { alignElementToCanvas } = useAlignElementToCanvas()

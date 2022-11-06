@@ -50,6 +50,12 @@ import { PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import {
+  Button,
+  Select,
+  Input,
+} from 'ant-design-vue'
+const SelectOption = Select.Option
 
 type TypeKey = 'web' | 'slide'
 interface TabItem {

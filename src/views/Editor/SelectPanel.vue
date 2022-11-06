@@ -85,6 +85,9 @@ import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import { ElementOrderCommands } from '@/types/edit'
 
+import MoveablePanel from '@/components/MoveablePanel.vue'
+import { Button, Input } from 'ant-design-vue'
+
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
 const { currentSlide } = storeToRefs(slidesStore)

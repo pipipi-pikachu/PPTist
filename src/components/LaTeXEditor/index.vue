@@ -73,7 +73,12 @@ import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex'
 import FormulaContent from './FormulaContent.vue'
 import SymbolContent from './SymbolContent.vue'
 
-import { message } from 'ant-design-vue'
+import {
+  Button,
+  Input,
+  message,
+} from 'ant-design-vue'
+const TextArea = Input.TextArea
 
 interface Tab {
   label: string

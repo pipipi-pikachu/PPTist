@@ -73,6 +73,13 @@ import ElementShadow from '../common/ElementShadow.vue'
 import ElementFlip from '../common/ElementFlip.vue'
 import ElementFilter from '../common/ElementFilter.vue'
 import ElementColorMask from '../common/ElementColorMask.vue'
+import FileInput from '@/components/FileInput.vue'
+import {
+  Divider,
+  Button,
+  Popover,
+} from 'ant-design-vue'
+const ButtonGroup = Button.Group
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [

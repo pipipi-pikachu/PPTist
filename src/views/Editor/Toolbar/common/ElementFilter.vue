@@ -32,6 +32,8 @@ import { useMainStore, useSlidesStore } from '@/store'
 import { PPTImageElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import { Slider, Switch } from 'ant-design-vue'
+
 interface FilterOption {
   label: string
   key: string
