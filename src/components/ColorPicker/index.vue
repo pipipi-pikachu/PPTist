@@ -21,6 +21,9 @@
     <div class="picker-field">
       <EditableInput class="input" :value="color" @colorChange="value => changeColor(value)" />
       <div class="straw" @click="openEyeDropper()"><IconNeedle /></div>
+      <div class="transparent" @click="selectPresetColor('#00000000')">
+        <Checkboard />
+      </div>
     </div>
 
     <div class="picker-presets">
@@ -357,15 +360,41 @@ const customEyeDropper = () => {
   display: flex;
   margin-bottom: 8px;
 
+  .transparent {
+    width: 24px;
+    height: 24px;
+    margin-top: 4px;
+    margin-left: 8px;
+    position: relative;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      width: 26px;
+      height: 2px;
+      position: absolute;
+      top: 11px;
+      left: -1px;
+      transform: rotate(-45deg);
+      background-color: #f00;
+    }
+
+    .checkerboard {
+      background-size: auto;
+    }
+  }
+
   .straw {
     width: 24px;
     height: 24px;
     margin-top: 4px;
-    margin-left: 4px;
+    margin-left: 8px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     font-size: 20px;
+    background-color: #f5f5f5;
+    outline: 1px solid #f1f1f1;
     cursor: pointer;
   }
   .input {
