@@ -1,5 +1,23 @@
 <template>
   <div class="shape-style-panel">
+    <div class="title">
+      <span>点击替换形状</span>
+      <IconDown />
+    </div>
+    <div class="shape-pool">
+      <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
+        <div class="shape-list">
+          <ShapeItemThumbnail 
+            class="shape-item"
+            v-for="(shape, index) in item.children" 
+            :key="index" 
+            :shape="shape"
+            @click="changeShape(shape)"
+          />
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <Select 
         style="flex: 10;" 
@@ -69,6 +87,7 @@
     </template>
 
     <ElementFlip />
+
     <Divider />
 
     <template v-if="handleShapeElement.text?.content">
@@ -245,6 +264,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
+import { ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
@@ -258,6 +278,7 @@ import TextColorButton from '../common/TextColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import ShapeItemThumbnail from '@/views/Editor/CanvasTool/ShapeItemThumbnail.vue'
 import {
   Divider,
   Button,
@@ -326,6 +347,32 @@ const updateFill = (value: string) => {
   updateElement({ fill: value })
 }
 
+// 修改形状
+const changeShape = (shape: ShapePoolItem) => {
+  const { width, height } = handleElement.value as PPTShapeElement
+  const props: Partial<PPTShapeElement> = {
+    viewBox: shape.viewBox,
+    path: shape.path,
+    special: shape.special,
+  }
+  if (shape.pathFormula) {
+    props.pathFormula = shape.pathFormula
+    props.viewBox = [width, height]
+
+    const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
+    if ('editable' in pathFormula) {
+      props.path = pathFormula.formula(width, height, pathFormula.defaultValue)
+      props.keypoint = pathFormula.defaultValue
+    }
+    else props.path = pathFormula.formula(width, height)
+  }
+  else {
+    props.pathFormula = undefined
+    props.keypoint = undefined
+  }
+  updateElement(props)
+}
+
 const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
   const _handleElement = handleElement.value as PPTShapeElement
   
@@ -365,5 +412,29 @@ const emitRichTextCommand = (command: string, value?: string) => {
 }
 .slider {
   flex: 3;
+}
+.title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.shape-pool {
+  width: 235px;
+  height: 190px;
+  overflow: auto;
+  padding: 5px;
+  padding-right: 10px;
+  border: 1px solid $borderColor;
+  margin-bottom: 20px;
+}
+.shape-list {
+  @include flex-grid-layout();
+}
+.shape-item {
+  @include flex-grid-layout-children(6, 14%);
+
+  height: 0;
+  padding-bottom: 14%;
+  flex-shrink: 0;
 }
 </style>
