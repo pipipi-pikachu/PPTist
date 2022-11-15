@@ -331,4 +331,18 @@ const drawLine = (line: LinePoolItem) => {
     margin-top: 3px;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .text {
+    display: none;
+  }
+  .handler-item {
+    margin: 0 5px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .left-handler, .right-handler {
+    display: none;
+  }
+}
 </style>

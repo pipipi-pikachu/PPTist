@@ -408,7 +408,7 @@ const updateViewportRatio = (value: number) => {
     border-radius: $borderRadius;
 
     &:hover {
-      background-color: #c42f19;
+      background-color: $themeHoverColor;
     }
 
     & + .btn {
