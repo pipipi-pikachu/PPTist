@@ -96,7 +96,15 @@ const paragraph: NodeSpec = {
       
         return { align, indent }
       }
-    }
+    },
+    {
+      tag: 'img',
+      ignore: true,
+    },
+    {
+      tag: 'pre',
+      skip: true,
+    },
   ],
   toDOM: (node: Node) => {
     const { align, indent } = node.attrs
