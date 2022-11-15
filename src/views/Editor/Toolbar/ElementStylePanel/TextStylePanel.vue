@@ -14,6 +14,7 @@
     
     <InputGroup compact class="row">
       <Select
+        class="font-select"
         style="flex: 3;"
         :value="richTextAttrs.fontname"
         @change="value => emitRichTextCommand('fontname', value as string)"
@@ -559,6 +560,9 @@ const updateLink = (link?: string) => {
   &:nth-child(n+3) {
     margin-top: -1px;
   }
+}
+.font-select {
+  max-width: 50%;
 }
 .font-size-btn {
   padding: 0;

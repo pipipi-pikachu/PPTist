@@ -93,6 +93,7 @@
     <template v-if="handleShapeElement.text?.content">
       <InputGroup compact class="row">
         <Select
+          class="font-select"
           style="flex: 3;"
           :value="richTextAttrs.fontname"
           @change="value => emitRichTextCommand('fontname', value as string)"
@@ -406,6 +407,9 @@ const emitRichTextCommand = (command: string, value?: string) => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+.font-select {
+  max-width: 50%;
 }
 .font-size-btn {
   padding: 0;
