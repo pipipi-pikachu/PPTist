@@ -1,40 +1,7 @@
-@font-face {
-  font-family: '仓耳小丸子';
-  src: url(../fonts/仓耳小丸子.ttf);
-}
-@font-face {
-  font-family: '优设标题黑';
-  src: url(../fonts/优设标题黑.ttf);
-}
-@font-face {
-  font-family: '峰广明锐体';
-  src: url(../fonts/峰广明锐体.ttf);
-}
-@font-face {
-  font-family: '摄图摩登小方体';
-  src: url(../fonts/摄图摩登小方体.ttf);
-}
-@font-face {
-  font-family: '站酷快乐体';
-  src: url(../fonts/站酷快乐体.ttf);
-}
-@font-face {
-  font-family: '字制区喜脉体';
-  src: url(../fonts/字制区喜脉体.ttf);
-}
-@font-face {
-  font-family: '素材集市康康体';
-  src: url(../fonts/素材集市康康体.ttf);
-}
-@font-face {
-  font-family: '素材集市酷方体';
-  src: url(../fonts/素材集市酷方体.ttf);
-}
-@font-face {
-  font-family: '途牛类圆体';
-  src: url(../fonts/途牛类圆体.ttf);
-}
-@font-face {
-  font-family: '锐字真言体';
-  src: url(../fonts/锐字真言体.ttf);
+@each $font in $font-list {
+  @font-face {
+    font-display: swap;
+    font-family: $font;
+    src: url('../fonts/#{$font}.woff2') format('woff2'), url('../fonts/#{$font}.ttf') format('truetype');
+  }
 }

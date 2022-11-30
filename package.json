@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:fonts": "node scripts/build-fonts"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.0",
@@ -74,6 +75,7 @@
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-webpack-plugin": "^2.1.1",
+    "ttf2woff2": "^4.0.5",
     "typescript": "^4.4.4"
   },
   "husky": {
