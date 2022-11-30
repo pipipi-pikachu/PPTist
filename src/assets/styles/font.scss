@@ -1,4 +1,4 @@
-@each $font in $font-list {
+@each $font in $fontList {
   @font-face {
     font-display: swap;
     font-family: $font;

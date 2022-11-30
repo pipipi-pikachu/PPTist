@@ -4,9 +4,9 @@ const path = require('path')
 const assetsPath = path.join(__dirname, '../src/assets')
 const scssVariablePath = path.join(assetsPath, 'styles/variable.scss')
 const fontsPath = path.join(assetsPath, 'fonts')
-const scssFontListVar = '$font-list'
+const scssFontListVar = '$fontList'
 
-// scss 文件中 $font-list 变量替换
+// scss 文件中 $fontList 变量替换
 const replaceSCSSFile = (names) => {
   fs.readFile(scssVariablePath, 'utf-8', (errs, content) => {
     if (errs) {
