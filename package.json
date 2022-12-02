@@ -75,7 +75,6 @@
     "stylelint": "^13.8.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-webpack-plugin": "^2.1.1",
-    "ttf2woff2": "^4.0.5",
     "typescript": "^4.4.4"
   },
   "husky": {
