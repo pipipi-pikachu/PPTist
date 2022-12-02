@@ -30,6 +30,7 @@ export const SYS_FONTS = [
 ]
 
 export const WEB_FONTS = [
+  { label: '得意黑', value: '得意黑' },
   { label: '仓耳小丸子', value: '仓耳小丸子' },
   { label: '优设标题黑', value: '优设标题黑' },
   { label: '峰广明锐体', value: '峰广明锐体' },

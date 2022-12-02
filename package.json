@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build:fonts": "node scripts/build-fonts"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.0",
