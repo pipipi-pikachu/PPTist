@@ -408,8 +408,7 @@ const customEyeDropper = () => {
 .picker-presets-color {
   @include flex-grid-layout-children(10, 7%);
 
-  height: 0;
-  padding-bottom: 7%;
+  height: 16px;
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
