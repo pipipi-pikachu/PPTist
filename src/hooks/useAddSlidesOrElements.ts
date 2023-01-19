@@ -4,6 +4,8 @@ import { useSlidesStore, useMainStore } from '@/store'
 import { PPTElement, Slide } from '@/types/slides'
 import { createSlideIdMap, createElementIdMap } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import {encrypt} from '@/utils/crypto'
+import {copyText} from '@/utils/clipboard'
 
 export default () => {
   const mainStore = useMainStore()
@@ -32,6 +34,15 @@ export default () => {
 
       if (element.groupId) element.groupId = groupIdMap[element.groupId]
     }
+    // 替换粘贴板中内容为本次已粘贴的内容
+    const text = encrypt(JSON.stringify({
+      type: 'elements',
+      data: elements,
+    }))
+
+    copyText(text).then(() => {
+      mainStore.setEditorareaFocus(true)
+    })
     slidesStore.addElement(elements)
     mainStore.setActiveElementIdList(Object.values(elIdMap))
     addHistorySnapshot()
@@ -49,7 +60,7 @@ export default () => {
       for (const element of slide.elements) {
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
-		
+
         // 若元素绑定了页面跳转链接
         if (element.link && element.link.type === 'slide') {
 
