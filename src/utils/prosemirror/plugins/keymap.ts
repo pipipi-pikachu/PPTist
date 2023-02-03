@@ -8,6 +8,8 @@ import {
   selectParentNode,
   joinUp,
   joinDown,
+  chainCommands,
+  splitBlockKeepMarks,
 } from 'prosemirror-commands'
 
 export const buildKeymap = (schema: Schema) => {
@@ -24,8 +26,7 @@ export const buildKeymap = (schema: Schema) => {
   bind('Ctrl-i', toggleMark(schema.marks.em))
   bind('Ctrl-u', toggleMark(schema.marks.underline))
   bind('Ctrl-d', toggleMark(schema.marks.strikethrough))
-
-  bind('Enter', splitListItem(schema.nodes.list_item))
+  bind('Enter', chainCommands(splitListItem(schema.nodes.list_item), splitBlockKeepMarks))
   bind('Mod-[', liftListItem(schema.nodes.list_item))
   bind('Mod-]', sinkListItem(schema.nodes.list_item))
 
