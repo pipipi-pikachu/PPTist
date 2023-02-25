@@ -76,7 +76,7 @@ module.exports = {
     workboxOptions: {
       runtimeCaching: [{
         urlPattern: /.*/,
-        handler: 'networkFirst',
+        handler: 'NetworkFirst',
         options: {
           cacheName: 'PPTist',
           expiration: {
