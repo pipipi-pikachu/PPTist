@@ -52,15 +52,17 @@
     
     <Divider />
 
-    <Draggable 
+    <Sortable 
       class="animation-sequence"
-      :modelValue="animationSequence"
-      :animation="300"
-      :scroll="true"
-      :scrollSensitivity="50"
-      handle=".sequence-content"
-      @end="handleDragEnd"
+      :list="animationSequence"
+      :options="{
+        animation: 200,
+        scroll: true,
+        scrollSensitivity: 50,
+        handle: '.sequence-content',
+      }"
       itemKey="id"
+      @end="handleDragEnd"
     >
       <template #item="{ element }">
         <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
@@ -109,7 +111,7 @@
           </div>
         </div>
       </template>
-    </Draggable>
+    </Sortable>
   </div>
 </template>
 
@@ -130,7 +132,8 @@ import {
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import Draggable from 'vuedraggable'
+import { SortableEvent } from 'sortablejs'
+import Sortable from '@/components/Sortable.vue'
 import {
   InputNumber,
   Divider,
@@ -224,9 +227,9 @@ const deleteAnimation = (id: string) => {
 }
 
 // 拖拽修改动画顺序后同步数据
-const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
+const handleDragEnd = (eventData: SortableEvent) => {
   const { newIndex, oldIndex } = eventData
-  if (oldIndex === newIndex) return
+  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
 
   const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
   const animation = animations[oldIndex]
