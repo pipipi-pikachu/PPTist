@@ -8,6 +8,9 @@
             <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
               <MenuItem>导入 pptist 文件</MenuItem>
             </FileInput>
+            <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => importPPTXFile(files)">
+              <MenuItem>导入 pptx 文件（demo）</MenuItem>
+            </FileInput>
             <MenuItem @click="setDialogForExport('pptx')">导出文件</MenuItem>
           </Menu>
         </template>
@@ -83,7 +86,7 @@ import { useMainStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useExport from '@/hooks/useExport'
+import useImport from '@/hooks/useImport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 import FileInput from '@/components/FileInput.vue'
@@ -101,7 +104,7 @@ const { gridLineSize, showRuler, showSelectPanel } = storeToRefs(mainStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
 const { redo, undo } = useHistorySnapshot()
-const { importSpecificFile } = useExport()
+const { importSpecificFile, importPPTXFile } = useImport()
 
 const setDialogForExport = mainStore.setDialogForExport
 

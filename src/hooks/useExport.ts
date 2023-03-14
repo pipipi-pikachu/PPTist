@@ -10,10 +10,9 @@ import { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/ty
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { AST, toAST } from '@/utils/htmlParser'
 import { SvgPoints, toPoints } from '@/utils/svgPathParser'
-import { decrypt, encrypt } from '@/utils/crypto'
+import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
 import { message } from 'ant-design-vue'
-import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 const INCH_PX_RATIO = 100
 const PT_PX_RATIO = 0.75
@@ -27,8 +26,6 @@ interface ExportImageConfig {
 export default () => {
   const slidesStore = useSlidesStore()
   const { slides, theme, viewportRatio } = storeToRefs(slidesStore)
-
-  const { addSlidesFromData } = useAddSlidesOrElements()
 
   const exporting = ref(false)
 
@@ -62,24 +59,6 @@ export default () => {
   const exportSpecificFile = (_slides: Slide[]) => {
     const blob = new Blob([encrypt(JSON.stringify(_slides))], { type: '' })
     saveAs(blob, 'pptist_slides.pptist')
-  }
-  
-  // 导入pptist文件
-  const importSpecificFile = (files: FileList, cover = false) => {
-    const file = files[0]
-
-    const reader = new FileReader()
-    reader.addEventListener('load', () => {
-      try {
-        const slides = JSON.parse(decrypt(reader.result as string))
-        if (cover) slidesStore.setSlides(slides)
-        else addSlidesFromData(slides)
-      }
-      catch {
-        message.error('无法正确读取 / 解析该文件')
-      }
-    })
-    reader.readAsText(file)
   }
   
   // 导出JSON文件
@@ -778,7 +757,6 @@ export default () => {
     exporting,
     exportImage,
     exportJSON,
-    importSpecificFile,
     exportSpecificFile,
     exportPPTX,
   }

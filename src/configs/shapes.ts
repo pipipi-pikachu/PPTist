@@ -10,6 +10,7 @@ export interface ShapePoolItem {
   special?: boolean
   pathFormula?: ShapePathFormulasKeys
   outlined?: boolean
+  pptxShapeType?: string
 }
 
 interface ShapeListItem {
@@ -228,47 +229,56 @@ export const SHAPE_LIST: ShapeListItem[] = [
     children: [
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z'
+        path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
+        pptxShapeType: 'rect',
       },
       {
         viewBox: [200, 200],
         path: 'M 50 0 L 150 0 Q 200 0 200 50 L 200 150 Q 200 200 150 200 L 50 200 Q 0 200 0 150 L 0 50 Q 0 0 50 0 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT,
+        pptxShapeType: 'roundRect',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 200 L 0 0 L 150 0 L 200 50 L 200 200 Z',
         pathFormula: ShapePathFormulasKeys.CUT_RECT_SINGLE,
+        pptxShapeType: 'snip1Rect',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 50 L 50 0 L 150 0 L 200 50 L 200 200 L 0 200 Z',
         pathFormula: ShapePathFormulasKeys.CUT_RECT_SAMESIDE,
+        pptxShapeType: 'snip2SameRect',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 150 L 0 0 L 150 0 L 200 50 L 200 200 L 50 200 Z',
         pathFormula: ShapePathFormulasKeys.CUT_RECT_DIAGONAL,
+        pptxShapeType: 'snip2DiagRect',
       },
       {
         viewBox: [200, 200],
         path: 'M 50 0 L 150 0 L 200 50 L 200 200 L 0 200 L 0 50 Q 0 0 50 0 Z',
         pathFormula: ShapePathFormulasKeys.CUT_ROUND_RECT,
+        pptxShapeType: 'snipRoundRect',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 L 0 0 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_SINGLE,
+        pptxShapeType: 'round1Rect',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 50 Q 0 0 50 0 L 150 0 Q 200 0 200 50 L 200 200 L 0 200 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_SAMESIDE,
+        pptxShapeType: 'round2SameRect',
       },
       {
         viewBox: [200, 200],
         path: 'M 50 0 L 200 0 L 200 150 Q 200 200 150 200 L 0 200 L 0 50 Q 0 0 50 0 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
+        pptxShapeType: 'round2DiagRect',
       },
     ]
   },
@@ -278,12 +288,14 @@ export const SHAPE_LIST: ShapeListItem[] = [
     children: [
       {
         viewBox: [200, 200],
-        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z'
+        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z',
+        pptxShapeType: 'ellipse',
       },
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 0 200 L 200 200 L 100 0 Z',
         pathFormula: ShapePathFormulasKeys.TRIANGLE,
+        pptxShapeType: 'triangle',
       },
       {
         viewBox: [200, 200],
@@ -297,6 +309,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
         viewBox: [200, 200],
         path: 'M 50 0 L 200 0 L 150 200 L 0 200 L 50 0 Z',
         pathFormula: ShapePathFormulasKeys.PARALLELOGRAM_LEFT,
+        pptxShapeType: 'parallelogram',
       },
       {
         viewBox: [200, 200],
@@ -307,10 +320,12 @@ export const SHAPE_LIST: ShapeListItem[] = [
         viewBox: [200, 200],
         path: 'M 50 0 L 150 0 L 200 200 L 0 200 L 50 0 Z',
         pathFormula: ShapePathFormulasKeys.TRAPEZOID,
+        pptxShapeType: 'trapezoid',
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 100 L 100 200 L 200 100 L 100 0 Z'
+        path: 'M 100 0 L 0 100 L 100 200 L 200 100 L 100 0 Z',
+        pptxShapeType: 'diamond',
       },
       {
         viewBox: [200, 200],
@@ -340,7 +355,8 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 100 L 100 0 Z'
+        path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 100 L 100 0 Z',
+        pptxShapeType: 'pie',
       },
       {
         viewBox: [200, 200],
@@ -348,11 +364,13 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 0 Z'
+        path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 0 Z',
+        pptxShapeType: 'chord',
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 A 100 100 102 1 0 200 100 L 200 0 L 100 0 Z'
+        path: 'M 100 0 A 100 100 102 1 0 200 100 L 200 0 L 100 0 Z',
+        pptxShapeType: 'teardrop',
       },
       {
         viewBox: [200, 200],
@@ -360,7 +378,13 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 90 L 50 200 L 150 200 L 200 90 L 100 0 Z'
+        path: 'M 100 0 L 0 90 L 50 200 L 150 200 L 200 90 L 100 0 Z',
+        pptxShapeType: 'pentagon',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 40 0 L 160 0 L 200 100 L 160 200 L 40 200 L 0 100 Z',
+        pptxShapeType: 'hexagon',
       },
       {
         viewBox: [200, 200],
@@ -368,7 +392,8 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 60 0 L 140 0 L 200 60 L 200 140 L 140 200 L 60 200 L 0 140 L 0 60 L 60 0 Z'
+        path: 'M 60 0 L 140 0 L 200 60 L 200 140 L 140 200 L 60 200 L 0 140 L 0 60 L 60 0 Z',
+        pptxShapeType: 'octagon',
       },
       {
         viewBox: [200, 200],
@@ -462,6 +487,13 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 120 80 L 200 100 L 120 120 L 100 200 L 80 120 L 0 100 L 80 80 L 100 0 Z',
+        pptxShapeType: 'star4',
+      },
+      {
+        viewBox: [1024, 1024],
+        path: 'M1018.67652554 400.05983681l-382.95318779-5.89158658L512 34.78141155 388.27666225 394.16825023l-382.95318779 5.89158658L311.68602415 629.83174977l-117.83174978 365.27842665 312.25413766-223.88032637 312.25413904 223.88032637-117.83175116-365.27842665 318.14572563-229.77191296z',
+        pptxShapeType: 'star5',
+        special: true,
       },
       {
         viewBox: [200, 200],
@@ -470,6 +502,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 140 60 L 200 60 L 160 100 L 200 140 L 140 140 L 100 200 L 60 140 L 0 140 L 40 100 L 0 60 L 60 60 L 100 0 Z',
+        pptxShapeType: 'star6',
       },
       {
         viewBox: [200, 200],
@@ -487,27 +520,33 @@ export const SHAPE_LIST: ShapeListItem[] = [
     children: [
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 100 L 50 100 L 50 200 L 150 200 L 150 100 L 200 100 L 100 0 Z'
+        path: 'M 100 0 L 0 100 L 50 100 L 50 200 L 150 200 L 150 100 L 200 100 L 100 0 Z',
+        pptxShapeType: 'upArrow',
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 200 L 200 100 L 150 100 L 150 0 L 50 0 L 50 100 L 0 100 L 100 200 Z'
+        path: 'M 100 200 L 200 100 L 150 100 L 150 0 L 50 0 L 50 100 L 0 100 L 100 200 Z',
+        pptxShapeType: 'downArrow',
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 100 L 100 0 L 100 50 L 200 50 L 200 150 L 100 150 L 100 200 L 0 100 Z'
+        path: 'M 0 100 L 100 0 L 100 50 L 200 50 L 200 150 L 100 150 L 100 200 L 0 100 Z',
+        pptxShapeType: 'leftArrow',
       },
       {
         viewBox: [200, 200],
-        path: 'M 200 100 L 100 0 L 100 50 L 0 50 L 0 150 L 100 150 L 100 200 L 200 100 Z'
+        path: 'M 200 100 L 100 0 L 100 50 L 0 50 L 0 150 L 100 150 L 100 200 L 200 100 Z',
+        pptxShapeType: 'rightArrow',
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 60 L 60 60 L 60 140 L 0 140 L 100 200 L 200 140 L 140 140 L 140 60 L 200 60 L 100 0 Z'
+        path: 'M 100 0 L 0 60 L 60 60 L 60 140 L 0 140 L 100 200 L 200 140 L 140 140 L 140 60 L 200 60 L 100 0 Z',
+        pptxShapeType: 'upDownArrow',
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 100 L 60 0 L 60 60 L 140 60 L 140 0 L 200 100 L 140 200 L 140 140 L 60 140 L 60 200 L 0 100 Z'
+        path: 'M 0 100 L 60 0 L 60 60 L 140 60 L 140 0 L 200 100 L 140 200 L 140 140 L 60 140 L 60 200 L 0 100 Z',
+        pptxShapeType: 'leftRightArrow',
       },
       {
         viewBox: [200, 200],
@@ -515,11 +554,12 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 100 L 100 0 L 100 50 L 200 50 L 150 100 L 200 150 L 100 150 L 100 200 L 0 100 Z'
+        path: 'M 0 100 L 100 0 L 100 50 L 200 50 L 150 100 L 200 150 L 100 150 L 100 200 L 0 100 Z',
       },
       {
         viewBox: [200, 200],
-        path: 'M 200 100 L 100 0 L 100 50 L 0 50 L 50 100 L 0 150 L 100 150 L 100 200 L 200 100 Z'
+        path: 'M 200 100 L 100 0 L 100 50 L 0 50 L 50 100 L 0 150 L 100 150 L 100 200 L 200 100 Z',
+        pptxShapeType: 'notchedRightArrow',
       },
       {
         viewBox: [200, 200],
@@ -527,19 +567,21 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 200 100 L 120 20 L 120 80 L 80 80 L 80 0 L 0 0 L 0 200 L 80 200 L 80 120 L 120 120 L 120 180 L 200 100 Z'
+        path: 'M 200 100 L 120 20 L 120 80 L 80 80 L 80 0 L 0 0 L 0 200 L 80 200 L 80 120 L 120 120 L 120 180 L 200 100 Z',
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 120 0 L 200 100 L 120 200 L 0 200 L 80 100 L 0 0 Z'
+        path: 'M 0 0 L 120 0 L 200 100 L 120 200 L 0 200 L 80 100 L 0 0 Z',
+        pptxShapeType: 'chevron',
       },
       {
         viewBox: [200, 200],
-        path: 'M 80 0 L 200 0 L 120 100 L 200 200 L 80 200 L 0 100 L 80 0 Z'
+        path: 'M 80 0 L 200 0 L 120 100 L 200 200 L 80 200 L 0 100 L 80 0 Z',
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 140 0 L 200 100 L 140 200 L 0 200 L 0 100 L 0 0 Z'
+        path: 'M 0 0 L 140 0 L 200 100 L 140 200 L 0 200 L 0 100 L 0 0 Z',
+        pptxShapeType: 'homePlate',
       },
       {
         viewBox: [200, 200],
