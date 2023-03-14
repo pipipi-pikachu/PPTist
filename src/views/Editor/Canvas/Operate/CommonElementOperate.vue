@@ -72,5 +72,5 @@ const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
-const cannotRotate = computed(() => ['video', 'audio'].includes(props.elementInfo.type))
+const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type))
 </script>
