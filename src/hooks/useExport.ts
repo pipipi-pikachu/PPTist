@@ -516,6 +516,7 @@ export default () => {
             if (el.flipV) options.flipV = el.flipV
             if (el.shadow) options.shadow = getShadowOption(el.shadow)
             if (el.outline?.width) options.line = getOutlineOption(el.outline)
+            if (el.rotate) options.rotate = el.rotate
             if (el.link) {
               const linkOption = getLinkOption(el.link)
               if (linkOption) options.hyperlink = linkOption
