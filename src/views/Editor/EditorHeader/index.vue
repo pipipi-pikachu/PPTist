@@ -76,6 +76,8 @@
     >
       <HotkeyDoc />
     </Drawer>
+
+    <FullscreenSpin :loading="exporting" tip="正在导入..." />
   </div>
 </template>
 
@@ -90,6 +92,7 @@ import useImport from '@/hooks/useImport'
 
 import HotkeyDoc from './HotkeyDoc.vue'
 import FileInput from '@/components/FileInput.vue'
+import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import {
   Tooltip,
   Dropdown,
@@ -104,7 +107,7 @@ const { gridLineSize, showRuler, showSelectPanel } = storeToRefs(mainStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { createSlide, deleteSlide, resetSlides } = useSlideHandler()
 const { redo, undo } = useHistorySnapshot()
-const { importSpecificFile, importPPTXFile } = useImport()
+const { importSpecificFile, importPPTXFile, exporting } = useImport()
 
 const setDialogForExport = mainStore.setDialogForExport
 

@@ -52,6 +52,7 @@
 // select
 .ant-select {
   user-select: none;
+  overflow: hidden;
 }
 .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background-color: rgba($color: $themeColor, $alpha: .2);
