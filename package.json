@@ -38,11 +38,11 @@
     "prosemirror-state": "^1.4.1",
     "prosemirror-view": "^1.27.2",
     "register-service-worker": "^1.7.2",
-    "sortablejs": "^1.15.0",
     "svg-arc-to-cubic-bezier": "^3.2.0",
     "svg-pathdata": "^6.0.0",
     "tinycolor2": "^1.6.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.4",

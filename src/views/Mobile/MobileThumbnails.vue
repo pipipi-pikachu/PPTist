@@ -1,15 +1,13 @@
 <template>
   <div class="mobile-thumbnails">
-    <Sortable 
+    <Draggable 
       class="thumbnail-list"
-      :list="slides"
-      :options="{
-        animation: 200,
-        scroll: true,
-        scrollSensitivity: 50,
-        delayOnTouchOnly: true,
-        delay: 800,
-      }"
+      :modelValue="slides"
+      :animation="200"
+      :scroll="true"
+      :scrollSensitivity="50"
+      :delayOnTouchOnly="true"
+      :delay="800"
       itemKey="id"
       @end="handleDragEnd"
     >
@@ -23,7 +21,7 @@
           <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
         </div>
       </template>
-    </Sortable>
+    </Draggable>
   </div>
 </template>
 
@@ -33,8 +31,7 @@ import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
 import useSlideHandler from '@/hooks/useSlideHandler'
 
-import { SortableEvent } from 'sortablejs'
-import Sortable from '@/components/Sortable.vue'
+import Draggable from 'vuedraggable'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 const slidesStore = useSlidesStore()
@@ -48,7 +45,7 @@ const changeSlideIndex = (index: number) => {
 }
 
 // 拖拽调整顺序后进行数据的同步
-const handleDragEnd = (eventData: SortableEvent) => {
+const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
   if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
   sortSlides(newIndex, oldIndex)

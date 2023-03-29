@@ -15,14 +15,12 @@
       </Popover>
     </div>
 
-    <Sortable 
+    <Draggable 
       class="thumbnail-list"
-      :list="slides"
-      :options="{
-        animation: 200,
-        scroll: true,
-        scrollSensitivity: 50,
-      }"
+      :modelValue="slides"
+      :animation="200"
+      :scroll="true"
+      :scrollSensitivity="50"
       @end="handleDragEnd"
       itemKey="id"
     >
@@ -40,7 +38,7 @@
           <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
         </div>
       </template>
-    </Sortable>
+    </Draggable>
 
     <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
   </div>
@@ -56,10 +54,9 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
-import { SortableEvent } from 'sortablejs'
-import Sortable from '@/components/Sortable.vue'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
+import Draggable from 'vuedraggable'
 import { Popover } from 'ant-design-vue'
 
 const mainStore = useMainStore()
@@ -155,7 +152,7 @@ const setThumbnailsFocus = (focus: boolean) => {
 }
 
 // 拖拽调整顺序后进行数据的同步
-const handleDragEnd = (eventData: SortableEvent) => {
+const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
   if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
   sortSlides(newIndex, oldIndex)

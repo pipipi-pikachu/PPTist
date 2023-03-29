@@ -52,15 +52,13 @@
     
     <Divider />
 
-    <Sortable 
+    <Draggable 
       class="animation-sequence"
-      :list="animationSequence"
-      :options="{
-        animation: 200,
-        scroll: true,
-        scrollSensitivity: 50,
-        handle: '.sequence-content',
-      }"
+      :modelValue="animationSequence"
+      :animation="200"
+      :scroll="true"
+      :scrollSensitivity="50"
+      handle=".sequence-content"
       itemKey="id"
       @end="handleDragEnd"
     >
@@ -111,7 +109,7 @@
           </div>
         </div>
       </template>
-    </Sortable>
+    </Draggable>
   </div>
 </template>
 
@@ -132,8 +130,8 @@ import {
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { SortableEvent } from 'sortablejs'
-import Sortable from '@/components/Sortable.vue'
+
+import Draggable from 'vuedraggable'
 import {
   InputNumber,
   Divider,
@@ -227,7 +225,7 @@ const deleteAnimation = (id: string) => {
 }
 
 // 拖拽修改动画顺序后同步数据
-const handleDragEnd = (eventData: SortableEvent) => {
+const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
   if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
 
