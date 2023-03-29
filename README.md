@@ -198,4 +198,12 @@ npm run serve
 # 📄 开源协议
 [GPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
-闭源商用请先邮件联系作者
+# 🧮 商业用途
+- 如果你希望将本项目商用盈利，我希望你能严格遵循 GPL-3.0 协议；
+- 如果你真的需要闭源商用，无法执行 GPL-3.0 协议，可以选择：
+    1. 使用 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
+    2. 成为项目的贡献者，大致包括：
+        - 你的代码被本项目作为依赖引用；
+        - 你提交的 PR 被本项目合并（仅限有价值的，不包括简单的错别字或拼写错误修改等）；
+        - 你参与过本项目的设计、实现（也包括对各种功能/模块的实现或Bug的修复提供了有价值的思路）；
+    3. 邮件联系作者付费商用（说心里话，目前项目还不算很成熟，我更建议你走上面的途径）；
