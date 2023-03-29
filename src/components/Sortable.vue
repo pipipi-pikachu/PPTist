@@ -1,13 +1,9 @@
 <template>
-  <div ref="containerRef" :class="$props.class">
-    <slot 
-      v-for="(item, index) in list" 
-      :key="item[props.itemKey]" 
-      :element="item" 
-      :index="index" 
-      name="item"
-    ></slot>
-  </div>
+  <ol ref="containerRef" :class="$props.class">
+    <li v-for="(item, index) in list" :key="item[props.itemKey]">
+      <slot :element="item" :index="index" name="item"></slot>
+    </li>
+  </ol>
 </template>
 
 <script setup lang="ts">
