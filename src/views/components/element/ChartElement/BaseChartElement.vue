@@ -56,7 +56,7 @@ defineProps({
 
 const slideScale = inject(injectKeySlideScale) || ref(1)
 
-const needScaleSize = computed(() => slideScale.value < 1)
+const needScaleSize = computed(() => slideScale.value && slideScale.value < 1)
 const zoom = computed(() => needScaleSize.value ? 1 / slideScale.value : 1)
 </script>
 
