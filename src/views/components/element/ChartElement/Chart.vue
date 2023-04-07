@@ -124,10 +124,10 @@ onMounted(renderChart)
 const themeColors = computed(() => {
   let colors: string[] = []
   if (props.themeColor.length >= 10) colors = props.themeColor
-  else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toHexString())
+  else if (props.themeColor.length === 1) colors = tinycolor(props.themeColor[0]).analogous(10).map(color => color.toRgbString())
   else {
     const len = props.themeColor.length
-    const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
+    const supplement = tinycolor(props.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toRgbString())
     colors = [...props.themeColor.slice(0, len - 1), ...supplement]
   }
   return colors
