@@ -230,12 +230,12 @@ watch(handleElement, () => {
       stackBars: _stackBars,
     } = handleElement.value.options
 
-    if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth as boolean
-    if (_showLine !== undefined) showLine.value = _showLine
-    if (_showArea !== undefined) showArea.value = _showArea
-    if (_horizontalBars !== undefined) horizontalBars.value = _horizontalBars
-    if (_donut !== undefined) donut.value = _donut
-    if (_stackBars !== undefined) stackBars.value = _stackBars
+    lineSmooth.value = !!_lineSmooth
+    showLine.value = !!_showLine
+    showArea.value = !!_showArea
+    horizontalBars.value = !!_horizontalBars
+    donut.value = !!_donut
+    stackBars.value = !!_stackBars
   }
 
   themeColor.value = handleElement.value.themeColor
