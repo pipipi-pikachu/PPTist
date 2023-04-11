@@ -103,11 +103,15 @@ export default () => {
       },
     }
 
-    let options: ChartOptions = {}
-    if (type === 'horizontalBar') options = { horizontalBars: true }
-    else if (type === 'area') options = { showArea: true }
-    else if (type === 'scatter') options = { showLine: false }
-    else if (type === 'ring') options = { donut: true }
+    const options: ChartOptions = {
+      ...(type === 'bar' ? { horizontalBars: false, stackBars: false } : {}),
+      ...(type === 'horizontalBar' ? { horizontalBars: true, stackBars: false } : {}),
+      ...(type === 'line' ? { showLine: true, lineSmooth: true, showArea: false } : {}),
+      ...(type === 'area' ? { showLine: true, lineSmooth: true, showArea: true } : {}),
+      ...(type === 'scatter' ? { showLine: false, lineSmooth: true, showArea: false } : {}),
+      ...(type === 'pie' ? { donut: false } : {}),
+      ...(type === 'ring' ? { donut: true } : {}),
+    }
 
     createElement({
       ...newElement,
