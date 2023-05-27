@@ -1,13 +1,13 @@
 <template>
   <div class="shape-pool">
     <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
-      <div class="category-name">{{item.type}}</div>
+      <div class="category-name">{{t(item.type)}}</div>
       <div class="shape-list">
-        <ShapeItemThumbnail 
+        <ShapeItemThumbnail
           class="shape-item"
-          v-for="(shape, index) in item.children" 
-          :key="index" 
-          :shape="shape" 
+          v-for="(shape, index) in item.children"
+          :key="index"
+          :shape="shape"
           @click="selectShape(shape)"
         />
       </div>
@@ -18,7 +18,9 @@
 <script lang="ts" setup>
 import { SHAPE_LIST, ShapePoolItem } from '@/configs/shapes'
 import ShapeItemThumbnail from './ShapeItemThumbnail.vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const emit = defineEmits<{
   (event: 'select', payload: ShapePoolItem): void
 }>()

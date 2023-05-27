@@ -1,12 +1,12 @@
 <template>
-  <div 
+  <div
     class="thumbnails"
     @mousedown="() => setThumbnailsFocus(true)"
     v-click-outside="() => setThumbnailsFocus(false)"
     v-contextmenu="contextmenusThumbnails"
   >
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
+      <div class="btn" @click="createSlide()"><IconPlus class="icon" />{{t('thumbnails.addSlide')}}</div>
       <Popover trigger="click" placement="bottomLeft" v-model:visible="presetLayoutPopoverVisible">
         <template #content>
           <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
@@ -15,7 +15,7 @@
       </Popover>
     </div>
 
-    <Draggable 
+    <Draggable
       class="thumbnail-list"
       :modelValue="slides"
       :animation="200"
@@ -40,7 +40,7 @@
       </template>
     </Draggable>
 
-    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+    <div class="page-number">{{t('thumbnails.slide')}} {{slideIndex + 1}} / {{slides.length}}</div>
   </div>
 </template>
 
@@ -58,7 +58,9 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
 import Draggable from 'vuedraggable'
 import { Popover } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const keyboardStore = useKeyboardStore()

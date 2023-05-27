@@ -1,22 +1,22 @@
 <template>
   <div class="table-generator">
     <div class="title">
-      <div class="lef">表格 {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
-      <div class="right" @click="isCustom = !isCustom">{{ isCustom ? '返回' : '自定义'}}</div>
+      <div class="left">{{t('tableGenerator.sheet')}} {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
+      <div class="right" @click="isCustom = !isCustom">{{ isCustom ? t('tableGenerator.return') : t('tableGenerator.customize')}}</div>
     </div>
-    <table 
-      @mouseleave="endCell = []" 
-      @click="handleClickTable()" 
+    <table
+      @mouseleave="endCell = []"
+      @click="handleClickTable()"
       v-if="!isCustom"
     >
       <tbody>
         <tr v-for="row in 10" :key="row">
-          <td 
+          <td
             @mouseenter="endCell = [row, col]"
             v-for="col in 10" :key="col"
           >
-            <div 
-              class="cell" 
+            <div
+              class="cell"
               :class="{ 'active': endCell.length && row <= endCell[0] && col <= endCell[1] }"
             ></div>
           </td>
@@ -26,7 +26,7 @@
 
     <div class="custom" v-else>
       <div class="row">
-        <div class="label" style="flex: 1;">行数：</div>
+        <div class="label" style="flex: 1;">{{t('tableGenerator.lines')}}：</div>
         <InputNumber
           :min="1"
           :max="20"
@@ -35,7 +35,7 @@
         />
       </div>
       <div class="row">
-        <div class="label" style="flex: 1;">列数：</div>
+        <div class="label" style="flex: 1;">{{t('tableGenerator.rows')}}：</div>
         <InputNumber
           :min="1"
           :max="20"
@@ -44,8 +44,8 @@
         />
       </div>
       <div class="btns">
-        <Button class="btn" @click="close()">取消</Button>
-        <Button class="btn" type="primary" @click="insertCustomTable()">确认</Button>
+        <Button class="btn" @click="close()">{{t('common.cancel')}}</Button>
+        <Button class="btn" type="primary" @click="insertCustomTable()">{{t('common.confirm')}}</Button>
       </div>
     </div>
   </div>
@@ -58,12 +58,14 @@ import {
   Button,
   message,
 } from 'ant-design-vue'
+import useI18n from '@/hooks/usei18n'
 
 interface InsertData {
   row: number
   col: number
 }
 
+const {t} = useI18n()
 const emit = defineEmits<{
   (event: 'insert', payload: InsertData): void
   (event: 'close'): void

@@ -1,0 +1,96 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "editorHeader": {
+    "file": "File",
+    "importpptist": "Import PPTIST file",
+    "importpptx": "Import PPTX file",
+    "export": "Export file",
+    "edit": "Edit",
+    "undo": "Undo",
+    "redo": "Redo",
+    "createSlide": "Create Slide",
+    "deleteSlide": "Delete Slide",
+    "turnGridOn": "Turn On Grides",
+    "turnGridOff": "Turn Off Grides",
+    "turnRulerOn": "Open Ruler",
+    "turnRulerOff": "Close Ruler",
+    "resetSlides": "Reset Slides",
+    "closeSelectionPanel": "Close selection panel",
+    "openSelectionPanel": "Open selection panel",
+    "showSlides": "Run",
+    "fromStart": "From start",
+    "fromCurrent": "From the current slide",
+    "help": "Help",
+    "feedback": "Feedback",
+    "QA": "Q&A",
+    "hotkey": "HotKeys",
+    "export": "Export",
+    "importing": "Importing"
+  },
+  "thumbnails": {
+    "addSlide": "Add slide",
+    "slide": "Slide"
+  },
+  "canvasTool": {
+    "insertText": "Insert Text",
+    "horizontal": "Horizontally",
+    "vertical": "Vertically",
+    "insertImage": "Insert Image",
+    "insertShape": "Insert Shape",
+    "insertLine": "Insert Line",
+    "insertChart": "Insert Chart",
+    "insertTable": "Insert Table",
+    "insertFormula": "Insert Formula",
+    "insertMedia": "Insert Media",
+    "adaptToScreen": "Adapt to Screen"
+  },
+  "shapes": {
+    "rectangle": "Rectangle",
+    "common": "Common",
+    "arrow": "Arrows",
+    "others": "Others",
+    "linear": "Linear"
+  },
+  "lines": {
+    "straight": "Straight line",
+    "polyline": "Polyline, Curve"
+  },
+  "tableGenerator": {
+    "sheet": "Sheet",
+    "return": "Return",
+    "customize": "Customize",
+    "lines": "Lines",
+    "rows": "Rows"
+  },
+  "latex": {
+    "placeholder": "Enter LaTeX formula",
+    "preview": "Formula preview",
+    "symbols": "Common symbols",
+    "formulas": "Formula presets",
+    "gauss": "Gauss Formula",
+    "fourier": "Fourier series",
+    "taylor": "Taylor series",
+    "definiteIntegral": "Definite integral",
+    "triangleIdentity1": "Triangle identity 1",
+    "triangleIdentity2": "Triangle identity 2",
+    "expansion": "Expansion",
+    "euler": "Euler formula",
+    "bernoulli": "Bernoulli equation",
+    "FDE": "Full differential equation",
+    "inhomogeneous": "Inhomogeneous equation",
+    "cauchy": "Mean value theorem",
+    "lagrange": "Lagrange mean value theorem",
+    "derivative": "Derivative formula",
+    "integral": "Trigonometry integral",
+    "quadratic": "Quadratic surface",
+    "SOD": "Second order differential",
+    "DD": "Directional derivative",
+    "math": "Math",
+    "combination": "Combinations",
+    "function": "Functions",
+    "greek": "Greek"
+  }
+}

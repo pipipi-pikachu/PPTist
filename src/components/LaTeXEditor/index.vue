@@ -3,10 +3,10 @@
     <div class="container">
       <div class="left">
         <div class="input-area">
-          <TextArea v-model:value="latex" placeholder="输入 LaTeX 公式" ref="textAreaRef" />
+          <TextArea v-model:value="latex" :placeholder="t('latex.placeholder')" ref="textAreaRef" />
         </div>
         <div class="preview">
-          <div class="placeholder" v-if="!latex">公式预览</div>
+          <div class="placeholder" v-if="!latex">{{t('latex.preview')}}</div>
           <div class="preview-content" v-else>
             <FormulaContent
               :width="518"
@@ -18,24 +18,24 @@
       </div>
       <div class="right">
         <div class="tabs">
-          <div 
-            class="tab" 
+          <div
+            class="tab"
             :class="{ 'active': tab.value === toolbarState }"
-            v-for="tab in tabs" 
+            v-for="tab in tabs"
             :key="tab.value"
             @click="toolbarState = tab.value"
-          >{{tab.label}}</div>
+          >{{t(tab.label)}}</div>
         </div>
         <div class="content">
           <div class="symbol" v-if="toolbarState === 'symbol'">
             <div class="symbol-tabs">
-              <div 
-                class="symbol-tab" 
-                :class="{ 'active': selectedSymbolKey === group.type }" 
-                v-for="group in symbolList" 
+              <div
+                class="symbol-tab"
+                :class="{ 'active': selectedSymbolKey === group.type }"
+                v-for="group in symbolList"
                 :key="group.type"
                 @click="selectedSymbolKey = group.type"
-              >{{group.label}}</div>
+              >{{t(group.label)}}</div>
             </div>
             <div class="symbol-pool">
               <div class="symbol-item" v-for="item in symbolPool" :key="item.latex" @click="insertSymbol(item.latex)">
@@ -45,7 +45,7 @@
           </div>
           <div class="formula" v-else>
             <div class="formula-item" v-for="item in formulaList" :key="item.label">
-              <div class="formula-title">{{item.label}}</div>
+              <div class="formula-title">{{t(item.label)}}</div>
               <div class="formula-item-content" @click="latex =item.latex">
                 <FormulaContent
                   :width="236"
@@ -59,8 +59,8 @@
       </div>
     </div>
     <div class="footer">
-      <Button class="btn" @click="emit('close')">取消</Button>
-      <Button class="btn" type="primary" @click="update()">确定</Button>
+      <Button class="btn" @click="emit('close')">{{t('common.cancel')}}</Button>
+      <Button class="btn" type="primary" @click="update()">{{t('common.confirm')}}</Button>
     </div>
   </div>
 </template>
@@ -69,6 +69,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { hfmath } from './hfmath'
 import { FORMULA_LIST, SYMBOL_LIST } from '@/configs/latex'
+import usei18n from '@/hooks/usei18n'
 
 import FormulaContent from './FormulaContent.vue'
 import SymbolContent from './SymbolContent.vue'
@@ -78,6 +79,8 @@ import {
   Input,
   message,
 } from 'ant-design-vue'
+
+const {t} = usei18n()
 const TextArea = Input.TextArea
 
 interface Tab {
@@ -86,8 +89,8 @@ interface Tab {
 }
 
 const tabs: Tab[] = [
-  { label: '常用符号', value: 'symbol' },
-  { label: '预置公式', value: 'formula' },
+  { label: 'latex.symbols', value: 'symbol' },
+  { label: 'latex.formulas', value: 'formula' },
 ]
 
 interface LatexResult {
@@ -132,7 +135,7 @@ const update = () => {
   const eq = new hfmath(latex.value)
   const pathd = eq.pathd({})
   const box = eq.box({})
-  
+
   emit('update', {
     latex: latex.value,
     path: pathd,

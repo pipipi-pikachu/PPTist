@@ -1,0 +1,97 @@
+{
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消"
+  },
+  "editorHeader": {
+    "file": "文件",
+    "importpptist": "导入 pptist 文件",
+    "importpptx": "导入 pptx 文件",
+    "export": "导出文件",
+    "edit": "编辑",
+    "undo": "撤销",
+    "redo": "重做",
+    "createSlide": "添加页面",
+    "deleteSlide": "删除页面",
+    "turnGridOn": "打开网格线",
+    "turnGridOff": "关闭网格线",
+    "turnRulerOn": "打开标尺",
+    "turnRulerOff": "关闭标尺",
+    "resetSlides": "重置幻灯片",
+    "closeSelectionPanel": "关闭选择面板",
+    "openSelectionPanel": "打开选择面板",
+    "showSlides": "演示",
+    "fromStart": "从头开始",
+    "fromCurrent": "从当前页开始",
+    "help": "帮助",
+    "feedback": "意见反馈",
+    "QA": "常见问题",
+    "hotkey": "快捷键",
+    "export": "导出",
+    "importing": "正在导入..."
+
+  },
+  "thumbnails": {
+    "addSlide": "添加幻灯片",
+    "slide": "幻灯片"
+  },
+  "canvasTool": {
+    "insertText": "插入文字",
+    "horizontal": "横向文本框",
+    "vertical": "竖向文本框",
+    "insertImage": "插入图片",
+    "insertShape": "插入形状",
+    "insertLine": "插入线条",
+    "insertChart": "插入图表",
+    "insertTable": "插入表格",
+    "insertFormula": "插入公式",
+    "insertMedia": "插入音视频",
+    "adaptToScreen": "适应屏幕"
+  },
+  "shapes": {
+    "rectangle": "矩形",
+    "common": "常用形状",
+    "arrow": "箭头",
+    "others": "其他形状",
+    "linear": "线性"
+  },
+  "lines": {
+    "straight": "直线",
+    "polyline": "折线、曲线"
+  },
+  "tableGenerator": {
+    "sheet": "表格",
+    "return": "返回",
+    "customize": "自定义",
+    "lines": "行数",
+    "rows": "列数"
+  },
+  "latex": {
+    "placeholder": "输入 LaTeX 公式",
+    "preview": "公式预览",
+    "symbols": "常用符号",
+    "formulas": "预置公式",
+    "gauss": "高斯公式",
+    "fourier": "傅里叶级数",
+    "taylor": "泰勒展开式",
+    "definiteIntegral": "定积分",
+    "triangleIdentity1": "三角恒等式1",
+    "triangleIdentity2": "三角恒等式2",
+    "expansion": "和的展开式",
+    "euler": "欧拉公式",
+    "bernoulli": "贝努利方程",
+    "FDE": "全微分方程",
+    "inhomogeneous": "非齐次方程",
+    "cauchy": "柯西中值定理",
+    "lagrange": "拉格朗日中值定理",
+    "derivative": "导数公式",
+    "integral": "三角函数积分",
+    "quadratic": "二次曲面",
+    "SOD": "二阶微分",
+    "DD": "方向导数",
+    "math": "数学",
+    "combination": "组合",
+    "function": "函数",
+    "greek": "希腊字母"
+  }
+}
