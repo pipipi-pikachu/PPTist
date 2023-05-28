@@ -1,18 +1,18 @@
 <template>
   <div class="slide-animation-panel">
     <div class="animation-pool">
-      <div 
-        class="animation-item" 
-        :class="{ 'active': currentTurningMode === item.value }" 
-        v-for="item in animations" 
+      <div
+        class="animation-item"
+        :class="{ 'active': currentTurningMode === item.value }"
+        v-for="item in animations"
         :key="item.label"
         @click="updateTurningMode(item.value)"
       >
         <div :class="['animation-block', item.value]"></div>
-        <div class="animation-text">{{item.label}}</div>
+        <div class="animation-text">{{t(item.label)}}</div>
       </div>
     </div>
-    <Button style="width: 100%;" @click="applyAllSlide()">应用到全部</Button>
+    <Button style="width: 100%;" @click="applyAllSlide()">{{t('slideAnimation.apply')}}</Button>
   </div>
 </template>
 
@@ -24,22 +24,24 @@ import { TurningMode } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Button } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
 interface Animations {
   label: string
   value: TurningMode
 }
 
+const {t} = usei18n()
 const slidesStore = useSlidesStore()
 const { slides, currentSlide } = storeToRefs(slidesStore)
 
 const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY')
 
 const animations: Animations[] = [
-  { label: '无', value: 'no' },
-  { label: '淡入淡出', value: 'fade' },
-  { label: '左右推移', value: 'slideX' },
-  { label: '上下推移', value: 'slideY' },
+  { label: 'slideAnimation.no', value: 'no' },
+  { label: 'slideAnimation.fade', value: 'fade' },
+  { label: 'slideAnimation.slideX', value: 'slideX' },
+  { label: 'slideAnimation.slideY', value: 'slideY' },
 ]
 
 const { addHistorySnapshot } = useHistorySnapshot()

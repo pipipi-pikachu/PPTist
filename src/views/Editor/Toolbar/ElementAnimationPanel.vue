@@ -1,40 +1,40 @@
 <template>
   <div class="element-animation-panel">
     <div class="element-animation" v-if="handleElement">
-      <Popover 
-        trigger="click" 
-        v-model:visible="animationPoolVisible" 
+      <Popover
+        trigger="click"
+        v-model:visible="animationPoolVisible"
         @visibleChange="visible => handlePopoverVisibleChange(visible)"
       >
         <template #content>
           <div class="tabs">
-            <div 
+            <div
               :class="['tab', tab.key, { 'active': activeTab === tab.key }]"
-              v-for="tab in tabs" 
+              v-for="tab in tabs"
               :key="tab.key"
               @click="activeTab = tab.key"
-            >{{tab.label}}</div>
+            >{{t(tab.label)}}</div>
           </div>
           <template v-for="key in animationTypes">
             <div :class="['animation-pool', key]" :key="key" v-if="activeTab === key">
               <div class="pool-type" :key="effect.name" v-for="effect in animations[key]">
-                <div class="type-title">{{effect.name}}：</div>
+                <div class="type-title">{{t(effect.name)}}：</div>
                 <div class="pool-item-wrapper">
-                  <div 
-                    class="pool-item" 
+                  <div
+                    class="pool-item"
                     v-for="item in effect.children" :key="item.name"
                     @mouseenter="hoverPreviewAnimation = item.value"
                     @mouseleave="hoverPreviewAnimation = ''"
                     @click="addAnimation(key, item.value)"
                   >
-                    <div 
+                    <div
                       class="animation-box"
                       :class="[
                         `${ANIMATION_CLASS_PREFIX}animated`,
                         `${ANIMATION_CLASS_PREFIX}fast`,
                         hoverPreviewAnimation === item.value && `${ANIMATION_CLASS_PREFIX}${item.value}`,
                       ]"
-                    >{{item.name}}</div>
+                    >{{t(item.name)}}</div>
                   </div>
                 </div>
               </div>
@@ -43,16 +43,16 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <IconEffects style="margin-right: 5px;" /> 添加动画
+          <IconEffects style="margin-right: 5px;" /> {{t('elementAnimation.add')}}
         </Button>
       </Popover>
     </div>
 
-    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
-    
+    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> {{t('elementAnimation.tip')}}</div>
+
     <Divider />
 
-    <Draggable 
+    <Draggable
       class="animation-sequence"
       :modelValue="animationSequence"
       :animation="200"
@@ -82,13 +82,13 @@
 
             <div class="config-item">
               <div style="flex: 3;">持续时长：</div>
-              <InputNumber 
+              <InputNumber
                 :min="500"
                 :max="3000"
                 :step="500"
-                :value="element.duration" 
-                @change="value => updateElementAnimationDuration(element.id, value as number)" 
-                style="flex: 5;" 
+                :value="element.duration"
+                @change="value => updateElementAnimationDuration(element.id, value as number)"
+                style="flex: 5;"
               />
             </div>
             <div class="config-item">
@@ -119,7 +119,7 @@ import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTAnimation } from '@/types/slides'
-import { 
+import {
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
   ATTENTION_ANIMATIONS,
@@ -140,6 +140,9 @@ import {
   Popover,
   Select,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const SelectOption = Select.Option
 
 const animationEffects: { [key: string]: string } = {}
@@ -172,9 +175,9 @@ const { handleElement, handleElementId } = storeToRefs(useMainStore())
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
-  { key: 'in', label: '入场' },
-  { key: 'out', label: '退场' },
-  { key: 'attention', label: '强调' },
+  { key: 'in', label: 'elementAnimation.in' },
+  { key: 'out', label: 'elementAnimation.out' },
+  { key: 'attention', label: 'elementAnimation.attention' },
 ]
 const activeTab = ref('in')
 
@@ -233,7 +236,7 @@ const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const animation = animations[oldIndex]
   animations.splice(oldIndex, 1)
   animations.splice(newIndex, 0, animation)
-  
+
   slidesStore.updateSlide({ animations })
   addHistorySnapshot()
 }

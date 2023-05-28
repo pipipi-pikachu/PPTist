@@ -61,7 +61,7 @@
       ></div>
     </div>
 
-    <div class="recent-colors-title" v-if="recentColors.length">最近使用：</div>
+    <div class="recent-colors-title" v-if="recentColors.length">{{t('colorPicker.recentlyUsed')}}：</div>
     <div class="picker-presets">
       <div
         v-for="c in recentColors"
@@ -88,7 +88,9 @@ import Saturation from './Saturation.vue'
 import EditableInput from './EditableInput.vue'
 
 import { message } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const props = defineProps({
   modelValue: {
     type: String,
@@ -291,7 +293,7 @@ const customEyeDropper = () => {
         updateRecentColorsCache()
       }
       document.body.removeChild(maskRef)
-      
+
       canvasRef.removeEventListener('mousemove', handleMousemove)
       canvasRef.removeEventListener('mouseleave', handleMouseleave)
       window.removeEventListener('mousedown', handleMousedown)
@@ -301,7 +303,7 @@ const customEyeDropper = () => {
     canvasRef.addEventListener('mouseleave', handleMouseleave)
     window.addEventListener('mousedown', handleMousedown)
   }).catch(() => {
-    message.error('取色吸管初始化失败')
+    message.error(t('colorPicker.error'))
     document.body.removeChild(maskRef)
   })
 }

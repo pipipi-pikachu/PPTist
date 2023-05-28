@@ -1,15 +1,15 @@
 <template>
   <div class="slide-design-panel">
-    <div class="title">背景填充</div>
+    <div class="title">{{t('slideDesign.title')}}</div>
     <div class="row">
-      <Select 
-        style="flex: 10;" 
-        :value="background.type" 
+      <Select
+        style="flex: 10;"
+        :value="background.type"
         @change="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
       >
-        <SelectOption value="solid">纯色填充</SelectOption>
-        <SelectOption value="image">图片填充</SelectOption>
-        <SelectOption value="gradient">渐变填充</SelectOption>
+        <SelectOption value="solid">{{t('slideDesign.solid')}}</SelectOption>
+        <SelectOption value="image">{{t('slideDesign.image')}}</SelectOption>
+        <SelectOption value="gradient">{{t('slideDesign.gradient')}}</SelectOption>
       </Select>
       <div style="flex: 1;"></div>
 
@@ -23,25 +23,25 @@
         <ColorButton :color="background.color || '#fff'" style="flex: 10;" />
       </Popover>
 
-      <Select 
-        style="flex: 10;" 
-        :value="background.imageSize || 'cover'" 
+      <Select
+        style="flex: 10;"
+        :value="background.imageSize || 'cover'"
         @change="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
         v-else-if="background.type === 'image'"
       >
-        <SelectOption value="contain">缩放</SelectOption>
-        <SelectOption value="repeat">拼贴</SelectOption>
-        <SelectOption value="cover">缩放铺满</SelectOption>
+        <SelectOption value="contain">{{t('slideDesign.contain')}}</SelectOption>
+        <SelectOption value="repeat">{{t('slideDesign.repeat')}}</SelectOption>
+        <SelectOption value="cover">{{t('slideDesign.cover')}}</SelectOption>
       </Select>
 
-      <Select 
-        style="flex: 10;" 
-        :value="background.gradientType" 
+      <Select
+        style="flex: 10;"
+        :value="background.gradientType"
         @change="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
         v-else
       >
-        <SelectOption value="linear">线性渐变</SelectOption>
-        <SelectOption value="radial">径向渐变</SelectOption>
+        <SelectOption value="linear">{{t('slideDesign.linear')}}</SelectOption>
+        <SelectOption value="radial">{{t('slideDesign.radial')}}</SelectOption>
       </Select>
     </div>
 
@@ -57,7 +57,7 @@
 
     <div class="background-gradient-wrapper" v-if="background.type === 'gradient'">
       <div class="row">
-        <div style="flex: 2;">起点颜色：</div>
+        <div style="flex: 2;">{{t('slideDesign.startWith')}}：</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -69,7 +69,7 @@
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">终点颜色：</div>
+        <div style="flex: 2;">{{t('slideDesign.endWith')}}：</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -81,48 +81,48 @@
         </Popover>
       </div>
       <div class="row" v-if="background.gradientType === 'linear'">
-        <div style="flex: 2;">渐变角度：</div>
+        <div style="flex: 2;">{{t('slideDesign.angle')}}：</div>
         <Slider
           class="slider"
           :min="0"
           :max="360"
           :step="15"
           :value="background.gradientRotate"
-          @change="value => updateBackground({ gradientRotate: value as number })" 
+          @change="value => updateBackground({ gradientRotate: value as number })"
         />
       </div>
     </div>
 
-    <div class="row"><Button style="flex: 1;" @click="applyBackgroundAllSlide()">应用背景到全部</Button></div>
+    <div class="row"><Button style="flex: 1;" @click="applyBackgroundAllSlide()">{{t("slideDesign.applyBG")}}</Button></div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">画布尺寸：</div>
+      <div style="flex: 2;">{{t('slideDesign.ratio')}}：</div>
       <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value as number)">
-        <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
-        <SelectOption :value="0.625">宽屏 16 : 10</SelectOption>
-        <SelectOption :value="0.75">标准 4 : 3</SelectOption>
-        <SelectOption :value="0.70710678">纸张 A3 / A4</SelectOption>
+        <SelectOption :value="0.5625">{{t('slideDesign.widescreen')}} 16 : 9</SelectOption>
+        <SelectOption :value="0.625">{{t('slideDesign.widescreen')}} 16 : 10</SelectOption>
+        <SelectOption :value="0.75">{{t('slideDesign.standard')}} 4 : 3</SelectOption>
+        <SelectOption :value="0.70710678">{{t('slideDesign.paper')}} A3 / A4</SelectOption>
       </Select>
     </div>
 
     <Divider />
 
-    <div class="title">全局主题</div>
+    <div class="title">{{t('slideDesign.globalTheme')}}</div>
     <div class="row">
-      <div style="flex: 2;">字体：</div>
+      <div style="flex: 2;">{{t('slideDesign.font')}}：</div>
       <Select
         style="flex: 3;"
         :value="theme.fontName"
         @change="value => updateTheme({ fontName: value as string })"
       >
-        <SelectOptGroup label="系统字体">
+        <SelectOptGroup :label="t('slideDesign.systemFonts')">
           <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
             <span :style="{ fontFamily: font.value }">{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
+        <SelectOptGroup :label="t('slideDesign.webFonts')">
           <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
@@ -130,7 +130,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">字体颜色：</div>
+      <div style="flex: 2;">{{t('slideDesign.fontColor')}}：</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -142,7 +142,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">背景颜色：</div>
+      <div style="flex: 2;">{{t('slideDesign.BGColor')}}：</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -154,7 +154,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">主题色：</div>
+      <div style="flex: 2;">{{t('slideDesign.themeColor')}}：</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -166,15 +166,15 @@
       </Popover>
     </div>
 
-    <div class="row"><Button style="flex: 1;" @click="applyThemeToAllSlides()">应用主题到全部</Button></div>
+    <div class="row"><Button style="flex: 1;" @click="applyThemeToAllSlides()">{{t('slideDesign.applyTheme')}}</Button></div>
 
     <Divider />
 
-    <div class="title">预置主题</div>
+    <div class="title">{{t('slideDesign.presets')}}</div>
     <div class="theme-list">
-      <div 
-        class="theme-item" 
-        v-for="(item, index) in PRESET_THEMES" 
+      <div
+        class="theme-item"
+        v-for="(item, index) in PRESET_THEMES"
         :key="index"
         :style="{
           backgroundColor: item.background,
@@ -188,8 +188,8 @@
           </div>
 
           <div class="btns">
-            <div class="btn" @click="applyPresetThemeToSingleSlide(item)">应用</div>
-            <div class="btn" @click="applyPresetThemeToAllSlides(item)">应用全局</div>
+            <div class="btn" @click="applyPresetThemeToSingleSlide(item)">{{t('slideDesign.applyToOne')}}</div>
+            <div class="btn" @click="applyPresetThemeToAllSlides(item)">{{t('slideDesign.applyToAll')}}</div>
           </div>
         </div>
       </div>
@@ -218,6 +218,10 @@ import {
   Slider,
   Select,
 } from 'ant-design-vue'
+
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 
 const slidesStore = useSlidesStore()

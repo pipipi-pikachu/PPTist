@@ -1,13 +1,13 @@
 <template>
   <div class="toolbar">
     <div class="tabs">
-      <div 
-        class="tab" 
+      <div
+        class="tab"
         :class="{ 'active': tab.value === toolbarState }"
-        v-for="tab in currentTabs" 
+        v-for="tab in currentTabs"
         :key="tab.value"
         @click="setToolbarState(tab.value)"
-      >{{tab.label}}</div>
+      >{{t(tab.label)}}</div>
     </div>
     <div class="content">
       <component :is="currentPanelComponent"></component>
@@ -28,38 +28,40 @@ import SlideDesignPanel from './SlideDesignPanel.vue'
 import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 import SymbolPanel from './SymbolPanel.vue'
+import useI18n from '@/hooks/usei18n'
 
 interface ElementTabs {
   label: string
   value: ToolbarStates
 }
 
+const {t} = useI18n()
 const mainStore = useMainStore()
 const { activeElementIdList, handleElement, toolbarState } = storeToRefs(mainStore)
 
 const elementTabs = computed<ElementTabs[]>(() => {
   if (handleElement.value?.type === 'text') {
     return [
-      { label: '样式', value: ToolbarStates.EL_STYLE },
-      { label: '符号', value: ToolbarStates.SYMBOL },
-      { label: '位置', value: ToolbarStates.EL_POSITION },
-      { label: '动画', value: ToolbarStates.EL_ANIMATION },
+      { label: 'toolbar.style', value: ToolbarStates.EL_STYLE },
+      { label: 'toolbar.symbol', value: ToolbarStates.SYMBOL },
+      { label: 'toolbar.position', value: ToolbarStates.EL_POSITION },
+      { label: 'toolbar.animation', value: ToolbarStates.EL_ANIMATION },
     ]
   }
   return [
-    { label: '样式', value: ToolbarStates.EL_STYLE },
-    { label: '位置', value: ToolbarStates.EL_POSITION },
-    { label: '动画', value: ToolbarStates.EL_ANIMATION },
+    { label: 'toolbar.style', value: ToolbarStates.EL_STYLE },
+    { label: 'toolbar.position', value: ToolbarStates.EL_POSITION },
+    { label: 'toolbar.animation', value: ToolbarStates.EL_ANIMATION },
   ]
 })
 const slideTabs = [
-  { label: '设计', value: ToolbarStates.SLIDE_DESIGN },
-  { label: '切换', value: ToolbarStates.SLIDE_ANIMATION },
-  { label: '动画', value: ToolbarStates.EL_ANIMATION },
+  { label: 'toolbar.design', value: ToolbarStates.SLIDE_DESIGN },
+  { label: 'toolbar.slide', value: ToolbarStates.SLIDE_ANIMATION },
+  { label: 'toolbar.animation', value: ToolbarStates.EL_ANIMATION },
 ]
 const multiSelectTabs = [
-  { label: '样式', value: ToolbarStates.EL_STYLE },
-  { label: '位置', value: ToolbarStates.MULTI_POSITION },
+  { label: 'toolbar.style', value: ToolbarStates.EL_STYLE },
+  { label: 'toolbar.position', value: ToolbarStates.MULTI_POSITION },
 ]
 
 const setToolbarState = (value: ToolbarStates) => {
