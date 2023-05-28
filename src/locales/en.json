@@ -259,5 +259,40 @@
     "pulse": "pulse",
     "rubberBand": "rubberBand",
     "heartBeat": "heartBeat"
+  },
+  "export": {
+    "isExporting": "Exporting...",
+    "customize": "Custom",
+    "rangeExport": "Export range",
+    "allSlides": "All",
+    "currentSlide": "Current",
+    "countPerPage": "Count per page",
+    "margin": "Margin",
+    "cancelButton": "Close",
+    "pptist": {
+      "tab": "Export pptist",
+      "notice": "Notice: .pptist is a unique file suffix of this application, and it is supported to import this type of file back into the application."
+    },
+    "pptx": {
+      "tab": "Export PPTX",
+      "masterOverwrite": "Override default master"
+    },
+    "image": {
+      "tab": "Export image",
+      "exportFormat": "Format",
+      "quality": "Quality",
+      "ignoreOnlineFonts": "Ignore Online Fonts",
+      "ignoreNotice": "Online fonts are ignored by default when exporting. If you use online fonts in your slides and want to keep the relevant styles after exporting, you can choose to turn off the [Ignore Online Fonts] option, but be aware that this will increase the export time."
+    },
+    "json": {
+      "tab": "Export JSON"
+    },
+    "pdf": {
+      "tab": "Print / Export PDF",
+      "notice": "Note: If the print preview is inconsistent with the actual style, please check the [Background Graphics] option in the pop-up print window."
+    },
+    "html": {
+      "tab": "Export HTML"
+    }
   }
 }

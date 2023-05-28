@@ -27,6 +27,9 @@ import ExportPDF from './ExportPDF.vue'
 import ExportPPTX from './ExportPPTX.vue'
 import ExportSpecificFile from './ExportSpecificFile.vue'
 import ExportHTML from './ExportHTML.vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 
 interface TabItem {
   key: DialogForExportTypes
@@ -39,12 +42,12 @@ const { dialogForExport } = storeToRefs(mainStore)
 const setDialogForExport = mainStore.setDialogForExport
 
 const tabs: TabItem[] = [
-  { key: 'pptist', label: '导出 pptist 文件' },
-  { key: 'pptx', label: '导出 PPTX' },
-  { key: 'image', label: '导出图片' },
-  { key: 'json', label: '导出 JSON' },
-  { key: 'pdf', label: '打印 / 导出 PDF' },
-  { key: 'html', label: 'HTML' },
+  { key: 'pptist', label: t('export.pptist.tab') },
+  { key: 'pptx', label: t('export.pptx.tab') },
+  { key: 'image', label: t('export.image.tab') },
+  { key: 'json', label: t('export.json.tab') },
+  { key: 'pdf', label: t('export.pdf.tab') },
+  { key: 'html', label: t('export.html.tab') },
 ]
 
 const currentDialogComponent = computed(() => {

@@ -5,8 +5,8 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportJSON()">导出 JSON</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn export" type="primary" @click="exportJSON()">{{t('export.json.tab')}}</Button>
+      <Button class="btn close" @click="emit('close')">{{t('export.cancelButton')}}</Button>
     </div>
   </div>
 </template>
@@ -15,8 +15,11 @@
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
+import usei18n from '@/hooks/usei18n'
 
 import { Button } from 'ant-design-vue'
+
+const {t} = usei18n()
 
 const emit = defineEmits<{
   (event: 'close'): void

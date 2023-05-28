@@ -40,8 +40,8 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportHtml()">{{t('export.html.exportButton')}}</Button>
-      <Button class="btn close" @click="emit('close')">{{t('export.html.cancelButton')}}</Button>
+      <Button class="btn export" type="primary" @click="exportHtml()">{{t('export.html.tab')}}</Button>
+      <Button class="btn close" @click="emit('close')">{{t('export.cancelButton')}}</Button>
     </div>
   </div>
 </template>

@@ -22,18 +22,18 @@
     </div>
     <div class="configs">
       <div class="row">
-        <div class="title">导出范围：</div>
+        <div class="title">{{t('export.rangeExport')}}：</div>
         <RadioGroup
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 50%;" value="all">全部幻灯片</RadioButton>
-          <RadioButton style="width: 50%;" value="current">当前幻灯片</RadioButton>
+          <RadioButton style="width: 50%;" value="all">{{t('export.allSlides')}}</RadioButton>
+          <RadioButton style="width: 50%;" value="current">{{t('export.currentSlide')}}</RadioButton>
         </RadioGroup>
       </div>
       <div class="row">
-        <div class="title">每页数量：</div>
-        <Select 
+        <div class="title">{{t('export.countPerPage')}}：</div>
+        <Select
           class="config-item"
           v-model:value="count"
         >
@@ -43,19 +43,19 @@
         </Select>
       </div>
       <div class="row">
-        <div class="title">边缘留白：</div>
+        <div class="title">{{t('export.margin')}}：</div>
         <div class="config-item">
           <Switch v-model:checked="padding" />
         </div>
       </div>
       <div class="tip">
-        注意：若打印预览与实际样式不一致，请在弹出的打印窗口中勾选【背景图形】选项。
+        {{t('export.pdf.notice')}}
       </div>
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn export" type="primary" @click="expPDF()">{{t('export.pdf.tab')}}</Button>
+      <Button class="btn close" @click="emit('close')">{{t('export.cancelButton')}}</Button>
     </div>
   </div>
 </template>
@@ -73,6 +73,9 @@ import {
   Switch,
   Radio,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const { Group: RadioGroup, Button: RadioButton } = Radio
 const SelectOption = Select.Option
 

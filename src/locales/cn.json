@@ -259,6 +259,41 @@
     "pulse": "脉搏",
     "rubberBand": "橡皮筋",
     "heartBeat": "心跳（快）"
+  },
+  "export": {
+    "isExporting": "正在导出...",
+    "customize": "自定义",
+    "rangeExport": "导出范围",
+    "allSlides": "全部幻灯片",
+    "currentSlide": "当前幻灯片",
+    "countPerPage": "每页数量",
+    "margin": "边缘留白",
+    "cancelButton": "关闭",
+    "pptist": {
+      "tab": "导出 pptist 文件",
+      "notice": "提示：.pptist 是本应用的特有文件后缀，支持将该类型的文件导入回应用中。"
+    },
+    "pptx": {
+      "tab": "导出 PPTX",
+      "masterOverwrite": "覆盖默认母版"
+    },
+    "image": {
+      "tab": "导出图片",
+      "exportFormat": "导出格式",
+      "quality": "图片质量",
+      "ignoreOnlineFonts": "忽略在线字体",
+      "ignoreNotice": "导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。"
+    },
+    "json": {
+      "tab": "导出 JSON"
+    },
+    "pdf": {
+      "tab": "打印 / 导出 PDF",
+      "notice": "注意：若打印预览与实际样式不一致，请在弹出的打印窗口中勾选【背景图形】选项。"
+    },
+    "html": {
+      "tab": "导出 HTML"
+    }
   }
 }
 
