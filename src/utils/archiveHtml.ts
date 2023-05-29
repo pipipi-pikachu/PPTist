@@ -22,8 +22,11 @@ const changeTagLink = (node: HTMLElement) => {
     let attrValue = attr.value
     if (attr.name === 'data-link') {
       attrName = 'href'
-      const linkArray = attrValue.split('-')
-      attrValue = '/slide-' + linkArray[linkArray.length - 1] + '.html'
+      const linkArray = attrValue.split('slide-')
+
+      if (linkArray.length > 1) {
+        attrValue = '/slide-' + linkArray[linkArray.length - 1] + '.html'
+      }
     }
     clone.setAttributeNS(null, attrName, attrValue)
   }
