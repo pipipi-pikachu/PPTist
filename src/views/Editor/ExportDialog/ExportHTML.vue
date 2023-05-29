@@ -75,6 +75,7 @@ const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 const htmlThumbnailsRef = ref<HTMLElement>()
 const rangeType = ref<'all' | 'current'>('all')
 const padding = ref(true)
+const count = ref(1)
 
 const exportHtml = () => {
   if (!htmlThumbnailsRef.value) return

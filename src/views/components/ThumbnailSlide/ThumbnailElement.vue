@@ -1,6 +1,7 @@
 <template>
   <div 
     class="base-element"
+    v-bind:[linkAttributeName] = "`${linkAttributeValue}`"
     :class="`base-element-${elementInfo.id}`"
     :style="{
       zIndex: elementIndex,
@@ -27,7 +28,6 @@ import BaseTableElement from '@/views/components/element/TableElement/BaseTableE
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import BaseVideoElement from '@/views/components/element/VideoElement/BaseVideoElement.vue'
 import BaseAudioElement from '@/views/components/element/AudioElement/BaseAudioElement.vue'
-
 const props = defineProps({
   elementInfo: {
     type: Object as PropType<PPTElement>,
@@ -53,4 +53,6 @@ const currentElementComponent = computed(() => {
   }
   return elementTypeMap[props.elementInfo.type] || null
 })
+const linkAttributeName = computed(() => (props.elementInfo && props.elementInfo.link) ? 'data-link' : '')
+const linkAttributeValue = computed(() => (props.elementInfo && props.elementInfo.link) ? props.elementInfo.link.target : '')
 </script>
