@@ -15,6 +15,25 @@ const createIframe = () => {
 
   return iframe
 }
+const changeTagLink = (node: HTMLElement) => {
+  const clone = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
+  for (const attr of node.attributes) {
+    let attrName = attr.name
+    let attrValue = attr.value
+    if (attr.name === 'data-link') {
+      attrName = 'href'
+      const linkArray = attrValue.split('-')
+      attrValue = '/slide-' + linkArray[linkArray.length - 1] + '.html'
+    }
+    clone.setAttributeNS(null, attrName, attrValue)
+  }
+  while (node.firstChild) {
+    clone.appendChild(node.firstChild)
+  }
+  node.replaceWith(clone)
+  return clone
+}
+
 
 const writeContent = (doc: Document, archiveNode: HTMLElement) => {
   const docType = '<!DOCTYPE html>'
@@ -38,6 +57,13 @@ const writeContent = (doc: Document, archiveNode: HTMLElement) => {
       </style>
     </head>
   `
+  archiveNode.querySelectorAll('[data-link]')
+    .forEach(
+      (link) => {
+        archiveNode.innerHTML = archiveNode.innerHTML.replace(link.outerHTML, changeTagLink(link as HTMLElement).outerHTML)
+      }
+    )
+
   const body = '<body>' + archiveNode.innerHTML + '</body>'
 
   doc.open()
