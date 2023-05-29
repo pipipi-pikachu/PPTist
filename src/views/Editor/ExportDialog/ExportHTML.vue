@@ -1,21 +1,21 @@
 <template>
-  <div class="export-pdf-dialog">
+  <div class="export-html-dialog">
     <div class="thumbnails-view">
-      <div class="thumbnails" ref="pdfThumbnailsRef">
-        <ThumbnailSlide 
-          class="thumbnail" 
-          :slide="currentSlide" 
-          :size="1600" 
-          v-if="rangeType === 'current'"
+      <div class="thumbnails" ref="htmlThumbnailsRef">
+        <ThumbnailSlide
+            class="thumbnail"
+            :slide="currentSlide"
+            :size="1600"
+            v-if="rangeType === 'current'"
         />
         <template v-else>
-          <ThumbnailSlide 
-            class="thumbnail" 
-            :class="{ 'break-page': (index + 1) % count === 0 }"
-            v-for="(slide, index) in slides" 
-            :key="slide.id" 
-            :slide="slide" 
-            :size="1600" 
+          <ThumbnailSlide
+              class="thumbnail"
+              :class="{ 'break-page': (index + 1) % count === 0 }"
+              v-for="(slide, index) in slides"
+              :key="slide.id"
+              :slide="slide"
+              :size="1600"
           />
         </template>
       </div>
@@ -24,23 +24,12 @@
       <div class="row">
         <div class="title">{{t('export.rangeExport')}}：</div>
         <RadioGroup
-          class="config-item"
-          v-model:value="rangeType"
+            class="config-item"
+            v-model:value="rangeType"
         >
           <RadioButton style="width: 50%;" value="all">{{t('export.allSlides')}}</RadioButton>
           <RadioButton style="width: 50%;" value="current">{{t('export.currentSlide')}}</RadioButton>
         </RadioGroup>
-      </div>
-      <div class="row">
-        <div class="title">{{t('export.countPerPage')}}：</div>
-        <Select
-          class="config-item"
-          v-model:value="count"
-        >
-          <SelectOption :value="1">1</SelectOption>
-          <SelectOption :value="2">2</SelectOption>
-          <SelectOption :value="3">3</SelectOption>
-        </Select>
       </div>
       <div class="row">
         <div class="title">{{t('export.margin')}}：</div>
@@ -48,13 +37,10 @@
           <Switch v-model:checked="padding" />
         </div>
       </div>
-      <div class="tip">
-        {{t('export.pdf.notice')}}
-      </div>
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()">{{t('export.pdf.tab')}}</Button>
+      <Button class="btn export" type="primary" @click="exportHtml()">{{t('export.html.tab')}}</Button>
       <Button class="btn close" @click="emit('close')">{{t('export.cancelButton')}}</Button>
     </div>
   </div>
@@ -64,7 +50,6 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { print } from '@/utils/print'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import {
@@ -74,10 +59,12 @@ import {
   Radio,
 } from 'ant-design-vue'
 import usei18n from '@/hooks/usei18n'
+import { archiveHtml } from '@/utils/archiveHtml'
 
 const {t} = usei18n()
 const { Group: RadioGroup, Button: RadioButton } = Radio
 const SelectOption = Select.Option
+const parser = new DOMParser()
 
 const emit = defineEmits<{
   (event: 'close'): void
@@ -85,24 +72,19 @@ const emit = defineEmits<{
 
 const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
-const pdfThumbnailsRef = ref<HTMLElement>()
+const htmlThumbnailsRef = ref<HTMLElement>()
 const rangeType = ref<'all' | 'current'>('all')
-const count = ref(1)
 const padding = ref(true)
 
-const expPDF = () => {
-  if (!pdfThumbnailsRef.value) return
-  const pageSize = {
-    width: 1600,
-    height: rangeType.value === 'all' ? 1600 * viewportRatio.value * count.value : 1600 * viewportRatio.value,
-    margin: padding.value ? 50 : 0,
-  }
-  print(pdfThumbnailsRef.value, pageSize)
+const exportHtml = () => {
+  if (!htmlThumbnailsRef.value) return
+
+  archiveHtml(htmlThumbnailsRef.value)
 }
 </script>
 
 <style lang="scss" scoped>
-.export-pdf-dialog {
+.export-html-dialog {
   height: 100%;
   display: flex;
   justify-content: center;

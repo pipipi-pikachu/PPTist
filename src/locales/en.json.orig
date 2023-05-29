@@ -277,6 +277,7 @@
     "rubberBand": "rubberBand",
     "heartBeat": "heartBeat"
   },
+<<<<<<< HEAD
   "textStyle": {
     "headline": "Header",
     "subheading": "Subheader",
@@ -430,7 +431,7 @@
     "addLink": "Add link",
     "group": "Group",
     "unGroup": "Ungroup"
-  },
+=======
   "export": {
     "isExporting": "Exporting...",
     "customize": "Custom",
@@ -438,7 +439,7 @@
     "allSlides": "All",
     "currentSlide": "Current",
     "countPerPage": "Count per page",
-    "margin": "Margins",
+    "margin": "Margin",
     "cancelButton": "Close",
     "pptist": {
       "tab": "Export pptist",
@@ -465,5 +466,6 @@
     "html": {
       "tab": "Export HTML"
     }
+>>>>>>> b28467932cccd7de3e5d502f04bcea4b7bdf5e68
   }
 }

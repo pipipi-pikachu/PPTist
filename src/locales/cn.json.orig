@@ -277,6 +277,7 @@
     "rubberBand": "橡皮筋",
     "heartBeat": "心跳（快）"
   },
+<<<<<<< HEAD
   "textStyle": {
     "headline": "大标题",
     "subheading": "小标题",
@@ -429,7 +430,7 @@
     "addLink": "设置链接",
     "group": "组合",
     "unGroup": "取消组合"
-  },
+=======
   "export": {
     "isExporting": "正在导出...",
     "customize": "自定义",
@@ -464,6 +465,7 @@
     "html": {
       "tab": "导出 HTML"
     }
+>>>>>>> b28467932cccd7de3e5d502f04bcea4b7bdf5e68
   }
 }
 

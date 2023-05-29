@@ -21,6 +21,7 @@
     "file-saver": "^2.0.5",
     "hfmath": "0.0.2",
     "html-to-image": "^1.11.11",
+    "jszip": "^3.10.1",
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "nanoid": "^4.0.0",
