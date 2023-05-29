@@ -66,12 +66,12 @@
         <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
           <div class="sequence-content">
             <div class="index">{{element.index}}</div>
-            <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
+            <div class="text">【{{element.elType}}】{{t(element.animationEffect)}}</div>
             <div class="handler">
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
+              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('common.preview')">
                 <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.effect, element.duration)" />
               </Tooltip>
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
+              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('common.remove')">
                 <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.id)" />
               </Tooltip>
             </div>
@@ -81,7 +81,7 @@
             <Divider style="margin: 16px 0;" />
 
             <div class="config-item">
-              <div style="flex: 3;">持续时长：</div>
+              <div style="flex: 3;">{{t('elementAnimation.duration')}}：</div>
               <InputNumber
                 :min="500"
                 :max="3000"
@@ -92,19 +92,19 @@
               />
             </div>
             <div class="config-item">
-              <div style="flex: 3;">触发方式：</div>
+              <div style="flex: 3;">{{t('elementAnimation.trigger')}}：</div>
               <Select
                 :value="element.trigger"
                 @change="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
                 style="flex: 5;"
               >
-                <SelectOption value="click">主动触发</SelectOption>
-                <SelectOption value="meantime">与上一动画同时</SelectOption>
-                <SelectOption value="auto">上一动画之后</SelectOption>
+                <SelectOption value="click">{{t('elementAnimation.trigger')}}</SelectOption>
+                <SelectOption value="meantime">{{t('elementAnimation.meantime')}}</SelectOption>
+                <SelectOption value="auto">{{t('elementAnimation.auto')}}</SelectOption>
               </Select>
             </div>
             <div class="config-item">
-              <Button style="flex: 1;" @click="openAnimationPool(element.id)">更换动画</Button>
+              <Button style="flex: 1;" @click="openAnimationPool(element.id)">{{t('elementAnimation.change')}}</Button>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ const animationSequence = computed(() => {
       const el = currentSlide.value.elements.find(el => el.id === animation.elId)
       if (!el) continue
 
-      const elType = ELEMENT_TYPE_ZH[el.type]
+      const elType = t(`common.${el.type}`)
       const animationEffect = animationEffects[animation.effect]
       animationSequence.push({
         ...animation,

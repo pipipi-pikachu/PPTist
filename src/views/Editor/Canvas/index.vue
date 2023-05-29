@@ -1,6 +1,6 @@
 <template>
-  <div 
-    class="canvas" 
+  <div
+    class="canvas"
     ref="canvasRef"
     @wheel="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
@@ -11,7 +11,7 @@
       v-if="creatingElement"
       @created="data => insertElementFromCreateSelection(data)"
     />
-    <div 
+    <div
       class="viewport-wrapper"
       :style="{
         width: viewportStyles.width * canvasScale + 'px',
@@ -21,21 +21,21 @@
       }"
     >
       <div class="operates">
-        <AlignmentLine 
-          v-for="(line, index) in alignmentLines" 
-          :key="index" 
-          :type="line.type" 
-          :axis="line.axis" 
+        <AlignmentLine
+          v-for="(line, index) in alignmentLines"
+          :key="index"
+          :type="line.type"
+          :axis="line.axis"
           :length="line.length"
           :canvasScale="canvasScale"
         />
-        <MultiSelectOperate 
+        <MultiSelectOperate
           v-if="activeElementIdList.length > 1"
           :elementList="elementList"
           :scaleMultiElement="scaleMultiElement"
         />
         <Operate
-          v-for="element in elementList" 
+          v-for="element in elementList"
           :key="element.id"
           :elementInfo="element"
           :isSelected="activeElementIdList.includes(element.id)"
@@ -52,21 +52,21 @@
         <ViewportBackground />
       </div>
 
-      <div 
-        class="viewport" 
+      <div
+        class="viewport"
         ref="viewportRef"
         :style="{ transform: `scale(${canvasScale})` }"
       >
-        <MouseSelection 
+        <MouseSelection
           v-if="mouseSelectionVisible"
-          :top="mouseSelection.top" 
-          :left="mouseSelection.left" 
-          :width="mouseSelection.width" 
-          :height="mouseSelection.height" 
+          :top="mouseSelection.top"
+          :left="mouseSelection.left"
+          :width="mouseSelection.width"
+          :height="mouseSelection.height"
           :quadrant="mouseSelectionQuadrant"
-        />      
-        <EditableElement 
-          v-for="(element, index) in elementList" 
+        />
+        <EditableElement
+          v-for="(element, index) in elementList"
           :key="element.id"
           :elementInfo="element"
           :elementIndex="index + 1"
@@ -83,8 +83,8 @@
     <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
 
     <Modal
-      v-model:visible="linkDialogVisible" 
-      :footer="null" 
+      v-model:visible="linkDialogVisible"
+      :footer="null"
       centered
       :width="540"
       destroyOnClose
@@ -134,7 +134,10 @@ import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
 import { Modal } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+
+const {t} = usei18n()
 const mainStore = useMainStore()
 const {
   activeElementIdList,
@@ -249,60 +252,60 @@ const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewpo
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: t('context.paste'),
       subText: 'Ctrl + V',
       handler: pasteElement,
     },
     {
-      text: '全选',
+      text: t('context.selectAll'),
       subText: 'Ctrl + A',
       handler: selectAllElement,
     },
     {
-      text: '标尺',
+      text: t('context.toggleRuler'),
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
     },
     {
-      text: '网格线',
+      text: t('context.gridLines'),
       handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
       children: [
         {
-          text: '无',
+          text: t('context.none'),
           subText: gridLineSize.value === 0 ? '√' : '',
           handler: () => mainStore.setGridLineSize(0),
         },
         {
-          text: '小',
+          text: t('context.small'),
           subText: gridLineSize.value === 25 ? '√' : '',
           handler: () => mainStore.setGridLineSize(25),
         },
         {
-          text: '中',
+          text: t('context.middle'),
           subText: gridLineSize.value === 50 ? '√' : '',
           handler: () => mainStore.setGridLineSize(50),
         },
         {
-          text: '大',
+          text: t('context.big'),
           subText: gridLineSize.value === 100 ? '√' : '',
           handler: () => mainStore.setGridLineSize(100),
         },
       ],
     },
     {
-      text: showSelectPanel.value ? '关闭选择面板' : '打开选择面板',
+      text: showSelectPanel.value ? t('context.closeSelectionPanel') : t('context.showSelectionPanel'),
       handler: () => {
         if (!showSelectPanel.value) mainStore.setSelectPanelState(true)
         else mainStore.setSelectPanelState(false)
       },
     },
     {
-      text: '重置当前页',
+      text: t('context.resetAll'),
       handler: deleteAllElements,
     },
     { divider: true },
     {
-      text: '幻灯片放映',
+      text: t('context.slideshow'),
       subText: 'F5',
       handler: enterScreeningFromStart,
     },

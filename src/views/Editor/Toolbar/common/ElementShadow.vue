@@ -1,25 +1,25 @@
 <template>
   <div class="element-shadow">
     <div class="row">
-      <div style="flex: 2;">启用阴影：</div>
+      <div style="flex: 2;">{{t('elementShadow.shadow')}}：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch :checked="hasShadow" @change="checked => toggleShadow(checked as boolean)" />
       </div>
     </div>
     <template v-if="hasShadow && shadow">
       <div class="row">
-        <div style="flex: 2;">水平阴影：</div>
-        <Slider 
+        <div style="flex: 2;">{{t('elementShadow.h')}}：</div>
+        <Slider
           class="slider"
-          :min="-10" 
-          :max="10" 
-          :step="1" 
-          :value="shadow.h" 
+          :min="-10"
+          :max="10"
+          :step="1"
+          :value="shadow.h"
           @change="value => updateShadow({ h: value as number })"
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">垂直阴影：</div>
+        <div style="flex: 2;">{{t('elementShadow.v')}}：</div>
         <Slider
           class="slider"
           :min="-10"
@@ -30,7 +30,7 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">模糊距离：</div>
+        <div style="flex: 2;">{{t('elementShadow.blur')}}：</div>
         <Slider
           class="slider"
           :min="1"
@@ -41,7 +41,7 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">阴影颜色：</div>
+        <div style="flex: 2;">{{t('elementShadow.color')}}：</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -70,7 +70,9 @@ import {
   Slider,
   Switch,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

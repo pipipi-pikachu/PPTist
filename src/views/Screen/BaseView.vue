@@ -82,7 +82,9 @@ import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
 import { Tooltip } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const props = defineProps({
   changeViewMode: {
     type: Function as PropType<(mode: 'base' | 'presenter') => void>,
@@ -121,51 +123,51 @@ const laserPen = ref(false)
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '上一页',
+      text: t('context.prevSlide'),
       subText: '↑ ←',
       disable: slideIndex.value <= 0,
       handler: () => turnPrevSlide(),
     },
     {
-      text: '下一页',
+      text: t('context.nextSlide'),
       subText: '↓ →',
       disable: slideIndex.value >= slides.value.length - 1,
       handler: () => turnNextSlide(),
     },
     {
-      text: '第一页',
+      text: t('context.firstPage'),
       disable: slideIndex.value === 0,
       handler: () => turnSlideToIndex(0),
     },
     {
-      text: '最后一页',
+      text: t('context.lastPage'),
       disable: slideIndex.value === slides.value.length - 1,
       handler: () => turnSlideToIndex(slides.value.length - 1),
     },
     { divider: true },
     {
-      text: '显示工具栏',
+      text: t('context.showToolbar'),
       handler: () => rightToolsVisible.value = true,
     },
     {
-      text: '查看所有幻灯片',
+      text: t('context.viewAll'),
       handler: () => slideThumbnailModelVisible.value = true,
     },
     {
-      text: '画笔工具',
+      text: t('context.brushTool'),
       handler: () => writingBoardToolVisible.value = true,
     },
     {
-      text: '演讲者视图',
+      text: t('context.speakerView'),
       handler: () => props.changeViewMode('presenter'),
     },
     { divider: true },
     {
-      text: autoPlayTimer.value ? '取消自动放映' : '自动放映',
+      text: autoPlayTimer.value ? t('context.autoplayOff') : t('context.autoplayOn'),
       handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
     },
     {
-      text: '结束放映',
+      text: t('context.exit'),
       subText: 'ESC',
       handler: exitScreening,
     },

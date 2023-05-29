@@ -1,13 +1,13 @@
 <template>
   <div class="symbol-panel">
     <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': selectedSymbolKey === item.key }" 
-        v-for="item in SYMBOL_LIST" 
+      <div
+        class="tab"
+        :class="{ 'active': selectedSymbolKey === item.key }"
+        v-for="item in SYMBOL_LIST"
         :key="item.key"
         @click="selectedSymbolKey = item.key"
-      >{{item.label}}</div>
+      >{{t(item.label)}}</div>
     </div>
     <div class="pool">
       <div class="symbol-item" v-for="(item, index) in symbolPool" :key="index" @click="selectSymbol(item)">
@@ -21,7 +21,9 @@
 import { computed, ref } from 'vue'
 import { SYMBOL_LIST } from '@/configs/symbol'
 import emitter, { EmitterEvents } from '@/utils/emitter'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
 const symbolPool = computed(() => {
   const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value)
@@ -47,7 +49,7 @@ const selectSymbol = (value: string) => {
     margin-bottom: 8px;
   }
   .tab {
-    padding: 6px 10px 8px;
+    padding: 6px 2px 8px;
     border-bottom: 2px solid transparent;
     cursor: pointer;
 

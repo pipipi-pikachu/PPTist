@@ -1,43 +1,43 @@
 <template>
   <div class="link-dialog">
     <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': type === tab.key }" 
-        v-for="tab in tabs" 
+      <div
+        class="tab"
+        :class="{ 'active': type === tab.key }"
+        v-for="tab in tabs"
         :key="tab.key"
         @click="type = tab.key"
-      >{{tab.label}}</div>
+      >{{t(tab.label)}}</div>
     </div>
 
-    <Input 
+    <Input
       class="input"
-      v-if="type === 'web'" 
-      v-model:value="address" 
-      placeholder="请输入网页链接地址"
+      v-if="type === 'web'"
+      v-model:value="address"
+      :placeholder="t('linkDialog.webPlaceholder')"
     />
 
-    <Select 
+    <Select
       class="input"
       v-if="type === 'slide'"
       v-model:value="slideId"
     >
-      <SelectOption 
-        v-for="(slide, index) in slides" 
-        :key="slide.id" 
-        :value="slide.id" 
+      <SelectOption
+        v-for="(slide, index) in slides"
+        :key="slide.id"
+        :value="slide.id"
         :disabled="currentSlide.id === slide.id"
-      >幻灯片 {{index + 1}}</SelectOption>
+      >{{t('linkDialog.slide')}} {{index + 1}}</SelectOption>
     </Select>
 
     <div class="preview" v-if="type === 'slide' && selectedSlide">
-      <div>预览：</div>
+      <div>{{t('linkDialog.preview')}}：</div>
       <ThumbnailSlide class="thumbnail" :slide="selectedSlide" :size="490" />
     </div>
 
     <div class="btns">
-      <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-      <Button type="primary" @click="save()">确认</Button>
+      <Button @click="emit('close')" style="margin-right: 10px;">{{t('common.cancel')}}</Button>
+      <Button type="primary" @click="save()">{{t('common.confirm')}}</Button>
     </div>
   </div>
 </template>
@@ -55,6 +55,9 @@ import {
   Select,
   Input,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const SelectOption = Select.Option
 
 type TypeKey = 'web' | 'slide'
@@ -83,8 +86,8 @@ const selectedSlide = computed(() => {
 })
 
 const tabs: TabItem[] = [
-  { key: 'web', label: '网页链接' },
-  { key: 'slide', label: '幻灯片页面' },
+  { key: 'web', label: 'linkDialog.web' },
+  { key: 'slide', label: 'linkDialog.slide' },
 ]
 
 const { setLink } = useLink()

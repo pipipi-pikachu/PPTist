@@ -1,17 +1,17 @@
 <template>
   <div class="text-style-panel">
     <div class="preset-style">
-      <div 
+      <div
         class="preset-style-item"
         v-for="item in presetStyles"
         :key="item.label"
         :style="item.style"
         @click="emitBatchRichTextCommand(item.cmd)"
-      >{{item.label}}</div>
+      >{{t(item.label)}}</div>
     </div>
 
     <Divider />
-    
+
     <InputGroup compact class="row">
       <Select
         class="font-select"
@@ -20,12 +20,12 @@
         @change="value => emitRichTextCommand('fontname', value as string)"
       >
         <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
+        <SelectOptGroup :label="t('textStyle.system')">
           <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
             <span :style="{ fontFamily: font.value }">{{font.label}}</span>
           </SelectOption>
         </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
+        <SelectOptGroup :label="t('textStyle.web')">
           <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
             <span>{{font.label}}</span>
           </SelectOption>
@@ -51,7 +51,7 @@
             @update:modelValue="value => emitRichTextCommand('color', value)"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.color')">
           <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
             <IconText />
           </TextColorButton>
@@ -64,21 +64,21 @@
             @update:modelValue="value => emitRichTextCommand('backcolor', value)"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.highlight')">
           <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
             <IconHighLight />
           </TextColorButton>
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-        <Button 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.fontSizePlus')">
+        <Button
           class="font-size-btn"
           style="flex: 2;"
           @click="emitRichTextCommand('fontsize-add')"
         ><IconFontSize />+</Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-        <Button 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.fontSizePlus')">
+        <Button
           class="font-size-btn"
           style="flex: 2;"
           @click="emitRichTextCommand('fontsize-reduce')"
@@ -87,29 +87,29 @@
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
-        <CheckboxButton 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.bold')">
+        <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.bold"
           @click="emitRichTextCommand('bold')"
         ><IconTextBold /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
-        <CheckboxButton 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.italic')">
+        <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.em"
           @click="emitRichTextCommand('em')"
         ><IconTextItalic /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
-        <CheckboxButton 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.underline')">
+        <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.underline"
           @click="emitRichTextCommand('underline')"
         ><IconTextUnderline /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
-        <CheckboxButton 
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.strikethrough')">
+        <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.strikethrough"
           @click="emitRichTextCommand('strikethrough')"
@@ -118,28 +118,28 @@
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上标">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.super')">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.superscript"
           @click="emitRichTextCommand('superscript')"
         >A²</CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.sub')">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.subscript"
           @click="emitRichTextCommand('subscript')"
         >A₂</CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="行内代码">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.code')">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.code"
           @click="emitRichTextCommand('code')"
         ><IconCode /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.quote')">
         <CheckboxButton
           style="flex: 1;"
           :checked="richTextAttrs.blockquote"
@@ -149,27 +149,27 @@
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.clear')">
         <CheckboxButton
           style="flex: 1;"
           @click="emitRichTextCommand('clear')"
         ><IconFormat /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.preview')">
         <CheckboxButton
           style="flex: 1;"
           :checked="!!textFormatPainter"
           @click="toggleFormatPainter()"
         ><IconFormatBrush /></CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="超链接">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.link')">
         <Popover placement="bottomRight" trigger="click" v-model:visible="linkPopoverVisible">
           <template #content>
             <div class="link-popover">
-              <Input v-model:value="link" placeholder="请输入超链接" />
+              <Input v-model:value="link" :placeholder="t('textStyle.linkPlaceholder')" />
               <div class="btns">
-                <Button size="small" :disabled="!richTextAttrs.link" @click="updateLink()" style="margin-right: 5px;">移除</Button>
-                <Button size="small" type="primary" @click="updateLink(link)">确认</Button>
+                <Button size="small" :disabled="!richTextAttrs.link" @click="updateLink()" style="margin-right: 5px;">{{t('common.remove')}}</Button>
+                <Button size="small" type="primary" @click="updateLink(link)">{{t('common.confirm')}}</Button>
               </div>
             </div>
           </template>
@@ -184,26 +184,26 @@
 
     <Divider />
 
-    <RadioGroup 
-      class="row" 
-      button-style="solid" 
+    <RadioGroup
+      class="row"
+      button-style="solid"
       :value="richTextAttrs.align"
       @change="e => emitRichTextCommand('align', e.target.value)"
     >
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignLeft')">
         <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignCenter')">
         <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignRight')">
         <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
       </Tooltip>
     </RadioGroup>
 
     <div class="row">
       <ButtonGroup style="flex: 15;">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="项目符号">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.ul')">
           <Button
             :type="richTextAttrs.bulletList ? 'primary' : 'default'"
             style="flex: 1;"
@@ -213,9 +213,9 @@
         <Popover trigger="click" v-model:visible="bulletListPanelVisible">
           <template #content>
             <div class="list-wrap">
-              <ul class="list" 
-                v-for="item in bulletListStyleTypeOption" 
-                :key="item" 
+              <ul class="list"
+                v-for="item in bulletListStyleTypeOption"
+                :key="item"
                 :style="{ listStyleType: item }"
                 @click="emitRichTextCommand('bulletList', item)"
               >
@@ -228,7 +228,7 @@
       </ButtonGroup>
       <div style="flex: 1;"></div>
       <ButtonGroup style="flex: 15;">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.ol')">
           <Button
             :type="richTextAttrs.orderedList ? 'primary' : 'default'"
             style="flex: 1;"
@@ -238,9 +238,9 @@
         <Popover trigger="click" v-model:visible="orderedListPanelVisible">
           <template #content>
             <div class="list-wrap">
-              <ul class="list" 
-                v-for="item in orderedListStyleTypeOption" 
-                :key="item" 
+              <ul class="list"
+                v-for="item in orderedListStyleTypeOption"
+                :key="item"
                 :style="{ listStyleType: item }"
                 @click="emitRichTextCommand('orderedList', item)"
               >
@@ -254,10 +254,10 @@
     </div>
 
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小缩进">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.indentMinus')">
         <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大缩进">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.indentPlus')">
         <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
       </Tooltip>
     </ButtonGroup>
@@ -265,35 +265,35 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">行间距：</div>
+      <div style="flex: 2;">{{t('textStyle.lineHeight')}}：</div>
       <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value as number)">
         <template #suffixIcon><IconRowHeight /></template>
-        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
+        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item + t('textStyle.times')}}</SelectOption>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">段间距：</div>
+      <div style="flex: 2;">{{t('textStyle.pSpacing')}}：</div>
       <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value as number)">
         <template #suffixIcon><IconVerticalSpacingBetweenItems /></template>
         <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">字间距：</div>
+      <div style="flex: 2;">{{t('textStyle.wordSpace')}}：</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value as number)">
         <template #suffixIcon><IconFullwidth /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">首行缩进：</div>
+      <div style="flex: 2;">{{t('textStyle.textIndent')}}：</div>
       <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value as number)">
         <template #suffixIcon><IconIndentRight /></template>
         <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">文本框填充：</div>
+      <div style="flex: 2;">{{t('textStyle.textFill')}}：</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -342,6 +342,9 @@ import {
   Input,
   message,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
@@ -351,7 +354,7 @@ const ButtonGroup = Button.Group
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
 const presetStyles = [
   {
-    label: '大标题',
+    label: 'textStyle.headline',
     style: {
       fontSize: '26px',
       fontWeight: 700,
@@ -364,7 +367,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '小标题',
+    label: 'textStyle.subheading',
     style: {
       fontSize: '22px',
       fontWeight: 700,
@@ -377,7 +380,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文',
+    label: 'textStyle.text',
     style: {
       fontSize: '20px',
     },
@@ -387,7 +390,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文[小]',
+    label: 'textStyle.textSmall',
     style: {
       fontSize: '18px',
     },
@@ -397,7 +400,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 1',
+    label: 'textStyle.note1',
     style: {
       fontSize: '16px',
       fontStyle: 'italic',
@@ -409,7 +412,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 2',
+    label: 'textStyle.note1',
     style: {
       fontSize: '16px',
       textDecoration: 'underline',

@@ -1,16 +1,16 @@
 <template>
   <div class="shape-style-panel">
     <div class="title">
-      <span>点击替换形状</span>
+      <span>{{t('shapeStyle.title')}}</span>
       <IconDown />
     </div>
     <div class="shape-pool">
       <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
         <div class="shape-list">
-          <ShapeItemThumbnail 
+          <ShapeItemThumbnail
             class="shape-item"
-            v-for="(shape, index) in item.children" 
-            :key="index" 
+            v-for="(shape, index) in item.children"
+            :key="index"
             :shape="shape"
             @click="changeShape(shape)"
           />
@@ -19,13 +19,13 @@
     </div>
 
     <div class="row">
-      <Select 
-        style="flex: 10;" 
-        :value="fillType" 
+      <Select
+        style="flex: 10;"
+        :value="fillType"
         @change="value => updateFillType(value as 'fill' | 'gradient')"
       >
-        <SelectOption value="fill">纯色填充</SelectOption>
-        <SelectOption value="gradient">渐变填充</SelectOption>
+        <SelectOption value="fill">{{t('shapeStyle.fill')}}</SelectOption>
+        <SelectOption value="gradient">{{t('shapeStyle.gradient')}}</SelectOption>
       </Select>
       <div style="flex: 1;"></div>
       <Popover trigger="click" v-if="fillType === 'fill'">
@@ -37,20 +37,20 @@
         </template>
         <ColorButton :color="fill" style="flex: 10;" />
       </Popover>
-      <Select 
-        style="flex: 10;" 
-        :value="gradient.type" 
+      <Select
+        style="flex: 10;"
+        :value="gradient.type"
         @change="value => updateGradient({ type: value as 'linear' | 'radial' })"
         v-else
       >
-        <SelectOption value="linear">线性渐变</SelectOption>
-        <SelectOption value="radial">径向渐变</SelectOption>
+        <SelectOption value="linear">{{t('shapeStyle.linear')}}</SelectOption>
+        <SelectOption value="radial">{{t('shapeStyle.radial')}}</SelectOption>
       </Select>
     </div>
-    
+
     <template v-if="fillType === 'gradient'">
       <div class="row">
-        <div style="flex: 2;">起点颜色：</div>
+        <div style="flex: 2;">{{t('shapeStyle.startWith')}}：</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -62,7 +62,7 @@
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">终点颜色：</div>
+        <div style="flex: 2;">{{t('shapeStyle.endWith')}}：</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -74,14 +74,14 @@
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
-        <div style="flex: 2;">渐变角度：</div>
+        <div style="flex: 2;">{{t('shapeStyle.angle')}}：</div>
         <Slider
           class="slider"
           :min="0"
           :max="360"
           :step="15"
           :value="gradient.rotate"
-          @change="value => updateGradient({ rotate: value as number })" 
+          @change="value => updateGradient({ rotate: value as number })"
         />
       </div>
     </template>
@@ -99,14 +99,14 @@
           @change="value => emitRichTextCommand('fontname', value as string)"
         >
           <template #suffixIcon><IconFontSize /></template>
-          <SelectOptGroup label="系统字体">
+          <SelectOptGroup :label="t('textStyle.system')">
             <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
               <span :style="{ fontFamily: font.value }">{{font.label}}</span>
             </SelectOption>
           </SelectOptGroup>
-          <SelectOptGroup label="在线字体">
+          <SelectOptGroup :label="t('textStyle.web')">
             <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-              <span>{{font.label}}</span>
+              <span>{{t(font.label)}}</span>
             </SelectOption>
           </SelectOptGroup>
         </Select>
@@ -130,7 +130,7 @@
               @update:modelValue="value => emitRichTextCommand('color', value)"
             />
           </template>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.color')">
             <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
               <IconText />
             </TextColorButton>
@@ -143,21 +143,21 @@
               @update:modelValue="value => emitRichTextCommand('backcolor', value)"
             />
           </template>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.highlight')">
             <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
               <IconHighLight />
             </TextColorButton>
           </Tooltip>
         </Popover>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-          <Button 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.fontSizePlus')">
+          <Button
             class="font-size-btn"
             style="flex: 2;"
             @click="emitRichTextCommand('fontsize-add')"
           ><IconFontSize />+</Button>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-          <Button 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.fontSizeMinus')">
+          <Button
             class="font-size-btn"
             style="flex: 2;"
             @click="emitRichTextCommand('fontsize-reduce')"
@@ -166,29 +166,29 @@
       </ButtonGroup>
 
       <CheckboxButtonGroup class="row">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
-          <CheckboxButton 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.bold')">
+          <CheckboxButton
             style="flex: 1;"
             :checked="richTextAttrs.bold"
             @click="emitRichTextCommand('bold')"
           ><IconTextBold /></CheckboxButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
-          <CheckboxButton 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.italic')">
+          <CheckboxButton
             style="flex: 1;"
             :checked="richTextAttrs.em"
             @click="emitRichTextCommand('em')"
           ><IconTextItalic /></CheckboxButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
-          <CheckboxButton 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.underline')">
+          <CheckboxButton
             style="flex: 1;"
             :checked="richTextAttrs.underline"
             @click="emitRichTextCommand('underline')"
           ><IconTextUnderline /></CheckboxButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
-          <CheckboxButton 
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.strikethrough')">
+          <CheckboxButton
             style="flex: 1;"
             :checked="richTextAttrs.strikethrough"
             @click="emitRichTextCommand('strikethrough')"
@@ -197,13 +197,13 @@
       </CheckboxButtonGroup>
 
       <CheckboxButtonGroup class="row">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.clear')">
           <CheckboxButton
             style="flex: 1;"
             @click="emitRichTextCommand('clear')"
           ><IconFormat /></CheckboxButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.preview')">
           <CheckboxButton
             style="flex: 1;"
             :checked="!!textFormatPainter"
@@ -214,36 +214,36 @@
 
       <Divider  />
 
-      <RadioGroup 
-        class="row" 
-        button-style="solid" 
+      <RadioGroup
+        class="row"
+        button-style="solid"
         :value="richTextAttrs.align"
         @change="e => emitRichTextCommand('align', e.target.value)"
       >
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignLeft')">
           <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignCenter')">
           <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignRight')">
           <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
         </Tooltip>
       </RadioGroup>
 
-      <RadioGroup 
-        class="row" 
-        button-style="solid" 
+      <RadioGroup
+        class="row"
+        button-style="solid"
         :value="textAlign"
         @change="e => updateTextAlign(e.target.value)"
       >
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顶对齐">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignTop')">
           <RadioButton value="top" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignMiddle')">
           <RadioButton value="middle" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
         </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="底对齐">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" :title="t('textStyle.alignBottom')">
           <RadioButton value="bottom" style="flex: 1;"><IconAlignTextBottomOne /></RadioButton>
         </Tooltip>
       </RadioGroup>
@@ -290,6 +290,9 @@ import {
   Radio,
   Input,
 } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
@@ -303,7 +306,7 @@ const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
 const fill = ref<string>('#000')
 const gradient = ref<ShapeGradient>({
-  type: 'linear', 
+  type: 'linear',
   rotate: 0,
   color: ['#fff', '#fff'],
 })
@@ -376,7 +379,7 @@ const changeShape = (shape: ShapePoolItem) => {
 
 const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
   const _handleElement = handleElement.value as PPTShapeElement
-  
+
   const defaultText: ShapeText = {
     content: '',
     defaultFontName: '微软雅黑',

@@ -1,14 +1,14 @@
 <template>
   <div class="element-opacity">
     <div class="row">
-      <div style="flex: 2;">不透明度：</div>
+      <div style="flex: 2;">{{t('elementOpacity.opacity')}}：</div>
       <Slider
         class="slider"
         :min="0"
         :max="1"
         :step="0.1"
         :value="opacity"
-        @change="value => updateOpacity(value as number)" 
+        @change="value => updateOpacity(value as number)"
       />
     </div>
   </div>
@@ -21,7 +21,9 @@ import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Slider } from 'ant-design-vue'
+import usei18n from '@/hooks/usei18n'
 
+const {t} = usei18n()
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

@@ -7,22 +7,22 @@
         @click.stop="handleClickMenuItem(menu)"
         :class="{'divider': menu.divider, 'disable': menu.disable}"
       >
-        <div 
-          class="menu-item-content" 
+        <div
+          class="menu-item-content"
           :class="{
             'has-children': menu.children,
             'has-handler': menu.handler,
-          }" 
+          }"
           v-if="!menu.divider"
         >
           <span class="text">{{menu.text}}</span>
           <span class="sub-text" v-if="menu.subText && !menu.children">{{menu.subText}}</span>
 
-          <menu-content 
+          <menu-content
             class="sub-menu"
-            :menus="menu.children" 
+            :menus="menu.children"
             v-if="menu.children && menu.children.length"
-            :handleClickMenuItem="handleClickMenuItem" 
+            :handleClickMenuItem="handleClickMenuItem"
           />
         </div>
       </li>

@@ -1,16 +1,16 @@
 <template>
   <div class="element-flip">
     <CheckboxButtonGroup class="row">
-      <CheckboxButton 
+      <CheckboxButton
         style="flex: 1;"
         :checked="flipV"
         @click="updateFlip({ flipV: !flipV })"
-      ><IconFlipVertically /> 垂直翻转</CheckboxButton>
-      <CheckboxButton 
+      ><IconFlipVertically /> {{t('elementFlip.vertical')}}</CheckboxButton>
+      <CheckboxButton
         style="flex: 1;"
         :checked="flipH"
         @click="updateFlip({ flipH: !flipH })"
-      ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
+      ><IconFlipHorizontally /> {{t('elementFlip.horizontal')}}</CheckboxButton>
     </CheckboxButtonGroup>
   </div>
 </template>
@@ -25,6 +25,9 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
 
+import usei18n from '@/hooks/usei18n'
+
+const {t} = usei18n()
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
 

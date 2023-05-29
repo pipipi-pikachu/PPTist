@@ -165,22 +165,22 @@ const { enterScreening, enterScreeningFromStart } = useScreening()
 const contextmenusThumbnails = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: t('context.paste'),
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: t('context.selectAll'),
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     {
-      text: '新建页面',
+      text: t('context.newPage'),
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '幻灯片放映',
+      text: t('context.slideshow'),
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
@@ -190,44 +190,44 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
-      text: '剪切',
+      text: t('context.cut'),
       subText: 'Ctrl + X',
       handler: cutSlide,
     },
     {
-      text: '复制',
+      text: t('context.copy'),
       subText: 'Ctrl + C',
       handler: copySlide,
     },
     {
-      text: '粘贴',
+      text: t('context.paste'),
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: t('context.all'),
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     { divider: true },
     {
-      text: '新建页面',
+      text: t('context.newPage'),
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '复制页面',
+      text: t('context.duplicate'),
       subText: 'Ctrl + D',
       handler: copyAndPasteSlide,
     },
     {
-      text: '删除页面',
+      text: t('context.delete'),
       subText: 'Delete',
       handler: () => deleteSlide(),
     },
     { divider: true },
     {
-      text: '从当前放映',
+      text: t('context.slideshow'),
       subText: 'Shift + F5',
       handler: enterScreening,
     },
