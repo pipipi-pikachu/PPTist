@@ -34,6 +34,17 @@ export interface MainState {
   databaseId: string
   textFormatPainter: TextFormatPainter | null
   showSelectPanel: boolean
+  searchObj: {
+    oldSearchText: string,
+    searchText: string
+    searchIndex: number
+    searchCount: number
+    slideIndex: number
+    elementIndex: number
+    subIndexInSlide: number
+    subIndexInElement: number
+    replaceText: string
+  }
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -65,6 +76,17 @@ export const useMainStore = defineStore('main', {
     databaseId, // 标识当前应用的indexedDB数据库ID
     textFormatPainter: null, // 文字格式刷
     showSelectPanel: false, // 打开选择面板
+    searchObj: {
+      oldSearchText: '',
+      searchText: '',
+      searchIndex: 0,
+      searchCount: 0,
+      slideIndex: 0,
+      elementIndex: 0,
+      subIndexInSlide: 0,
+      subIndexInElement: 0,
+      replaceText: '',
+    },
   }),
 
   getters: {

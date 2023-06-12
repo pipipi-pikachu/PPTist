@@ -7,3 +7,12 @@ export const enum ToolbarStates {
   SLIDE_ANIMATION = 'slideAnimation',
   MULTI_POSITION = 'multiPosition',
 }
+
+/**
+ * 搜索操作
+ */
+export const enum SearchAction {
+	All,
+	Next,
+	Prev,
+}

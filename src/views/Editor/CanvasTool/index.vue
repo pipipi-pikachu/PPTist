@@ -78,6 +78,14 @@
           <IconVideoTwo class="handler-item" />
         </Tooltip>
       </Popover>
+      <Popover trigger="click" v-model:visible="searchPanelVisible">
+        <template #content>
+            <SearchPanel/>
+        </template>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="查找/替换">
+          <IconSearch class="handler-item" />
+        </Tooltip>
+      </Popover>
     </div>
 
     <div class="right-handler">
@@ -117,7 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSnapshotStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
@@ -126,12 +134,14 @@ import { LinePoolItem } from '@/configs/lines'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useCreateElement from '@/hooks/useCreateElement'
+import useSearch from '@/hooks/useSearch'
 
 import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
 import ChartPool from './ChartPool.vue'
 import TableGenerator from './TableGenerator.vue'
 import MediaInput from './MediaInput.vue'
+import SearchPanel from './SearchPanel.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import FileInput from '@/components/FileInput.vue'
 import {
@@ -183,6 +193,7 @@ const tableGeneratorVisible = ref(false)
 const mediaInputVisible = ref(false)
 const latexEditorVisible = ref(false)
 const textTypeSelectVisible = ref(false)
+const searchPanelVisible = ref(false)
 
 // 绘制文字范围
 const drawText = (vertical = false) => {
@@ -209,6 +220,13 @@ const drawLine = (line: LinePoolItem) => {
   })
   linePoolVisible.value = false
 }
+
+// 查找替换
+const { cancelSearch } = useSearch()
+watch(searchPanelVisible, val => {
+  !val && cancelSearch()
+})
+
 </script>
 
 <style lang="scss" scoped>

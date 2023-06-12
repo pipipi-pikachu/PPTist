@@ -112,6 +112,10 @@ import {
   PreviewOpen,
   PreviewClose,
   StopwatchStart,
+  Search,
+  LeftOne,
+  RightOne,
+  AutoWidth,
 } from '@icon-park/vue-next'
 
 export const icons = {
@@ -225,6 +229,10 @@ export const icons = {
   IconPreviewOpen: PreviewOpen,
   IconPreviewClose: PreviewClose,
   IconStopwatchStart: StopwatchStart,
+  IconSearch: Search,
+  IconLeftOne: LeftOne,
+  IconRightOne: RightOne,
+  IconAutoWidth: AutoWidth,
 }
 
 export default {
