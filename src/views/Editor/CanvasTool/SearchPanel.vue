@@ -144,8 +144,7 @@ export default defineComponent({
   .ant-btn {
     width: 63px;
     height: 28px;
-    border-color: #22AB82;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 0px;
     font-size: 12px;
     line-height: 12px;
@@ -155,7 +154,6 @@ export default defineComponent({
     color: #41464b;
   }
   .ant-btn-primary {
-    background: #22AB82;
     margin-left: 12px;
   }
   .ant-btn-primary:hover {
