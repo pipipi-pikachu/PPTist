@@ -37,7 +37,7 @@ export interface MainState {
   searchObj: {
     oldSearchText: string,
     searchText: string
-    searchIndex: number
+    searchNum: number
     searchCount: number
     slideIndex: number
     elementIndex: number
@@ -79,7 +79,7 @@ export const useMainStore = defineStore('main', {
     searchObj: {
       oldSearchText: '',
       searchText: '',
-      searchIndex: 0,
+      searchNum: 0,
       searchCount: 0,
       slideIndex: 0,
       elementIndex: 0,

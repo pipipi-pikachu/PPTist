@@ -1,21 +1,21 @@
 <template>
   <div class="search-input">
-      <Input v-model:value="searchObj.searchText" placeholder="输入查找内容" @pressEnter="search()">
+      <Input v-model:value="searchObj.searchText" placeholder="输入查找内容" @change="silentSearch()" @pressEnter="search()">
         <template #prefix>
           <IconSearch class="icon-item" />
         </template>
         <template #suffix>
-          <span class="num-tip">{{ searchObj.searchIndex }}/{{ searchObj.searchCount }}</span>
+          <span class="num-tip">{{ searchObj.searchNum }}/{{ searchObj.searchCount }}</span>
           <span class="edge-line"></span>
           <Tooltip title="上一个">
               <IconLeftOne theme="filled" size="10"
-                :fill="searchObj.searchIndex > 1 ? '#333' : '#999'"
+                :fill="searchObj.searchCount > 0 ? '#333' : '#999'"
                 @click="prev()"
               />
           </Tooltip>
           <Tooltip title="下一个">
               <IconRightOne theme="filled" size="10"
-                :fill="searchObj.searchIndex < searchObj.searchCount ? '#333' : '#999'"
+                :fill="searchObj.searchCount > 0 ? '#333' : '#999'"
                 @click="next()"
               />
           </Tooltip>
@@ -48,6 +48,9 @@ export default defineComponent({
     const { searchObj } = storeToRefs(useMainStore())
     const { search } = useSearch()
 
+    const silentSearch = () => {
+      search(SearchAction.Silent)
+    }
     const prev = () => {
       search(SearchAction.Prev)
     }
@@ -57,6 +60,7 @@ export default defineComponent({
 
     return {
       searchObj,
+      silentSearch,
       search,
       prev,
       next,

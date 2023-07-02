@@ -12,7 +12,9 @@ export const enum ToolbarStates {
  * 搜索操作
  */
 export const enum SearchAction {
+  Silent,
 	All,
 	Next,
 	Prev,
+  Replace,
 }
