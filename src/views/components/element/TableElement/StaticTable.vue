@@ -150,6 +150,7 @@ table {
     white-space: normal;
     word-wrap: break-word;
     vertical-align: middle;
+    background-clip: padding-box;
   }
 
   .cell-text {

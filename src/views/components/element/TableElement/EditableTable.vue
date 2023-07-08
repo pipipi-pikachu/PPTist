@@ -711,6 +711,7 @@ table {
     word-wrap: break-word;
     vertical-align: middle;
     font-size: 14px;
+    background-clip: padding-box;
     cursor: default;
 
     &.selected::after {
