@@ -2,25 +2,22 @@
   <div 
     class="custom-textarea"
     ref="textareaRef"
-    @focus="handleFocus"
-    @blur="handleBlur"
+    :contenteditable="true"
+    @focus="handleFocus()"
+    @blur="handleBlur()"
     @input="handleInput()"
     v-html="text"
   ></div>
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 
 const props = defineProps({
   value: {
     type: String,
     default: '',
-  },
-  contenteditable: {
-    type: [Boolean, String],
-    default: false,
   },
 })
 
@@ -70,7 +67,6 @@ const handleFocus = () => {
           return
         }
 
-        emit('updateValue', text)
         document.execCommand('insertText', false, text)
       })
     }
@@ -84,7 +80,7 @@ const handleBlur = () => {
 }
 
 // 清除粘贴事件监听
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (textareaRef.value) textareaRef.value.onpaste = null
 })
 </script>
@@ -94,6 +90,5 @@ onUnmounted(() => {
   border: 0;
   outline: 0;
   -webkit-user-modify: read-write-plaintext-only;
-  -moz-user-modify: read-write-plaintext-only;
 }
 </style>
