@@ -38,6 +38,7 @@ export const buildKeymap = (schema: Schema) => {
   ))
   bind('Mod-[', liftListItem(schema.nodes.list_item))
   bind('Mod-]', sinkListItem(schema.nodes.list_item))
+  bind('Tab', sinkListItem(schema.nodes.list_item))
 
   return keys
 }

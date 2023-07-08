@@ -37,7 +37,7 @@ const strikethrough: MarkSpec = {
       getAttrs: value => value === 'line-through' && null
     },
   ],
-  toDOM: () => ['span', { style: 'text-decoration-line: line-through' }, 0],
+  toDOM: () => ['span', { style: 'text-decoration-line: line-through;' }, 0],
 }
 
 const underline: MarkSpec = {
@@ -52,7 +52,7 @@ const underline: MarkSpec = {
       getAttrs: value => value === 'underline' && null
     },
   ],
-  toDOM: () => ['span', { style: 'text-decoration: underline' }, 0],
+  toDOM: () => ['span', { style: 'text-decoration: underline;' }, 0],
 }
 
 const forecolor: MarkSpec = {
@@ -110,7 +110,7 @@ const fontsize: MarkSpec = {
   toDOM: mark => {
     const { fontsize } = mark.attrs
     let style = ''
-    if (fontsize) style += `font-size: ${fontsize}`
+    if (fontsize) style += `font-size: ${fontsize};`
     return ['span', { style }, 0]
   },
 }
@@ -132,7 +132,7 @@ const fontname: MarkSpec = {
   toDOM: mark => {
     const { fontname } = mark.attrs
     let style = ''
-    if (fontname) style += `font-family: ${fontname}`
+    if (fontname) style += `font-family: ${fontname};`
     return ['span', { style }, 0]
   },
 }
