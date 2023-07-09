@@ -147,12 +147,14 @@ export default () => {
     const slides = slidesStore.slides
     let slideIndex = -1
     let hasFind = false
+    let reStart = false
     const {oldSearchText, searchText, searchNum, searchCount, subIndexInSlide, subIndexInElement} = searchObj
 
     // check
     if (!searchObj.searchText) {
       searchObj.searchCount = 0
       searchObj.searchNum = 0
+      clearHighlight()
       return
     }
     if (action !== SearchAction.All && action !== SearchAction.Silent && searchCount <= 0) {
@@ -169,12 +171,14 @@ export default () => {
       searchObj.searchNum = 0
       searchObj.subIndexInSlide = 0
       searchObj.subIndexInElement = 0
+      reStart = true
     }
     if (action === SearchAction.Prev && searchNum <= 1) {
       startSlideIndex = slides.length - 1
       searchObj.searchNum = searchCount + 1
       searchObj.subIndexInSlide = 0
       searchObj.subIndexInElement = 0
+      reStart = true
     }
     if (action === SearchAction.All || action === SearchAction.Silent) {
       searchObj.oldSearchText = searchText
@@ -190,10 +194,18 @@ export default () => {
       searchObj.subIndexInElement = 0
       hasFind = count > 0
 
-      const {count: currentSlideCount, firstElementIndex: curSlideFirstElementIndex} = countInSlides(searchText, [slides[slidesStore.slideIndex]])
+      const {
+        count: currentSlideCount,
+        firstElementIndex: curSlideFirstElementIndex
+      } = countInSlides(searchText, [slides[slidesStore.slideIndex]])
       if (currentSlideCount > 0) {
-        const {count: preCount} = countInSlides(searchText, slides.slice(0, slidesStore.slideIndex - 1))
-        searchObj.searchNum = preCount + 1
+        if (slidesStore.slideIndex === 0) {
+          searchObj.searchNum = 1
+        }
+        else {
+          const {count: preCount} = countInSlides(searchText, slides.slice(0, slidesStore.slideIndex))
+          searchObj.searchNum = preCount + 1
+        }
         searchObj.elementIndex = curSlideFirstElementIndex
         slideIndex = slidesStore.slideIndex
       }
@@ -230,13 +242,13 @@ export default () => {
                 searchObj.subIndexInSlide = 0
                 searchObj.subIndexInElement = 0
                 searchObj.searchNum++
-                hasFind = true
                 searchObj.elementIndex = j
+                hasFind = true
                 break
               }
-              if (searchObj.subIndexInSlide + (action === SearchAction.Replace ? 1 : 2) <= slideTextCounting) {
+              if (reStart || slideTextCounting - searchObj.subIndexInSlide > 1) {
                 // current slide
-                if (action !== SearchAction.Replace) {
+                if (!reStart && (action === SearchAction.Next || (action === SearchAction.Replace && searchObj.replaceText.startsWith(searchText)))) {
                   searchObj.subIndexInSlide++
                   searchObj.subIndexInElement = searchObj.elementIndex !== j || subIndexInElement >= matchCount - 1 
                     ? 0
@@ -290,16 +302,22 @@ export default () => {
                 hasFind = true
                 break
               }
-              if (searchObj.subIndexInSlide - 1 >= 0 && (
+              if (reStart || (searchObj.subIndexInSlide - 1 >= 0 && (
                 matchCount > 1 
                   ? searchObj.subIndexInElement !== 0
                   : subIndexInSlide > slideTextCount - slideTextCounting
-              )) {
+              ))) {
                 // current slide
-                searchObj.subIndexInSlide--
-                searchObj.subIndexInElement = subIndexInElement > 0
-                  ? searchObj.subIndexInElement - 1
-                  : matchCount - 1
+                if (!reStart) {
+                  searchObj.subIndexInSlide--
+                  searchObj.subIndexInElement = subIndexInElement > 0
+                    ? searchObj.subIndexInElement - 1
+                    : matchCount - 1
+                }
+                else {
+                  searchObj.subIndexInSlide = slideTextCount - 1
+                  searchObj.subIndexInElement = matchCount - 1
+                }
                 searchObj.searchNum--
                 searchObj.elementIndex = j
                 hasFind = true
@@ -446,14 +464,17 @@ export default () => {
 
     // update searchObj for search next
     const { count: slideTextCount } = countInSlides(searchText, [slidesStore.slides[slideIndex]])
+    const canNext = !replaceText.startsWith(searchText)
     if (slideTextCount <= subIndexInSlide) {
       searchObj.slideIndex++
       searchObj.subIndexInSlide = 0
       searchObj.elementIndex = 0
       searchObj.subIndexInElement = 0
     }
-    searchObj.searchCount--
-    searchObj.searchNum-- // 自动搜索下一个会矫正
+    if (canNext) {
+      searchObj.searchCount--
+      searchObj.searchNum-- // 自动搜索下一个会矫正
+    }
     search(SearchAction.Replace, searchObj.slideIndex)
   }
 
