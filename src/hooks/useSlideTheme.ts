@@ -46,7 +46,7 @@ export default () => {
   // 创建原颜色与新颜色的对应关系表
   const createSlideThemeColorMap = (slide: Slide, newColors: string[]): { [key: string]: string } => {
     const oldColors = getSlideAllColors(slide)
-    const themeColorMap = {}
+    const themeColorMap: { [key: string]: string } = {}
   
     if (oldColors.length > newColors.length) {
       const analogous = tinycolor(newColors[0]).analogous(oldColors.length - newColors.length + 10)

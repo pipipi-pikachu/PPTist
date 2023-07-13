@@ -18,7 +18,7 @@
                 class="shape-clip-item" 
                 v-for="(item, key) in shapeClipPathOptions" 
                 :key="key"
-                @click="presetImageClip(key)"
+                @click="presetImageClip(key as string)"
               >
                 <div class="shape" :style="{ clipPath: item.style }"></div>
               </div>

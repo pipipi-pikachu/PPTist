@@ -10,6 +10,10 @@ interface RotatedElementData {
   rotate: number
 }
 
+interface IdMap {
+  [id: string]: string
+}
+
 /**
  * 计算元素在画布中的矩形范围旋转后的新位置范围
  * @param element 元素的位置大小和旋转角度信息
@@ -158,7 +162,7 @@ export const uniqAlignLines = (lines: AlignLine[]) => {
  * @param slides 页面列表
  */
 export const createSlideIdMap = (slides: Slide[]) => {
-  const slideIdMap = {}
+  const slideIdMap: IdMap = {}
   for (const slide of slides) {
     slideIdMap[slide.id] = nanoid(10)
   }
@@ -172,8 +176,8 @@ export const createSlideIdMap = (slides: Slide[]) => {
    * @param elements 元素列表数据
    */
 export const createElementIdMap = (elements: PPTElement[]) => {
-  const groupIdMap = {}
-  const elIdMap = {}
+  const groupIdMap: IdMap = {}
+  const elIdMap: IdMap = {}
   for (const element of elements) {
     const groupId = element.groupId
     if (groupId && !groupIdMap[groupId]) {

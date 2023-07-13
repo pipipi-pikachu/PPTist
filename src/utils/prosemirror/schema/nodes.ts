@@ -2,6 +2,10 @@ import { nodes } from 'prosemirror-schema-basic'
 import { Node, NodeSpec } from 'prosemirror-model'
 import { listItem as _listItem } from 'prosemirror-schema-list'
 
+interface Attr {
+  [key: string]: number | string
+}
+
 const orderedList: NodeSpec = {
   attrs: {
     order: {
@@ -18,7 +22,7 @@ const orderedList: NodeSpec = {
       tag: 'ol', 
       getAttrs: dom => {
         const order = ((dom as HTMLElement).hasAttribute('start') ? (dom as HTMLElement).getAttribute('start') : 1) || 1
-        const attr = { order: +order }
+        const attr: Attr = { order: +order }
 
         const { listStyleType } = (dom as HTMLElement).style
         if (listStyleType) attr['listStyleType'] = listStyleType
@@ -32,7 +36,7 @@ const orderedList: NodeSpec = {
     let style = ''
     if (listStyleType) style += `list-style-type: ${listStyleType};`
 
-    const attr = { style }
+    const attr: Attr = { style }
     if (order !== 1) attr['start'] = order
 
 
@@ -111,7 +115,7 @@ const paragraph: NodeSpec = {
     let style = ''
     if (align && align !== 'left') style += `text-align: ${align};`
 
-    const attr = { style }
+    const attr: Attr = { style }
     if (indent) attr['data-indent'] = indent
 
     return ['p', attr, 0]

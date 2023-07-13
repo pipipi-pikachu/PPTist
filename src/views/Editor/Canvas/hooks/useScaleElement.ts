@@ -79,7 +79,7 @@ const getRotateElementPoints = (element: RotateElementData, angle: number) => {
  * @param direction 当前操作的缩放点
  * @param points 旋转后的元素八个缩放点的位置
  */
-const getOppositePoint = (direction: string, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
+const getOppositePoint = (direction: OperateResizeHandlers, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
   const oppositeMap = {
     [OperateResizeHandlers.RIGHT_BOTTOM]: points.leftTopPoint,
     [OperateResizeHandlers.LEFT_BOTTOM]: points.rightTopPoint,

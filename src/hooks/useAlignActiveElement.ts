@@ -5,6 +5,10 @@ import { ElementAlignCommands } from '@/types/edit'
 import { getElementListRange, getRectRotatedOffset } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
+interface RangeMap {
+  [id: string]: ReturnType<typeof getElementListRange> 
+}
+
 export default () => {
   const slidesStore = useSlidesStore()
   const { activeElementIdList, activeElementList } = storeToRefs(useMainStore())
@@ -21,7 +25,7 @@ export default () => {
     const elementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
 
     // 如果所选择的元素为组合元素的成员，需要计算该组合的整体范围
-    const groupElementRangeMap = {}
+    const groupElementRangeMap: RangeMap = {}
     for (const activeElement of activeElementList.value) {
       if (activeElement.groupId && !groupElementRangeMap[activeElement.groupId]) {
         const groupElements = activeElementList.value.filter(item => item.groupId === activeElement.groupId)

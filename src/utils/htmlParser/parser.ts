@@ -26,7 +26,7 @@ export const hasTerminalParent = (tagName: string, stack: StackItem[]) => {
     while (currentIndex >= 0) {
       const parentTagName = stack[currentIndex].tagName
       if (parentTagName === tagName) break
-      if (tagParents.includes(parentTagName)) return true
+      if (parentTagName && tagParents.includes(parentTagName)) return true
       currentIndex--
     }
   }

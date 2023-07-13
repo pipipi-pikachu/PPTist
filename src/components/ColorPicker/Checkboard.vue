@@ -20,7 +20,10 @@ const props = defineProps({
   },
 })
 
-const checkboardCache = {}
+interface CheckboardCache {
+  [key: string]: string | null
+}
+const checkboardCache: CheckboardCache = {}
 
 const renderCheckboard = (white: string, grey: string, size: number) => {
   const canvas = document.createElement('canvas')

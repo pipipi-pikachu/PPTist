@@ -88,7 +88,7 @@ export default () => {
     let indent = 0
 
     const slices: pptxgen.TextProps[] = []
-    const parse = (obj: AST[], baseStyleObj = {}) => {
+    const parse = (obj: AST[], baseStyleObj: { [key: string]: string } = {}) => {
 
       for (const item of obj) {
         const isBlockTag = 'tagName' in item && ['div', 'li', 'p'].includes(item.tagName)
@@ -186,7 +186,7 @@ export default () => {
             if (styleObj['vertical-align'] === 'super') options.superscript = true
             if (styleObj['vertical-align'] === 'sub') options.subscript = true
           }
-          if (styleObj['text-align']) options.align = styleObj['text-align']
+          if (styleObj['text-align']) options.align = styleObj['text-align'] as pptxgen.HAlign
           if (styleObj['font-weight']) options.bold = styleObj['font-weight'] === 'bold'
           if (styleObj['font-style']) options.italic = styleObj['font-style'] === 'italic'
           if (styleObj['font-family']) options.fontFace = styleObj['font-family']

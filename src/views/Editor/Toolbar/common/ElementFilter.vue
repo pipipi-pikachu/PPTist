@@ -29,14 +29,14 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTImageElement } from '@/types/slides'
+import { ImageElementFilterKeys, PPTImageElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Slider, Switch } from 'ant-design-vue'
 
 interface FilterOption {
   label: string
-  key: string
+  key: ImageElementFilterKeys
   default: number
   value: number
   unit: string
@@ -68,7 +68,8 @@ watch(handleElement, () => {
   const filters = handleElement.value.filters
   if (filters) {
     filterOptions.value = defaultFilters.map(item => {
-      if (filters[item.key] !== undefined) return { ...item, value: parseInt(filters[item.key]) }
+      const filterItem = filters[item.key]
+      if (filterItem) return { ...item, value: parseInt(filterItem) }
       return item
     })
     hasFilters.value = true

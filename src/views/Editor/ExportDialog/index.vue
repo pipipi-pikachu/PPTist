@@ -53,7 +53,8 @@ const currentDialogComponent = computed(() => {
     'pptx': ExportPPTX,
     'pptist': ExportSpecificFile,
   }
-  return dialogMap[dialogForExport.value] || null
+  if (dialogForExport.value) return dialogMap[dialogForExport.value] || null
+  return null
 })
 </script>
 

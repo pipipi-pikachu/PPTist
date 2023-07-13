@@ -2,6 +2,10 @@ import { Directive, DirectiveBinding } from 'vue'
 
 const CTX_CLICK_OUTSIDE_HANDLER = 'CTX_CLICK_OUTSIDE_HANDLER'
 
+interface CustomHTMLElement extends HTMLElement {
+  [CTX_CLICK_OUTSIDE_HANDLER]?: (event: MouseEvent) => void
+} 
+
 const clickListener = (el: HTMLElement, event: MouseEvent, binding: DirectiveBinding) => {
   const handler = binding.value
 
@@ -13,14 +17,14 @@ const clickListener = (el: HTMLElement, event: MouseEvent, binding: DirectiveBin
 }
 
 const ClickOutsideDirective: Directive = {
-  mounted(el: HTMLElement, binding) {
+  mounted(el: CustomHTMLElement, binding) {
     el[CTX_CLICK_OUTSIDE_HANDLER] = (event: MouseEvent) => clickListener(el, event, binding)
     setTimeout(() => {
-      document.addEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
+      document.addEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER]!)
     }, 0)
   },
   
-  unmounted(el: HTMLElement) {
+  unmounted(el: CustomHTMLElement) {
     if (el[CTX_CLICK_OUTSIDE_HANDLER]) {
       document.removeEventListener('click', el[CTX_CLICK_OUTSIDE_HANDLER])
       delete el[CTX_CLICK_OUTSIDE_HANDLER]

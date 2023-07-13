@@ -194,6 +194,7 @@ export interface ImageOrShapeFlip {
  * 
  * 'opacity'?: 不透明度，默认100（%）
  */
+export type ImageElementFilterKeys = 'blur' | 'brightness' | 'contrast' | 'grayscale' | 'saturate' | 'hue-rotate' | 'opacity'
 export interface ImageElementFilters {
   'blur'?: string
   'brightness'?: string

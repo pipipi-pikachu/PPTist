@@ -114,7 +114,11 @@ import {
   StopwatchStart,
 } from '@icon-park/vue-next'
 
-export const icons = {
+interface Icons {
+  [key: string]: typeof PlayOne
+}
+
+export const icons: Icons = {
   IconPlayOne: PlayOne,
   IconFullScreenPlay: FullScreenPlay,
   IconLock: Lock,

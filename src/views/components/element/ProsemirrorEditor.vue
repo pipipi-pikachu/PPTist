@@ -20,6 +20,7 @@ import emitter, { EmitterEvents, RichTextAction, RichTextCommand } from '@/utils
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
+import { TextFormatPainterKeys } from '@/types/edit'
 
 const props = defineProps({
   elementId: {
@@ -242,10 +243,11 @@ const handleMouseup = () => {
   if (!textFormatPainter.value) return
 
   const actions: RichTextAction[] = [{ command: 'clear' }]
-  for (const key of Object.keys(textFormatPainter.value)) {
+  for (const key of Object.keys(textFormatPainter.value) as TextFormatPainterKeys[]) {
     const command = key
     const value = textFormatPainter.value[key]
-    if (value) actions.push({ command, value })
+    if (value === true) actions.push({ command })
+    else if (value) actions.push({ command, value })
   }
   execCommand({ action: actions })
   mainStore.setTextFormatPainter(null)

@@ -18,7 +18,7 @@
       :width="elementInfo.width"
       :height="elementInfo.height"
       :outline="elementInfo.outline"
-      :createPath="clipShape.createPath"
+      :createPath="clipShape.createPath!"
     />
   </div>
 </template>
