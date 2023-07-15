@@ -101,7 +101,7 @@
       </Popover>
     </div>
     <ButtonGroup class="row">
-      <Popover trigger="click" v-model:visible="presetThemesVisible">
+      <Popover trigger="click" v-model:open="presetThemesVisible">
         <template #content>
           <div class="preset-themes">
             <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index">
@@ -135,7 +135,7 @@
     <ElementOutline />
 
     <Modal
-      v-model:visible="chartDataEditorVisible" 
+      v-model:open="chartDataEditorVisible" 
       :footer="null" 
       centered
       :closable="false"

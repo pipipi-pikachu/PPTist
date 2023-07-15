@@ -9,7 +9,7 @@
 
     <ButtonGroup class="row">
       <Button style="flex: 5;" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
-      <Popover trigger="click" v-model:visible="clipPanelVisible">
+      <Popover trigger="click" v-model:open="clipPanelVisible">
         <template #content>
           <div class="clip">
             <div class="title">按形状：</div>

@@ -139,6 +139,7 @@ const expPDF = () => {
 
   .title {
     width: 100px;
+    line-height: 1;
   }
   .config-item {
     flex: 1;

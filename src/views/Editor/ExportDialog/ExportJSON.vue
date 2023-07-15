@@ -39,11 +39,12 @@ const { exportJSON } = useExport()
 .preview {
   width: 100%;
   height: calc(100% - 100px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background-color: #f9f9f9;
   color: #0451a5;
+  overflow: auto;
+}
+pre {
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
 .btns {
   width: 300px;

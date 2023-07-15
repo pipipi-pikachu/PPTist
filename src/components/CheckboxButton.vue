@@ -21,7 +21,9 @@ defineProps({
   font-size: 13px;
   padding: 0 15px;
   height: 32px;
+  line-height: 32px;
   text-align: center;
+  color: $textColor;
   cursor: pointer;
 
   &:hover {

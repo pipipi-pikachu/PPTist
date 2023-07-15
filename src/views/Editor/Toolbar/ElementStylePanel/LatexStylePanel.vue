@@ -28,7 +28,7 @@
     </div>
 
     <Modal
-      v-model:visible="latexEditorVisible" 
+      v-model:open="latexEditorVisible" 
       :footer="null" 
       centered
       :width="880"

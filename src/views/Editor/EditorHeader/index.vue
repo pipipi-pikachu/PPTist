@@ -71,7 +71,7 @@
       width="320"
       placement="right"
       :closable="false"
-      :visible="hotkeyDrawerVisible"
+      :open="hotkeyDrawerVisible"
       @close="hotkeyDrawerVisible = false"
     >
       <HotkeyDoc />

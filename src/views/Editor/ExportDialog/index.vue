@@ -60,7 +60,7 @@ const currentDialogComponent = computed(() => {
 
 <style lang="scss" scoped>
 .export-dialog {
-  margin: -24px;
+  margin: -20px -24px;
 }
 .tabs {
   height: 50px;

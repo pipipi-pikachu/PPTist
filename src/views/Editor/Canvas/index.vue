@@ -83,7 +83,7 @@
     <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
 
     <Modal
-      v-model:visible="linkDialogVisible" 
+      v-model:open="linkDialogVisible" 
       :footer="null" 
       centered
       :width="540"

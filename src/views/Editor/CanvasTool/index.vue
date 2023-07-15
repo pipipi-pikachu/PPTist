@@ -10,11 +10,11 @@
     </div>
 
     <div class="add-element-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字" :align="{ offset: [0, 0] }">
         <div class="handler-item group-btn">
           <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
           
-          <Popover trigger="click" v-model:visible="textTypeSelectVisible">
+          <Popover trigger="click" v-model:open="textTypeSelectVisible">
             <template #content>
               <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
               <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
@@ -24,49 +24,49 @@
         </div>
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片" :align="{ offset: [0, 0] }">
           <IconPicture class="handler-item" />
         </Tooltip>
       </FileInput>
-      <Popover trigger="click" v-model:visible="shapePoolVisible">
+      <Popover trigger="click" v-model:open="shapePoolVisible">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状" :align="{ offset: [0, 0] }">
           <IconGraphicDesign class="handler-item" :class="{ 'active': creatingElement?.type === 'shape' }" />
         </Tooltip>
       </Popover>
-      <Popover trigger="click" v-model:visible="linePoolVisible">
+      <Popover trigger="click" v-model:open="linePoolVisible">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条" :align="{ offset: [0, 0] }">
           <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" />
         </Tooltip>
       </Popover>
-      <Popover trigger="click" v-model:visible="chartPoolVisible">
+      <Popover trigger="click" v-model:open="chartPoolVisible">
         <template #content>
           <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表" :align="{ offset: [0, 0] }">
           <IconChartProportion class="handler-item" />
         </Tooltip>
       </Popover>
-      <Popover trigger="click" v-model:visible="tableGeneratorVisible">
+      <Popover trigger="click" v-model:open="tableGeneratorVisible">
         <template #content>
           <TableGenerator
             @close="tableGeneratorVisible = false"
             @insert="({ row, col }) => { createTableElement(row, col); tableGeneratorVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格" :align="{ offset: [0, 0] }">
           <IconInsertTable class="handler-item" />
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式" :align="{ offset: [0, 0] }">
         <IconFormula class="handler-item" @click="latexEditorVisible = true" />
       </Tooltip>
-      <Popover trigger="click" v-model:visible="mediaInputVisible">
+      <Popover trigger="click" v-model:open="mediaInputVisible">
         <template #content>
           <MediaInput 
             @close="mediaInputVisible = false"
@@ -74,7 +74,7 @@
             @insertAudio="src => { createAudioElement(src); mediaInputVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入音视频">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入音视频" :align="{ offset: [0, 0] }">
           <IconVideoTwo class="handler-item" />
         </Tooltip>
       </Popover>
@@ -82,7 +82,7 @@
 
     <div class="right-handler">
       <IconMinus class="handler-item viewport-size" @click="scaleCanvas('-')" />
-      <Popover trigger="click" v-model:visible="canvasScaleVisible">
+      <Popover trigger="click" v-model:open="canvasScaleVisible">
         <template #content>
           <div class="viewport-size-preset">
             <div 
@@ -102,7 +102,7 @@
     </div>
 
     <Modal
-      v-model:visible="latexEditorVisible" 
+      v-model:open="latexEditorVisible" 
       :footer="null" 
       centered
       :width="880"

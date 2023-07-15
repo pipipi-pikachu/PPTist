@@ -19,7 +19,7 @@
   <SelectPanel v-if="showSelectPanel" />
 
   <Modal
-    :visible="!!dialogForExport" 
+    :open="!!dialogForExport" 
     :footer="null" 
     centered
     :closable="false"

@@ -163,7 +163,7 @@
         ><IconFormatBrush /></CheckboxButton>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="超链接">
-        <Popover placement="bottomRight" trigger="click" v-model:visible="linkPopoverVisible">
+        <Popover placement="bottomRight" trigger="click" v-model:open="linkPopoverVisible">
           <template #content>
             <div class="link-popover">
               <Input v-model:value="link" placeholder="请输入超链接" />
@@ -210,7 +210,7 @@
             @click="emitRichTextCommand('bulletList')"
           ><IconList /></Button>
         </Tooltip>
-        <Popover trigger="click" v-model:visible="bulletListPanelVisible">
+        <Popover trigger="click" v-model:open="bulletListPanelVisible">
           <template #content>
             <div class="list-wrap">
               <ul class="list" 
@@ -235,7 +235,7 @@
             @click="emitRichTextCommand('orderedList')"
           ><IconOrderedList /></Button>
         </Tooltip>
-        <Popover trigger="click" v-model:visible="orderedListPanelVisible">
+        <Popover trigger="click" v-model:open="orderedListPanelVisible">
           <template #content>
             <div class="list-wrap">
               <ul class="list" 

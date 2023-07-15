@@ -37,9 +37,8 @@ defineProps({
   height: 100%;
 }
 .color-btn-icon {
-  width: 30px;
-  font-size: 12px;
-  margin-top: 2px;
+  width: 34px;
+  font-size: 13px;
   color: #bfbfbf;
 }
 </style>

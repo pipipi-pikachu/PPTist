@@ -3,8 +3,8 @@
     <div class="element-animation" v-if="handleElement">
       <Popover 
         trigger="click" 
-        v-model:visible="animationPoolVisible" 
-        @visibleChange="visible => handlePopoverVisibleChange(visible)"
+        v-model:open="animationPoolVisible" 
+        @openChange="visible => handlePopoverVisibleChange(visible)"
       >
         <template #content>
           <div class="tabs">

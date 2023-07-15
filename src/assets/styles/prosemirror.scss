@@ -18,10 +18,10 @@
 
   p {
     text-indent: var(--textIndent);
-  }
-
-  p + p {
     margin-top: var(--paragraphSpace);
+  }
+  p:first-child {
+    margin-top: 0;
   }
 
   ul {
@@ -44,10 +44,10 @@
 
   code {
     background-color: $borderColor;
-    padding: 1px 3px;
+    padding: 2px 6px;
     margin: 0 1px;
-    border-radius: 2px;
-    font-family: inherit;
+    border-radius: 4px;
+    font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
   blockquote {
@@ -57,7 +57,7 @@
     margin-left: 0;
     margin-right: 0;
     font-style: italic;
-    border-left: 5px solid #ccc;
+    border-left: 4px solid #ddd;
   }
 
   [data-indent='1'] {

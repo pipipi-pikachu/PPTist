@@ -5,28 +5,19 @@
   padding-top: 5px !important;
 }
 .ant-popover-arrow {
-  display: none;
+  display: none !important;
 }
 .ant-popover-inner {
-  box-shadow: $boxShadow;
-  border: 1px solid $borderColor;
-}
-.ant-popover-inner-content {
-  padding: 12px !important;
+  box-shadow: $boxShadow !important;
+  border: 1px solid $borderColor !important;
 }
 
 // dropdown
 .ant-dropdown-menu {
   min-width: 150px;
-  box-shadow: $boxShadow;
-  border: 1px solid $borderColor;
-  margin-top: -4px;
-}
-.ant-dropdown-menu-item {
-
-  &:hover {
-    background-color: rgba($color: $themeColor, $alpha: .2);
-  }
+  box-shadow: $boxShadow !important;
+  border: 1px solid $borderColor !important;
+  margin-top: -4px !important;
 }
 
 // button
@@ -43,10 +34,10 @@
 
 // slider
 .ant-slider-track {
-  background-color: $themeColor;
+  background-color: $themeColor !important;
 }
 .ant-slider-handle {
-  border-color: $themeColor;
+  border-color: $themeColor !important;
 }
 
 // select
@@ -54,16 +45,14 @@
   user-select: none;
   overflow: hidden;
 }
-.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-  background-color: rgba($color: $themeColor, $alpha: .2);
+.ant-select-arrow {
+  font-size: 13px !important;
 }
 
 // tooltip
 .ant-tooltip-inner {
   font-size: 12px;
 }
-
-// input
-.ant-input-number-input {
-  line-height: 30px;
+.ant-tooltip .ant-tooltip-arrow::before {
+  height: 4px !important;
 }

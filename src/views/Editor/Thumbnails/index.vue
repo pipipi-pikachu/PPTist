@@ -7,7 +7,7 @@
   >
     <div class="add-slide">
       <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
-      <Popover trigger="click" placement="bottomLeft" v-model:visible="presetLayoutPopoverVisible">
+      <Popover trigger="click" placement="bottomLeft" v-model:open="presetLayoutPopoverVisible">
         <template #content>
           <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
         </template>

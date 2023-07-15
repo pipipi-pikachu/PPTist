@@ -1,7 +1,19 @@
 <template>
-  <Screen v-if="screening" />
-  <Editor v-else-if="_isPC" />
-  <Mobile v-else />
+  <ConfigProvider
+    :theme="{
+      token: {
+        colorPrimary: '#d14424',
+        colorText: '#41464b',
+        borderRadius: 2,
+        fontSize: 13,
+        lineHeight: 1.5715,
+      },
+    }"
+  >
+    <Screen v-if="screening" />
+    <Editor v-else-if="_isPC" />
+    <Mobile v-else />
+  </ConfigProvider>
 </template>
 
 <script lang="ts" setup>
@@ -15,6 +27,8 @@ import { isPC } from './utils/common'
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
 import Mobile from './views/Mobile/index.vue'
+
+import { ConfigProvider } from 'ant-design-vue'
 
 const _isPC = isPC()
 

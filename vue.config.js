@@ -12,17 +12,6 @@ module.exports = {
           @import '~@/assets/styles/mixin.scss';
         `,
       },
-      less: {
-        lessOptions: {
-          modifyVars: {
-            'primary-color': '#d14424',
-            'text-color': '#41464b',
-            'font-size-base': '13px',
-            'border-radius-base': '2px',
-          },
-          javascriptEnabled: true,
-        },
-      },
     },
   },
   configureWebpack: {

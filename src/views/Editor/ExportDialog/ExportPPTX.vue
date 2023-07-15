@@ -103,6 +103,7 @@ const selectedSlides = computed(() => {
   .title {
     width: 100px;
     position: relative;
+    line-height: 1;
 
     &::after {
       content: attr(data-range);
