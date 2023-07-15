@@ -45,7 +45,7 @@ const tabs: TabItem[] = [
   { key: 'pdf', label: '打印 / 导出 PDF' },
 ]
 
-const currentDialogComponent = computed(() => {
+const currentDialogComponent = computed<unknown>(() => {
   const dialogMap = {
     'image': ExportImage,
     'json': ExportJSON,

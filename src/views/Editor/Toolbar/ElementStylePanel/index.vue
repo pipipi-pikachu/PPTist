@@ -35,7 +35,7 @@ const panelMap = {
 
 const { activeElementIdList, activeElementList, handleElement, activeGroupElementId } = storeToRefs(useMainStore())
 
-const currentPanelComponent = computed(() => {
+const currentPanelComponent = computed<unknown>(() => {
   if (activeElementIdList.value.length > 1) {
     if (!activeGroupElementId.value) return MultiStylePanel
 

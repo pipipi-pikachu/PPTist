@@ -39,7 +39,7 @@ const props = defineProps({
   },
 })
 
-const currentElementComponent = computed(() => {
+const currentElementComponent = computed<unknown>(() => {
   const elementTypeMap = {
     [ElementTypes.IMAGE]: BaseImageElement,
     [ElementTypes.TEXT]: BaseTextElement,

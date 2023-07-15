@@ -98,7 +98,7 @@ const props = defineProps({
 const { canvasScale, toolbarState } = storeToRefs(useMainStore())
 const { formatedAnimations } = storeToRefs(useSlidesStore())
 
-const currentOperateComponent = computed(() => {
+const currentOperateComponent = computed<unknown>(() => {
   const elementTypeMap = {
     [ElementTypes.IMAGE]: ImageElementOperate,
     [ElementTypes.TEXT]: TextElementOperate,
