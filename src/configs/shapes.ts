@@ -160,7 +160,7 @@ export const SHAPE_PATH_FORMULAS = {
     defaultValue: 0.5,
     range: [0, 1],
     relative: 'left',
-    getBaseSize: (width: number, height: number) => width,
+    getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
       const vertex = width * value
       return `M ${vertex} 0 L 0 ${height} L ${width} ${height} Z`
@@ -171,7 +171,7 @@ export const SHAPE_PATH_FORMULAS = {
     defaultValue: 0.25,
     range: [0, 0.9],
     relative: 'left',
-    getBaseSize: (width: number, height: number) => width,
+    getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
       const point = width * value
       return `M ${point} 0 L ${width} 0 L ${width - point} ${height} L 0 ${height} Z`
@@ -182,7 +182,7 @@ export const SHAPE_PATH_FORMULAS = {
     defaultValue: 0.25,
     range: [0, 0.9],
     relative: 'right',
-    getBaseSize: (width: number, height: number) => width,
+    getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
       const point = width * value
       return `M 0 0 L ${width - point} 0 L ${width} ${height} L ${point} ${height} Z`
@@ -193,7 +193,7 @@ export const SHAPE_PATH_FORMULAS = {
     defaultValue: 0.25,
     range: [0, 0.5],
     relative: 'left',
-    getBaseSize: (width: number, height: number) => width,
+    getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
       const point = width * value
       return `M ${point} 0 L ${width - point} 0 L ${width} ${height} L 0 ${height} Z`
@@ -215,7 +215,7 @@ export const SHAPE_PATH_FORMULAS = {
     defaultValue: 0.2,
     range: [0, 0.9],
     relative: 'right',
-    getBaseSize: (width: number, height: number) => width,
+    getBaseSize: (width: number) => width,
     formula: (width: number, height: number, value: number) => {
       const point = width * value
       return `M ${width} ${height / 2} L ${width - point} 0 L 0 0 L ${point} ${height / 2} L 0 ${height} L ${width - point} ${height} Z`

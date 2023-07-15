@@ -1,7 +1,7 @@
 import { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { CreateElementSelectionData, CreatingLineElement, CreatingShapeElement } from '@/types/edit'
+import { CreateElementSelectionData } from '@/types/edit'
 import useCreateElement from '@/hooks/useCreateElement'
 
 export default (viewportRef: Ref<HTMLElement | undefined>) => {

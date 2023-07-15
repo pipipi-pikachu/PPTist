@@ -123,6 +123,7 @@ const paragraph: NodeSpec = {
 }
 
 // https://github.com/pipipi-pikachu/PPTist/issues/134
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { hard_break, ...otherNodes } = nodes
 
 export default {

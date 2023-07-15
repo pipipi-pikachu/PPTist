@@ -34,7 +34,7 @@ import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 
 import VideoPlayer from './VideoPlayer/index.vue'
 
-const props = defineProps({
+defineProps({
   elementInfo: {
     type: Object as PropType<PPTVideoElement>,
     required: true,
