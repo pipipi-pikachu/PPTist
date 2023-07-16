@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch, PropType } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -95,12 +95,9 @@ import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
 import { Divider } from 'ant-design-vue'
 
-const props = defineProps({
-  changeViewMode: {
-    type: Function as PropType<(mode: 'base' | 'presenter') => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  changeViewMode: (mode: 'base' | 'presenter') => void
+}>()
 
 const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
 

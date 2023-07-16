@@ -38,7 +38,6 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
@@ -46,19 +45,11 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import VideoPlayer from './VideoPlayer/index.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTVideoElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTVideoElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTVideoElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTVideoElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const { canvasScale } = storeToRefs(useMainStore())
 

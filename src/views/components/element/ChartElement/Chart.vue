@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, PropType, ref, watch } from 'vue'
+import { computed, inject, onMounted, ref, watch } from 'vue'
 import tinycolor from 'tinycolor2'
 import { BarChart, LineChart, PieChart } from 'chartist'
 import { ChartData, ChartOptions, ChartType } from '@/types/slides'
@@ -35,41 +35,17 @@ import { injectKeySlideScale } from '@/types/injectKey'
 
 import 'chartist/dist/index.css'
 
-const props = defineProps({
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  type: {
-    type: String as PropType<ChartType>,
-    required: true,
-  },
-  data: {
-    type: Object as PropType<ChartData>,
-    required: true,
-  },
-  options: {
-    type: Object as PropType<ChartOptions>,
-  },
-  themeColor: {
-    type: Array as PropType<string[]>,
-    required: true,
-  },
-  legends: {
-    type: Array as PropType<string[]>,
-    required: true,
-  },
-  gridColor: {
-    type: String,
-  },
-  legend: {
-    type: String as PropType<'' | 'top' | 'bottom'>,
-  },
-})
+const props = defineProps<{
+  width: number
+  height: number
+  type: ChartType
+  data: ChartData
+  themeColor: string[]
+  legends: string[]
+  options?: ChartOptions
+  gridColor?: string
+  legend?: '' | 'top' | 'bottom'
+}>()
 
 const chartRef = ref<HTMLElement>()
 const slideScale = inject(injectKeySlideScale) || ref(1)

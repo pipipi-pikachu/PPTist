@@ -19,15 +19,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { PPTVideoElement } from '@/types/slides'
 
-defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTVideoElement>,
-    required: true,
-  },
-})
+defineProps<{
+  elementInfo: PPTVideoElement
+}>()
 </script>
 
 <style lang="scss" scoped>

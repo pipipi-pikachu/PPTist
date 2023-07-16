@@ -55,19 +55,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { ChartData } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 
 import { Button } from 'ant-design-vue'
 
-const props = defineProps({
-  data: {
-    type: Object as PropType<ChartData>,
-    required: true,
-  }
-})
+const props = defineProps<{
+  data: ChartData
+}>()
 
 const emit = defineEmits<{
   (event: 'save', payload: ChartData): void

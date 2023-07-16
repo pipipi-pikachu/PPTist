@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, PropType, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTAudioElement } from '@/types/slides'
@@ -45,12 +45,9 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import AudioPlayer from './AudioPlayer.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTAudioElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTAudioElement
+}>()
 
 const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
 

@@ -43,18 +43,15 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, computed, StyleValue } from 'vue'
+import { computed, StyleValue } from 'vue'
 import { PPTTextElement } from '@/types/slides'
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTTextElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTTextElement
+}>()
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)

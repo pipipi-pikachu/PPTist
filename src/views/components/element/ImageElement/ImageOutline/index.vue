@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { PPTImageElement } from '@/types/slides'
 import useClipImage from '../useClipImage'
 
@@ -32,12 +32,9 @@ import ImageRectOutline from './ImageRectOutline.vue'
 import ImageEllipseOutline from './ImageEllipseOutline.vue'
 import ImagePolygonOutline from './ImagePolygonOutline.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTImageElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTImageElement
+}>()
 
 const clip = computed(() => props.elementInfo.clip)
 const { clipShape } = useClipImage(clip)

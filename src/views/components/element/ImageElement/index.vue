@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ImageElementClip, PPTImageElement } from '@/types/slides'
@@ -81,19 +81,11 @@ import useFilter from './useFilter'
 import ImageOutline from './ImageOutline/index.vue'
 import ImageClipHandler from './ImageClipHandler.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTImageElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTImageElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTImageElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTImageElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

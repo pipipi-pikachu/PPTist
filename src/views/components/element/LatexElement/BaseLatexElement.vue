@@ -35,15 +35,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { PPTLatexElement } from '@/types/slides'
 
-defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTLatexElement>,
-    required: true,
-  },
-})
+defineProps<{
+  elementInfo: PPTLatexElement
+}>()
 </script>
 
 <style lang="scss" scoped>

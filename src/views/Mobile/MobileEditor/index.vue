@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, PropType, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTElement } from '@/types/slides'
@@ -58,12 +58,9 @@ import SlideToolbar from './SlideToolbar.vue'
 import ElementToolbar from './ElementToolbar.vue'
 import Header from './Header.vue'
 
-defineProps({
-  changeMode: {
-    type: Function as PropType<(mode: Mode) => void>,
-    required: true,
-  },
-})
+defineProps<{
+  changeMode: (mode: Mode) => void
+}>()
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()

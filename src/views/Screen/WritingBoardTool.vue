@@ -104,23 +104,14 @@ const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d
 
 type WritingBoardModel = 'pen' | 'mark' | 'eraser'
 
-defineProps({
-  slideWidth: {
-    type: Number,
-    required: true,
-  },
-  slideHeight: {
-    type: Number,
-    required: true,
-  },
-  left: {
-    type: Number,
-    default: -5,
-  },
-  top: {
-    type: Number,
-    default: -5,
-  },
+withDefaults(defineProps<{
+  slideWidth: number
+  slideHeight: number
+  left?: number
+  top?: number
+}>(), {
+  left: -5,
+  top: -5,
 })
 
 const emit = defineEmits<{

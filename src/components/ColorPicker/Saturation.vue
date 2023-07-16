@@ -19,20 +19,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, PropType, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 import { throttle, clamp } from 'lodash'
 
-const props = defineProps({
-  value: {
-    type: Object as PropType<ColorFormats.RGBA>,
-    required: true,
-  },
-  hue: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  value: ColorFormats.RGBA
+  hue: number
+}>()
 
 const emit = defineEmits<{
   (event: 'colorChange', payload: ColorFormats.HSVA): void

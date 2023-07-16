@@ -8,15 +8,12 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-  tip: {
-    type: String,
-    default: '',
-  },
+withDefaults(defineProps<{
+  loading?: boolean
+  tip?: string
+}>(), {
+  loading: false,
+  tip: '',
 })
 </script>
 

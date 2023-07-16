@@ -47,15 +47,12 @@ import { fillDigit } from '@/utils/common'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
 
-defineProps({
-  left: {
-    type: Number,
-    default: 5,
-  },
-  top: {
-    type: Number,
-    default: 5,
-  },
+withDefaults(defineProps<{
+  left?: number
+  top?: number
+}>(), {
+  left: 5,
+  top: 5,
 })
 
 const emit = defineEmits<{

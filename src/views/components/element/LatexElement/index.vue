@@ -42,24 +42,15 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { PPTLatexElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTLatexElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTLatexElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTLatexElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTLatexElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
   if (props.elementInfo.lock) return

@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTTableElement, TableCell } from '@/types/slides'
@@ -55,19 +55,11 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import EditableTable from './EditableTable.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTTableElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTTableElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTTableElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTTableElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

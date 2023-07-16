@@ -34,7 +34,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTShapeElement, PPTVideoElement, PPTLatexElement, PPTAudioElement } from '@/types/slides'
@@ -47,24 +47,12 @@ import BorderLine from './BorderLine.vue'
 
 type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement | PPTAudioElement
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTElement>,
-    required: true,
-  },
-  handlerVisible: {
-    type: Boolean,
-    required: true,
-  },
-  rotateElement: {
-    type: Function as PropType<(element: PPTElement) => void>,
-    required: true,
-  },
-  scaleElement: {
-    type: Function as PropType<(e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTElement
+  handlerVisible: boolean
+  rotateElement: (element: PPTElement) => void
+  scaleElement: (e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void
+}>()
 
 const { canvasScale } = storeToRefs(useMainStore())
 

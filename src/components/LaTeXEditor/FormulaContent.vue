@@ -23,20 +23,11 @@
 import { computed, ref, watch } from 'vue'
 import { hfmath } from './hfmath'
 
-const props = defineProps({
-  latex: {
-    type: String,
-    required: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  latex: string
+  width: number
+  height: number
+}>()
 
 const box = ref({ x: 0, y: 0, w: 0, h: 0 })
 const pathd = ref('')

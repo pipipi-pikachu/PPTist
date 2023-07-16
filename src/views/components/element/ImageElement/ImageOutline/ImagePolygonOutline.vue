@@ -20,27 +20,16 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, toRef } from 'vue'
+import { toRef } from 'vue'
 import { PPTElementOutline } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 
-const props = defineProps({
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  outline: {
-    type: Object as PropType<PPTElementOutline>
-  },
-  createPath: {
-    type: Function,
-    required: true,
-  },
-})
+const props = defineProps<{
+  width: number
+  height: number
+  createPath: (width: number, height: number) => string
+  outline?: PPTElementOutline
+}>()
 
 const {
   outlineWidth,

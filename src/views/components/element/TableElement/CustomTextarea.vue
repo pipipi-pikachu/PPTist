@@ -14,11 +14,10 @@
 import { onBeforeUnmount, ref, watch } from 'vue'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 
-const props = defineProps({
-  value: {
-    type: String,
-    default: '',
-  },
+const props = withDefaults(defineProps<{
+  value?: string
+}>(), {
+  value: '',
 })
 
 const emit = defineEmits<{

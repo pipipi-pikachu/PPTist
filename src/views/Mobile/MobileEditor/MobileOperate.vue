@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, computed } from 'vue'
+import { computed } from 'vue'
 import { PPTElement, PPTLineElement } from '@/types/slides'
 import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate'
 import { OperateResizeHandlers } from '@/types/edit'
@@ -38,24 +38,12 @@ import { OperateResizeHandlers } from '@/types/edit'
 import BorderLine from '@/views/Editor/Canvas/Operate/BorderLine.vue'
 import ResizeHandler from '@/views/Editor/Canvas/Operate/ResizeHandler.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<Exclude<PPTElement, PPTLineElement>>,
-    required: true,
-  },
-  isSelected: {
-    type: Boolean,
-    required: true,
-  },
-  canvasScale: {
-    type: Number,
-    required: true,
-  },
-  scaleElement: {
-    type: Function as PropType<(e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: Exclude<PPTElement, PPTLineElement>
+  isSelected: boolean
+  canvasScale: number
+  scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
+}>()
 
 const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
 

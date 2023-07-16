@@ -9,15 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import tinycolor, { ColorFormats } from 'tinycolor2'
 
-const props = defineProps({
-  value: {
-    type: Object as PropType<ColorFormats.RGBA>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  value: ColorFormats.RGBA
+}>()
 
 const emit = defineEmits<{
   (event: 'colorChange', payload: ColorFormats.RGBA): void

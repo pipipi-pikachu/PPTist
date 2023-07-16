@@ -18,19 +18,15 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
-const props = defineProps({
-  turnSlideToIndex: {
-    type: Function as PropType<(index: number) => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  turnSlideToIndex: (index: number) => void
+}>()
 
 const emit = defineEmits<{
   (event: 'close'): void

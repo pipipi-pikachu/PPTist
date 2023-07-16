@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { PPTImageElement } from '@/types/slides'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
@@ -57,12 +57,9 @@ import useFilter from './useFilter'
 
 import ImageOutline from './ImageOutline/index.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTImageElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTImageElement
+}>()
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)

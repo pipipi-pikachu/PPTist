@@ -118,27 +118,15 @@
 import { computed, ref } from 'vue'
 import useMSE from './useMSE'
 
-const props = defineProps({
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  src: {
-    type: String,
-    required: true,
-  },
-  poster: {
-    type: String,
-    default: '',
-  },
-  scale: {
-    type: Number,
-    default: 1,
-  },
+const props = withDefaults(defineProps<{
+  width: number
+  height: number
+  src: string
+  poster?: string
+  scale?: number
+}>(), {
+  poster: '',
+  scale: 1,
 })
 
 const secondToTime = (second = 0) => {

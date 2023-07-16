@@ -5,19 +5,14 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-const props = defineProps({
-  size: {
-    type: Number,
-    default: 8,
-  },
-  white: {
-    type: String,
-    default: '#fff',
-  },
-  grey: {
-    type: String,
-    default: '#e6e6e6',
-  },
+const props = withDefaults(defineProps<{
+  size?: number
+  white?: string
+  grey?: string
+}>(), {
+  size: 8,
+  white: '#fff',
+  grey: '#e6e6e6',
 })
 
 interface CheckboardCache {

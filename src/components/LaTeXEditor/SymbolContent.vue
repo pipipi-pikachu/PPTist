@@ -6,12 +6,9 @@
 import { computed } from 'vue'
 import { hfmath } from './hfmath'
 
-const props = defineProps({
-  latex: {
-    type: String,
-    required: true,
-  },
-})
+const props = defineProps<{
+  latex: string
+}>()
 
 const svg = computed(() => {
   const eq = new hfmath(props.latex)

@@ -17,17 +17,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, PropType, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 
 import Checkboard from './Checkboard.vue'
 import { ColorFormats } from 'tinycolor2'
 
-const props = defineProps({
-  value: {
-    type: Object as PropType<ColorFormats.RGBA>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  value: ColorFormats.RGBA
+}>()
 
 const emit = defineEmits<{
   (event: 'colorChange', payload: ColorFormats.RGBA): void

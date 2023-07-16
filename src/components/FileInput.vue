@@ -14,12 +14,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-
-defineProps({
-  accept: {
-    type: String,
-    default: 'image/*',
-  },
+withDefaults(defineProps<{
+  accept?: string
+}>(), {
+  accept: 'image/*',
 })
 
 const emit = defineEmits<{

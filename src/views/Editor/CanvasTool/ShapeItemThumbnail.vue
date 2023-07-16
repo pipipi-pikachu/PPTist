@@ -27,15 +27,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { ShapePoolItem } from '@/configs/shapes'
 
-defineProps({
-  shape: {
-    type: Object as PropType<ShapePoolItem>,
-    required: true,
-  },
-})
+defineProps<{
+  shape: ShapePoolItem
+}>()
 </script>
 
 <style lang="scss" scoped>

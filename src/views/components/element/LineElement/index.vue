@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { PPTLineElement } from '@/types/slides'
 import { getLineElementPath } from '@/utils/element'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -68,19 +68,11 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import LinePointMarker from './LinePointMarker.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTLineElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTLineElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTLineElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTLineElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
   if (props.elementInfo.lock) return

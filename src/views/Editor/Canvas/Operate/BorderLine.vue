@@ -3,18 +3,13 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { OperateBorderLines } from '@/types/edit'
 
-defineProps({
-  type: {
-    type: String as PropType<OperateBorderLines>,
-    required: true,
-  },
-  isWide: {
-    type: Boolean,
-    default: false,
-  },
+withDefaults(defineProps<{
+  type: OperateBorderLines
+  isWide?: boolean
+}>(), {
+  isWide: false
 })
 </script>
 

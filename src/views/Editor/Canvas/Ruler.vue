@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 
@@ -48,12 +48,9 @@ interface ViewportStyles {
   height: number
 }
 
-const props = defineProps({
-  viewportStyles: {
-    type: Object as PropType<ViewportStyles>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  viewportStyles: ViewportStyles
+}>()
 
 const { canvasScale } = storeToRefs(useMainStore())
 

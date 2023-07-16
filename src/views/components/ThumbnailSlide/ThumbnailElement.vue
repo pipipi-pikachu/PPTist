@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { ElementTypes, PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
@@ -28,16 +28,10 @@ import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexE
 import BaseVideoElement from '@/views/components/element/VideoElement/BaseVideoElement.vue'
 import BaseAudioElement from '@/views/components/element/AudioElement/BaseAudioElement.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTElement>,
-    required: true,
-  },
-  elementIndex: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTElement
+  elementIndex: number
+}>()
 
 const currentElementComponent = computed<unknown>(() => {
   const elementTypeMap = {

@@ -17,29 +17,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 
-const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  position: {
-    type: String as PropType<'start' | 'end'>,
-    required: true,
-  },
-  type: {
-    type: String as PropType<'dot' | 'arrow'>,
-    required: true,
-  },
-  color: {
-    type: String,
-  },
-  baseSize: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  id: string
+  position: 'start' | 'end'
+  type: 'dot' | 'arrow'
+  baseSize: number
+  color?: string
+}>()
 
 const pathMap = {
   dot: 'm0 5a5 5 0 1 0 10 0a5 5 0 1 0 -10 0z',

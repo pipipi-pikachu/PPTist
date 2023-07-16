@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, PropType, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTShapeElement, ShapeText } from '@/types/slides'
@@ -91,19 +91,11 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import GradientDefs from './GradientDefs.vue'
 import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTShapeElement>,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTShapeElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  contextmenus: {
-    type: Function as PropType<() => ContextmenuItem[] | null>,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTShapeElement
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTShapeElement, canMove?: boolean) => void
+  contextmenus: () => ContextmenuItem[] | null
+}>()
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

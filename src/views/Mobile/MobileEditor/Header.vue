@@ -9,18 +9,14 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSnapshotStore } from '@/store'
 import { Mode } from '@/types/mobile'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-defineProps({
-  changeMode: {
-    type: Function as PropType<(mode: Mode) => void>,
-    required: true,
-  },
-})
+defineProps<{
+  changeMode: (mode: Mode) => void
+}>()
 
 const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 const { redo, undo } = useHistorySnapshot()

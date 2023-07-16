@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, PropType, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { PPTVideoElement } from '@/types/slides'
@@ -34,12 +34,9 @@ import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 
 import VideoPlayer from './VideoPlayer/index.vue'
 
-defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTVideoElement>,
-    required: true,
-  },
-})
+defineProps<{
+  elementInfo: PPTVideoElement
+}>()
 
 const { currentSlide } = storeToRefs(useSlidesStore())
 

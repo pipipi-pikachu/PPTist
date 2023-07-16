@@ -28,31 +28,18 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 
-const props = defineProps({
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  left: {
-    type: Number,
-    default: 10,
-  },
-  top: {
-    type: Number,
-    default: 10,
-  },
-  title: {
-    type: String,
-    default: '',
-  },
-  moveable: {
-    type: Boolean,
-    default: true,
-  },
+const props = withDefaults(defineProps<{
+  width: number
+  height: number
+  left?: number
+  top?: number
+  title?: string
+  moveable?: boolean
+}>(), {
+  left: 10,
+  top: 10,
+  title: '',
+  moveable: true,
 })
 
 const emit = defineEmits<{

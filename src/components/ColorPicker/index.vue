@@ -89,11 +89,10 @@ import EditableInput from './EditableInput.vue'
 
 import { message } from 'ant-design-vue'
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: '#e86b99',
-  },
+const props = withDefaults(defineProps<{
+  modelValue?: string
+}>(), {
+  modelValue: '#e86b99',
 })
 
 const emit = defineEmits<{

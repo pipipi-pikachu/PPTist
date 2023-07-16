@@ -21,29 +21,17 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { ContextmenuItem, Axis } from './types'
 
 import MenuContent from './MenuContent.vue'
 
-const props = defineProps({
-  axis: {
-    type: Object as PropType<Axis>,
-    required: true,
-  },
-  el: {
-    type: Object as PropType<HTMLElement>,
-    required: true,
-  },
-  menus: {
-    type: Array as PropType<ContextmenuItem[]>,
-    required: true,
-  },
-  removeContextmenu: {
-    type: Function,
-    required: true,
-  },
-})
+const props = defineProps<{
+  axis: Axis
+  el: HTMLElement
+  menus: ContextmenuItem[]
+  removeContextmenu: () => void
+}>()
 
 const style = computed(() => {
   const MENU_WIDTH = 170

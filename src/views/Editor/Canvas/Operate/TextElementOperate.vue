@@ -33,7 +33,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { PPTTextElement } from '@/types/slides'
@@ -44,24 +44,12 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTTextElement>,
-    required: true,
-  },
-  handlerVisible: {
-    type: Boolean,
-    required: true,
-  },
-  rotateElement: {
-    type: Function as PropType<(element: PPTTextElement) => void>,
-    required: true,
-  },
-  scaleElement: {
-    type: Function as PropType<(e: MouseEvent, element: PPTTextElement, command: OperateResizeHandlers) => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTTextElement
+  handlerVisible: boolean
+  rotateElement: (element: PPTTextElement) => void
+  scaleElement: (e: MouseEvent, element: PPTTextElement, command: OperateResizeHandlers) => void
+}>()
 
 const { canvasScale } = storeToRefs(useMainStore())
 

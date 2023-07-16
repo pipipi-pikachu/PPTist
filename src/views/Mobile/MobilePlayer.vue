@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, PropType, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { Mode } from '@/types/mobile'
@@ -60,12 +60,9 @@ import { Mode } from '@/types/mobile'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import MobileThumbnails from './MobileThumbnails.vue'
 
-defineProps({
-  changeMode: {
-    type: Function as PropType<(mode: Mode) => void>,
-    required: true,
-  },
-})
+defineProps<{
+  changeMode: (mode: Mode) => void
+}>()
 
 const slidesStore = useSlidesStore()
 const { slides, slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)

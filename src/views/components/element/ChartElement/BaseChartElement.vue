@@ -40,19 +40,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, PropType, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 import Chart from './Chart.vue'
 
-defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTChartElement>,
-    required: true,
-  },
-})
+defineProps<{
+  elementInfo: PPTChartElement
+}>()
 
 const slideScale = inject(injectKeySlideScale) || ref(1)
 

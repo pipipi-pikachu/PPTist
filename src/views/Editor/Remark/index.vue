@@ -17,12 +17,9 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
-const props = defineProps({
-  height: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  height: number
+}>()
 
 const emit = defineEmits<{
   (event: 'update:height', payload: number): void

@@ -97,11 +97,10 @@ interface LatexResult {
   h: number
 }
 
-const props = defineProps({
-  value: {
-    type: String,
-    default: '',
-  },
+const props = withDefaults(defineProps<{
+  value?: string
+}>(), {
+  value: '',
 })
 
 const emit = defineEmits<{

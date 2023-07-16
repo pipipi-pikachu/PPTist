@@ -5,11 +5,10 @@
 </template>
 
 <script lang="ts" setup>
-defineProps({
-  checked: {
-    type: Boolean,
-    default: false,
-  },
+withDefaults(defineProps<{
+  checked?: boolean
+}>(), {
+  checked: false,
 })
 </script>
 

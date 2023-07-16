@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType, provide } from 'vue'
+import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
@@ -43,28 +43,13 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import ScreenSlide from './ScreenSlide.vue'
 
-const props = defineProps({
-  slideWidth: {
-    type: Number,
-    required: true,
-  },
-  slideHeight: {
-    type: Number,
-    required: true,
-  },
-  animationIndex: {
-    type: Number,
-    required: true,
-  },
-  turnSlideToId: {
-    type: Function as PropType<(id: string) => void>,
-    required: true,
-  },
-  manualExitFullscreen: {
-    type: Function as PropType<() => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  slideWidth: number
+  slideHeight: number
+  animationIndex: number
+  turnSlideToId: (id: string) => void
+  manualExitFullscreen: () => void
+}>()
 
 const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
 

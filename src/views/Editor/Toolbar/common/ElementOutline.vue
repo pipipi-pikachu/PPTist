@@ -62,11 +62,10 @@ import {
 } from 'ant-design-vue'
 const SelectOption = Select.Option
 
-defineProps({
-  fixed: {
-    type: Boolean,
-    default: false,
-  },
+withDefaults(defineProps<{
+  fixed?: boolean
+}>(), {
+  fixed: false,
 })
 
 const slidesStore = useSlidesStore()

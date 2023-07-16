@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { ElementTypes, PPTElement } from '@/types/slides'
 import { ContextmenuItem } from '@/components/Contextmenu/types'
 
@@ -41,28 +41,13 @@ import LatexElement from '@/views/components/element/LatexElement/index.vue'
 import VideoElement from '@/views/components/element/VideoElement/index.vue'
 import AudioElement from '@/views/components/element/AudioElement/index.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTElement>,
-    required: true,
-  },
-  elementIndex: {
-    type: Number,
-    required: true,
-  },
-  isMultiSelect: {
-    type: Boolean,
-    required: true,
-  },
-  selectElement: {
-    type: Function as PropType<(e: MouseEvent | TouchEvent, element: PPTElement, canMove?: boolean) => void>,
-    required: true,
-  },
-  openLinkDialog: {
-    type: Function as PropType<() => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTElement
+  elementIndex: number
+  isMultiSelect: boolean
+  selectElement: (e: MouseEvent | TouchEvent, element: PPTElement, canMove?: boolean) => void
+  openLinkDialog: () => void
+}>()
 
 const currentElementComponent = computed<unknown>(() => {
   const elementTypeMap = {

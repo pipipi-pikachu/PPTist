@@ -5,27 +5,15 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { AlignmentLineAxis } from '@/types/edit'
 
-const props = defineProps({
-  type: {
-    type: String as PropType<'vertical' | 'horizontal'>,
-    required: true,
-  },
-  axis: {
-    type: Object as PropType<AlignmentLineAxis>,
-    required: true,
-  },
-  length: {
-    type: Number,
-    required: true,
-  },
-  canvasScale: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  type: 'vertical' | 'horizontal'
+  axis: AlignmentLineAxis
+  length: number
+  canvasScale: number
+}>()
 
 // 吸附对齐线的位置
 const left = computed(() => props.axis.x * props.canvasScale + 'px')

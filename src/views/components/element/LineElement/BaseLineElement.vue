@@ -48,19 +48,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { PPTLineElement } from '@/types/slides'
 import { getLineElementPath } from '@/utils/element'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import LinePointMarker from './LinePointMarker.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTLineElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTLineElement
+}>()
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)

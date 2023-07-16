@@ -31,19 +31,12 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { ContextmenuItem } from './types'
 
-defineProps({
-  menus: {
-    type: Array as PropType<ContextmenuItem[]>,
-    required: true,
-  },
-  handleClickMenuItem: {
-    type: Function,
-    required: true,
-  },
-})
+defineProps<{
+  menus: ContextmenuItem[]
+  handleClickMenuItem: (item: ContextmenuItem) => void
+}>()
 </script>
 
 <style lang="scss" scoped>

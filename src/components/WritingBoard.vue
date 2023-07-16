@@ -55,33 +55,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
-const props = defineProps({
-  color: {
-    type: String,
-    default: '#ffcc00',
-  },
-  model: {
-    type: String as PropType<'pen' | 'eraser' | 'mark'>,
-    default: 'pen',
-  },
-  blackboard: {
-    type: Boolean,
-    default: false,
-  },
-  penSize: {
-    type: Number,
-    default: 6,
-  },
-  markSize: {
-    type: Number,
-    default: 24,
-  },
-  rubberSize: {
-    type: Number,
-    default: 80,
-  },
+const props = withDefaults(defineProps<{
+  color?: string
+  model?: 'pen' | 'eraser' | 'mark'
+  blackboard?: boolean
+  penSize?: number
+  markSize?: number
+  rubberSize?: number
+}>(), {
+  color: '#ffcc00',
+  model: 'pen',
+  blackboard: false,
+  penSize: 6,
+  markSize: 24,
+  rubberSize: 80,
 })
 
 const emit = defineEmits<{

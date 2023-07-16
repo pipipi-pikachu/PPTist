@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUnmounted, PropType, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { debounce, isEqual } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
@@ -81,34 +81,16 @@ import useSubThemeColor from './useSubThemeColor'
 
 import CustomTextarea from './CustomTextarea.vue'
 
-const props = defineProps({
-  data: {
-    type: Array as PropType<TableCell[][]>,
-    required: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-  },
-  cellMinHeight: {
-    type: Number,
-    required: true,
-  },
-  colWidths: {
-    type: Array as PropType<number[]>,
-    required: true,
-  },
-  outline: {
-    type: Object as PropType<PPTElementOutline>,
-    required: true,
-  },
-  theme: {
-    type: Object as PropType<TableTheme>,
-  },
-  editable: {
-    type: Boolean,
-    default: true,
-  },
+const props = withDefaults(defineProps<{
+  data: TableCell[][]
+  width: number
+  cellMinHeight: number
+  colWidths: number[]
+  outline: PPTElementOutline
+  theme?: TableTheme
+  editable?: boolean
+}>(), {
+  editable: true,
 })
 
 const emit = defineEmits<{

@@ -66,46 +66,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, PropType, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
 import { ImageClipDataRange, ImageElementClip } from '@/types/slides'
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  clipData: {
-    type: Object as PropType<ImageElementClip>,
-  },
-  clipPath: {
-    type: String,
-    required: true,
-  },
-  width: {
-    type: Number,
-    required: true,
-  },
-  height: {
-    type: Number,
-    required: true,
-  },
-  top: {
-    type: Number,
-    required: true,
-  },
-  left: {
-    type: Number,
-    required: true,
-  },
-  rotate: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  src: string
+  clipPath: string
+  width: number
+  height: number
+  top: number
+  left: number
+  rotate: number
+  clipData?: ImageElementClip
+}>()
 
 const emit = defineEmits<{
   (event: 'clip', payload: ImageClipedEmitData | null): void

@@ -22,31 +22,16 @@ import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { TextFormatPainterKeys } from '@/types/edit'
 
-const props = defineProps({
-  elementId: {
-    type: String,
-    required: true,
-  },
-  defaultColor: {
-    type: String,
-    required: true,
-  },
-  defaultFontName: {
-    type: String,
-    required: true,
-  },
-  editable: {
-    type: Boolean,
-    default: false,
-  },
-  value: {
-    type: String,
-    required: true,
-  },
-  autoFocus: {
-    type: Boolean,
-    default: false,
-  },
+const props = withDefaults(defineProps<{
+  elementId: string
+  defaultColor: string
+  defaultFontName: string
+  value: string
+  editable?: boolean
+  autoFocus?: boolean
+}>(), {
+  editable: false,
+  autoFocus: false,
 })
 
 const emit = defineEmits<{

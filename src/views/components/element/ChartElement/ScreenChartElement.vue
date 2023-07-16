@@ -3,15 +3,11 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
 import { PPTChartElement } from '@/types/slides'
 
 import BaseChartElement from './BaseChartElement.vue'
 
-defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTChartElement>,
-    required: true,
-  },
-})
+defineProps<{
+  elementInfo: PPTChartElement
+}>()
 </script>

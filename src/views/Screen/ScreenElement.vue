@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { ElementTypes, PPTElement } from '@/types/slides'
@@ -35,28 +35,13 @@ import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexE
 import ScreenVideoElement from '@/views/components/element/VideoElement/ScreenVideoElement.vue'
 import ScreenAudioElement from '@/views/components/element/AudioElement/ScreenAudioElement.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTElement>,
-    required: true,
-  },
-  elementIndex: {
-    type: Number,
-    required: true,
-  },
-  animationIndex: {
-    type: Number,
-    required: true,
-  },
-  turnSlideToId: {
-    type: Function as PropType<(id: string) => void>,
-    required: true,
-  },
-  manualExitFullscreen: {
-    type: Function as PropType<() => void>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTElement
+  elementIndex: number
+  animationIndex: number
+  turnSlideToId: (id: string) => void
+  manualExitFullscreen: () => void
+}>()
 
 const currentElementComponent = computed<unknown>(() => {
   const elementTypeMap = {

@@ -10,12 +10,9 @@
 <script lang="ts" setup>
 import { Button } from 'ant-design-vue'
 
-defineProps({
-  color: {
-    type: String,
-    required: true,
-  },
-})
+defineProps<{
+  color: string
+}>()
 </script>
 
 <style lang="scss" scoped>

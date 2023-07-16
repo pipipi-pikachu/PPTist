@@ -19,27 +19,13 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
-
-defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  type: {
-    type: String as PropType<'linear' | 'radial'>,
-  },
-  color1: {
-    type: String,
-    required: true,
-  },
-  color2: {
-    type: String,
-    required: true,
-  },
-  rotate: {
-    type: Number,
-    default: 0,
-  },
+withDefaults(defineProps<{
+  id: string
+  type: 'linear' | 'radial'
+  color1: string
+  color2: string
+  rotate?: number
+}>(), {
+  rotate: 0,
 })
 </script>

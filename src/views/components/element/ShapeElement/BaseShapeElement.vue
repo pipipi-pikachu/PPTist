@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { PPTShapeElement, ShapeText } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
@@ -69,12 +69,9 @@ import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 
 import GradientDefs from './GradientDefs.vue'
 
-const props = defineProps({
-  elementInfo: {
-    type: Object as PropType<PPTShapeElement>,
-    required: true,
-  },
-})
+const props = defineProps<{
+  elementInfo: PPTShapeElement
+}>()
 
 const outline = computed(() => props.elementInfo.outline)
 const { outlineWidth, outlineStyle, outlineColor } = useElementOutline(outline)
