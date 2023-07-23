@@ -1,5 +1,5 @@
-import { computed, Ref } from 'vue'
-import { TableCell } from '@/types/slides'
+import { computed, type Ref } from 'vue'
+import type { TableCell } from '@/types/slides'
 
 // 计算无效的单元格位置（被合并的单元格位置）集合
 

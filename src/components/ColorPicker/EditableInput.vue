@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import tinycolor, { ColorFormats } from 'tinycolor2'
+import tinycolor, { type ColorFormats } from 'tinycolor2'
 
 const props = defineProps<{
   value: ColorFormats.RGBA

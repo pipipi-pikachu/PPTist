@@ -1,8 +1,8 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { uniq } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import type { PPTElement } from '@/types/slides'
 
 export default (
   elementList: Ref<PPTElement[]>,

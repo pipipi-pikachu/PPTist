@@ -30,7 +30,7 @@
 import { computed, inject, onMounted, ref, watch } from 'vue'
 import tinycolor from 'tinycolor2'
 import { BarChart, LineChart, PieChart } from 'chartist'
-import { ChartData, ChartOptions, ChartType } from '@/types/slides'
+import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
 import 'chartist/dist/index.css'

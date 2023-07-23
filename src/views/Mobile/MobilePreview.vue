@@ -22,7 +22,7 @@ import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
-import { Mode } from '@/types/mobile'
+import type { Mode } from '@/types/mobile'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import { Divider } from 'ant-design-vue'

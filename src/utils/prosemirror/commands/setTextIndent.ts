@@ -1,6 +1,6 @@
-import { Schema } from 'prosemirror-model'
-import { TextSelection, AllSelection, Transaction } from 'prosemirror-state'
-import { EditorView } from 'prosemirror-view'
+import type { Schema } from 'prosemirror-model'
+import { type Transaction, TextSelection, AllSelection } from 'prosemirror-state'
+import type { EditorView } from 'prosemirror-view'
 import { isList } from './toggleList'
 
 function setNodeIndentMarkup(tr: Transaction, pos: number, delta: number): Transaction {

@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, onUnmounted, Ref, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'

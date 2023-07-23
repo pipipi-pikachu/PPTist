@@ -4,10 +4,10 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { OperateResizeHandlers } from '@/types/edit'
+import type { OperateResizeHandlers } from '@/types/edit'
 
 const props = withDefaults(defineProps<{
-  type: OperateResizeHandlers
+  type?: OperateResizeHandlers
   rotate?: number
 }>(), {
   rotate: 0,

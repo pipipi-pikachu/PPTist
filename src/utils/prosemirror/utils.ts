@@ -1,6 +1,6 @@
-import { Node, NodeType, ResolvedPos, Mark, MarkType } from 'prosemirror-model'
-import { EditorState, Selection } from 'prosemirror-state'
-import { EditorView } from 'prosemirror-view'
+import type { Node, NodeType, ResolvedPos, Mark, MarkType } from 'prosemirror-model'
+import type { EditorState, Selection } from 'prosemirror-state'
+import type { EditorView } from 'prosemirror-view'
 import { selectAll } from 'prosemirror-commands'
 
 export const autoSelectAll = (view: EditorView) => {

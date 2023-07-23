@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { SHAPE_LIST, ShapePoolItem } from '@/configs/shapes'
+import { SHAPE_LIST, type ShapePoolItem } from '@/configs/shapes'
 import ShapeItemThumbnail from './ShapeItemThumbnail.vue'
 
 const emit = defineEmits<{

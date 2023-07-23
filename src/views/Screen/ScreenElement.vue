@@ -23,7 +23,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { ElementTypes, PPTElement } from '@/types/slides'
+import { ElementTypes, type PPTElement } from '@/types/slides'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'

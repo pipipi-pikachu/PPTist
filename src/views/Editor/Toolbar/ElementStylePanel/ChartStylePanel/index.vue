@@ -152,10 +152,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, Ref, ref, watch } from 'vue'
+import { onUnmounted, ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
+import type { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 

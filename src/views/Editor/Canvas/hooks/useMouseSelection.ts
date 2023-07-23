@@ -1,7 +1,7 @@
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import type { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {

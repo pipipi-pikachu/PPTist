@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { LINE_LIST, LinePoolItem } from '@/configs/lines'
+import { LINE_LIST, type LinePoolItem } from '@/configs/lines'
 
 import LinePointMarker from '@/views/components/element/LineElement/LinePointMarker.vue'
 

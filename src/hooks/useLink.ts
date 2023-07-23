@@ -1,5 +1,5 @@
 import { useSlidesStore } from '@/store'
-import { PPTElement, PPTElementLink } from '@/types/slides'
+import type { PPTElement, PPTElementLink } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { message } from 'ant-design-vue'
 

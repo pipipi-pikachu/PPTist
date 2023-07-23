@@ -19,7 +19,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { DialogForExportTypes } from '@/types/export'
+import type { DialogForExportTypes } from '@/types/export'
 
 import ExportImage from './ExportImage.vue'
 import ExportJSON from './ExportJSON.vue'

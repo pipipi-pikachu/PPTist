@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { Slide } from '@/types/slides'
+import type { Slide } from '@/types/slides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 

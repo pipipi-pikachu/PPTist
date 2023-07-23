@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTImageElement } from '@/types/slides'
+import type { PPTImageElement } from '@/types/slides'
 import useClipImage from '../useClipImage'
 
 import ImageRectOutline from './ImageRectOutline.vue'

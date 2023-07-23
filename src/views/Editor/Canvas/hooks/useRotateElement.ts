@@ -1,7 +1,7 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
+import type { PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 /**

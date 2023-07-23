@@ -1,6 +1,4 @@
-/* eslint-disable */
-
-import { onMounted, Ref } from 'vue'
+import { onMounted, type Ref } from 'vue'
 
 export default (
   src: string,
@@ -18,6 +16,7 @@ export default (
     }
 
     if (type === 'hls') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const Hls = (window as any).Hls
       
       if (Hls && Hls.isSupported()) {
@@ -27,6 +26,7 @@ export default (
       }
     }
     else if (type === 'flv') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const flvjs = (window as any).flvjs
       if (flvjs && flvjs.isSupported()) {
         const flvPlayer = flvjs.createPlayer({

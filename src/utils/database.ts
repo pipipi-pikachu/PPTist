@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 import { databaseId } from '@/store/main'
-import { Slide } from '@/types/slides'
+import type { Slide } from '@/types/slides'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 
 export interface writingBoardImg {

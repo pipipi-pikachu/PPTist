@@ -1,6 +1,6 @@
-import { ShapePoolItem } from '@/configs/shapes'
-import { LinePoolItem } from '@/configs/lines'
-import { ImageClipDataRange } from './slides'
+import type { ShapePoolItem } from '@/configs/shapes'
+import type { LinePoolItem } from '@/configs/lines'
+import type { ImageClipDataRange } from './slides'
 
 export enum ElementOrderCommands {
   UP = 'up',

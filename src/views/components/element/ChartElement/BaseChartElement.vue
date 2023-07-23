@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 import { computed, inject, ref } from 'vue'
-import { PPTChartElement } from '@/types/slides'
+import type { PPTChartElement } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'

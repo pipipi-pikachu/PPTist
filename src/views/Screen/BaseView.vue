@@ -70,7 +70,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { enterFullscreen } from '@/utils/fullscreen'
 import useScreening from '@/hooks/useScreening'
 import useExecPlay from './hooks/useExecPlay'

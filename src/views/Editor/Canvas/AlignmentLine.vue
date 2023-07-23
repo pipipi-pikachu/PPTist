@@ -6,7 +6,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { AlignmentLineAxis } from '@/types/edit'
+import type { AlignmentLineAxis } from '@/types/edit'
 
 const props = defineProps<{
   type: 'vertical' | 'horizontal'

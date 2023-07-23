@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { IndexableTypeArray } from 'dexie'
-import { db, Snapshot } from '@/utils/database'
+import type { IndexableTypeArray } from 'dexie'
+import { db, type Snapshot } from '@/utils/database'
 
 import { useSlidesStore } from './slides'
 import { useMainStore } from './main'

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import tinycolor from 'tinycolor2'
 import { omit } from 'lodash'
-import { Slide, SlideTheme, PPTElement, PPTAnimation } from '@/types/slides'
+import type { Slide, SlideTheme, PPTElement, PPTAnimation } from '@/types/slides'
 import { slides } from '@/mocks/slides'
 import { theme } from '@/mocks/theme'
 import { layouts } from '@/mocks/layout'

@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { ChartData } from '@/types/slides'
+import type { ChartData } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 

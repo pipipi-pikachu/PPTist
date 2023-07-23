@@ -1,10 +1,10 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
-import { PPTElement } from '@/types/slides'
-import { AlignmentLineProps } from '@/types/edit'
+import type { PPTElement } from '@/types/slides'
+import type { AlignmentLineProps } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { getRectRotatedRange, AlignLine, uniqAlignLines } from '@/utils/element'
+import { getRectRotatedRange, uniqAlignLines, type AlignLine } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default (

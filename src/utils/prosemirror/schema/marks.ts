@@ -1,5 +1,5 @@
 import { marks } from 'prosemirror-schema-basic'
-import { MarkSpec } from 'prosemirror-model'
+import type { MarkSpec } from 'prosemirror-model'
 
 const subscript: MarkSpec = {
   excludes: 'subscript',

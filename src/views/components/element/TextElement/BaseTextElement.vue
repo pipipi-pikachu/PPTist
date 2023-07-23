@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, StyleValue } from 'vue'
-import { PPTTextElement } from '@/types/slides'
+import { computed, type StyleValue } from 'vue'
+import type { PPTTextElement } from '@/types/slides'
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'

@@ -29,7 +29,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
-import { CreateElementSelectionData } from '@/types/edit'
+import type { CreateElementSelectionData } from '@/types/edit'
 
 const emit = defineEmits<{
   (event: 'created', payload: CreateElementSelectionData): void

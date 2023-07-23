@@ -15,7 +15,7 @@ defineProps<{
   left: number
   width: number
   height: number
-  quadrant: 1 | 2 | 3 | 4
+  quadrant: number
 }>()
 </script>
 

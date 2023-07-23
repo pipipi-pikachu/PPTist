@@ -31,9 +31,9 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTElement, PPTLineElement } from '@/types/slides'
+import type { PPTElement, PPTLineElement } from '@/types/slides'
 import useCommonOperate from '@/views/Editor/Canvas/hooks/useCommonOperate'
-import { OperateResizeHandlers } from '@/types/edit'
+import type { OperateResizeHandlers } from '@/types/edit'
 
 import BorderLine from '@/views/Editor/Canvas/Operate/BorderLine.vue'
 import ResizeHandler from '@/views/Editor/Canvas/Operate/ResizeHandler.vue'

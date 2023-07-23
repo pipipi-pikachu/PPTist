@@ -70,8 +70,8 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useKeyboardStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
-import { ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
-import { ImageClipDataRange, ImageElementClip } from '@/types/slides'
+import { type ImageClipedEmitData, OperateResizeHandlers } from '@/types/edit'
+import type { ImageClipDataRange, ImageElementClip } from '@/types/slides'
 
 const props = defineProps<{
   src: string

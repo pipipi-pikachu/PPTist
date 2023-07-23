@@ -1,6 +1,6 @@
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import type { PPTElement } from '@/types/slides'
 import { ElementAlignCommands } from '@/types/edit'
 import { getElementListRange } from '@/utils/element'
 import { VIEWPORT_SIZE } from '@/configs/canvas'

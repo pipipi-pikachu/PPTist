@@ -12,15 +12,15 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { EditorView } from 'prosemirror-view'
+import type { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
-import emitter, { EmitterEvents, RichTextAction, RichTextCommand } from '@/utils/emitter'
+import emitter, { EmitterEvents, type RichTextAction, type RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
-import { TextFormatPainterKeys } from '@/types/edit'
+import type { TextFormatPainterKeys } from '@/types/edit'
 
 const props = withDefaults(defineProps<{
   elementId: string

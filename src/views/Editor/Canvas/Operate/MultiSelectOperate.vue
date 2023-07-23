@@ -24,9 +24,9 @@
 import { computed, ref, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import type { PPTElement } from '@/types/slides'
 import { getElementListRange } from '@/utils/element'
-import { OperateResizeHandlers, MultiSelectRange } from '@/types/edit'
+import type { OperateResizeHandlers, MultiSelectRange } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import ResizeHandler from './ResizeHandler.vue'

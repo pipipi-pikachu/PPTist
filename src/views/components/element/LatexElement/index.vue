@@ -42,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PPTLatexElement } from '@/types/slides'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { PPTLatexElement } from '@/types/slides'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 
 const props = defineProps<{

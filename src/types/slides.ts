@@ -1,4 +1,4 @@
-import { BarChartOptions, LineChartOptions, PieChartOptions } from 'chartist'
+import type { BarChartOptions, LineChartOptions, PieChartOptions } from 'chartist'
 
 export const enum ShapePathFormulasKeys {
   ROUND_RECT = 'roundRect',

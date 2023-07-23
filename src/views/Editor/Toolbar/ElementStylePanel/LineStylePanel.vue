@@ -63,10 +63,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTLineElement } from '@/types/slides'
+import type { PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementShadow from '../common/ElementShadow.vue'

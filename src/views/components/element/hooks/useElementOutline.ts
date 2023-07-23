@@ -1,5 +1,5 @@
-import { computed, Ref } from 'vue'
-import { PPTElementOutline } from '@/types/slides'
+import { computed, type Ref } from 'vue'
+import type { PPTElementOutline } from '@/types/slides'
 
 // 计算边框相关属性值，主要是对默认值的处理
 export default (outline: Ref<PPTElementOutline | undefined>) => {

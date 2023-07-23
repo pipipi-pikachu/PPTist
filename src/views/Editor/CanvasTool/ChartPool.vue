@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PresetChartType } from '@/types/slides'
+import type { PresetChartType } from '@/types/slides'
 
 const emit = defineEmits<{
   (event: 'select', payload: PresetChartType): void

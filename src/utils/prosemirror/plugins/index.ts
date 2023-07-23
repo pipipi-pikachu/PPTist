@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap'
-import { Schema } from 'prosemirror-model'
+import type { Schema } from 'prosemirror-model'
 import { history } from 'prosemirror-history'
 import { baseKeymap } from 'prosemirror-commands'
 import { dropCursor } from 'prosemirror-dropcursor'

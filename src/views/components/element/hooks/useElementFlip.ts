@@ -1,4 +1,4 @@
-import { computed, Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 
 // 计算元素的翻转样式
 export default (flipH: Ref<boolean | undefined>, flipV: Ref<boolean | undefined>) => {

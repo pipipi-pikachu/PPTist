@@ -118,7 +118,7 @@ import { computed, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTAnimation } from '@/types/slides'
+import type { PPTAnimation } from '@/types/slides'
 import { 
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,

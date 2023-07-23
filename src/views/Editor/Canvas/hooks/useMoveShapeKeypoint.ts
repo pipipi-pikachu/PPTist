@@ -1,6 +1,6 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { useSlidesStore } from '@/store'
-import { PPTElement, PPTShapeElement } from '@/types/slides'
+import type { PPTElement, PPTShapeElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 

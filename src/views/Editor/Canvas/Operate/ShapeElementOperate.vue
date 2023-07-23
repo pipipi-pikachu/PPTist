@@ -42,8 +42,8 @@ export default {
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTShapeElement } from '@/types/slides'
-import { OperateResizeHandlers } from '@/types/edit'
+import type { PPTShapeElement } from '@/types/slides'
+import type { OperateResizeHandlers } from '@/types/edit'
 import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useCommonOperate from '../hooks/useCommonOperate'
 

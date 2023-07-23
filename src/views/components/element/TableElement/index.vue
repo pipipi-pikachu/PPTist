@@ -49,8 +49,8 @@
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTTableElement, TableCell } from '@/types/slides'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { PPTTableElement, TableCell } from '@/types/slides'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import EditableTable from './EditableTable.vue'

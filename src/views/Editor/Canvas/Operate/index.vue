@@ -41,8 +41,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ElementTypes, PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement, PPTShapeElement } from '@/types/slides'
-import { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
+import { ElementTypes, type PPTElement, type PPTLineElement, type PPTVideoElement, type PPTAudioElement, type PPTShapeElement } from '@/types/slides'
+import type { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
 import TextElementOperate from './TextElementOperate.vue'

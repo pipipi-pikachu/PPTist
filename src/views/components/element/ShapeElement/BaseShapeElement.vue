@@ -62,7 +62,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTShapeElement, ShapeText } from '@/types/slides'
+import type { PPTShapeElement, ShapeText } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'

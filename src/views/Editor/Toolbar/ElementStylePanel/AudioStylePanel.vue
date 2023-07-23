@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTAudioElement } from '@/types/slides'
+import type { PPTAudioElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'

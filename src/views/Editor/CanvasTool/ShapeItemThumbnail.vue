@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ShapePoolItem } from '@/configs/shapes'
+import type { ShapePoolItem } from '@/configs/shapes'
 
 defineProps<{
   shape: ShapePoolItem

@@ -24,7 +24,7 @@
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { Slide } from '@/types/slides'
+import type { Slide } from '@/types/slides'
 import { injectKeySlideId } from '@/types/injectKey'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'

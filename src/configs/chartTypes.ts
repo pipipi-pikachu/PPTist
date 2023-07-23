@@ -1,4 +1,4 @@
-import { ChartType } from '@/types/slides'
+import type { ChartType } from '@/types/slides'
 
 interface ChartTypes {
   [propName: string]: ChartType

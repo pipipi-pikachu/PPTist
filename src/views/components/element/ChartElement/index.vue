@@ -44,8 +44,8 @@
 </template>
 
 <script lang="ts" setup>
-import { PPTChartElement } from '@/types/slides'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { PPTChartElement } from '@/types/slides'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'

@@ -1,4 +1,4 @@
-import { AST, ElementAST, ElementAttribute } from './types'
+import type { AST, ElementAST, ElementAttribute } from './types'
 import { voidTags } from './tags'
 
 export const formatAttributes = (attributes: ElementAttribute[]) => {

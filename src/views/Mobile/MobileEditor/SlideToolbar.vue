@@ -36,7 +36,7 @@ import { useSlidesStore } from '@/store'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useCreateElement from '@/hooks/useCreateElement'
 import { getImageDataURL } from '@/utils/image'
-import { ShapePoolItem } from '@/configs/shapes'
+import type { ShapePoolItem } from '@/configs/shapes'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import MobileThumbnails from '../MobileThumbnails.vue'

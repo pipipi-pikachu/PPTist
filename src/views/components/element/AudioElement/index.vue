@@ -43,8 +43,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTAudioElement } from '@/types/slides'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { PPTAudioElement } from '@/types/slides'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import AudioPlayer from './AudioPlayer.vue'

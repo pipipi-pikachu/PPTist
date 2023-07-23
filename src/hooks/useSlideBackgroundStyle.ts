@@ -1,5 +1,5 @@
-import { Ref, computed } from 'vue'
-import { SlideBackground } from '@/types/slides'
+import { type Ref, computed } from 'vue'
+import type { SlideBackground } from '@/types/slides'
 
 // 将页面背景数据转换为css样式
 export default (background: Ref<SlideBackground | undefined>) => {

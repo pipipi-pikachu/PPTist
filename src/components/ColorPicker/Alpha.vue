@@ -20,7 +20,7 @@
 import { computed, onUnmounted, ref } from 'vue'
 
 import Checkboard from './Checkboard.vue'
-import { ColorFormats } from 'tinycolor2'
+import type { ColorFormats } from 'tinycolor2'
 
 const props = defineProps<{
   value: ColorFormats.RGBA

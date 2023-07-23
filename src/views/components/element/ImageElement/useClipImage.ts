@@ -1,6 +1,6 @@
-import { computed, Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
-import { ImageElementClip } from '@/types/slides'
+import type { ImageElementClip } from '@/types/slides'
 
 export default (clip: Ref<ImageElementClip | undefined>) => {
   const clipShape = computed(() => {

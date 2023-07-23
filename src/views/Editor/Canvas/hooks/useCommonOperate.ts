@@ -1,4 +1,4 @@
-import { computed, Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import { OperateResizeHandlers, OperateBorderLines } from '@/types/edit'
 
 export default (width: Ref<number>, height: Ref<number>) => {

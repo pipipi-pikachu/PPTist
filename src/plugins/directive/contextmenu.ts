@@ -1,4 +1,4 @@
-import { Directive, createVNode, render, DirectiveBinding } from 'vue'
+import { type Directive, type DirectiveBinding, createVNode, render } from 'vue'
 import ContextmenuComponent from '@/components/Contextmenu/index.vue'
 
 const CTX_CONTEXTMENU_HANDLER = 'CTX_CONTEXTMENU_HANDLER'

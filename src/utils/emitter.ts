@@ -1,4 +1,4 @@
-import mitt, { Emitter } from 'mitt'
+import mitt, { type Emitter } from 'mitt'
 
 export const enum EmitterEvents {
   RICH_TEXT_COMMAND = 'RICH_TEXT_COMMAND',

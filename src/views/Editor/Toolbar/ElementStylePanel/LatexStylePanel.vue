@@ -44,10 +44,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, Ref, ref } from 'vue'
+import { onUnmounted, ref, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTLatexElement } from '@/types/slides'
+import type { PPTLatexElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 

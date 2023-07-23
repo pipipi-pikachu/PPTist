@@ -1,12 +1,12 @@
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
-import { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
-import { OperateResizeHandlers, AlignmentLineProps, MultiSelectRange } from '@/types/edit'
+import type { PPTElement, PPTImageElement, PPTLineElement, PPTShapeElement } from '@/types/slides'
+import { OperateResizeHandlers, type AlignmentLineProps, type MultiSelectRange } from '@/types/edit'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { MIN_SIZE } from '@/configs/element'
 import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
-import { AlignLine, uniqAlignLines } from '@/utils/element'
+import { type AlignLine, uniqAlignLines } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface RotateElementData {

@@ -36,8 +36,8 @@ export default {
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTTableElement } from '@/types/slides'
-import { OperateResizeHandlers } from '@/types/edit'
+import type { PPTTableElement } from '@/types/slides'
+import type { OperateResizeHandlers } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'

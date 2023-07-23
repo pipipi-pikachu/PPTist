@@ -77,7 +77,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import tinycolor, { ColorFormats } from 'tinycolor2'
+import tinycolor, { type ColorFormats } from 'tinycolor2'
 import { debounce } from 'lodash'
 import { toCanvas } from 'html-to-image'
 

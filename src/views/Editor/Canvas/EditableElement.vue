@@ -18,8 +18,8 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { ElementTypes, PPTElement } from '@/types/slides'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import { ElementTypes, type PPTElement } from '@/types/slides'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 
 import useLockElement from '@/hooks/useLockElement'
 import useDeleteElement from '@/hooks/useDeleteElement'

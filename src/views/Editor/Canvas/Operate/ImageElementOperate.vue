@@ -36,8 +36,8 @@ export default {
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { PPTImageElement } from '@/types/slides'
-import { OperateResizeHandlers } from '@/types/edit'
+import type { PPTImageElement } from '@/types/slides'
+import type { OperateResizeHandlers } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import RotateHandler from './RotateHandler.vue'

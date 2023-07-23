@@ -29,7 +29,7 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ImageElementFilterKeys, PPTImageElement } from '@/types/slides'
+import type { ImageElementFilterKeys, PPTImageElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Slider, Switch } from 'ant-design-vue'

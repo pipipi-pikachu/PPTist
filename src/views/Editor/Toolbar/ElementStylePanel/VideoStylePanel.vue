@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTVideoElement } from '@/types/slides'
+import type { PPTVideoElement } from '@/types/slides'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 

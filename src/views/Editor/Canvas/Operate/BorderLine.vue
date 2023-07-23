@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { OperateBorderLines } from '@/types/edit'
+import type { OperateBorderLines } from '@/types/edit'
 
 withDefaults(defineProps<{
   type: OperateBorderLines

@@ -19,7 +19,7 @@ import tinycolor from 'tinycolor2'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
-import { SlideBackground } from '@/types/slides'
+import type { SlideBackground } from '@/types/slides'
 
 const { canvasScale, gridLineSize } = storeToRefs(useMainStore())
 const { currentSlide, viewportRatio } = storeToRefs(useSlidesStore())

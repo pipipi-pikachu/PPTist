@@ -1,8 +1,8 @@
 import tinycolor from 'tinycolor2'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { Slide } from '@/types/slides'
-import { PresetTheme } from '@/configs/theme'
+import type { Slide } from '@/types/slides'
+import type { PresetTheme } from '@/configs/theme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {

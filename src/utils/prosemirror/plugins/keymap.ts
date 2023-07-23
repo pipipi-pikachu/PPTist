@@ -1,8 +1,8 @@
 import { splitListItem, liftListItem, sinkListItem } from 'prosemirror-schema-list'
-import { Schema } from 'prosemirror-model'
+import type { Schema } from 'prosemirror-model'
 import { undo, redo } from 'prosemirror-history'
 import { undoInputRule } from 'prosemirror-inputrules'
-import { Command } from 'prosemirror-state'
+import type { Command } from 'prosemirror-state'
 import {
   toggleMark,
   selectParentNode,

@@ -188,7 +188,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
+import type { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 

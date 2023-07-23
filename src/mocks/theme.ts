@@ -1,4 +1,4 @@
-import { SlideTheme } from '@/types/slides'
+import type { SlideTheme } from '@/types/slides'
 
 export const theme: SlideTheme = {
   themeColor: '#5b9bd5',

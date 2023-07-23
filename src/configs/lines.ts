@@ -1,4 +1,4 @@
-import { LinePoint } from '@/types/slides'
+import type { LinePoint } from '@/types/slides'
 
 
 export interface LinePoolItem {

@@ -1,4 +1,4 @@
-import { Token, HTMLNode, TagToken, NormalElement, TagEndToken, AttributeToken, TextToken } from './types'
+import type { Token, HTMLNode, TagToken, NormalElement, TagEndToken, AttributeToken, TextToken } from './types'
 import { closingTags, closingTagAncestorBreakers, voidTags } from './tags'
 
 interface StackItem {

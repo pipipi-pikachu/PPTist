@@ -20,7 +20,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { TurningMode } from '@/types/slides'
+import type { TurningMode } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import { Button } from 'ant-design-vue'

@@ -60,10 +60,10 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTImageElement, SlideBackground } from '@/types/slides'
+import type { PPTImageElement, SlideBackground } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
 import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'

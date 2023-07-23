@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTImageElement } from '@/types/slides'
+import type { PPTImageElement } from '@/types/slides'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 import useClipImage from './useClipImage'

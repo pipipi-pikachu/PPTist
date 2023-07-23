@@ -19,7 +19,7 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ImageOrShapeFlip } from '@/types/slides'
+import type { ImageOrShapeFlip } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'

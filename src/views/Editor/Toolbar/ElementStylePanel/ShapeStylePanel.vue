@@ -260,12 +260,12 @@
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, watch } from 'vue'
+import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
+import type { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
-import { ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
+import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'

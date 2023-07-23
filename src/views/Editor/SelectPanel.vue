@@ -80,7 +80,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore, useMainStore } from '@/store'
-import { PPTElement } from '@/types/slides'
+import type { PPTElement } from '@/types/slides'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import { ElementOrderCommands } from '@/types/edit'

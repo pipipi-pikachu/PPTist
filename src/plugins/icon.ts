@@ -1,6 +1,6 @@
 // https://iconpark.bytedance.com/official
 
-import { App } from 'vue'
+import type { App } from 'vue'
 import {
   PlayOne,
   FullScreenPlay,

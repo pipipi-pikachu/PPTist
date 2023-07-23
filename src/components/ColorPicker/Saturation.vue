@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { computed, onUnmounted, ref } from 'vue'
-import tinycolor, { ColorFormats } from 'tinycolor2'
+import tinycolor, { type ColorFormats } from 'tinycolor2'
 import { throttle, clamp } from 'lodash'
 
 const props = defineProps<{

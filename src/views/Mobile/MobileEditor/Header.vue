@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { useSnapshotStore } from '@/store'
-import { Mode } from '@/types/mobile'
+import type { Mode } from '@/types/mobile'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 defineProps<{

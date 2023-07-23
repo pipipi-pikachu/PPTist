@@ -80,7 +80,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { enterFullscreen } from '@/utils/fullscreen'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import useScreening from '@/hooks/useScreening'

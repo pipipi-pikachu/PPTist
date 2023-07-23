@@ -123,7 +123,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTElement, TableCell } from '@/types/slides'
+import type { PPTElement, TableCell } from '@/types/slides'
 import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useOrderElement from '@/hooks/useOrderElement'

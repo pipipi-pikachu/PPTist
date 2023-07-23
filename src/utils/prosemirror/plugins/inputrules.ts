@@ -1,4 +1,4 @@
-import { NodeType, Schema } from 'prosemirror-model'
+import type { NodeType, Schema } from 'prosemirror-model'
 import {
   inputRules,
   wrappingInputRule,

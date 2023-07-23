@@ -46,7 +46,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { PPTElementLink } from '@/types/slides'
+import type { PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'

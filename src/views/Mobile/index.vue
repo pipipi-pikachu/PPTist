@@ -9,7 +9,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { Mode } from '@/types/mobile'
+import type { Mode } from '@/types/mobile'
 
 import MobileEditor from './MobileEditor/index.vue'
 import MobilePlayer from './MobilePlayer.vue'

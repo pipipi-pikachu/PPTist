@@ -1,10 +1,10 @@
 import { customAlphabet } from 'nanoid'
 import { defineStore } from 'pinia'
-import { CreatingElement, TextFormatPainter } from '@/types/edit'
 import { ToolbarStates } from '@/types/toolbar'
-import { DialogForExportTypes } from '@/types/export'
+import type { CreatingElement, TextFormatPainter } from '@/types/edit'
+import type { DialogForExportTypes } from '@/types/export'
+import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { SYS_FONTS } from '@/configs/font'
-import { TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { isSupportFont } from '@/utils/font'
 
 import { useSlidesStore } from './slides'

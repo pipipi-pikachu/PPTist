@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTLineElement } from '@/types/slides'
+import type { PPTLineElement } from '@/types/slides'
 import { getLineElementPath } from '@/utils/element'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 

@@ -39,7 +39,7 @@
 import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { PPTAudioElement } from '@/types/slides'
+import type { PPTAudioElement } from '@/types/slides'
 import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 

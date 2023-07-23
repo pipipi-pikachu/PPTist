@@ -1,4 +1,4 @@
-import { HTMLNode, CommentOrTextAST, ElementAST, AST } from './types'
+import type { HTMLNode, CommentOrTextAST, ElementAST, AST } from './types'
 
 export const splitHead = (str: string, sep: string) => {
   const idx = str.indexOf(sep)

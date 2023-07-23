@@ -1,6 +1,6 @@
 import { wrapInList, liftListItem } from 'prosemirror-schema-list'
-import { Schema, Node, NodeType } from 'prosemirror-model'
-import { Transaction, EditorState } from 'prosemirror-state'
+import type { Schema, Node, NodeType } from 'prosemirror-model'
+import type { Transaction, EditorState } from 'prosemirror-state'
 import { findParentNode } from '../utils'
 
 export const isList = (node: Node, schema: Schema) => {

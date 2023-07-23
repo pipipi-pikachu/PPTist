@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 
-import { Slide } from '@/types/slides'
+import type { Slide } from '@/types/slides'
 
 export const layouts: Slide[] = [
   {

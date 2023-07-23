@@ -1,4 +1,4 @@
-import { InjectionKey, Ref } from 'vue'
+import type { InjectionKey, Ref } from 'vue'
 
 export type SlideScale = Ref<number>
 export type SlideId = Ref<string>

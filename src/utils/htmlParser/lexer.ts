@@ -1,5 +1,5 @@
 import { startsWith, endsWith } from 'lodash'
-import { Token } from './types'
+import type { Token } from './types'
 import { childlessTags } from './tags'
 
 interface State {

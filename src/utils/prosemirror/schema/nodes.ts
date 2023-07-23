@@ -1,5 +1,5 @@
 import { nodes } from 'prosemirror-schema-basic'
-import { Node, NodeSpec } from 'prosemirror-model'
+import type { Node, NodeSpec } from 'prosemirror-model'
 import { listItem as _listItem } from 'prosemirror-schema-list'
 
 interface Attr {

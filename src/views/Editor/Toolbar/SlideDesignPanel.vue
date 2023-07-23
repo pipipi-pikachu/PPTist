@@ -201,7 +201,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { SlideBackground, SlideTheme } from '@/types/slides'
+import type { SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'

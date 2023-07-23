@@ -1,4 +1,4 @@
-import { App } from 'vue'
+import type { App } from 'vue'
 
 import Contextmenu from './contextmenu'
 import ClickOutside from './clickOutside'

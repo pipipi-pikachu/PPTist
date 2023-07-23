@@ -1,5 +1,5 @@
-import { computed, Ref } from 'vue'
-import { PPTElementShadow } from '@/types/slides'
+import { computed, type Ref } from 'vue'
+import type { PPTElementShadow } from '@/types/slides'
 
 // 计算元素的阴影样式
 export default (shadow: Ref<PPTElementShadow | undefined>) => {

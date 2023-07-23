@@ -61,9 +61,9 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { PPTLineElement } from '@/types/slides'
+import type { PPTLineElement } from '@/types/slides'
 import { getLineElementPath } from '@/utils/element'
-import { ContextmenuItem } from '@/components/Contextmenu/types'
+import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import LinePointMarker from './LinePointMarker.vue'
