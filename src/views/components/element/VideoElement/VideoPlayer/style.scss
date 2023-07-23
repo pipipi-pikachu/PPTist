@@ -5,32 +5,6 @@
   line-height: 1;
   transform-origin: 0 0;
 
-  &.playing {
-    @media (min-width: 900px) {
-      .controller-mask {
-        opacity: 0;
-      }
-      .controller {
-        opacity: 0;
-      }
-
-      &:hover {
-        .controller-mask {
-          opacity: 1;
-        }
-        .controller {
-          opacity: 1;
-        }
-      }
-    }
-  }
-
-  &.loading {
-    .bezel .diplayer-loading-icon {
-      display: block;
-    }
-  }
-
   &.hide-controller {
     cursor: none;
 
@@ -341,45 +315,6 @@
       to {
         opacity: 0;
         transform: scale(2);
-      }
-    }
-  }
-  .loading-icon {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -18px 0 0 -18px;
-    height: 36px;
-    width: 36px;
-    pointer-events: none;
-
-    .loading-hide {
-      display: none;
-    }
-    .loading-dot {
-      animation: loading-dot-fade 0.8s ease infinite;
-      opacity: 0;
-      transform-origin: 4px 4px;
-
-      @for $i from 7 through 1 {
-        &.loading-dot-#{$i} {
-          animation-delay: 0.1s * $i;
-        }
-      }
-    }
-    @keyframes loading-dot-fade {
-      0% {
-        opacity: 0.7;
-        transform: scale(1.2, 1.2);
-      }
-      50% {
-        opacity: 0.25;
-        transform: scale(0.9, 0.9);
-      }
-      to {
-        opacity: 0.25;
-        transform: scale(0.85, 0.85);
       }
     }
   }
