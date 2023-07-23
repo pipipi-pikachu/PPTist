@@ -56,3 +56,12 @@
 .ant-tooltip .ant-tooltip-arrow::before {
   height: 4px !important;
 }
+
+// input
+.ant-input-number-affix-wrapper-disabled .ant-input-number-disabled {
+  background-color: transparent !important;
+
+  .ant-input-number-input {
+    color: rgba(0, 0, 0, 0.25) !important;
+  }
+}
