@@ -44,7 +44,7 @@ const { exportJSON } = useExport()
   overflow: auto;
 }
 pre {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 }
 .btns {
   width: 300px;

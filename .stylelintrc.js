@@ -46,5 +46,13 @@ module.exports = {
     'font-family-no-missing-generic-family-keyword': null,
     'selector-class-pattern': null,
     'custom-property-pattern': null,
+    'keyframes-name-pattern': null,
+    'shorthand-property-no-redundant-values': null,
   },
+  overrides: [
+    {
+      files: ['*.scss', '**/*.scss'],
+      customSyntax: 'postcss-scss'
+    },
+  ],
 }

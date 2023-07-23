@@ -354,5 +354,5 @@ useMSE(props.src, videoRef)
 </script>
 
 <style scoped lang="scss">
-@import './style.scss';
+@import url(./style.scss);
 </style>

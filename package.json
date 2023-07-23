@@ -67,6 +67,7 @@
     "eslint-plugin-vue": "^9.9.0",
     "husky": "8.0.3",
     "postcss-html": "^1.5.0",
+    "postcss-scss": "^4.0.6",
     "sass": "^1.32.13",
     "sass-loader": "^8.0.2",
     "stylelint": "^15.10.2",

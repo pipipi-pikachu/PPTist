@@ -232,7 +232,7 @@ const contextmenus = (): ContextmenuItem[] => {
     background-color: #fff;
     color: $textColor;
     padding: 8px 10px;
-    box-shadow: 0 2px 12px 0 rgb(56 56 56 / 20%);
+    box-shadow: 0 2px 12px 0 rgb(56, 56, 56, .2);
     border: 1px solid #e2e6ed;
   }
 

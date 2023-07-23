@@ -332,7 +332,7 @@ const drawLine = (line: LinePoolItem) => {
   }
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (width <= 1024px) {
   .text {
     display: none;
   }
@@ -340,7 +340,7 @@ const drawLine = (line: LinePoolItem) => {
     margin: 0 5px;
   }
 }
-@media screen and (max-width: 1000px) {
+@media screen and (width <= 1000px) {
   .left-handler, .right-handler {
     display: none;
   }
