@@ -41,7 +41,15 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import { ElementTypes, type PPTElement, type PPTLineElement, type PPTVideoElement, type PPTAudioElement, type PPTShapeElement } from '@/types/slides'
+import {
+  ElementTypes,
+  type PPTElement,
+  type PPTLineElement,
+  type PPTVideoElement,
+  type PPTAudioElement,
+  type PPTShapeElement,
+  type PPTChartElement,
+} from '@/types/slides'
 import type { OperateLineHandlers, OperateResizeHandlers } from '@/types/edit'
 
 import ImageElementOperate from './ImageElementOperate.vue'
@@ -58,7 +66,7 @@ const props = defineProps<{
   isActive: boolean
   isActiveGroupElement: boolean
   isMultiSelect: boolean
-  rotateElement: (element: Exclude<PPTElement, PPTLineElement | PPTVideoElement | PPTAudioElement>) => void
+  rotateElement: (e: MouseEvent, element: Exclude<PPTElement, PPTChartElement | PPTLineElement | PPTVideoElement | PPTAudioElement>) => void
   scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
   dragLineElement: (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void
   moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void

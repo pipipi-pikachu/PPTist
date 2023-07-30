@@ -20,7 +20,7 @@
       <RotateHandler
         class="operate-rotate-handler" 
         :style="{ left: scaleWidth / 2 + 'px' }"
-        @mousedown.stop="rotateElement(elementInfo)"
+        @mousedown.stop="$event => rotateElement($event, elementInfo)"
       />
       <div 
         class="operate-keypoint-handler" 
@@ -54,7 +54,7 @@ import BorderLine from './BorderLine.vue'
 const props = defineProps<{
   elementInfo: PPTShapeElement
   handlerVisible: boolean
-  rotateElement: (element: PPTShapeElement) => void
+  rotateElement: (e: MouseEvent, element: PPTShapeElement) => void
   scaleElement: (e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void
   moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void
 }>()

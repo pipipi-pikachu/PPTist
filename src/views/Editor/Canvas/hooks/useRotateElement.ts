@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement } from '@/types/slides'
+import { useSlidesStore } from '@/store'
+import type { PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement, PPTChartElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 /**
@@ -15,14 +14,20 @@ const getAngleFromCoordinate = (x: number, y: number) => {
   return angle
 }
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
+export default (
+  elementList: Ref<PPTElement[]>,
+  viewportRef: Ref<HTMLElement | undefined>,
+  canvasScale: Ref<number>,
+) => {
   const slidesStore = useSlidesStore()
-  const { canvasScale } = storeToRefs(useMainStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
   // 旋转元素
-  const rotateElement = (element: Exclude<PPTElement, PPTLineElement | PPTVideoElement | PPTAudioElement>) => {
+  const rotateElement = (e: MouseEvent | TouchEvent, element: Exclude<PPTElement, PPTChartElement | PPTLineElement | PPTVideoElement | PPTAudioElement>) => {
+    const isTouchEvent = !(e instanceof MouseEvent)
+    if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
+  
     let isMouseDown = true
     let angle = 0
     const elOriginRotate = element.rotate || 0
@@ -39,12 +44,15 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
     if (!viewportRef.value) return
     const viewportRect = viewportRef.value.getBoundingClientRect()
 
-    document.onmousemove = e => {
+    const handleMousemove = (e: MouseEvent | TouchEvent) => {
       if (!isMouseDown) return
+
+      const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
       
       // 计算当前鼠标位置相对元素中心点连线的角度（弧度）
-      const mouseX = (e.pageX - viewportRect.left) / canvasScale.value
-      const mouseY = (e.pageY - viewportRect.top) / canvasScale.value
+      const mouseX = (currentPageX - viewportRect.left) / canvasScale.value
+      const mouseY = (currentPageY - viewportRect.top) / canvasScale.value
       const x = mouseX - centerX
       const y = centerY - mouseY
 
@@ -65,7 +73,7 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       elementList.value = elementList.value.map(el => element.id === el.id ? { ...el, rotate: angle } : el)
     }
 
-    document.onmouseup = () => {
+    const handleMouseup = () => {
       isMouseDown = false
       document.onmousemove = null
       document.onmouseup = null
@@ -74,6 +82,15 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
 
       slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
+    }
+
+    if (isTouchEvent) {
+      document.ontouchmove = handleMousemove
+      document.ontouchend = handleMouseup
+    }
+    else {
+      document.onmousemove = handleMousemove
+      document.onmouseup = handleMouseup
     }
   }
 

@@ -20,7 +20,7 @@
       <RotateHandler
         class="operate-rotate-handler" 
         :style="{ left: scaleWidth / 2 + 'px' }"
-        @mousedown.stop="rotateElement(elementInfo)"
+        @mousedown.stop="$event => rotateElement($event, elementInfo)"
       />
     </template>
   </div>
@@ -47,7 +47,7 @@ import BorderLine from './BorderLine.vue'
 const props = defineProps<{
   elementInfo: PPTTableElement
   handlerVisible: boolean
-  rotateElement: (element: PPTTableElement) => void
+  rotateElement: (e: MouseEvent, element: PPTTableElement) => void
   scaleElement: (e: MouseEvent, element: PPTTableElement, command: OperateResizeHandlers) => void
 }>()
 

@@ -21,7 +21,7 @@
         class="operate-rotate-handler" 
         v-if="!cannotRotate"
         :style="{ left: scaleWidth / 2 + 'px' }"
-        @mousedown.stop="rotateElement(elementInfo)"
+        @mousedown.stop="$event => rotateElement($event, elementInfo)"
       />
     </template>
   </div>
@@ -37,7 +37,7 @@ export default {
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import type { PPTShapeElement, PPTVideoElement, PPTLatexElement, PPTAudioElement } from '@/types/slides'
+import type { PPTVideoElement, PPTLatexElement, PPTAudioElement, PPTChartElement } from '@/types/slides'
 import type { OperateResizeHandlers } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
@@ -45,12 +45,12 @@ import RotateHandler from './RotateHandler.vue'
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
 
-type PPTElement = PPTShapeElement | PPTVideoElement | PPTLatexElement | PPTAudioElement
+type PPTElement = PPTVideoElement | PPTLatexElement | PPTAudioElement | PPTChartElement
 
 const props = defineProps<{
   elementInfo: PPTElement
   handlerVisible: boolean
-  rotateElement: (element: PPTElement) => void
+  rotateElement: (e: MouseEvent, element: PPTElement) => void
   scaleElement: (e: MouseEvent, element: PPTElement, command: OperateResizeHandlers) => void
 }>()
 
