@@ -100,6 +100,12 @@ export default () => {
   }
   onUnmounted(closeAutoPlay)
 
+  // 循环放映
+  const loopPlay = ref(false)
+  const setLoopPlay = (loop: boolean) => {
+    loopPlay.value = loop
+  }
+
   const throttleMassage = throttle(function(msg) {
     message.success(msg)
   }, 1000, { leading: true, trailing: false })
@@ -121,7 +127,8 @@ export default () => {
       else animationIndex.value = formatedAnimations.value.length
     }
     else {
-      throttleMassage('已经是第一页了')
+      if (loopPlay.value) turnSlideToIndex(slides.value.length - 1)
+      else throttleMassage('已经是第一页了')
     }
     inAnimation.value = false
   }
@@ -135,17 +142,27 @@ export default () => {
       inAnimation.value = false
     }
     else {
-      throttleMassage('已经是最后一页了')
-      closeAutoPlay()
+      if (loopPlay.value) turnSlideToIndex(0)
+      else {
+        throttleMassage('已经是最后一页了')
+        closeAutoPlay()
+      }
       inAnimation.value = false
     }
   }
 
   // 自动播放
+  const autoPlayInterval = ref(2500)
   const autoPlay = () => {
     closeAutoPlay()
     message.success('开始自动放映')
-    autoPlayTimer.value = setInterval(execNext, 2500)
+    autoPlayTimer.value = setInterval(execNext, autoPlayInterval.value)
+  }
+
+  const setAutoPlayInterval = (interval: number) => {
+    closeAutoPlay()
+    autoPlayInterval.value = interval
+    autoPlay()
   }
 
   // 鼠标滚动翻页
@@ -219,8 +236,12 @@ export default () => {
 
   return {
     autoPlayTimer,
+    autoPlayInterval,
+    setAutoPlayInterval,
     autoPlay,
     closeAutoPlay,
+    loopPlay,
+    setLoopPlay,
     mousewheelListener,
     touchStartListener,
     touchEndListener,

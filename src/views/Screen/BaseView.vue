@@ -93,6 +93,10 @@ const {
   autoPlayTimer,
   autoPlay,
   closeAutoPlay,
+  autoPlayInterval,
+  setAutoPlayInterval,
+  loopPlay,
+  setLoopPlay,
   mousewheelListener,
   touchStartListener,
   touchEndListener,
@@ -141,6 +145,38 @@ const contextmenus = (): ContextmenuItem[] => {
     },
     { divider: true },
     {
+      text: autoPlayTimer.value ? '取消自动放映' : '自动放映',
+      handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
+      children: [
+        {
+          text: '2.5秒',
+          subText: autoPlayInterval.value === 2500 ? '√' : '',
+          handler: () => setAutoPlayInterval(2500),
+        },
+        {
+          text: '5秒',
+          subText: autoPlayInterval.value === 5000 ? '√' : '',
+          handler: () => setAutoPlayInterval(5000),
+        },
+        {
+          text: '7.5秒',
+          subText: autoPlayInterval.value === 7500 ? '√' : '',
+          handler: () => setAutoPlayInterval(7500),
+        },
+        {
+          text: '10秒',
+          subText: autoPlayInterval.value === 10000 ? '√' : '',
+          handler: () => setAutoPlayInterval(10000),
+        },
+      ],
+    },
+    {
+      text: '循环放映',
+      subText: loopPlay.value ? '√' : '',
+      handler: () => setLoopPlay(!loopPlay.value),
+    },
+    { divider: true },
+    {
       text: '显示工具栏',
       handler: () => rightToolsVisible.value = true,
     },
@@ -157,10 +193,6 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: () => props.changeViewMode('presenter'),
     },
     { divider: true },
-    {
-      text: autoPlayTimer.value ? '取消自动放映' : '自动放映',
-      handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
-    },
     {
       text: '结束放映',
       subText: 'ESC',
