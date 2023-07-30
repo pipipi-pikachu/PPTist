@@ -45,7 +45,6 @@
           :editable="!elementInfo.lock"
           :value="elementInfo.content"
           :style="{
-            '--textIndent': `${elementInfo.textIndent || 0}px`,
             '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
           }"
           @update="value => updateContent(value)"

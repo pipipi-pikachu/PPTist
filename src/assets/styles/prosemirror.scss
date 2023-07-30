@@ -17,7 +17,6 @@
   }
 
   p {
-    text-indent: var(--textIndent);
     margin-top: var(--paragraphSpace);
   }
   p:first-child {
@@ -61,25 +60,28 @@
   }
 
   [data-indent='1'] {
-    padding-left: 48px;
+    padding-left: 24px;
   }
   [data-indent='2'] {
-    padding-left: 96px;
+    padding-left: 48px;
   }
   [data-indent='3'] {
-    padding-left: 144px;
+    padding-left: 72px;
   }
   [data-indent='4'] {
-    padding-left: 192px;
+    padding-left: 96px;
   }
   [data-indent='5'] {
-    padding-left: 240px;
+    padding-left: 120px;
   }
   [data-indent='6'] {
-    padding-left: 288px;
+    padding-left: 144px;
   }
   [data-indent='7'] {
-    padding-left: 336px;
+    padding-left: 168px;
+  }
+  [data-indent='8'] {
+    padding-left: 192px;
   }
 }
 

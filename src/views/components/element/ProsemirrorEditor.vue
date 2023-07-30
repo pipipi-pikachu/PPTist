@@ -18,7 +18,7 @@ import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, type RichTextAction, type RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
-import { indentCommand } from '@/utils/prosemirror/commands/setTextIndent'
+import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import type { TextFormatPainterKeys } from '@/types/edit'
 
@@ -174,6 +174,9 @@ const execCommand = ({ target, action }: RichTextCommand) => {
     }
     else if (item.command === 'indent' && item.value) {
       indentCommand(editorView, +item.value)
+    }
+    else if (item.command === 'textIndent' && item.value) {
+      textIndentCommand(editorView, +item.value)
     }
     else if (item.command === 'bulletList') {
       const listStyleType = item.value || ''

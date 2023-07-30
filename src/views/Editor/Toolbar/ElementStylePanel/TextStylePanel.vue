@@ -256,14 +256,35 @@
       </ButtonGroup>
     </div>
 
-    <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小缩进">
-        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大缩进">
-        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
-      </Tooltip>
-    </ButtonGroup>
+    <div class="row">
+      <ButtonGroup style="flex: 15;">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小段落缩进">
+          <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
+        </Tooltip>
+        <Popover trigger="click" v-model:open="indentLeftPanelVisible">
+          <template #content>
+            <div class="popover-list">
+              <span class="popover-item" @click="emitRichTextCommand('textIndent', '-1')">减小首行缩进</span>
+            </div>
+          </template>
+          <Button class="popover-btn"><IconDown /></Button>
+        </Popover>
+      </ButtonGroup>
+      <div style="flex: 1;"></div>
+      <ButtonGroup style="flex: 15;">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大段落缩进">
+          <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
+        </Tooltip>
+        <Popover trigger="click" v-model:open="indentRightPanelVisible">
+          <template #content>
+            <div class="popover-list">
+              <span class="popover-item" @click="emitRichTextCommand('textIndent', '+1')">增大首行缩进</span>
+            </div>
+          </template>
+          <Button class="popover-btn"><IconDown /></Button>
+        </Popover>
+      </ButtonGroup>
+    </div>
 
     <Divider />
 
@@ -286,13 +307,6 @@
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value as number)">
         <template #suffixIcon><IconFullwidth /></template>
         <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
-      </Select>
-    </div>
-    <div class="row">
-      <div style="flex: 2;">首行缩进：</div>
-      <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value as number)">
-        <template #suffixIcon><IconIndentRight /></template>
-        <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{item}}px</SelectOption>
       </Select>
     </div>
     <div class="row">
@@ -439,6 +453,8 @@ const updateElement = (props: Partial<PPTTextElement>) => {
 
 const bulletListPanelVisible = ref(false)
 const orderedListPanelVisible = ref(false)
+const indentLeftPanelVisible = ref(false)
+const indentRightPanelVisible = ref(false)
 
 const bulletListStyleTypeOption = ref(['disc', 'circle', 'square'])
 const orderedListStyleTypeOption = ref(['decimal', 'lower-roman', 'upper-roman', 'lower-alpha', 'upper-alpha', 'lower-greek'])
@@ -446,7 +462,6 @@ const orderedListStyleTypeOption = ref(['decimal', 'lower-roman', 'upper-roman',
 const fill = ref<string>('#000')
 const lineHeight = ref<number>()
 const wordSpace = ref<number>()
-const textIndent = ref<number>()
 const paragraphSpace = ref<number>()
 
 watch(handleElement, () => {
@@ -455,7 +470,6 @@ watch(handleElement, () => {
   fill.value = handleElement.value.fill || '#fff'
   lineHeight.value = handleElement.value.lineHeight || 1.5
   wordSpace.value = handleElement.value.wordSpace || 0
-  textIndent.value = handleElement.value.textIndent || 0
   paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
 }, { deep: true, immediate: true })
 
@@ -466,7 +480,6 @@ const fontSizeOptions = [
 ]
 const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
 const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
-const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
 const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 
 // 设置行高
@@ -482,11 +495,6 @@ const updateParagraphSpace = (value: number) => {
 // 设置字间距
 const updateWordSpace = (value: number) => {
   updateElement({ wordSpace: value })
-}
-
-// 设置首行缩进
-const updateTextIndent = (value: number) => {
-  updateElement({ textIndent: value })
 }
 
 // 设置文本框填充
@@ -624,6 +632,21 @@ const updateLink = (link?: string) => {
     position: absolute;
     top: 10px;
     background-color: #666;
+  }
+}
+.popover-list {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin: -12px;
+}
+.popover-item {
+  padding: 9px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f5f5f5;
   }
 }
 .popover-btn {

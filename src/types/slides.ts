@@ -140,8 +140,6 @@ interface PPTBaseElement {
  * 
  * shadow?: 阴影
  * 
- * textIndent?: 段落首行缩进
- * 
  * paragraphSpace?: 段间距，默认 5px
  * 
  * vertical?: 竖向文本
@@ -157,7 +155,6 @@ export interface PPTTextElement extends PPTBaseElement {
   wordSpace?: number
   opacity?: number
   shadow?: PPTElementShadow
-  textIndent?: number
   paragraphSpace?: number
   vertical?: boolean
 }

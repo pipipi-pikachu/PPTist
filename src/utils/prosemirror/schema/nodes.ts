@@ -84,6 +84,9 @@ const paragraph: NodeSpec = {
     indent: {
       default: 0,
     },
+    textIndent: {
+      default: 0,
+    },
   },
   content: 'inline*',
   group: 'block',
@@ -91,14 +94,20 @@ const paragraph: NodeSpec = {
     {
       tag: 'p',
       getAttrs: dom => {
-        const { textAlign } = (dom as HTMLElement).style
+        const { textAlign, textIndent } = (dom as HTMLElement).style
 
         let align = (dom as HTMLElement).getAttribute('align') || textAlign || ''
         align = /(left|right|center|justify)/.test(align) ? align : ''
 
+        let textIndentLevel = 0
+        if (textIndent) {
+          textIndentLevel = Math.floor(parseInt(textIndent) / 24)
+          if (!textIndentLevel) textIndentLevel = 1
+        }
+
         const indent = +((dom as HTMLElement).getAttribute('data-indent') || 0)
       
-        return { align, indent }
+        return { align, indent, textIndent: textIndentLevel }
       }
     },
     {
@@ -111,9 +120,10 @@ const paragraph: NodeSpec = {
     },
   ],
   toDOM: (node: Node) => {
-    const { align, indent } = node.attrs
+    const { align, indent, textIndent } = node.attrs
     let style = ''
     if (align && align !== 'left') style += `text-align: ${align};`
+    if (textIndent) style += `text-indent: ${textIndent * 24}px;`
 
     const attr: Attr = { style }
     if (indent) attr['data-indent'] = indent
