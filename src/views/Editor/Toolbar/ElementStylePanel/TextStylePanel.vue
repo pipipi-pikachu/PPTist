@@ -376,7 +376,7 @@ const presetStyles = [
     cmd: [
       { command: 'clear' },
       { command: 'bold' },
-      { command: 'fontsize', value: '48px' },
+      { command: 'fontsize', value: '66px' },
       { command: 'align', value: 'center' },
     ],
   },
@@ -389,7 +389,7 @@ const presetStyles = [
     cmd: [
       { command: 'clear' },
       { command: 'bold' },
-      { command: 'fontsize', value: '36px' },
+      { command: 'fontsize', value: '40px' },
       { command: 'align', value: 'center' },
     ],
   },
