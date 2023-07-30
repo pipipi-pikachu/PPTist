@@ -199,6 +199,9 @@
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
         <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
       </Tooltip>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="两端对齐">
+        <RadioButton value="justify" style="flex: 1;"><IconAlignTextBoth /></RadioButton>
+      </Tooltip>
     </RadioGroup>
 
     <div class="row">
