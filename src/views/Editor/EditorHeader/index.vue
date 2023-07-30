@@ -54,7 +54,7 @@
     <div class="right">
       <Tooltip :mouseLeaveDelay="0" title="导出">
         <div class="menu-item" @click="setDialogForExport('pptx')">
-          <IconShare size="18" fill="#666" />
+          <IconDownload size="18" fill="#666" />
         </div>
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" title="幻灯片放映">
