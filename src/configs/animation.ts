@@ -1,3 +1,5 @@
+import type { TurningMode } from '@/types/slides'
+
 export const ANIMATION_DEFAULT_DURATION = 1000
 export const ANIMATION_DEFAULT_TRIGGER = 'click'
 export const ANIMATION_CLASS_PREFIX = 'animate__'
@@ -209,4 +211,24 @@ export const ATTENTION_ANIMATIONS = [
       { name: '心跳（快）', value: 'heartBeat' },
     ],
   },
+]
+
+interface SlideAnimation {
+  label: string
+  value: TurningMode
+}
+
+export const SLIDE_ANIMATIONS: SlideAnimation[] = [
+  { label: '无', value: 'no' },
+  { label: '随机', value: 'random' },
+  { label: '左右推移', value: 'slideX' },
+  { label: '上下推移', value: 'slideY' },
+  { label: '左右推移（3D）', value: 'slideX3D' },
+  { label: '上下推移（3D）', value: 'slideY3D' },
+  { label: '淡入淡出', value: 'fade' },
+  { label: '旋转', value: 'rotate' },
+  { label: '上下展开', value: 'scaleY' },
+  { label: '左右展开', value: 'scaleX' },
+  { label: '放大', value: 'scale' },
+  { label: '缩小', value: 'scaleReverse' },
 ]

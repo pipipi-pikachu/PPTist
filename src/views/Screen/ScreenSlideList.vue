@@ -3,7 +3,7 @@
     <div 
       :class="[
         'slide-item', 
-        `turning-mode-${slide.turningMode || 'slideY'}`,
+        `turning-mode-${slide.turningMode}`,
         {
           'current': index === slideIndex,
           'before': index < slideIndex,
@@ -11,7 +11,7 @@
           'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== currentSlide.turningMode,
         }
       ]"
-      v-for="(slide, index) in slides" 
+      v-for="(slide, index) in slidesWithTurningMode" 
       :key="slide.id"
     >
       <div 
@@ -40,6 +40,7 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
+import { SLIDE_ANIMATIONS } from '@/configs/animation'
 
 import ScreenSlide from './ScreenSlide.vue'
 
@@ -52,6 +53,21 @@ const props = defineProps<{
 }>()
 
 const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
+
+const slidesWithTurningMode = computed(() => {
+  return slides.value.map(slide => {
+    let turningMode = slide.turningMode
+    if (!turningMode) turningMode = 'slideY'
+    if (turningMode === 'random') {
+      const turningModeKeys = SLIDE_ANIMATIONS.filter(item => !['random', 'no'].includes(item.value)).map(item => item.value)
+      turningMode = turningModeKeys[Math.floor(Math.random() * turningModeKeys.length)]
+    }
+    return {
+      ...slide,
+      turningMode,
+    }
+  })
+})
 
 const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
 provide(injectKeySlideScale, scale)
@@ -114,6 +130,70 @@ provide(injectKeySlideScale, scale)
     }
     &.after {
       transform: translateY(100%);
+    }
+  }
+  &.turning-mode-slideX3D {
+    transition: transform .5s;
+    &.before {
+      transform: translateX(-100%) scale(.5);
+    }
+    &.after {
+      transform: translateX(100%) scale(.5);
+    }
+  }
+  &.turning-mode-slideY3D {
+    transition: transform .5s;
+    &.before {
+      transform: translateY(-100%) scale(.5);
+    }
+    &.after {
+      transform: translateY(100%) scale(.5);
+    }
+  }
+  &.turning-mode-rotate {
+    transition: transform .5s;
+    transform-origin: 0 0;
+    &.before {
+      transform: rotate(90deg);
+    }
+    &.after {
+      transform: rotate(-90deg);
+    }
+  }
+  &.turning-mode-scaleY {
+    transition: transform .5s;
+    &.before {
+      transform: scaleY(.1);
+    }
+    &.after {
+      transform: scaleY(.1);
+    }
+  }
+  &.turning-mode-scaleX {
+    transition: transform .5s;
+    &.before {
+      transform: scaleX(.1);
+    }
+    &.after {
+      transform: scaleX(.1);
+    }
+  }
+  &.turning-mode-scale {
+    transition: transform .5s;
+    &.before {
+      transform: scale(.25);
+    }
+    &.after {
+      transform: scale(.25);
+    }
+  }
+  &.turning-mode-scaleReverse {
+    transition: transform .5s;
+    &.before {
+      transform: scale(2);
+    }
+    &.after {
+      transform: scale(2);
     }
   }
 }

@@ -658,7 +658,7 @@ export interface SlideBackground {
 }
 
 
-export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY'
+export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY' | 'random' | 'slideX3D' | 'slideY3D' | 'rotate' | 'scaleY' | 'scaleX' | 'scale' | 'scaleReverse'
 
 /**
  * 幻灯片页面

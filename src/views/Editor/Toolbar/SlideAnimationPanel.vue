@@ -21,26 +21,17 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { TurningMode } from '@/types/slides'
+import { SLIDE_ANIMATIONS } from '@/configs/animation'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { Button } from 'ant-design-vue'
-
-interface Animations {
-  label: string
-  value: TurningMode
-}
+import { Button, message } from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { slides, currentSlide } = storeToRefs(slidesStore)
 
 const currentTurningMode = computed(() => currentSlide.value.turningMode || 'slideY')
 
-const animations: Animations[] = [
-  { label: '无', value: 'no' },
-  { label: '淡入淡出', value: 'fade' },
-  { label: '左右推移', value: 'slideX' },
-  { label: '上下推移', value: 'slideY' },
-]
+const animations = SLIDE_ANIMATIONS
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -60,6 +51,7 @@ const applyAllSlide = () => {
     }
   })
   slidesStore.setSlides(newSlides)
+  message.success('已应用到全部')
   addHistorySnapshot()
 }
 </script>
@@ -72,14 +64,14 @@ const applyAllSlide = () => {
 }
 .animation-item {
   width: 50%;
-  height: 115px;
+  height: 100px;
   border: solid 1px #d6d6d6;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 25px 0 15px 0;
+  padding: 20px 0 15px 0;
   position: relative;
   cursor: pointer;
 
@@ -103,13 +95,16 @@ const applyAllSlide = () => {
   overflow: hidden;
 
   @mixin elAnimation($animationType) {
-    content: '';
+    content: 'Slide';
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
     background-color: #d9dadb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     animation: $animationType $transitionDelaySlow linear;
   }
 
@@ -126,6 +121,42 @@ const applyAllSlide = () => {
   &.slideY:hover {
     &::after {
       @include elAnimation(slideY);
+    }
+  }
+  &.slideX3D:hover {
+    &::after {
+      @include elAnimation(slideX3D);
+    }
+  }
+  &.slideY3D:hover {
+    &::after {
+      @include elAnimation(slideY3D);
+    }
+  }
+  &.rotate:hover {
+    &::after {
+      transform-origin: 0 0;
+      @include elAnimation(rotate);
+    }
+  }
+  &.scaleY:hover {
+    &::after {
+      @include elAnimation(scaleY);
+    }
+  }
+  &.scaleX:hover {
+    &::after {
+      @include elAnimation(scaleX);
+    }
+  }
+  &.scale:hover {
+    &::after {
+      @include elAnimation(scale);
+    }
+  }
+  &.scaleReverse:hover {
+    &::after {
+      @include elAnimation(scaleReverse);
     }
   }
 }
@@ -157,6 +188,62 @@ const applyAllSlide = () => {
   }
   100% {
     transform: translateY(0);
+  }
+}
+@keyframes slideX3D {
+  0% {
+    transform: translateX(100%) scale(.5);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+@keyframes slideY3D {
+  0% {
+    transform: translateY(100%) scale(.5);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+@keyframes scaleY {
+  0% {
+    transform: scaleY(.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+@keyframes scaleX {
+  0% {
+    transform: scaleX(.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+@keyframes scale {
+  0% {
+    transform: scale(.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes scaleReverse {
+  0% {
+    transform: scale(2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
