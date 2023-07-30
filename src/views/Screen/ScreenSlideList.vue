@@ -8,7 +8,7 @@
           'current': index === slideIndex,
           'before': index < slideIndex,
           'after': index > slideIndex,
-          'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== currentSlide.turningMode,
+          'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== slidesWithTurningMode[slideIndex].turningMode,
         }
       ]"
       v-for="(slide, index) in slidesWithTurningMode" 
@@ -52,7 +52,7 @@ const props = defineProps<{
   manualExitFullscreen: () => void
 }>()
 
-const { slides, slideIndex, currentSlide } = storeToRefs(useSlidesStore())
+const { slides, slideIndex } = storeToRefs(useSlidesStore())
 
 const slidesWithTurningMode = computed(() => {
   return slides.value.map(slide => {
