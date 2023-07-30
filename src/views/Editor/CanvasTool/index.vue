@@ -105,6 +105,7 @@
       v-model:open="latexEditorVisible" 
       :footer="null" 
       centered
+      :closable="false"
       :width="880"
       destroyOnClose
     >

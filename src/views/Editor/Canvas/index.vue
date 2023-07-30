@@ -86,6 +86,7 @@
       v-model:open="linkDialogVisible" 
       :footer="null" 
       centered
+      :closable="false"
       :width="540"
       destroyOnClose
     >

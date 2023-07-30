@@ -154,7 +154,6 @@ const insertSymbol = (latex: string) => {
 .container {
   height: calc(100% - 50px);
   display: flex;
-  padding-top: 25px;
 }
 .left {
   width: 540px;
