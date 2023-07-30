@@ -1,6 +1,5 @@
-// 对 ant design vue 的默认样式覆盖
+/* 对 ant design vue 的默认样式覆盖 */
 
-// popover
 .ant-popover {
   padding-top: 5px !important;
 }
@@ -12,7 +11,6 @@
   border: 1px solid $borderColor !important;
 }
 
-// dropdown
 .ant-dropdown-menu {
   min-width: 150px;
   box-shadow: $boxShadow !important;
@@ -20,19 +18,16 @@
   margin-top: -4px !important;
 }
 
-// button
 .ant-btn {
   &.no-padding {
     padding: 0;
   }
 }
 
-// radio
 .ant-radio-button-wrapper {
   text-align: center;
 }
 
-// slider
 .ant-slider-track {
   background-color: $themeColor !important;
 }
@@ -40,7 +35,6 @@
   border-color: $themeColor !important;
 }
 
-// select
 .ant-select {
   user-select: none;
   overflow: hidden;
@@ -49,7 +43,6 @@
   font-size: 13px !important;
 }
 
-// tooltip
 .ant-tooltip-inner {
   font-size: 12px;
 }
@@ -57,7 +50,6 @@
   height: 4px !important;
 }
 
-// input
 .ant-input-number-affix-wrapper-disabled .ant-input-number-disabled {
   background-color: transparent !important;
 
