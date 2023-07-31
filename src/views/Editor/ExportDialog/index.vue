@@ -1,10 +1,10 @@
 <template>
   <div class="export-dialog">
     <div class="tabs">
-      <div 
-        class="tab" 
+      <div
+        class="tab"
         :class="{ 'active': tab.key === dialogForExport }"
-        v-for="tab in tabs" 
+        v-for="tab in tabs"
         :key="tab.key"
         @click="setDialogForExport(tab.key)"
       >{{tab.label}}</div>
@@ -38,11 +38,11 @@ const { dialogForExport } = storeToRefs(mainStore)
 const setDialogForExport = mainStore.setDialogForExport
 
 const tabs: TabItem[] = [
-  { key: 'super-ppt', label: '导出 super-ppt 文件' },
-  { key: 'pptx', label: '导出 PPTX' },
-  { key: 'image', label: '导出图片' },
-  { key: 'json', label: '导出 JSON' },
-  { key: 'pdf', label: '打印 / 导出 PDF' },
+  { key: 'super-ppt', label: 'Export super-ppt file' },
+  { key: 'pptx', label: 'Export PPTX' },
+  { key: 'image', label: 'Export image' },
+  { key: 'json', label: 'Export JSON' },
+  { key: 'pdf', label: 'Print/Export PDF' },
 ]
 
 const currentDialogComponent = computed(() => {
@@ -53,7 +53,7 @@ const currentDialogComponent = computed(() => {
     'pptx': ExportPPTX,
     'super-ppt': ExportSpecificFile,
   }
-  if (dialogForExport.value) return dialogMap[dialogForExport.value] || null
+  if (dialogForExport. value) return dialogMap[dialogForExport. value] || null
   return null
 })
 </script>

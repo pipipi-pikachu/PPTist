@@ -2,38 +2,38 @@
   <div class="export-pdf-dialog">
     <div class="thumbnails-view">
       <div class="thumbnails" ref="pdfThumbnailsRef">
-        <ThumbnailSlide 
-          class="thumbnail" 
-          :slide="currentSlide" 
-          :size="1600" 
+        <ThumbnailSlide
+          class="thumbnail"
+          :slide="currentSlide"
+          :size="1600"
           v-if="rangeType === 'current'"
         />
         <template v-else>
-          <ThumbnailSlide 
-            class="thumbnail" 
+          <ThumbnailSlide
+            class="thumbnail"
             :class="{ 'break-page': (index + 1) % count === 0 }"
-            v-for="(slide, index) in slides" 
-            :key="slide.id" 
-            :slide="slide" 
-            :size="1600" 
+            v-for="(slide, index) in slides"
+            :key="slide.id"
+            :slide="slide"
+            :size="1600"
           />
         </template>
       </div>
     </div>
     <div class="configs">
       <div class="row">
-        <div class="title">导出范围：</div>
+        <div class="title">Export range:</div>
         <RadioGroup
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 50%;" value="all">全部幻灯片</RadioButton>
-          <RadioButton style="width: 50%;" value="current">当前幻灯片</RadioButton>
+          <RadioButton style="width: 50%;" value="all">All slides</RadioButton>
+          <RadioButton style="width: 50%;" value="current">Current slideshow</RadioButton>
         </RadioGroup>
       </div>
       <div class="row">
-        <div class="title">每页数量：</div>
-        <Select 
+        <div class="title">Quantity per page:</div>
+        <Select
           class="config-item"
           v-model:value="count"
         >
@@ -43,19 +43,19 @@
         </Select>
       </div>
       <div class="row">
-        <div class="title">边缘留白：</div>
+        <div class="title">Margin margin:</div>
         <div class="config-item">
           <Switch v-model:checked="padding" />
         </div>
       </div>
       <div class="tip">
-        注意：若打印预览与实际样式不一致，请在弹出的打印窗口中勾选【背景图形】选项。
+        Note: If the print preview is inconsistent with the actual style, please check the [Background Graphics] option in the pop-up print window.
       </div>
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn export" type="primary" @click="expPDF()">Print/Export PDF</Button>
+      <Button class="btn close" @click="emit('close')">Close</Button>
     </div>
   </div>
 </template>
@@ -92,9 +92,9 @@ const expPDF = () => {
   const pageSize = {
     width: 1600,
     height: rangeType.value === 'all' ? 1600 * viewportRatio.value * count.value : 1600 * viewportRatio.value,
-    margin: padding.value ? 50 : 0,
+    margin: padding. value ? 50 : 0,
   }
-  print(pdfThumbnailsRef.value, pageSize)
+  print(pdfThumbnailsRef. value, pageSize)
 }
 </script>
 
