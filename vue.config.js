@@ -3,7 +3,7 @@
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 
 module.exports = {
-  publicPath: './',
+  publicPath: '/',
   css: {
     loaderOptions: {
       sass: {

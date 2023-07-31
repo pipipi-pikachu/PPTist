@@ -1,23 +1,23 @@
 ---
-name: Bug反馈
+name: Bug Feedback
 about: 'Bug report'
 title: "[Bug report]"
 labels: 'bug'
 assignees: ''
 ---
 
-**注意**
-1. 请在提问前先尝试搜索历史 Issue 记录，避免重复的问题。
-2. 请确保提问时已经仔细阅读过 README 中的相关事项。
-3. 过于随意的 Issue 可能会被直接关闭（无标题、无描述、表述不清楚、信息不完整、无复现方法、重复的问题等）。
+**Notice**
+1. Please try to search historical Issue records before asking questions to avoid duplicate questions.
+2. Please make sure you have carefully read the relevant items in the README when asking questions.
+3. Issues that are too casual may be closed directly (no title, no description, unclear expression, incomplete information, no reproduction method, repeated questions, etc.).
 
-**问题描述**  
-请尽量简洁、完整地描述你遇到的bug，至少包括以下部分（如有必要，可提供截图甚至视频）：
-1. 问题触发的条件/操作流程。
-2. 期望表现与实际表现。
+**Problem Description**  
+Please try to describe the bug you encountered as concisely and completely as possible, including at least the following parts (screenshots or even videos may be provided if necessary):
+1. The condition/operation process that triggers the problem.
+2. Expected performance versus actual performance.
 
-**环境信息**  
-如有必要，可包含以下部分：
-1. 系统环境(Mac or Windows)。
-2. 浏览器环境(如：Chrome v89.0.4389.114)。
-3. 如拉取后无法运行，请提供相关异常指向的依赖及其版本信息。
+**Environmental information**
+If necessary, include the following sections:
+1. System environment (Mac or Windows).
+2. Browser environment (eg: Chrome v89.0.4389.114).
+3. If it fails to run after being pulled, please provide the dependency pointed to by the relevant exception and its version information.

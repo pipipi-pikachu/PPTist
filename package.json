@@ -2,11 +2,13 @@
   "name": "super-ppt",
   "version": "0.0.1",
   "private": true,
+  "homepage": "https://supernovate07.github.io/super-ppt",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:fonts": "node scripts/build-fonts"
+    "build:fonts": "node scripts/build-fonts",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
@@ -66,6 +68,7 @@
     "babel-plugin-import": "^1.13.3",
     "eslint": "^8.34.0",
     "eslint-plugin-vue": "^9.9.0",
+    "gh-pages": "^5.0.0",
     "husky": "8.0.3",
     "less": "^3.5.0",
     "less-loader": "^7.1.0",

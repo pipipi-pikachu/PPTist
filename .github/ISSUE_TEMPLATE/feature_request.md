@@ -1,13 +1,13 @@
 ---
-name: 功能请求
+name: feature request
 about: 'Feature request'
 title: "[Feature request]"
 labels: 'enhancement'
 assignees: ''
 ---
 
-**注意**
-1. 请在提问前先尝试搜索历史 Issue 记录，避免重复的问题。
-2. 请在提交前仔细阅读 README 中的后续规划部分，不要重复提交已经在规划中的请求。
-3. 请完整地描述你需要的功能及场景。
-4. 本项目是一个“在线幻灯片应用/在线演示工具”，请注意你的需求是否符合该项目的定位，如不符合将不予接受（例如你的需求针对的是：图片编辑器、低代码编辑器、在线设计软件等，请自行实现）。
+**Notice**
+1. Please try to search historical Issue records before asking questions to avoid duplicate questions.
+2. Please carefully read the follow-up planning section in the README before submitting, and do not repeatedly submit requests that are already in planning.
+3. Please fully describe the functions and scenarios you need.
+4. This project is an "online slideshow application/online presentation tool", please pay attention to whether your needs meet the positioning of the project, otherwise it will not be accepted (for example, your needs are aimed at: image editor, low-level code editor, online design software, etc., please implement it yourself).
