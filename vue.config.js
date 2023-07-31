@@ -3,7 +3,7 @@
 const StyleLintPlugin = require('stylelint-webpack-plugin')
 
 module.exports = {
-  publicPath: '/',
+  publicPath: '/super-ppt/',
   css: {
     loaderOptions: {
       sass: {
