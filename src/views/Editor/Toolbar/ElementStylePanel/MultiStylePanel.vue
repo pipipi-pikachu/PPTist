@@ -1,13 +1,10 @@
 <template>
   <div class="multi-style-panel">
     <div class="row">
-      <div style="flex: 2;">填充颜色：</div>
+      <div style="flex: 2;">Fill color:</div>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="fill"
-            @update:modelValue="value => updateFill(value)"
-          />
+          <ColorPicker :modelValue="fill" @update:modelValue="value => updateFill(value)" />
         </template>
         <ColorButton :color="fill" style="flex: 3;" />
       </Popover>
@@ -16,77 +13,62 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">边框样式：</div>
-      <Select 
-        style="flex: 3;" 
-        :value="outline.style"
-        @change="value => updateOutline({ style: value as 'solid' | 'dashed' })"
-      >
-        <SelectOption value="solid">实线边框</SelectOption>
-        <SelectOption value="dashed">虚线边框</SelectOption>
-      </Select>
+      <div style="flex: 2;">Border style:</div>
+      <Select style="flex: 3;" :value="outline.style"
+        @change="value => updateOutline({ style: value as 'solid' | 'dashed' })">
+        <SelectOption value="solid">solid border</SelectOption>
+        <SelectOption value="dashed">Dashed Border</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">边框颜色：</div>
+      <div style="flex: 2;">Border color:</div>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="outline.color"
-            @update:modelValue="value => updateOutline({ color: value })"
-          />
+          <ColorPicker :modelValue="outline.color" @update:modelValue="value => updateOutline({ color: value })" />
         </template>
         <ColorButton :color="outline.color || '#000'" style="flex: 3;" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">边框粗细：</div>
-      <InputNumber 
-        :value="outline.width"
-        @change="value => updateOutline({ width: value as number })" 
-        style="flex: 3;" 
-      />
+      <div style="flex: 2;">Border thickness:</div>
+      <InputNumber :value="outline.width" @change="value => updateOutline({ width: value as number })" style="flex: 3;" />
     </div>
 
     <Divider />
 
     <InputGroup compact class="row">
-      <Select
-        style="flex: 3;"
-        :value="richTextAttrs.fontname"
-        @change="value => updateFontStyle('fontname', value as string)"
-      >
-        <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
+      <Select style="flex: 3;" :value="richTextAttrs.fontname"
+        @change="value => updateFontStyle('fontname', value as string)">
+        <template #suffixIcon>
+          <IconFontSize />
+        </template>
+        <SelectOptGroup label="system font">
           <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
+            <span :style="{ fontFamily: font.value }">{{ font.label }}</span>
           </SelectOption>
         </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
+        <SelectOptGroup label="Online font">
           <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
+            <span>{{ font.label }}</span>
           </SelectOption>
         </SelectOptGroup>
-      </Select>
-      <Select
-        style="flex: 2;"
-        :value="richTextAttrs.fontsize"
-        @change="value => updateFontStyle('fontsize', value as string)"
-      >
-        <template #suffixIcon><IconAddText /></template>
+      </select>
+      <Select style="flex: 2;" :value="richTextAttrs.fontsize"
+        @change="value => updateFontStyle('fontsize', value as string)">
+        <template #suffixIcon>
+          <IconAddText />
+        </template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-          {{fontsize}}
+          {{ fontsize }}
         </SelectOption>
-      </Select>
+      </select>
     </InputGroup>
     <ButtonGroup class="row">
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="richTextAttrs.color"
-            @update:modelValue="value => updateFontStyle('color', value)"
-          />
+          <ColorPicker :modelValue="richTextAttrs.color" @update:modelValue="value => updateFontStyle('color', value)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Text Color">
           <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
             <IconText />
           </TextColorButton>
@@ -94,51 +76,46 @@
       </Popover>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="richTextAttrs.backcolor"
-            @update:modelValue="value => updateFontStyle('backcolor', value)"
-          />
+          <ColorPicker :modelValue="richTextAttrs.backcolor"
+            @update:modelValue="value => updateFontStyle('backcolor', value)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Text Highlight">
           <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
             <IconHighLight />
           </TextColorButton>
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="updateFontStyle('fontsize-add', '2')"
-        ><IconFontSize />+</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Increase font size">
+        <Button class="font-size-btn" style="flex: 2;" @click="updateFontStyle('fontsize-add', '2')">
+          <IconFontSize />+
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="updateFontStyle('fontsize-reduce', '2')"
-        ><IconFontSize />-</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Reduce font size">
+        <Button class="font-size-btn" style="flex: 2;" @click="updateFontStyle('fontsize-reduce', '2')">
+          <IconFontSize />-
+        </Button>
       </Tooltip>
     </ButtonGroup>
-    <RadioGroup 
-      class="row" 
-      button-style="solid" 
-      :value="richTextAttrs.align"
-      @change="e => updateFontStyle('align', e.target.value)"
-    >
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
+    <RadioGroup class="row" button-style="solid" :value="richTextAttrs.align"
+      @change="e => updateFontStyle('align', e.target.value)">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Left alignment">
+        <RadioButton value="left" style="flex: 1;">
+          <IconAlignTextLeft />
+        </RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Center">
+        <RadioButton value="center" style="flex: 1;">
+          <IconAlignTextCenter />
+        </RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Right Align">
+        <RadioButton value="right" style="flex: 1;">
+          <IconAlignTextRight />
+        </RadioButton>
       </Tooltip>
     </RadioGroup>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -189,7 +166,7 @@ const outline = ref<PPTElementOutline>({
   style: 'solid',
 })
 
-// 批量修改填充色（表格元素为单元格填充、音频元素为图标颜色）
+// Modify the fill color in batches (table elements are cell fills, audio elements are icon colors)
 const updateFill = (value: string) => {
   for (const el of activeElementList.value) {
     if (
@@ -214,7 +191,7 @@ const updateFill = (value: string) => {
   fill.value = value
 }
 
-// 修改边框/线条样式
+// modify border/line style
 const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
 
   for (const el of activeElementList.value) {
@@ -235,7 +212,7 @@ const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
   outline.value = { ...outline.value, ...outlineProps }
 }
 
-// 修改文字样式
+// Modify the text style
 const updateFontStyle = (command: string, value: string) => {
   for (const el of activeElementList.value) {
     if (el.type === 'text' || (el.type === 'shape' && el.text?.content)) {
@@ -265,6 +242,7 @@ const updateFontStyle = (command: string, value: string) => {
   align-items: center;
   margin-bottom: 10px;
 }
+
 .font-size-btn {
   padding: 0;
 }

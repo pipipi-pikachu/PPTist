@@ -1,11 +1,11 @@
 <template>
   <div class="latex-style-panel">
-    <div class="row"><Button style="flex: 1;" @click="latexEditorVisible = true">编辑 LaTeX</Button></div>
+    <div class="row"><Button style="flex: 1;" @click="latexEditorVisible = true">Edit LaTeX</Button></div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">颜色：</div>
+      <div style="flex: 2;">color:</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -17,24 +17,24 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">粗细：</div>
-      <InputNumber 
+      <div style="flex: 2;">Thickness:</div>
+      <InputNumber
         :min="1"
         :max="3"
-        :value="handleLatexElement.strokeWidth" 
-        @change="value => updateLatex({ strokeWidth: value as number })" 
-        style="flex: 3;" 
+        :value="handleLatexElement. strokeWidth"
+        @change="value => updateLatex({ strokeWidth: value as number })"
+        style="flex: 3;"
       />
     </div>
 
     <Modal
-      v-model:visible="latexEditorVisible" 
-      :footer="null" 
+      v-model:visible="latexEditorVisible"
+      :footer="null"
       centered
       :width="880"
       destroyOnClose
     >
-      <LaTeXEditor 
+      <LaTeXEditor
         :value="handleLatexElement.latex"
         @close="latexEditorVisible = false"
         @update="data => { updateLatexData(data); latexEditorVisible = false }"
@@ -72,8 +72,8 @@ const latexEditorVisible = ref(false)
 const { addHistorySnapshot } = useHistorySnapshot()
 
 const updateLatex = (props: Partial<PPTLatexElement>) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props })
+  if (!handleElement. value) return
+  slidesStore. updateElement({ id: handleElement. value. id, props })
   addHistorySnapshot()
 }
 
@@ -87,7 +87,7 @@ const updateLatexData = (data: { path: string; latex: string; w: number; h: numb
   })
 }
 
-const openLatexEditor = () => latexEditorVisible.value = true
+const openLatexEditor = () => latexEditorVisible. value = true
 
 emitter.on(EmitterEvents.OPEN_LATEX_EDITOR, openLatexEditor)
 onUnmounted(() => {

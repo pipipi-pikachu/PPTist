@@ -1,59 +1,44 @@
 <template>
   <div class="line-style-panel">
     <div class="row">
-      <div style="flex: 2;">线条样式：</div>
-      <Select 
-        style="flex: 3;" 
-        :value="handleLineElement.style" 
-        @change="value => updateLine({ style: value as 'solid' | 'dashed' })"
-      >
-        <SelectOption value="solid">实线</SelectOption>
-        <SelectOption value="dashed">虚线</SelectOption>
-      </Select>
+      <div style="flex: 2;">line style:</div>
+      <Select style="flex: 3;" :value="handleLineElement.style"
+        @change="value => updateLine({ style: value as 'solid' | 'dashed' })">
+        <SelectOption value="solid">solid line</SelectOption>
+        <SelectOption value="dashed">dashed line</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">线条颜色：</div>
+      <div style="flex: 2;">line color:</div>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="handleLineElement.color"
-            @update:modelValue="value => updateLine({ color: value })"
-          />
+          <ColorPicker :modelValue="handleLineElement.color" @update:modelValue="value => updateLine({ color: value })" />
         </template>
         <ColorButton :color="handleLineElement.color" style="flex: 3;" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">线条宽度：</div>
-      <InputNumber 
-        :value="handleLineElement.width" 
-        @change="value => updateLine({ width: value as number })" 
-        style="flex: 3;" 
-      />
+      <div style="flex: 2;">line width:</div>
+      <InputNumber :value="handleLineElement.width" @change="value => updateLine({ width: value as number })"
+        style="flex: 3;" />
     </div>
-    
+
     <div class="row">
-      <div style="flex: 2;">起点样式：</div>
-      <Select 
-        style="flex: 3;" 
-        :value="handleLineElement.points[0]" 
-        @change="value => updateLine({ points: [value as 'arrow' | 'dot', handleLineElement.points[1]] })"
-      >
-        <SelectOption value="">无</SelectOption>
-        <SelectOption value="arrow">箭头</SelectOption>
-        <SelectOption value="dot">圆点</SelectOption>
+      <div style="flex: 2;">Start style:</div>
+      <Select style="flex: 3;" :value="handleLineElement.points[0]"
+        @change="value => updateLine({ points: [value as 'arrow' | 'dot', handleLineElement.points[1]] })">
+        <SelectOption value="">None</SelectOption>
+        <SelectOption value="arrow">Arrow</SelectOption>
+        <SelectOption value="dot">Dot</SelectOption>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">终点样式：</div>
-      <Select 
-        style="flex: 3;" 
-        :value="handleLineElement.points[1]" 
-        @change="value => updateLine({ points: [handleLineElement.points[0], value as 'arrow' | 'dot'] })"
-      >
-        <SelectOption value="">无</SelectOption>
-        <SelectOption value="arrow">箭头</SelectOption>
-        <SelectOption value="dot">圆点</SelectOption>
+      <div style="flex: 2;">End style:</div>
+      <Select style="flex: 3;" :value="handleLineElement.points[1]"
+        @change="value => updateLine({ points: [handleLineElement.points[0], value as 'arrow' | 'dot'] })">
+        <SelectOption value="">None</SelectOption>
+        <SelectOption value="arrow">Arrow</SelectOption>
+        <SelectOption value="dot">Dot</SelectOption>
       </Select>
     </div>
 
@@ -101,6 +86,7 @@ const updateLine = (props: Partial<PPTLineElement>) => {
   align-items: center;
   margin-bottom: 10px;
 }
+
 .line-btn {
   display: flex;
   align-items: center;
@@ -111,15 +97,18 @@ const updateLine = (props: Partial<PPTLineElement>) => {
     margin-left: 8px;
   }
 }
+
 .line-wrapper {
   overflow: visible;
 }
+
 .line-btn-icon {
   width: 30px;
   font-size: 12px;
   margin-top: 2px;
   color: #bfbfbf;
 }
+
 .preset-point-style {
   padding: 0 10px;
 

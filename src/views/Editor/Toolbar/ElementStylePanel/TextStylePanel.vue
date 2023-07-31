@@ -1,57 +1,47 @@
 <template>
   <div class="text-style-panel">
     <div class="preset-style">
-      <div 
-        class="preset-style-item"
-        v-for="item in presetStyles"
-        :key="item.label"
-        :style="item.style"
-        @click="emitBatchRichTextCommand(item.cmd)"
-      >{{item.label}}</div>
+      <div class="preset-style-item" v-for="item in presetStyles" :key="item.label" :style="item.style"
+        @click="emitBatchRichTextCommand(item.cmd)">{{ item.label }}</div>
     </div>
 
     <Divider />
-    
+
     <InputGroup compact class="row">
-      <Select
-        class="font-select"
-        style="flex: 3;"
-        :value="richTextAttrs.fontname"
-        @change="value => emitRichTextCommand('fontname', value as string)"
-      >
-        <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
+      <Select class="font-select" style="flex: 3;" :value="richTextAttrs.fontname"
+        @change="value => emitRichTextCommand('fontname', value as string)">
+        <template #suffixIcon>
+          <IconFontSize />
+        </template>
+        <SelectOptGroup label="system font">
           <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
+            <span :style="{ fontFamily: font.value }">{{ font.label }}</span>
           </SelectOption>
         </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
+        <SelectOptGroup label="Online font">
           <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
+            <span>{{ font.label }}</span>
           </SelectOption>
         </SelectOptGroup>
-      </Select>
-      <Select
-        style="flex: 2;"
-        :value="richTextAttrs.fontsize"
-        @change="value => emitRichTextCommand('fontsize', value as string)"
-      >
-        <template #suffixIcon><IconAddText /></template>
+      </select>
+      <Select style="flex: 2;" :value="richTextAttrs.fontsize"
+        @change="value => emitRichTextCommand('fontsize', value as string)">
+        <template #suffixIcon>
+          <IconAddText />
+        </template>
         <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-          {{fontsize}}
+          {{ fontsize }}
         </SelectOption>
-      </Select>
+      </select>
     </InputGroup>
 
     <ButtonGroup class="row">
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="richTextAttrs.color"
-            @update:modelValue="value => emitRichTextCommand('color', value)"
-          />
+          <ColorPicker :modelValue="richTextAttrs.color"
+            @update:modelValue="value => emitRichTextCommand('color', value)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Text Color">
           <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
             <IconText />
           </TextColorButton>
@@ -59,247 +49,225 @@
       </Popover>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="richTextAttrs.backcolor"
-            @update:modelValue="value => emitRichTextCommand('backcolor', value)"
-          />
+          <ColorPicker :modelValue="richTextAttrs.backcolor"
+            @update:modelValue="value => emitRichTextCommand('backcolor', value)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Text Highlight">
           <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
             <IconHighLight />
           </TextColorButton>
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="emitRichTextCommand('fontsize-add')"
-        ><IconFontSize />+</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Increase font size">
+        <Button class="font-size-btn" style="flex: 2;" @click="emitRichTextCommand('fontsize-add')">
+          <IconFontSize />+
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="emitRichTextCommand('fontsize-reduce')"
-        ><IconFontSize />-</Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Reduce font size">
+        <Button class="font-size-btn" style="flex: 2;" @click="emitRichTextCommand('fontsize-reduce')">
+          <IconFontSize />-
+        </Button>
       </Tooltip>
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="richTextAttrs.bold"
-          @click="emitRichTextCommand('bold')"
-        ><IconTextBold /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Bold">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bold" @click="emitRichTextCommand('bold')">
+          <IconTextBold />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="richTextAttrs.em"
-          @click="emitRichTextCommand('em')"
-        ><IconTextItalic /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Italics">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.em" @click="emitRichTextCommand('em')">
+          <IconTextItalic />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="richTextAttrs.underline"
-          @click="emitRichTextCommand('underline')"
-        ><IconTextUnderline /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Underline">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.underline" @click="emitRichTextCommand('underline')">
+          <IconTextUnderline />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="richTextAttrs.strikethrough"
-          @click="emitRichTextCommand('strikethrough')"
-        ><IconStrikethrough /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Strikethrough">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.strikethrough"
+          @click="emitRichTextCommand('strikethrough')">
+          <IconStrikethrough />
+        </CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上标">
-        <CheckboxButton
-          style="flex: 1;"
-          :checked="richTextAttrs.superscript"
-          @click="emitRichTextCommand('superscript')"
-        >A²</CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="superscript">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.superscript" @click="emitRichTextCommand('superscript')">
+          A²</CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下标">
-        <CheckboxButton
-          style="flex: 1;"
-          :checked="richTextAttrs.subscript"
-          @click="emitRichTextCommand('subscript')"
-        >A₂</CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="subscript">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.subscript" @click="emitRichTextCommand('subscript')">A₂
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="行内代码">
-        <CheckboxButton
-          style="flex: 1;"
-          :checked="richTextAttrs.code"
-          @click="emitRichTextCommand('code')"
-        ><IconCode /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Inline code">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.code" @click="emitRichTextCommand('code')">
+          <IconCode />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="引用">
-        <CheckboxButton
-          style="flex: 1;"
-          :checked="richTextAttrs.blockquote"
-          @click="emitRichTextCommand('blockquote')"
-        ><IconQuote /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Quotation">
+        <CheckboxButton style="flex: 1;" :checked="richTextAttrs.blockquote" @click="emitRichTextCommand('blockquote')">
+          <IconQuote />
+        </CheckboxButton>
       </Tooltip>
     </CheckboxButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
-        <CheckboxButton
-          style="flex: 1;"
-          @click="emitRichTextCommand('clear')"
-        ><IconFormat /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Clear Format">
+        <CheckboxButton style="flex: 1;" @click="emitRichTextCommand('clear')">
+          <IconFormat />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
-        <CheckboxButton
-          style="flex: 1;"
-          :checked="!!textFormatPainter"
-          @click="toggleFormatPainter()"
-        ><IconFormatBrush /></CheckboxButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Format Painter">
+        <CheckboxButton style="flex: 1;" :checked="!!textFormatPainter" @click="toggleFormatPainter()">
+          <IconFormatBrush />
+        </CheckboxButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="超链接">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Hyperlink">
         <Popover placement="bottomRight" trigger="click" v-model:visible="linkPopoverVisible">
           <template #content>
             <div class="link-popover">
-              <Input v-model:value="link" placeholder="请输入超链接" />
+              <Input v-model:value="link" placeholder="Please enter a hyperlink" />
               <div class="btns">
-                <Button size="small" :disabled="!richTextAttrs.link" @click="updateLink()" style="margin-right: 5px;">移除</Button>
-                <Button size="small" type="primary" @click="updateLink(link)">确认</Button>
+                <Button size="small" :disabled="!richTextAttrs.link" @click="updateLink()"
+                  style="margin-right: 5px;">Remove</Button>
+                <Button size="small" type="primary" @click="updateLink(link)">Confirm</Button>
               </div>
             </div>
           </template>
-          <CheckboxButton
-            style="flex: 1;"
-            :checked="!!richTextAttrs.link"
-            @click="openLinkPopover()"
-          ><IconLinkOne /></CheckboxButton>
+          <CheckboxButton style="flex: 1;" :checked="!!richTextAttrs.link" @click="openLinkPopover()">
+            <IconLinkOne />
+          </CheckboxButton>
         </Popover>
       </Tooltip>
     </CheckboxButtonGroup>
 
     <Divider />
 
-    <RadioGroup 
-      class="row" 
-      button-style="solid" 
-      :value="richTextAttrs.align"
-      @change="e => emitRichTextCommand('align', e.target.value)"
-    >
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
+    <RadioGroup class="row" button-style="solid" :value="richTextAttrs.align"
+      @change="e => emitRichTextCommand('align', e.target.value)">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Left alignment">
+        <RadioButton value="left" style="flex: 1;">
+          <IconAlignTextLeft />
+        </RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Center">
+        <RadioButton value="center" style="flex: 1;">
+          <IconAlignTextCenter />
+        </RadioButton>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Right Align">
+        <RadioButton value="right" style="flex: 1;">
+          <IconAlignTextRight />
+        </RadioButton>
       </Tooltip>
     </RadioGroup>
 
     <div class="row">
       <ButtonGroup style="flex: 15;">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="项目符号">
-          <Button
-            :type="richTextAttrs.bulletList ? 'primary' : 'default'"
-            style="flex: 1;"
-            @click="emitRichTextCommand('bulletList')"
-          ><IconList /></Button>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Bullets">
+          <Button :type="richTextAttrs.bulletList ? 'primary' : 'default'" style="flex: 1;"
+            @click="emitRichTextCommand('bulletList')">
+            <IconList />
+          </Button>
         </Tooltip>
         <Popover trigger="click" v-model:visible="bulletListPanelVisible">
           <template #content>
             <div class="list-wrap">
-              <ul class="list" 
-                v-for="item in bulletListStyleTypeOption" 
-                :key="item" 
-                :style="{ listStyleType: item }"
-                @click="emitRichTextCommand('bulletList', item)"
-              >
+              <ul class="list" v-for="item in bulletListStyleTypeOption" :key="item" :style="{ listStyleType: item }"
+                @click="emitRichTextCommand('bulletList', item)">
                 <li class="list-item" v-for="key in 3" :key="key"><span></span></li>
               </ul>
             </div>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button class="popover-btn">
+            <IconDown />
+          </Button>
         </Popover>
       </ButtonGroup>
       <div style="flex: 1;"></div>
       <ButtonGroup style="flex: 15;">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="编号">
-          <Button
-            :type="richTextAttrs.orderedList ? 'primary' : 'default'"
-            style="flex: 1;"
-            @click="emitRichTextCommand('orderedList')"
-          ><IconOrderedList /></Button>
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Number">
+          <Button :type="richTextAttrs.orderedList ? 'primary' : 'default'" style="flex: 1;"
+            @click="emitRichTextCommand('orderedList')">
+            <IconOrderedList />
+          </Button>
         </Tooltip>
         <Popover trigger="click" v-model:visible="orderedListPanelVisible">
           <template #content>
             <div class="list-wrap">
-              <ul class="list" 
-                v-for="item in orderedListStyleTypeOption" 
-                :key="item" 
-                :style="{ listStyleType: item }"
-                @click="emitRichTextCommand('orderedList', item)"
-              >
+              <ul class="list" v-for="item in orderedListStyleTypeOption" :key="item" :style="{ listStyleType: item }"
+                @click="emitRichTextCommand('orderedList', item)">
                 <li class="list-item" v-for="key in 3" :key="key"><span></span></li>
               </ul>
             </div>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button class="popover-btn">
+            <IconDown />
+          </Button>
         </Popover>
       </ButtonGroup>
     </div>
 
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小缩进">
-        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Reduce indentation">
+        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '-1')">
+          <IconIndentLeft />
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大缩进">
-        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Increase indent">
+        <Button style="flex: 1;" @click="emitRichTextCommand('indent', '+1')">
+          <IconIndentRight />
+        </Button>
       </Tooltip>
     </ButtonGroup>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">行间距：</div>
+      <div style="flex: 2;">Linespacing:</div>
       <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value as number)">
-        <template #suffixIcon><IconRowHeight /></template>
-        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
-      </Select>
+        <template #suffixIcon>
+          <IconRowHeight />
+        </template>
+        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{ item }} times</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">段间距：</div>
+      <div style="flex: 2;">Paragraph spacing:</div>
       <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value as number)">
-        <template #suffixIcon><IconVerticalSpacingBetweenItems /></template>
-        <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
-      </Select>
+        <template #suffixIcon>
+          <IconVerticalSpacingBetweenItems />
+        </template>
+        <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{ item }}px</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">字间距：</div>
+      <div style="flex: 2;">Word spacing:</div>
       <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value as number)">
-        <template #suffixIcon><IconFullwidth /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
-      </Select>
+        <template #suffixIcon>
+          <IconFullwidth />
+        </template>
+        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{ item }}px</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">首行缩进：</div>
+      <div style="flex: 2;">First line indent:</div>
       <Select style="flex: 3;" :value="textIndent" @change="value => updateTextIndent(value as number)">
-        <template #suffixIcon><IconIndentRight /></template>
-        <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{item}}px</SelectOption>
-      </Select>
+        <template #suffixIcon>
+          <IconIndentRight />
+        </template>
+        <SelectOption v-for="item in textIndentOptions" :key="item" :value="item">{{ item }}px</SelectOption>
+      </select>
     </div>
     <div class="row">
-      <div style="flex: 2;">文本框填充：</div>
+      <div style="flex: 2;">Fill text box:</div>
       <Popover trigger="click">
         <template #content>
-          <ColorPicker
-            :modelValue="fill"
-            @update:modelValue="value => updateFill(value)"
-          />
+          <ColorPicker :modelValue="fill" @update:modelValue="value => updateFill(value)" />
         </template>
         <ColorButton :color="fill" style="flex: 3;" />
       </Popover>
@@ -347,11 +315,12 @@ const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
 const ButtonGroup = Button.Group
 
-// 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
-// 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
+// Note that there is a BUG for unknown reasons. If the height of the text box increases after the text is thickened, the positioning of the visible area of the canvas will be wrong
+// Therefore, when executing the preset style command, put the bold command at the front as much as possible to avoid bolding after the font size increases
+
 const presetStyles = [
   {
-    label: '大标题',
+    label: 'Title',
     style: {
       fontSize: '26px',
       fontWeight: 700,
@@ -364,7 +333,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '小标题',
+    label: 'subtitle',
     style: {
       fontSize: '22px',
       fontWeight: 700,
@@ -377,7 +346,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文',
+    label: 'text',
     style: {
       fontSize: '20px',
     },
@@ -387,7 +356,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文[小]',
+    label: 'text[small]',
     style: {
       fontSize: '18px',
     },
@@ -397,7 +366,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 1',
+    label: 'Comment 1',
     style: {
       fontSize: '16px',
       fontStyle: 'italic',
@@ -409,7 +378,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 2',
+    label: 'Note 2',
     style: {
       fontSize: '16px',
       textDecoration: 'underline',
@@ -466,42 +435,42 @@ const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 const textIndentOptions = [0, 48, 96, 144, 192, 240, 288, 336]
 const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 
-// 设置行高
+// set row height
 const updateLineHeight = (value: number) => {
   updateElement({ lineHeight: value })
 }
 
-// 设置段间距
+// set paragraph spacing
 const updateParagraphSpace = (value: number) => {
   updateElement({ paragraphSpace: value })
 }
 
-// 设置字间距
+// set word spacing
 const updateWordSpace = (value: number) => {
   updateElement({ wordSpace: value })
 }
 
-// 设置首行缩进
+// Set first line indentation
 const updateTextIndent = (value: number) => {
   updateElement({ textIndent: value })
 }
 
-// 设置文本框填充
+// Set textbox padding
 const updateFill = (value: string) => {
   updateElement({ fill: value })
 }
 
-// 发射富文本设置命令
+// emit rich text setting command
 const emitRichTextCommand = (command: string, value?: string) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
 }
 
-// 发射富文本设置命令（批量）
+// Issue rich text setting commands (batch)
 const emitBatchRichTextCommand = (action: RichTextAction[]) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
 }
 
-// 设置富文本超链接
+// set rich text hyperlink
 const link = ref('')
 const linkPopoverVisible = ref(false)
 
@@ -513,8 +482,8 @@ const openLinkPopover = () => {
 }
 const updateLink = (link?: string) => {
   if (link) {
-    const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
-    if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
+    const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/ ~+#]*[\w\-@?^=%&\/~+#])?$/
+    if (!linkRegExp.test(link)) return message.error('not the correct web page link address')
   }
   emitRichTextCommand('link', link)
   linkPopoverVisible.value = false
@@ -525,17 +494,20 @@ const updateLink = (link?: string) => {
 .text-style-panel {
   user-select: none;
 }
+
 .row {
   width: 100%;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
+
 .preset-style {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
+
 .preset-style-item {
   width: 50%;
   height: 50px;
@@ -557,16 +529,20 @@ const updateLink = (link?: string) => {
   &:nth-child(2n) {
     margin-left: -1px;
   }
+
   &:nth-child(n+3) {
     margin-top: -1px;
   }
 }
+
 .font-select {
   max-width: 50%;
 }
+
 .font-size-btn {
   padding: 0;
 }
+
 .link-popover {
   width: 240px;
 
@@ -585,6 +561,7 @@ const updateLink = (link?: string) => {
   flex-wrap: wrap;
   align-content: flex-start;
 }
+
 .list {
   background-color: $lightGray;
   padding: 4px 4px 4px 20px;
@@ -608,6 +585,7 @@ const updateLink = (link?: string) => {
     }
   }
 }
+
 .list-item {
   width: 24px;
   height: 12px;
@@ -623,6 +601,7 @@ const updateLink = (link?: string) => {
     background-color: #666;
   }
 }
+
 .popover-btn {
   padding: 0 3px;
 }

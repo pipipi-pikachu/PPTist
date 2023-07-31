@@ -172,7 +172,7 @@ const _defaultAttrs: DefaultAttrs = {
   color: '#000',
   backcolor: '',
   fontsize: '20px',
-  fontname: '微软雅黑',
+  fontname: 'Microsoft Yahei',
   align: 'left',
 }
 export const getTextAttrs = (view: EditorView, attrs: Partial<DefaultAttrs> = {}) => {
@@ -236,7 +236,7 @@ export const defaultRichTextAttrs: TextAttrs = {
   color: '#000',
   backcolor: '',
   fontsize: '20px',
-  fontname: '微软雅黑',
+  fontname: 'Microsoft Yahei',
   link: '',
   align: 'left',
   bulletList: false,

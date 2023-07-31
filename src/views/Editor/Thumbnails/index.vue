@@ -1,46 +1,34 @@
 <template>
-  <div 
-    class="thumbnails"
-    @mousedown="() => setThumbnailsFocus(true)"
-    v-click-outside="() => setThumbnailsFocus(false)"
-    v-contextmenu="contextmenusThumbnails"
-  >
+  <div class="thumbnails" @mousedown="() => setThumbnailsFocus(true)" v-click-outside="() => setThumbnailsFocus(false)"
+    v-contextmenu="contextmenusThumbnails">
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
+      <div class="btn" @click="createSlide()">
+        <IconPlus class="icon" />Add slideshow
+      </div>
       <Popover trigger="click" placement="bottomLeft" v-model:visible="presetLayoutPopoverVisible">
         <template #content>
           <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
         </template>
-        <div class="select-btn"><IconDown /></div>
+        <div class="select-btn">
+          <IconDown />
+        </div>
       </Popover>
     </div>
 
-    <Draggable 
-      class="thumbnail-list"
-      :modelValue="slides"
-      :animation="200"
-      :scroll="true"
-      :scrollSensitivity="50"
-      @end="handleDragEnd"
-      itemKey="id"
-    >
+    <Draggable class="thumbnail-list" :modelValue="slides" :animation="200" :scroll="true" :scrollSensitivity="50"
+      @end="handleDragEnd" itemKey="id">
       <template #item="{ element, index }">
-        <div
-          class="thumbnail-item"
-          :class="{
-            'active': slideIndex === index,
-            'selected': selectedSlidesIndex.includes(index),
-          }"
-          @mousedown="$event => handleClickSlideThumbnail($event, index)"
-          v-contextmenu="contextmenusThumbnailItem"
-        >
+        <div class="thumbnail-item" :class="{
+          'active': slideIndex === index,
+          'selected': selectedSlidesIndex.includes(index),
+        }" @mousedown="$event => handleClickSlideThumbnail($event, index)" v-contextmenu="contextmenusThumbnailItem">
           <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
           <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
         </div>
       </template>
     </Draggable>
 
-    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+    <div class="page-number">Slides {{ slideIndex + 1 }} / {{ slides.length }}</div>
   </div>
 </template>
 
@@ -84,7 +72,7 @@ const {
   sortSlides,
 } = useSlideHandler()
 
-// 切换页面
+// switch page
 const changeSlideIndex = (index: number) => {
   mainStore.setActiveElementIdList([])
 
@@ -92,13 +80,13 @@ const changeSlideIndex = (index: number) => {
   slidesStore.updateSlideIndex(index)
 }
 
-// 点击缩略图
+// click on the thumbnail
 const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
   const isMultiSelected = selectedSlidesIndex.value.length > 1
 
   if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
 
-  // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
+  // Hold down the Ctrl key, click on the slide, and click on the selected page again to cancel the selection
   if (ctrlKeyState.value) {
     if (slideIndex.value === index) {
       if (!isMultiSelected) return
@@ -119,7 +107,7 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
       }
     }
   }
-  // 按住Shift键，选择范围内的全部幻灯片
+  // Hold down the Shift key to select all slides in the range
   else if (shiftKeyState.value) {
     if (slideIndex.value === index && !isMultiSelected) return
 
@@ -136,22 +124,20 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
     mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
     changeSlideIndex(index)
   }
-  // 正常切换页面
+  // Switch pages normally
   else {
     mainStore.updateSelectedSlidesIndex([])
     changeSlideIndex(index)
   }
 }
 
-// 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
+// Set the focus state of the thumbnail toolbar (only in the focus state, the shortcut keys of this part can take effect)
 const setThumbnailsFocus = (focus: boolean) => {
   if (thumbnailsFocus.value === focus) return
   mainStore.setThumbnailsFocus(focus)
 
   if (!focus) mainStore.updateSelectedSlidesIndex([])
-}
-
-// 拖拽调整顺序后进行数据的同步
+}// Drag and drop to adjust the order to synchronize the data
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
   if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
@@ -163,22 +149,22 @@ const { enterScreening, enterScreeningFromStart } = useScreening()
 const contextmenusThumbnails = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: 'Paste',
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: 'Select all',
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     {
-      text: '新建页面',
+      text: 'New page',
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '幻灯片放映',
+      text: 'Slideshow',
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
@@ -188,44 +174,44 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
-      text: '剪切',
+      text: 'Cut',
       subText: 'Ctrl + X',
       handler: cutSlide,
     },
     {
-      text: '复制',
+      text: 'Copy',
       subText: 'Ctrl + C',
       handler: copySlide,
     },
     {
-      text: '粘贴',
+      text: 'Paste',
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: 'Select all',
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     { divider: true },
     {
-      text: '新建页面',
+      text: 'New page',
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '复制页面',
+      text: 'Copy page',
       subText: 'Ctrl + D',
       handler: copyAndPasteSlide,
     },
     {
-      text: '删除页面',
+      text: 'Delete page',
       subText: 'Delete',
       handler: () => deleteSlide(),
     },
     { divider: true },
     {
-      text: '从当前放映',
+      text: 'From current show',
       subText: 'Shift + F5',
       handler: enterScreening,
     },
@@ -241,6 +227,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   flex-direction: column;
   user-select: none;
 }
+
 .add-slide {
   height: 40px;
   font-size: 12px;
@@ -259,6 +246,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       background-color: $lightGray;
     }
   }
+
   .select-btn {
     width: 30px;
     display: flex;
@@ -276,11 +264,13 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     font-size: 14px;
   }
 }
+
 .thumbnail-list {
   padding: 5px 0;
   flex: 1;
   overflow: auto;
 }
+
 .thumbnail-item {
   display: flex;
   justify-content: center;
@@ -295,16 +285,19 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     .label {
       color: $themeColor;
     }
+
     .thumbnail {
       outline-color: $themeColor;
     }
   }
+
   &.selected {
     .thumbnail {
       outline-color: $themeColor;
     }
   }
 }
+
 .label {
   font-size: 12px;
   color: #999;
@@ -320,6 +313,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     cursor: grabbing;
   }
 }
+
 .page-number {
   height: 40px;
   font-size: 12px;

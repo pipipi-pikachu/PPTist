@@ -1,5 +1,5 @@
 <template>
-  <div class="pptist-editor">
+  <div class="super-ppt-editor">
     <EditorHeader class="layout-header" />
     <div class="layout-content">
       <Thumbnails class="layout-content-left" />
@@ -59,7 +59,7 @@ usePasteEvent()
 </script>
 
 <style lang="scss" scoped>
-.pptist-editor {
+.super-ppt-editor {
   height: 100%;
 }
 .layout-header {

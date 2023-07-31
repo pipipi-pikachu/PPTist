@@ -1,17 +1,17 @@
 <template>
   <div class="element-color-mask">
     <div class="row">
-      <div style="flex: 1;">重新着色（蒙版）：</div>
+      <div style="flex: 1;">Recolor (masking):</div>
       <div class="switch-wrapper" style="flex: 1;">
-        <Switch 
-          :checked="hasColorMask" 
-          @change="checked => toggleColorMask(checked as boolean)" 
+        <Switch
+          :checked="hasColorMask"
+          @change="checked => toggleColorMask(checked as boolean)"
         />
       </div>
     </div>
     <template v-if="hasColorMask">
       <div class="row" style="margin-top: 15px;">
-        <div style="flex: 2;">蒙版颜色：</div>
+        <div style="flex: 2;">Mask color:</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -23,13 +23,13 @@
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">不透明度：</div>
+        <div style="flex: 2;">Opacity:</div>
         <Slider
           class="opacity-slider"
           :max="1"
           :min="0"
           :step="0.05"
-          :value="colorMask.opacity"
+          :value="colorMask. opacity"
           @change="value => updateColorMask({ opacity: value as number })"
         />
       </div>

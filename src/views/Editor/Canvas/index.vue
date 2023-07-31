@@ -1,80 +1,34 @@
 <template>
-  <div 
-    class="canvas" 
-    ref="canvasRef"
-    @wheel="$event => handleMousewheelCanvas($event)"
-    @mousedown="$event => handleClickBlankArea($event)"
-    v-contextmenu="contextmenus"
-    v-click-outside="removeEditorAreaFocus"
-  >
-    <ElementCreateSelection
-      v-if="creatingElement"
-      @created="data => insertElementFromCreateSelection(data)"
-    />
-    <div 
-      class="viewport-wrapper"
-      :style="{
-        width: viewportStyles.width * canvasScale + 'px',
-        height: viewportStyles.height * canvasScale + 'px',
-        left: viewportStyles.left + 'px',
-        top: viewportStyles.top + 'px',
-      }"
-    >
+  <div class="canvas" ref="canvasRef" @wheel="$event => handleMousewheelCanvas($event)"
+    @mousedown="$event => handleClickBlankArea($event)" v-contextmenu="contextmenus"
+    v-click-outside="removeEditorAreaFocus">
+    <ElementCreateSelection v-if="creatingElement" @created="data => insertElementFromCreateSelection(data)" />
+    <div class="viewport-wrapper" :style="{
+      width: viewportStyles.width * canvasScale + 'px',
+      height: viewportStyles.height * canvasScale + 'px',
+      left: viewportStyles.left + 'px',
+      top: viewportStyles.top + 'px',
+    }">
       <div class="operates">
-        <AlignmentLine 
-          v-for="(line, index) in alignmentLines" 
-          :key="index" 
-          :type="line.type" 
-          :axis="line.axis" 
-          :length="line.length"
-          :canvasScale="canvasScale"
-        />
-        <MultiSelectOperate 
-          v-if="activeElementIdList.length > 1"
-          :elementList="elementList"
-          :scaleMultiElement="scaleMultiElement"
-        />
-        <Operate
-          v-for="element in elementList" 
-          :key="element.id"
-          :elementInfo="element"
-          :isSelected="activeElementIdList.includes(element.id)"
-          :isActive="handleElementId === element.id"
-          :isActiveGroupElement="activeGroupElementId === element.id"
-          :isMultiSelect="activeElementIdList.length > 1"
-          :rotateElement="rotateElement"
-          :scaleElement="scaleElement"
-          :openLinkDialog="openLinkDialog"
-          :dragLineElement="dragLineElement"
-          :moveShapeKeypoint="moveShapeKeypoint"
-          v-show="!hiddenElementIdList.includes(element.id)"
-        />
+        <AlignmentLine v-for="(line, index) in alignmentLines" :key="index" :type="line.type" :axis="line.axis"
+          :length="line.length" :canvasScale="canvasScale" />
+        <MultiSelectOperate v-if="activeElementIdList.length > 1" :elementList="elementList"
+          :scaleMultiElement="scaleMultiElement" />
+        <Operate v-for="element in elementList" :key="element.id" :elementInfo="element"
+          :isSelected="activeElementIdList.includes(element.id)" :isActive="handleElementId === element.id"
+          :isActiveGroupElement="activeGroupElementId === element.id" :isMultiSelect="activeElementIdList.length > 1"
+          :rotateElement="rotateElement" :scaleElement="scaleElement" :openLinkDialog="openLinkDialog"
+          :dragLineElement="dragLineElement" :moveShapeKeypoint="moveShapeKeypoint"
+          v-show="!hiddenElementIdList.includes(element.id)" />
         <ViewportBackground />
       </div>
 
-      <div 
-        class="viewport" 
-        ref="viewportRef"
-        :style="{ transform: `scale(${canvasScale})` }"
-      >
-        <MouseSelection 
-          v-if="mouseSelectionVisible"
-          :top="mouseSelection.top" 
-          :left="mouseSelection.left" 
-          :width="mouseSelection.width" 
-          :height="mouseSelection.height" 
-          :quadrant="mouseSelectionQuadrant"
-        />      
-        <EditableElement 
-          v-for="(element, index) in elementList" 
-          :key="element.id"
-          :elementInfo="element"
-          :elementIndex="index + 1"
-          :isMultiSelect="activeElementIdList.length > 1"
-          :selectElement="selectElement"
-          :openLinkDialog="openLinkDialog"
-          v-show="!hiddenElementIdList.includes(element.id)"
-        />
+      <div class="viewport" ref="viewportRef" :style="{ transform: `scale(${canvasScale})` }">
+        <MouseSelection v-if="mouseSelectionVisible" :top="mouseSelection.top" :left="mouseSelection.left"
+          :width="mouseSelection.width" :height="mouseSelection.height" :quadrant="mouseSelectionQuadrant" />
+        <EditableElement v-for="(element, index) in elementList" :key="element.id" :elementInfo="element"
+          :elementIndex="index + 1" :isMultiSelect="activeElementIdList.length > 1" :selectElement="selectElement"
+          :openLinkDialog="openLinkDialog" v-show="!hiddenElementIdList.includes(element.id)" />
       </div>
     </div>
 
@@ -82,13 +36,7 @@
 
     <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
 
-    <Modal
-      v-model:visible="linkDialogVisible" 
-      :footer="null" 
-      centered
-      :width="540"
-      destroyOnClose
-    >
+    <Modal v-model:visible="linkDialogVisible" :footer="null" centered :width="540" destroyOnClose>
       <LinkDialog @close="linkDialogVisible = false" />
     </Modal>
   </div>
@@ -249,31 +197,31 @@ const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewpo
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: 'Paste',
       subText: 'Ctrl + V',
       handler: pasteElement,
     },
     {
-      text: '全选',
+      text: 'Select all',
       subText: 'Ctrl + A',
       handler: selectAllElement,
     },
     {
-      text: '标尺',
+      text: 'ruler',
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
     },
     {
-      text: '网格线',
+      text: 'Grid lines',
       handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
       children: [
         {
-          text: '无',
+          text: 'none',
           subText: gridLineSize.value === 0 ? '√' : '',
           handler: () => mainStore.setGridLineSize(0),
         },
         {
-          text: '小',
+          text: 'small',
           subText: gridLineSize.value === 25 ? '√' : '',
           handler: () => mainStore.setGridLineSize(25),
         },
@@ -283,26 +231,26 @@ const contextmenus = (): ContextmenuItem[] => {
           handler: () => mainStore.setGridLineSize(50),
         },
         {
-          text: '大',
+          text: 'big',
           subText: gridLineSize.value === 100 ? '√' : '',
           handler: () => mainStore.setGridLineSize(100),
         },
       ],
     },
     {
-      text: showSelectPanel.value ? '关闭选择面板' : '打开选择面板',
+      text: showSelectPanel.value ? 'Close selection panel' : 'Open selection panel',
       handler: () => {
         if (!showSelectPanel.value) mainStore.setSelectPanelState(true)
         else mainStore.setSelectPanelState(false)
       },
     },
     {
-      text: '重置当前页',
+      text: 'Reset current page',
       handler: deleteAllElements,
     },
     { divider: true },
     {
-      text: '幻灯片放映',
+      text: 'Slideshow',
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
@@ -320,14 +268,17 @@ provide(injectKeySlideScale, canvasScale)
   background-color: $lightGray;
   position: relative;
 }
+
 .drag-mask {
   cursor: grab;
   @include absolute-0();
 }
+
 .viewport-wrapper {
   position: absolute;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
 }
+
 .viewport {
   position: absolute;
   top: 0;

@@ -2,8 +2,8 @@ import { CSSProperties } from 'vue'
 import { TableCellStyle } from '@/types/slides'
 
 /**
- * 计算单元格文本样式
- * @param style 单元格文本样式原数据
+* Calculate cell text style
+  * @param style original data of cell text style
  */
 export const getTextStyle = (style?: TableCellStyle): CSSProperties => {
   if (!style) return {}
@@ -29,7 +29,7 @@ export const getTextStyle = (style?: TableCellStyle): CSSProperties => {
     color: color || '#000',
     backgroundColor: backcolor || '',
     fontSize: fontsize || '14px',
-    fontFamily: fontname || '微软雅黑',
+    fontFamily: fontname || 'Microsoft Yahei',
     textAlign: align || 'left',
   }
 }

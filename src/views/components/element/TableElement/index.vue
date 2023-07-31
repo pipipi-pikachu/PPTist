@@ -1,44 +1,20 @@
 <template>
-  <div 
-    class="editable-element-table"
-    ref="elementRef"
-    :class="{ 'lock': elementInfo.lock }"
-    :style="{
-      top: elementInfo.top + 'px',
-      left: elementInfo.left + 'px',
-      width: elementInfo.width + 'px',
-    }"
-  >
-    <div
-      class="rotate-wrapper"
-      :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
-    >
-      <div 
-        class="element-content" 
-        v-contextmenu="contextmenus"
-      >
-        <EditableTable 
-          @mousedown.stop
-          :data="elementInfo.data"
-          :width="elementInfo.width"
-          :cellMinHeight="elementInfo.cellMinHeight"
-          :colWidths="elementInfo.colWidths"
-          :outline="elementInfo.outline"
-          :theme="elementInfo.theme"
-          :editable="editable"
-          @change="data => updateTableCells(data)"
+  <div class="editable-element-table" ref="elementRef" :class="{ 'lock': elementInfo.lock }" :style="{
+    top: elementInfo.top + 'px',
+    left: elementInfo.left + 'px',
+    width: elementInfo.width + 'px',
+  }">
+    <div class="rotate-wrapper" :style="{ transform: `rotate(${elementInfo.rotate}deg)` }">
+      <div class="element-content" v-contextmenu="contextmenus">
+        <EditableTable @mousedown.stop :data="elementInfo.data" :width="elementInfo.width"
+          :cellMinHeight="elementInfo.cellMinHeight" :colWidths="elementInfo.colWidths" :outline="elementInfo.outline"
+          :theme="elementInfo.theme" :editable="editable" @change="data => updateTableCells(data)"
           @changeColWidths="widths => updateColWidths(widths)"
-          @changeSelectedCells="cells => updateSelectedCells(cells)"
-        />
-        <div 
-          class="table-mask" 
-          :class="{ 'lock': elementInfo.lock }"
-          v-if="!editable || elementInfo.lock"
-          @dblclick="startEdit()"
-          @mousedown="$event => handleSelectElement($event)"
-          @touchstart="$event => handleSelectElement($event)"
-        >
-          <div class="mask-tip" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
+          @changeSelectedCells="cells => updateSelectedCells(cells)" />
+        <div class="table-mask" :class="{ 'lock': elementInfo.lock }" v-if="!editable || elementInfo.lock"
+          @dblclick="startEdit()" @mousedown="$event => handleSelectElement($event)"
+          @touchstart="$event => handleSelectElement($event)">
+          <div class="mask-tip" :style="{ transform: `scale(${1 / canvasScale})` }">双击编辑</div>
         </div>
       </div>
     </div>
@@ -54,7 +30,6 @@ import { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import EditableTable from './EditableTable.vue'
-
 const props = defineProps({
   elementInfo: {
     type: Object as PropType<PPTTableElement>,
@@ -84,7 +59,7 @@ const handleSelectElement = (e: MouseEvent | TouchEvent) => {
   props.selectElement(e, props.elementInfo)
 }
 
-// 更新表格的可编辑状态，表格处于编辑状态时需要禁用全局快捷键
+// Update the editable state of the table, the global shortcut key needs to be disabled when the table is in the editing state
 const editable = ref(false)
 
 watch(handleElementId, () => {
@@ -99,8 +74,8 @@ const startEdit = () => {
   if (!props.elementInfo.lock) editable.value = true
 }
 
-// 监听表格元素的尺寸变化，当高度变化时，更新高度到vuex
-// 如果高度变化时正处在缩放操作中，则等待缩放操作结束后再更新
+// Monitor the size change of the table element, when the height changes, update the height to vuex
+// If the zoom operation is in progress when the height changes, wait for the zoom operation to end before updating
 const realHeightCache = ref(-1)
 
 watch(isScaling, () => {
@@ -143,28 +118,28 @@ onUnmounted(() => {
   if (elementRef.value) resizeObserver.unobserve(elementRef.value)
 })
 
-// 更新表格内容数据
+// Update table content data
 const updateTableCells = (data: TableCell[][]) => {
   slidesStore.updateElement({
-    id: props.elementInfo.id, 
+    id: props.elementInfo.id,
     props: { data },
   })
   addHistorySnapshot()
 }
 
-// 更新表格的列宽数据
+// Update the column width data of the table
 const updateColWidths = (widths: number[]) => {
   const width = widths.reduce((a, b) => a + b)
   const colWidths = widths.map(item => item / width)
 
   slidesStore.updateElement({
-    id: props.elementInfo.id, 
+    id: props.elementInfo.id,
     props: { width, colWidths },
   })
   addHistorySnapshot()
 }
 
-// 更新表格当前选中的单元格
+// Update the currently selected cell in the table
 const updateSelectedCells = (cells: string[]) => {
   nextTick(() => mainStore.setSelectedTableCells(cells))
 }
@@ -174,20 +149,23 @@ const updateSelectedCells = (cells: string[]) => {
 .editable-element-table {
   position: absolute;
 
-  &.lock .element-content {
+  &.lock.element-content {
     cursor: default;
   }
 }
+
 .rotate-wrapper {
   width: 100%;
   height: 100%;
 }
+
 .element-content {
   width: 100%;
   height: 100%;
   position: relative;
   cursor: move;
 }
+
 .table-mask {
   @include absolute-0();
 

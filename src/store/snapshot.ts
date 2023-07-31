@@ -78,7 +78,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       }
   
       // 快照数大于1时，需要保证撤回操作后维持页面焦点不变：也就是将倒数第二个快照对应的索引设置为当前页的索引
-      // https://github.com/pipipi-pikachu/PPTist/issues/27
+      // https://github.com/supernovate07/super-ppt/issues/27
       if (snapshotLength >= 2) {
         db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: slidesStore.slideIndex })
       }

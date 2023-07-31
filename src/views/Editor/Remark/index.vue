@@ -1,12 +1,12 @@
 <template>
   <div class="remark">
-    <div 
+    <div
       class="resize-handler"
       @mousedown="$event => resize($event)"
     ></div>
     <textarea
       :value="remark"
-      placeholder="点击输入演讲者备注"
+      placeholder="Click to enter speaker notes"
       @input="$event => handleInput($event)"
     ></textarea>
   </div>
@@ -35,13 +35,13 @@ const remark = computed(() => currentSlide.value?.remark || '')
 
 const handleInput = (e: Event) => {
   const value = (e.target as HTMLTextAreaElement).value
-  slidesStore.updateSlide({ remark: value })
+  slidesStore. updateSlide({ remark: value })
 }
 
 const resize = (e: MouseEvent) => {
   let isMouseDown = true
   const startPageY = e.pageY
-  const originHeight = props.height
+  const originHeight = props. height
 
   document.onmousemove = e => {
     if (!isMouseDown) return

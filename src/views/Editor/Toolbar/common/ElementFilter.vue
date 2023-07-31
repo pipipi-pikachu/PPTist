@@ -1,11 +1,11 @@
 <template>
   <div class="element-filter">
     <div class="row">
-      <div style="flex: 2;">启用滤镜：</div>
+      <div style="flex: 2;">Enable filter:</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="hasFilters" 
-          @change="checked => toggleFilters(checked as boolean)" 
+        <Switch
+          :checked="hasFilters"
+          @change="checked => toggleFilters(checked as boolean)"
         />
       </div>
     </div>
@@ -45,26 +45,26 @@ interface FilterOption {
 }
 
 const defaultFilters: FilterOption[] = [
-  { label: '模糊', key: 'blur', default: 0, value: 0, unit: 'px', max: 10, step: 1 },
-  { label: '亮度', key: 'brightness', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '对比度', key: 'contrast', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '灰度', key: 'grayscale', default: 0, value: 0, unit: '%', max: 100, step: 5 },
-  { label: '饱和度', key: 'saturate', default: 100, value: 100, unit: '%', max: 200, step: 5 },
-  { label: '色相', key: 'hue-rotate', default: 0, value: 0, unit: 'deg', max: 360, step: 10 },
-  { label: '不透明度', key: 'opacity', default: 100, value: 100, unit: '%', max: 100, step: 5 },
+  { label: 'blur', key: 'blur', default: 0, value: 0, unit: 'px', max: 10, step: 1 },
+  { label: 'brightness', key: 'brightness', default: 100, value: 100, unit: '%', max: 200, step: 5 },
+  { label: 'contrast', key: 'contrast', default: 100, value: 100, unit: '%', max: 200, step: 5 },
+  { label: 'grayscale', key: 'grayscale', default: 0, value: 0, unit: '%', max: 100, step: 5 },
+  { label: 'saturation', key: 'saturate', default: 100, value: 100, unit: '%', max: 200, step: 5 },
+  { label: 'hue', key: 'hue-rotate', default: 0, value: 0, unit: 'deg', max: 360, step: 10 },
+  { label: 'opacity', key: 'opacity', default: 100, value: 100, unit: '%', max: 100, step: 5 },
 ]
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
-const filterOptions = ref<FilterOption[]>(JSON.parse(JSON.stringify(defaultFilters)))
+const filterOptions = ref<FilterOption[]>(JSON. parse(JSON. stringify(defaultFilters)))
 const hasFilters = ref(false)
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'image') return
-  
+ 
   const filters = handleElement.value.filters
   if (filters) {
     filterOptions.value = defaultFilters.map(item => {
@@ -72,18 +72,18 @@ watch(handleElement, () => {
       if (filterItem) return { ...item, value: parseInt(filterItem) }
       return item
     })
-    hasFilters.value = true
+    hasFilters. value = true
   }
   else {
     filterOptions.value = JSON.parse(JSON.stringify(defaultFilters))
-    hasFilters.value = false
+    hasFilters. value = false
   }
 }, { deep: true, immediate: true })
 
-// 设置滤镜
+// set filter
 const updateFilter = (filter: FilterOption, value: number) => {
   const _handleElement = handleElement.value as PPTImageElement
-  
+ 
   const originFilters = _handleElement.filters || {}
   const filters = { ...originFilters, [filter.key]: `${value}${filter.unit}` }
   slidesStore.updateElement({ id: handleElementId.value, props: { filters } })
@@ -91,7 +91,7 @@ const updateFilter = (filter: FilterOption, value: number) => {
 }
 
 const toggleFilters = (checked: boolean) => {
-  if (!handleElement.value) return
+  if (!handleElement. value) return
   if (checked) {
     slidesStore.updateElement({ id: handleElement.value.id, props: { filters: {} } })
   }

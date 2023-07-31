@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 
-// 非专业设计人士可以用该应用绘制基本形状：https://github.com/pipipi-pikachu/svgPathCreator
+// Non-professional designers can use this app to draw basic shapes: https://github.com/supernovate07/svgPathCreator
 
 import { ShapePathFormulasKeys } from '@/types/slides'
 
@@ -93,7 +93,7 @@ export const SHAPE_PATH_FORMULAS = {
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
       const radius = Math.min(width, height) * value
-      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 $ {height} Z`
     }
   },
   [ShapePathFormulasKeys.CUT_ROUND_RECT]: {
@@ -104,14 +104,14 @@ export const SHAPE_PATH_FORMULAS = {
     getBaseSize: (width: number, height: number) => Math.min(width, height),
     formula: (width: number, height: number, value: number) => {
       const radius = Math.min(width, height) * value
-      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 $ {radius} 0 Z`
     }
   },
   [ShapePathFormulasKeys.MESSAGE]: {
     formula: (width: number, height: number) => {
       const arrowWidth = width * 0.2
       const arrowheight = height * 0.2
-      return `M 0 0 L ${width} 0 L ${width} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L 0 ${height - arrowheight} Z`
+      return `M 0 0 L ${width} 0 L ${width} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L $ {width / 2 - arrowWidth} ${height - arrowheight} L 0 ${height - arrowheight} Z`
     }
   },
   [ShapePathFormulasKeys.ROUND_MESSAGE]: {
@@ -225,7 +225,7 @@ export const SHAPE_PATH_FORMULAS = {
 
 export const SHAPE_LIST: ShapeListItem[] = [
   {
-    type: '矩形',
+    type: 'rectangle',
     children: [
       {
         viewBox: [200, 200],
@@ -284,7 +284,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '常用形状',
+    type: 'common shape',
     children: [
       {
         viewBox: [200, 200],
@@ -514,9 +514,9 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
     ],
   },
-  
+
   {
-    type: '箭头',
+    type: 'arrow',
     children: [
       {
         viewBox: [200, 200],
@@ -629,7 +629,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '其他形状',
+    type: 'other shapes',
     children: [
       {
         viewBox: [1024, 1024],
@@ -815,7 +815,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '线性',
+    type: 'linear',
     children: [
       {
         viewBox: [1024, 1024],

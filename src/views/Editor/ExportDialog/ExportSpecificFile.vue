@@ -1,5 +1,5 @@
 <template>
-  <div class="export-pptist-dialog">
+  <div class="export-super-ppt-dialog">
     <div class="configs">
       <div class="row">
         <div class="title">导出范围：</div>
@@ -24,11 +24,11 @@
         />
       </div>
       <div class="tip">
-        提示：.pptist 是本应用的特有文件后缀，支持将该类型的文件导入回应用中。
+        提示：.super-ppt 是本应用的特有文件后缀，支持将该类型的文件导入回应用中。
       </div>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)">导出 .pptist 文件</Button>
+      <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)">导出 .super-ppt 文件</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>
@@ -69,7 +69,7 @@ const selectedSlides = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.export-pptist-dialog {
+.export-super-ppt-dialog {
   height: 100%;
   display: flex;
   justify-content: center;

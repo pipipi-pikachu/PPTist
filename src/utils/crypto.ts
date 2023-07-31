@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js'
 
-const CRYPTO_KEY = 'pptist'
+const CRYPTO_KEY = 'super-ppt'
 
 /**
  * 加密

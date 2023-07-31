@@ -1,41 +1,41 @@
 <p align="center">
-    <img src='/public/icons/android-chrome-192x192.png' />
+     <img src='/public/icons/android-chrome-192x192.png' />
 </p>
 
 <p align="center">
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/stargazers" target="_black">
-        <img src="https://img.shields.io/github/stars/pipipi-pikachu/PPTist?logo=github" alt="stars" />
-    </a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/network/members" target="_black">
-        <img src="https://img.shields.io/github/forks/pipipi-pikachu/PPTist?logo=github" alt="forks" />
-    </a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black">
-        <img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist?color=%232DCE89&logo=github" alt="license" />
-    </a>
-    <a href="https://www.typescriptlang.org" target="_black">
-        <img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language">
-    </a>
-    <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black">
-        <img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue">
-    </a>
+     <a href="https://www.github.com/supernovate07/super-ppt/stargazers" target="_black">
+         <img src="https://img.shields.io/github/stars/supernovate07/super-ppt?logo=github" alt="stars" />
+     </a>
+     <a href="https://www.github.com/supernovate07/super-ppt/network/members" target="_black">
+         <img src="https://img.shields.io/github/forks/supernovate07/super-ppt?logo=github" alt="forks" />
+     </a>
+     <a href="https://www.github.com/supernovate07/super-ppt/blob/master/LICENSE" target="_black">
+         <img src="https://img.shields.io/github/license/supernovate07/super-ppt?color=%232DCE89&logo=github" alt="license" />
+     </a>
+     <a href="https://www.typescriptlang.org" target="_black">
+         <img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language">
+     </a>
+     <a href="https://github.com/supernovate07/super-ppt/issues" target="_black">
+         <img src="https://img.shields.io/github/issues-closed/supernovate07/super-ppt.svg" alt="issue">
+     </a>
 </p>
 
 
-# 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地 PPTX 文件，支持移动端基础编辑和预览，支持 PWA。您可以在此基础上搭建自己的在线幻灯片应用。
+# 🎨 super-ppt
+> An online presentation (slideshow) application based on Vue3.x + TypeScript, which restores most of the common functions of Office PowerPoint, and supports text, pictures, shapes, lines, charts, tables, videos, audio, and formulas. Element type, each element has a high degree of editability, and supports rich shortcut keys and right-click menus, supports exporting local PPTX files, supports basic editing and preview on mobile terminals, and supports PWA. You can build your own online slideshow application on this basis.
 
-<b>在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
-
-
-# 👀 前排提示
-1. 本项目的目标是打造一个 “在线幻灯片应用” ，而非 “低代码平台”、“H5 编辑器” 或 “图片编辑工具” 等。
-2. 本项目的目标受众是<b>有【Web 幻灯片】开发需求的开发者</b>，提供的链接只是一个演示地址，不提供任何在线服务。你不应该直接将本项目作为工具使用，也不支持一键部署。
-如果你只是需要一个服务或工具，可以选择更优秀和成熟的产品，例如：[石墨文档](https://shimo.im/)、[金山文档](https://www.kdocs.cn/)、[Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/) 等。
-3. 本项目是基于 DOM 的渲染方案，优点是简单易上手。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
-4. 这里总结了一些[常见问题](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md)，第一次提 Issues 和 PR 时，务必提前阅读此文档。
+<b>Online experience address: [https://supernovate07.github.io/super-ppt/](https://supernovate07.github.io/super-ppt/)</b>
 
 
-# 🚀 项目运行
+# 👀 Front Row Tips
+1. The goal of this project is to create an "online slideshow application", not a "low-code platform", "H5 editor" or "picture editing tool".
+2. The target audience of this project is <b>developers who have the development needs of 【Web Slideshow】</b>, the link provided is just a demonstration address, and no online service is provided. You should not use this project directly as a tool, nor does it support one-click deployment.
+If you just need a service or tool, you can choose more excellent and mature products, such as: [Graphite Documentation](https://shimo.im/), [Kingsoft Documentation](https://www.kdocs.cn/ ), [Slidev](https://sli.dev/), [revealjs](https://revealjs.com/), etc.
+3. This project is a DOM-based rendering solution, which has the advantage of being simple and easy to use. However, compared with the Canvas rendering solution, there will be a certain gap in performance in complex scenes, so if you have high performance requirements, this project may not be a good choice/reference direction.
+4. Some [FAQs](https://github.com/supernovate07/super-ppt/blob/master/doc/Q&A.md) are summarized here. When submitting Issues and PR for the first time, be sure to read this document in advance .
+
+
+# 🚀 project running
 ```
 npm install
 
@@ -43,167 +43,167 @@ npm run serve
 ```
 
 
-# 📚 功能列表
-### 基础功能
-- 历史记录（撤销、重做）
-- 快捷键
-- 右键菜单
-- 导出本地文件（PPTX、JSON、图片、PDF）
-- 导入导出特有 .pptist 文件
-- 打印
-### 幻灯片页面编辑
-- 页面添加、删除
-- 页面顺序调整
-- 页面复制粘贴
-- 背景设置（纯色、渐变、图片）
-- 设置画布尺寸
-- 网格线
-- 标尺
-- 画布缩放、移动
-- 主题设置
-- 幻灯片备注
-- 幻灯片模板
-- 翻页动画
-- 元素动画（入场、退场、强调）
-- 选择面板（隐藏元素、层级排序、元素命名）
-### 幻灯片元素编辑
-- 元素添加、删除
-- 元素复制粘贴
-- 元素拖拽移动
-- 元素旋转
-- 元素缩放
-- 元素多选（框选、点选）
-- 多元素组合
-- 多元素批量编辑
-- 元素锁定
-- 元素吸附对齐（移动和缩放）
-- 元素层级调整
-- 元素对齐到画布
-- 元素对齐到其他元素
-- 多元素均匀分布
-- 拖拽添加图文
-- 粘贴外部图片
-- 元素坐标、尺寸和旋转角度设置
-- 元素超链接（链接到网页、链接到其他幻灯片页面）
-#### 文字
-- 富文本编辑（颜色、高亮、字体、字号、加粗、斜体、下划线、删除线、角标、行内代码、引用、超链接、对齐方式、序号、项目符号、缩进、清除格式）
-- 行高
-- 字间距
-- 段间距
-- 首行缩进
-- 填充色
-- 边框
-- 阴影
-- 透明度
-- 竖向文本
-#### 图片
-- 裁剪（自定义、按形状、按纵横比）
-- 滤镜
-- 着色（蒙版）
-- 翻转
-- 边框
-- 阴影
-- 替换图片
-- 重置图片
-- 设置为背景图
-#### 形状
-- 替换形状
-- 填充色
-- 边框
-- 阴影
-- 透明度
-- 翻转
-- 编辑文字
-#### 线条
-- 颜色
-- 宽度
-- 样式
-- 端点样式
-#### 图表（柱状图、条形图、折线图、面积图、散点图、饼图、环形图）
-- 图表转换
-- 数据编辑
-- 背景填充
-- 主题色
-- 坐标系与坐标文字颜色
-- 其他图表设置
-- 边框
-- 图例
-#### 表格
-- 行、列添加删除
-- 主题设置（主题色、表头、汇总行、第一列、最后一列）
-- 合并单元格
-- 单元格样式（填充色、文字颜色、加粗、斜体、下划线、删除线、对齐方式）
-- 边框
-#### 视频
-- 预览封面设置
-#### 音频
-- 图标颜色
-- 自动播放
-- 循环播放
-#### 公式
-- LaTeX编辑
-- 颜色设置
-- 公式线条粗细设置
-### 幻灯片放映
-- 全部幻灯片预览
-- 画笔、黑板工具
-- 计时器工具
-- 激光笔
-- 自动放映
-- 演讲者视图
-### 移动端
-- 基础编辑
-    - 页面添加、删除、复制、备注、撤销重做
-    - 插入文字、图片、矩形、圆形
-    - 元素通用操作：移动、缩放、复制、删除、层级调整、对齐
-    - 元素样式：文字（加粗、斜体、下划线、删除线、字号、颜色、对齐方向）、填充色
-- 基础预览
-- 播放预览
+# 📚 Feature list
+### basic function
+- History (undo, redo)
+- hot key
+- right click menu
+- Export local files (PPTX, JSON, image, PDF)
+- Import and export of unique .super-ppt files
+- Print
+### slide page editor
+- Page addition, deletion
+- page order adjustment
+- Page copy and paste
+- Background settings (solid color, gradient, image)
+- Set canvas size
+- Gridlines
+- Ruler
+- Canvas zoom, move
+- Theme settings
+- slide notes
+- Slideshow templates
+- Page flip animation
+- Element animation (entry, exit, emphasis)
+- Selection panel (hidden elements, hierarchical ordering, element naming)
+### Slide element editing
+- Element addition, deletion
+- Element copy paste
+- Drag and drop elements to move
+- element rotation
+- Element scaling
+- Multiple selection of elements (box selection, click selection)
+- Multi-element combination
+- Multi-element batch editing
+- Element locking
+- Element snap alignment (move and scale)
+- Element level adjustment
+- Elements are snapped to the canvas
+- Elements are aligned to other elements
+- Even distribution of multiple elements
+- Drag and drop to add pictures and texts
+- Paste external pictures
+- Element coordinates, size and rotation angle settings
+- Element hyperlinks (links to web pages, links to other slide pages)
+#### Word
+- Rich text editing (color, highlight, font, font size, bold, italic, underline, strikethrough, corner mark, inline code, reference, hyperlink, alignment, serial number, bullet, indent, clear format)
+- row height
+- word spacing
+- paragraph spacing
+- First line indent
+- fill color
+- border
+- shadow
+- transparency
+- vertical text
+#### picture
+- Cropping (custom, by shape, by aspect ratio)
+- filter
+- Shading (masking)
+- flip
+- border
+- shadow
+- replace picture
+- reset picture
+- set as background image
+#### shape
+- Replace shape
+- fill color
+- border
+- shadow
+- transparency
+- flip
+- edit text
+#### Lines
+- color
+- width
+- style
+- Endpoint style
+#### Charts (histogram, bar chart, line chart, area chart, scatter chart, pie chart, ring chart)
+- Chart conversion
+- Data editing
+- background fill
+- theme color
+- Coordinate system and coordinate text color
+- Additional chart settings
+- border
+- Legend
+#### sheet
+- Add and delete rows and columns
+- Theme settings (theme color, table header, summary row, first column, last column)
+- Merge Cells
+- Cell styles (fill color, text color, bold, italic, underline, strikethrough, alignment)
+- border
+#### video
+- Preview cover settings
+#### Audio
+- icon color
+- Autoplay
+- Loop
+#### formula
+- LaTeX editing
+- color settings
+- Formula line thickness setting
+### Slideshow
+- Full slideshow preview
+- Brush, blackboard tools
+- Timer tool
+- laser pointer
+- Auto show
+- Speaker view
+### Mobile
+- Basic editing
+     - Add, delete, copy, note, undo and redo pages
+     - Insert text, picture, rectangle, circle
+     - Common operations on elements: move, zoom, copy, delete, level adjustment, alignment
+     - Element style: text (bold, italic, underline, strikethrough, font size, color, alignment direction), fill color
+- Basic preview
+- play preview
 
 
-# 📅 后续规划
-- 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
-- 导入本地PPTX文件；
-- 导出HTML文件；
-- 将 Vue CLI 更换到 Vite 生态；
+# 📅 Subsequent planning
+- Reconstruction of combined elements: it can support combined elements to rotate, scale, perform animation as a whole, etc.;
+- Import local PPTX files;
+- export HTML file;
+- Replace Vue CLI with Vite ecology;
 
 
-# 🎯 开发
-目前没有完整的开发文档，但下面这些文档可能会对你有一些帮助：
-- [项目目录与数据结构](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/DirectoryAndData.md)
-- [画布与元素的基本原理](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Canvas.md)
-- [如何自定义一个元素](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/CustomElement.md)
+# 🎯 Development
+There is currently no complete development documentation, but the following documents may be of some help to you:
+- [Project Directory and Data Structure](https://github.com/supernovate07/super-ppt/blob/master/doc/DirectoryAndData.md)
+- [Basic principles of canvas and elements](https://github.com/supernovate07/super-ppt/blob/master/doc/Canvas.md)
+- [How to customize an element](https://github.com/supernovate07/super-ppt/blob/master/doc/CustomElement.md)
 
 
-# 💻 贡献代码
-首先感谢关注本项目的朋友，非常欢迎每一位对本项目感兴趣的朋友贡献代码。
+# 💻 Contributing Code
+First of all, I would like to thank the friends who pay attention to this project. Everyone who is interested in this project is very welcome to contribute code.
 
-### 具体参考如下：
-- fork 源码，下载到本地并运行项目
-- 添加/修改代码
-- <b>对相关改动进行全面的自我测试（这非常重要）</b>
-- 确认无误后提交修改到 Github
-- 提交 Pull Request
+### The specific reference is as follows:
+- fork the source code, download it locally and run the project
+- Add/modify code
+- <b>Completely self-test the changes (this is very important)</b>
+- Submit the modification to Github after confirming that it is correct
+- Submit a Pull Request
 
-### 另外需要注意的是：
-- 每一次 Pull Request 都不应该提交过多的代码，且务必说明本次改动的具体目的，例如：修复了某个 bug、优化了某个方法 等，方便进行 Code Review；
-- 对于 bug 的修复，应该将本次 Pull Request 和相对应 bug 的 issue 关联起来，让别人知道该问题已经被修复；
-- 对于较大的新功能，你需要先提交 Issues，例如 “添加 XXX 功能”，确认该功能有被添加的必要后，再开始工作；
-- 对于一些主观的样式、交互逻辑调整：如颜色、图标的使用，某些预设配置的增减修改等，一般不予通过。但可以在 Issues 中进行讨论；
-- 其他如简单的代码优化、文档修正等，只要修改合理都会被接受。
+### Also note that:
+- Each Pull Request should not submit too much code, and must explain the specific purpose of this change, such as: fixing a bug, optimizing a method, etc., to facilitate Code Review;
+- For bug fixes, this Pull Request should be associated with the corresponding bug issue to let others know that the problem has been fixed;
+- For larger new functions, you need to submit Issues first, such as "add XXX function", and then start working after confirming that the function is necessary to be added;
+- For some subjective style and interaction logic adjustments: such as the use of colors and icons, the increase or decrease of some preset configurations, etc., they are generally not approved. But it can be discussed in Issues;
+- Others such as simple code optimization, document correction, etc., as long as the modification is reasonable, it will be accepted.
 
-在此感谢每一位贡献者。
+Thanks to every contributor here.
 
 
-# 📄 开源协议
-[GPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
+# 📄 Open source protocol
+[GPL-3.0 license](https://github.com/supernovate07/super-ppt/blob/master/LICENSE) © [supernovate07](https://github.com/supernovate07)
 
-# 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能严格遵循 GPL-3.0 协议；
-- 如果你真的需要闭源商用，无法执行 GPL-3.0 协议，可以选择：
-    1. 使用 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
-    2. 成为项目的贡献者，大致包括：
-        - 你的代码被本项目作为依赖引用；
-        - 你提交的 PR 被本项目合并（仅限有价值的，不包括简单的错别字或拼写错误修改等）；
-        - 你参与过本项目的设计、实现（也包括对各种功能/模块的实现或Bug的修复提供了有价值的思路）；
-    3. 邮件联系作者付费商用（说心里话，目前项目还不算很成熟，我更建议你走上面的途径）；
+# 🧮 commercial use
+- If you want to make this project commercially profitable, I hope you can strictly follow the GPL-3.0 agreement;
+- If you really need closed-source commercial use and cannot implement the GPL-3.0 agreement, you can choose:
+     1. Use [Apache 2.0 LICENSE version](https://github.com/supernovate07/super-ppt/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip);
+     2. Become a contributor to the project, generally including:
+         - Your code is referenced by this project as a dependency;
+         - The PR you submitted is merged by this project (only valuable ones, excluding simple typos or spelling mistakes, etc.);
+         - You have participated in the design and implementation of this project (including providing valuable ideas for the implementation of various functions/modules or bug fixes);
+     3. Contact the author by email to pay for commercial use (to tell the truth, the current project is not very mature, I suggest you take the above path);

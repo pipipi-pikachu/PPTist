@@ -30,8 +30,7 @@ export default () => {
   const { theme, viewportRatio } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
-
-  // 创建（插入）一个元素并将其设置为被选中元素
+  // Create (insert) an element and set it as the selected element
   const createElement = (element: PPTElement, callback?: () => void) => {
     slidesStore.addElement(element)
     mainStore.setActiveElementIdList([element.id])
@@ -48,13 +47,13 @@ export default () => {
   }
 
   /**
-   * 创建图片元素
-   * @param src 图片地址
+   * Create image elements
+   * @param src image address
    */
   const createImageElement = (src: string) => {
     getImageSize(src).then(({ width, height }) => {
       const scale = height / width
-  
+
       if (scale < viewportRatio.value && width > VIEWPORT_SIZE) {
         width = VIEWPORT_SIZE
         height = width * scale
@@ -77,10 +76,10 @@ export default () => {
       })
     })
   }
-  
+
   /**
-   * 创建图表元素
-   * @param chartType 图表类型
+   * Create chart elements
+   * @param chartType chart type
    */
   const createChartElement = (type: PresetChartType) => {
     const newElement: PPTChartElement = {
@@ -95,8 +94,8 @@ export default () => {
       themeColor: [theme.value.themeColor],
       gridColor: theme.value.fontColor,
       data: {
-        labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-        legends: ['系列1'],
+        labels: ['category 1', 'category 2', 'category 3', 'category 4', 'category 5'],
+        legends: ['Series 1'],
         series: [
           [12, 19, 5, 2, 18],
         ],
@@ -118,11 +117,11 @@ export default () => {
       options,
     })
   }
-  
+
   /**
-   * 创建表格元素
-   * @param row 行数
-   * @param col 列数
+   * Create table elements
+   * @param row number of rows
+   * @param col column number
    */
   const createTableElement = (row: number, col: number) => {
     const style: TableCellStyle = {
@@ -171,13 +170,13 @@ export default () => {
       cellMinHeight: 36,
     })
   }
-  
+
   /**
-   * 创建文本元素
-   * @param position 位置大小信息
-   * @param content 文本内容
+   * Create text element
+   * @param position position size information
+   * @param content text content
    */
-  
+
   interface CreateTextData {
     content?: string
     vertical?: boolean
@@ -191,9 +190,9 @@ export default () => {
     createElement({
       type: 'text',
       id,
-      left, 
-      top, 
-      width, 
+      left,
+      top,
+      width,
       height,
       content,
       rotate: 0,
@@ -207,20 +206,20 @@ export default () => {
       }, 0)
     })
   }
-  
+
   /**
-   * 创建形状元素
-   * @param position 位置大小信息
-   * @param data 形状路径信息
+   * Create shape elements
+   * @param position position size information
+   * @param data shape path information
    */
   const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem) => {
     const { left, top, width, height } = position
     const newElement: PPTShapeElement = {
       type: 'shape',
       id: nanoid(10),
-      left, 
-      top, 
-      width, 
+      left,
+      top,
+      width,
       height,
       viewBox: data.viewBox,
       path: data.path,
@@ -242,20 +241,19 @@ export default () => {
     }
     createElement(newElement)
   }
-  
   /**
-   * 创建线条元素
-   * @param position 位置大小信息
-   * @param data 线条的路径和样式
-   */
+    * Create line elements
+    * @param position position size information
+    * @param data the path and style of the line
+    */
   const createLineElement = (position: LineElementPosition, data: LinePoolItem) => {
     const { left, top, start, end } = position
 
     const newElement: PPTLineElement = {
       type: 'line',
       id: nanoid(10),
-      left, 
-      top, 
+      left,
+      top,
       start,
       end,
       points: data.points,
@@ -268,10 +266,10 @@ export default () => {
     if (data.isCubic) newElement.cubic = [[(start[0] + end[0]) / 2, (start[1] + end[1]) / 2], [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]]
     createElement(newElement)
   }
-  
+
   /**
-   * 创建LaTeX元素
-   * @param svg SVG代码
+   * Create LaTeX elements
+   * @param svg SVG code
    */
   const createLatexElement = (data: { path: string; latex: string; w: number; h: number; }) => {
     createElement({
@@ -290,10 +288,10 @@ export default () => {
       fixedRatio: true,
     })
   }
-  
+
   /**
-   * 创建视频元素
-   * @param src 视频地址
+   * Create video elements
+   * @param src video address
    */
   const createVideoElement = (src: string) => {
     createElement({
@@ -307,10 +305,10 @@ export default () => {
       src,
     })
   }
-  
+
   /**
-   * 创建音频元素
-   * @param src 音频地址
+   * Create audio elements
+   * @param src audio address
    */
   const createAudioElement = (src: string) => {
     createElement({

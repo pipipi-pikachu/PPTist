@@ -1,64 +1,41 @@
 <template>
-  <div 
-    class="editable-table"
-    :style="{ width: totalWidth + 'px' }"
-  >
+  <div class="editable-table" :style="{ width: totalWidth + 'px' }">
     <div class="handler" v-if="editable">
-      <div 
-        class="drag-line" 
-        v-for="(pos, index) in dragLinePosition" 
-        :key="index"
-        :style="{ left: pos + 'px' }"
-        @mousedown="$event => handleMousedownColHandler($event, index)"
-      ></div>
+      <div class="drag-line" v-for="(pos, index) in dragLinePosition" :key="index" :style="{ left: pos + 'px' }"
+        @mousedown="$event => handleMousedownColHandler($event, index)"></div>
     </div>
-    <table 
-      :class="{
-        'theme': theme,
-        'row-header': theme?.rowHeader,
-        'row-footer': theme?.rowFooter,
-        'col-header': theme?.colHeader,
-        'col-footer': theme?.colFooter,
-      }"
-      :style="`--themeColor: ${theme?.color}; --subThemeColor1: ${subThemeColor[0]}; --subThemeColor2: ${subThemeColor[1]}`"
-    >
+    <table :class="{
+      'theme': theme,
+      'row-header': theme?.rowHeader,
+      'row-footer': theme?.rowFooter,
+      'col-header': theme?.colHeader,
+      'col-footer': theme?.colFooter,
+    }"
+      :style="`--themeColor: ${theme?.color}; --subThemeColor1: ${subThemeColor[0]}; --subThemeColor2: ${subThemeColor[1]}`">
       <colgroup>
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
         <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
-          <td 
-            class="cell"
-            :class="{
-              'selected': selectedCells.includes(`${rowIndex}_${colIndex}`) && selectedCells.length > 1,
-              'active': activedCell === `${rowIndex}_${colIndex}`,
-            }"
-            :style="{
-              borderStyle: outline.style,
-              borderColor: outline.color,
-              borderWidth: outline.width + 'px',
-              ...getTextStyle(cell.style),
-            }"
-            v-for="(cell, colIndex) in rowCells"
-            :key="cell.id"
-            :rowspan="cell.rowspan"
-            :colspan="cell.colspan"
-            :data-cell-index="`${rowIndex}_${colIndex}`"
-            v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
+          <td class="cell" :class="{
+            'selected': selectedCells.includes(`${rowIndex}_${colIndex}`) && selectedCells.length > 1,
+            'active': activedCell === `${rowIndex}_${colIndex}`,
+          }" :style="{
+  borderStyle: outline.style,
+  borderColor: outline.color,
+  borderWidth: outline.width + 'px',
+  ...getTextStyle(cell.style),
+}" v-for="(cell, colIndex) in rowCells" :key="cell.id" :rowspan="cell.rowspan" :colspan="cell.colspan"
+            :data-cell-index="`${rowIndex}_${colIndex}`" v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
             @mousedown="$event => handleCellMousedown($event, rowIndex, colIndex)"
-            @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
-            v-contextmenu="(el: HTMLElement) => contextmenus(el)"
-          >
-            <CustomTextarea 
-              v-if="activedCell === `${rowIndex}_${colIndex}`"
-              class="cell-text" 
+            @mouseenter="handleCellMouseenter(rowIndex, colIndex)" v-contextmenu="(el: HTMLElement) => contextmenus(el)">
+            <CustomTextarea v-if="activedCell === `${rowIndex}_${colIndex}`" class="cell-text"
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
-              :style="{ minHeight: (cellMinHeight - 4) + 'px' }"
-              :value="cell.text"
+              :style="{ minHeight: (cellMinHeight - 4) + 'px' }" :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
-              @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
-            />
-            <div v-else class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }" v-html="formatText(cell.text)" />
+              @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)" />
+            <div v-else class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }"
+              v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -118,7 +95,7 @@ const emit = defineEmits<{
 }>()
 
 const { canvasScale } = storeToRefs(useMainStore())
-    
+
 const isStartSelect = ref(false)
 const startCell = ref<number[]>([])
 const endCell = ref<number[]>([])
@@ -265,7 +242,7 @@ const deleteRow = (rowIndex: number) => {
   for (let i = 0; i < targetCells.length; i++) {
     if (isHideCell(rowIndex, i)) hideCellsPos.push(i)
   }
-  
+
   for (const pos of hideCellsPos) {
     for (let i = rowIndex; i >= 0; i--) {
       if (!isHideCell(i, pos)) {
@@ -343,7 +320,7 @@ const insertCol = (colIndex: number) => {
 const fillTable = (rowCount: number, colCount: number) => {
   let _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
   const defaultCell = { colspan: 1, rowspan: 1, text: '' }
-  
+
   if (rowCount) {
     const newRows = []
     for (let i = 0; i < rowCount; i++) {
@@ -388,7 +365,7 @@ const mergeCells = () => {
   const maxY = Math.max(startY, endY)
 
   const _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
-  
+
   _tableCells[minX][minY].rowspan = maxX - minX + 1
   _tableCells[minX][minY].colspan = maxY - minY + 1
 
@@ -418,7 +395,7 @@ const handleMousedownColHandler = (e: MouseEvent, colIndex: number) => {
 
   document.onmousemove = e => {
     if (!isMouseDown) return
-    
+
     const moveX = (e.pageX - startPageX) / canvasScale.value
     const width = originWidth + moveX < minWidth ? minWidth : Math.round(originWidth + moveX)
 
@@ -603,51 +580,51 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '插入列',
+      text: 'Insert column',
       children: [
-        { text: '到左侧', handler: () => insertCol(colIndex) },
-        { text: '到右侧', handler: () => insertCol(colIndex + 1) },
+        { text: 'to the left', handler: () => insertCol(colIndex) },
+        { text: 'to the right', handler: () => insertCol(colIndex + 1) },
       ],
     },
     {
-      text: '插入行',
+      text: 'Insert row',
       children: [
-        { text: '到上方', handler: () => insertRow(rowIndex) },
-        { text: '到下方', handler: () => insertRow(rowIndex + 1) },
+        { text: 'to the top', handler: () => insertRow(rowIndex) },
+        { text: 'to the bottom', handler: () => insertRow(rowIndex + 1) },
       ],
     },
     {
-      text: '删除列',
+      text: 'Delete column',
       disable: !canDeleteCol,
       handler: () => deleteCol(colIndex),
     },
     {
-      text: '删除行',
+      text: 'Delete line',
       disable: !canDeleteRow,
       handler: () => deleteRow(rowIndex),
     },
     { divider: true },
     {
-      text: '合并单元格',
+      text: 'Merge cells',
       disable: !canMerge,
       handler: mergeCells,
     },
     {
-      text: '取消合并单元格',
+      text: 'Unmerge cells',
       disable: !canSplit,
       handler: () => splitCells(rowIndex, colIndex),
     },
     { divider: true },
     {
-      text: '选中当前列',
+      text: 'Select the current column',
       handler: () => selectCol(colIndex),
     },
     {
-      text: '选中当前行',
+      text: 'Select the current row',
       handler: () => selectRow(rowIndex),
     },
     {
-      text: '选中全部单元格',
+      text: 'Select all cells',
       handler: selectAll,
     },
   ]
@@ -659,6 +636,7 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   position: relative;
   user-select: none;
 }
+
 table {
   width: 100%;
   position: relative;
@@ -679,6 +657,7 @@ table {
     tr:nth-child(2n) .cell {
       background-color: var(--subThemeColor1);
     }
+
     tr:nth-child(2n + 1) .cell {
       background-color: var(--subThemeColor2);
     }
@@ -688,16 +667,19 @@ table {
         background-color: var(--themeColor);
       }
     }
+
     &.row-footer {
       tr:last-child .cell {
         background-color: var(--themeColor);
       }
     }
+
     &.col-header {
       tr .cell:first-child {
         background-color: var(--themeColor);
       }
     }
+
     &.col-footer {
       tr .cell:last-child {
         background-color: var(--themeColor);

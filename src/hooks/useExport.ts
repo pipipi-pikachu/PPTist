@@ -55,10 +55,10 @@ export default () => {
     }, 200)
   }
   
-  // 导出pptist文件（特有 .pptist 后缀文件）
+  // 导出pptist文件（特有 .super-ppt 后缀文件）
   const exportSpecificFile = (_slides: Slide[]) => {
     const blob = new Blob([encrypt(JSON.stringify(_slides))], { type: '' })
-    saveAs(blob, 'pptist_slides.pptist')
+    saveAs(blob, 'pptist_slides.super-ppt')
   }
   
   // 导出JSON文件
@@ -406,7 +406,7 @@ export default () => {
             w: el.width / INCH_PX_RATIO,
             h: el.height / INCH_PX_RATIO,
             fontSize: 20 * PT_PX_RATIO,
-            fontFace: '微软雅黑',
+            fontFace: 'Microsoft Yahei',
             color: '#000000',
             valign: 'top',
             margin: 10 * PT_PX_RATIO,
@@ -533,7 +533,7 @@ export default () => {
               w: el.width / INCH_PX_RATIO,
               h: el.height / INCH_PX_RATIO,
               fontSize: 20 * PT_PX_RATIO,
-              fontFace: '微软雅黑',
+              fontFace: 'Microsoft Yahei',
               color: '#000000',
               paraSpaceBefore: 5 * PT_PX_RATIO,
               valign: el.text.align,
@@ -577,7 +577,7 @@ export default () => {
           for (let i = 0; i < el.data.series.length; i++) {
             const item = el.data.series[i]
             chartData.push({
-              name: `系列${i + 1}`,
+              name: `series${i + 1}`,
               labels: el.data.labels,
               values: item,
             })
@@ -675,7 +675,7 @@ export default () => {
                 underline: { style: cell.style?.underline ? 'sng' : 'none' },
                 align: cell.style?.align || 'left',
                 valign: 'middle',
-                fontFace: cell.style?.fontname || '微软雅黑',
+                fontFace: cell.style?.fontname || 'Microsoft Yahei',
                 fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) * PT_PX_RATIO,
               }
               if (theme && themeColor) {
@@ -747,9 +747,9 @@ export default () => {
     }
 
     setTimeout(() => {
-      pptx.writeFile({ fileName: `pptist.pptx` }).then(() => exporting.value = false).catch(() => {
+      pptx.writeFile({ fileName: `super-ppt.pptx` }).then(() => exporting.value = false).catch(() => {
         exporting.value = false
-        message.error('导出失败')
+        message.error('export failed')
       })
     }, 200)
   }

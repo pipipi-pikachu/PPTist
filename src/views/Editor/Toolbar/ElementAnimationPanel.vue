@@ -1,40 +1,26 @@
 <template>
   <div class="element-animation-panel">
     <div class="element-animation" v-if="handleElement">
-      <Popover 
-        trigger="click" 
-        v-model:visible="animationPoolVisible" 
-        @visibleChange="visible => handlePopoverVisibleChange(visible)"
-      >
+      <Popover trigger="click" v-model:visible="animationPoolVisible"
+        @visibleChange="visible => handlePopoverVisibleChange(visible)">
         <template #content>
           <div class="tabs">
-            <div 
-              :class="['tab', tab.key, { 'active': activeTab === tab.key }]"
-              v-for="tab in tabs" 
-              :key="tab.key"
-              @click="activeTab = tab.key"
-            >{{tab.label}}</div>
+            <div :class="['tab', tab.key, { 'active': activeTab === tab.key }]" v-for="tab in tabs" :key="tab.key"
+              @click="activeTab = tab.key">{{ tab.label }}</div>
           </div>
           <template v-for="key in animationTypes">
             <div :class="['animation-pool', key]" :key="key" v-if="activeTab === key">
               <div class="pool-type" :key="effect.name" v-for="effect in animations[key]">
-                <div class="type-title">{{effect.name}}：</div>
+                <div class="type-title">{{ effect.name }}：</div>
                 <div class="pool-item-wrapper">
-                  <div 
-                    class="pool-item" 
-                    v-for="item in effect.children" :key="item.name"
-                    @mouseenter="hoverPreviewAnimation = item.value"
-                    @mouseleave="hoverPreviewAnimation = ''"
-                    @click="addAnimation(key, item.value)"
-                  >
-                    <div 
-                      class="animation-box"
-                      :class="[
-                        `${ANIMATION_CLASS_PREFIX}animated`,
-                        `${ANIMATION_CLASS_PREFIX}fast`,
-                        hoverPreviewAnimation === item.value && `${ANIMATION_CLASS_PREFIX}${item.value}`,
-                      ]"
-                    >{{item.name}}</div>
+                  <div class="pool-item" v-for="item in effect.children" :key="item.name"
+                    @mouseenter="hoverPreviewAnimation = item.value" @mouseleave="hoverPreviewAnimation = ''"
+                    @click="addAnimation(key, item.value)">
+                    <div class="animation-box" :class="[
+                      `${ANIMATION_CLASS_PREFIX}animated`,
+                      `${ANIMATION_CLASS_PREFIX}fast`,
+                      hoverPreviewAnimation === item.value && `${ANIMATION_CLASS_PREFIX}${item.value}`,
+                    ]">{{ item.name }}</div>
                   </div>
                 </div>
               </div>
@@ -43,83 +29,68 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <IconEffects style="margin-right: 5px;" /> 添加动画
-        </Button>
-      </Popover>
-    </div>
+          <IconEffects style="margin-right: 5px;" /> add animation
+         </Button>
+       </Popover>
+     </div>
 
-    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
-    
-    <Divider />
+     <div class="tip" v-else>
+       <IconClick style="margin-right: 5px;" /> Select elements in the canvas to add animation
+     </div>
 
-    <Draggable 
-      class="animation-sequence"
-      :modelValue="animationSequence"
-      :animation="200"
-      :scroll="true"
-      :scrollSensitivity="50"
-      handle=".sequence-content"
-      itemKey="id"
-      @end="handleDragEnd"
-    >
-      <template #item="{ element }">
-        <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
-          <div class="sequence-content">
-            <div class="index">{{element.index}}</div>
-            <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
-            <div class="handler">
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-                <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.effect, element.duration)" />
-              </Tooltip>
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-                <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.id)" />
-              </Tooltip>
-            </div>
-          </div>
+     <Divider />
 
-          <div class="configs" v-if="handleElementAnimation[0]?.elId === element.elId">
-            <Divider style="margin: 16px 0;" />
+     <Draggable class="animation-sequence" :modelValue="animationSequence" :animation="200" :scroll="true"
+       :scrollSensitivity="50" handle=".sequence-content" itemKey="id" @end="handleDragEnd">
+       <template #item="{ element }">
+         <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
+           <div class="sequence-content">
+             <div class="index">{{ element. index }}</div>
+             <div class="text">【{{ element.elType }}】{{ element.animationEffect }}</div>
+             <div class="handler">
+               <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Preview">
+                 <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.effect, element.duration)" />
+               </Tooltip>
+               <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Delete">
+                 <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.id)" />
+               </Tooltip>
+             </div>
+           </div>
 
-            <div class="config-item">
-              <div style="flex: 3;">持续时长：</div>
-              <InputNumber 
-                :min="500"
-                :max="3000"
-                :step="500"
-                :value="element.duration" 
-                @change="value => updateElementAnimationDuration(element.id, value as number)" 
-                style="flex: 5;" 
-              />
-            </div>
-            <div class="config-item">
-              <div style="flex: 3;">触发方式：</div>
-              <Select
-                :value="element.trigger"
-                @change="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
-                style="flex: 5;"
-              >
-                <SelectOption value="click">主动触发</SelectOption>
-                <SelectOption value="meantime">与上一动画同时</SelectOption>
-                <SelectOption value="auto">上一动画之后</SelectOption>
-              </Select>
-            </div>
-            <div class="config-item">
-              <Button style="flex: 1;" @click="openAnimationPool(element.id)">更换动画</Button>
-            </div>
-          </div>
-        </div>
-      </template>
-    </Draggable>
-  </div>
+           <div class="configs" v-if="handleElementAnimation[0]?.elId === element.elId">
+             <Divider style="margin: 16px 0;" />
+
+             <div class="config-item">
+               <div style="flex: 3;">Duration:</div>
+               <InputNumber :min="500" :max="3000" :step="500" :value="element.duration"
+                 @change="value => updateElementAnimationDuration(element.id, value as number)" style="flex: 5;" />
+             </div>
+             <div class="config-item">
+               <div style="flex: 3;">Trigger method:</div>
+               <Select :value="element. trigger"
+                 @change="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
+                 style="flex: 5;">
+                 <SelectOption value="click">Active trigger</SelectOption>
+                 <SelectOption value="meantime">At the same time as the previous animation</SelectOption>
+                 <SelectOption value="auto">After the last animation</SelectOption>
+               </select>
+             </div>
+             <div class="config-item">
+               <Button style="flex: 1;" @click="openAnimationPool(element.id)">Replace animation</Button>
+             </div>
+           </div>
+         </div>
+       </template>
+     </Draggable>
+   </div>
 </template>
-
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { PPTAnimation } from '@/types/slides'
-import { 
+import {
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
   ATTENTION_ANIMATIONS,
@@ -172,9 +143,9 @@ const { handleElement, handleElementId } = storeToRefs(useMainStore())
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
-  { key: 'in', label: '入场' },
-  { key: 'out', label: '退场' },
-  { key: 'attention', label: '强调' },
+  { key: 'in', label: 'entry' },
+  { key: 'out', label: 'exit' },
+  { key: 'attention', label: 'emphasis' },
 ]
 const activeTab = ref('in')
 
@@ -187,7 +158,7 @@ const animationPoolVisible = ref(false)
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
-// 当前页面的动画列表
+// list of animations for the current page
 const animationSequence = computed(() => {
   const animationSequence = []
   for (let i = 0; i < formatedAnimations.value.length; i++) {
@@ -210,21 +181,21 @@ const animationSequence = computed(() => {
   return animationSequence
 })
 
-// 当前选中元素的入场动画信息
+// The entry animation information of the currently selected element
 const handleElementAnimation = computed(() => {
   const animations = currentSlideAnimations.value
   const animation = animations.filter(item => item.elId === handleElementId.value)
   return animation || []
 })
 
-// 删除元素动画
+// delete element animation
 const deleteAnimation = (id: string) => {
   const animations = currentSlideAnimations.value.filter(item => item.id !== id)
   slidesStore.updateSlide({ animations })
   addHistorySnapshot()
 }
 
-// 拖拽修改动画顺序后同步数据
+// Drag and drop to modify the animation order and then synchronize the data
 const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const { newIndex, oldIndex } = eventData
   if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
@@ -233,7 +204,7 @@ const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   const animation = animations[oldIndex]
   animations.splice(oldIndex, 1)
   animations.splice(newIndex, 0, animation)
-  
+
   slidesStore.updateSlide({ animations })
   addHistorySnapshot()
 }
@@ -348,6 +319,7 @@ $attentionColor: #e8b76a;
   display: flex;
   flex-direction: column;
 }
+
 .tabs {
   display: flex;
   justify-content: flex-start;
@@ -355,6 +327,7 @@ $attentionColor: #e8b76a;
   border-bottom: 1px solid $borderColor;
   margin-bottom: 20px;
 }
+
 .tab {
   width: 33.33%;
   padding-bottom: 8px;
@@ -365,24 +338,30 @@ $attentionColor: #e8b76a;
   &.active {
     border-bottom: 2px solid $themeColor;
   }
+
   &.in.active {
     border-bottom-color: $inColor;
   }
+
   &.out.active {
     border-bottom-color: $outColor;
   }
+
   &.attention.active {
     border-bottom-color: $attentionColor;
   }
 }
+
 .element-animation {
   height: 32px;
   display: flex;
   align-items: center;
 }
+
 .element-animation-btn {
   width: 100%;
 }
+
 .config-item {
   display: flex;
   align-items: center;
@@ -391,6 +370,7 @@ $attentionColor: #e8b76a;
     margin-top: 5px;
   }
 }
+
 .tip {
   height: 32px;
   display: flex;
@@ -398,6 +378,7 @@ $attentionColor: #e8b76a;
   align-items: center;
   font-style: italic;
 }
+
 .animation-pool {
   width: 400px;
   height: 500px;
@@ -415,15 +396,18 @@ $attentionColor: #e8b76a;
     border-left-color: $inColor;
     background-color: rgba($color: $inColor, $alpha: .15);
   }
+
   &.out .type-title {
     border-left-color: $outColor;
     background-color: rgba($color: $outColor, $alpha: .15);
   }
+
   &.attention .type-title {
     border-left-color: $attentionColor;
     background-color: rgba($color: $attentionColor, $alpha: .15);
   }
 }
+
 .type-title {
   width: 100%;
   font-size: 13px;
@@ -432,9 +416,11 @@ $attentionColor: #e8b76a;
   background-color: #eee;
   padding: 2px 0 2px 10px;
 }
+
 .pool-item-wrapper {
   @include flex-grid-layout();
 }
+
 .pool-item {
   @include flex-grid-layout-children(4, 24%);
 
@@ -444,6 +430,7 @@ $attentionColor: #e8b76a;
   text-align: center;
   cursor: pointer;
 }
+
 .animation-box {
   background-color: $lightGray;
 }
@@ -455,6 +442,7 @@ $attentionColor: #e8b76a;
 
   @include overflow-overlay();
 }
+
 .sequence-item {
   border: 1px solid $borderColor;
   padding: 10px 6px;
@@ -465,12 +453,15 @@ $attentionColor: #e8b76a;
   &.in.active {
     border-color: $inColor;
   }
+
   &.out.active {
     border-color: $outColor;
   }
+
   &.attention.active {
     border-color: $attentionColor;
   }
+
   &.active {
     height: auto;
   }
@@ -487,14 +478,17 @@ $attentionColor: #e8b76a;
     .index {
       flex: 1;
     }
+
     .text {
       flex: 6;
     }
+
     .handler {
       flex: 2;
       font-size: 15px;
       text-align: right;
     }
+
     .handler-btn {
       margin-left: 8px;
       cursor: pointer;

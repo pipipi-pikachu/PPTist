@@ -36,7 +36,7 @@ export default (elementList: Ref<PPTElement[]>) => {
       const top = _element.top
       const width = _element.width
       const height = _element.height
-      
+
       const right = left + width
       const bottom = top + height
       const centerX = top + height / 2
@@ -72,8 +72,8 @@ export default (elementList: Ref<PPTElement[]>) => {
 
       const moveX = (currentPageX - startPageX) / canvasScale.value
       const moveY = (currentPageY - startPageY) / canvasScale.value
-      
-      // 线条起点和终点在编辑区域中的位置
+
+      // The positions of the start and end points of the line in the editing area
       let startX = element.left + element.start[0]
       let startY = element.top + element.start[1]
       let endX = element.left + element.end[0]

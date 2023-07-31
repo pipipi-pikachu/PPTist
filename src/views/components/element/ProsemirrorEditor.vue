@@ -1,10 +1,6 @@
 <template>
-  <div 
-    class="prosemirror-editor" 
-    :class="{ 'format-painter': textFormatPainter }"
-    ref="editorViewRef"
-    @mousedown="$event => emit('mousedown', $event)"
-  ></div>
+  <div class="prosemirror-editor" :class="{ 'format-painter': textFormatPainter }" ref="editorViewRef"
+    @mousedown="$event => emit('mousedown', $event)"></div>
 </template>
 
 <script lang="ts" setup>
@@ -61,11 +57,10 @@ const { handleElementId, textFormatPainter } = storeToRefs(mainStore)
 
 const editorViewRef = ref<HTMLElement>()
 let editorView: EditorView
-
-// 富文本的各种交互事件监听：
-// 聚焦时取消全局快捷键事件
-// 输入文字时同步数据到vuex
-// 点击鼠标和键盘时同步富文本状态到工具栏
+// Various interactive event listeners for rich text:
+// Cancel the global shortcut key event when focusing
+// Synchronize data to vuex when entering text
+// Synchronize the rich text state to the toolbar when the mouse and keyboard are clicked
 const handleInput = debounce(function() {
   emit('update', editorView.dom.innerHTML)
 }, 300, { trailing: true })
@@ -93,7 +88,7 @@ const handleKeydown = () => {
   handleClick()
 }
 
-// 将富文本内容同步到DOM
+// Synchronize rich text content to DOM
 const textContent = computed(() => props.value)
 watch(textContent, () => {
   if (!editorView) return
@@ -103,17 +98,17 @@ watch(textContent, () => {
   editorView.dispatch(tr.replaceRangeWith(0, doc.content.size, createDocument(textContent.value)))
 })
 
-// 打开/关闭编辑器的编辑模式
+// Turn on/off the edit mode of the editor
 watch(() => props.editable, () => {
   editorView.setProps({ editable: () => props.editable })
 })
 
-// 暴露 focus 方法
+// expose focus method
 const focus = () => editorView.focus()
 defineExpose({ focus })
 
-// 执行富文本命令（可以是一个或多个）
-// 部分命令在执行前先判断当前选区是否为空，如果选区为空先进行全选操作
+// Execute rich text commands (can be one or more)
+// Before executing some commands, judge whether the current selection is empty, if the selection is empty, first select all
 const execCommand = ({ target, action }: RichTextCommand) => {
   if (!target && handleElementId.value !== props.elementId) return
   if (target && target !== props.elementId) return

@@ -2,67 +2,67 @@
   <div class="editor-header">
     <div class="left">
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconFolderClose /> <span class="text">文件</span></div>
+        <div class="menu-item"><IconFolderClose /> <span class="text">File</span></div>
         <template #overlay>
           <Menu>
-            <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
-              <MenuItem>导入 pptist 文件</MenuItem>
+            <FileInput accept=".super-ppt" @change="files => importSpecificFile(files)">
+              <MenuItem>Import super-ppt file</MenuItem>
             </FileInput>
-            <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => importPPTXFile(files)">
-              <MenuItem>导入 pptx 文件（demo）</MenuItem>
+            <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="files => importPPTXFile(files)">
+              <MenuItem>Import pptx file (demo)</MenuItem>
             </FileInput>
-            <MenuItem @click="setDialogForExport('pptx')">导出文件</MenuItem>
+            <MenuItem @click="setDialogForExport('pptx')">Export file</MenuItem>
           </Menu>
         </template>
-      </Dropdown>
+      </dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconEdit /> <span class="text">编辑</span></div>
+        <div class="menu-item"><IconEdit /> <span class="text">Edit</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="undo()">撤销</MenuItem>
-            <MenuItem @click="redo()">重做</MenuItem>
-            <MenuItem @click="createSlide()">添加页面</MenuItem>
-            <MenuItem @click="deleteSlide()">删除页面</MenuItem>
-            <MenuItem @click="toggleGridLines()">{{ gridLineSize ? '关闭网格线' : '打开网格线' }}</MenuItem>
-            <MenuItem @click="toggleRuler()">{{ showRuler ? '关闭标尺' : '打开标尺' }}</MenuItem>
-            <MenuItem @click="resetSlides()">重置幻灯片</MenuItem>
-            <MenuItem @click="openSelectPanel()">{{ showSelectPanel ? '关闭选择面板' : '打开选择面板' }}</MenuItem>
+            <MenuItem @click="undo()">Undo</MenuItem>
+            <MenuItem @click="redo()">Redo</MenuItem>
+            <MenuItem @click="createSlide()">Add Page</MenuItem>
+            <MenuItem @click="deleteSlide()">Delete page</MenuItem>
+            <MenuItem @click="toggleGridLines()">{{ gridLineSize ? 'Turn off gridlines' : 'Turn on gridlines' }}</MenuItem>
+            <MenuItem @click="toggleRuler()">{{ showRuler ? 'Close Ruler' : 'Open Ruler' }}</MenuItem>
+            <MenuItem @click="resetSlides()">Reset Slides</MenuItem>
+            <MenuItem @click="openSelectPanel()">{{ showSelectPanel ? 'Close Select Panel' : 'Open Select Panel' }}</MenuItem>
           </Menu>
         </template>
-      </Dropdown>
+      </dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconPpt /> <span class="text">演示</span></div>
+        <div class="menu-item"><IconPpt /> <span class="text">Demo</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="enterScreeningFromStart()">从头开始</MenuItem>
-            <MenuItem @click="enterScreening()">从当前页开始</MenuItem>
+            <MenuItem @click="enterScreeningFromStart()">Start from scratch</MenuItem>
+            <MenuItem @click="enterScreening()">Start from current page</MenuItem>
           </Menu>
         </template>
-      </Dropdown>
+      </dropdown>
       <Dropdown :trigger="['click']">
-        <div class="menu-item"><IconHelpcenter /> <span class="text">帮助</span></div>
+        <div class="menu-item"><IconHelpcenter /> <span class="text">Help</span></div>
         <template #overlay>
           <Menu>
-            <MenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">意见反馈</MenuItem>
-            <MenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">常见问题</MenuItem>
-            <MenuItem @click="hotkeyDrawerVisible = true">快捷键</MenuItem>
+            <MenuItem @click="goLink('https://github.com/supernovate07/super-ppt/issues')">Feedback</MenuItem>
+            <MenuItem @click="goLink('https://github.com/supernovate07/super-ppt/blob/master/doc/Q&A.md')">FAQ</MenuItem>
+            <MenuItem @click="hotkeyDrawerVisible = true">Shortcut keys</MenuItem>
           </Menu>
         </template>
-      </Dropdown>
+      </dropdown>
     </div>
 
     <div class="right">
-      <Tooltip :mouseLeaveDelay="0" title="导出">
+      <Tooltip :mouseLeaveDelay="0" title="Export">
         <div class="menu-item" @click="setDialogForExport('pptx')">
           <IconShare size="18" fill="#666" />
         </div>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" title="幻灯片放映">
+      <Tooltip :mouseLeaveDelay="0" title="Slide Show">
         <div class="menu-item" @click="enterScreening()">
           <IconPpt size="19" fill="#666" style="margin-top: 1px;" />
         </div>
       </Tooltip>
-      <a href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
+      <a href="https://github.com/supernovate07/super-ppt" target="_blank">
         <div class="menu-item"><IconGithub size="18" fill="#666" /></div>
       </a>
     </div>
@@ -77,7 +77,7 @@
       <HotkeyDoc />
     </Drawer>
 
-    <FullscreenSpin :loading="exporting" tip="正在导入..." />
+    <FullscreenSpin :loading="exporting" tip="Importing..." />
   </div>
 </template>
 

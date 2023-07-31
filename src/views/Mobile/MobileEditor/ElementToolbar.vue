@@ -1,86 +1,66 @@
 <template>
   <div class="element-toolbar">
     <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': activeTab === item.key }" 
-        v-for="item in tabs" 
-        :key="item.key"
-        @click="activeTab = item.key"
-      >{{item.label}}</div>
+      <div class="tab" :class="{ 'active': activeTab === item.key }" v-for="item in tabs" :key="item.key"
+        @click="activeTab = item.key">{{ item.label }}</div>
     </div>
 
     <div class="content">
       <div class="style" v-if="activeTab === 'style'">
         <CheckboxButtonGroup class="row">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.bold"
-            @click="emitRichTextCommand('bold')"
-          ><IconTextBold /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.em"
-            @click="emitRichTextCommand('em')"
-          ><IconTextItalic /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.underline"
-            @click="emitRichTextCommand('underline')"
-          ><IconTextUnderline /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.strikethrough"
-            @click="emitRichTextCommand('strikethrough')"
-          ><IconStrikethrough /></CheckboxButton>
+          <CheckboxButton style="flex: 1;" :checked="richTextAttrs.bold" @click="emitRichTextCommand('bold')">
+            <IconTextBold />
+          </CheckboxButton>
+          <CheckboxButton style="flex: 1;" :checked="richTextAttrs.em" @click="emitRichTextCommand('em')">
+            <IconTextItalic />
+          </CheckboxButton>
+          <CheckboxButton style="flex: 1;" :checked="richTextAttrs.underline" @click="emitRichTextCommand('underline')">
+            <IconTextUnderline />
+          </CheckboxButton>
+          <CheckboxButton style="flex: 1;" :checked="richTextAttrs.strikethrough"
+            @click="emitRichTextCommand('strikethrough')">
+            <IconStrikethrough />
+          </CheckboxButton>
         </CheckboxButtonGroup>
 
         <ButtonGroup class="row">
-          <Button 
-            style="flex: 2;"
-            @click="emitRichTextCommand('fontsize-add')"
-          ><IconFontSize />+</Button>
-          <Button 
-            style="flex: 2;"
-            @click="emitRichTextCommand('fontsize-reduce')"
-          ><IconFontSize />-</Button>
+          <Button style="flex: 2;" @click="emitRichTextCommand('fontsize-add')">
+            <IconFontSize />+
+          </Button>
+          <Button style="flex: 2;" @click="emitRichTextCommand('fontsize-reduce')">
+            <IconFontSize />-
+          </Button>
         </ButtonGroup>
-        
+
         <Divider style="margin: 20px 0;" />
 
-        <RadioGroup 
-          class="row" 
-          button-style="solid" 
-          :value="richTextAttrs.align"
-          @change="e => emitRichTextCommand('align', e.target.value)"
-        >
-          <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-          <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-          <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+        <RadioGroup class="row" button-style="solid" :value="richTextAttrs.align"
+          @change="e => emitRichTextCommand('align', e.target.value)">
+          <RadioButton value="left" style="flex: 1;">
+            <IconAlignTextLeft />
+          </RadioButton>
+          <RadioButton value="center" style="flex: 1;">
+            <IconAlignTextCenter />
+          </RadioButton>
+          <RadioButton value="right" style="flex: 1;">
+            <IconAlignTextRight />
+          </RadioButton>
         </RadioGroup>
-        
+
         <Divider style="margin: 20px 0;" />
 
         <div class="row-block">
-          <div class="label">文字颜色：</div>
+          <div class="label">Text color:</div>
           <div class="colors">
-            <div class="color" 
-              v-for="color in colors" 
-              :key="color"
-              @click="updateFontColor(color)"
-            >
+            <div class="color" v-for="color in colors" :key="color" @click="updateFontColor(color)">
               <div class="color-block" :style="{ backgroundColor: color }"></div>
             </div>
           </div>
         </div>
         <div class="row-block">
-          <div class="label">填充色：</div>
+          <div class="label">Fill color:</div>
           <div class="colors">
-            <div class="color" 
-              v-for="color in colors" 
-              :key="color"
-              @click="updateFill(color)"
-            >
+            <div class="color" v-for="color in colors" :key="color" @click="updateFill(color)">
               <div class="color-block" :style="{ backgroundColor: color }"></div>
             </div>
           </div>
@@ -89,30 +69,54 @@
 
       <div class="common" v-if="activeTab === 'common'">
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="copyElement()"><IconCopy class="icon" /> 复制</Button>
-          <Button style="flex: 1;" @click="deleteElement()"><IconDelete class="icon" /> 删除</Button>
+          <Button style="flex: 1;" @click="copyElement()">
+            <IconCopy class="icon" /> Copy
+          </Button>
+          <Button style="flex: 1;" @click="deleteElement()">
+            <IconDelete class="icon" /> delete
+          </Button>
         </ButtonGroup>
-        
+
         <Divider style="margin: 20px 0;" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="icon" /> 置底</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="icon" /> 上移</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)">
+            <IconSendToBack class="icon" />Top
+          </Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)">
+            <IconBringToFrontOne class="icon" /> Bottom
+          </Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)">
+            <IconBringToFront class="icon" /> move up
+          </Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)">
+            <IconSentToBack class="icon" /> move down
+          </Button>
         </ButtonGroup>
-        
+
         <Divider style="margin: 20px 0;" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft class="icon" /> 左对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><IconAlignVertically class="icon" /> 水平居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><IconAlignRight class="icon" /> 右对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)">
+            <IconAlignLeft class="icon" /> left alignment
+          </Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)">
+            <IconAlignVertically class="icon" /> horizontally centered
+          </Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)">
+            <IconAlignRight class="icon" /> Right alignment
+          </Button>
         </ButtonGroup>
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><IconAlignTop class="icon" /> 上对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><IconAlignHorizontally class="icon" /> 垂直居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><IconAlignBottom class="icon" /> 下对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)">
+            <IconAlignTop class="icon" /> top alignment
+          </Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)">
+            <IconAlignHorizontally class="icon" /> vertically centered
+          </Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)">
+            <IconAlignBottom class="icon" /> Bottom alignment
+          </Button>
         </ButtonGroup>
       </div>
     </div>
@@ -161,8 +165,8 @@ const updateElement = (id: string, props: Partial<PPTElement>) => {
 }
 
 const tabs: TabItem[] = [
-  { key: 'style', label: '样式' },
-  { key: 'common', label: '布局' },
+  { key: 'style', label: 'style' },
+  { key: 'common', label: 'layout' },
 ]
 const activeTab = ref('common')
 
@@ -237,6 +241,7 @@ const updateFill = (color: string) => {
   flex-direction: column;
   animation: slideInUp .15s;
 }
+
 .tabs {
   display: flex;
   justify-content: flex-start;
@@ -246,6 +251,7 @@ const updateFill = (color: string) => {
   font-weight: 700;
   margin-bottom: 10px;
 }
+
 .tab {
   width: 30%;
   padding: 10px 10px 12px;
@@ -263,6 +269,7 @@ const updateFill = (color: string) => {
   from {
     transform: translateY(100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -273,6 +280,7 @@ const updateFill = (color: string) => {
   flex: 1;
   overflow: auto;
 }
+
 .row {
   width: 100%;
   display: flex;
@@ -283,20 +291,24 @@ const updateFill = (color: string) => {
     margin-right: 3px;
   }
 }
+
 .row-block {
   margin-bottom: 10px;
   background-color: $lightGray;
   border-radius: $borderRadius;
   padding: 10px;
 }
+
 .label {
   font-size: 13px;
   margin-bottom: 20px;
   margin-left: 6px;
 }
+
 .colors {
   @include flex-grid-layout();
 }
+
 .color {
   @include flex-grid-layout-children(8, 12%);
 
@@ -310,5 +322,4 @@ const updateFill = (color: string) => {
     height: 30px;
     border-radius: 50%;
   }
-}
-</style>
+}</style>

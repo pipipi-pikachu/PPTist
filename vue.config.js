@@ -36,7 +36,7 @@ module.exports = {
     ],
   },
   pwa: {
-    name: 'PPTist',
+    name: 'super-ppt',
     themeColor: '#d14424',
     iconPaths: {
       faviconSVG: null,
@@ -47,8 +47,8 @@ module.exports = {
       msTileImage: null,
     },
     manifestOptions: {
-      name: 'PPTist',
-      short_name: 'PPTist',
+      name: 'super-ppt',
+      short_name: 'super-ppt',
       theme_color: '#d14424',
       icons: [{
         src: 'icons/android-chrome-192x192.png',
@@ -78,7 +78,7 @@ module.exports = {
         urlPattern: /.*/,
         handler: 'NetworkFirst',
         options: {
-          cacheName: 'PPTist',
+          cacheName: 'super-ppt',
           expiration: {
             maxAgeSeconds: 60 * 60 * 10,
           },

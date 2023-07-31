@@ -1,63 +1,63 @@
-## 常见问题
+## common problem
 
-#### Q. 为什么xxx快捷键没有作用？
+#### Q. Why doesn't the xxx shortcut key work?
 
-A. 部分快捷键需要聚焦到指定区域才会生效，例如焦点在左边缩略图列表才能使用操作页面的快捷键，焦点在画布区域才能使用操作元素的快捷键。
+A. Some shortcut keys need to be focused on the specified area to take effect. For example, the shortcut keys of the operation page can only be used when the focus is on the thumbnail list on the left, and the shortcut keys of the operation elements can only be used when the focus is on the canvas area.
 
-#### Q. 为什么粘贴没有作用？
+#### Q. Why does pasting not work?
 
-A. 请注意允许浏览器访问系统剪贴板。
+A. Please pay attention to allow the browser to access the system clipboard.
 
-#### Q. 为什么浏览器刷新或重新打开后，之前做的PPT没有了？
+#### Q. Why is the previous PPT gone after the browser is refreshed or reopened?
 
-A. 该演示项目是纯前端部署的，不会保存数据。
+A. The demo project is purely front-end deployment and will not save data.
 
-#### Q. 如何调整幻灯片页面的顺序？
+#### Q. How to adjust the order of slide pages?
 
-A. 按住左侧缩略图可进行拖拽调整顺序。
+A. Press and hold the left thumbnail to drag to adjust the order.
 
-#### Q. 为什么插入图片后会出现操作卡顿的情况？
+#### Q. Why does the operation freeze after inserting a picture?
 
-A. 由于本演示项目不依赖后端，插入本地图片实际引用的是Base64，导致数据体积非常大，在真正的生产环境中应该上传图片后引用图片地址，就不会出现这样的情况了。
+A. Since this demo project does not rely on the backend, the actual reference to the inserted local image is Base64, resulting in a very large data volume. In a real production environment, the image address should be referenced after uploading the image, and this situation will not occur.
 
-#### Q. 为什么应用预置主题后没有效果？
+#### Q. Why is there no effect after applying the preset theme?
 
-A. 设置预置主题的作用是使新添加的元素和页面应用主题样式，不会对已有的元素和页面生效，您可以使用“应用主题到全部”功能，将当前主题应用到全部页面中。
+A. The role of setting the preset theme is to apply the theme style to newly added elements and pages, and it will not take effect on existing elements and pages. You can use the "Apply theme to all" function to apply the current theme to all pages .
 
-#### Q. 设置在线字体不生效？
+#### Q. Setting the online font does not take effect?
 
-A. 设置在线字体时会下载对应的字体文件，该文件较大，需要等待下载完成后才会应用新的字体。
+A. When setting online fonts, the corresponding font file will be downloaded. The file is relatively large, and the new font will not be applied until the download is complete.
 
-#### Q. 关于导入导出PPTX文件
+#### Q. About importing and exporting PPTX files
 
-A. 作为一个在线幻灯片应用，导出、导入 PPTX 文件是非常重要的功能，但是经过调研发现，该功能实现起来的复杂度远超过了预期。由于个人能力和时间有限，这部分功能只能借助第三方的轮子来完成。
+A. As an online slideshow application, exporting and importing PPTX files is a very important function, but after investigation, it was found that the complexity of implementing this function far exceeded expectations. Due to limited personal ability and time, this part of the function can only be completed with the help of third-party wheels.
 
-导出：目前导出功能主要基于 [PptxGenJS](https://github.com/gitbrent/PptxGenJS/) 完成，能够实现大多数基本元素的导出，但还有非常多的缺陷需要一点点完善。同时需要知晓的是：1、该功能依赖 PptxGenJS，对于该库本身无法实现的部分（如动画），本项目也无能为力；2、导出功能的目标只是【导出样式尽可能一致的元素】，而不是一比一将网页还原到PPT，一些样式差异是必然存在的。
+Export: The current export function is mainly based on [PptxGenJS](https://github.com/gitbrent/PptxGenJS/), which can realize the export of most basic elements, but there are still many defects that need to be improved a little bit. What you need to know at the same time is: 1. This function depends on PptxGenJS, and this project can't do anything about the parts that the library itself cannot implement (such as animation); 2. The goal of the export function is only to [export elements with the same style as possible], not When restoring the webpage to PPT one by one, some style differences are bound to exist.
 
-导入：导入功能目前暂时没有合适的解决方案，还在调研和观望中。如果有感兴趣或做过相关内容的朋友，欢迎来 issues 中讨论。
+Import: There is currently no suitable solution for the import function, and it is still under investigation and wait-and-see. If you are interested or have done related content, welcome to discuss in issues.
 
-> PS. 我做了一个 [pptx转json](https://github.com/pipipi-pikachu/pptx2json) 的实验，如果你急需实现导入PPTX文件功能，可以此为参考自行实现。
+> PS. I did a [pptx to json](https://github.com/supernovate07/pptx2json) experiment, if you urgently need to implement the function of importing PPTX files, you can use this as a reference to implement it yourself.
 
-同时补充一点，本项目不是 office PPT 的专属在线编辑器，本质上与 office PPT 没有任何关系。【导入/导出 ppt 文件】只是项目的一个[功能]而非[目的]。
+At the same time, add that this project is not an exclusive online editor for office PPT, and has nothing to do with office PPT in essence. [Import/Export ppt file] is just a [function] of the project rather than a [purpose].
 
-#### Q. 视频元素支持哪些格式？
+#### Q. What formats does the video element support?
 
-A. 本项目只提供最基础的视频能力，正常状态下可以播放video标签本身支持的格式。
+A. This project only provides the most basic video capabilities. Under normal conditions, the formats supported by the video tag itself can be played.
 
-此外，可以额外引入 [hls.js](https://github.com/video-dev/hls.js) 或 [flv.js](https://github.com/Bilibili/flv.js) 来支持对应的格式（.m3u8 .flv），你只需要在项目中引入对应的文件（如cdn）即可，无需其他配置。
+In addition, [hls.js](https://github.com/video-dev/hls.js) or [flv.js](https://github.com/Bilibili/flv.js) can be additionally introduced to support For the corresponding format (.m3u8 .flv), you only need to import the corresponding file (such as cdn) in the project, no other configuration is required.
 
-#### Q. 关于导入JSON文件
+#### Q. About importing JSON files
 
-A. 首先，出于安全等原因，个人并不建议将这种功能在前端直接暴露给用户，或者说用户根本就不应该接触到JSON这种格式（甚至导出JSON功能的初衷也只是为了方便开发）。如果真的有相关的需求，请自行在服务端实现，核心在于做好进行数据的校验，前端实现也是一样。
+A. First of all, for reasons such as security, I personally do not recommend exposing this function directly to users on the front end, or that users should not have access to the JSON format at all (even the original intention of exporting the JSON function is only for the convenience of development ). If you really have relevant requirements, please implement it on the server side yourself. The core is to do a good job of data verification, and the front-end implementation is the same.
 
-#### Q. 打印 / 导出 PDF 样式与实际有出入
+#### Q. The print/export PDF format is different from the actual one
 
-A. 请注意在浏览器弹出的打印窗口调整相关的设置。建议：设置边距为【默认】、取消勾选【页眉和页脚】、勾选【背景图形】
+A. Please pay attention to adjust the relevant settings in the pop-up printing window of the browser. Suggestion: set margin to [Default], uncheck [Header and Footer], check [Background Graphics]
 
-#### Q. 为什么移动端不支持 xxx 功能？
+#### Q. Why does the mobile terminal not support the xxx function?
 
-A. 首先需要明确的一点，就是移动端无论怎么做，体验上都是必然大不如 PC 端的。因此个人将移动端定位为：简单进行一些临时处理的应急使用。真正的设计/制作幻灯片应在电脑上使用完整的功能。如实在有移动端的特殊需求，可尝试在移动端使用电脑模式打开（当然，体验会更槽糕），或者开发者自己进行二次开发。
+A. First of all, it needs to be clear that no matter what you do on the mobile end, the experience will inevitably be much worse than that on the PC end. Therefore, I personally position the mobile terminal as: emergency use for simple temporary processing. The actual design/production of slideshows should be done on a computer with full functionality. If you really have special needs for the mobile terminal, you can try to open it in computer mode on the mobile terminal (of course, the experience will be worse), or the developer can carry out secondary development by himself.
 
-#### Q. 关于兼容性？
+#### Q. About compatibility?
 
-A. 本项目优先兼容Chrome、Firefox。在Safari下可能存在部分兼容性问题。不兼容IE。
+A. This project is compatible with Chrome and Firefox first. There may be some compatibility issues under Safari. Not compatible with Internet Explorer.

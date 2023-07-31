@@ -1,92 +1,87 @@
 <template>
-  <div class="element-positopn-panel">
-    <div class="title">层级：</div>
+  <div class="element-positon-panel">
+    <div class="title">Level:</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="btn-icon" /> 置顶</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="btn-icon" /> 置底</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)">
+        <IconSendToBack class="btn-icon" />Top
+      </Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)">
+        <IconBringToFrontOne class="btn-icon" /> Bottom
+      </Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="btn-icon" /> 上移</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="btn-icon" /> 下移</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)">
+        <IconBringToFront class="btn-icon" /> move up
+      </Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)">
+        <IconSentToBack class="btn-icon" /> move down
+      </Button>
     </ButtonGroup>
 
     <Divider />
-    
-    <div class="title">对齐：</div>
+
+    <div class="title">Alignment:</div>
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Left alignment">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)">
+          <IconAlignLeft />
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><IconAlignVertically /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Horizontal Center">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)">
+          <IconAlignVertically />
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><IconAlignRight /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Right Align">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)">
+          <IconAlignRight />
+        </Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><IconAlignTop /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Top alignment">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)">
+          <IconAlignTop />
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><IconAlignHorizontally /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Vertical Center">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)">
+          <IconAlignHorizontally />
+        </Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><IconAlignBottom /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Bottom alignment">
+        <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)">
+          <IconAlignBottom />
+        </Button>
       </Tooltip>
     </ButtonGroup>
 
     <Divider />
 
     <div class="row">
-      <InputNumber
-        prefix="水平："
-        :step="5"
-        :value="left"
-        @change="value => updateLeft(value as number)"
-        style="flex: 4;"
-      />
+      <InputNumber prefix="level:" :step="5" :value="left" @change="value => updateLeft(value as number)"
+        style="flex: 4;" />
       <div style="flex: 1;"></div>
-      <InputNumber
-        prefix="垂直："
-        :step="5"
-        :value="top"
-        @change="value => updateTop(value as number)"
-        style="flex: 4;"
-      />
+      <InputNumber prefix="vertical:" :step="5" :value="top" @change="value => updateTop(value as number)"
+        style="flex: 4;" />
     </div>
 
     <template v-if="handleElement!.type !== 'line'">
       <div class="row">
-        <InputNumber
-          prefix="宽度："
-          :min="minSize"
-          :max="1500"
-          :step="5"
-          :disabled="isVerticalText"
-          :value="width"
-          @change="value => updateWidth(value as number)"
-          style="flex: 4;"
-        />
+        <InputNumber prefix="width:" :min="minSize" :max="1500" :step="5" :disabled="isVerticalText" :value="width"
+          @change="value => updateWidth(value as number)" style="flex: 4;" />
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="解除宽高比锁定" v-if="fixedRatio">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Unlock aspect ratio" v-if="fixedRatio">
             <IconLock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(false)" />
           </Tooltip>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="宽高比锁定" v-else>
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Aspect Ratio Lock" v-else>
             <IconUnlock style="flex: 1;" class="icon-btn" @click="updateFixedRatio(true)" />
           </Tooltip>
         </template>
         <div style="flex: 1;" v-else></div>
-        <InputNumber 
-          prefix="高度："
-          :min="minSize"
-          :max="800"
-          :step="5"
-          :disabled="isHorizontalText || handleElement!.type === 'table'" 
-          :value="height" 
-          @change="value => updateHeight(value as number)"
-          style="flex: 4;"
-        />
+        <InputNumber prefix="height:" :min="minSize" :max="800" :step="5"
+          :disabled="isHorizontalText || handleElement!.type === 'table'" :value="height"
+          @change="value => updateHeight(value as number)" style="flex: 4;" />
       </div>
     </template>
 
@@ -94,23 +89,19 @@
       <Divider />
 
       <div class="row">
-        <InputNumber 
-          prefix="旋转："
-          :min="-180"
-          :max="180"
-          :step="5"
-          :value="rotate" 
-          @change="value => updateRotate(value as number)" 
-          style="flex: 8;" 
-        />
+        <InputNumber prefix="rotation:" :min="-180" :max="180" :step="5" :value="rotate"
+          @change="value => updateRotate(value as number)" style="flex: 8;" />
         <div style="flex: 1;"></div>
-        <div class="text-btn" @click="updateRotate45('-')" style="flex: 5;"><IconRotate /> -45°</div>
-        <div class="text-btn" @click="updateRotate45('+')"  style="flex: 5;"><IconRotate :style="{ transform: 'rotateY(180deg)' }" /> +45°</div>
+        <div class="text-btn" @click="updateRotate45('-')" style="flex: 5;">
+          <IconRotate /> -45°
+        </div>
+        <div class="text-btn" @click="updateRotate45('+')" style="flex: 5;">
+          <IconRotate :style="{ transform: 'rotateY(180deg)' }" /> +45 °
+        </div>
       </div>
     </template>
   </div>
 </template>
-
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { round } from 'lodash'
@@ -253,18 +244,23 @@ const updateRotate45 = (command: '+' | '-') => {
   align-items: center;
   margin-bottom: 10px;
 }
+
 .title {
   margin-bottom: 10px;
 }
+
 .label {
   text-align: center;
 }
+
 .btn-icon {
   margin-right: 3px;
 }
+
 .icon-btn {
   cursor: pointer;
 }
+
 .text-btn {
   height: 30px;
   line-height: 30px;

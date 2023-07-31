@@ -1,7 +1,7 @@
 <template>
   <div class="audio-style-panel">
     <div class="row">
-      <div style="flex: 2;">图标颜色：</div>
+      <div style="flex: 2;">Icon color:</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -14,21 +14,21 @@
     </div>
 
     <div class="row switch-row">
-      <div style="flex: 2;">自动播放：</div>
+      <div style="flex: 2;">Autoplay:</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="handleAudioElement.autoplay" 
-          @change="checked => updateAudio({ autoplay: checked as boolean })" 
+        <Switch
+          :checked="handleAudioElement.autoplay"
+          @change="checked => updateAudio({ autoplay: checked as boolean })"
         />
       </div>
     </div>
 
     <div class="row switch-row">
-      <div style="flex: 2;">循环播放：</div>
+      <div style="flex: 2;">Loop playback:</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="handleAudioElement.loop" 
-          @change="checked => updateAudio({ loop: checked as boolean })" 
+        <Switch
+          :checked="handleAudioElement.loop"
+          @change="checked => updateAudio({ loop: checked as boolean })"
         />
       </div>
     </div>
@@ -54,8 +54,8 @@ const handleAudioElement = handleElement as Ref<PPTAudioElement>
 const { addHistorySnapshot } = useHistorySnapshot()
 
 const updateAudio = (props: Partial<PPTAudioElement>) => {
-  if (!handleElement.value) return
-  slidesStore.updateElement({ id: handleElement.value.id, props })
+  if (!handleElement. value) return
+  slidesStore. updateElement({ id: handleElement. value. id, props })
   addHistorySnapshot()
 }
 </script>

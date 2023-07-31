@@ -2,9 +2,9 @@ import Clipboard from 'clipboard'
 import { decrypt } from '@/utils/crypto'
 
 /**
- * 复制文本到剪贴板
- * @param text 文本内容
- */
+  * Copy text to clipboard
+  * @param text text content
+  */
 export const copyText = (text: string) => {
   return new Promise((resolve, reject) => {
     const fakeElement = document.createElement('button')
@@ -27,20 +27,20 @@ export const copyText = (text: string) => {
   })
 }
 
-// 读取剪贴板
+// read the clipboard
 export const readClipboard = (): Promise<string> => {
   return new Promise((resolve, reject) => {
     if (navigator.clipboard?.readText) {
       navigator.clipboard.readText().then(text => {
-        if (!text) reject('剪贴板为空或者不包含文本')
+        if (!text) reject('The clipboard is empty or contains no text')
         return resolve(text)
       })
     }
-    else reject('浏览器不支持或禁止访问剪贴板，请使用快捷键 Ctrl + V')
+    else reject('The browser does not support or prohibit access to the clipboard, please use the shortcut key Ctrl + V')
   })
 }
 
-// 解析加密后的剪贴板内容
+// parse the encrypted clipboard content
 export const pasteCustomClipboardString = (text: string) => {
   let clipboardData
   try {
@@ -53,7 +53,7 @@ export const pasteCustomClipboardString = (text: string) => {
   return clipboardData
 }
 
-// 尝试解析剪贴板内容是否为Excel表格（或类似的）数据格式
+// Try to parse the clipboard content to see if it is an Excel table (or similar) data format
 export const pasteExcelClipboardString = (text: string): string[][] | null => {
   const lines: string[] = text.split('\r\n')
 

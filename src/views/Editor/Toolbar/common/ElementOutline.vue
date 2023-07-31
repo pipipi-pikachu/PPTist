@@ -1,28 +1,28 @@
 <template>
   <div class="element-outline">
     <div class="row" v-if="!fixed">
-      <div style="flex: 2;">启用边框：</div>
+      <div style="flex: 2;">Enable border:</div>
       <div class="switch-wrapper" style="flex: 3;">
-        <Switch 
-          :checked="hasOutline" 
-          @change="checked => toggleOutline(checked as boolean)" 
+        <Switch
+          :checked="hasOutline"
+          @change="checked => toggleOutline(checked as boolean)"
         />
       </div>
     </div>
     <template v-if="hasOutline && outline">
       <div class="row">
-        <div style="flex: 2;">边框样式：</div>
-        <Select 
-          style="flex: 3;" 
-          :value="outline.style" 
+        <div style="flex: 2;">Border style:</div>
+        <Select
+          style="flex: 3;"
+          :value="outline.style"
           @change="value => updateOutline({ style: value as 'dashed' | 'solid' })"
         >
-          <SelectOption value="solid">实线边框</SelectOption>
-          <SelectOption value="dashed">虚线边框</SelectOption>
-        </Select>
+          <SelectOption value="solid">solid border</SelectOption>
+          <SelectOption value="dashed">Dashed Border</SelectOption>
+        </select>
       </div>
       <div class="row">
-        <div style="flex: 2;">边框颜色：</div>
+        <div style="flex: 2;">Border color:</div>
         <Popover trigger="click">
           <template #content>
             <ColorPicker
@@ -34,11 +34,11 @@
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">边框粗细：</div>
-        <InputNumber 
-          :value="outline.width" 
-          @change="value => updateOutline({ width: value as number })" 
-          style="flex: 3;" 
+        <div style="flex: 2;">Border thickness:</div>
+        <InputNumber
+          :value="outline.width"
+          @change="value => updateOutline({ width: value as number })"
+          style="flex: 3;"
         />
       </div>
     </template>

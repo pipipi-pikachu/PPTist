@@ -1,30 +1,30 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="撤销">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Cancel">
         <IconBack class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="重做">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Redo">
         <IconNext class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
       </Tooltip>
     </div>
 
     <div class="add-element-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert text">
         <div class="handler-item group-btn">
           <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
-          
+         
           <Popover trigger="click" v-model:visible="textTypeSelectVisible">
             <template #content>
-              <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
-              <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
+              <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> horizontal text box</div>
+              <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> vertical text box</div>
             </template>
             <IconDown class="arrow" />
           </Popover>
         </div>
       </Tooltip>
       <FileInput @change="files => insertImageElement(files)">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert picture">
           <IconPicture class="handler-item" />
         </Tooltip>
       </FileInput>
@@ -32,7 +32,7 @@
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert Shape">
           <IconGraphicDesign class="handler-item" :class="{ 'active': creatingElement?.type === 'shape' }" />
         </Tooltip>
       </Popover>
@@ -40,7 +40,7 @@
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert Line">
           <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" />
         </Tooltip>
       </Popover>
@@ -48,7 +48,7 @@
         <template #content>
           <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert Chart">
           <IconChartProportion class="handler-item" />
         </Tooltip>
       </Popover>
@@ -59,22 +59,22 @@
             @insert="({ row, col }) => { createTableElement(row, col); tableGeneratorVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert Form">
           <IconInsertTable class="handler-item" />
         </Tooltip>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert formula">
         <IconFormula class="handler-item" @click="latexEditorVisible = true" />
       </Tooltip>
       <Popover trigger="click" v-model:visible="mediaInputVisible">
         <template #content>
-          <MediaInput 
+          <MediaInput
             @close="mediaInputVisible = false"
             @insertVideo="src => { createVideoElement(src); mediaInputVisible = false }"
             @insertAudio="src => { createAudioElement(src); mediaInputVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入音视频">
+        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Insert audio and video">
           <IconVideoTwo class="handler-item" />
         </Tooltip>
       </Popover>
@@ -85,10 +85,10 @@
       <Popover trigger="click" v-model:visible="canvasScaleVisible">
         <template #content>
           <div class="viewport-size-preset">
-            <div 
-              class="preset-item" 
-              v-for="item in canvasScalePresetList" 
-              :key="item" 
+            <div
+              class="preset-item"
+              v-for="item in canvasScalePresetList"
+              :key="item"
               @click="applyCanvasPresetScale(item)"
             >{{item}}%</div>
           </div>
@@ -96,19 +96,19 @@
         <span class="text">{{canvasScalePercentage}}</span>
       </Popover>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="适应屏幕">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Fit to screen">
         <IconFullScreen class="handler-item viewport-size-adaptation" @click="resetCanvas()" />
       </Tooltip>
     </div>
 
     <Modal
-      v-model:visible="latexEditorVisible" 
-      :footer="null" 
+      v-model:visible="latexEditorVisible"
+      :footer="null"
       centered
       :width="880"
       destroyOnClose
     >
-      <LaTeXEditor 
+      <LaTeXEditor
         @close="latexEditorVisible = false"
         @update="data => { createLatexElement(data); latexEditorVisible = false }"
       />

@@ -1,16 +1,16 @@
 <template>
   <div class="element-flip">
     <CheckboxButtonGroup class="row">
-      <CheckboxButton 
+      <CheckboxButton
         style="flex: 1;"
         :checked="flipV"
         @click="updateFlip({ flipV: !flipV })"
-      ><IconFlipVertically /> 垂直翻转</CheckboxButton>
-      <CheckboxButton 
+      ><IconFlipVertically /> Flip vertically</CheckboxButton>
+      <CheckboxButton
         style="flex: 1;"
         :checked="flipH"
         @click="updateFlip({ flipH: !flipH })"
-      ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
+      ><IconFlipHorizontally />Flip horizontally</CheckboxButton>
     </CheckboxButtonGroup>
   </div>
 </template>

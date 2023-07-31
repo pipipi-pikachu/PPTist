@@ -1,63 +1,63 @@
 <template>
   <div class="chart-style-panel">
     <Button class="full-width-btn" @click="chartDataEditorVisible = true">
-      <IconEdit class="btn-icon" /> 编辑图表数据
+      <IconEdit class="btn-icon" /> Edit chart data
     </Button>
 
     <Divider />
 
     <template v-if="handleChartElement.chartType === 'line'">
       <div class="row">
-        <Checkbox 
+        <Checkbox
           @change="e => updateOptions({ showArea: e.target.checked })"
-          :checked="showArea" 
+          :checked="showArea"
           style="flex: 1;"
-        >面积图样式</Checkbox>
-        <Checkbox 
+        >Area Chart Style</Checkbox>
+        <Checkbox
           @change="e => updateOptions({ showLine: !e.target.checked })"
-          :checked="!showLine" 
+          :checked="!showLine"
           style="flex: 1;"
-        >散点图样式</Checkbox>
+        >Scatter plot style</Checkbox>
       </div>
       <div class="row">
-        <Checkbox 
-          @change="e => updateOptions({ lineSmooth: e.target.checked })" 
+        <Checkbox
+          @change="e => updateOptions({ lineSmooth: e. target. checked })"
           :checked="lineSmooth"
-        >使用平滑曲线</Checkbox>
+        >Use smooth curves</Checkbox>
       </div>
     </template>
     <div class="row" v-if="handleChartElement.chartType === 'bar'">
-      <Checkbox 
-        @change="e => updateOptions({ horizontalBars: e.target.checked })" 
+      <Checkbox
+        @change="e => updateOptions({ horizontalBars: e.target.checked })"
         :checked="horizontalBars"
-      >条形图样式</Checkbox>
-      <Checkbox 
-        @change="e => updateOptions({ stackBars: e.target.checked })" 
+      >Bar Style</Checkbox>
+      <Checkbox
+        @change="e => updateOptions({ stackBars: e.target.checked })"
         :checked="stackBars"
-      >堆叠样式</Checkbox>
+      >Stacked styles</Checkbox>
     </div>
     <div class="row" v-if="handleChartElement.chartType === 'pie'">
-      <Checkbox 
-        @change="e => updateOptions({ donut: e.target.checked })" 
+      <Checkbox
+        @change="e => updateOptions({ donut: e. target. checked })"
         :checked="donut"
-      >环形图样式</Checkbox>
+      >Donut Chart Style</Checkbox>
     </div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">图例：</div>
+      <div style="flex: 2;">Legend:</div>
       <Select style="flex: 3;" :value="legend" @change="value => updateLegend(value as '' | 'top' | 'bottom')">
-        <SelectOption value="">不显示</SelectOption>
-        <SelectOption value="top">显示在上方</SelectOption>
-        <SelectOption value="bottom">显示在下方</SelectOption>
-      </Select>
+        <SelectOption value="">Do not display</SelectOption>
+        <SelectOption value="top">Display on Top</SelectOption>
+        <SelectOption value="bottom">Display below</SelectOption>
+      </select>
     </div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">背景填充：</div>
+      <div style="flex: 2;">Background fill:</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -69,7 +69,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">网格颜色：</div>
+      <div style="flex: 2;">Grid color:</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -84,7 +84,7 @@
     <Divider />
 
     <div class="row" v-for="(color, index) in themeColor" :key="index">
-      <div style="flex: 2;">{{index === 0 ? '主题配色：' : ''}}</div>
+      <div style="flex: 2;">{{index === 0 ? 'Theme color:' : ''}}</div>
       <Popover trigger="click">
         <template #content>
           <ColorPicker
@@ -94,7 +94,7 @@
         </template>
         <div class="color-btn-wrap" style="flex: 3;">
           <ColorButton :color="color" style="width: 100%;" />
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Delete">
             <div class="delete-color-btn" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
           </Tooltip>
         </div>
@@ -105,12 +105,12 @@
         <template #content>
           <div class="preset-themes">
             <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index">
-              <div 
-                class="preset-theme-color" 
+              <div
+                class="preset-theme-color"
                 :class="{ 'select': presetThemeColorHoverIndex[0] === index && itemIndex <= presetThemeColorHoverIndex[1] }"
-                v-for="(color, itemIndex) in item" 
-                :key="color" 
-                :style="{ backgroundColor: color }" 
+                v-for="(color, itemIndex) in item"
+                :key="color"
+                :style="{ backgroundColor: color }"
                 @click="applyPresetTheme(item, itemIndex)"
                 @mouseenter="presetThemeColorHoverIndex = [index, itemIndex]"
                 @mouseleave="presetThemeColorHoverIndex = [-1, -1]"
@@ -118,15 +118,15 @@
             </div>
           </div>
         </template>
-        <Button class="no-padding" style="flex: 2;">推荐主题</Button>
+        <Button class="no-padding" style="flex: 2;">Recommend theme</Button>
       </Popover>
-      <Button 
-        class="no-padding" 
-        :disabled="themeColor.length >= 10" 
-        style="flex: 3;" 
+      <Button
+        class="no-padding"
+        :disabled="themeColor.length >= 10"
+        style="flex: 3;"
         @click="addThemeColor()"
       >
-        <IconPlus class="btn-icon" /> 添加主题色
+        <IconPlus class="btn-icon" /> Add theme color
       </Button>
     </ButtonGroup>
 
@@ -135,14 +135,14 @@
     <ElementOutline />
 
     <Modal
-      v-model:visible="chartDataEditorVisible" 
-      :footer="null" 
+      v-model:visible="chartDataEditorVisible"
+      :footer="null"
       centered
       :closable="false"
       :width="648"
       destroyOnClose
     >
-      <ChartDataEditor 
+      <ChartDataEditor
         :data="handleChartElement.data"
         @close="chartDataEditorVisible = false"
         @save="value => updateData(value)"

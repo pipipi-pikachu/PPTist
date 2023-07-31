@@ -89,7 +89,7 @@ const { flipStyle } = useElementFlip(flipH, flipV)
 const text = computed<ShapeText>(() => {
   const defaultText: ShapeText = {
     content: '',
-    defaultFontName: '微软雅黑',
+    defaultFontName: 'Microsoft Yahei',
     defaultColor: '#000',
     align: 'middle',
   }

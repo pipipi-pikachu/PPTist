@@ -2,53 +2,34 @@
   <div class="chart-data-editor">
     <div class="editor-content">
       <div class="range-box">
-        <div 
-          class="temp-range" 
-          :style="{
-            width: tempRangeSize.width + 'px',
-            height: tempRangeSize.height + 'px',
-          }"
-        ></div>
-        <div 
-          :class="['range-line', line.type]" 
-          v-for="line in rangeLines" 
-          :key="line.type" 
-          :style="line.style"
-        ></div>
-        <div 
-          class="resizable" 
-          :style="resizablePointStyle"
-          @mousedown.stop="changeSelectRange($event)"
-        ></div>
+        <div class="temp-range" :style="{
+          width: tempRangeSize.width + 'px',
+          height: tempRangeSize.height + 'px',
+        }"></div>
+        <div :class="['range-line', line.type]" v-for="line in rangeLines" :key="line.type" :style="line.style"></div>
+        <div class="resizable" :style="resizablePointStyle" @mousedown.stop="changeSelectRange($event)"></div>
       </div>
       <table>
         <tbody>
           <tr v-for="rowIndex in 31" :key="rowIndex">
-            <td 
-              v-for="colIndex in 7" 
-              :key="colIndex" 
-              :class="{ 'head': (colIndex === 1 && rowIndex <= selectedRange[1]) || (rowIndex === 1 && colIndex <= selectedRange[0]) }"
-            >
-              <input 
-                :class="['item', { 'selected': rowIndex <= selectedRange[1] && colIndex <= selectedRange[0] }]"
-                :id="`cell-${rowIndex - 1}-${colIndex - 1}`"
-                autocomplete="off"
+            <td v-for="colIndex in 7" :key="colIndex"
+              :class="{ 'head': (colIndex === 1 && rowIndex <= selectedRange[1]) || (rowIndex === 1 && colIndex <= selectedRange[0]) }">
+              <input :class="['item', { 'selected': rowIndex <= selectedRange[1] && colIndex <= selectedRange[0] }]"
+                :id="`cell-${rowIndex - 1}-${colIndex - 1}`" autocomplete="off"
                 @focus="focusCell = [rowIndex - 1, colIndex - 1]"
-                @paste="$event => handlePaste($event, rowIndex - 1, colIndex - 1)"
-              >
+                @paste="$event => handlePaste($event, rowIndex - 1, colIndex - 1)">
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
     <div class="btns">
       <div class="left">
-        <Button class="btn" @click="clear()">清空</Button>
+        <Button class="btn" @click="clear()">Clear</Button>
       </div>
       <div class="right">
-        <Button class="btn" @click="closeEditor()">取消</Button>
-        <Button type="primary" class="btn" @click="getTableData()" style="margin-left: 10px;">确认</Button>
+        <Button class="btn" @click="closeEditor()">Cancel</Button>
+        <Button type="primary" class="btn" @click="getTableData()" style="margin-left: 10px;">Confirm</Button>
       </div>
     </div>
   </div>
@@ -81,26 +62,26 @@ const selectedRange = ref([0, 0])
 const tempRangeSize = ref({ width: 0, height: 0 })
 const focusCell = ref<[number, number] | null>(null)
 
-// 当前选区的边框线条位置
+// The border line position of the current selection
 const rangeLines = computed(() => {
   const width = selectedRange.value[0] * CELL_WIDTH
   const height = selectedRange.value[1] * CELL_HEIGHT
   return [
-    { type: 't', style: {width: width + 'px'} },
-    { type: 'b', style: {top: height + 'px', width: width + 'px'} },
-    { type: 'l', style: {height: height + 'px'} },
-    { type: 'r', style: {left: width + 'px', height: height + 'px'} },
+    { type: 't', style: { width: width + 'px' } },
+    { type: 'b', style: { top: height + 'px', width: width + 'px' } },
+    { type: 'l', style: { height: height + 'px' } },
+    { type: 'r', style: { left: width + 'px', height: height + 'px' } },
   ]
 })
 
-// 当前选区的缩放点位置
+// The zoom point position of the current selection
 const resizablePointStyle = computed(() => {
   const width = selectedRange.value[0] * CELL_WIDTH
   const height = selectedRange.value[1] * CELL_HEIGHT
   return { left: width + 'px', top: height + 'px' }
 })
 
-// 初始化图表数据：将数据格式化并填充到DOM
+// Initialize chart data: format and populate data to DOM
 const initData = () => {
   const _data: string[][] = []
 
@@ -130,7 +111,7 @@ const initData = () => {
 
 onMounted(initData)
 
-// 快捷键监听：回车移动焦点到下一行
+// Shortcut key monitoring: Enter to move the focus to the next line
 const moveNextRow = () => {
   if (!focusCell.value) return
 
@@ -151,7 +132,7 @@ onUnmounted(() => {
   document.removeEventListener('keydown', keyboardListener)
 })
 
-// 获取当前图表DOM中的数据，整理格式化后传递出去
+// Get the data in the DOM of the current chart, arrange and format it and pass it out
 const getTableData = () => {
   const [col, row] = selectedRange.value
 
@@ -159,15 +140,15 @@ const getTableData = () => {
   const legends: string[] = []
   const series: number[][] = []
 
-  // 第一行为系列名，第一列为项目名，实际数据从第二行第二列开始
+  // The first row is the series name, the first column is the project name, and the actual data starts from the second row and the second column
   for (let rowIndex = 1; rowIndex < row; rowIndex++) {
-    let labelsItem = `类别${rowIndex}`
+    let labelsItem = `category ${rowIndex}`
     const labelInputRef = document.querySelector(`#cell-${rowIndex}-0`) as HTMLInputElement
     if (labelInputRef && labelInputRef.value) labelsItem = labelInputRef.value
     labels.push(labelsItem)
   }
   for (let colIndex = 1; colIndex < col; colIndex++) {
-    let legendsItem = `系列${colIndex}`
+    let legendsItem = `Series ${colIndex}`
     const labelInputRef = document.querySelector(`#cell-0-${colIndex}`) as HTMLInputElement
     if (labelInputRef && labelInputRef.value) legendsItem = labelInputRef.value
     legends.push(legendsItem)
@@ -189,7 +170,7 @@ const getTableData = () => {
   emit('save', { labels, legends, series })
 }
 
-// 清空表格数据
+// Clear form data
 const clear = () => {
   for (let rowIndex = 1; rowIndex < 31; rowIndex++) {
     for (let colIndex = 1; colIndex < 7; colIndex++) {
@@ -199,8 +180,7 @@ const clear = () => {
     }
   }
 }
-
-// 自定义粘贴事件（尝试读取剪贴板中的表格数据）
+// custom paste event (try to read the table data in the clipboard)
 const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
   e.preventDefault()
 
@@ -212,7 +192,7 @@ const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
     clipboardDataFirstItem.getAsString(text => {
       const clipboardData = pasteCustomClipboardString(text)
       if (typeof clipboardData === 'object') return
- 
+
       const excelData = pasteExcelClipboardString(text)
       if (excelData) {
         const maxRow = rowIndex + excelData.length
@@ -229,10 +209,10 @@ const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
   }
 }
 
-// 关闭图表数据编辑器
+// Close the chart data editor
 const closeEditor = () => emit('close')
 
-// 鼠标拖拽修改选中的数据范围
+// Mouse drag to modify the selected data range
 const changeSelectRange = (e: MouseEvent) => {
   let isMouseDown = true
 
@@ -267,7 +247,7 @@ const changeSelectRange = (e: MouseEvent) => {
 
     if (startPageX === endPageX && startPageY === endPageY) return
 
-    // 拖拽结束时，范围超过格子一半自动扩大到下一格（如拖动到一格半多的位置，会自动扩展到两格，横竖都同理）
+    // At the end of dragging, the range will automatically expand to the next grid if the range exceeds half of the grid (if you drag to a position of more than one and a half grids, it will automatically expand to two grids, the same is true for both horizontal and vertical)
     let width = tempRangeSize.value.width
     let height = tempRangeSize.value.height
     if (width % CELL_WIDTH > CELL_WIDTH * 0.5) width = width + (CELL_WIDTH - width % CELL_WIDTH)
@@ -290,6 +270,7 @@ const changeSelectRange = (e: MouseEvent) => {
   width: 600px;
   position: relative;
 }
+
 .editor-content {
   width: 100%;
   height: 360px;
@@ -299,6 +280,7 @@ const changeSelectRange = (e: MouseEvent) => {
 
   @include overflow-overlay();
 }
+
 .range-box {
   position: absolute;
   top: 0;
@@ -306,6 +288,7 @@ const changeSelectRange = (e: MouseEvent) => {
   z-index: 100;
   user-select: none;
 }
+
 .temp-range {
   width: 0;
   height: 0;
@@ -314,6 +297,7 @@ const changeSelectRange = (e: MouseEvent) => {
   left: 0;
   background-color: rgba($color: #888, $alpha: .3);
 }
+
 .range-line {
   width: 0;
   height: 0;
@@ -325,16 +309,20 @@ const changeSelectRange = (e: MouseEvent) => {
   &.t {
     border-top-width: 1px;
   }
+
   &.b {
     border-bottom-width: 1px;
   }
+
   &.l {
     border-left-width: 1px;
   }
+
   &.r {
     border-right-width: 1px;
   }
 }
+
 .resizable {
   position: absolute;
   width: 12px;
@@ -353,6 +341,7 @@ const changeSelectRange = (e: MouseEvent) => {
     top: 0;
     background-color: $themeColor;
   }
+
   &::before {
     content: '';
     position: absolute;
@@ -363,6 +352,7 @@ const changeSelectRange = (e: MouseEvent) => {
     background-color: $themeColor;
   }
 }
+
 table {
   width: 100%;
   height: 100%;
@@ -380,6 +370,7 @@ table {
       background-color: rgba($color: $themeColor, $alpha: .1);
     }
   }
+
   .item {
     width: 100%;
     height: 100%;
@@ -394,6 +385,7 @@ table {
     }
   }
 }
+
 .btns {
   margin-top: 10px;
   display: flex;

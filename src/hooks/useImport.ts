@@ -19,80 +19,80 @@ export default () => {
 
   const exporting = ref(false)
 
-  // 导入pptist文件
+  // Import the pptist file
   const importSpecificFile = (files: FileList, cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()
-    reader.addEventListener('load', () => {
+    reader. addEventListener('load', () => {
       try {
-        const slides = JSON.parse(decrypt(reader.result as string))
-        if (cover) slidesStore.setSlides(slides)
+        const slides = JSON. parse(decrypt(reader. result as string))
+        if (cover) slidesStore. setSlides(slides)
         else addSlidesFromData(slides)
       }
       catch {
-        message.error('无法正确读取 / 解析该文件')
+        message.error('The file cannot be read/parsed correctly')
       }
     })
-    reader.readAsText(file)
+    reader. readAsText(file)
   }
 
   const parseLineElement = (el: Shape): PPTLineElement => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
 
-    if (!el.isFlipV && !el.isFlipH) { // 右下
+    if (!el.isFlipV && !el.isFlipH) { // bottom right
       start = [0, 0]
-      end = [el.width, el.height]
+      end = [el. width, el. height]
     }
-    else if (el.isFlipV && el.isFlipH) { // 左上
-      start = [el.width, el.height]
+    else if (el.isFlipV && el.isFlipH) { // top left
+      start = [el. width, el. height]
       end = [0, 0]
     }
-    else if (el.isFlipV && !el.isFlipH) { // 右上
-      start = [0, el.height]
-      end = [el.width, 0]
+    else if (el.isFlipV && !el.isFlipH) { // top right
+      start = [0, el. height]
+      end = [el. width, 0]
     }
-    else { // 左下
-      start = [el.width, 0]
-      end = [0, el.height]
+    else { // bottom left
+      start = [el. width, 0]
+      end = [0, el. height]
     }
     return {
       type: 'line',
       id: nanoid(10),
-      width: el.borderWidth || 1,
-      left: el.left,
+      width: el. borderWidth || 1,
+      left: el. left,
       top: el.top,
       start,
       end,
-      style: el.borderType,
-      color: el.borderColor,
+      style: el. borderType,
+      color: el. borderColor,
       points: ['', el.shapType === 'straightConnector1' ? 'arrow' : '']
     }
   }
 
-  // 导入PPTX文件
+  // Import PPTX file
   const importPPTXFile = (files: FileList) => {
     const file = files[0]
     if (!file) return
 
-    exporting.value = true
+    exporting. value = true
 
     const shapeList: ShapePoolItem[] = []
     for (const item of SHAPE_LIST) {
-      shapeList.push(...item.children)
+      shapeList. push(...item. children)
     }
-    
+   
     const reader = new FileReader()
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer)
+      const json = await parse(e. target!. result as ArrayBuffer)
 
-      const width = json.size.width
+      const width = json. size. width
       const scale = VIEWPORT_SIZE / width
 
       const slides: Slide[] = []
-      for (const item of json.slides) {
-        const { type, value } = item.fill
+      for (const item of json. slides) {
+        const { type, value } = item. fill
         let background: SlideBackground
         if (type === 'image') {
           background = {
@@ -118,47 +118,47 @@ export default () => {
           for (const el of elements) {
             el.width = el.width * scale
             el.height = el.height * scale
-            el.left = el.left * scale
+            el. left = el. left * scale
             el.top = el.top * scale
-  
-            if (el.type === 'text') {
-              slide.elements.push({
+ 
+            if (el. type === 'text') {
+              slide. elements. push({
                 type: 'text',
                 id: nanoid(10),
-                width: el.width,
-                height: el.height,
+                width: el. width,
+                height: el. height,
                 left: el.left,
                 top: el.top,
                 rotate: el.rotate,
                 defaultFontName: theme.value.fontName,
                 defaultColor: theme.value.fontColor,
-                content: el.content,
+                content: el. content,
                 lineHeight: 1,
                 outline: {
-                  color: el.borderColor,
-                  width: el.borderWidth,
-                  style: el.borderType,
+                  color: el. borderColor,
+                  width: el. borderWidth,
+                  style: el. borderType,
                 },
                 fill: el.fillColor,
               })
             }
-            else if (el.type === 'image') {
-              slide.elements.push({
+            else if (el. type === 'image') {
+              slide. elements. push({
                 type: 'image',
                 id: nanoid(10),
                 src: el.src,
                 width: el.width,
-                height: el.height,
-                left: el.left,
+                height: el. height,
+                left: el. left,
                 top: el.top,
                 fixedRatio: true,
                 rotate: el.rotate,
               })
             }
-            else if (el.type === 'shape') {
+            else if (el. type === 'shape') {
               if (el.shapType === 'line' || el.shapType === 'straightConnector1') {
                 const lineElement = parseLineElement(el)
-                slide.elements.push(lineElement)
+                slide. elements. push(lineElement)
               }
               else {
                 const shape = shapeList.find(item => item.pptxShapeType === el.shapType)
@@ -266,7 +266,7 @@ export default () => {
   
               if (el.chartType === 'scatterChart') {
                 labels = el.data[0].map(item => item + '')
-                legends = ['系列1']
+                legends = ['Series 1']
                 series = [el.data[1]]
               }
               else {

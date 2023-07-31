@@ -42,7 +42,7 @@ export const layouts: Slide[] = [
         width: 585,
         height: 116,
         lineHeight: 1.2,
-        content: '<p style=\'\'><strong><span style=\'font-size: 80px\'>输入标题</span></strong></p>',
+        content: '<p style=\'\'><strong><span style=\'font-size: 80px\'>Enter title</span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -55,7 +55,7 @@ export const layouts: Slide[] = [
         top: 253.25,
         width: 585,
         height: 56,
-        content: '<p><span style=\'font-size:  24px\'>请在此处输入副标题</span></p>',
+        content: '<p><span style=\'font-size: 24px\'>Please enter the subtitle here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -89,11 +89,11 @@ export const layouts: Slide[] = [
         width: 711,
         height: 77,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'font-size: 48px\'>在此处添加标题</span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'font-size: 48px\'>Add title here</span></strong></ p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'text',
         id: 'mRHvQN',
@@ -101,11 +101,11 @@ export const layouts: Slide[] = [
         top: 249.84259259259264,
         width: 585,
         height: 56,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处添加副标题</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Add subtitle here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'line',
         id: '7CQDwc',
@@ -117,7 +117,7 @@ export const layouts: Slide[] = [
         color: '{{themeColor}}',
         style: 'solid',
         width: 4
-      }, 
+      },
       {
         type: 'shape',
         id: '09wqWw',
@@ -152,7 +152,7 @@ export const layouts: Slide[] = [
         fill: '{{themeColor}}',
         fixedRatio: false,
         rotate: 0
-      }, 
+      },
       {
         type: 'shape',
         id: 'Mpwv7x',
@@ -166,7 +166,7 @@ export const layouts: Slide[] = [
         fixedRatio: false,
         rotate: 0,
         opacity: 0.7
-      }, 
+      },
       {
         type: 'text',
         id: 'WQOTAp',
@@ -174,7 +174,7 @@ export const layouts: Slide[] = [
         top: 198.10185185185182,
         width: 417.9629629629629,
         height: 140,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 80px\'>感谢观看</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 80px\'>Thank you.</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -246,7 +246,7 @@ export const layouts: Slide[] = [
         top: 100.1388888888889,
         width: 359.25925925925924,
         height: 80,
-        content: '<p style=\'\'><strong><span style=\'font-size: 40px\'>在此处输入标题</span></strong></p>',
+        content: '<p style=\'\'><strong><span style=\'font-size: 40px\'>Enter title here</span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -258,7 +258,7 @@ export const layouts: Slide[] = [
         top: 202.3611111111111,
         width: 257.77777777777777,
         height: 260,
-        content: '<ol><li><p style=\'\'>在此处输入内容</p></li><li><p style=\'\'>在此处输入内容</p></li><li><p style=\'\'>在此处输入内容</p></li><li><p style=\'\'>在此处输入内容</p></li><li><p style=\'\'>在此处输入内容</p></li><li><p style=\'\'>在此处输入内容</p></li></ol>',
+        content: '<ol><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</ p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</ p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</p></li><li><p style=\'\'>Enter content here</ p></li></ol>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -291,7 +291,7 @@ export const layouts: Slide[] = [
           color: '{{backgroundColor}}',
           style: 'solid'
         }
-      }, 
+      },
       {
         type: 'shape',
         id: 'gDIWDH',
@@ -315,7 +315,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'shape',
         id: 'DUWT7E',
@@ -339,7 +339,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'shape',
         id: 'pbhn38',
@@ -363,7 +363,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'shape',
         id: 'CvMKrO',
@@ -387,7 +387,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: 'adudHB',
@@ -395,11 +395,11 @@ export const layouts: Slide[] = [
         top: 39.39814814814815,
         width: 194.07407407407408,
         height: 50,
-        content: '<p style=\'text-align: center;\'>在此输入内容</p>',
+        content: '<p style=\'text-align: center;\'>Enter content here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'text',
         id: '9UpDwg',
@@ -407,11 +407,11 @@ export const layouts: Slide[] = [
         top: 473.1018518518518,
         width: 194.07407407407408,
         height: 50,
-        content: '<p style=\'text-align: center;\'>在此输入内容</p>',
+        content: '<p style=\'text-align: center;\'>Enter content here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'text',
         id: 'GERdpB',
@@ -419,23 +419,23 @@ export const layouts: Slide[] = [
         top: 256.25,
         width: 194.07407407407408,
         height: 50,
-        content: '<p style=\'text-align: center;\'>在此输入内容</p>',
+        content: '<p style=\'text-align: center;\'>Enter content here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'text',
         id: 'G5qoho',
-        left: 691.1111111111111,
+        left: 691.111111111111,
         top: 256.25,
         width: 194.07407407407408,
         height: 50,
-        content: '<p style=\'text-align: center;\'>在此输入内容</p>',
+        content: '<p style=\'text-align: center;\'>Enter content here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
-      }, 
+      },
       {
         type: 'shape',
         id: 'vdZcI6',
@@ -471,7 +471,7 @@ export const layouts: Slide[] = [
         fixedRatio: false,
         rotate: 0,
         text: {
-          content: '<p style=\'text-align: center;\'><span style=\'color: #ffffff;\'><span style=\'font-size: 60px\'>01</span></span></p>',
+          content: '<p style=\'text-align: center;\'><span style=\'color: #ffffff;\'><span style=\'font-size: 60px\'>01</span ></span></p>',
           defaultFontName: '{{fontName}}',
           defaultColor: '{{fontColor}}',
           align: 'middle'
@@ -497,7 +497,7 @@ export const layouts: Slide[] = [
         top: 235.24999999999994,
         width: 464.4444444444444,
         height: 92,
-        content: '<p style=\'\'><strong><span style=\'font-size: 48px\'>在此处添加标题</span></strong></p>',
+        content: '<p style=\'\'><strong><span style=\'font-size: 48px\'>Add title here</span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -519,7 +519,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 63,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 36px\'>1.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 36px\'>1 .Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -532,7 +532,7 @@ export const layouts: Slide[] = [
         top: 129.28240740740745,
         width: 420,
         height: 384,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -546,7 +546,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 63,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 36px\'>2.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 36px\'>2.Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -559,7 +559,7 @@ export const layouts: Slide[] = [
         top: 129.28240740740745,
         width: 420,
         height: 384,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 24px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -582,7 +582,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 58,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>1.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>1.Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -595,7 +595,7 @@ export const layouts: Slide[] = [
         top: 131.78240740740745,
         width: 420,
         height: 129,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -609,7 +609,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 58,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>2.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>2.Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -622,7 +622,7 @@ export const layouts: Slide[] = [
         top: 131.78240740740745,
         width: 420,
         height: 129,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -636,7 +636,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 58,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>3.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>3.Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -649,7 +649,7 @@ export const layouts: Slide[] = [
         top: 381.7824074074074,
         width: 420,
         height: 129,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -663,7 +663,7 @@ export const layouts: Slide[] = [
         width: 420,
         height: 58,
         lineHeight: 1.2,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>4.请输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 32px\'>4.Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -676,7 +676,7 @@ export const layouts: Slide[] = [
         top: 381.7824074074074,
         width: 420,
         height: 129,
-        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>在此处输入内容</span></p>',
+        content: '<p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p><p style=\'text-align: center;\'><span style=\'font-size: 22px\'>Type here</span></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -699,7 +699,7 @@ export const layouts: Slide[] = [
         width: 152.77777777777777,
         height: 308,
         lineHeight: 1.8,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 40px\'>请在此处输入标题</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 40px\'>Please enter a title</span></span></strong></p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -713,7 +713,7 @@ export const layouts: Slide[] = [
         top: 127.25,
         width: 532.5925925925926,
         height: 50,
-        content: '<blockquote><p style=\'\'>请在此处输入内容1</p></blockquote>',
+        content: '<blockquote><p style=\'\'>Please Type here1</p></blockquote>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -726,7 +726,7 @@ export const layouts: Slide[] = [
         top: 212.0648148148148,
         width: 532.5925925925926,
         height: 50,
-        content: '<blockquote><p style=\'\'>请在此处输入内容2</p></blockquote>',
+        content: '<blockquote><p style=\'\'>Please Type here2</p></blockquote>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -739,7 +739,7 @@ export const layouts: Slide[] = [
         top: 296.8796296296296,
         width: 532.5925925925926,
         height: 50,
-        content: '<blockquote><p style=\'\'>请在此处输入内容3</p></blockquote>',
+        content: '<blockquote><p style=\'\'>Please Type here3</p></blockquote>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -752,7 +752,7 @@ export const layouts: Slide[] = [
         top: 381.69444444444446,
         width: 532.5925925925926,
         height: 50,
-        content: '<blockquote><p style=\'\'>请在此处输入内容4</p></blockquote>',
+        content: '<blockquote><p style=\'\'>Please Type here4</p></blockquote>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -785,7 +785,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: 'YjzN1M',
@@ -793,12 +793,12 @@ export const layouts: Slide[] = [
         top: 64.21296296296302,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
         fill: '{{subColor}}'
-      }, 
+      },
       {
         type: 'shape',
         id: 'fS09I7',
@@ -817,7 +817,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: 'qCnfB1',
@@ -825,7 +825,7 @@ export const layouts: Slide[] = [
         top: 64.21296296296302,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
@@ -849,7 +849,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: 'EUlvMo',
@@ -857,12 +857,12 @@ export const layouts: Slide[] = [
         top: 221.25000000000003,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
         fill: '{{subColor}}'
-      }, 
+      },
       {
         type: 'shape',
         id: 'US_9jB',
@@ -881,7 +881,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: '243MnQ',
@@ -889,12 +889,12 @@ export const layouts: Slide[] = [
         top: 221.25000000000003,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
         fill: '{{subColor}}'
-      }, 
+      },
       {
         type: 'shape',
         id: 'Y_KUj0',
@@ -913,7 +913,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: '9GglMe',
@@ -921,12 +921,12 @@ export const layouts: Slide[] = [
         top: 378.287037037037,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
         fill: '{{subColor}}'
-      }, 
+      },
       {
         type: 'shape',
         id: 'eSInje',
@@ -945,7 +945,7 @@ export const layouts: Slide[] = [
           defaultColor: '{{fontColor}}',
           align: 'middle'
         }
-      }, 
+      },
       {
         type: 'text',
         id: '0S3yUg',
@@ -953,7 +953,7 @@ export const layouts: Slide[] = [
         top: 378.287037037037,
         width: 323.7037037037037,
         height: 120,
-        content: '<p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p><p style=\'\'>在此输入内容</p>',
+        content: '<p style=\'\'>Type here</p><p style=\'\'>Type here</p><p style=\'\'>Type here</p>',
         rotate: 0,
         defaultFontName: '{{fontName}}',
         defaultColor: '{{fontColor}}',
