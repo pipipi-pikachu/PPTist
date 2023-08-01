@@ -7,9 +7,9 @@
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 33.33%;" value="all">All</RadioButton>
-          <RadioButton style="width: 33.33%;" value="current">Current page</RadioButton>
-          <RadioButton style="width: 33.33%;" value="custom">Custom</RadioButton>
+          <RadioButton value="all">All</RadioButton>
+          <RadioButton value="current">Current page</RadioButton>
+          <RadioButton value="custom">Custom</RadioButton>
         </RadioGroup>
       </div>
       <div class="row" v-if="rangeType === 'custom'">

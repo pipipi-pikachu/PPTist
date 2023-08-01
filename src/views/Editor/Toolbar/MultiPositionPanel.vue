@@ -1,37 +1,37 @@
 <template>
   <div class="multi-position-panel">
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Left alignment">
         <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.LEFT)"><IconAlignLeft /></Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="水平居中">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Horizontal Center">
         <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.HORIZONTAL)"><IconAlignHorizontally /></Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Right Align">
         <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.RIGHT)"><IconAlignRight /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="上对齐">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Top alignment">
         <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.TOP)"><IconAlignTop /></Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="垂直居中">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Vertical Center">
         <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.VERTICAL)"><IconAlignVertically /></Button>
       </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下对齐">
-        <Button style="flex: 1;" @click="alignElement(ElementAlignCommands.BOTTOM)"><IconAlignBottom /></Button>
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Bottom alignment">
+        <Button style="flex: 1;" @click="alignElement(ElementAlignCommands. BOTTOM)"><IconAlignBottom /></Button>
       </Tooltip>
     </ButtonGroup>
     <ButtonGroup class="row" v-if="displayItemCount > 2">
-      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">水平均匀分布</Button>
-      <Button style="flex: 1;" @click="uniformVerticalDisplay()">垂直均匀分布</Button>
+      <Button  @click="uniformHorizontalDisplay()"><IconHorizontalSpacingBetweenItems /></Button>
+      <Button  @click="uniformVerticalDisplay()"><IconVerticalSpacingBetweenItems /></Button>
     </ButtonGroup>
 
     <Divider />
 
     <ButtonGroup class="row">
-      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconGroup style="margin-right: 3px;" />组合</Button>
-      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconUngroup style="margin-right: 3px;" />取消组合</Button>
+      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconGroup style="margin-right: 3px;" />combination</Button>
+      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconUngroup style="margin-right: 3px;" />Uncombine</Button>
     </ButtonGroup>
   </div>
 </template>
@@ -55,11 +55,11 @@ const { alignActiveElement } = useAlignActiveElement()
 const { alignElementToCanvas } = useAlignElementToCanvas()
 const { displayItemCount, uniformHorizontalDisplay, uniformVerticalDisplay } = useUniformDisplayElement()
 
-// 多选元素对齐，需要先判断当前所选中的元素状态：
-// 如果所选元素为一组组合元素，则将它对齐到画布；
-// 如果所选元素不是组合元素或不止一组元素（即当前为可组合状态），则将这多个（多组）元素相互对齐。
+// To align multiple selected elements, you need to first determine the status of the currently selected element:
+// If the selected element is a set of composite elements, align it to the canvas;
+// If the selected element is not a combined element or more than one set of elements (that is, currently in a composable state), align the multiple (multiple sets) of elements with each other.
 const alignElement = (command: ElementAlignCommands) => {
-  if (canCombine.value) alignActiveElement(command)
+  if (canCombine. value) alignActiveElement(command)
   else alignElementToCanvas(command)
 }
 </script>

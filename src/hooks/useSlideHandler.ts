@@ -26,7 +26,7 @@ export default () => {
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  // 重置幻灯片
+  // reset slide
   const resetSlides = () => {
     const emptySlide: Slide = {
       id: nanoid(10),
@@ -42,8 +42,8 @@ export default () => {
   }
 
   /**
-   * 移动页面焦点
-   * @param command 移动页面焦点命令：上移、下移
+   * Move page focus
+   * @param command Move page focus command: move up, move down
    */
   const updateSlideIndex = (command: string) => {
     if (command === KEYS.UP && slideIndex.value > 0) {
@@ -56,7 +56,7 @@ export default () => {
     }
   }
 
-  // 将当前页面数据加密后复制到剪贴板
+  // Copy the encrypted data of the current page to the clipboard
   const copySlide = () => {
     const text = encrypt(JSON.stringify({
       type: 'slides',
@@ -68,14 +68,14 @@ export default () => {
     })
   }
 
-  // 尝试将剪贴板页面数据解密后添加到下一页（粘贴）
+  // Attempt to decrypt the clipboard page data and add it to the next page (paste)
   const pasteSlide = () => {
     readClipboard().then(text => {
       pasteTextClipboardData(text, { onlySlide: true })
     }).catch(err => message.warning(err))
   }
 
-  // 创建一页空白页并添加到下一页
+  // Create a blank page and add to the next page
   const createSlide = () => {
     const emptySlide: Slide = {
       id: nanoid(10),
@@ -90,7 +90,7 @@ export default () => {
     addHistorySnapshot()
   }
 
-  // 根据模板创建新页面
+  // Create a new page based on the template
   const createSlideByTemplate = (slide: Slide) => {
     const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
 
@@ -107,13 +107,13 @@ export default () => {
     addHistorySnapshot()
   }
 
-  // 将当前页复制一份到下一页
+  // copy the current page to the next page
   const copyAndPasteSlide = () => {
     const slide = JSON.parse(JSON.stringify(currentSlide.value))
     addSlidesFromData([slide])
   }
 
-  // 删除当前页，若将删除全部页面，则执行重置幻灯片操作
+  // Delete the current page, if all pages will be deleted, reset the slideshow
   const deleteSlide = (targetSlidesId = selectedSlidesId.value) => {
     if (slides.value.length === targetSlidesId.length) resetSlides()
     else slidesStore.deleteSlide(targetSlidesId)
@@ -123,25 +123,25 @@ export default () => {
     addHistorySnapshot()
   }
 
-  // 将当前页复制后删除（剪切）
-  // 由于复制操作会导致多选状态消失，所以需要提前将需要删除的页面ID进行缓存
+  // Copy the current page and delete it (cut)
+  // Since the copy operation will cause the multi-select state to disappear, it is necessary to cache the page ID to be deleted in advance
   const cutSlide = () => {
     const targetSlidesId = [...selectedSlidesId.value]
     copySlide()
     deleteSlide(targetSlidesId)
   }
 
-  // 选中全部幻灯片
+  // select all slides
   const selectAllSlide = () => {
     const newSelectedSlidesIndex = Array.from(Array(slides.value.length), (item, index) => index)
     mainStore.setActiveElementIdList([])
     mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
   }
 
-  // 拖拽调整幻灯片顺序同步数据
+  // Drag and drop to adjust the order of slides to synchronize data
   const sortSlides = (newIndex: number, oldIndex: number) => {
     if (oldIndex === newIndex) return
-  
+
     const _slides = JSON.parse(JSON.stringify(slides.value))
     const _slide = _slides[oldIndex]
     _slides.splice(oldIndex, 1)
@@ -149,7 +149,6 @@ export default () => {
     slidesStore.setSlides(_slides)
     slidesStore.updateSlideIndex(newIndex)
   }
-
   return {
     resetSlides,
     updateSlideIndex,

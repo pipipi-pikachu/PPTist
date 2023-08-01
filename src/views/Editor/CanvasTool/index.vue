@@ -1,7 +1,7 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Cancel">
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Undo">
         <IconBack class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
       </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="Redo">

@@ -171,7 +171,7 @@ export const slides: Slide[] = [
         top: 198.10185185185182,
         width: 417.9629629629629,
         height: 140,
-        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 80px\'>Thank you Watch</span></span></strong></p>',
+        content: '<p style=\'text-align: center;\'><strong><span style=\'color: #ffffff;\'><span style=\'font-size: 48px\'>Thank you</span></span></strong></p>',
         rotate: 0,
         defaultFontName: 'Microsoft Yahei',
         defaultColor: '#333',

@@ -10,30 +10,29 @@ import { message } from 'ant-design-vue'
 export default () => {
   const slidesStore = useSlidesStore()
   const { slides, slideIndex, formatedAnimations } = storeToRefs(slidesStore)
-
-  // 当前页的元素动画执行到的位置
+  // The position where the element animation of the current page is executed
   const animationIndex = ref(0)
 
-  // 动画执行状态
+  // animation execution status
   const inAnimation = ref(false)
 
-  // 最小已播放页面索引
+  // Minimum played page index
   const playedSlidesMinIndex = ref(slideIndex.value)
 
-  // 执行元素动画
+  // Perform element animation
   const runAnimation = () => {
-    // 正在执行动画时，禁止其他新的动画开始
+    // While an animation is in progress, prevent other new animations from starting
     if (inAnimation.value) return
 
     const { animations, autoNext } = formatedAnimations.value[animationIndex.value]
     animationIndex.value += 1
 
-    // 标记开始执行动画
+    // Mark start animation
     inAnimation.value = true
 
     let endAnimationCount = 0
 
-    // 依次执行该位置中的全部动画
+    // Execute all animations in this position in turn
     for (const animation of animations) {
       const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
       if (!elRef) {
@@ -42,25 +41,25 @@ export default () => {
       }
 
       const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
-      
-      // 执行动画前先清除原有的动画状态（如果有）
+
+      // Clear the original animation state (if any) before executing the animation
       elRef.style.removeProperty('--animate-duration')
       for (const classname of elRef.classList) {
         if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
       }
-      
-      // 执行动画
+
+      // execute the animation
       elRef.style.setProperty('--animate-duration', `${animation.duration}ms`)
       elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
 
-      // 执行动画结束，将“退场”以外的动画状态清除
+      // Execute the end of the animation, and clear the animation state other than "exit"
       const handleAnimationEnd = () => {
         if (animation.type !== 'out') {
           elRef.style.removeProperty('--animate-duration')
           elRef.classList.remove(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
         }
 
-        // 判断该位置上的全部动画都已经结束后，标记动画执行完成，并尝试继续向下执行（如果有需要）
+        // After judging that all the animations at this position have ended, mark the execution of the animation as completed, and try to continue to execute downwards (if necessary)
         endAnimationCount += 1
         if (endAnimationCount === animations.length) {
           inAnimation.value = false
@@ -71,7 +70,7 @@ export default () => {
     }
   }
 
-  // 撤销元素动画，除了将索引前移外，还需要清除动画状态
+  // Undo element animation, in addition to moving the index forward, you also need to clear the animation state
   const revokeAnimation = () => {
     animationIndex.value -= 1
     const { animations } = formatedAnimations.value[animationIndex.value]
@@ -79,18 +78,18 @@ export default () => {
     for (const animation of animations) {
       const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
       if (!elRef) continue
-      
+
       elRef.style.removeProperty('--animate-duration')
       for (const classname of elRef.classList) {
         if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
       }
     }
 
-    // 如果撤销时该位置有且仅有强调动画，则继续执行一次撤销
+    // If there is one and only emphasis animation at this position when undoing, continue to perform an undo
     if (animations.every(item => item.type === 'attention')) execPrev()
   }
 
-  // 关闭自动播放
+  // turn off autoplay
   const autoPlayTimer = ref(0)
   const closeAutoPlay = () => {
     if (autoPlayTimer.value) {
@@ -99,121 +98,119 @@ export default () => {
     }
   }
   onUnmounted(closeAutoPlay)
-
   const throttleMassage = throttle(function(msg) {
-    message.success(msg)
+    message. success(msg)
   }, 1000, { leading: true, trailing: false })
-
-  // 向上/向下播放
-  // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
-  // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
-  // 撤回到上一页时，若该页从未播放过（意味着不存在动画状态），需要将动画索引置为最小值（初始状态），否则置为最大值（最终状态）
+  // play up/down
+  // When an element animation is encountered, the animation will be played first, and if there is no animation, the page will be turned
+  // When playing upward and encountering an animation, it only undoes to the state before the animation is executed, and there is no need to play the animation in reverse
+  // When returning to the previous page, if the page has never been played (meaning that there is no animation state), the animation index needs to be set to the minimum value (initial state), otherwise set to the maximum value (final state)
   const execPrev = () => {
     if (formatedAnimations.value.length && animationIndex.value > 0) {
       revokeAnimation()
     }
-    else if (slideIndex.value > 0) {
+    else if (slideIndex. value > 0) {
       slidesStore.updateSlideIndex(slideIndex.value - 1)
       if (slideIndex.value < playedSlidesMinIndex.value) {
-        animationIndex.value = 0
+        animationIndex. value = 0
         playedSlidesMinIndex.value = slideIndex.value
       }
       else animationIndex.value = formatedAnimations.value.length
     }
     else {
-      throttleMassage('已经是第一页了')
+      throttleMassage('It\'s already the first page')
     }
-    inAnimation.value = false
+    inAnimation. value = false
   }
   const execNext = () => {
     if (formatedAnimations.value.length && animationIndex.value < formatedAnimations.value.length) {
       runAnimation()
     }
-    else if (slideIndex.value < slides.value.length - 1) {
+    else if (slideIndex. value < slides. value. length - 1) {
       slidesStore.updateSlideIndex(slideIndex.value + 1)
-      animationIndex.value = 0
-      inAnimation.value = false
+      animationIndex. value = 0
+      inAnimation. value = false
     }
     else {
-      throttleMassage('已经是最后一页了')
+      throttleMassage('It\'s the last page')
       closeAutoPlay()
-      inAnimation.value = false
+      inAnimation. value = false
     }
   }
 
-  // 自动播放
+  // Autoplay
   const autoPlay = () => {
     closeAutoPlay()
-    message.success('开始自动放映')
-    autoPlayTimer.value = setInterval(execNext, 2500)
+    message.success('Start automatic show')
+    autoPlayTimer. value = setInterval(execNext, 2500)
   }
 
-  // 鼠标滚动翻页
+  // mouse scrolling
   const mousewheelListener = throttle(function(e: WheelEvent) {
     if (e.deltaY < 0) execPrev()
     else if (e.deltaY > 0) execNext()
   }, 500, { leading: true, trailing: false })
 
-  // 触摸屏上下滑动翻页
+  // Swipe up and down on the touch screen to turn pages
   const touchInfo = ref<{ x: number; y: number; } | null>(null)
 
   const touchStartListener = (e: TouchEvent) => {
-    touchInfo.value = {
+    touchInfo. value = {
       x: e.changedTouches[0].pageX,
       y: e.changedTouches[0].pageY,
     }
   }
   const touchEndListener = (e: TouchEvent) => {
-    if (!touchInfo.value) return
+    if (!touchInfo. value) return
 
     const offsetX = Math.abs(touchInfo.value.x - e.changedTouches[0].pageX)
     const offsetY = e.changedTouches[0].pageY - touchInfo.value.y
 
-    if ( Math.abs(offsetY) > offsetX && Math.abs(offsetY) > 50 ) {
-      touchInfo.value = null
+    if (Math.abs(offsetY) > offsetX && Math.abs(offsetY) > 50) {
+      touchInfo. value = null
 
       if (offsetY > 0) execPrev()
       else execNext()
     }
   }
 
-  // 快捷键翻页
+  // Shortcut key to turn page
   const keydownListener = (e: KeyboardEvent) => {
     const key = e.key.toUpperCase()
 
     if (key === KEYS.UP || key === KEYS.LEFT || key === KEYS.PAGEUP) execPrev()
     else if (
-      key === KEYS.DOWN || 
+      key === KEYS.DOWN ||
       key === KEYS.RIGHT ||
-      key === KEYS.SPACE || 
+      key === KEYS. SPACE ||
       key === KEYS.ENTER ||
-      key === KEYS.PAGEDOWN
+      key === KEYS. PAGEDOWN
     ) execNext()
   }
 
-  onMounted(() => document.addEventListener('keydown', keydownListener))
-  onUnmounted(() => document.removeEventListener('keydown', keydownListener))
+  onMounted(() => document. addEventListener('keydown', keydownListener))
+  onUnmounted(() => document. removeEventListener('keydown', keydownListener))
 
-  // 切换到上一张/上一张幻灯片（无视元素的入场动画）
+  // Switch to the previous/previous slide (ignoring the element's entry animation)
   const turnPrevSlide = () => {
     slidesStore.updateSlideIndex(slideIndex.value - 1)
-    animationIndex.value = 0
+    animationIndex. value = 0
   }
   const turnNextSlide = () => {
     slidesStore.updateSlideIndex(slideIndex.value + 1)
-    animationIndex.value = 0
+    animationIndex. value = 0
   }
 
-  // 切换幻灯片到指定的页面
+  // Switch the slideshow to the specified page
   const turnSlideToIndex = (index: number) => {
-    slidesStore.updateSlideIndex(index)
-    animationIndex.value = 0
+    slidesStore. updateSlideIndex(index)
+    animationIndex. value = 0
   }
   const turnSlideToId = (id: string) => {
-    const index = slides.value.findIndex(slide => slide.id === id)
+    const index = slides. value. findIndex(slide => slide. id === id)
     if (index !== -1) {
-      slidesStore.updateSlideIndex(index)
-      animationIndex.value = 0
+      slidesStore. updateSlideIndex(index)
+      animationIndex. value = 0
     }
   }
 

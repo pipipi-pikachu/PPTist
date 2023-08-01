@@ -6,7 +6,7 @@
         <template #overlay>
           <Menu>
             <FileInput accept=".super-ppt" @change="files => importSpecificFile(files)">
-              <MenuItem>Import super-ppt file</MenuItem>
+              <MenuItem>Import Json file</MenuItem>
             </FileInput>
             <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="files => importPPTXFile(files)">
               <MenuItem>Import pptx file (demo)</MenuItem>

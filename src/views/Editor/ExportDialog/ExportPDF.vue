@@ -27,8 +27,8 @@
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 50%;" value="all">All slides</RadioButton>
-          <RadioButton style="width: 50%;" value="current">Current slideshow</RadioButton>
+          <RadioButton value="all">All slides</RadioButton>
+          <RadioButton value="current">Current slideshow</RadioButton>
         </RadioGroup>
       </div>
       <div class="row">
@@ -43,7 +43,7 @@
         </Select>
       </div>
       <div class="row">
-        <div class="title">Margin margin:</div>
+        <div class="title">Margin:</div>
         <div class="config-item">
           <Switch v-model:checked="padding" />
         </div>

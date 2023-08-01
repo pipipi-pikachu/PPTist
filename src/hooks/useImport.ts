@@ -26,7 +26,7 @@ export default () => {
     const reader = new FileReader()
     reader. addEventListener('load', () => {
       try {
-        const slides = JSON. parse(decrypt(reader. result as string))
+        const slides = JSON. parse(reader. result as string)
         if (cover) slidesStore. setSlides(slides)
         else addSlidesFromData(slides)
       }
