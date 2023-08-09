@@ -4,6 +4,7 @@
     ref="canvasRef"
     @wheel="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
+    @dblclick="$event => handleDbClick($event)"
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
   >
@@ -208,6 +209,17 @@ const handleClickBlankArea = (e: MouseEvent) => {
   if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
   removeAllRanges()
 }
+
+// 双击插入文本：在没有激活元素 和 选中工具的情况下
+const handleDbClick = ({ pageX, pageY }: MouseEvent) => {
+  if (activeElementIdList.value.length === 0 && !creatingElement.value) {
+    mainStore.setCreatingElement({ type: 'text', vertical: false });
+    insertElementFromCreateSelection({
+      start: [pageX, pageY],
+      end: [pageX + 100, pageY + 20],
+    });
+  }
+};
 
 // 画布注销时清空格式刷状态
 onUnmounted(() => {
