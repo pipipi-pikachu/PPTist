@@ -4,6 +4,7 @@
     ref="canvasRef"
     @wheel="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
+    @dblclick="$event => handleDblClick($event)"
     v-contextmenu="contextmenus"
     v-click-outside="removeEditorAreaFocus"
   >
@@ -124,6 +125,7 @@ import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useCreateElement from '@/hooks/useCreateElement'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -188,6 +190,7 @@ const { deleteAllElements } = useDeleteElement()
 const { pasteElement } = useCopyAndPasteElement()
 const { enterScreeningFromStart } = useScreening()
 const { updateSlideIndex } = useSlideHandler()
+const { createTextElement } = useCreateElement()
 
 // 组件渲染时，如果存在元素焦点，需要清除
 // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
@@ -207,6 +210,23 @@ const handleClickBlankArea = (e: MouseEvent) => {
   if (!editorAreaFocus.value) mainStore.setEditorareaFocus(true)
   if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
   removeAllRanges()
+}
+
+// 双击插入文本
+const handleDblClick = (e: MouseEvent) => {
+  if (activeElementIdList.value.length) return
+  if (!viewportRef.value) return
+
+  const viewportRect = viewportRef.value.getBoundingClientRect()
+  const left = (e.pageX - viewportRect.x) / canvasScale.value
+  const top = (e.pageY - viewportRect.y) / canvasScale.value
+
+  createTextElement({
+    left,
+    top,
+    width: 200 / canvasScale.value, // 除以 canvasScale 是为了与点击选区创建的形式保持相同的宽度
+    height: 0,
+  })
 }
 
 // 画布注销时清空格式刷状态
