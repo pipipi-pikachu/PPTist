@@ -10,7 +10,7 @@
   }
 
   ::selection {
-    background-color: rgba(#d14424, 0.3);
+    background-color: rgba(#d14424, 0.25);
     color: inherit;
   }
 
@@ -27,6 +27,7 @@
 
     li {
       list-style-type: inherit;
+      padding: 2px 0;
     }
   }
 
@@ -36,6 +37,7 @@
 
     li {
       list-style-type: inherit;
+      padding: 2px 0;
     }
   }
 

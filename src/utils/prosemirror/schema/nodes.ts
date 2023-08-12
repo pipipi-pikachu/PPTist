@@ -145,10 +145,10 @@ const {
 
 export default {
   doc,
-  text,
+  paragraph,
   blockquote,
+  text,
   'ordered_list': orderedList,
   'bullet_list': bulletList,
   'list_item': listItem,
-  paragraph,
 }
