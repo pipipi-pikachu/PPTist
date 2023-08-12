@@ -25,14 +25,17 @@ export const buildKeymap = (schema: Schema) => {
 
   bind('Alt-ArrowUp', joinUp)
   bind('Alt-ArrowDown', joinDown)
-  bind('Ctrl-z', undo)
-  bind('Ctrl-y', redo)
+  bind('Mod-z', undo)
+  bind('Mod-y', redo)
   bind('Backspace', undoInputRule)
   bind('Escape', selectParentNode)
-  bind('Ctrl-b', toggleMark(schema.marks.strong))
-  bind('Ctrl-i', toggleMark(schema.marks.em))
-  bind('Ctrl-u', toggleMark(schema.marks.underline))
-  bind('Ctrl-d', toggleMark(schema.marks.strikethrough))
+  bind('Mod-b', toggleMark(schema.marks.strong))
+  bind('Mod-i', toggleMark(schema.marks.em))
+  bind('Mod-u', toggleMark(schema.marks.underline))
+  bind('Mod-d', toggleMark(schema.marks.strikethrough))
+  bind('Mod-e', toggleMark(schema.marks.code))
+  bind('Mod-;', toggleMark(schema.marks.superscript))
+  bind(`Mod-'`, toggleMark(schema.marks.subscript))
   bind('Enter', chainCommands(
     splitListItem(schema.nodes.list_item),
     newlineInCode,

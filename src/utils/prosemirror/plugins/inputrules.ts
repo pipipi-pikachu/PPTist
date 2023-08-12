@@ -2,7 +2,6 @@ import type { NodeType, Schema } from 'prosemirror-model'
 import {
   inputRules,
   wrappingInputRule,
-  textblockTypeInputRule,
   smartQuotes,
   emDash,
   ellipsis,
@@ -22,7 +21,18 @@ const orderedListRule = (nodeType: NodeType) => (
 
 const bulletListRule = (nodeType: NodeType) => wrappingInputRule(/^\s*([-+*])\s$/, nodeType)
 
-const codeBlockRule = (nodeType: NodeType) => textblockTypeInputRule(/^```$/, nodeType)
+const codeRule = () => {
+  const inputRegex = /(?:^|\s)((?:`)((?:[^`]+))(?:`))$/
+  
+  return new InputRule(inputRegex, (state, match, start, end) => {
+    const { schema } = state
+
+    const tr = state.tr.insertText(`${match[2]} `, start, end)
+    const mark = schema.marks.code.create()
+
+    return tr.addMark(start, start + match[2].length, mark)
+  })
+}
 
 const linkRule = () => {
   const urlRegEx = /(?:https?:\/\/)?[\w-]+(?:\.[\w-]+)+\.?(?:\d+)?(?:\/\S*)?$/
@@ -46,7 +56,7 @@ export const buildInputRules = (schema: Schema) => {
   rules.push(blockQuoteRule(schema.nodes.blockquote))
   rules.push(orderedListRule(schema.nodes.ordered_list))
   rules.push(bulletListRule(schema.nodes.bullet_list))
-  rules.push(codeBlockRule(schema.nodes.code_block))
+  rules.push(codeRule())
   rules.push(linkRule())
 
   return inputRules({ rules })

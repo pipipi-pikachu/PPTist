@@ -47,6 +47,15 @@
     font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
   }
 
+  sup {
+    vertical-align: super;
+    font-size: smaller;
+  }
+  sub {
+    vertical-align: sub;
+    font-size: smaller;
+  }
+
   blockquote {
     overflow: hidden;
     padding-right: 1.2em;

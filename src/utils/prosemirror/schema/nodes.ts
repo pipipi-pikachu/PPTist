@@ -137,12 +137,16 @@ const paragraph: NodeSpec = {
   },
 }
 
-// https://github.com/pipipi-pikachu/PPTist/issues/134
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { hard_break, ...otherNodes } = nodes
+const {
+  doc,
+  blockquote,
+  text,
+} = nodes
 
 export default {
-  ...otherNodes,
+  doc,
+  text,
+  blockquote,
   'ordered_list': orderedList,
   'bullet_list': bulletList,
   'list_item': listItem,
