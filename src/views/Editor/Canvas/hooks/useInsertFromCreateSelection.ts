@@ -89,6 +89,7 @@ export default (viewportRef: Ref<HTMLElement | undefined>) => {
   }
 
   return {
+    formatCreateSelection,
     insertElementFromCreateSelection,
   }
 }

@@ -33,7 +33,7 @@
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状" :align="{ offset: [0, 0] }">
-          <IconGraphicDesign class="handler-item" :class="{ 'active': creatingElement?.type === 'shape' }" />
+          <IconGraphicDesign class="handler-item" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" />
         </Tooltip>
       </Popover>
       <Popover trigger="click" v-model:open="linePoolVisible">
@@ -142,7 +142,7 @@ import {
 } from 'ant-design-vue'
 
 const mainStore = useMainStore()
-const { creatingElement } = storeToRefs(mainStore)
+const { creatingElement, creatingCustomShape } = storeToRefs(mainStore)
 const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
 const { redo, undo } = useHistorySnapshot()
@@ -193,12 +193,17 @@ const drawText = (vertical = false) => {
   })
 }
 
-// 绘制形状范围
+// 绘制形状范围（或绘制自定义任意多边形）
 const drawShape = (shape: ShapePoolItem) => {
-  mainStore.setCreatingElement({
-    type: 'shape',
-    data: shape,
-  })
+  if (shape.title === '任意多边形') {
+    mainStore.setCreatingCustomShapeState(true)
+  }
+  else {
+    mainStore.setCreatingElement({
+      type: 'shape',
+      data: shape,
+    })
+  }
   shapePoolVisible.value = false
 }
 
