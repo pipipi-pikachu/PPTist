@@ -78,6 +78,13 @@ export interface CreateElementSelectionData {
   end: [number, number]
 }
 
+export interface CreateCustomShapeData {
+  start: [number, number]
+  end: [number, number]
+  path: string
+  viewBox: [number, number]
+}
+
 export interface CreatingTextElement {
   type: 'text'
   vertical?: boolean

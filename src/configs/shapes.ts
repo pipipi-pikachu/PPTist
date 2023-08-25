@@ -11,6 +11,7 @@ export interface ShapePoolItem {
   pathFormula?: ShapePathFormulasKeys
   outlined?: boolean
   pptxShapeType?: string
+  title?: string
 }
 
 interface ShapeListItem {
@@ -279,6 +280,11 @@ export const SHAPE_LIST: ShapeListItem[] = [
         path: 'M 50 0 L 200 0 L 200 150 Q 200 200 150 200 L 0 200 L 0 50 Q 0 0 50 0 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
         pptxShapeType: 'round2DiagRect',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 80 L 60 0 L 100 40 L 180 20 L 200 120 L 160 200 L 0 200 L 60 140 Z',
+        title: '任意多边形',
       },
     ]
   },

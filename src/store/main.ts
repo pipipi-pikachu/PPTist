@@ -23,6 +23,7 @@ export interface MainState {
   gridLineSize: number
   showRuler: boolean
   creatingElement: CreatingElement | null
+  creatingCustomShape: boolean
   availableFonts: typeof SYS_FONTS
   toolbarState: ToolbarStates
   clipingImageElementId: string
@@ -54,6 +55,7 @@ export const useMainStore = defineStore('main', {
     gridLineSize: 0, // 网格线尺寸（0表示不显示网格线）
     showRuler: false, // 显示标尺
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
+    creatingCustomShape: false, // 正在绘制任意多边形
     availableFonts: SYS_FONTS, // 当前环境可用字体
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
@@ -137,6 +139,10 @@ export const useMainStore = defineStore('main', {
   
     setCreatingElement(element: CreatingElement | null) {
       this.creatingElement = element
+    },
+  
+    setCreatingCustomShapeState(state: boolean) {
+      this.creatingCustomShape = state
     },
   
     setAvailableFonts() {

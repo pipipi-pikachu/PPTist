@@ -13,9 +13,9 @@ import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import type { EditorView } from 'prosemirror-view'
-import { toggleMark, wrapIn } from 'prosemirror-commands'
+import { toggleMark, wrapIn, lift } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
-import { findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
+import { isActiveOfParentNodeType, findNodesWithSameMark, getTextAttrs, autoSelectAll, addMark, markActive, getFontsize } from '@/utils/prosemirror/utils'
 import emitter, { EmitterEvents, type RichTextAction, type RichTextCommand } from '@/utils/emitter'
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/setTextIndent'
@@ -164,7 +164,9 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       toggleMark(editorView.state.schema.marks.superscript)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'blockquote') {
-      wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
+      const isBlockquote = isActiveOfParentNodeType('blockquote', editorView.state)
+      if (isBlockquote) lift(editorView.state, editorView.dispatch)
+      else wrapIn(editorView.state.schema.nodes.blockquote)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'code') {
       toggleMark(editorView.state.schema.marks.code)(editorView.state, editorView.dispatch)

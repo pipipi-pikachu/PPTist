@@ -12,6 +12,10 @@
       v-if="creatingElement"
       @created="data => insertElementFromCreateSelection(data)"
     />
+    <ShapeCreateCanvas
+      v-if="creatingCustomShape"
+      @created="data => insertCustomShape(data)"
+    />
     <div 
       class="viewport-wrapper"
       :style="{
@@ -103,7 +107,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import type { PPTElement } from '@/types/slides'
-import type { AlignmentLineProps } from '@/types/edit'
+import type { AlignmentLineProps, CreateCustomShapeData } from '@/types/edit'
 import { injectKeySlideScale } from '@/types/injectKey'
 import { removeAllRanges } from '@/utils/selection'
 import { KEYS } from '@/configs/hotkey'
@@ -125,6 +129,7 @@ import useSelectAllElement from '@/hooks/useSelectAllElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useCreateElement from '@/hooks/useCreateElement'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -132,6 +137,7 @@ import ViewportBackground from './ViewportBackground.vue'
 import AlignmentLine from './AlignmentLine.vue'
 import Ruler from './Ruler.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'
+import ShapeCreateCanvas from './ShapeCreateCanvas.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
@@ -148,6 +154,7 @@ const {
   showRuler,
   showSelectPanel,
   creatingElement,
+  creatingCustomShape,
   canvasScale,
   textFormatPainter,
 } = storeToRefs(mainStore)
@@ -189,6 +196,7 @@ const { deleteAllElements } = useDeleteElement()
 const { pasteElement } = useCopyAndPasteElement()
 const { enterScreeningFromStart } = useScreening()
 const { updateSlideIndex } = useSlideHandler()
+const { createTextElement, createShapeElement } = useCreateElement()
 
 // 组件渲染时，如果存在元素焦点，需要清除
 // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
@@ -210,16 +218,22 @@ const handleClickBlankArea = (e: MouseEvent) => {
   removeAllRanges()
 }
 
-// 双击插入文本：在没有激活元素 和 选中工具的情况下
-const handleDbClick = ({ pageX, pageY }: MouseEvent) => {
-  if (activeElementIdList.value.length === 0 && !creatingElement.value) {
-    mainStore.setCreatingElement({ type: 'text', vertical: false });
-    insertElementFromCreateSelection({
-      start: [pageX, pageY],
-      end: [pageX + 100, pageY + 20],
-    });
-  }
-};
+// 双击空白处插入文本
+const handleDblClick = (e: MouseEvent) => {
+  if (activeElementIdList.value.length || creatingElement.value || creatingCustomShape.value) return
+  if (!viewportRef.value) return
+
+  const viewportRect = viewportRef.value.getBoundingClientRect()
+  const left = (e.pageX - viewportRect.x) / canvasScale.value
+  const top = (e.pageY - viewportRect.y) / canvasScale.value
+
+  createTextElement({
+    left,
+    top,
+    width: 200 / canvasScale.value, // 除以 canvasScale 是为了与点击选区创建的形式保持相同的宽度
+    height: 0,
+  })
+}
 
 // 画布注销时清空格式刷状态
 onUnmounted(() => {
@@ -257,7 +271,21 @@ const toggleRuler = () => {
 }
 
 // 在鼠标绘制的范围插入元素
-const { insertElementFromCreateSelection } = useInsertFromCreateSelection(viewportRef)
+const { insertElementFromCreateSelection, formatCreateSelection } = useInsertFromCreateSelection(viewportRef)
+
+// 插入自定义任意多边形
+const insertCustomShape = (data: CreateCustomShapeData) => {
+  const {
+    start,
+    end,
+    path,
+    viewBox,
+  } = data
+  const position = formatCreateSelection({ start, end })
+  position && createShapeElement(position, { path, viewBox })
+
+  mainStore.setCreatingCustomShapeState(false)
+}
 
 const contextmenus = (): ContextmenuItem[] => {
   return [

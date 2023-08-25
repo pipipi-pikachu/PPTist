@@ -157,10 +157,14 @@ const link: MarkSpec = {
   toDOM: node => ['a', node.attrs, 0],
 }
 
+const { em, strong, code } = marks
+
 export default {
-  ...marks,
+  em,
+  strong,
   fontsize,
   fontname,
+  code,
   forecolor,
   backcolor,
   subscript,
