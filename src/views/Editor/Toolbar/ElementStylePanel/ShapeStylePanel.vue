@@ -424,7 +424,7 @@ const emitRichTextCommand = (command: string, value?: string) => {
 }
 .shape-pool {
   width: 235px;
-  height: 190px;
+  height: 150px;
   overflow: auto;
   padding: 5px;
   padding-right: 10px;
