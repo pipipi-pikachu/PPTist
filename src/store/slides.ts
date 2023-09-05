@@ -14,6 +14,7 @@ interface RemoveElementPropData {
 interface UpdateElementData {
   id: string | string[]
   props: Partial<PPTElement>
+  slideId?: string
 }
 
 interface FormatedAnimation {
@@ -164,10 +165,10 @@ export const useSlidesStore = defineStore('slides', {
     },
   
     updateElement(data: UpdateElementData) {
-      const { id, props } = data
+      const { id, props, slideId } = data
       const elIdList = typeof id === 'string' ? [id] : id
-  
-      const slideIndex = this.slideIndex
+
+      const slideIndex = slideId ? this.slides.findIndex(item => item.id === slideId) : this.slideIndex
       const slide = this.slides[slideIndex]
       const elements = slide.elements.map(el => {
         return elIdList.includes(el.id) ? { ...el, ...props } : el

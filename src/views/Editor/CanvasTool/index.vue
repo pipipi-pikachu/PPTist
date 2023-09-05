@@ -7,6 +7,10 @@
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="重做">
         <IconNext class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
       </Tooltip>
+      <Divider type="vertical" style="height: 20px;" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="查找/替换" @click="openSraechPanel()">
+        <IconSearch class="handler-item" />
+      </Tooltip>
     </div>
 
     <div class="add-element-handler">
@@ -138,6 +142,7 @@ import FileInput from '@/components/FileInput.vue'
 import {
   Tooltip,
   Popover,
+  Divider,
   Modal,
 } from 'ant-design-vue'
 
@@ -214,6 +219,11 @@ const drawLine = (line: LinePoolItem) => {
     data: line,
   })
   linePoolVisible.value = false
+}
+
+// 打开选择替换面板
+const openSraechPanel = () => {
+  mainStore.setSearchPanelState(true)
 }
 </script>
 

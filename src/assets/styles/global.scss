@@ -75,6 +75,7 @@ table {
 
 a {
   text-decoration: none;
+  color: $themeColor;
 }
 
 img {
@@ -86,6 +87,10 @@ hr {
   box-sizing: content-box;
   height: 0;
   overflow: visible;
+}
+
+mark.active {
+  background-color: #ff9632;
 }
 
 input,

@@ -157,6 +157,22 @@ const link: MarkSpec = {
   toDOM: node => ['a', node.attrs, 0],
 }
 
+const mark: MarkSpec = {
+  attrs: {
+    index: { default: null },
+  },
+  parseDOM: [
+    {
+      tag: 'mark',
+      getAttrs: dom => {
+        const index = (dom as HTMLElement).dataset.index
+        return { index }
+      }
+    },
+  ],
+  toDOM: node => ['mark', { 'data-index': node.attrs.index }, 0],
+}
+
 const { em, strong, code } = marks
 
 export default {
@@ -172,4 +188,5 @@ export default {
   strikethrough,
   underline,
   link,
+  mark,
 }

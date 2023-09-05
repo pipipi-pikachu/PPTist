@@ -6,7 +6,6 @@
         colorText: '#41464b',
         borderRadius: 2,
         fontSize: 13,
-        lineHeight: 1.5715,
       },
     }"
   >

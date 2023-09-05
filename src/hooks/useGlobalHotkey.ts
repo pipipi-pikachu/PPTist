@@ -151,6 +151,11 @@ export default () => {
       enterScreeningFromStart()
       return
     }
+    if (key === KEYS.F) {
+      e.preventDefault()
+      mainStore.setSearchPanelState(true)
+      return
+    }
     
     if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
 
