@@ -7,13 +7,15 @@
     <div class="shape-pool">
       <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
         <div class="shape-list">
-          <ShapeItemThumbnail 
-            class="shape-item"
-            v-for="(shape, index) in item.children" 
-            :key="index" 
-            :shape="shape"
-            @click="changeShape(shape)"
-          />
+          <template v-for="(shape, index) in item.children">
+            <ShapeItemThumbnail 
+              class="shape-item"
+              :key="index"
+              :shape="shape"
+              @click="changeShape(shape)"
+              v-if="shape.title !== '任意多边形'"
+            />
+          </template>
         </div>
       </div>
     </div>
