@@ -22,13 +22,13 @@
 
 
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，支持导出本地 PPTX 文件，支持移动端基础编辑和预览，支持 PWA。您可以在此基础上搭建自己的在线幻灯片应用。
+> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，力求还原桌面应用级体验。支持导出本地 PPTX 文件，支持移动端基础编辑和预览，支持 PWA。您可以在此基础上搭建自己的在线幻灯片应用。
 
-<b>在线体验地址：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
+<b>在线体验地址👉：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
 
 
 # 👀 前排提示
-1. 本项目的目标是打造一个 “在线幻灯片应用” ，而非 “低代码平台”、“H5 编辑器” 或 “图片编辑工具” 等。
+1. 本项目是一个 “Web 幻灯片应用” ，而不是 “低代码平台”、“H5 编辑器”、“图片编辑器” 、“白板应用”等。
 2. 本项目的目标受众是<b>有【Web 幻灯片】开发需求的开发者</b>，提供的链接只是一个演示地址，不提供任何在线服务。你不应该直接将本项目作为工具使用，也不支持一键部署。
 如果你只是需要一个服务或工具，可以选择更优秀和成熟的产品，例如：[石墨文档](https://shimo.im/)、[金山文档](https://www.kdocs.cn/)、[Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/) 等。
 3. 本项目是基于 DOM 的渲染方案，优点是简单易上手。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
@@ -87,7 +87,7 @@ npm run serve
 - 元素坐标、尺寸和旋转角度设置
 - 元素超链接（链接到网页、链接到其他幻灯片页面）
 #### 文字
-- 富文本编辑（颜色、高亮、字体、字号、加粗、斜体、下划线、删除线、角标、行内代码、引用、超链接、对齐方式、序号、项目符号、缩进、清除格式）
+- 富文本编辑（颜色、高亮、字体、字号、加粗、斜体、下划线、删除线、角标、行内代码、引用、超链接、对齐方式、序号、项目符号、段落缩进、清除格式）
 - 行高
 - 字间距
 - 段间距
@@ -163,17 +163,18 @@ npm run serve
 - 播放预览
 
 
-# 📅 后续规划
+# 📅 后续重点规划
 - 项目工程升级：
-    - 升级 Ant-Design-Vue v4.x；
-    - 升级 Vue v3.3（部分语法更新）；
     - 升级 TypeScript v5.x；
     - 将 npm 更换到 pnpm；
     - 将 Vue CLI 更换到 Vite 生态；
+    - 移除 Ant-Design-Vue 代码（计划）
+- 支持 Iframe 引用；
 - 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
-- 导入本地PPTX文件；
+- 支持多屏放映；
 - 导出HTML文件；
-
+- 补充注释/文档；
+- 导入PPTX持续优化；
 
 # 🎯 开发
 目前没有完整的开发文档，但下面这些文档可能会对你有一些帮助：
@@ -206,9 +207,9 @@ npm run serve
 [AGPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
 # 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能严格遵循 AGPL-3.0 协议；
+- 如果你希望将本项目商用盈利，我希望你能严格遵循 AGPL-3.0 协议，回馈开源社区；
 - 此外，如果你真的需要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
-    1. 使用 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
+    1. 使用 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)（建议）；
     2. 成为项目的贡献者，大致包括：
         - 你的代码被本项目作为依赖引用；
         - 你提交的 PR 被本项目合并（仅限有价值的，不包括简单的错别字或拼写错误修改等）；
