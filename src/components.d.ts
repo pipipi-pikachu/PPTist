@@ -1,7 +1,7 @@
-import { icons } from '@/plugins/icon'
+import type { Icons } from '@/plugins/icon'
 
 declare module 'vue' {
-  export type GlobalComponents = typeof icons
+  export type GlobalComponents = Icons
 }
 
 export {}

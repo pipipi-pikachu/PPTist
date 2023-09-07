@@ -118,7 +118,7 @@ import {
   Right,
 } from '@icon-park/vue-next'
 
-interface Icons {
+export interface Icons {
   [key: string]: typeof PlayOne
 }
 
