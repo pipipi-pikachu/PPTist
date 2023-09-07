@@ -24,14 +24,29 @@
         />
       </div>
       <div class="row">
+        <div class="title">忽略音频/视频：</div>
+        <div class="config-item">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.1" title="导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭【忽略音视频】选项，但要注意这将会大幅增加导出用时。">
+            <Switch v-model:checked="ignoreMedia" />
+          </Tooltip>
+        </div>
+      </div>
+      <div class="row">
         <div class="title">覆盖默认母版：</div>
         <div class="config-item">
           <Switch v-model:checked="masterOverwrite" />
         </div>
       </div>
+
+      <div class="tip" v-if="!ignoreMedia">
+        提示：
+        1. 支持导出的视频格式：avi、mp4、m4v、mov、wmv；
+        2. 支持导出的音频格式：mp3、m4a、mp4、wav、wma；
+        3. 跨域资源无法导出。
+      </div>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportPPTX(selectedSlides, masterOverwrite)">导出 PPTX</Button>
+      <Button class="btn export" type="primary" @click="exportPPTX(selectedSlides, masterOverwrite, ignoreMedia)">导出 PPTX</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
 
@@ -47,6 +62,7 @@ import useExport from '@/hooks/useExport'
 
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import {
+  Tooltip,
   Button,
   Slider,
   Switch,
@@ -65,6 +81,7 @@ const { exportPPTX, exporting } = useExport()
 const rangeType = ref<'all' | 'current' | 'custom'>('all')
 const range = ref<[number, number]>([1, slides.value.length])
 const masterOverwrite = ref(true)
+const ignoreMedia = ref(true)
 
 const selectedSlides = computed(() => {
   if (rangeType.value === 'all') return slides.value
@@ -114,6 +131,13 @@ const selectedSlides = computed(() => {
   }
   .config-item {
     flex: 1;
+  }
+
+  .tip {
+    font-size: 12px;
+    color: #aaa;
+    line-height: 1.8;
+    margin-top: 20px;
   }
 }
 .btns {

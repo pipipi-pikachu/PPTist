@@ -353,7 +353,7 @@ export default () => {
   }
 
   // 导出PPTX文件
-  const exportPPTX = (_slides: Slide[], masterOverwrite: boolean) => {
+  const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
     exporting.value = true
     const pptx = new pptxgen()
 
@@ -742,6 +742,28 @@ export default () => {
           }
 
           pptxSlide.addImage(options)
+        }
+        
+        else if (!ignoreMedia && (el.type === 'video' || el.type === 'audio')) {
+          const options: pptxgen.MediaProps = {
+            x: el.left / INCH_PX_RATIO,
+            y: el.top / INCH_PX_RATIO,
+            w: el.width / INCH_PX_RATIO,
+            h: el.height / INCH_PX_RATIO,
+            path: el.src,
+            type: el.type,
+          }
+          if (el.type === 'video' && el.poster) options.cover = el.poster
+
+          const extMatch = el.src.match(/\.([a-zA-Z0-9]+)(?:[\?#]|$)/)
+          if (extMatch && extMatch[1]) options.extn = extMatch[1]
+          else if (el.ext) options.extn = el.ext
+          
+          const videoExts = ['avi', 'mp4', 'm4v', 'mov', 'wmv']
+          const audioExts = ['mp3', 'm4a', 'mp4', 'wav', 'wma']
+          if (options.extn && [...videoExts, ...audioExts].includes(options.extn)) {
+            pptxSlide.addMedia(options)
+          }
         }
       }
     }

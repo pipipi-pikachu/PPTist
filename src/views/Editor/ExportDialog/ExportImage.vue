@@ -59,7 +59,7 @@
       <div class="row">
         <div class="title">忽略在线字体：</div>
         <div class="config-item">
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。">
+          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.1" title="导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。">
             <Switch v-model:checked="ignoreWebfont" />
           </Tooltip>
         </div>

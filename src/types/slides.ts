@@ -568,11 +568,14 @@ export interface PPTLatexElement extends PPTBaseElement {
  * src: 视频地址
  * 
  * poster: 预览封面
+ * 
+ * ext: 视频后缀，当资源链接缺少后缀时用该字段确认资源类型
  */
 export interface PPTVideoElement extends PPTBaseElement {
   type: 'video'
   src: string
   poster?: string
+  ext?: string
 }
 
 /**
@@ -589,14 +592,17 @@ export interface PPTVideoElement extends PPTBaseElement {
  * autoplay: 自动播放
  * 
  * src: 音频地址
+ * 
+ * ext: 音频后缀，当资源链接缺少后缀时用该字段确认资源类型
  */
 export interface PPTAudioElement extends PPTBaseElement {
   type: 'audio'
   fixedRatio: boolean
-  color: string,
-  loop: boolean,
-  autoplay: boolean,
+  color: string
+  loop: boolean
+  autoplay: boolean
   src: string
+  ext?: string
 }
 
 
