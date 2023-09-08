@@ -203,8 +203,8 @@ npm run serve
 在此感谢每一位贡献者。
 
 
-# 📄 开源协议
-[AGPL-3.0 license](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) © [pipipi-pikachu](https://github.com/pipipi-pikachu)
+# 📄 版权声明/开源协议
+[AGPL-3.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
 # 🧮 商业用途
 - 如果你希望将本项目商用盈利，我希望你能严格遵循 AGPL-3.0 协议，回馈开源社区；
