@@ -13,7 +13,7 @@
         :class="{ 'active': type === tab.key }" 
         v-for="tab in tabs" 
         :key="tab.key"
-        @click="type = tab.key"
+        @click="changeTab(tab.key)"
         @mousedown.stop
       >{{tab.label}}</div>
     </div>
@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
@@ -80,6 +80,13 @@ const searchInpRef = ref<HTMLInputElement>()
 onMounted(() => {
   searchInpRef.value!.focus()
 })
+
+const changeTab = (key: TypeKey) => {
+  type.value = key
+  nextTick(() => {
+    searchInpRef.value!.focus()
+  })
+}
 </script>
 
 <style lang="scss" scoped>
