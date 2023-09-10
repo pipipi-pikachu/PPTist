@@ -32,6 +32,7 @@
             'selected': selectedSlidesIndex.includes(index),
           }"
           @mousedown="$event => handleClickSlideThumbnail($event, index)"
+          @dblclick="enterScreening()"
           v-contextmenu="contextmenusThumbnailItem"
         >
           <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
