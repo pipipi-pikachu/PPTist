@@ -251,12 +251,6 @@ const openSraechPanel = () => {
 
   .handler-item {
     width: 32px;
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 2px;
-    border-radius: $borderRadius;
 
     &:not(.group-btn):hover {
       background-color: #f1f1f1;
@@ -303,13 +297,27 @@ const openSraechPanel = () => {
   }
 }
 .handler-item {
-  margin: 0 10px;
+  height: 24px;
   font-size: 14px;
+  margin: 0 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $borderRadius;
   overflow: hidden;
   cursor: pointer;
 
   &.disable {
     opacity: .5;
+  }
+}
+.left-handler, .right-handler {
+  .handler-item {
+    padding: 0 8px;
+
+    &:not(.disable):hover {
+      background-color: #f1f1f1;
+    }
   }
 }
 .right-handler {
@@ -351,9 +359,6 @@ const openSraechPanel = () => {
 @media screen and (width <= 1024px) {
   .text {
     display: none;
-  }
-  .handler-item {
-    margin: 0 5px;
   }
 }
 @media screen and (width <= 1000px) {
