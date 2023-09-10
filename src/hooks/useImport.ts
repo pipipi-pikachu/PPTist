@@ -15,7 +15,7 @@ export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
 
-  const { addSlidesFromData } = useAddSlidesOrElements()
+  const { addSlidesFromData, isEmptySlide } = useAddSlidesOrElements()
 
   const exporting = ref(false)
 
@@ -28,6 +28,7 @@ export default () => {
       try {
         const slides = JSON.parse(decrypt(reader.result as string))
         if (cover) slidesStore.setSlides(slides)
+        else if (isEmptySlide.value) slidesStore.setSlides(slides)
         else addSlidesFromData(slides)
       }
       catch {
@@ -99,6 +100,14 @@ export default () => {
             type: 'image',
             image: value.picBase64,
             imageSize: 'cover',
+          }
+        }
+        else if (type === 'gradient') {
+          background = {
+            type: 'gradient',
+            gradientType: 'linear',
+            gradientColor: [value.colors[0], value.colors[1]],
+            gradientRotate: value.rot,
           }
         }
         else {
@@ -332,7 +341,8 @@ export default () => {
         parseElements(item.elements)
         slides.push(slide)
       }
-      addSlidesFromData(slides)
+      if (isEmptySlide.value) slidesStore.setSlides(slides)
+      else addSlidesFromData(slides)
       exporting.value = false
     }
     reader.readAsArrayBuffer(file)
