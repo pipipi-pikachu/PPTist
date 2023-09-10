@@ -42,6 +42,7 @@ export const HOTKEY_DOC = [
       { label: '恢复', value: 'Ctrl + Y' },
       { label: '删除', value: 'Delete / Backspace' },
       { label: '多选', value: '按住 Ctrl 或 Shift' },
+      { label: '打开搜索替换', value: 'Ctrl + F' },
       { label: '打印', value: 'Ctrl + P' },
       { label: '关闭弹窗', value: 'ESC' },
     ],

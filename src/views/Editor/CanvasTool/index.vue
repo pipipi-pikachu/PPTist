@@ -8,6 +8,9 @@
         <IconNext class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
       </Tooltip>
       <Divider type="vertical" style="height: 20px;" />
+      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="选择窗格" @click="openSelectPanel()">
+        <IconMoveOne class="handler-item" />
+      </Tooltip>
       <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="查找/替换" @click="openSraechPanel()">
         <IconSearch class="handler-item" />
       </Tooltip>
@@ -221,7 +224,12 @@ const drawLine = (line: LinePoolItem) => {
   linePoolVisible.value = false
 }
 
-// 打开选择替换面板
+// 打开选择面板
+const openSelectPanel = () => {
+  mainStore.setSelectPanelState(true)
+}
+
+// 打开搜索替换面板
 const openSraechPanel = () => {
   mainStore.setSearchPanelState(true)
 }

@@ -116,6 +116,7 @@ import {
   Search,
   Left,
   Right,
+  MoveOne,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -237,6 +238,7 @@ export const icons: Icons = {
   IconSearch: Search,
   IconLeft: Left,
   IconRight: Right,
+  IconMoveOne: MoveOne,
 }
 
 export default {
