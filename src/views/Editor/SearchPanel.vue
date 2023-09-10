@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
@@ -75,6 +75,11 @@ const tabs: TabItem[] = [
 const close = () => {
   mainStore.setSearchPanelState(false)
 }
+
+const searchInpRef = ref<HTMLInputElement>()
+onMounted(() => {
+  searchInpRef.value!.focus()
+})
 </script>
 
 <style lang="scss" scoped>
