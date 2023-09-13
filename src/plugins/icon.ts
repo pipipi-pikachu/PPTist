@@ -12,7 +12,6 @@ import {
   FullScreen,
   List,
   OrderedList,
-  Helpcenter,
   FlipVertically,
   FlipHorizontally,
   FontSize,
@@ -81,7 +80,6 @@ import {
   Logout,
   Erase,
   Clear,
-  FolderClose,
   AlignTextTopOne,
   AlignTextBottomOne,
   AlignTextMiddleOne,
@@ -117,6 +115,7 @@ import {
   Left,
   Right,
   MoveOne,
+  HamburgerButton,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -134,7 +133,6 @@ export const icons: Icons = {
   IconFullScreen: FullScreen,
   IconList: List,
   IconOrderedList: OrderedList,
-  IconHelpcenter: Helpcenter,
   IconFlipVertically: FlipVertically,
   IconFlipHorizontally: FlipHorizontally,
   IconFontSize: FontSize,
@@ -203,7 +201,6 @@ export const icons: Icons = {
   IconLogout: Logout,
   IconErase: Erase,
   IconClear: Clear,
-  IconFolderClose: FolderClose,
   IconAlignTextTopOne: AlignTextTopOne,
   IconAlignTextBottomOne: AlignTextBottomOne,
   IconAlignTextMiddleOne: AlignTextMiddleOne,
@@ -239,6 +236,7 @@ export const icons: Icons = {
   IconLeft: Left,
   IconRight: Right,
   IconMoveOne: MoveOne,
+  IconHamburgerButton: HamburgerButton,
 }
 
 export default {
