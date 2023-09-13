@@ -19,6 +19,22 @@
         </template>
         <div class="menu-item"><IconHamburgerButton class="icon" /></div>
       </Popover>
+
+      <div class="title">
+        <Input 
+          class="title-input" 
+          ref="titleInputRef"
+          v-model:value="titleValue" 
+          @blur="handleUpdateTitle()" 
+          v-if="editingTitle" 
+        ></Input>
+        <div 
+          class="title-text"
+          @click="startEditTitle()"
+          :title="title"
+          v-else
+        >{{ title }}</div>
+      </div>
     </div>
 
     <div class="right">
@@ -63,8 +79,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useMainStore } from '@/store'
+import { nextTick, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useMainStore, useSlidesStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useImport from '@/hooks/useImport'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -77,15 +94,32 @@ import {
   Tooltip,
   Drawer,
   Popover,
+  Input,
 } from 'ant-design-vue'
 
 const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
+const { title } = storeToRefs(slidesStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { importSpecificFile, importPPTXFile, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
 
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
+const editingTitle = ref(false)
+const titleInputRef = ref<HTMLInputElement>()
+const titleValue = ref('')
+
+const startEditTitle = () => {
+  titleValue.value = title.value
+  editingTitle.value = true
+  nextTick(() => titleInputRef.value?.focus())
+}
+
+const handleUpdateTitle = () => {
+  slidesStore.setTitle(titleValue.value)
+  editingTitle.value = false
+}
 
 const goLink = (url: string) => {
   window.open(url)
@@ -149,6 +183,33 @@ const setDialogForExport = (type: DialogForExportTypes) => {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+}
+.title {
+  height: 30px;
+  margin-left: 2px;
+  font-size: 13px;
+
+  .title-input {
+    width: 200px;
+    height: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-family: 'Microsoft YaHei';
+  }
+  .title-text {
+    min-width: 20px;
+    max-width: 400px;
+    line-height: 30px;
+    padding: 0 6px;
+    border-radius: $borderRadius;
+    cursor: pointer;
+
+    @include ellipsis-oneline();
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
   }
 }
 .github-link {

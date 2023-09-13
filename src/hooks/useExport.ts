@@ -25,7 +25,7 @@ interface ExportImageConfig {
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, theme, viewportRatio } = storeToRefs(slidesStore)
+  const { slides, theme, viewportRatio, title } = storeToRefs(slidesStore)
 
   const exporting = ref(false)
 
@@ -47,7 +47,7 @@ export default () => {
 
       toImage(domRef, config).then(dataUrl => {
         exporting.value = false
-        saveAs(dataUrl, `pptist_slides.${format}`)
+        saveAs(dataUrl, `${title.value}.${format}`)
       }).catch(() => {
         exporting.value = false
         message.error('导出图片失败')
@@ -58,13 +58,13 @@ export default () => {
   // 导出pptist文件（特有 .pptist 后缀文件）
   const exportSpecificFile = (_slides: Slide[]) => {
     const blob = new Blob([encrypt(JSON.stringify(_slides))], { type: '' })
-    saveAs(blob, 'pptist_slides.pptist')
+    saveAs(blob, `${title.value}.pptist`)
   }
   
   // 导出JSON文件
   const exportJSON = () => {
     const blob = new Blob([JSON.stringify(slides.value)], { type: '' })
-    saveAs(blob, 'pptist_slides.json')
+    saveAs(blob, `${title.value}.json`)
   }
 
   // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
@@ -769,7 +769,7 @@ export default () => {
     }
 
     setTimeout(() => {
-      pptx.writeFile({ fileName: `pptist.pptx` }).then(() => exporting.value = false).catch(() => {
+      pptx.writeFile({ fileName: `${title.value}.pptx` }).then(() => exporting.value = false).catch(() => {
         exporting.value = false
         message.error('导出失败')
       })
