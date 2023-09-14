@@ -262,12 +262,13 @@ const close = () => {
 }
 .input {
   width: 100%;
-  height: 18px;
-  line-height: 18px;
+  height: 16px;
   border: 0;
   outline: 0;
   padding-left: 0;
   padding-right: 0;
   flex: 1;
+  font-size: 12px;
+  background-color: transparent;
 }
 </style>
