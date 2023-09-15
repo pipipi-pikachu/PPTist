@@ -168,7 +168,21 @@ npm run serve
     - 升级 TypeScript v5.x；
     - 将 npm 更换到 pnpm；
     - 将 Vue CLI 更换到 Vite 生态；
-    - 移除 Ant-Design-Vue 代码（计划）
+    - （进行中）移除 Ant-Design-Vue 组件：样式异常且难以控制、存在全局污染的问题、已知部分组件存在Bug，如Slider、Popover、Tooltip...
+        - message -> https://github.com/smastrom/notivue
+        - Modal -> custom
+        - Tooltip -> https://github.com/atomiks/tippyjs
+        - Popover -> https://github.com/atomiks/tippyjs
+        - Select -> https://github.com/atomiks/tippyjs
+        - Drawer -> remove
+        - Slider -> custom
+        - Button -> custom
+        - Input -> custom
+        - InputNumber -> custom
+        - Switch -> custom
+        - Radio -> custom
+        - Checkbox -> custom
+        - Divider -> custom
 - 支持 Iframe 引用；
 - 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
 - 支持多屏放映；
