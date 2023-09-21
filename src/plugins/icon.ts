@@ -116,6 +116,10 @@ import {
   Right,
   MoveOne,
   HamburgerButton,
+  Attention,
+  CheckOne,
+  CloseOne,
+  Info,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -237,6 +241,10 @@ export const icons: Icons = {
   IconRight: Right,
   IconMoveOne: MoveOne,
   IconHamburgerButton: HamburgerButton,
+  IconAttention: Attention,
+  IconCheckOne: CheckOne,
+  IconCloseOne: CloseOne,
+  IconInfo: Info,
 }
 
 export default {

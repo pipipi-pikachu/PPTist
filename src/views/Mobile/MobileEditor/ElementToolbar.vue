@@ -133,7 +133,7 @@ import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import {
   Divider,
   Button,

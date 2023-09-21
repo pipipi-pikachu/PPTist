@@ -1,6 +1,6 @@
 <template>
   <div class="element-flip">
-    <CheckboxButtonGroup class="row">
+    <ButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
         :checked="flipV"
@@ -11,7 +11,7 @@
         :checked="flipH"
         @click="updateFlip({ flipH: !flipH })"
       ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
-    </CheckboxButtonGroup>
+    </ButtonGroup>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import type { ImageOrShapeFlip } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/CheckboxButtonGroup.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

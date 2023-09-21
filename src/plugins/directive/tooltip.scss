@@ -1,0 +1,67 @@
+.tippy-box[data-theme~='tooltip'] {
+  background-color: #262626;
+  color: #fff;
+  border-radius: 2px;
+  padding: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+
+  .tippy-arrow {
+    width: 12px;
+    height: 12px;
+    color: #262626;
+
+    &::before {
+      content: '';
+      position: absolute;
+      border-color: transparent;
+      border-style: solid;
+    }
+  }
+
+  &[data-placement^='top'] > .tippy-arrow {
+    bottom: 0;
+
+    &::before {
+      bottom: -5px;
+      left: 0;
+      border-width: 6px 6px 0;
+      border-top-color: initial;
+      transform-origin: center top;
+    }
+  }
+
+  &[data-placement^='bottom'] > .tippy-arrow {
+    top: 0;
+
+    &::before {
+      top: -5px;
+      left: 0;
+      border-width: 0 6px 6px;
+      border-bottom-color: initial;
+      transform-origin: center bottom;
+    }
+  }
+
+  &[data-placement^='left'] > .tippy-arrow {
+    right: 0;
+
+    &::before {
+      border-width: 6px 0 6px 6px;
+      border-left-color: initial;
+      right: -5px;
+      transform-origin: center left;
+    }
+  }
+
+  &[data-placement^='right'] > .tippy-arrow {
+    left: 0;
+
+    &::before {
+      left: -5px;
+      border-width: 6px 6px 6px 0;
+      border-right-color: initial;
+      transform-origin: center right;
+    }
+  }
+}

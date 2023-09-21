@@ -23,6 +23,7 @@
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "nanoid": "^4.0.2",
+    "number-precision": "^1.6.0",
     "pinia": "^2.1.4",
     "pptxgenjs": "^3.12.0",
     "pptxtojson": "^0.0.11",
@@ -41,6 +42,7 @@
     "svg-arc-to-cubic-bezier": "^3.2.0",
     "svg-pathdata": "^6.0.3",
     "tinycolor2": "^1.6.0",
+    "tippy.js": "^6.3.7",
     "vue": "^3.3.4",
     "vuedraggable": "^4.1.0"
   },
