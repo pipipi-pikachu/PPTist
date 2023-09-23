@@ -52,6 +52,7 @@ onMounted(() => {
     appendTo: props.appendTo || document.body,
     maxWidth: 'none',
     offset: [0, 8],
+    duration: 200,
     animation: 'scale',
     onShown() {
       if (!props.value) emit('update:value', true)

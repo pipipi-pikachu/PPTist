@@ -1,15 +1,17 @@
 <template>
-  <Transition name="modal-fade">
-    <div class="modal" ref="modalRef" v-show="visible" tabindex="-1" @keyup.esc="onEsc()">
-      <div class="mask" @click="onClickMask()"></div>
-      <Transition name="modal-zoom">
-        <div class="modal-content" v-show="visible" :style="contentStyle">
-          <span class="close-btn" v-if="closeButton" @click="emit('update:visible', false)"><IconClose /></span>
-          <slot></slot>
-        </div>
-      </Transition>
-    </div>
-  </Transition>
+  <Teleport to="body">
+    <Transition name="modal-fade">
+      <div class="modal" ref="modalRef" v-show="visible" tabindex="-1" @keyup.esc="onEsc()">
+        <div class="mask" @click="onClickMask()"></div>
+        <Transition name="modal-zoom">
+          <div class="modal-content" v-show="visible" :style="contentStyle">
+            <span class="close-btn" v-if="closeButton" @click="emit('update:visible', false)"><IconClose /></span>
+            <slot v-if="visible"></slot>
+          </div>
+        </Transition>
+      </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
@@ -85,7 +87,7 @@ const onClickMask = () => {
 
 .modal-content {
   z-index: 5001;
-  padding: 10px;
+  padding: 15px;
   background: #fff;
   border-radius: $borderRadius;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
@@ -93,11 +95,14 @@ const onClickMask = () => {
 }
 
 .close-btn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   top: 10px;
   right: 12px;
-  width: 16px;
-  height: 16px;
   cursor: pointer;
 }
 
