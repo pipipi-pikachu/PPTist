@@ -51,7 +51,7 @@ const message: Message = (options: MessageOptions) => {
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 1010;
+      z-index: 6000;
       pointer-events: none;
       display: flex;
       flex-direction: column;

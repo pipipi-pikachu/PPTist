@@ -85,9 +85,9 @@ import HotkeyDoc from './HotkeyDoc.vue'
 import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Drawer from '@/components/Drawer.vue'
+import Input from '@/components/Input.vue'
 import {
   Popover,
-  Input,
 } from 'ant-design-vue'
 
 const mainStore = useMainStore()
@@ -179,7 +179,7 @@ const setDialogForExport = (type: DialogForExportTypes) => {
   }
 }
 .title {
-  height: 30px;
+  height: 32px;
   margin-left: 2px;
   font-size: 13px;
 
@@ -193,8 +193,8 @@ const setDialogForExport = (type: DialogForExportTypes) => {
   .title-text {
     min-width: 20px;
     max-width: 400px;
-    line-height: 30px;
-    padding: 0 6px;
+    line-height: 32px;
+    padding: 0 8px;
     border-radius: $borderRadius;
     cursor: pointer;
 

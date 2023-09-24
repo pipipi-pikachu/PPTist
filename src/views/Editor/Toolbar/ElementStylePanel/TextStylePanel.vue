@@ -309,6 +309,7 @@ import emitter, { EmitterEvents, type RichTextAction } from '@/utils/emitter'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
+import message from '@/utils/message'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
@@ -319,17 +320,17 @@ import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import Input from '@/components/Input.vue'
 import {
   Button,
   Popover,
   Select,
   Radio,
-  Input,
-  message,
+  Input as AntInput,
 } from 'ant-design-vue'
 const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
-const InputGroup = Input.Group
+const InputGroup = AntInput.Group
 const ButtonGroup = Button.Group
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
@@ -491,10 +492,9 @@ const openLinkPopover = () => {
   linkPopoverVisible.value = true
 }
 const updateLink = (link?: string) => {
-  if (link) {
-    const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
-    if (!linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
-  }
+  const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
+  if (!link || !linkRegExp.test(link)) return message.error('不是正确的网页链接地址')
+
   emitRichTextCommand('link', link)
   linkPopoverVisible.value = false
 }

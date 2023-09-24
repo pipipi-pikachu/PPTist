@@ -13,7 +13,7 @@
     />
 
     <div class="content" :class="type" @mousedown.stop>
-      <Input class="input" v-model:value="searchWord" placeholder="输入查找内容" @keydown.enter="searchNext()" ref="searchInpRef">
+      <Input class="input" v-model:value="searchWord" placeholder="输入查找内容" @enter="searchNext()" ref="searchInpRef">
         <template #suffix>
           <span class="count">{{searchIndex + 1}}/{{searchResults.length}}</span>
           <Divider type="vertical" />
@@ -21,7 +21,7 @@
           <IconRight class="next-btn right" @click="searchNext()" />
         </template>
       </Input>
-      <Input class="input" v-model:value="replaceWord" placeholder="输入替换内容" @keydown.enter="replace()" v-if="type === 'replace'"></Input>
+      <Input class="input" v-model:value="replaceWord" placeholder="输入替换内容" @enter="replace()" v-if="type === 'replace'"></Input>
       <div class="footer" v-if="type === 'replace'">
         <Button :disabled="!searchWord" style="margin-left: 5px;" @click="replace()">替换</Button>
         <Button :disabled="!searchWord" type="primary" style="margin-left: 5px;" @click="replaceAll()">全部替换</Button>
@@ -37,9 +37,9 @@ import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
+import Input from '@/components/Input.vue'
 import {
   Button,
-  Input,
 } from 'ant-design-vue'
 
 type TypeKey = 'search' | 'replace'
@@ -97,6 +97,7 @@ watch(type, () => {
 }
 .count {
   font-size: 12px;
+  margin-right: 8px;
   user-select: none;
 }
 .next-btn {
@@ -124,7 +125,7 @@ watch(type, () => {
   height: 32px;
   position: absolute;
   top: 8px;
-  right: 0;
+  right: 3px;
   display: flex;
   justify-content: center;
   align-items: center;

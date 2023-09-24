@@ -15,8 +15,11 @@
         :disabled="disabled"
         v-model="number" 
         :placeholder="placeholder"
-        @focus="focused = true"
-        @blur="focused = false"
+        @input="$event => emit('input', $event)"
+        @focus="$event => handleFocus($event)"
+        @blur="$event => handleBlur($event)"
+        @change="$event => emit('change', $event)"
+        @keydown.enter="$event => emit('enter', $event)"
       />
       <div class="handlers">
         <span class="handler" @click="number += step">
@@ -53,6 +56,11 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:value', payload: number): void
+  (event: 'input', payload: Event): void
+  (event: 'change', payload: Event): void
+  (event: 'blur', payload: Event): void
+  (event: 'focus', payload: Event): void
+  (event: 'enter', payload: Event): void
 }>()
 
 const number = ref(0)
@@ -73,6 +81,15 @@ watch(number, () => {
   number.value = value
   emit('update:value', number.value)
 })
+
+const handleBlur = (e: Event) => {
+  focused.value = false
+  emit('blur', e)
+}
+const handleFocus = (e: Event) => {
+  focused.value = true
+  emit('focus', e)
+}
 </script>
 
 <style lang="scss" scoped>

@@ -11,12 +11,15 @@
     </span>
     <input
       type="text"
+      ref="inputRef"
       :disabled="disabled"
       :value="value" 
       :placeholder="placeholder"
       @input="$event => handleInput($event)"
-      @focus="focused = true"
-      @blur="focused = false"
+      @focus="$event => handleFocus($event)"
+      @blur="$event => handleBlur($event)"
+      @change="$event => emit('change', $event)"
+      @keydown.enter="$event => emit('enter', $event)"
     />
     <span class="suffix">
       <slot name="suffix"></slot>
@@ -38,13 +41,36 @@ withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string): void
+  (event: 'input', payload: Event): void
+  (event: 'change', payload: Event): void
+  (event: 'blur', payload: Event): void
+  (event: 'focus', payload: Event): void
+  (event: 'enter', payload: Event): void
 }>()
 
 const focused = ref(false)
 
 const handleInput = (e: Event) => {
   emit('update:value', (e.target as HTMLInputElement).value)
+  emit('input', e)
 }
+const handleBlur = (e: Event) => {
+  focused.value = false
+  emit('blur', e)
+}
+const handleFocus = (e: Event) => {
+  focused.value = true
+  emit('focus', e)
+}
+
+const inputRef = ref<HTMLInputElement>()
+const focus = () => {
+  if (inputRef.value) inputRef.value.focus()
+}
+
+defineExpose({
+  focus,
+})
 </script>
 
 <style lang="scss" scoped>
@@ -55,7 +81,7 @@ const handleInput = (e: Event) => {
   border-radius: $borderRadius;
   transition: border-color .25s;
   font-size: 13px;
-  display: inline-flex;
+  display: flex;
 
   input {
     min-width: 0;

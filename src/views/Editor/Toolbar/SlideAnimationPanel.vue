@@ -23,8 +23,9 @@ import { useSlidesStore } from '@/store'
 import type { TurningMode } from '@/types/slides'
 import { SLIDE_ANIMATIONS } from '@/configs/animation'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import message from '@/utils/message'
 
-import { Button, message } from 'ant-design-vue'
+import { Button } from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { slides, currentSlide } = storeToRefs(slidesStore)

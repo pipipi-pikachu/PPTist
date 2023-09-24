@@ -53,10 +53,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import message from '@/utils/message'
 import {
   InputNumber,
   Button,
-  message,
 } from 'ant-design-vue'
 
 interface InsertData {

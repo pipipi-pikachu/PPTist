@@ -47,10 +47,10 @@ import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Tabs from '@/components/Tabs.vue'
+import Input from '@/components/Input.vue'
 import {
   Button,
   Select,
-  Input,
 } from 'ant-design-vue'
 const SelectOption = Select.Option
 
