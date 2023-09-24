@@ -158,8 +158,8 @@ import ColorButton from '../../common/ColorButton.vue'
 import ChartDataEditor from './ChartDataEditor.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
+import Divider from '@/components/Divider.vue'
 import {
-  Divider,
   Button,
   Popover,
   Select,

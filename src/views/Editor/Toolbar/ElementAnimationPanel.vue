@@ -126,10 +126,10 @@ import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Tabs from '@/components/Tabs.vue'
+import Divider from '@/components/Divider.vue'
 import Draggable from 'vuedraggable'
 import {
   InputNumber,
-  Divider,
   Button,
   Popover,
   Select,

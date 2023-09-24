@@ -106,10 +106,10 @@ import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import Divider from '@/components/Divider.vue'
 
 import {
   InputNumber,
-  Divider,
   Button,
 } from 'ant-design-vue'
 const ButtonGroup = Button.Group

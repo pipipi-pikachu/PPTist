@@ -93,7 +93,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import ScreenSlideList from './ScreenSlideList.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
-import { Divider } from 'ant-design-vue'
+import Divider from '@/components/Divider.vue'
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
@@ -226,8 +226,7 @@ const contextmenus = (): ContextmenuItem[] => {
 
   .divider {
     width: 70%;
-    min-width: 70%;
-    margin: 24px 15%;
+    margin: 24px 15% !important;
   }
 
   .tool-icon {

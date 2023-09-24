@@ -135,8 +135,8 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import Tabs from '@/components/Tabs.vue'
+import Divider from '@/components/Divider.vue'
 import {
-  Divider,
   Button,
   Radio,
 } from 'ant-design-vue'

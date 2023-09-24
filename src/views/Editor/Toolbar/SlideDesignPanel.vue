@@ -211,8 +211,8 @@ import { getImageDataURL } from '@/utils/image'
 import ColorButton from './common/ColorButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Divider from '@/components/Divider.vue'
 import {
-  Divider,
   Button,
   Popover,
   Slider,

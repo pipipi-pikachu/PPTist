@@ -16,8 +16,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement, PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
-
-import { Divider } from 'ant-design-vue'
+import Divider from '@/components/Divider.vue'
 
 const props = defineProps<{
   elementInfo: PPTElement

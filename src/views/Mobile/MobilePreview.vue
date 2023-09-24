@@ -25,7 +25,7 @@ import useLoadSlides from '@/hooks/useLoadSlides'
 import type { Mode } from '@/types/mobile'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import { Divider } from 'ant-design-vue'
+import Divider from '@/components/Divider.vue'
 
 defineProps<{
   changeMode: (mode: Mode) => void

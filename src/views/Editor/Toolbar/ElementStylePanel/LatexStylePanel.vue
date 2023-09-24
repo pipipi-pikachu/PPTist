@@ -52,9 +52,9 @@ import ColorButton from '../common/ColorButton.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
+import Divider from '@/components/Divider.vue'
 import {
   InputNumber,
-  Divider,
   Button,
   Popover,
 } from 'ant-design-vue'

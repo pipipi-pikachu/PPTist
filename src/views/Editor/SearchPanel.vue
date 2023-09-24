@@ -36,10 +36,10 @@ import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Tabs from '@/components/Tabs.vue'
+import Divider from '@/components/Divider.vue'
 import {
   Button,
   Input,
-  Divider,
 } from 'ant-design-vue'
 
 type TypeKey = 'search' | 'replace'

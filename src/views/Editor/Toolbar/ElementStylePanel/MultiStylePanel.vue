@@ -139,9 +139,9 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Divider from '@/components/Divider.vue'
 import {
   InputNumber,
-  Divider,
   Button,
   Popover,
   Select,

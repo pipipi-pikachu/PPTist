@@ -72,9 +72,9 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Divider from '@/components/Divider.vue'
 import {
   InputNumber,
-  Divider,
   Popover,
   Select,
 } from 'ant-design-vue'

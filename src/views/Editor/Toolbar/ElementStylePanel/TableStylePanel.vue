@@ -184,8 +184,8 @@ import TextColorButton from '../common/TextColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Divider from '@/components/Divider.vue'
 import {
-  Divider,
   Button,
   Popover,
   Select,
