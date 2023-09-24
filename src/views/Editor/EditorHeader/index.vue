@@ -39,11 +39,9 @@
 
     <div class="right">
       <div class="group-menu-item">
-        <Tooltip :mouseLeaveDelay="0" title="幻灯片放映">
-          <div class="menu-item" @click="enterScreening()">
-            <IconPpt class="icon" />
-          </div>
-        </Tooltip>
+        <div class="menu-item" v-tooltip="'幻灯片放映'" @click="enterScreening()">
+          <IconPpt class="icon" />
+        </div>
         <Popover trigger="click">
           <template #content>
             <div class="popover-list">
@@ -54,11 +52,9 @@
           <div class="arrow-btn"><IconDown class="arrow" /></div>
         </Popover>
       </div>
-      <Tooltip :mouseLeaveDelay="0" title="导出">
-        <div class="menu-item" @click="setDialogForExport('pptx')">
-          <IconDownload class="icon" />
-        </div>
-      </Tooltip>
+      <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
+        <IconDownload class="icon" />
+      </div>
       <a class="github-link" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
         <div class="menu-item"><IconGithub class="icon" /></div>
       </a>
@@ -90,7 +86,6 @@ import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Drawer from '@/components/Drawer.vue'
 import {
-  Tooltip,
   Popover,
   Input,
 } from 'ant-design-vue'

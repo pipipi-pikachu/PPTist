@@ -35,9 +35,9 @@
                 <Slider class="size-slider" :min="4" :max="10" :step="2" v-model:value="penSize" />
               </div>
             </template>
-            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔">
-              <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" @click="changeModel('pen')"><IconWrite class="icon" /></div>
-            </Tooltip>
+            <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" v-tooltip="'画笔'" @click="changeModel('pen')">
+              <IconWrite class="icon" />
+            </div>
           </Popover>
           <Popover trigger="click" :open="sizePopoverType === 'mark'">
             <template #content>
@@ -46,9 +46,9 @@
                 <Slider class="size-slider" :min="16" :max="40" :step="4" v-model:value="markSize" />
               </div>
             </template>
-            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="荧光笔">
-              <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" @click="changeModel('mark')"><IconHighLight class="icon" /></div>
-            </Tooltip>
+            <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" v-tooltip="'荧光笔'" @click="changeModel('mark')">
+              <IconHighLight class="icon" />
+            </div>
           </Popover>
           <Popover trigger="click" :open="sizePopoverType === 'eraser'">
             <template #content>
@@ -57,16 +57,16 @@
                 <Slider class="size-slider" :min="20" :max="200" :step="20" v-model:value="rubberSize" />
               </div>
             </template>
-            <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="橡皮擦">
-              <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" @click="changeModel('eraser')"><IconErase class="icon" /></div>
-            </Tooltip>
+            <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" v-tooltip="'橡皮擦'" @click="changeModel('eraser')">
+              <IconErase class="icon" />
+            </div>
           </Popover>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="清除墨迹">
-            <div class="btn" @click="clearCanvas()"><IconClear class="icon" /></div>
-          </Tooltip>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="黑板">
-            <div class="btn" :class="{ 'active': blackboard }" @click="blackboard = !blackboard"><IconFill class="icon" /></div>
-          </Tooltip>
+          <div class="btn" v-tooltip="'清除墨迹'" @click="clearCanvas()">
+            <IconClear class="icon" />
+          </div>
+          <div class="btn" :class="{ 'active': blackboard }" v-tooltip="'黑板'" @click="blackboard = !blackboard">
+            <IconFill class="icon" />
+          </div>
           <div class="colors">
             <div 
               class="color" 
@@ -78,9 +78,9 @@
             ></div>
           </div>
         </div>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="关闭画笔">
-          <div class="btn" @click="closeWritingBoard()"><IconClose class="icon" /></div>
-        </Tooltip>
+        <div class="btn" v-tooltip="'关闭画笔'" @click="closeWritingBoard()">
+          <IconClose class="icon" />
+        </div>
       </div>
     </MoveablePanel>
   </div>
@@ -95,7 +95,6 @@ import { db } from '@/utils/database'
 import WritingBoard from '@/components/WritingBoard.vue'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import {
-  Tooltip,
   Popover,
   Slider,
 } from 'ant-design-vue'

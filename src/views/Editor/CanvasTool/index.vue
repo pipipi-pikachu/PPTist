@@ -1,63 +1,45 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="撤销">
-        <IconBack class="handler-item" :class="{ 'disable': !canUndo }" @click="undo()" />
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="重做">
-        <IconNext class="handler-item" :class="{ 'disable': !canRedo }" @click="redo()" />
-      </Tooltip>
+      <IconBack class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'撤销'" @click="undo()" />
+      <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'重做'" @click="redo()" />
       <Divider type="vertical" style="height: 20px;" />
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="选择窗格" @click="openSelectPanel()">
-        <IconMoveOne class="handler-item" />
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="查找/替换" @click="openSraechPanel()">
-        <IconSearch class="handler-item" />
-      </Tooltip>
+      <IconMoveOne class="handler-item" v-tooltip="'选择窗格'" @click="openSelectPanel()" />
+      <IconSearch class="handler-item" v-tooltip="'查找/替换'" @click="openSraechPanel()" />
     </div>
 
     <div class="add-element-handler">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入文字" :align="{ offset: [0, 0] }">
-        <div class="handler-item group-btn">
-          <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
-          
-          <Popover trigger="click" v-model:open="textTypeSelectVisible">
-            <template #content>
-              <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
-              <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
-            </template>
-            <IconDown class="arrow" />
-          </Popover>
-        </div>
-      </Tooltip>
+      <div class="handler-item group-btn" v-tooltip="'插入文字'">
+        <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
+        
+        <Popover trigger="click" v-model:open="textTypeSelectVisible">
+          <template #content>
+            <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
+            <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
+          </template>
+          <IconDown class="arrow" />
+        </Popover>
+      </div>
       <FileInput @change="files => insertImageElement(files)">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图片" :align="{ offset: [0, 0] }">
-          <IconPicture class="handler-item" />
-        </Tooltip>
+        <IconPicture class="handler-item" v-tooltip="'插入图片'" />
       </FileInput>
       <Popover trigger="click" v-model:open="shapePoolVisible">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入形状" :align="{ offset: [0, 0] }">
-          <IconGraphicDesign class="handler-item" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" />
-        </Tooltip>
+        <IconGraphicDesign class="handler-item" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" v-tooltip="'插入形状'" />
       </Popover>
       <Popover trigger="click" v-model:open="linePoolVisible">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入线条" :align="{ offset: [0, 0] }">
-          <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" />
-        </Tooltip>
+        <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" v-tooltip="'插入线条'" />
       </Popover>
       <Popover trigger="click" v-model:open="chartPoolVisible">
         <template #content>
           <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入图表" :align="{ offset: [0, 0] }">
-          <IconChartProportion class="handler-item" />
-        </Tooltip>
+        <IconChartProportion class="handler-item" v-tooltip="'插入图表'" />
       </Popover>
       <Popover trigger="click" v-model:open="tableGeneratorVisible">
         <template #content>
@@ -66,13 +48,9 @@
             @insert="({ row, col }) => { createTableElement(row, col); tableGeneratorVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入表格" :align="{ offset: [0, 0] }">
-          <IconInsertTable class="handler-item" />
-        </Tooltip>
+        <IconInsertTable class="handler-item" v-tooltip="'插入表格'" />
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入公式" :align="{ offset: [0, 0] }">
-        <IconFormula class="handler-item" @click="latexEditorVisible = true" />
-      </Tooltip>
+      <IconFormula class="handler-item" v-tooltip="'插入公式'" @click="latexEditorVisible = true" />
       <Popover trigger="click" v-model:open="mediaInputVisible">
         <template #content>
           <MediaInput 
@@ -81,9 +59,7 @@
             @insertAudio="src => { createAudioElement(src); mediaInputVisible = false }"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="插入音视频" :align="{ offset: [0, 0] }">
-          <IconVideoTwo class="handler-item" />
-        </Tooltip>
+        <IconVideoTwo class="handler-item" v-tooltip="'插入音视频'" />
       </Popover>
     </div>
 
@@ -103,9 +79,7 @@
         <span class="text">{{canvasScalePercentage}}</span>
       </Popover>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="适应屏幕">
-        <IconFullScreen class="handler-item viewport-size-adaptation" @click="resetCanvas()" />
-      </Tooltip>
+      <IconFullScreen class="handler-item viewport-size-adaptation" v-tooltip="'适应屏幕'" @click="resetCanvas()" />
     </div>
 
     <Modal
@@ -140,7 +114,6 @@ import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import FileInput from '@/components/FileInput.vue'
 import Modal from '@/components/Modal.vue'
 import {
-  Tooltip,
   Popover,
   Divider,
 } from 'ant-design-vue'

@@ -67,12 +67,8 @@
             <div class="index">{{element.index}}</div>
             <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
             <div class="handler">
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="预览">
-                <IconPlayOne class="handler-btn" @click="runAnimation(element.elId, element.effect, element.duration)" />
-              </Tooltip>
-              <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-                <IconCloseSmall class="handler-btn" @click="deleteAnimation(element.id)" />
-              </Tooltip>
+              <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click="runAnimation(element.elId, element.effect, element.duration)" />
+              <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click="deleteAnimation(element.id)" />
             </div>
           </div>
 
@@ -135,7 +131,6 @@ import {
   InputNumber,
   Divider,
   Button,
-  Tooltip,
   Popover,
   Select,
 } from 'ant-design-vue'

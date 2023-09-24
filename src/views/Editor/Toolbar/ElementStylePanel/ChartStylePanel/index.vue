@@ -94,9 +94,7 @@
         </template>
         <div class="color-btn-wrap" style="flex: 3;">
           <ColorButton :color="color" style="width: 100%;" />
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除">
-            <div class="delete-color-btn" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
-          </Tooltip>
+          <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
         </div>
       </Popover>
     </div>
@@ -163,7 +161,6 @@ import Modal from '@/components/Modal.vue'
 import {
   Divider,
   Button,
-  Tooltip,
   Popover,
   Select,
   Checkbox,

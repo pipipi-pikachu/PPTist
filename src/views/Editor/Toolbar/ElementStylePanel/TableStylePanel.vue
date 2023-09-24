@@ -38,11 +38,9 @@
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <TextColorButton :color="textAttrs.color" style="flex: 1;">
-            <IconText />
-          </TextColorButton>
-        </Tooltip>
+        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color" style="flex: 1;">
+          <IconText />
+        </TextColorButton>
       </Popover>
       <Popover trigger="click">
         <template #content>
@@ -51,43 +49,37 @@
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="单元格填充">
-          <TextColorButton :color="textAttrs.backcolor" style="flex: 1;">
-            <IconFill />
-          </TextColorButton>
-        </Tooltip>
+        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor" style="flex: 1;">
+          <IconFill />
+        </TextColorButton>
       </Popover>
     </ButtonGroup>
 
     <CheckboxButtonGroup class="row">
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="textAttrs.bold"
-          @click="updateTextAttrs({ bold: !textAttrs.bold })"
-        ><IconTextBold /></CheckboxButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="textAttrs.em"
-          @click="updateTextAttrs({ em: !textAttrs.em })"
-        ><IconTextItalic /></CheckboxButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="textAttrs.underline"
-          @click="updateTextAttrs({ underline: !textAttrs.underline })"
-        ><IconTextUnderline /></CheckboxButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
-        <CheckboxButton 
-          style="flex: 1;"
-          :checked="textAttrs.strikethrough"
-          @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
-        ><IconStrikethrough /></CheckboxButton>
-      </Tooltip>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="textAttrs.bold"
+        v-tooltip="'加粗'"
+        @click="updateTextAttrs({ bold: !textAttrs.bold })"
+      ><IconTextBold /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="textAttrs.em"
+        v-tooltip="'斜体'"
+        @click="updateTextAttrs({ em: !textAttrs.em })"
+      ><IconTextItalic /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="textAttrs.underline"
+        v-tooltip="'下划线'"
+        @click="updateTextAttrs({ underline: !textAttrs.underline })"
+      ><IconTextUnderline /></CheckboxButton>
+      <CheckboxButton 
+        style="flex: 1;"
+        :checked="textAttrs.strikethrough"
+        v-tooltip="'删除线'"
+        @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
+      ><IconStrikethrough /></CheckboxButton>
     </CheckboxButtonGroup>
 
     <RadioGroup 
@@ -96,15 +88,9 @@
       :value="textAttrs.align"
       @change="e => updateTextAttrs({ align: e.target.value })"
     >
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
-      </Tooltip>
+      <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
+      <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
+      <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><IconAlignTextRight /></RadioButton>
     </RadioGroup>
 
     <Divider />
@@ -201,7 +187,6 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 import {
   Divider,
   Button,
-  Tooltip,
   Popover,
   Select,
   Switch,

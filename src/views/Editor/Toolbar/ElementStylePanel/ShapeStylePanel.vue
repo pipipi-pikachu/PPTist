@@ -132,11 +132,9 @@
               @update:modelValue="value => emitRichTextCommand('color', value)"
             />
           </template>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-            <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
-              <IconText />
-            </TextColorButton>
-          </Tooltip>
+          <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="flex: 3;">
+            <IconText />
+          </TextColorButton>
         </Popover>
         <Popover trigger="click">
           <template #content>
@@ -145,73 +143,63 @@
               @update:modelValue="value => emitRichTextCommand('backcolor', value)"
             />
           </template>
-          <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
-            <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
-              <IconHighLight />
-            </TextColorButton>
-          </Tooltip>
+          <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="flex: 3;">
+            <IconHighLight />
+          </TextColorButton>
         </Popover>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-          <Button 
-            class="font-size-btn"
-            style="flex: 2;"
-            @click="emitRichTextCommand('fontsize-add')"
-          ><IconFontSize />+</Button>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-          <Button 
-            class="font-size-btn"
-            style="flex: 2;"
-            @click="emitRichTextCommand('fontsize-reduce')"
-          ><IconFontSize />-</Button>
-        </Tooltip>
+        <Button 
+          class="font-size-btn"
+          style="flex: 2;"
+          v-tooltip="'增大字号'"
+          @click="emitRichTextCommand('fontsize-add')"
+        ><IconFontSize />+</Button>
+        <Button 
+          class="font-size-btn"
+          style="flex: 2;"
+          v-tooltip="'减小字号'"
+          @click="emitRichTextCommand('fontsize-reduce')"
+        ><IconFontSize />-</Button>
       </ButtonGroup>
 
       <CheckboxButtonGroup class="row">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="加粗">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.bold"
-            @click="emitRichTextCommand('bold')"
-          ><IconTextBold /></CheckboxButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="斜体">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.em"
-            @click="emitRichTextCommand('em')"
-          ><IconTextItalic /></CheckboxButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="下划线">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.underline"
-            @click="emitRichTextCommand('underline')"
-          ><IconTextUnderline /></CheckboxButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="删除线">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.strikethrough"
-            @click="emitRichTextCommand('strikethrough')"
-          ><IconStrikethrough /></CheckboxButton>
-        </Tooltip>
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.bold"
+          v-tooltip="'加粗'"
+          @click="emitRichTextCommand('bold')"
+        ><IconTextBold /></CheckboxButton>
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.em"
+          v-tooltip="'斜体'"
+          @click="emitRichTextCommand('em')"
+        ><IconTextItalic /></CheckboxButton>
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.underline"
+          v-tooltip="'下划线'"
+          @click="emitRichTextCommand('underline')"
+        ><IconTextUnderline /></CheckboxButton>
+        <CheckboxButton 
+          style="flex: 1;"
+          :checked="richTextAttrs.strikethrough"
+          v-tooltip="'删除线'"
+          @click="emitRichTextCommand('strikethrough')"
+        ><IconStrikethrough /></CheckboxButton>
       </CheckboxButtonGroup>
 
       <CheckboxButtonGroup class="row">
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="清除格式">
-          <CheckboxButton
-            style="flex: 1;"
-            @click="emitRichTextCommand('clear')"
-          ><IconFormat /></CheckboxButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="格式刷">
-          <CheckboxButton
-            style="flex: 1;"
-            :checked="!!textFormatPainter"
-            @click="toggleFormatPainter()"
-          ><IconFormatBrush /></CheckboxButton>
-        </Tooltip>
+        <CheckboxButton
+          style="flex: 1;"
+          v-tooltip="'清除格式'"
+          @click="emitRichTextCommand('clear')"
+        ><IconFormat /></CheckboxButton>
+        <CheckboxButton
+          style="flex: 1;"
+          :checked="!!textFormatPainter"
+          v-tooltip="'格式刷'"
+          @click="toggleFormatPainter()"
+        ><IconFormatBrush /></CheckboxButton>
       </CheckboxButtonGroup>
 
       <Divider  />
@@ -222,15 +210,9 @@
         :value="richTextAttrs.align"
         @change="e => emitRichTextCommand('align', e.target.value)"
       >
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-          <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-          <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-          <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
-        </Tooltip>
+        <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
+        <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
+        <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><IconAlignTextRight /></RadioButton>
       </RadioGroup>
 
       <RadioGroup 
@@ -239,15 +221,9 @@
         :value="textAlign"
         @change="e => updateTextAlign(e.target.value)"
       >
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="顶对齐">
-          <RadioButton value="top" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-          <RadioButton value="middle" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="底对齐">
-          <RadioButton value="bottom" style="flex: 1;"><IconAlignTextBottomOne /></RadioButton>
-        </Tooltip>
+        <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
+        <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
+        <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><IconAlignTextBottomOne /></RadioButton>
       </RadioGroup>
 
       <Divider  />
@@ -285,7 +261,6 @@ import ShapeItemThumbnail from '@/views/Editor/CanvasTool/ShapeItemThumbnail.vue
 import {
   Divider,
   Button,
-  Tooltip,
   Popover,
   Slider,
   Select,

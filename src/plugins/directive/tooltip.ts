@@ -20,7 +20,7 @@ interface BindingValue {
 const TooltipDirective: Directive = {
   mounted(el: CustomHTMLElement, binding: DirectiveBinding<BindingValue | string>) {
     let content = ''
-    let placement: Placement = 'auto'
+    let placement: Placement = 'top'
     let delay: Delay = [300, 0]
 
     if (typeof binding.value === 'string') {

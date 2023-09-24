@@ -86,11 +86,9 @@
             @update:modelValue="value => updateFontStyle('color', value)"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字颜色">
-          <TextColorButton :color="richTextAttrs.color" style="flex: 3;">
-            <IconText />
-          </TextColorButton>
-        </Tooltip>
+        <TextColorButton :color="richTextAttrs.color" style="flex: 3;" v-tooltip="'文字颜色'">
+          <IconText />
+        </TextColorButton>
       </Popover>
       <Popover trigger="click">
         <template #content>
@@ -99,26 +97,22 @@
             @update:modelValue="value => updateFontStyle('backcolor', value)"
           />
         </template>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="文字高亮">
-          <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;">
-            <IconHighLight />
-          </TextColorButton>
-        </Tooltip>
+        <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;" v-tooltip="'文字高亮'">
+          <IconHighLight />
+        </TextColorButton>
       </Popover>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="增大字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="updateFontStyle('fontsize-add', '2')"
-        ><IconFontSize />+</Button>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="减小字号">
-        <Button 
-          class="font-size-btn"
-          style="flex: 2;"
-          @click="updateFontStyle('fontsize-reduce', '2')"
-        ><IconFontSize />-</Button>
-      </Tooltip>
+      <Button 
+        class="font-size-btn"
+        style="flex: 2;"
+        v-tooltip="'增大字号'"
+        @click="updateFontStyle('fontsize-add', '2')"
+      ><IconFontSize />+</Button>
+      <Button 
+        class="font-size-btn"
+        style="flex: 2;"
+        v-tooltip="'减小字号'"
+        @click="updateFontStyle('fontsize-reduce', '2')"
+      ><IconFontSize />-</Button>
     </ButtonGroup>
     <RadioGroup 
       class="row" 
@@ -126,15 +120,9 @@
       :value="richTextAttrs.align"
       @change="e => updateFontStyle('align', e.target.value)"
     >
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="左对齐">
-        <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="居中">
-        <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-      </Tooltip>
-      <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.5" title="右对齐">
-        <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
-      </Tooltip>
+      <RadioButton value="left" style="flex: 1;" v-tooltip="'左对齐'"><IconAlignTextLeft /></RadioButton>
+      <RadioButton value="center" style="flex: 1;" v-tooltip="'居中'"><IconAlignTextCenter /></RadioButton>
+      <RadioButton value="right" style="flex: 1;" v-tooltip="'右对齐'"><IconAlignTextRight /></RadioButton>
     </RadioGroup>
   </div>
 </template>
@@ -155,7 +143,6 @@ import {
   InputNumber,
   Divider,
   Button,
-  Tooltip,
   Popover,
   Select,
   Radio,

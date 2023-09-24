@@ -42,25 +42,13 @@
     >
       <div class="content">
         <div class="tool-btn page-number" @click="slideThumbnailModelVisible = true">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="画笔工具">
-          <IconWrite class="tool-btn" @click="writingBoardToolVisible = true" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="激光笔">
-          <IconMagic class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="计时器">
-          <IconStopwatchStart class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="演讲者视图">
-          <IconListView class="tool-btn" @click="changeViewMode('presenter')" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" :title="fullscreenState ? '退出全屏' : '进入全屏'">
-          <IconOffScreenOne class="tool-btn" v-if="fullscreenState" @click="manualExitFullscreen()" />
-          <IconFullScreenOne class="tool-btn" v-else @click="enterFullscreen()" />
-        </Tooltip>
-        <Tooltip :mouseLeaveDelay="0" :mouseEnterDelay="0.3" title="结束放映">
-          <IconPower class="tool-btn" @click="exitScreening()" />
-        </Tooltip>
+        <IconWrite class="tool-btn" v-tooltip="'画笔工具'" @click="writingBoardToolVisible = true" />
+        <IconMagic class="tool-btn" v-tooltip="'激光笔'" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
+        <IconStopwatchStart class="tool-btn" v-tooltip="'计时器'" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
+        <IconListView class="tool-btn" v-tooltip="'演讲者视图'" @click="changeViewMode('presenter')" />
+        <IconOffScreenOne class="tool-btn" v-tooltip="'退出全屏'" v-if="fullscreenState" @click="manualExitFullscreen()" />
+        <IconFullScreenOne class="tool-btn" v-tooltip="'进入全屏'" v-else @click="enterFullscreen()" />
+        <IconPower class="tool-btn" v-tooltip="'结束放映'" @click="exitScreening()" />
       </div>
     </div>
   </div>
@@ -81,7 +69,6 @@ import ScreenSlideList from './ScreenSlideList.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
-import { Tooltip } from 'ant-design-vue'
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
