@@ -4,8 +4,7 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ANIMATION_CLASS_PREFIX } from '@/configs/animation'
-
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 export default () => {
   const slidesStore = useSlidesStore()

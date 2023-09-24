@@ -12,7 +12,7 @@ import { type AST, toAST } from '@/utils/htmlParser'
 import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 const INCH_PX_RATIO = 100
 const PT_PX_RATIO = 0.75

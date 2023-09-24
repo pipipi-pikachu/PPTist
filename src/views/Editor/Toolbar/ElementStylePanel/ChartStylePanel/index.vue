@@ -135,12 +135,8 @@
     <ElementOutline />
 
     <Modal
-      v-model:open="chartDataEditorVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
-      :width="648"
-      destroyOnClose
+      v-model:visible="chartDataEditorVisible" 
+      :width="640"
     >
       <ChartDataEditor 
         :data="handleChartElement.data"
@@ -163,13 +159,13 @@ import ElementOutline from '../../common/ElementOutline.vue'
 import ColorButton from '../../common/ColorButton.vue'
 import ChartDataEditor from './ChartDataEditor.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Modal from '@/components/Modal.vue'
 import {
   Divider,
   Button,
   Tooltip,
   Popover,
   Select,
-  Modal,
   Checkbox,
 } from 'ant-design-vue'
 const ButtonGroup = Button.Group

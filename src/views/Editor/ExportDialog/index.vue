@@ -1,14 +1,11 @@
 <template>
   <div class="export-dialog">
-    <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': tab.key === dialogForExport }"
-        v-for="tab in tabs" 
-        :key="tab.key"
-        @click="setDialogForExport(tab.key)"
-      >{{tab.label}}</div>
-    </div>
+    <Tabs 
+      :tabs="tabs" 
+      :value="dialogForExport" 
+      card
+      @update:value="key => setDialogForExport(key as DialogForExportTypes)" 
+    />
     <div class="content">
       <component :is="currentDialogComponent" @close="setDialogForExport('')"></component>
     </div>
@@ -26,6 +23,7 @@ import ExportJSON from './ExportJSON.vue'
 import ExportPDF from './ExportPDF.vue'
 import ExportPPTX from './ExportPPTX.vue'
 import ExportSpecificFile from './ExportSpecificFile.vue'
+import Tabs from '@/components/Tabs.vue'
 
 interface TabItem {
   key: DialogForExportTypes
@@ -60,35 +58,7 @@ const currentDialogComponent = computed<unknown>(() => {
 
 <style lang="scss" scoped>
 .export-dialog {
-  margin: -20px -24px;
-}
-.tabs {
-  height: 50px;
-  font-size: 12px;
-  flex-shrink: 0;
-  display: flex;
-  user-select: none;
-  border-top-left-radius: $borderRadius;
-  border-top-right-radius: $borderRadius;
-  overflow: hidden;
-}
-.tab {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: $lightGray;
-  border-bottom: 1px solid $borderColor;
-  cursor: pointer;
-
-  &.active {
-    background-color: #fff;
-    border-bottom-color: #fff;
-  }
-
-  & + .tab {
-    border-left: 1px solid $borderColor;
-  }
+  margin: -20px;
 }
 .content {
   height: 460px;

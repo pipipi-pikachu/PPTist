@@ -45,6 +45,8 @@ const handleInput = (e: Event) => {
   border-radius: $borderRadius;
   padding: 10px;
   transition: border-color .25s;
+  box-sizing: border-box;
+  line-height: 1.675;
   resize: none;
   font-family: -apple-system,BlinkMacSystemFont, 'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
 

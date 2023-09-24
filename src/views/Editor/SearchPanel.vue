@@ -7,16 +7,10 @@
     :top="90"
   >
     <div class="close-btn" @click="close()" @mousedown.stop><IconClose /></div>
-    <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': type === tab.key }" 
-        v-for="tab in tabs" 
-        :key="tab.key"
-        @click="changeTab(tab.key)"
-        @mousedown.stop
-      >{{tab.label}}</div>
-    </div>
+    <Tabs 
+      :tabs="tabs" 
+      v-model:value="type" 
+    />
 
     <div class="content" :class="type" @mousedown.stop>
       <Input class="input" v-model:value="searchWord" placeholder="输入查找内容" @keydown.enter="searchNext()" ref="searchInpRef">
@@ -37,10 +31,11 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
+import Tabs from '@/components/Tabs.vue'
 import {
   Button,
   Input,
@@ -81,34 +76,16 @@ onMounted(() => {
   searchInpRef.value!.focus()
 })
 
-const changeTab = (key: TypeKey) => {
-  type.value = key
+watch(type, () => {
   nextTick(() => {
     searchInpRef.value!.focus()
   })
-}
+})
 </script>
 
 <style lang="scss" scoped>
 .search-panel {
   font-size: 13px;
-}
-.tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom: 1px solid $borderColor;
-  line-height: 1.5;
-  user-select: none;
-}
-.tab {
-  padding: 0 10px 8px;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-
-  &.active {
-    border-bottom: 2px solid $themeColor;
-  }
 }
 .content {
   display: flex;
@@ -143,10 +120,10 @@ const changeTab = (key: TypeKey) => {
   margin-top: 10px;
 }
 .close-btn {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   position: absolute;
-  top: 0;
+  top: 8px;
   right: 0;
   display: flex;
   justify-content: center;

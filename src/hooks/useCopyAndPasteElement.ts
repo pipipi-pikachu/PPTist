@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useDeleteElement from './useDeleteElement'
 

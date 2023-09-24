@@ -1,7 +1,7 @@
 import { useSlidesStore } from '@/store'
 import type { PPTElement, PPTElementLink } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 export default () => {
   const slidesStore = useSlidesStore()

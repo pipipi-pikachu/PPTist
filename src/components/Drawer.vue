@@ -1,12 +1,15 @@
 <template>
   <Teleport to="body">
-    <Transition :name="`drawer-slide-${placement}`">
+    <Transition :name="`drawer-slide-${placement}`"
+      @afterLeave="contentVisible = false"
+      @before-enter="contentVisible = true"
+    >
       <div :class="['drawer', placement]" v-show="visible" :style="{ width: props.width + 'px' }">
         <div class="header">
           <slot name="title"></slot>
           <span class="close-btn" @click="emit('update:visible', false)"><IconClose /></span>
         </div>
-        <div class="content" v-if="visible" :style="contentStyle">
+        <div class="content" v-if="contentVisible" :style="contentStyle">
           <slot></slot>
         </div>
       </div>
@@ -15,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type CSSProperties } from 'vue'
+import { computed, ref, type CSSProperties } from 'vue'
 
 const props = withDefaults(defineProps<{
   visible: boolean
@@ -30,6 +33,8 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{
   (event: 'update:visible', payload: boolean): void
 }>()
+
+const contentVisible = ref(false)
 
 const contentStyle = computed(() => {
   return {

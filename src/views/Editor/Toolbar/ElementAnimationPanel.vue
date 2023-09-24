@@ -7,14 +7,13 @@
         @openChange="visible => handlePopoverVisibleChange(visible)"
       >
         <template #content>
-          <div class="tabs">
-            <div 
-              :class="['tab', tab.key, { 'active': activeTab === tab.key }]"
-              v-for="tab in tabs" 
-              :key="tab.key"
-              @click="activeTab = tab.key"
-            >{{tab.label}}</div>
-          </div>
+          <Tabs 
+            :tabs="tabs" 
+            v-model:value="activeTab" 
+            :tabsStyle="{ marginBottom: '20px' }" 
+            :tabStyle="{ width: '33.333%' }" 
+            spaceAround
+          />
           <template v-for="key in animationTypes">
             <div :class="['animation-pool', key]" :key="key" v-if="activeTab === key">
               <div class="pool-type" :key="effect.name" v-for="effect in animations[key]">
@@ -130,7 +129,7 @@ import {
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-
+import Tabs from '@/components/Tabs.vue'
 import Draggable from 'vuedraggable'
 import {
   InputNumber,
@@ -163,6 +162,7 @@ type AnimationType = 'in' | 'out' | 'attention'
 interface TabItem {
   key: AnimationType
   label: string
+  color: string,
 }
 
 const animationTypes: AnimationType[] = ['in', 'out', 'attention']
@@ -172,9 +172,9 @@ const { handleElement, handleElementId } = storeToRefs(useMainStore())
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
-  { key: 'in', label: '入场' },
-  { key: 'out', label: '退场' },
-  { key: 'attention', label: '强调' },
+  { key: 'in', label: '入场', color: '#68a490' },
+  { key: 'out', label: '退场', color: '#d86344' },
+  { key: 'attention', label: '强调', color: '#e8b76a' },
 ]
 const activeTab = ref('in')
 
@@ -347,33 +347,6 @@ $attentionColor: #e8b76a;
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-.tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom: 1px solid $borderColor;
-  margin-bottom: 20px;
-}
-.tab {
-  width: 33.33%;
-  padding-bottom: 8px;
-  border-bottom: 2px solid transparent;
-  text-align: center;
-  cursor: pointer;
-
-  &.active {
-    border-bottom: 2px solid $themeColor;
-  }
-  &.in.active {
-    border-bottom-color: $inColor;
-  }
-  &.out.active {
-    border-bottom-color: $outColor;
-  }
-  &.attention.active {
-    border-bottom-color: $attentionColor;
-  }
 }
 .element-animation {
   height: 32px;

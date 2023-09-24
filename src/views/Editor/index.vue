@@ -20,13 +20,9 @@
   <SearchPanel v-if="showSearchPanel" />
 
   <Modal
-    :open="!!dialogForExport" 
-    :footer="null" 
-    centered
-    :closable="false"
+    :visible="!!dialogForExport" 
     :width="680"
-    destroyOnClose
-    @cancel="closeExportDialog()"
+    @closed="closeExportDialog()"
   >
     <ExportDialog />
   </Modal>
@@ -48,7 +44,7 @@ import Remark from './Remark/index.vue'
 import ExportDialog from './ExportDialog/index.vue'
 import SelectPanel from './SelectPanel.vue'
 import SearchPanel from './SearchPanel.vue'
-import { Modal } from 'ant-design-vue'
+import Modal from '@/components/Modal.vue'
 
 const mainStore = useMainStore()
 const { dialogForExport, showSelectPanel, showSearchPanel } = storeToRefs(mainStore)

@@ -1,14 +1,14 @@
 <template>
   <div class="element-toolbar">
-    <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': activeTab === item.key }" 
-        v-for="item in tabs" 
-        :key="item.key"
-        @click="activeTab = item.key"
-      >{{item.label}}</div>
-    </div>
+    <Tabs 
+      :tabs="tabs" 
+      v-model:value="activeTab" 
+      :tabsStyle="{ marginBottom: '8px' }" 
+      :tabStyle="{
+        width: '30%',
+        margin: '0 10%',
+      }" 
+    />
 
     <div class="content">
       <div class="style" v-if="activeTab === 'style'">
@@ -134,6 +134,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
+import Tabs from '@/components/Tabs.vue'
 import {
   Divider,
   Button,
@@ -236,27 +237,6 @@ const updateFill = (color: string) => {
   display: flex;
   flex-direction: column;
   animation: slideInUp .15s;
-}
-.tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom: 1px solid $borderColor;
-  font-size: 12px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.tab {
-  width: 30%;
-  padding: 10px 10px 12px;
-  margin: 0 10%;
-  border-bottom: 2px solid transparent;
-  text-align: center;
-  cursor: pointer;
-
-  &.active {
-    border-bottom: 2px solid $themeColor;
-  }
 }
 
 @keyframes slideInUp {

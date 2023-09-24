@@ -109,12 +109,8 @@
     </div>
 
     <Modal
-      v-model:open="latexEditorVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
+      v-model:visible="latexEditorVisible" 
       :width="880"
-      destroyOnClose
     >
       <LaTeXEditor 
         @close="latexEditorVisible = false"
@@ -142,11 +138,11 @@ import TableGenerator from './TableGenerator.vue'
 import MediaInput from './MediaInput.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import FileInput from '@/components/FileInput.vue'
+import Modal from '@/components/Modal.vue'
 import {
   Tooltip,
   Popover,
   Divider,
-  Modal,
 } from 'ant-design-vue'
 
 const mainStore = useMainStore()

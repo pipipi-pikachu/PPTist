@@ -19,14 +19,14 @@ import { HOTKEY_DOC } from '@/configs/hotkey'
   height: 100%;
   overflow: auto;
   font-size: 12px;
-  margin: 0 -24px;
-  padding: 0 24px;
+  margin: 0 -15px;
+  padding: 0 15px 15px;
 }
 .title {
   font-size: 14px;
   font-weight: 700;
   border-bottom: 1px solid #e5e5e5;
-  padding: 24px 0 5px 0;
+  padding: 25px 0 5px 0;
 
   &:first-child {
     padding-top: 0;

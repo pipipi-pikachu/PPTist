@@ -28,12 +28,8 @@
     </div>
 
     <Modal
-      v-model:open="latexEditorVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
+      v-model:visible="latexEditorVisible" 
       :width="880"
-      destroyOnClose
     >
       <LaTeXEditor 
         :value="handleLatexElement.latex"
@@ -55,12 +51,12 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from '../common/ColorButton.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Modal from '@/components/Modal.vue'
 import {
   InputNumber,
   Divider,
   Button,
   Popover,
-  Modal,
 } from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()

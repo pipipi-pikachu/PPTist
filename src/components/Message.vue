@@ -21,11 +21,10 @@
           <div class="title" v-if="title">{{ title }}</div>
           <div class="description">{{ message }}</div>
         </div>
-        <div class="control">
+        <div class="control" v-if="closable">
           <span 
             class="close-btn"
             @click="close()"
-            v-if="closable"
           >
             <IconCloseSmall />
           </span>
@@ -100,7 +99,7 @@ defineExpose({
   }
 }
 .message-container {
-  min-width: 150px;
+  min-width: 50px;
   display: flex;
   align-items: center;
   padding: 10px;

@@ -23,8 +23,7 @@ import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore } from '@/store'
 import type { CreateCustomShapeData } from '@/types/edit'
 import { KEYS } from '@/configs/hotkey'
-
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 const emit = defineEmits<{
   (event: 'created', payload: CreateCustomShapeData): void

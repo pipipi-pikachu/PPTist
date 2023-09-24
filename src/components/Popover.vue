@@ -1,7 +1,7 @@
 <template>
   <div class="popover" ref="triggerRef">
     <div class="popover-content" :style="contentStyle" ref="contentRef">
-      <slot name="content"></slot>
+      <slot name="content" v-if="contentVisible"></slot>
     </div>
     <slot></slot>
   </div>
@@ -31,6 +31,7 @@ const emit = defineEmits<{
 const instance = ref<Instance>()
 const triggerRef = ref<HTMLElement>()
 const contentRef = ref<HTMLElement>()
+const contentVisible = ref(false)
 
 const contentStyle = computed(() => {
   return props.contentStyle || {}
@@ -54,11 +55,15 @@ onMounted(() => {
     offset: [0, 8],
     duration: 200,
     animation: 'scale',
+    onShow() {
+      contentVisible.value = true
+    },
     onShown() {
       if (!props.value) emit('update:value', true)
     },
     onHidden() {
       if (props.value) emit('update:value', false)
+      contentVisible.value = false
     },
   })
 })

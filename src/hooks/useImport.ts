@@ -8,8 +8,7 @@ import { decrypt } from '@/utils/crypto'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
-
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 export default () => {
   const slidesStore = useSlidesStore()

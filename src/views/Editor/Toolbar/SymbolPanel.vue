@@ -1,14 +1,11 @@
 <template>
   <div class="symbol-panel">
-    <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': selectedSymbolKey === item.key }" 
-        v-for="item in SYMBOL_LIST" 
-        :key="item.key"
-        @click="selectedSymbolKey = item.key"
-      >{{item.label}}</div>
-    </div>
+    <Tabs 
+      :tabs="tabs" 
+      v-model:value="selectedSymbolKey" 
+      :tabsStyle="{ marginBottom: '8px' }" 
+      spaceBetween
+    />
     <div class="pool">
       <div class="symbol-item" v-for="(item, index) in symbolPool" :key="index" @click="selectSymbol(item)">
         <div class="symbol">{{item}}</div>
@@ -21,12 +18,18 @@
 import { computed, ref } from 'vue'
 import { SYMBOL_LIST } from '@/configs/symbol'
 import emitter, { EmitterEvents } from '@/utils/emitter'
+import Tabs from '@/components/Tabs.vue'
 
 const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
 const symbolPool = computed(() => {
   const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value)
   return selectedSymbol?.children || []
 })
+
+const tabs = SYMBOL_LIST.map(item => ({
+  key: item.key,
+  label: item.label,
+}))
 
 const selectSymbol = (value: string) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command: 'insert', value } })
@@ -39,22 +42,6 @@ const selectSymbol = (value: string) => {
   display: flex;
   flex-direction: column;
 
-  .tabs {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-bottom: 1px solid $borderColor;
-    margin-bottom: 8px;
-  }
-  .tab {
-    padding: 6px 10px 8px;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-
-    &.active {
-      border-bottom: 2px solid $themeColor;
-    }
-  }
   .pool {
     padding: 5px 12px;
     margin: 0 -12px;

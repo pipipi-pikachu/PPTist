@@ -3,10 +3,13 @@
     <Transition name="modal-fade">
       <div class="modal" ref="modalRef" v-show="visible" tabindex="-1" @keyup.esc="onEsc()">
         <div class="mask" @click="onClickMask()"></div>
-        <Transition name="modal-zoom">
+        <Transition name="modal-zoom"
+          @afterLeave="contentVisible = false"
+          @before-enter="contentVisible = true"
+        >
           <div class="modal-content" v-show="visible" :style="contentStyle">
-            <span class="close-btn" v-if="closeButton" @click="emit('update:visible', false)"><IconClose /></span>
-            <slot v-if="visible"></slot>
+            <span class="close-btn" v-if="closeButton" @click="close()"><IconClose /></span>
+            <slot v-if="contentVisible"></slot>
           </div>
         </Transition>
       </div>
@@ -38,7 +41,10 @@ const modalRef = ref<HTMLDivElement>()
 
 const emit = defineEmits<{
   (event: 'update:visible', payload: boolean): void
+  (event: 'closed'): void
 }>()
+
+const contentVisible = ref(false)
 
 const contentStyle = computed(() => {
   return {
@@ -53,12 +59,17 @@ watch(() => props.visible, () => {
   }
 })
 
+const close = () => {
+  emit('update:visible', false)
+  emit('closed')
+}
+
 const onEsc = () => {
-  if (props.visible && props.closeOnEsc) emit('update:visible', false)
+  if (props.visible && props.closeOnEsc) close()
 }
 
 const onClickMask = () => {
-  if (props.closeOnClickMask) emit('update:visible', false)
+  if (props.closeOnClickMask) close()
 }
 </script>
 
@@ -87,7 +98,7 @@ const onClickMask = () => {
 
 .modal-content {
   z-index: 5001;
-  padding: 15px;
+  padding: 20px;
   background: #fff;
   border-radius: $borderRadius;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
@@ -101,8 +112,8 @@ const onClickMask = () => {
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 10px;
-  right: 12px;
+  top: 16px;
+  right: 16px;
   cursor: pointer;
 }
 

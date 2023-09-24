@@ -74,7 +74,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 const props = withDefaults(defineProps<{
   src: string

@@ -88,12 +88,8 @@
     <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
 
     <Modal
-      v-model:open="linkDialogVisible" 
-      :footer="null" 
-      centered
-      :closable="false"
+      v-model:visible="linkDialogVisible" 
       :width="540"
-      destroyOnClose
     >
       <LinkDialog @close="linkDialogVisible = false" />
     </Modal>
@@ -141,7 +137,7 @@ import ShapeCreateCanvas from './ShapeCreateCanvas.vue'
 import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
-import { Modal } from 'ant-design-vue'
+import Modal from '@/components/Modal.vue'
 
 const mainStore = useMainStore()
 const {

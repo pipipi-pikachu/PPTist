@@ -1,14 +1,10 @@
 <template>
   <div class="link-dialog">
-    <div class="tabs">
-      <div 
-        class="tab" 
-        :class="{ 'active': type === tab.key }" 
-        v-for="tab in tabs" 
-        :key="tab.key"
-        @click="type = tab.key"
-      >{{tab.label}}</div>
-    </div>
+    <Tabs 
+      :tabs="tabs" 
+      v-model:value="type"
+      :tabsStyle="{ marginBottom: '20px' }" 
+    />
 
     <Input 
       class="input"
@@ -32,7 +28,7 @@
 
     <div class="preview" v-if="type === 'slide' && selectedSlide">
       <div>预览：</div>
-      <ThumbnailSlide class="thumbnail" :slide="selectedSlide" :size="490" />
+      <ThumbnailSlide class="thumbnail" :slide="selectedSlide" :size="500" />
     </div>
 
     <div class="btns">
@@ -50,6 +46,7 @@ import type { PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import Tabs from '@/components/Tabs.vue'
 import {
   Button,
   Select,
@@ -112,21 +109,9 @@ const save = () => {
 </script>
 
 <style lang="scss" scoped>
-.tabs {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  border-bottom: 1px solid $borderColor;
-  margin-bottom: 20px;
-}
-.tab {
-  padding: 0 10px 8px;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-
-  &.active {
-    border-bottom: 2px solid $themeColor;
-  }
+.link-dialog {
+  font-size: 13px;
+  line-height: 1.675;
 }
 .input {
   width: 100%;
@@ -136,7 +121,7 @@ const save = () => {
   margin-top: 12px;
 }
 .thumbnail {
-  outline: 1px solid rgba($color: $themeColor, $alpha: .15);
+  border: 1px solid rgba($color: $themeColor, $alpha: .15);
   margin-top: 5px;
 }
 .btns {

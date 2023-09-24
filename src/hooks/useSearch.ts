@@ -2,7 +2,7 @@ import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement } from '@/types/slides'
-import { message } from 'ant-design-vue'
+import message from '@/utils/message'
 
 interface SearchTextResult {
   elType: 'text' | 'shape'

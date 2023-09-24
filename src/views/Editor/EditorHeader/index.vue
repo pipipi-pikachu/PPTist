@@ -65,11 +65,9 @@
     </div>
 
     <Drawer
-      width="320"
+      :width="320"
+      v-model:visible="hotkeyDrawerVisible"
       placement="right"
-      :closable="false"
-      :open="hotkeyDrawerVisible"
-      @close="hotkeyDrawerVisible = false"
     >
       <HotkeyDoc />
     </Drawer>
@@ -90,9 +88,9 @@ import type { DialogForExportTypes } from '@/types/export'
 import HotkeyDoc from './HotkeyDoc.vue'
 import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+import Drawer from '@/components/Drawer.vue'
 import {
   Tooltip,
-  Drawer,
   Popover,
   Input,
 } from 'ant-design-vue'
