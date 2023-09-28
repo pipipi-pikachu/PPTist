@@ -8,7 +8,7 @@
         :max="1"
         :step="0.1"
         :value="opacity"
-        @change="value => updateOpacity(value as number)" 
+        @update:value="value => updateOpacity(value as number)" 
       />
     </div>
   </div>
@@ -19,8 +19,7 @@ import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-
-import { Slider } from 'ant-design-vue'
+import Slider from '@/components/Slider.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

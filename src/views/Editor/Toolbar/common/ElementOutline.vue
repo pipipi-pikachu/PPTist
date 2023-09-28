@@ -4,8 +4,8 @@
       <div style="flex: 2;">启用边框：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="hasOutline" 
-          @change="checked => toggleOutline(checked as boolean)" 
+          :value="hasOutline" 
+          @update:value="value => toggleOutline(value)" 
         />
       </div>
     </div>
@@ -54,11 +54,11 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
+import Switch from '@/components/Switch.vue'
 import {
   InputNumber,
   Popover,
   Select,
-  Switch,
 } from 'ant-design-vue'
 const SelectOption = Select.Option
 

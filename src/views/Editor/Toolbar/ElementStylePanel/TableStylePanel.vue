@@ -122,8 +122,8 @@
       <div style="flex: 2;">启用主题表格：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="hasTheme" 
-          @change="checked => toggleTheme(checked as boolean)" 
+          :value="hasTheme" 
+          @update:value="value => toggleTheme(value)" 
         />
       </div>
     </div>
@@ -131,25 +131,25 @@
     <template v-if="theme">
       <div class="row">
         <Checkbox 
-          @change="e => updateTheme({ rowHeader: e.target.checked })" 
-          :checked="theme.rowHeader" 
+          @update:value="value => updateTheme({ rowHeader: value })" 
+          :value="theme.rowHeader" 
           style="flex: 1;"
         >标题行</Checkbox>
         <Checkbox 
-          @change="e => updateTheme({ rowFooter: e.target.checked })" 
-          :checked="theme.rowFooter" 
+          @update:value="value => updateTheme({ rowFooter: value })" 
+          :value="theme.rowFooter" 
           style="flex: 1;"
         >汇总行</Checkbox>
       </div>
       <div class="row">
         <Checkbox 
-          @change="e => updateTheme({ colHeader: e.target.checked })" 
-          :checked="theme.colHeader" 
+          @update:value="value => updateTheme({ colHeader: value })" 
+          :value="theme.colHeader" 
           style="flex: 1;"
         >第一列</Checkbox>
         <Checkbox 
-          @change="e => updateTheme({ colFooter: e.target.checked })" 
-          :checked="theme.colFooter" 
+          @update:value="value => updateTheme({ colFooter: value })" 
+          :value="theme.colFooter" 
           style="flex: 1;"
         >最后一列</Checkbox>
       </div>
@@ -185,12 +185,12 @@ import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import Switch from '@/components/Switch.vue'
+import Checkbox from '@/components/Checkbox.vue'
 import {
   Button,
   Popover,
   Select,
-  Switch,
-  Checkbox,
   Radio,
   Input,
 } from 'ant-design-vue'

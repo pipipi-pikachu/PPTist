@@ -83,7 +83,7 @@
           :max="360"
           :step="15"
           :value="gradient.rotate"
-          @change="value => updateGradient({ rotate: value as number })" 
+          @update:value="value => updateGradient({ rotate: value as number })" 
         />
       </div>
     </template>
@@ -259,10 +259,10 @@ import CheckboxButton from '@/components/CheckboxButton.vue'
 import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import Slider from '@/components/Slider.vue'
 import {
   Button,
   Popover,
-  Slider,
   Select,
   Radio,
   Input,

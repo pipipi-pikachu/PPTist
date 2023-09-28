@@ -220,7 +220,6 @@ const insertSymbol = (latex: string) => {
     margin-bottom: 5px;
   }
   .formula-item-content {
-    width: 246px;
     height: 60px;
     padding: 5px;
     display: flex;

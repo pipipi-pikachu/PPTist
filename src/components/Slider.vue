@@ -7,15 +7,15 @@
       </template>
       <template v-else>
         <div class="track" :style="{ width: `${end - start}%`, left: `${start}%` }"></div>
-        <div class="thumb" :style="{ left: `${start}%` }" :data-tooltip="tooltipValue"></div>
-        <div class="thumb" :style="{ left: `${end}%` }" :data-tooltip="tooltipValue"></div>
+        <div class="thumb" :style="{ left: `${start}%` }" :data-tooltip="tooltipRangeStartValue"></div>
+        <div class="thumb" :style="{ left: `${end}%` }" :data-tooltip="tooltipRangeEndValue"></div>
       </template>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import NP from 'number-precision'
 
 const getBoundingClientRectViewLeft = (element: HTMLElement) => {
@@ -46,9 +46,38 @@ const percentage = ref(0)
 const start = ref(0)
 const end = ref(0)
 const handler = ref<'start' | 'end'>('end')
-const tooltipValue = ref(0)
+
+const getNewValue = (percentage: number) => {
+  let diff = percentage / 100 * (props.max - props.min)
+  if (props.step >= 1) diff = Math.fround(diff)
+  else {
+    const str = props.step.toString()
+    const match = str.match(/^[0.]*([1-9])/)
+
+    if (match) {
+      const targetNumber = match[1]
+      const position = str.indexOf(targetNumber) - 1
+      if (position > 0) {
+        const accuracy = Math.pow(10, position)
+        diff = Math.fround(diff * accuracy) / accuracy
+      }
+    }
+  }
+  return NP.plus(diff, props.min)
+}
+
+const tooltipValue = computed(() => {
+  return getNewValue(percentage.value)
+})
+const tooltipRangeStartValue = computed(() => {
+  return getNewValue(start.value)
+})
+const tooltipRangeEndValue = computed(() => {
+  return getNewValue(end.value)
+})
 
 watch(() => props.value, () => {
+  if (props.max === props.min) return
   if (typeof props.value === 'number') {
     percentage.value = (props.value - props.min) / (props.max - props.min) * 100
   }
@@ -78,33 +107,12 @@ const getPercentage = (e: MouseEvent | TouchEvent) => {
   return _percentage
 }
 
-const getNewValue = (percentage: number) => {
-  let diff = percentage / 100 * (props.max - props.min)
-  if (props.step >= 1) diff = Math.fround(diff)
-  else {
-    const str = props.step.toString()
-    const match = str.match(/^[0.]*([1-9])/)
-
-    if (match) {
-      const targetNumber = match[1]
-      const position = str.indexOf(targetNumber) - 1
-      if (position > 0) {
-        const accuracy = Math.pow(10, position)
-        diff = Math.fround(diff * accuracy) / accuracy
-      }
-    }
-  }
-  return NP.plus(diff, props.min)
-}
-
 // 双滑块（范围）模式
 const updateRange = (e: MouseEvent | TouchEvent) => {
   const value = getPercentage(e)
 
   if (handler.value === 'start') start.value = value
   else end.value = value
-
-  tooltipValue.value = getNewValue(value)
 }
 
 const updateRangeEnd = (e: MouseEvent | TouchEvent) => {
@@ -127,7 +135,6 @@ const updateRangeEnd = (e: MouseEvent | TouchEvent) => {
 // 单滑块模式
 const updatePercentage = (e: MouseEvent | TouchEvent) => {
   percentage.value = getPercentage(e)
-  tooltipValue.value = getNewValue(percentage.value)
 }
 
 const updatePercentageEnd = (e: MouseEvent | TouchEvent) => {
@@ -207,6 +214,8 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
 }
 
 .bar {
+  width: calc(100% - 10px);
+  margin-left: 5px;
   height: 4px;
   border-radius: 2px;
   position: relative;
@@ -234,6 +243,7 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
   outline: 2px solid $themeColor;
   transform: translate(-50%, -50%);
   border-radius: 50%;
+  z-index: 100;
 
   &:hover, &:active {
     &::before, &::after {
@@ -243,18 +253,17 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
 
   &::before {
     content: attr(data-tooltip);
-    min-width: 44px;
+    min-width: 28px;
     display: none;
     position: absolute;
     left: 50%;
     bottom: 24px;
     transform: translateX(-50%);
-    z-index: 1000;
     background-color: #262626;
     text-align: center;
     color: #fff;
     border-radius: 2px;
-    padding: 8px 5px;
+    padding: 6px 5px;
     font-size: 12px;
   }
   &::after {
@@ -264,7 +273,6 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
     left: 50%;
     bottom: 15px;
     transform: translateX(-50%);
-    z-index: 1000;
     border: 5px solid transparent;
     border-top-color: #262626;
   }

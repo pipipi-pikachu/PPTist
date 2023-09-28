@@ -17,8 +17,8 @@
       <div style="flex: 2;">自动播放：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="handleAudioElement.autoplay" 
-          @change="checked => updateAudio({ autoplay: checked as boolean })" 
+          :value="handleAudioElement.autoplay" 
+          @update:value="value => updateAudio({ autoplay: value })" 
         />
       </div>
     </div>
@@ -27,8 +27,8 @@
       <div style="flex: 2;">循环播放：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="handleAudioElement.loop" 
-          @change="checked => updateAudio({ loop: checked as boolean })" 
+          :value="handleAudioElement.loop" 
+          @update:value="value => updateAudio({ loop: value })" 
         />
       </div>
     </div>
@@ -44,7 +44,8 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from '../common/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
-import { Popover, Switch } from 'ant-design-vue'
+import Switch from '@/components/Switch.vue'
+import { Popover } from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

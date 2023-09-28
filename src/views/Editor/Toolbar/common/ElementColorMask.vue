@@ -1,11 +1,11 @@
 <template>
   <div class="element-color-mask">
     <div class="row">
-      <div style="flex: 1;">重新着色（蒙版）：</div>
+      <div style="flex: 1;">着色（蒙版）：</div>
       <div class="switch-wrapper" style="flex: 1;">
         <Switch 
-          :checked="hasColorMask" 
-          @change="checked => toggleColorMask(checked as boolean)" 
+          :value="hasColorMask" 
+          @update:value="value => toggleColorMask(value)" 
         />
       </div>
     </div>
@@ -30,7 +30,7 @@
           :min="0"
           :step="0.05"
           :value="colorMask.opacity"
-          @change="value => updateColorMask({ opacity: value as number })"
+          @update:value="value => updateColorMask({ opacity: value as number })"
         />
       </div>
     </template>
@@ -46,11 +46,9 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
-import {
-  Popover,
-  Slider,
-  Switch,
-} from 'ant-design-vue'
+import Switch from '@/components/Switch.vue'
+import Slider from '@/components/Slider.vue'
+import { Popover } from 'ant-design-vue'
 
 const defaultColorMask = { color: 'transparent', opacity: 0.3 }
 

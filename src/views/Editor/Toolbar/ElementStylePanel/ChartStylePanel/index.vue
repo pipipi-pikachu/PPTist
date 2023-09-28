@@ -9,37 +9,39 @@
     <template v-if="handleChartElement.chartType === 'line'">
       <div class="row">
         <Checkbox 
-          @change="e => updateOptions({ showArea: e.target.checked })"
-          :checked="showArea" 
+          @update:value="value => updateOptions({ showArea: value })"
+          :value="showArea" 
           style="flex: 1;"
         >面积图样式</Checkbox>
         <Checkbox 
-          @change="e => updateOptions({ showLine: !e.target.checked })"
-          :checked="!showLine" 
+          @update:value="value => updateOptions({ showLine: value })"
+          :value="!showLine" 
           style="flex: 1;"
         >散点图样式</Checkbox>
       </div>
       <div class="row">
         <Checkbox 
-          @change="e => updateOptions({ lineSmooth: e.target.checked })" 
-          :checked="lineSmooth"
+          @update:value="value => updateOptions({ lineSmooth: value })" 
+          :value="lineSmooth"
         >使用平滑曲线</Checkbox>
       </div>
     </template>
     <div class="row" v-if="handleChartElement.chartType === 'bar'">
       <Checkbox 
-        @change="e => updateOptions({ horizontalBars: e.target.checked })" 
-        :checked="horizontalBars"
+        @update:value="value => updateOptions({ horizontalBars: value })" 
+        :value="horizontalBars"
+        style="flex: 1;"
       >条形图样式</Checkbox>
       <Checkbox 
-        @change="e => updateOptions({ stackBars: e.target.checked })" 
-        :checked="stackBars"
+        @update:value="value => updateOptions({ stackBars: value })" 
+        :value="stackBars"
+        style="flex: 1;"
       >堆叠样式</Checkbox>
     </div>
     <div class="row" v-if="handleChartElement.chartType === 'pie'">
       <Checkbox 
-        @change="e => updateOptions({ donut: e.target.checked })" 
-        :checked="donut"
+        @update:value="value => updateOptions({ donut: value })" 
+        :value="donut"
       >环形图样式</Checkbox>
     </div>
 
@@ -159,11 +161,11 @@ import ChartDataEditor from './ChartDataEditor.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
+import Checkbox from '@/components/Checkbox.vue'
 import {
   Button,
   Popover,
   Select,
-  Checkbox,
 } from 'ant-design-vue'
 const ButtonGroup = Button.Group
 const SelectOption = Select.Option

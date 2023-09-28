@@ -87,8 +87,8 @@
           :min="0"
           :max="360"
           :step="15"
-          :value="background.gradientRotate"
-          @change="value => updateBackground({ gradientRotate: value as number })" 
+          :value="background.gradientRotate || 0"
+          @update:value="value => updateBackground({ gradientRotate: value as number })" 
         />
       </div>
     </div>
@@ -212,10 +212,10 @@ import ColorButton from './common/ColorButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import Slider from '@/components/Slider.vue'
 import {
   Button,
   Popover,
-  Slider,
   Select,
 } from 'ant-design-vue'
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select

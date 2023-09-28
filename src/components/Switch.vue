@@ -8,9 +8,6 @@
     @click="handleChange()"
   >
     <span class="switch-core"></span>
-    <span class="switch-text">
-      <slot></slot>
-    </span>
   </span>
 </template>
 
@@ -34,7 +31,8 @@ const handleChange = () => {
 
 <style lang="scss" scoped>
 .switch {
-  color: $textColor;
+  height: 20px;
+  display: inline-block;
   cursor: pointer;
 
   &:not(.disabled).active {
@@ -52,21 +50,10 @@ const handleChange = () => {
   &.disabled {
     cursor: default;
 
-    .switch-text {
-      color: #b7b7b7;
-    }
     .switch-core::after {
       background-color: #f5f5f5;
     }
   }
-}
-.switch-text {
-  margin-left: 5px;
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  font-size: 13px;
-  user-select: none;
 }
 .switch-core {
   margin: 0;

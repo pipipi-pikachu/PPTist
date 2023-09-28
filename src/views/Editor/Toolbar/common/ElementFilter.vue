@@ -4,8 +4,8 @@
       <div style="flex: 2;">启用滤镜：</div>
       <div class="switch-wrapper" style="flex: 3;">
         <Switch 
-          :checked="hasFilters" 
-          @change="checked => toggleFilters(checked as boolean)" 
+          :value="hasFilters" 
+          @update:value="value => toggleFilters(value)" 
         />
       </div>
     </div>
@@ -18,7 +18,7 @@
           :min="0"
           :step="filter.step"
           :value="filter.value"
-          @change="value => updateFilter(filter, value as number)"
+          @update:value="value => updateFilter(filter, value as number)"
         />
       </div>
     </div>
@@ -32,7 +32,8 @@ import { useMainStore, useSlidesStore } from '@/store'
 import type { ImageElementFilterKeys, PPTImageElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import { Slider, Switch } from 'ant-design-vue'
+import Switch from '@/components/Switch.vue'
+import Slider from '@/components/Slider.vue'
 
 interface FilterOption {
   label: string
@@ -116,7 +117,7 @@ const toggleFilters = (checked: boolean) => {
   font-size: 12px;
 }
 .filter-item {
-  padding: 8px 0;
+  padding: 6px 0;
   display: flex;
   justify-content: center;
   align-items: center;

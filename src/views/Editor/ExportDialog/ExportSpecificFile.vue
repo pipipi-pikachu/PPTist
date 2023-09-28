@@ -40,9 +40,9 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
+import Slider from '@/components/Slider.vue'
 import {
   Button,
-  Slider,
   Radio,
 } from 'ant-design-vue'
 const { Group: RadioGroup, Button: RadioButton } = Radio
@@ -95,7 +95,6 @@ const selectedSlides = computed(() => {
   .title {
     width: 100px;
     position: relative;
-    line-height: 1;
 
     &::after {
       content: attr(data-range);

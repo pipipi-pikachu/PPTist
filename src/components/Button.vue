@@ -47,7 +47,7 @@ const handleClick = () => {
   color: $textColor;
   border-radius: $borderRadius;
   user-select: none;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   cursor: pointer;
 
   &.default {

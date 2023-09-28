@@ -73,7 +73,7 @@ const handleChange = (e: Event) => {
   height: 16px;
   background-color: #fff;
   vertical-align: middle;
-  transition: border-color .25s cubic-bezier(.71, -.46, .29, 1.46), background-color .25s cubic-bezier(.71, -.46, .29, 1.46);
+  transition: border-color .15s cubic-bezier(.71, -.46, .29, 1.46), background-color .15s cubic-bezier(.71, -.46, .29, 1.46);
   z-index: 1;
 
   &::after {

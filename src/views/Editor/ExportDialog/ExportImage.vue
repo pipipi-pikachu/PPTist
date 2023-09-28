@@ -59,7 +59,7 @@
       <div class="row">
         <div class="title">忽略在线字体：</div>
         <div class="config-item">
-          <Switch v-model:checked="ignoreWebfont" v-tooltip="'导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。'" />
+          <Switch v-model:value="ignoreWebfont" v-tooltip="'导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。'" />
         </div>
       </div>
     </div>
@@ -81,10 +81,10 @@ import useExport from '@/hooks/useExport'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+import Switch from '@/components/Switch.vue'
+import Slider from '@/components/Slider.vue'
 import {
   Button,
-  Slider,
-  Switch,
   Radio,
 } from 'ant-design-vue'
 const { Group: RadioGroup, Button: RadioButton } = Radio
@@ -156,7 +156,6 @@ const expImage = () => {
   .title {
     width: 100px;
     position: relative;
-    line-height: 1;
 
     &::after {
       content: attr(data-range);

@@ -114,9 +114,7 @@ import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import FileInput from '@/components/FileInput.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
-import {
-  Popover,
-} from 'ant-design-vue'
+import { Popover } from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const { creatingElement, creatingCustomShape } = storeToRefs(mainStore)

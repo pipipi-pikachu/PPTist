@@ -45,7 +45,7 @@
       <div class="row">
         <div class="title">边缘留白：</div>
         <div class="config-item">
-          <Switch v-model:checked="padding" />
+          <Switch v-model:value="padding" />
         </div>
       </div>
       <div class="tip">
@@ -67,10 +67,10 @@ import { useSlidesStore } from '@/store'
 import { print } from '@/utils/print'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
+import Switch from '@/components/Switch.vue'
 import {
   Button,
   Select,
-  Switch,
   Radio,
 } from 'ant-design-vue'
 const { Group: RadioGroup, Button: RadioButton } = Radio
@@ -139,7 +139,6 @@ const expPDF = () => {
 
   .title {
     width: 100px;
-    line-height: 1;
   }
   .config-item {
     flex: 1;

@@ -26,21 +26,18 @@
       <div class="row">
         <div class="title">忽略音频/视频：</div>
         <div class="config-item">
-          <Switch v-model:checked="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭【忽略音视频】选项，但要注意这将会大幅增加导出用时。'" />
+          <Switch v-model:value="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭【忽略音视频】选项，但要注意这将会大幅增加导出用时。'" />
         </div>
       </div>
       <div class="row">
         <div class="title">覆盖默认母版：</div>
         <div class="config-item">
-          <Switch v-model:checked="masterOverwrite" />
+          <Switch v-model:value="masterOverwrite" />
         </div>
       </div>
 
       <div class="tip" v-if="!ignoreMedia">
-        提示：
-        1. 支持导出的视频格式：avi、mp4、m4v、mov、wmv；
-        2. 支持导出的音频格式：mp3、m4a、mp4、wav、wma；
-        3. 跨域资源无法导出。
+        提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。
       </div>
     </div>
     <div class="btns">
@@ -59,10 +56,10 @@ import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
 
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+import Switch from '@/components/Switch.vue'
+import Slider from '@/components/Slider.vue'
 import {
   Button,
-  Slider,
-  Switch,
   Radio,
 } from 'ant-design-vue'
 const { Group: RadioGroup, Button: RadioButton } = Radio
@@ -117,7 +114,6 @@ const selectedSlides = computed(() => {
   .title {
     width: 100px;
     position: relative;
-    line-height: 1;
 
     &::after {
       content: attr(data-range);
@@ -134,7 +130,7 @@ const selectedSlides = computed(() => {
     font-size: 12px;
     color: #aaa;
     line-height: 1.8;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 }
 .btns {

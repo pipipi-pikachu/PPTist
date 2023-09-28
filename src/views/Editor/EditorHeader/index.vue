@@ -86,9 +86,7 @@ import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Drawer from '@/components/Drawer.vue'
 import Input from '@/components/Input.vue'
-import {
-  Popover,
-} from 'ant-design-vue'
+import { Popover } from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

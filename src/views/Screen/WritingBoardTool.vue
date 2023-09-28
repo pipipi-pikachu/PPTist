@@ -94,10 +94,8 @@ import { db } from '@/utils/database'
 
 import WritingBoard from '@/components/WritingBoard.vue'
 import MoveablePanel from '@/components/MoveablePanel.vue'
-import {
-  Popover,
-  Slider,
-} from 'ant-design-vue'
+import Slider from '@/components/Slider.vue'
+import { Popover } from 'ant-design-vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 

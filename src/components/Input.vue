@@ -52,7 +52,6 @@ const focused = ref(false)
 
 const handleInput = (e: Event) => {
   emit('update:value', (e.target as HTMLInputElement).value)
-  emit('input', e)
 }
 const handleBlur = (e: Event) => {
   focused.value = false
