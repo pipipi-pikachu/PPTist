@@ -213,8 +213,8 @@ import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Slider from '@/components/Slider.vue'
+import Button from '@/components/Button.vue'
 import {
-  Button,
   Popover,
   Select,
 } from 'ant-design-vue'

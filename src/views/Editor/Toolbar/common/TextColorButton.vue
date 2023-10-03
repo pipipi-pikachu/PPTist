@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 defineProps<{
   color: string
@@ -17,7 +17,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 .text-color-btn {
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;

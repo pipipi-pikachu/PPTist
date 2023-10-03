@@ -27,33 +27,33 @@
     <Divider />
 
     <div class="row">
-      <InputNumber
+      <NumberInput
         prefix="水平："
         :step="5"
         :value="left"
-        @change="value => updateLeft(value as number)"
+        @update:value="value => updateLeft(value)"
         style="flex: 4;"
       />
       <div style="flex: 1;"></div>
-      <InputNumber
+      <NumberInput
         prefix="垂直："
         :step="5"
         :value="top"
-        @change="value => updateTop(value as number)"
+        @update:value="value => updateTop(value)"
         style="flex: 4;"
       />
     </div>
 
     <template v-if="handleElement!.type !== 'line'">
       <div class="row">
-        <InputNumber
+        <NumberInput
           prefix="宽度："
           :min="minSize"
           :max="1500"
           :step="5"
           :disabled="isVerticalText"
           :value="width"
-          @change="value => updateWidth(value as number)"
+          @update:value="value => updateWidth(value)"
           style="flex: 4;"
         />
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
@@ -61,14 +61,14 @@
           <IconUnlock style="flex: 1;" class="icon-btn" v-tooltip="'宽高比锁定'" @click="updateFixedRatio(true)" v-else />
         </template>
         <div style="flex: 1;" v-else></div>
-        <InputNumber 
+        <NumberInput 
           prefix="高度："
           :min="minSize"
           :max="800"
           :step="5"
           :disabled="isHorizontalText || handleElement!.type === 'table'" 
           :value="height" 
-          @change="value => updateHeight(value as number)"
+          @update:value="value => updateHeight(value)"
           style="flex: 4;"
         />
       </div>
@@ -78,13 +78,13 @@
       <Divider />
 
       <div class="row">
-        <InputNumber 
+        <NumberInput 
           prefix="旋转："
           :min="-180"
           :max="180"
           :step="5"
           :value="rotate" 
-          @change="value => updateRotate(value as number)" 
+          @update:value="value => updateRotate(value)" 
           style="flex: 8;" 
         />
         <div style="flex: 1;"></div>
@@ -107,12 +107,9 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import Divider from '@/components/Divider.vue'
-
-import {
-  InputNumber,
-  Button,
-} from 'ant-design-vue'
-const ButtonGroup = Button.Group
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import NumberInput from '@/components/NumberInput.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())

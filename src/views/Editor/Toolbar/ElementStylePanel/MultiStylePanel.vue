@@ -40,9 +40,9 @@
     </div>
     <div class="row">
       <div style="flex: 2;">边框粗细：</div>
-      <InputNumber 
-        :value="outline.width"
-        @change="value => updateOutline({ width: value as number })" 
+      <NumberInput 
+        :value="outline.width || 0"
+        @update:value="value => updateOutline({ width: value })" 
         style="flex: 3;" 
       />
     </div>
@@ -118,7 +118,7 @@
       class="row" 
       button-style="solid" 
       :value="richTextAttrs.align"
-      @change="e => updateFontStyle('align', e.target.value)"
+      @update:value="value => updateFontStyle('align', value)"
     >
       <RadioButton value="left" style="flex: 1;" v-tooltip="'左对齐'"><IconAlignTextLeft /></RadioButton>
       <RadioButton value="center" style="flex: 1;" v-tooltip="'居中'"><IconAlignTextCenter /></RadioButton>
@@ -140,18 +140,18 @@ import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
+import NumberInput from '@/components/NumberInput.vue'
 import {
-  InputNumber,
-  Button,
   Popover,
   Select,
-  Radio,
   Input,
 } from 'ant-design-vue'
-const { Button: RadioButton, Group: RadioGroup } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
-const ButtonGroup = Button.Group
 
 const slidesStore = useSlidesStore()
 const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())

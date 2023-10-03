@@ -23,7 +23,7 @@ import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import FileInput from '@/components/FileInput.vue'
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

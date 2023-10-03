@@ -118,12 +118,12 @@
             </div>
           </div>
         </template>
-        <Button class="no-padding" style="flex: 2;">推荐主题</Button>
+        <Button class="no-padding" style="width: 40%;">推荐主题</Button>
       </Popover>
       <Button 
         class="no-padding" 
         :disabled="themeColor.length >= 10" 
-        style="flex: 3;" 
+        style="width: 60%;" 
         @click="addThemeColor()"
       >
         <IconPlus class="btn-icon" /> 添加主题色
@@ -162,12 +162,12 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
 import {
-  Button,
   Popover,
   Select,
 } from 'ant-design-vue'
-const ButtonGroup = Button.Group
 const SelectOption = Select.Option
 
 const presetChartThemes = [

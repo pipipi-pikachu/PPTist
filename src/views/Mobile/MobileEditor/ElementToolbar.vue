@@ -12,7 +12,7 @@
 
     <div class="content">
       <div class="style" v-if="activeTab === 'style'">
-        <CheckboxButtonGroup class="row">
+        <ButtonGroup class="row">
           <CheckboxButton 
             style="flex: 1;"
             :checked="richTextAttrs.bold"
@@ -33,7 +33,7 @@
             :checked="richTextAttrs.strikethrough"
             @click="emitRichTextCommand('strikethrough')"
           ><IconStrikethrough /></CheckboxButton>
-        </CheckboxButtonGroup>
+        </ButtonGroup>
 
         <ButtonGroup class="row">
           <Button 
@@ -52,7 +52,7 @@
           class="row" 
           button-style="solid" 
           :value="richTextAttrs.align"
-          @change="e => emitRichTextCommand('align', e.target.value)"
+          @update:value="value => emitRichTextCommand('align', value)"
         >
           <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
           <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
@@ -133,15 +133,12 @@ import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
-import {
-  Button,
-  Radio,
-} from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
-const ButtonGroup = Button.Group
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
 
 interface TabItem {
   key: 'style' | 'common'

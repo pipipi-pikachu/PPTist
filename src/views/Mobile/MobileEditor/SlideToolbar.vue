@@ -41,8 +41,8 @@ import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import MobileThumbnails from '../MobileThumbnails.vue'
 import FileInput from '@/components/FileInput.vue'
-import { Button } from 'ant-design-vue'
-const ButtonGroup = Button.Group
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
 
 const slidesStore = useSlidesStore()
 const { viewportRatio, currentSlide } = storeToRefs(slidesStore)
@@ -121,6 +121,7 @@ const handleInputMark = (e: Event) => {
     outline: 0;
     padding: 8px 10px;
     font-size: 12px;
+    box-sizing: border-box;
 
     @include absolute-0();
   }

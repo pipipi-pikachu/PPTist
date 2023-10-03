@@ -15,8 +15,7 @@
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
-
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 const emit = defineEmits<{
   (event: 'close'): void

@@ -55,7 +55,7 @@
       </Popover>
     </ButtonGroup>
 
-    <CheckboxButtonGroup class="row">
+    <ButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.bold"
@@ -80,13 +80,13 @@
         v-tooltip="'删除线'"
         @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
       ><IconStrikethrough /></CheckboxButton>
-    </CheckboxButtonGroup>
+    </ButtonGroup>
 
     <RadioGroup 
       class="row" 
       button-style="solid" 
       :value="textAttrs.align"
-      @change="e => updateTextAttrs({ align: e.target.value })"
+      @update:value="value => updateTextAttrs({ align: value as 'left' | 'center' | 'right' })"
     >
       <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
@@ -182,22 +182,21 @@ import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Switch from '@/components/Switch.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
 import {
-  Button,
   Popover,
   Select,
-  Radio,
   Input,
 } from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
-const ButtonGroup = Button.Group
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())
@@ -412,7 +411,7 @@ const setTableCol = (value: number) => {
   align-items: center;
 
   .btn {
-    padding: 4px 8px;
+    padding: 0 8px;
   }
 
   .count-text {

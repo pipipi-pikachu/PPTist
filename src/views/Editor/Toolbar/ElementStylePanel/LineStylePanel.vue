@@ -25,9 +25,9 @@
     </div>
     <div class="row">
       <div style="flex: 2;">线条宽度：</div>
-      <InputNumber 
+      <NumberInput 
         :value="handleLineElement.width" 
-        @change="value => updateLine({ width: value as number })" 
+        @update:value="value => updateLine({ width: value })" 
         style="flex: 3;" 
       />
     </div>
@@ -73,8 +73,8 @@ import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import NumberInput from '@/components/NumberInput.vue'
 import {
-  InputNumber,
   Popover,
   Select,
 } from 'ant-design-vue'

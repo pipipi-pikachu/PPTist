@@ -161,7 +161,7 @@
         ><IconFontSize />-</Button>
       </ButtonGroup>
 
-      <CheckboxButtonGroup class="row">
+      <ButtonGroup class="row">
         <CheckboxButton 
           style="flex: 1;"
           :checked="richTextAttrs.bold"
@@ -186,9 +186,9 @@
           v-tooltip="'删除线'"
           @click="emitRichTextCommand('strikethrough')"
         ><IconStrikethrough /></CheckboxButton>
-      </CheckboxButtonGroup>
+      </ButtonGroup>
 
-      <CheckboxButtonGroup class="row">
+      <ButtonGroup class="row">
         <CheckboxButton
           style="flex: 1;"
           v-tooltip="'清除格式'"
@@ -200,7 +200,7 @@
           v-tooltip="'格式刷'"
           @click="toggleFormatPainter()"
         ><IconFormatBrush /></CheckboxButton>
-      </CheckboxButtonGroup>
+      </ButtonGroup>
 
       <Divider  />
 
@@ -208,7 +208,7 @@
         class="row" 
         button-style="solid" 
         :value="richTextAttrs.align"
-        @change="e => emitRichTextCommand('align', e.target.value)"
+        @update:value="value => emitRichTextCommand('align', value)"
       >
         <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
         <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
@@ -219,7 +219,7 @@
         class="row" 
         button-style="solid" 
         :value="textAlign"
-        @change="e => updateTextAlign(e.target.value)"
+        @update:value="value => updateTextAlign(value as 'top' | 'middle' | 'bottom')"
       >
         <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
         <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
@@ -256,21 +256,20 @@ import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
 import ShapeItemThumbnail from '@/views/Editor/CanvasTool/ShapeItemThumbnail.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Slider from '@/components/Slider.vue'
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
 import {
-  Button,
   Popover,
   Select,
-  Radio,
   Input,
 } from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = Input.Group
-const ButtonGroup = Button.Group
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

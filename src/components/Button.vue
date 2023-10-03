@@ -8,6 +8,7 @@
       'primary': !disabled && type === 'primary',
       'checkbox': !disabled && type === 'checkbox',
       'radio': !disabled && type === 'radio',
+      'small': size === 'small',
     }"
     @click="handleClick()"
   >
@@ -20,10 +21,12 @@ const props = withDefaults(defineProps<{
   checked?: boolean
   disabled?: boolean
   type?: 'default' | 'primary' | 'checkbox' | 'radio'
+  size?: 'small' | 'normal'
 }>(), {
   checked: false,
   disabled: false,
   type: 'default',
+  size: 'normal',
 })
 
 const emit = defineEmits<{
@@ -49,6 +52,13 @@ const handleClick = () => {
   user-select: none;
   letter-spacing: 1px;
   cursor: pointer;
+
+  &.small {
+    height: 24px;
+    line-height: 24px;
+    padding: 0 7px;
+    letter-spacing: 0;
+  }
 
   &.default {
     background-color: #fff;

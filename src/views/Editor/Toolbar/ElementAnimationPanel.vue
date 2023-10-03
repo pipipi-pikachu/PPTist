@@ -77,12 +77,12 @@
 
             <div class="config-item">
               <div style="flex: 3;">持续时长：</div>
-              <InputNumber 
+              <NumberInput 
                 :min="500"
                 :max="3000"
                 :step="500"
                 :value="element.duration" 
-                @change="value => updateElementAnimationDuration(element.id, value as number)" 
+                @update:value="value => updateElementAnimationDuration(element.id, value)" 
                 style="flex: 5;" 
               />
             </div>
@@ -127,10 +127,10 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
+import Button from '@/components/Button.vue'
 import Draggable from 'vuedraggable'
+import NumberInput from '@/components/NumberInput.vue'
 import {
-  InputNumber,
-  Button,
   Popover,
   Select,
 } from 'ant-design-vue'

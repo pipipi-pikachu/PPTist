@@ -59,8 +59,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { ChartData } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
-
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 const props = defineProps<{
   data: ChartData

@@ -70,11 +70,13 @@ watch(() => props.value, () => {
   if (props.value !== number.value) {
     number.value = props.value
   }
+}, {
+  immediate: true,
 })
 
 watch(number, () => {
   let value = +number.value
-  if (isNaN(value)) value = 0
+  if (isNaN(value)) value = props.min
   else if (value > props.max) value = props.max
   else if (value < props.min) value = props.min
 

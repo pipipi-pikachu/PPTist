@@ -38,7 +38,7 @@ import MoveablePanel from '@/components/MoveablePanel.vue'
 import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
 import Input from '@/components/Input.vue'
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 type TypeKey = 'search' | 'replace'
 interface TabItem {

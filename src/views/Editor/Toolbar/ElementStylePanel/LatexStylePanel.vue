@@ -18,11 +18,11 @@
     </div>
     <div class="row">
       <div style="flex: 2;">粗细：</div>
-      <InputNumber 
+      <NumberInput 
         :min="1"
         :max="3"
         :value="handleLatexElement.strokeWidth" 
-        @change="value => updateLatex({ strokeWidth: value as number })" 
+        @update:value="value => updateLatex({ strokeWidth: value })" 
         style="flex: 3;" 
       />
     </div>
@@ -53,11 +53,9 @@ import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
-import {
-  InputNumber,
-  Button,
-  Popover,
-} from 'ant-design-vue'
+import Button from '@/components/Button.vue'
+import NumberInput from '@/components/NumberInput.vue'
+import { Popover } from 'ant-design-vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

@@ -58,11 +58,9 @@ import useExport from '@/hooks/useExport'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Switch from '@/components/Switch.vue'
 import Slider from '@/components/Slider.vue'
-import {
-  Button,
-  Radio,
-} from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
+import Button from '@/components/Button.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
 
 const emit = defineEmits<{
   (event: 'close'): void

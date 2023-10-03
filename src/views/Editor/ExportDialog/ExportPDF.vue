@@ -27,8 +27,8 @@
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 50%;" value="all">全部幻灯片</RadioButton>
-          <RadioButton style="width: 50%;" value="current">当前幻灯片</RadioButton>
+          <RadioButton style="width: 50%;" value="all">全部</RadioButton>
+          <RadioButton style="width: 50%;" value="current">当前页</RadioButton>
         </RadioGroup>
       </div>
       <div class="row">
@@ -68,12 +68,10 @@ import { print } from '@/utils/print'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Switch from '@/components/Switch.vue'
-import {
-  Button,
-  Select,
-  Radio,
-} from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
+import Button from '@/components/Button.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
+import { Select } from 'ant-design-vue'
 const SelectOption = Select.Option
 
 const emit = defineEmits<{
@@ -157,6 +155,7 @@ const expPDF = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 
   .export {
     flex: 1;

@@ -8,7 +8,7 @@
     <ElementFlip />
 
     <ButtonGroup class="row">
-      <Button style="flex: 5;" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
+      <Button style="width: calc(100% / 6 * 5);" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
       <Popover trigger="click" v-model:open="clipPanelVisible">
         <template #content>
           <div class="clip">
@@ -24,12 +24,12 @@
               </div>
             </div>
 
-            <template v-for="type in ratioClipOptions" :key="type.label">
-              <div class="title" v-if="type.label">按{{type.label}}：</div>
+            <template v-for="typeItem in ratioClipOptions" :key="typeItem.label">
+              <div class="title" v-if="typeItem.label">按{{typeItem.label}}：</div>
               <ButtonGroup class="row">
                 <Button 
                   style="flex: 1;"
-                  v-for="item in type.children"
+                  v-for="item in typeItem.children"
                   :key="item.key"
                   @click="presetImageClip('rect', item.ratio)"
                 >{{item.key}}</Button>
@@ -37,7 +37,7 @@
             </template>
           </div>
         </template>
-        <Button class="no-padding" style="flex: 1;"><IconDown /></Button>
+        <Button class="popover-btn" style="width: calc(100% / 6);"><IconDown /></Button>
       </Popover>
     </ButtonGroup>
 
@@ -75,11 +75,9 @@ import ElementFilter from '../common/ElementFilter.vue'
 import ElementColorMask from '../common/ElementColorMask.vue'
 import FileInput from '@/components/FileInput.vue'
 import Divider from '@/components/Divider.vue'
-import {
-  Button,
-  Popover,
-} from 'ant-design-vue'
-const ButtonGroup = Button.Group
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import { Popover } from 'ant-design-vue'
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
@@ -321,5 +319,8 @@ const setBackgroundImage = () => {
     height: 40px;
     background-color: #e1e1e1;
   }
+}
+.popover-btn {
+  padding: 0 3px;
 }
 </style>

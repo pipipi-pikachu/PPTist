@@ -24,7 +24,7 @@
     }
 
     &:hover {
-      &.default + .button.default {
+      &.default + .button {
         border-left-color: $themeColor;
       }
     }

@@ -35,9 +35,9 @@
       </div>
       <div class="row">
         <div style="flex: 2;">边框粗细：</div>
-        <InputNumber 
-          :value="outline.width" 
-          @change="value => updateOutline({ width: value as number })" 
+        <NumberInput 
+          :value="outline.width || 0" 
+          @update:value="value => updateOutline({ width: value })" 
           style="flex: 3;" 
         />
       </div>
@@ -55,8 +55,8 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
+import NumberInput from '@/components/NumberInput.vue'
 import {
-  InputNumber,
   Popover,
   Select,
 } from 'ant-design-vue'

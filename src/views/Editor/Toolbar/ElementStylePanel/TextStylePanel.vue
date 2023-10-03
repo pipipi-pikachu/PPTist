@@ -80,7 +80,7 @@
       ><IconFontSize />-</Button>
     </ButtonGroup>
 
-    <CheckboxButtonGroup class="row">
+    <ButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
         :checked="richTextAttrs.bold"
@@ -105,9 +105,9 @@
         v-tooltip="'删除线'"
         @click="emitRichTextCommand('strikethrough')"
       ><IconStrikethrough /></CheckboxButton>
-    </CheckboxButtonGroup>
+    </ButtonGroup>
 
-    <CheckboxButtonGroup class="row">
+    <ButtonGroup class="row">
       <CheckboxButton
         style="flex: 1;"
         :checked="richTextAttrs.superscript"
@@ -132,9 +132,9 @@
         v-tooltip="'引用'"
         @click="emitRichTextCommand('blockquote')"
       ><IconQuote /></CheckboxButton>
-    </CheckboxButtonGroup>
+    </ButtonGroup>
 
-    <CheckboxButtonGroup class="row">
+    <ButtonGroup class="row">
       <CheckboxButton
         style="flex: 1;"
         v-tooltip="'清除格式'"
@@ -163,7 +163,7 @@
           @click="openLinkPopover()"
         ><IconLinkOne /></CheckboxButton>
       </Popover>
-    </CheckboxButtonGroup>
+    </ButtonGroup>
 
     <Divider />
 
@@ -171,7 +171,7 @@
       class="row" 
       button-style="solid" 
       :value="richTextAttrs.align"
-      @change="e => emitRichTextCommand('align', e.target.value)"
+      @update:value="value => emitRichTextCommand('align', value)"
     >
       <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
@@ -317,21 +317,20 @@ import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
-import CheckboxButtonGroup from '@/components/ButtonGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Input from '@/components/Input.vue'
+import Button from '@/components/Button.vue'
+import ButtonGroup from '@/components/ButtonGroup.vue'
+import RadioButton from '@/components/RadioButton.vue'
+import RadioGroup from '@/components/RadioGroup.vue'
 import {
-  Button,
   Popover,
   Select,
-  Radio,
   Input as AntInput,
 } from 'ant-design-vue'
-const { Group: RadioGroup, Button: RadioButton } = Radio
 const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
 const InputGroup = AntInput.Group
-const ButtonGroup = Button.Group
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗

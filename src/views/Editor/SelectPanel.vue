@@ -86,7 +86,7 @@ import useOrderElement from '@/hooks/useOrderElement'
 import { ElementOrderCommands } from '@/types/edit'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
-import { Button } from 'ant-design-vue'
+import Button from '@/components/Button.vue'
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()

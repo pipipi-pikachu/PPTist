@@ -48,10 +48,8 @@ import useLink from '@/hooks/useLink'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
-import {
-  Button,
-  Select,
-} from 'ant-design-vue'
+import Button from '@/components/Button.vue'
+import { Select } from 'ant-design-vue'
 const SelectOption = Select.Option
 
 type TypeKey = 'web' | 'slide'

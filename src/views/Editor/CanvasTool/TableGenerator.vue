@@ -27,7 +27,7 @@
     <div class="custom" v-else>
       <div class="row">
         <div class="label" style="flex: 1;">行数：</div>
-        <InputNumber
+        <NumberInput
           :min="1"
           :max="20"
           v-model:value="customRow"
@@ -36,7 +36,7 @@
       </div>
       <div class="row">
         <div class="label" style="flex: 1;">列数：</div>
-        <InputNumber
+        <NumberInput
           :min="1"
           :max="20"
           v-model:value="customCol"
@@ -54,10 +54,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import message from '@/utils/message'
-import {
-  InputNumber,
-  Button,
-} from 'ant-design-vue'
+import Button from '@/components/Button.vue'
+import NumberInput from '@/components/NumberInput.vue'
 
 interface InsertData {
   row: number

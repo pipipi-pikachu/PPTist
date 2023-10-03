@@ -26,10 +26,10 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Button } from 'ant-design-vue'
 import message from '@/utils/message'
 import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
+import Button from '@/components/Button.vue'
 
 type TypeKey = 'video' | 'audio'
 interface TabItem {
