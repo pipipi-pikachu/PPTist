@@ -1,21 +1,19 @@
 <template>
   <div class="editor-header">
     <div class="left">
-      <Popover trigger="click" placement="bottomLeft" v-model:open="mainMenuVisible">
+      <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <div class="popover-list">
-            <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
-              <div class="popover-item" @click="mainMenuVisible = false">导入 pptist 文件</div>
-            </FileInput>
-            <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => importPPTXFile(files)">
-              <div class="popover-item" @click="mainMenuVisible = false">导入 pptx 文件（测试版）</div>
-            </FileInput>
-            <div class="popover-item" @click="setDialogForExport('pptx')">导出文件</div>
-            <div class="popover-item" @click="resetSlides(); mainMenuVisible = false">重置幻灯片</div>
-            <div class="popover-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">意见反馈</div>
-            <div class="popover-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">常见问题</div>
-            <div class="popover-item" @click="mainMenuVisible = false; hotkeyDrawerVisible = true">快捷键</div>
-          </div>
+          <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
+            <PopoverMenuItem @click="mainMenuVisible = false">导入 pptist 文件</PopoverMenuItem>
+          </FileInput>
+          <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => importPPTXFile(files)">
+            <PopoverMenuItem @click="mainMenuVisible = false">导入 pptx 文件（测试版）</PopoverMenuItem>
+          </FileInput>
+          <PopoverMenuItem @click="setDialogForExport('pptx')">导出文件</PopoverMenuItem>
+          <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">重置幻灯片</PopoverMenuItem>
+          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">意见反馈</PopoverMenuItem>
+          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">常见问题</PopoverMenuItem>
+          <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">快捷键</PopoverMenuItem>
         </template>
         <div class="menu-item"><IconHamburgerButton class="icon" /></div>
       </Popover>
@@ -42,12 +40,10 @@
         <div class="menu-item" v-tooltip="'幻灯片放映'" @click="enterScreening()">
           <IconPpt class="icon" />
         </div>
-        <Popover trigger="click">
+        <Popover trigger="click" center>
           <template #content>
-            <div class="popover-list">
-              <div class="popover-item" @click="enterScreeningFromStart()">从头开始</div>
-              <div class="popover-item" @click="enterScreening()">从当前页开始</div>
-            </div>
+            <PopoverMenuItem @click="enterScreeningFromStart()">从头开始</PopoverMenuItem>
+            <PopoverMenuItem @click="enterScreening()">从当前页开始</PopoverMenuItem>
           </template>
           <div class="arrow-btn"><IconDown class="arrow" /></div>
         </Popover>
@@ -86,7 +82,8 @@ import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Drawer from '@/components/Drawer.vue'
 import Input from '@/components/Input.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -206,20 +203,5 @@ const setDialogForExport = (type: DialogForExportTypes) => {
 .github-link {
   display: inline-block;
   height: 30px;
-}
-.popover-list {
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-  margin: -12px;
-}
-.popover-item {
-  padding: 6px 10px;
-  border-radius: 2px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
 }
 </style>

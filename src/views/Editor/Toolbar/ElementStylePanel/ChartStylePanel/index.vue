@@ -48,60 +48,65 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">图例：</div>
-      <Select style="flex: 3;" :value="legend" @change="value => updateLegend(value as '' | 'top' | 'bottom')">
-        <SelectOption value="">不显示</SelectOption>
-        <SelectOption value="top">显示在上方</SelectOption>
-        <SelectOption value="bottom">显示在下方</SelectOption>
-      </Select>
+      <div style="width: 40%;">图例：</div>
+      <Select 
+        style="width: 60%;" 
+        :value="legend" 
+        @update:value="value => updateLegend(value as '' | 'top' | 'bottom')"
+        :options="[
+          { label: '不显示', value: '' },
+          { label: '显示在上方', value: 'top' },
+          { label: '显示在下方', value: 'bottom' },
+        ]"
+      />
     </div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">背景填充：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">背景填充：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="fill"
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="flex: 3;" />
+        <ColorButton :color="fill" style="width: 100%;" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">网格颜色：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">网格颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="gridColor"
             @update:modelValue="value => updateGridColor(value)"
           />
         </template>
-        <ColorButton :color="gridColor" style="flex: 3;" />
+        <ColorButton :color="gridColor" style="width: 100%;" />
       </Popover>
     </div>
 
     <Divider />
 
     <div class="row" v-for="(color, index) in themeColor" :key="index">
-      <div style="flex: 2;">{{index === 0 ? '主题配色：' : ''}}</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">{{index === 0 ? '主题配色：' : ''}}</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="color"
             @update:modelValue="value => updateTheme(value, index)"
           />
         </template>
-        <div class="color-btn-wrap" style="flex: 3;">
+        <div class="color-btn-wrap" style="width: 100%;">
           <ColorButton :color="color" style="width: 100%;" />
           <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
         </div>
       </Popover>
     </div>
     <ButtonGroup class="row">
-      <Popover trigger="click" v-model:open="presetThemesVisible">
+      <Popover trigger="click" v-model:open="presetThemesVisible" style="width: 40%;">
         <template #content>
           <div class="preset-themes">
             <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index">
@@ -118,7 +123,7 @@
             </div>
           </div>
         </template>
-        <Button class="no-padding" style="width: 40%;">推荐主题</Button>
+        <Button class="no-padding" style="width: 100%;">推荐主题</Button>
       </Popover>
       <Button 
         class="no-padding" 
@@ -164,11 +169,8 @@ import Divider from '@/components/Divider.vue'
 import Checkbox from '@/components/Checkbox.vue'
 import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
-import {
-  Popover,
-  Select,
-} from 'ant-design-vue'
-const SelectOption = Select.Option
+import Select from '@/components/Select.vue'
+import Popover from '@/components/Popover.vue'
 
 const presetChartThemes = [
   ['#d87c7c', '#919e8b', '#d7ab82', '#6e7074', '#61a0a8', '#efa18d'],

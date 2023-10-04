@@ -12,10 +12,10 @@
       <div class="handler-item group-btn" v-tooltip="'插入文字'">
         <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
         
-        <Popover trigger="click" v-model:open="textTypeSelectVisible">
+        <Popover trigger="click" v-model:value="textTypeSelectVisible" style="height: 100%;">
           <template #content>
-            <div class="text-type-item" @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</div>
-            <div class="text-type-item" @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</div>
+            <PopoverMenuItem center @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</PopoverMenuItem>
           </template>
           <IconDown class="arrow" />
         </Popover>
@@ -23,25 +23,25 @@
       <FileInput @change="files => insertImageElement(files)">
         <IconPicture class="handler-item" v-tooltip="'插入图片'" />
       </FileInput>
-      <Popover trigger="click" v-model:open="shapePoolVisible">
+      <Popover trigger="click" v-model:value="shapePoolVisible">
         <template #content>
           <ShapePool @select="shape => drawShape(shape)" />
         </template>
         <IconGraphicDesign class="handler-item" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" v-tooltip="'插入形状'" />
       </Popover>
-      <Popover trigger="click" v-model:open="linePoolVisible">
+      <Popover trigger="click" v-model:value="linePoolVisible">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
         <IconConnection class="handler-item" :class="{ 'active': creatingElement?.type === 'line' }" v-tooltip="'插入线条'" />
       </Popover>
-      <Popover trigger="click" v-model:open="chartPoolVisible">
+      <Popover trigger="click" v-model:value="chartPoolVisible">
         <template #content>
           <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
         </template>
         <IconChartProportion class="handler-item" v-tooltip="'插入图表'" />
       </Popover>
-      <Popover trigger="click" v-model:open="tableGeneratorVisible">
+      <Popover trigger="click" v-model:value="tableGeneratorVisible">
         <template #content>
           <TableGenerator
             @close="tableGeneratorVisible = false"
@@ -51,7 +51,7 @@
         <IconInsertTable class="handler-item" v-tooltip="'插入表格'" />
       </Popover>
       <IconFormula class="handler-item" v-tooltip="'插入公式'" @click="latexEditorVisible = true" />
-      <Popover trigger="click" v-model:open="mediaInputVisible">
+      <Popover trigger="click" v-model:value="mediaInputVisible">
         <template #content>
           <MediaInput 
             @close="mediaInputVisible = false"
@@ -65,16 +65,14 @@
 
     <div class="right-handler">
       <IconMinus class="handler-item viewport-size" @click="scaleCanvas('-')" />
-      <Popover trigger="click" v-model:open="canvasScaleVisible">
+      <Popover trigger="click" v-model:value="canvasScaleVisible">
         <template #content>
-          <div class="viewport-size-preset">
-            <div 
-              class="preset-item" 
-              v-for="item in canvasScalePresetList" 
-              :key="item" 
-              @click="applyCanvasPresetScale(item)"
-            >{{item}}%</div>
-          </div>
+          <PopoverMenuItem
+            center
+            v-for="item in canvasScalePresetList" 
+            :key="item" 
+            @click="applyCanvasPresetScale(item)"
+          >{{item}}%</PopoverMenuItem>
         </template>
         <span class="text">{{canvasScalePercentage}}</span>
       </Popover>
@@ -114,7 +112,8 @@ import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import FileInput from '@/components/FileInput.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const mainStore = useMainStore()
 const { creatingElement, creatingCustomShape } = storeToRefs(mainStore)
@@ -300,6 +299,7 @@ const openSraechPanel = () => {
   align-items: center;
 
   .text {
+    display: inline-block;
     width: 40px;
     text-align: center;
     cursor: pointer;
@@ -307,27 +307,6 @@ const openSraechPanel = () => {
 
   .viewport-size {
     font-size: 13px;
-  }
-}
-.preset-item {
-  padding: 8px 20px;
-  text-align: center;
-  cursor: pointer;
-
-  &:hover {
-    color: $themeColor;
-  }
-}
-.text-type-item {
-  padding: 5px 10px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
-
-  & + .text-type-item {
-    margin-top: 3px;
   }
 }
 

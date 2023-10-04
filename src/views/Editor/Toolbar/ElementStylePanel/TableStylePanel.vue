@@ -1,55 +1,53 @@
 <template>
   <div class="table-style-panel">
-    <InputGroup compact class="row">
+    <SelectGroup class="row">
       <Select
-        style="flex: 3;"
+        style="width: 50%;"
         :value="textAttrs.fontname"
-        @change="value => updateTextAttrs({ fontname: value as string })"
+        @update:value="value => updateTextAttrs({ fontname: value as string })"
+        :options="[
+          ...availableFonts,
+          ...WEB_FONTS
+        ]"
       >
-        <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
-          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
+        <template #icon>
+          <IconFontSize />
+        </template>
       </Select>
       <Select
-        style="flex: 2;"
+        style="width: 50%;"
         :value="textAttrs.fontsize"
-        @change="value => updateTextAttrs({ fontsize: value as string })"
+        @update:value="value => updateTextAttrs({ fontsize: value as string })"
+        :options="fontSizeOptions.map(item => ({
+          label: item, value: item
+        }))"
       >
-        <template #suffixIcon><IconAddText /></template>
-        <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-          {{fontsize}}
-        </SelectOption>
+        <template #icon>
+          <IconAddText />
+        </template>
       </Select>
-    </InputGroup>
+    </SelectGroup>
 
     <ButtonGroup class="row">
-      <Popover trigger="click">
+      <Popover trigger="click" style="width: 50%;">
         <template #content>
           <ColorPicker
             :modelValue="textAttrs.color"
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color" style="flex: 1;">
+        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color" style="width: 100%;">
           <IconText />
         </TextColorButton>
       </Popover>
-      <Popover trigger="click">
+      <Popover trigger="click" style="width: 50%;">
         <template #content>
           <ColorPicker
             :modelValue="textAttrs.backcolor"
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor" style="flex: 1;">
+        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor" style="width: 100%;">
           <IconFill />
         </TextColorButton>
       </Popover>
@@ -100,16 +98,16 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">行数：</div>
-      <div class="set-count" style="flex: 3;">
+      <div style="width: 40%;">行数：</div>
+      <div class="set-count" style="width: 60%;">
         <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><IconMinus /></Button>
         <div class="count-text">{{rowCount}}</div>
         <Button class="btn" :disabled="rowCount >= 30" @click="setTableRow(rowCount + 1)"><IconPlus /></Button>
       </div>
     </div>
     <div class="row">
-      <div style="flex: 2;">列数：</div>
-      <div class="set-count" style="flex: 3;">
+      <div style="width: 40%;">列数：</div>
+      <div class="set-count" style="width: 60%;">
         <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><IconMinus /></Button>
         <div class="count-text">{{colCount}}</div>
         <Button class="btn" :disabled="colCount >= 30" @click="setTableCol(colCount + 1)"><IconPlus /></Button>
@@ -119,8 +117,8 @@
     <Divider />
 
     <div class="row theme-switch">
-      <div style="flex: 2;">启用主题表格：</div>
-      <div class="switch-wrapper" style="flex: 3;">
+      <div style="width: 40%;">启用主题表格：</div>
+      <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="hasTheme" 
           @update:value="value => toggleTheme(value)" 
@@ -154,15 +152,15 @@
         >最后一列</Checkbox>
       </div>
       <div class="row">
-        <div style="flex: 2;">主题颜色：</div>
-        <Popover trigger="click">
+        <div style="width: 40%;">主题颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="theme.color"
               @update:modelValue="value => updateTheme({ color: value })"
             />
           </template>
-          <ColorButton :color="theme.color" style="flex: 3;" />
+          <ColorButton :color="theme.color" style="width: 100%;" />
         </Popover>
       </div>
     </template>
@@ -190,13 +188,9 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
-import {
-  Popover,
-  Select,
-  Input,
-} from 'ant-design-vue'
-const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
-const InputGroup = Input.Group
+import Select from '@/components/Select.vue'
+import SelectGroup from '@/components/SelectGroup.vue'
+import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())

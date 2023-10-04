@@ -12,33 +12,25 @@
 .button-group {
   display: flex;
   align-items: center;
+  border: 1px solid #d9d9d9;
+  border-right: 0;
+  border-radius: $borderRadius;
+  overflow: hidden;
 
   ::v-deep(.button) {
     border-radius: 0;
-    border-left-width: 0;
-    border-right-width: 0;
+    border: 0;
     display: inline-block;
+    position: relative;
 
-    & + .button {
-      border-left-width: 1px;
-    }
-
-    &:hover {
-      &.default + .button {
-        border-left-color: $themeColor;
-      }
-    }
-
-    &:first-child {
-      border-top-left-radius: $borderRadius;
-      border-bottom-left-radius: $borderRadius;
-      border-left-width: 1px;
-    }
-
-    &:last-child {
-      border-top-right-radius: $borderRadius;
-      border-bottom-right-radius: $borderRadius;
-      border-right-width: 1px;
+    &::after {
+      content: '';
+      width: 1px;
+      height: 100%;
+      background-color: #d9d9d9;
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
 }

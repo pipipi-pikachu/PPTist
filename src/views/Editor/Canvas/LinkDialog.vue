@@ -17,14 +17,8 @@
       class="input"
       v-if="type === 'slide'"
       v-model:value="slideId"
-    >
-      <SelectOption 
-        v-for="(slide, index) in slides" 
-        :key="slide.id" 
-        :value="slide.id" 
-        :disabled="currentSlide.id === slide.id"
-      >幻灯片 {{index + 1}}</SelectOption>
-    </Select>
+      :options="slideOptions"
+    />
 
     <div class="preview" v-if="type === 'slide' && selectedSlide">
       <div>预览：</div>
@@ -49,8 +43,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
-import { Select } from 'ant-design-vue'
-const SelectOption = Select.Option
+import Select from '@/components/Select.vue'
 
 type TypeKey = 'web' | 'slide'
 interface TabItem {
@@ -68,6 +61,14 @@ const { slides, currentSlide } = storeToRefs(useSlidesStore())
 const type = ref<TypeKey>('web')
 const address = ref('')
 const slideId = ref('')
+
+const slideOptions = computed(() => {
+  return slides.value.map((item, index) => ({
+    label: `幻灯片 ${index + 1}`,
+    value: item.id,
+    disabled: currentSlide.value.id === item.id,
+  }))
+})
 
 slideId.value = slides.value.find(item => item.id !== currentSlide.value.id)?.id || ''
 

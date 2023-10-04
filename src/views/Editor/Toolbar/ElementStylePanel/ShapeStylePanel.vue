@@ -24,55 +24,57 @@
       <Select 
         style="flex: 10;" 
         :value="fillType" 
-        @change="value => updateFillType(value as 'fill' | 'gradient')"
-      >
-        <SelectOption value="fill">纯色填充</SelectOption>
-        <SelectOption value="gradient">渐变填充</SelectOption>
-      </Select>
+        @update:value="value => updateFillType(value as 'fill' | 'gradient')"
+        :options="[
+          { label: '纯色填充', value: 'fill' },
+          { label: '渐变填充', value: 'gradient' },
+        ]"
+      />
       <div style="flex: 1;"></div>
-      <Popover trigger="click" v-if="fillType === 'fill'">
+      <Popover trigger="click" v-if="fillType === 'fill'" style="flex: 10;">
         <template #content>
           <ColorPicker
             :modelValue="fill"
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="flex: 10;" />
+        <ColorButton :color="fill" style="width: 100%;" />
       </Popover>
       <Select 
         style="flex: 10;" 
         :value="gradient.type" 
-        @change="value => updateGradient({ type: value as 'linear' | 'radial' })"
+        @update:value="value => updateGradient({ type: value as 'linear' | 'radial' })"
         v-else
-      >
-        <SelectOption value="linear">线性渐变</SelectOption>
-        <SelectOption value="radial">径向渐变</SelectOption>
-      </Select>
+        :options="[
+          { label: '线性渐变', value: 'linear' },
+          { label: '径向渐变', value: 'radial' },
+        ]"
+      />
     </div>
     
     <template v-if="fillType === 'gradient'">
       <div class="row">
         <div style="flex: 2;">起点颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="gradient.color[0]"
               @update:modelValue="value => updateGradient({ color: [value, gradient.color[1]] })"
             />
           </template>
-          <ColorButton :color="gradient.color[0]" style="flex: 3;" />
+          <ColorButton :color="gradient.color[0]" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row">
         <div style="flex: 2;">终点颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="gradient.color[1]"
               @update:modelValue="value => updateGradient({ color: [gradient.color[0], value] })"
             />
           </template>
-          <ColorButton :color="gradient.color[1]" style="flex: 3;" />
+          <ColorButton :color="gradient.color[1]" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
@@ -93,57 +95,55 @@
     <Divider />
 
     <template v-if="handleShapeElement.text?.content">
-      <InputGroup compact class="row">
+      <SelectGroup class="row">
         <Select
           class="font-select"
           style="flex: 3;"
           :value="richTextAttrs.fontname"
-          @change="value => emitRichTextCommand('fontname', value as string)"
+          @update:value="value => emitRichTextCommand('fontname', value as string)"
+          :options="[
+            ...availableFonts,
+            ...WEB_FONTS
+          ]"
         >
-          <template #suffixIcon><IconFontSize /></template>
-          <SelectOptGroup label="系统字体">
-            <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-              <span :style="{ fontFamily: font.value }">{{font.label}}</span>
-            </SelectOption>
-          </SelectOptGroup>
-          <SelectOptGroup label="在线字体">
-            <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-              <span>{{font.label}}</span>
-            </SelectOption>
-          </SelectOptGroup>
+          <template #icon>
+            <IconFontSize />
+          </template>
         </Select>
         <Select
           style="flex: 2;"
           :value="richTextAttrs.fontsize"
-          @change="value => emitRichTextCommand('fontsize', value as string)"
+          @update:value="value => emitRichTextCommand('fontsize', value as string)"
+          :options="fontSizeOptions.map(item => ({
+            label: item, value: item
+          }))"
         >
-          <template #suffixIcon><IconAddText /></template>
-          <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-            {{fontsize}}
-          </SelectOption>
+          <template #icon>
+            <IconAddText />
+          </template>
         </Select>
-      </InputGroup>
+      </SelectGroup>
 
       <ButtonGroup class="row">
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="richTextAttrs.color"
               @update:modelValue="value => emitRichTextCommand('color', value)"
             />
           </template>
-          <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="flex: 3;">
+          <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="width: 100%;">
             <IconText />
           </TextColorButton>
         </Popover>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="richTextAttrs.backcolor"
               @update:modelValue="value => emitRichTextCommand('backcolor', value)"
             />
           </template>
-          <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="flex: 3;">
+          <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="width: 100%;">
             <IconHighLight />
           </TextColorButton>
         </Popover>
@@ -263,13 +263,9 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
-import {
-  Popover,
-  Select,
-  Input,
-} from 'ant-design-vue'
-const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
-const InputGroup = Input.Group
+import Select from '@/components/Select.vue'
+import SelectGroup from '@/components/SelectGroup.vue'
+import Popover from '@/components/Popover.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

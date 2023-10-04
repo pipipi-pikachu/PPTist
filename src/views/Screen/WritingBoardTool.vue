@@ -28,7 +28,7 @@
     >
       <div class="tools" @mousedown.stop>
         <div class="tool-content">
-          <Popover trigger="click" :open="sizePopoverType === 'pen'">
+          <Popover trigger="click" :value="sizePopoverType === 'pen'">
             <template #content>
               <div class="size">
                 <div class="label">墨迹粗细：</div>
@@ -39,7 +39,7 @@
               <IconWrite class="icon" />
             </div>
           </Popover>
-          <Popover trigger="click" :open="sizePopoverType === 'mark'">
+          <Popover trigger="click" :value="sizePopoverType === 'mark'">
             <template #content>
               <div class="size">
                 <div class="label">墨迹粗细：</div>
@@ -50,7 +50,7 @@
               <IconHighLight class="icon" />
             </div>
           </Popover>
-          <Popover trigger="click" :open="sizePopoverType === 'eraser'">
+          <Popover trigger="click" :value="sizePopoverType === 'eraser'">
             <template #content>
               <div class="size">
                 <div class="label">橡皮大小：</div>
@@ -95,7 +95,7 @@ import { db } from '@/utils/database'
 import WritingBoard from '@/components/WritingBoard.vue'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Slider from '@/components/Slider.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 
@@ -238,6 +238,7 @@ const hanldeWritingEnd = () => {
   display: flex;
   align-items: center;
   user-select: none;
+  font-size: 13px;
 
   .label {
     width: 70px;

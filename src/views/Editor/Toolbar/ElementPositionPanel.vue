@@ -28,26 +28,31 @@
 
     <div class="row">
       <NumberInput
-        prefix="水平："
         :step="5"
         :value="left"
         @update:value="value => updateLeft(value)"
         style="flex: 4;"
-      />
+      >
+        <template #prefix>
+          水平：
+        </template>
+      </NumberInput>
       <div style="flex: 1;"></div>
       <NumberInput
-        prefix="垂直："
         :step="5"
         :value="top"
         @update:value="value => updateTop(value)"
         style="flex: 4;"
-      />
+      >
+        <template #prefix>
+          垂直：
+        </template>
+      </NumberInput>
     </div>
 
     <template v-if="handleElement!.type !== 'line'">
       <div class="row">
         <NumberInput
-          prefix="宽度："
           :min="minSize"
           :max="1500"
           :step="5"
@@ -55,14 +60,17 @@
           :value="width"
           @update:value="value => updateWidth(value)"
           style="flex: 4;"
-        />
+        >
+          <template #prefix>
+            宽度：
+          </template>
+        </NumberInput>
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
           <IconLock style="flex: 1;" class="icon-btn" v-tooltip="'解除宽高比锁定'" @click="updateFixedRatio(false)" v-if="fixedRatio" />
           <IconUnlock style="flex: 1;" class="icon-btn" v-tooltip="'宽高比锁定'" @click="updateFixedRatio(true)" v-else />
         </template>
         <div style="flex: 1;" v-else></div>
         <NumberInput 
-          prefix="高度："
           :min="minSize"
           :max="800"
           :step="5"
@@ -70,7 +78,11 @@
           :value="height" 
           @update:value="value => updateHeight(value)"
           style="flex: 4;"
-        />
+        >
+          <template #prefix>
+            高度：
+          </template>
+        </NumberInput>
       </div>
     </template>
 
@@ -79,14 +91,17 @@
 
       <div class="row">
         <NumberInput 
-          prefix="旋转："
           :min="-180"
           :max="180"
           :step="5"
           :value="rotate" 
           @update:value="value => updateRotate(value)" 
           style="flex: 8;" 
-        />
+        >
+          <template #prefix>
+            旋转：
+          </template>
+        </NumberInput>
         <div style="flex: 1;"></div>
         <div class="text-btn" @click="updateRotate45('-')" style="flex: 5;"><IconRotate /> -45°</div>
         <div class="text-btn" @click="updateRotate45('+')"  style="flex: 5;"><IconRotate :style="{ transform: 'rotateY(180deg)' }" /> +45°</div>

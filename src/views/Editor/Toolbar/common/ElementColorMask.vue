@@ -12,14 +12,14 @@
     <template v-if="hasColorMask">
       <div class="row" style="margin-top: 15px;">
         <div style="flex: 2;">蒙版颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="colorMask.color"
               @update:modelValue="value => updateColorMask({ color: value })"
             />
           </template>
-          <ColorButton :color="colorMask.color" style="flex: 3;" />
+          <ColorButton :color="colorMask.color" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row">
@@ -48,7 +48,7 @@ import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import Slider from '@/components/Slider.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
 
 const defaultColorMask = { color: 'transparent', opacity: 0.3 }
 

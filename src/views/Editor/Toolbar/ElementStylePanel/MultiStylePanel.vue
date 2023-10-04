@@ -1,103 +1,102 @@
 <template>
   <div class="multi-style-panel">
     <div class="row">
-      <div style="flex: 2;">填充颜色：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">填充颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="fill"
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="flex: 3;" />
+        <ColorButton :color="fill" style="width: 100%;" />
       </Popover>
     </div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">边框样式：</div>
+      <div style="width: 40%;">边框样式：</div>
       <Select 
-        style="flex: 3;" 
-        :value="outline.style"
-        @change="value => updateOutline({ style: value as 'solid' | 'dashed' })"
-      >
-        <SelectOption value="solid">实线边框</SelectOption>
-        <SelectOption value="dashed">虚线边框</SelectOption>
-      </Select>
+        style="width: 60%;" 
+        :value="outline.style || ''"
+        @update:value="value => updateOutline({ style: value as 'solid' | 'dashed' })"
+        :options="[
+          { label: '实线边框', value: 'solid' },
+          { label: '虚线边框', value: 'dashed' },
+        ]"
+      />
     </div>
     <div class="row">
-      <div style="flex: 2;">边框颜色：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">边框颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="outline.color"
             @update:modelValue="value => updateOutline({ color: value })"
           />
         </template>
-        <ColorButton :color="outline.color || '#000'" style="flex: 3;" />
+        <ColorButton :color="outline.color || '#000'" style="width: 100%;" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">边框粗细：</div>
+      <div style="width: 40%;">边框粗细：</div>
       <NumberInput 
         :value="outline.width || 0"
         @update:value="value => updateOutline({ width: value })" 
-        style="flex: 3;" 
+        style="width: 60%;" 
       />
     </div>
 
     <Divider />
 
-    <InputGroup compact class="row">
+    <SelectGroup class="row">
       <Select
         style="flex: 3;"
         :value="richTextAttrs.fontname"
-        @change="value => updateFontStyle('fontname', value as string)"
+        @update:value="value => updateFontStyle('fontname', value as string)"
+        :options="[
+          ...availableFonts,
+          ...WEB_FONTS
+        ]"
       >
-        <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
-          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
+        <template #icon>
+          <IconFontSize />
+        </template>
       </Select>
       <Select
         style="flex: 2;"
         :value="richTextAttrs.fontsize"
-        @change="value => updateFontStyle('fontsize', value as string)"
+        @update:value="value => updateFontStyle('fontsize', value as string)"
+        :options="fontSizeOptions.map(item => ({
+          label: item, value: item
+        }))"
       >
-        <template #suffixIcon><IconAddText /></template>
-        <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-          {{fontsize}}
-        </SelectOption>
+        <template #icon>
+          <IconAddText />
+        </template>
       </Select>
-    </InputGroup>
+    </SelectGroup>
     <ButtonGroup class="row">
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.color"
             @update:modelValue="value => updateFontStyle('color', value)"
           />
         </template>
-        <TextColorButton :color="richTextAttrs.color" style="flex: 3;" v-tooltip="'文字颜色'">
+        <TextColorButton :color="richTextAttrs.color" style="width: 100%;" v-tooltip="'文字颜色'">
           <IconText />
         </TextColorButton>
       </Popover>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.backcolor"
             @update:modelValue="value => updateFontStyle('backcolor', value)"
           />
         </template>
-        <TextColorButton :color="richTextAttrs.backcolor" style="flex: 3;" v-tooltip="'文字高亮'">
+        <TextColorButton :color="richTextAttrs.backcolor" style="width: 100%;" v-tooltip="'文字高亮'">
           <IconHighLight />
         </TextColorButton>
       </Popover>
@@ -145,13 +144,9 @@ import ButtonGroup from '@/components/ButtonGroup.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
 import NumberInput from '@/components/NumberInput.vue'
-import {
-  Popover,
-  Select,
-  Input,
-} from 'ant-design-vue'
-const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
-const InputGroup = Input.Group
+import Select from '@/components/Select.vue'
+import SelectGroup from '@/components/SelectGroup.vue'
+import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
 const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())

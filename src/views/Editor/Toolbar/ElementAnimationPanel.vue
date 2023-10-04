@@ -3,8 +3,9 @@
     <div class="element-animation" v-if="handleElement">
       <Popover 
         trigger="click" 
-        v-model:open="animationPoolVisible" 
-        @openChange="visible => handlePopoverVisibleChange(visible)"
+        v-model:value="animationPoolVisible" 
+        @update:value="visible => handlePopoverVisibleChange(visible)"
+        style="width: 100%;"
       >
         <template #content>
           <Tabs 
@@ -76,27 +77,28 @@
             <Divider style="margin: 16px 0;" />
 
             <div class="config-item">
-              <div style="flex: 3;">持续时长：</div>
+              <div style="width: 35%;">持续时长：</div>
               <NumberInput 
                 :min="500"
                 :max="3000"
                 :step="500"
                 :value="element.duration" 
                 @update:value="value => updateElementAnimationDuration(element.id, value)" 
-                style="flex: 5;" 
+                style="width: 65%;" 
               />
             </div>
             <div class="config-item">
-              <div style="flex: 3;">触发方式：</div>
+              <div style="width: 35%;">触发方式：</div>
               <Select
                 :value="element.trigger"
-                @change="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
-                style="flex: 5;"
-              >
-                <SelectOption value="click">主动触发</SelectOption>
-                <SelectOption value="meantime">与上一动画同时</SelectOption>
-                <SelectOption value="auto">上一动画之后</SelectOption>
-              </Select>
+                @update:value="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
+                style="width: 65%;"
+                :options="[
+                  { label: '主动触发', value: 'click' },
+                  { label: '与上一动画同时', value: 'meantime' },
+                  { label: '上一动画之后', value: 'auto' },
+                ]"
+              />
             </div>
             <div class="config-item">
               <Button style="flex: 1;" @click="openAnimationPool(element.id)">更换动画</Button>
@@ -130,11 +132,8 @@ import Divider from '@/components/Divider.vue'
 import Button from '@/components/Button.vue'
 import Draggable from 'vuedraggable'
 import NumberInput from '@/components/NumberInput.vue'
-import {
-  Popover,
-  Select,
-} from 'ant-design-vue'
-const SelectOption = Select.Option
+import Select from '@/components/Select.vue'
+import Popover from '@/components/Popover.vue'
 
 const animationEffects: { [key: string]: string } = {}
 for (const effect of ENTER_ANIMATIONS) {

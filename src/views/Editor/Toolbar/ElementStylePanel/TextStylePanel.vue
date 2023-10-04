@@ -12,57 +12,55 @@
 
     <Divider />
     
-    <InputGroup compact class="row">
+    <SelectGroup class="row">
       <Select
         class="font-select"
-        style="flex: 3;"
+        style="width: 50%;"
         :value="richTextAttrs.fontname"
-        @change="value => emitRichTextCommand('fontname', value as string)"
+        @update:value="value => emitRichTextCommand('fontname', value as string)"
+        :options="[
+          ...availableFonts,
+          ...WEB_FONTS
+        ]"
       >
-        <template #suffixIcon><IconFontSize /></template>
-        <SelectOptGroup label="系统字体">
-          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
+        <template #icon>
+          <IconFontSize />
+        </template>
       </Select>
       <Select
-        style="flex: 2;"
+        style="width: 50%;"
         :value="richTextAttrs.fontsize"
-        @change="value => emitRichTextCommand('fontsize', value as string)"
+        @update:value="value => emitRichTextCommand('fontsize', value as string)"
+        :options="fontSizeOptions.map(item => ({
+          label: item, value: item
+        }))"
       >
-        <template #suffixIcon><IconAddText /></template>
-        <SelectOption v-for="fontsize in fontSizeOptions" :key="fontsize" :value="fontsize">
-          {{fontsize}}
-        </SelectOption>
+        <template #icon>
+          <IconAddText />
+        </template>
       </Select>
-    </InputGroup>
+    </SelectGroup>
 
     <ButtonGroup class="row">
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.color"
             @update:modelValue="value => emitRichTextCommand('color', value)"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="flex: 3;">
+        <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="width: 100%;">
           <IconText />
         </TextColorButton>
       </Popover>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.backcolor"
             @update:modelValue="value => emitRichTextCommand('backcolor', value)"
           />
         </template>
-        <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="flex: 3;">
+        <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="width: 100%;">
           <IconHighLight />
         </TextColorButton>
       </Popover>
@@ -146,7 +144,7 @@
         v-tooltip="'格式刷'"
         @click="toggleFormatPainter()"
       ><IconFormatBrush /></CheckboxButton>
-      <Popover placement="bottomRight" trigger="click" v-model:open="linkPopoverVisible">
+      <Popover placement="bottom-end" trigger="click" v-model:value="linkPopoverVisible" style="flex: 1;">
         <template #content>
           <div class="link-popover">
             <Input v-model:value="link" placeholder="请输入超链接" />
@@ -157,7 +155,7 @@
           </div>
         </template>
         <CheckboxButton
-          style="flex: 1;"
+          style="width: 100%;"
           :checked="!!richTextAttrs.link"
           v-tooltip="'超链接'"
           @click="openLinkPopover()"
@@ -187,7 +185,7 @@
           v-tooltip="'项目符号'"
           @click="emitRichTextCommand('bulletList')"
         ><IconList /></Button>
-        <Popover trigger="click" v-model:open="bulletListPanelVisible">
+        <Popover trigger="click" v-model:value="bulletListPanelVisible">
           <template #content>
             <div class="list-wrap">
               <ul class="list" 
@@ -211,7 +209,7 @@
           v-tooltip="'编号'"
           @click="emitRichTextCommand('orderedList')"
         ><IconOrderedList /></Button>
-        <Popover trigger="click" v-model:open="orderedListPanelVisible">
+        <Popover trigger="click" v-model:value="orderedListPanelVisible">
           <template #content>
             <div class="list-wrap">
               <ul class="list" 
@@ -232,11 +230,9 @@
     <div class="row">
       <ButtonGroup style="flex: 15;">
         <Button style="flex: 1;" v-tooltip="'减小段落缩进'" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
-        <Popover trigger="click" v-model:open="indentLeftPanelVisible">
+        <Popover trigger="click" v-model:value="indentLeftPanelVisible">
           <template #content>
-            <div class="popover-list">
-              <span class="popover-item" @click="emitRichTextCommand('textIndent', '-1')">减小首行缩进</span>
-            </div>
+            <PopoverMenuItem @click="emitRichTextCommand('textIndent', '-1')">减小首行缩进</PopoverMenuItem>
           </template>
           <Button class="popover-btn"><IconDown /></Button>
         </Popover>
@@ -244,11 +240,9 @@
       <div style="flex: 1;"></div>
       <ButtonGroup style="flex: 15;">
         <Button style="flex: 1;" v-tooltip="'增大段落缩进'" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
-        <Popover trigger="click" v-model:open="indentRightPanelVisible">
+        <Popover trigger="click" v-model:value="indentRightPanelVisible">
           <template #content>
-            <div class="popover-list">
-              <span class="popover-item" @click="emitRichTextCommand('textIndent', '+1')">增大首行缩进</span>
-            </div>
+            <PopoverMenuItem @click="emitRichTextCommand('textIndent', '+1')">增大首行缩进</PopoverMenuItem>
           </template>
           <Button class="popover-btn"><IconDown /></Button>
         </Popover>
@@ -258,36 +252,57 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">行间距：</div>
-      <Select style="flex: 3;" :value="lineHeight" @change="value => updateLineHeight(value as number)">
-        <template #suffixIcon><IconRowHeight /></template>
-        <SelectOption v-for="item in lineHeightOptions" :key="item" :value="item">{{item}}倍</SelectOption>
+      <div style="width: 40%;">行间距：</div>
+      <Select style="width: 60%;"
+        :value="lineHeight || 1"
+        @update:value="value => updateLineHeight(value as number)"
+        :options="lineHeightOptions.map(item => ({
+          label: item + '倍', value: item
+        }))"
+      >
+        <template #icon>
+          <IconRowHeight />
+        </template>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">段间距：</div>
-      <Select style="flex: 3;" :value="paragraphSpace" @change="value => updateParagraphSpace(value as number)">
-        <template #suffixIcon><IconVerticalSpacingBetweenItems /></template>
-        <SelectOption v-for="item in paragraphSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
+      <div style="width: 40%;">段间距：</div>
+      <Select style="width: 60%;"
+        :value="paragraphSpace || 0"
+        @update:value="value => updateParagraphSpace(value as number)"
+        :options="paragraphSpaceOptions.map(item => ({
+          label: item + 'px', value: item
+        }))"
+      >
+        <template #icon>
+          <IconVerticalSpacingBetweenItems />
+        </template>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">字间距：</div>
-      <Select style="flex: 3;" :value="wordSpace" @change="value => updateWordSpace(value as number)">
-        <template #suffixIcon><IconFullwidth /></template>
-        <SelectOption v-for="item in wordSpaceOptions" :key="item" :value="item">{{item}}px</SelectOption>
+      <div style="width: 40%;">字间距：</div>
+      <Select style="width: 60%;"
+        :value="wordSpace || 0"
+        @update:value="value => updateWordSpace(value as number)"
+        :options="wordSpaceOptions.map(item => ({
+          label: item + 'px', value: item
+        }))"
+      >
+        <template #icon>
+          <IconFullwidth />
+        </template>
       </Select>
     </div>
     <div class="row">
-      <div style="flex: 2;">文本框填充：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">文本框填充：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="fill"
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="flex: 3;" />
+        <ColorButton :color="fill" style="width: 100%;" />
       </Popover>
     </div>
 
@@ -324,13 +339,10 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
-import {
-  Popover,
-  Select,
-  Input as AntInput,
-} from 'ant-design-vue'
-const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
-const InputGroup = AntInput.Group
+import Select from '@/components/Select.vue'
+import SelectGroup from '@/components/SelectGroup.vue'
+import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
@@ -488,7 +500,6 @@ watch(richTextAttrs, () => linkPopoverVisible.value = false)
 
 const openLinkPopover = () => {
   link.value = richTextAttrs.value.link
-  linkPopoverVisible.value = true
 }
 const updateLink = (link?: string) => {
   const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
@@ -590,6 +601,7 @@ const updateLink = (link?: string) => {
   width: 24px;
   height: 12px;
   position: relative;
+  font-size: 12px;
   top: -5px;
 
   span {

@@ -5,44 +5,47 @@
       <Select 
         style="flex: 10;" 
         :value="background.type" 
-        @change="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
-      >
-        <SelectOption value="solid">纯色填充</SelectOption>
-        <SelectOption value="image">图片填充</SelectOption>
-        <SelectOption value="gradient">渐变填充</SelectOption>
-      </Select>
+        @update:value="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
+        :options="[
+          { label: '纯色填充', value: 'solid' },
+          { label: '图片填充', value: 'image' },
+          { label: '渐变填充', value: 'gradient' },
+        ]"
+      />
       <div style="flex: 1;"></div>
 
-      <Popover trigger="click" v-if="background.type === 'solid'">
+      <Popover trigger="click" v-if="background.type === 'solid'" style="flex: 10;">
         <template #content>
           <ColorPicker
             :modelValue="background.color"
             @update:modelValue="color => updateBackground({ color })"
           />
         </template>
-        <ColorButton :color="background.color || '#fff'" style="flex: 10;" />
+        <ColorButton :color="background.color || '#fff'" style="width: 100%;" />
       </Popover>
 
       <Select 
         style="flex: 10;" 
         :value="background.imageSize || 'cover'" 
-        @change="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
+        @update:value="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
         v-else-if="background.type === 'image'"
-      >
-        <SelectOption value="contain">缩放</SelectOption>
-        <SelectOption value="repeat">拼贴</SelectOption>
-        <SelectOption value="cover">缩放铺满</SelectOption>
-      </Select>
+        :options="[
+          { label: '缩放', value: 'contain' },
+          { label: '拼贴', value: 'repeat' },
+          { label: '缩放铺满', value: 'cover' },
+        ]"
+      />
 
       <Select 
         style="flex: 10;" 
-        :value="background.gradientType" 
-        @change="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
+        :value="background.gradientType || ''" 
+        @update:value="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
         v-else
-      >
-        <SelectOption value="linear">线性渐变</SelectOption>
-        <SelectOption value="radial">径向渐变</SelectOption>
-      </Select>
+        :options="[
+          { label: '线性渐变', value: 'linear' },
+          { label: '径向渐变', value: 'radial' },
+        ]"
+      />
     </div>
 
     <div class="background-image-wrapper" v-if="background.type === 'image'">
@@ -58,26 +61,26 @@
     <div class="background-gradient-wrapper" v-if="background.type === 'gradient'">
       <div class="row">
         <div style="flex: 2;">起点颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="background.gradientColor![0]"
               @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor![1]] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor![0]" style="flex: 3;" />
+          <ColorButton :color="background.gradientColor![0]" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row">
         <div style="flex: 2;">终点颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="background.gradientColor![1]"
               @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor![0], value] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor![1]" style="flex: 3;" />
+          <ColorButton :color="background.gradientColor![1]" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row" v-if="background.gradientType === 'linear'">
@@ -99,12 +102,17 @@
 
     <div class="row">
       <div style="flex: 2;">画布尺寸：</div>
-      <Select style="flex: 3;" :value="viewportRatio" @change="value => updateViewportRatio(value as number)">
-        <SelectOption :value="0.5625">宽屏 16 : 9</SelectOption>
-        <SelectOption :value="0.625">宽屏 16 : 10</SelectOption>
-        <SelectOption :value="0.75">标准 4 : 3</SelectOption>
-        <SelectOption :value="0.70710678">纸张 A3 / A4</SelectOption>
-      </Select>
+      <Select 
+        style="flex: 3;" 
+        :value="viewportRatio" 
+        @update:value="value => updateViewportRatio(value as number)"
+        :options="[
+          { label: '宽屏 16 : 9', value: 0.5625 },
+          { label: '宽屏 16 : 10', value: 0.625 },
+          { label: '标准 4 : 3', value: 0.75 },
+          { label: '纸张 A3 / A4', value: 0.70710678 },
+        ]"
+      />
     </div>
 
     <Divider />
@@ -115,54 +123,47 @@
       <Select
         style="flex: 3;"
         :value="theme.fontName"
-        @change="value => updateTheme({ fontName: value as string })"
-      >
-        <SelectOptGroup label="系统字体">
-          <SelectOption v-for="font in availableFonts" :key="font.value" :value="font.value">
-            <span :style="{ fontFamily: font.value }">{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
-        <SelectOptGroup label="在线字体">
-          <SelectOption v-for="font in WEB_FONTS" :key="font.value" :value="font.value">
-            <span>{{font.label}}</span>
-          </SelectOption>
-        </SelectOptGroup>
-      </Select>
+        @update:value="value => updateTheme({ fontName: value as string })"
+        :options="[
+          ...availableFonts,
+          ...WEB_FONTS
+        ]"
+      />
     </div>
     <div class="row">
       <div style="flex: 2;">字体颜色：</div>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="theme.fontColor"
             @update:modelValue="value => updateTheme({ fontColor: value })"
           />
         </template>
-        <ColorButton :color="theme.fontColor" style="flex: 3;" />
+        <ColorButton :color="theme.fontColor" style="width: 100%;" />
       </Popover>
     </div>
     <div class="row">
       <div style="flex: 2;">背景颜色：</div>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="theme.backgroundColor"
             @update:modelValue="value => updateTheme({ backgroundColor: value })"
           />
         </template>
-        <ColorButton :color="theme.backgroundColor" style="flex: 3;" />
+        <ColorButton :color="theme.backgroundColor" style="width: 100%;" />
       </Popover>
     </div>
     <div class="row">
       <div style="flex: 2;">主题色：</div>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="theme.themeColor"
             @update:modelValue="value => updateTheme({ themeColor: value })"
           />
         </template>
-        <ColorButton :color="theme.themeColor" style="flex: 3;" />
+        <ColorButton :color="theme.themeColor" style="width: 100%;" />
       </Popover>
     </div>
 
@@ -214,11 +215,8 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Slider from '@/components/Slider.vue'
 import Button from '@/components/Button.vue'
-import {
-  Popover,
-  Select,
-} from 'ant-design-vue'
-const { OptGroup: SelectOptGroup, Option: SelectOption } = Select
+import Select from '@/components/Select.vue'
+import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
 const { availableFonts } = storeToRefs(useMainStore())

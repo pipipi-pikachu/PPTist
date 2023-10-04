@@ -5,25 +5,25 @@
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">颜色：</div>
-      <Popover trigger="click">
+      <div style="width: 40%;">颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="handleLatexElement.color"
             @update:modelValue="value => updateLatex({ color: value })"
           />
         </template>
-        <ColorButton :color="handleLatexElement.color" style="flex: 3;" />
+        <ColorButton :color="handleLatexElement.color" style="width: 100%;" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">粗细：</div>
+      <div style="width: 40%;">粗细：</div>
       <NumberInput 
         :min="1"
         :max="3"
         :value="handleLatexElement.strokeWidth" 
         @update:value="value => updateLatex({ strokeWidth: value })" 
-        style="flex: 3;" 
+        style="width: 60%;" 
       />
     </div>
 
@@ -55,7 +55,7 @@ import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
 import Button from '@/components/Button.vue'
 import NumberInput from '@/components/NumberInput.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

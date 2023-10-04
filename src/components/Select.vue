@@ -23,15 +23,18 @@
     <template #content>
       <div class="options" :style="{ width: width + 2 + 'px' }">
         <div class="option" 
-          :class="{ 'disabled': option.disabled }"
+          :class="{
+            'disabled': option.disabled,
+            'selected': option.value === value,
+          }"
           v-for="option in options" 
-          :key="option.key"
+          :key="option.value"
           @click="handleSelect(option)"
-        >{{ option.value }}</div>
+        >{{ option.label }}</div>
       </div>
     </template>
     <div class="select" ref="selectRef">
-      <div class="selector">{{ value }}</div>
+      <div class="selector">{{ showLabel }}</div>
       <div class="icon">
         <slot name="icon">
           <IconDown :size="14" />
@@ -42,21 +45,25 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import Popover from './Popover.vue'
 
 interface SelectOption {
-  key: string
+  label: string
   value: string | number
   disabled?: boolean
 }
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   value: string | number
   options: SelectOption[]
   disabled?: boolean
 }>(), {
   disabled: false,
+})
+
+const showLabel = computed(() => {
+  return props.options.find(item => item.value === props.value)?.label || props.value
 })
 
 const emit = defineEmits<{
@@ -138,11 +145,14 @@ const handleSelect = (option: SelectOption) => {
   @include ellipsis-oneline();
 
   &.disabled {
-    background-color: #f5f5f5;
     color: #b7b7b7;
     cursor: default;
   }
-  &:not(.disabled):hover {
+  &:not(.disabled, .selected):hover {
+    background-color: rgba($color: #666, $alpha: .05);
+  }
+
+  &.selected {
     background-color: rgba($color: $themeColor, $alpha: .05);
   }
 }

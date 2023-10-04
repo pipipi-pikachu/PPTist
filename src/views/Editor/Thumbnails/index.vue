@@ -7,7 +7,7 @@
   >
     <div class="add-slide">
       <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
-      <Popover trigger="click" placement="bottomLeft" v-model:open="presetLayoutPopoverVisible">
+      <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
           <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
         </template>
@@ -57,8 +57,8 @@ import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import LayoutPool from './LayoutPool.vue'
+import Popover from '@/components/Popover.vue'
 import Draggable from 'vuedraggable'
-import { Popover } from 'ant-design-vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -262,6 +262,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   }
   .select-btn {
     width: 30px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

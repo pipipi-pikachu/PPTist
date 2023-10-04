@@ -2,14 +2,14 @@
   <div class="audio-style-panel">
     <div class="row">
       <div style="flex: 2;">图标颜色：</div>
-      <Popover trigger="click">
+      <Popover trigger="click" style="flex: 3;">
         <template #content>
           <ColorPicker
             :modelValue="handleAudioElement.color"
             @update:modelValue="value => updateAudio({ color: value })"
           />
         </template>
-        <ColorButton :color="handleAudioElement.color" style="flex: 3;" />
+        <ColorButton :color="handleAudioElement.color" style="width: 100%;" />
       </Popover>
     </div>
 
@@ -45,7 +45,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import ColorButton from '../common/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

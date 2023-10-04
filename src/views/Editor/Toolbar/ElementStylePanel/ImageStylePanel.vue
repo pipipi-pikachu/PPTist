@@ -9,7 +9,7 @@
 
     <ButtonGroup class="row">
       <Button style="width: calc(100% / 6 * 5);" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
-      <Popover trigger="click" v-model:open="clipPanelVisible">
+      <Popover trigger="click" v-model:value="clipPanelVisible" style="width: calc(100% / 6);">
         <template #content>
           <div class="clip">
             <div class="title">按形状：</div>
@@ -37,7 +37,7 @@
             </template>
           </div>
         </template>
-        <Button class="popover-btn" style="width: calc(100% / 6);"><IconDown /></Button>
+        <Button class="popover-btn" style="width: 100%;"><IconDown /></Button>
       </Popover>
     </ButtonGroup>
 
@@ -77,7 +77,7 @@ import FileInput from '@/components/FileInput.vue'
 import Divider from '@/components/Divider.vue'
 import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
-import { Popover } from 'ant-design-vue'
+import Popover from '@/components/Popover.vue'
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [

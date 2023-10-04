@@ -1,5 +1,5 @@
 <template>
-  <div class="popover" ref="triggerRef">
+  <div class="popover" :class="{ 'center': center }" ref="triggerRef">
     <div class="popover-content" :style="contentStyle" ref="contentRef">
       <slot name="content" v-if="contentVisible"></slot>
     </div>
@@ -14,14 +14,17 @@ import tippy, { type Instance, type Placement } from 'tippy.js'
 import 'tippy.js/animations/scale.css'
 
 const props = withDefaults(defineProps<{
-  value: boolean
+  value?: boolean
   trigger?: 'click' | 'mouseenter'
   placement?: Placement
   appendTo?: HTMLElement | 'parent'
   contentStyle?: CSSProperties
+  center?: boolean
 }>(), {
+  value: false,
   trigger: 'click',
-  placement: 'auto',
+  placement: 'bottom',
+  center: false,
 })
 
 const emit = defineEmits<{
@@ -70,6 +73,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.popover.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .popover-content {
   background-color: #fff;
   padding: 10px;

@@ -14,23 +14,24 @@
         <div style="flex: 2;">边框样式：</div>
         <Select 
           style="flex: 3;" 
-          :value="outline.style" 
-          @change="value => updateOutline({ style: value as 'dashed' | 'solid' })"
-        >
-          <SelectOption value="solid">实线边框</SelectOption>
-          <SelectOption value="dashed">虚线边框</SelectOption>
-        </Select>
+          :value="outline.style || ''" 
+          @update:value="value => updateOutline({ style: value as 'dashed' | 'solid' })"
+          :options="[
+            { label: '实线边框', value: 'solid' },
+            { label: '虚线边框', value: 'dashed' },
+          ]"
+        />
       </div>
       <div class="row">
         <div style="flex: 2;">边框颜色：</div>
-        <Popover trigger="click">
+        <Popover trigger="click" style="flex: 3;">
           <template #content>
             <ColorPicker
               :modelValue="outline.color"
               @update:modelValue="value => updateOutline({ color: value })"
             />
           </template>
-          <ColorButton :color="outline.color || '#000'" style="flex: 3;" />
+          <ColorButton :color="outline.color || '#000'" style="width: 100%;" />
         </Popover>
       </div>
       <div class="row">
@@ -56,11 +57,8 @@ import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import NumberInput from '@/components/NumberInput.vue'
-import {
-  Popover,
-  Select,
-} from 'ant-design-vue'
-const SelectOption = Select.Option
+import Select from '@/components/Select.vue'
+import Popover from '@/components/Popover.vue'
 
 withDefaults(defineProps<{
   fixed?: boolean

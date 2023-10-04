@@ -36,11 +36,12 @@
         <Select 
           class="config-item"
           v-model:value="count"
-        >
-          <SelectOption :value="1">1</SelectOption>
-          <SelectOption :value="2">2</SelectOption>
-          <SelectOption :value="3">3</SelectOption>
-        </Select>
+          :options="[
+            { label: '1', value: 1 },
+            { label: '2', value: 2 },
+            { label: '3', value: 3 },
+          ]"
+        />
       </div>
       <div class="row">
         <div class="title">边缘留白：</div>
@@ -71,8 +72,7 @@ import Switch from '@/components/Switch.vue'
 import Button from '@/components/Button.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
-import { Select } from 'ant-design-vue'
-const SelectOption = Select.Option
+import Select from '@/components/Select.vue'
 
 const emit = defineEmits<{
   (event: 'close'): void
