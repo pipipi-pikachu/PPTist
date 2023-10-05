@@ -43,6 +43,10 @@ const selectSlideTemplate = (slide: Slide) => {
 .layout-item {
   @include flex-grid-layout-children(2, 48%);
 
+  &:nth-last-child(2), &:last-child {
+    margin-bottom: 0;
+  }
+
   .thumbnail {
     outline: 1px solid $borderColor;
     cursor: pointer;

@@ -181,15 +181,14 @@ const setDialogForExport = (type: DialogForExportTypes) => {
   .title-input {
     width: 200px;
     height: 100%;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-family: 'Microsoft YaHei';
+    padding-left: 0;
+    padding-right: 0;
   }
   .title-text {
     min-width: 20px;
     max-width: 400px;
     line-height: 32px;
-    padding: 0 8px;
+    padding: 0 6px;
     border-radius: $borderRadius;
     cursor: pointer;
 
