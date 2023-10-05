@@ -1,16 +1,16 @@
 <template>
   <div class="element-shadow">
     <div class="row">
-      <div style="flex: 2;">启用阴影：</div>
-      <div class="switch-wrapper" style="flex: 3;">
+      <div style="width: 40%;">启用阴影：</div>
+      <div class="switch-wrapper" style="width: 60%;">
         <Switch :value="hasShadow" @update:value="value => toggleShadow(value)" />
       </div>
     </div>
     <template v-if="hasShadow && shadow">
       <div class="row">
-        <div style="flex: 2;">水平阴影：</div>
+        <div style="width: 40%;">水平阴影：</div>
         <Slider 
-          class="slider"
+          style="width: 60%;"
           :min="-10" 
           :max="10" 
           :step="1" 
@@ -19,9 +19,9 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">垂直阴影：</div>
+        <div style="width: 40%;">垂直阴影：</div>
         <Slider
-          class="slider"
+          style="width: 60%;"
           :min="-10"
           :max="10"
           :step="1"
@@ -30,9 +30,9 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">模糊距离：</div>
+        <div style="width: 40%;">模糊距离：</div>
         <Slider
-          class="slider"
+          style="width: 60%;"
           :min="1"
           :max="20"
           :step="1"
@@ -41,15 +41,15 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">阴影颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">阴影颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="shadow.color"
               @update:modelValue="value => updateShadow({ color: value })"
             />
           </template>
-          <ColorButton :color="shadow.color" style="width: 100%;" />
+          <ColorButton :color="shadow.color" />
         </Popover>
       </div>
     </template>
@@ -112,8 +112,5 @@ const toggleShadow = (checked: boolean) => {
 }
 .switch-wrapper {
   text-align: right;
-}
-.slider {
-  flex: 3;
 }
 </style>

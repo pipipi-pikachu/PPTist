@@ -22,7 +22,7 @@
 
     <div class="row">
       <Select 
-        style="flex: 10;" 
+        style="flex: 1;" 
         :value="fillType" 
         @update:value="value => updateFillType(value as 'fill' | 'gradient')"
         :options="[
@@ -30,18 +30,18 @@
           { label: '渐变填充', value: 'gradient' },
         ]"
       />
-      <div style="flex: 1;"></div>
-      <Popover trigger="click" v-if="fillType === 'fill'" style="flex: 10;">
+      <div style="width: 10px;"></div>
+      <Popover trigger="click" v-if="fillType === 'fill'" style="flex: 1;">
         <template #content>
           <ColorPicker
             :modelValue="fill"
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="width: 100%;" />
+        <ColorButton :color="fill" />
       </Popover>
       <Select 
-        style="flex: 10;" 
+        style="flex: 1;" 
         :value="gradient.type" 
         @update:value="value => updateGradient({ type: value as 'linear' | 'radial' })"
         v-else
@@ -54,33 +54,33 @@
     
     <template v-if="fillType === 'gradient'">
       <div class="row">
-        <div style="flex: 2;">起点颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">起点颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="gradient.color[0]"
               @update:modelValue="value => updateGradient({ color: [value, gradient.color[1]] })"
             />
           </template>
-          <ColorButton :color="gradient.color[0]" style="width: 100%;" />
+          <ColorButton :color="gradient.color[0]" />
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">终点颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">终点颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="gradient.color[1]"
               @update:modelValue="value => updateGradient({ color: [gradient.color[0], value] })"
             />
           </template>
-          <ColorButton :color="gradient.color[1]" style="width: 100%;" />
+          <ColorButton :color="gradient.color[1]" />
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
-        <div style="flex: 2;">渐变角度：</div>
+        <div style="width: 40%;">渐变角度：</div>
         <Slider
-          class="slider"
+          style="width: 60%;"
           :min="0"
           :max="360"
           :step="15"
@@ -98,7 +98,7 @@
       <SelectGroup class="row">
         <Select
           class="font-select"
-          style="flex: 3;"
+          style="width: 60%;"
           :value="richTextAttrs.fontname"
           @update:value="value => emitRichTextCommand('fontname', value as string)"
           :options="[
@@ -111,7 +111,7 @@
           </template>
         </Select>
         <Select
-          style="flex: 2;"
+          style="width: 40%;"
           :value="richTextAttrs.fontsize"
           @update:value="value => emitRichTextCommand('fontsize', value as string)"
           :options="fontSizeOptions.map(item => ({
@@ -125,37 +125,37 @@
       </SelectGroup>
 
       <ButtonGroup class="row">
-        <Popover trigger="click" style="flex: 3;">
+        <Popover trigger="click" style="width: 30%;">
           <template #content>
             <ColorPicker
               :modelValue="richTextAttrs.color"
               @update:modelValue="value => emitRichTextCommand('color', value)"
             />
           </template>
-          <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="width: 100%;">
+          <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color">
             <IconText />
           </TextColorButton>
         </Popover>
-        <Popover trigger="click" style="flex: 3;">
+        <Popover trigger="click" style="width: 30%;">
           <template #content>
             <ColorPicker
               :modelValue="richTextAttrs.backcolor"
               @update:modelValue="value => emitRichTextCommand('backcolor', value)"
             />
           </template>
-          <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="width: 100%;">
+          <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor">
             <IconHighLight />
           </TextColorButton>
         </Popover>
         <Button 
           class="font-size-btn"
-          style="flex: 2;"
+          style="width: 20%;"
           v-tooltip="'增大字号'"
           @click="emitRichTextCommand('fontsize-add')"
         ><IconFontSize />+</Button>
         <Button 
           class="font-size-btn"
-          style="flex: 2;"
+          style="width: 20%;"
           v-tooltip="'减小字号'"
           @click="emitRichTextCommand('fontsize-reduce')"
         ><IconFontSize />-</Button>
@@ -380,14 +380,8 @@ const emitRichTextCommand = (command: string, value?: string) => {
   align-items: center;
   margin-bottom: 10px;
 }
-.font-select {
-  max-width: 50%;
-}
 .font-size-btn {
   padding: 0;
-}
-.slider {
-  flex: 3;
 }
 .title {
   display: flex;

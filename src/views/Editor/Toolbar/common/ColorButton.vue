@@ -17,6 +17,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 .color-btn {
+  width: 100%;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -34,7 +35,7 @@ defineProps<{
   height: 100%;
 }
 .color-btn-icon {
-  width: 34px;
+  width: 32px;
   font-size: 13px;
   color: #bfbfbf;
 }

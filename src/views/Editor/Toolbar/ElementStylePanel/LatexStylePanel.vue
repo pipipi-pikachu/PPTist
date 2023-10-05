@@ -1,6 +1,8 @@
 <template>
   <div class="latex-style-panel">
-    <div class="row"><Button style="flex: 1;" @click="latexEditorVisible = true">编辑 LaTeX</Button></div>
+    <div class="row">
+      <Button style="flex: 1;" @click="latexEditorVisible = true">编辑 LaTeX</Button>
+    </div>
 
     <Divider />
 
@@ -13,7 +15,7 @@
             @update:modelValue="value => updateLatex({ color: value })"
           />
         </template>
-        <ColorButton :color="handleLatexElement.color" style="width: 100%;" />
+        <ColorButton :color="handleLatexElement.color" />
       </Popover>
     </div>
     <div class="row">

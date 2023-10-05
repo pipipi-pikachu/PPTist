@@ -3,7 +3,7 @@
     <div class="title">背景填充</div>
     <div class="row">
       <Select 
-        style="flex: 10;" 
+        style="flex: 1;" 
         :value="background.type" 
         @update:value="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
         :options="[
@@ -12,20 +12,20 @@
           { label: '渐变填充', value: 'gradient' },
         ]"
       />
-      <div style="flex: 1;"></div>
+      <div style="width: 10px;"></div>
 
-      <Popover trigger="click" v-if="background.type === 'solid'" style="flex: 10;">
+      <Popover trigger="click" v-if="background.type === 'solid'" style="flex: 1;">
         <template #content>
           <ColorPicker
             :modelValue="background.color"
             @update:modelValue="color => updateBackground({ color })"
           />
         </template>
-        <ColorButton :color="background.color || '#fff'" style="width: 100%;" />
+        <ColorButton :color="background.color || '#fff'" />
       </Popover>
 
       <Select 
-        style="flex: 10;" 
+        style="flex: 1;" 
         :value="background.imageSize || 'cover'" 
         @update:value="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
         v-else-if="background.type === 'image'"
@@ -37,7 +37,7 @@
       />
 
       <Select 
-        style="flex: 10;" 
+        style="flex: 1;" 
         :value="background.gradientType || ''" 
         @update:value="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
         v-else
@@ -60,50 +60,52 @@
 
     <div class="background-gradient-wrapper" v-if="background.type === 'gradient'">
       <div class="row">
-        <div style="flex: 2;">起点颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">起点颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="background.gradientColor![0]"
               @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor![1]] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor![0]" style="width: 100%;" />
+          <ColorButton :color="background.gradientColor![0]" />
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">终点颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">终点颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="background.gradientColor![1]"
               @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor![0], value] })"
             />
           </template>
-          <ColorButton :color="background.gradientColor![1]" style="width: 100%;" />
+          <ColorButton :color="background.gradientColor![1]" />
         </Popover>
       </div>
       <div class="row" v-if="background.gradientType === 'linear'">
-        <div style="flex: 2;">渐变角度：</div>
+        <div style="width: 40%;">渐变角度：</div>
         <Slider
-          class="slider"
           :min="0"
           :max="360"
           :step="15"
           :value="background.gradientRotate || 0"
           @update:value="value => updateBackground({ gradientRotate: value as number })" 
+          style="width: 60%;"
         />
       </div>
     </div>
 
-    <div class="row"><Button style="flex: 1;" @click="applyBackgroundAllSlide()">应用背景到全部</Button></div>
+    <div class="row">
+      <Button style="flex: 1;" @click="applyBackgroundAllSlide()">应用背景到全部</Button>
+    </div>
 
     <Divider />
 
     <div class="row">
-      <div style="flex: 2;">画布尺寸：</div>
+      <div style="width: 40%;">画布尺寸：</div>
       <Select 
-        style="flex: 3;" 
+        style="width: 60%;" 
         :value="viewportRatio" 
         @update:value="value => updateViewportRatio(value as number)"
         :options="[
@@ -119,9 +121,9 @@
 
     <div class="title">全局主题</div>
     <div class="row">
-      <div style="flex: 2;">字体：</div>
+      <div style="width: 40%;">字体：</div>
       <Select
-        style="flex: 3;"
+        style="width: 60%;"
         :value="theme.fontName"
         @update:value="value => updateTheme({ fontName: value as string })"
         :options="[
@@ -131,43 +133,45 @@
       />
     </div>
     <div class="row">
-      <div style="flex: 2;">字体颜色：</div>
-      <Popover trigger="click" style="flex: 3;">
+      <div style="width: 40%;">字体颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="theme.fontColor"
             @update:modelValue="value => updateTheme({ fontColor: value })"
           />
         </template>
-        <ColorButton :color="theme.fontColor" style="width: 100%;" />
+        <ColorButton :color="theme.fontColor" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">背景颜色：</div>
-      <Popover trigger="click" style="flex: 3;">
+      <div style="width: 40%;">背景颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="theme.backgroundColor"
             @update:modelValue="value => updateTheme({ backgroundColor: value })"
           />
         </template>
-        <ColorButton :color="theme.backgroundColor" style="width: 100%;" />
+        <ColorButton :color="theme.backgroundColor" />
       </Popover>
     </div>
     <div class="row">
-      <div style="flex: 2;">主题色：</div>
-      <Popover trigger="click" style="flex: 3;">
+      <div style="width: 40%;">主题色：</div>
+      <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="theme.themeColor"
             @update:modelValue="value => updateTheme({ themeColor: value })"
           />
         </template>
-        <ColorButton :color="theme.themeColor" style="width: 100%;" />
+        <ColorButton :color="theme.themeColor" />
       </Popover>
     </div>
 
-    <div class="row"><Button style="flex: 1;" @click="applyThemeToAllSlides()">应用主题到全部</Button></div>
+    <div class="row">
+      <Button style="flex: 1;" @click="applyThemeToAllSlides()">应用主题到全部</Button>
+    </div>
 
     <Divider />
 
@@ -413,8 +417,5 @@ const updateViewportRatio = (value: number) => {
       margin-top: 5px;
     }
   }
-}
-.slider {
-  flex: 3;
 }
 </style>

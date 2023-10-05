@@ -72,7 +72,7 @@
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="width: 100%;" />
+        <ColorButton :color="fill" />
       </Popover>
     </div>
     <div class="row">
@@ -84,7 +84,7 @@
             @update:modelValue="value => updateGridColor(value)"
           />
         </template>
-        <ColorButton :color="gridColor" style="width: 100%;" />
+        <ColorButton :color="gridColor" />
       </Popover>
     </div>
 
@@ -100,7 +100,7 @@
           />
         </template>
         <div class="color-btn-wrap" style="width: 100%;">
-          <ColorButton :color="color" style="width: 100%;" />
+          <ColorButton :color="color" />
           <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
         </div>
       </Popover>

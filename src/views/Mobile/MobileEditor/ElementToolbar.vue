@@ -37,11 +37,11 @@
 
         <ButtonGroup class="row">
           <Button 
-            style="flex: 2;"
+            style="flex: 1;"
             @click="emitRichTextCommand('fontsize-add')"
           ><IconFontSize />+</Button>
           <Button 
-            style="flex: 2;"
+            style="flex: 1;"
             @click="emitRichTextCommand('fontsize-reduce')"
           ><IconFontSize />-</Button>
         </ButtonGroup>

@@ -9,7 +9,7 @@
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="width: 100%;" />
+        <ColorButton :color="fill" />
       </Popover>
     </div>
 
@@ -36,7 +36,7 @@
             @update:modelValue="value => updateOutline({ color: value })"
           />
         </template>
-        <ColorButton :color="outline.color || '#000'" style="width: 100%;" />
+        <ColorButton :color="outline.color || '#000'" />
       </Popover>
     </div>
     <div class="row">
@@ -52,7 +52,7 @@
 
     <SelectGroup class="row">
       <Select
-        style="flex: 3;"
+        style="width: 60%;;"
         :value="richTextAttrs.fontname"
         @update:value="value => updateFontStyle('fontname', value as string)"
         :options="[
@@ -65,7 +65,7 @@
         </template>
       </Select>
       <Select
-        style="flex: 2;"
+        style="width: 40%;"
         :value="richTextAttrs.fontsize"
         @update:value="value => updateFontStyle('fontsize', value as string)"
         :options="fontSizeOptions.map(item => ({
@@ -78,37 +78,37 @@
       </Select>
     </SelectGroup>
     <ButtonGroup class="row">
-      <Popover trigger="click" style="flex: 3;">
+      <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.color"
             @update:modelValue="value => updateFontStyle('color', value)"
           />
         </template>
-        <TextColorButton :color="richTextAttrs.color" style="width: 100%;" v-tooltip="'文字颜色'">
+        <TextColorButton :color="richTextAttrs.color" v-tooltip="'文字颜色'">
           <IconText />
         </TextColorButton>
       </Popover>
-      <Popover trigger="click" style="flex: 3;">
+      <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.backcolor"
             @update:modelValue="value => updateFontStyle('backcolor', value)"
           />
         </template>
-        <TextColorButton :color="richTextAttrs.backcolor" style="width: 100%;" v-tooltip="'文字高亮'">
+        <TextColorButton :color="richTextAttrs.backcolor" v-tooltip="'文字高亮'">
           <IconHighLight />
         </TextColorButton>
       </Popover>
       <Button 
         class="font-size-btn"
-        style="flex: 2;"
+        style="width: 20%;"
         v-tooltip="'增大字号'"
         @click="updateFontStyle('fontsize-add', '2')"
       ><IconFontSize />+</Button>
       <Button 
         class="font-size-btn"
-        style="flex: 2;"
+        style="width: 20%;"
         v-tooltip="'减小字号'"
         @click="updateFontStyle('fontsize-reduce', '2')"
       ><IconFontSize />-</Button>

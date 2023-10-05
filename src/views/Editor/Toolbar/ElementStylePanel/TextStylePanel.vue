@@ -15,7 +15,7 @@
     <SelectGroup class="row">
       <Select
         class="font-select"
-        style="width: 50%;"
+        style="width: 60%;"
         :value="richTextAttrs.fontname"
         @update:value="value => emitRichTextCommand('fontname', value as string)"
         :options="[
@@ -28,7 +28,7 @@
         </template>
       </Select>
       <Select
-        style="width: 50%;"
+        style="width: 40%;"
         :value="richTextAttrs.fontsize"
         @update:value="value => emitRichTextCommand('fontsize', value as string)"
         :options="fontSizeOptions.map(item => ({
@@ -42,37 +42,37 @@
     </SelectGroup>
 
     <ButtonGroup class="row">
-      <Popover trigger="click" style="flex: 3;">
+      <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.color"
             @update:modelValue="value => emitRichTextCommand('color', value)"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color" style="width: 100%;">
+        <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color">
           <IconText />
         </TextColorButton>
       </Popover>
-      <Popover trigger="click" style="flex: 3;">
+      <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
             :modelValue="richTextAttrs.backcolor"
             @update:modelValue="value => emitRichTextCommand('backcolor', value)"
           />
         </template>
-        <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor" style="width: 100%;">
+        <TextColorButton v-tooltip="'文字高亮'" :color="richTextAttrs.backcolor">
           <IconHighLight />
         </TextColorButton>
       </Popover>
       <Button 
         class="font-size-btn"
-        style="flex: 2;"
+        style="width: 20%;"
         v-tooltip="'增大字号'"
         @click="emitRichTextCommand('fontsize-add')"
       ><IconFontSize />+</Button>
       <Button 
         class="font-size-btn"
-        style="flex: 2;"
+        style="width: 20%;"
         v-tooltip="'减小字号'"
         @click="emitRichTextCommand('fontsize-reduce')"
       ><IconFontSize />-</Button>
@@ -144,7 +144,7 @@
         v-tooltip="'格式刷'"
         @click="toggleFormatPainter()"
       ><IconFormatBrush /></CheckboxButton>
-      <Popover placement="bottom-end" trigger="click" v-model:value="linkPopoverVisible" style="flex: 1;">
+      <Popover placement="bottom-end" trigger="click" v-model:value="linkPopoverVisible" style="width: 33.33%;">
         <template #content>
           <div class="link-popover">
             <Input v-model:value="link" placeholder="请输入超链接" />
@@ -178,7 +178,7 @@
     </RadioGroup>
 
     <div class="row">
-      <ButtonGroup style="flex: 15;">
+      <ButtonGroup style="flex: 1;">
         <Button
           :type="richTextAttrs.bulletList ? 'primary' : 'default'"
           style="flex: 1;"
@@ -201,8 +201,8 @@
           <Button class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
-      <div style="flex: 1;"></div>
-      <ButtonGroup style="flex: 15;">
+      <div style="width: 10px;"></div>
+      <ButtonGroup style="flex: 1;">
         <Button
           :type="richTextAttrs.orderedList ? 'primary' : 'default'"
           style="flex: 1;"
@@ -228,7 +228,7 @@
     </div>
 
     <div class="row">
-      <ButtonGroup style="flex: 15;">
+      <ButtonGroup style="flex: 1;">
         <Button style="flex: 1;" v-tooltip="'减小段落缩进'" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
         <Popover trigger="click" v-model:value="indentLeftPanelVisible">
           <template #content>
@@ -237,8 +237,8 @@
           <Button class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
-      <div style="flex: 1;"></div>
-      <ButtonGroup style="flex: 15;">
+      <div style="width: 10px;"></div>
+      <ButtonGroup style="flex: 1;">
         <Button style="flex: 1;" v-tooltip="'增大段落缩进'" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
         <Popover trigger="click" v-model:value="indentRightPanelVisible">
           <template #content>
@@ -302,7 +302,7 @@
             @update:modelValue="value => updateFill(value)"
           />
         </template>
-        <ColorButton :color="fill" style="width: 100%;" />
+        <ColorButton :color="fill" />
       </Popover>
     </div>
 
@@ -549,9 +549,6 @@ const updateLink = (link?: string) => {
   &:nth-child(n+3) {
     margin-top: -1px;
   }
-}
-.font-select {
-  max-width: 50%;
 }
 .font-size-btn {
   padding: 0;

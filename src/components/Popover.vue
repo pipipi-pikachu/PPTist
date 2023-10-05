@@ -58,6 +58,7 @@ onMounted(() => {
     offset: [0, 8],
     duration: 200,
     animation: 'scale',
+    theme: 'popover',
     onShow() {
       contentVisible.value = true
     },
@@ -84,5 +85,13 @@ onMounted(() => {
   border: 1px solid $borderColor;
   box-shadow: $boxShadow;
   border-radius: 2px;
+  font-size: 13px;
+}
+</style>
+
+<style lang="scss">
+.tippy-box[data-theme~='popover'] {
+  border: 0;
+  outline: 0;
 }
 </style>

@@ -17,6 +17,7 @@ defineProps<{
 
 <style lang="scss" scoped>
 .text-color-btn {
+  width: 100%;
   display: flex !important;
   flex-direction: column;
   justify-content: center;

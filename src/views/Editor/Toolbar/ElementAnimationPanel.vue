@@ -101,7 +101,7 @@
               />
             </div>
             <div class="config-item">
-              <Button style="flex: 1;" @click="openAnimationPool(element.id)">更换动画</Button>
+              <Button style="width: 100%;" @click="openAnimationPool(element.id)">更换动画</Button>
             </div>
           </div>
         </div>
@@ -424,7 +424,7 @@ $attentionColor: #e8b76a;
 }
 .sequence-item {
   border: 1px solid $borderColor;
-  padding: 10px 6px;
+  padding: 8px;
   border-radius: $borderRadius;
   margin-bottom: 8px;
   transition: all .5s;

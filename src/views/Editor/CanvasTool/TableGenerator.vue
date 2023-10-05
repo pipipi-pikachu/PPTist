@@ -26,21 +26,21 @@
 
     <div class="custom" v-else>
       <div class="row">
-        <div class="label" style="flex: 1;">行数：</div>
+        <div class="label" style="width: 25%;">行数：</div>
         <NumberInput
           :min="1"
           :max="20"
           v-model:value="customRow"
-          style="flex: 3;"
+          style="width: 75%;"
         />
       </div>
       <div class="row">
-        <div class="label" style="flex: 1;">列数：</div>
+        <div class="label" style="width: 25%;">列数：</div>
         <NumberInput
           :min="1"
           :max="20"
           v-model:value="customCol"
-          style="flex: 3;"
+          style="width: 75%;"
         />
       </div>
       <div class="btns">

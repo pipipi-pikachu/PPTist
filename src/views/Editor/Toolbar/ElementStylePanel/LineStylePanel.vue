@@ -21,7 +21,7 @@
             @update:modelValue="value => updateLine({ color: value })"
           />
         </template>
-        <ColorButton :color="handleLineElement.color" style="width: 100%;" />
+        <ColorButton :color="handleLineElement.color" />
       </Popover>
     </div>
     <div class="row">

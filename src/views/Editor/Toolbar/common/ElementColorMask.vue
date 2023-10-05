@@ -1,8 +1,8 @@
 <template>
   <div class="element-color-mask">
     <div class="row">
-      <div style="flex: 1;">着色（蒙版）：</div>
-      <div class="switch-wrapper" style="flex: 1;">
+      <div style="width: 40%;">着色（蒙版）：</div>
+      <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="hasColorMask" 
           @update:value="value => toggleColorMask(value)" 
@@ -11,26 +11,26 @@
     </div>
     <template v-if="hasColorMask">
       <div class="row" style="margin-top: 15px;">
-        <div style="flex: 2;">蒙版颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">蒙版颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="colorMask.color"
               @update:modelValue="value => updateColorMask({ color: value })"
             />
           </template>
-          <ColorButton :color="colorMask.color" style="width: 100%;" />
+          <ColorButton :color="colorMask.color" />
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">不透明度：</div>
+        <div style="width: 40%;">不透明度：</div>
         <Slider
-          class="opacity-slider"
           :max="1"
           :min="0"
           :step="0.05"
           :value="colorMask.opacity"
           @update:value="value => updateColorMask({ opacity: value as number })"
+          style="width: 60%;"
         />
       </div>
     </template>
@@ -97,8 +97,5 @@ const updateColorMask = (colorMaskProp: Partial<ImageColorElementMask>) => {
 }
 .switch-wrapper {
   text-align: right;
-}
-.opacity-slider {
-  flex: 3;
 }
 </style>

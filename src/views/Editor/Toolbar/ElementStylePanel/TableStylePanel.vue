@@ -36,7 +36,7 @@
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color" style="width: 100%;">
+        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color">
           <IconText />
         </TextColorButton>
       </Popover>
@@ -47,7 +47,7 @@
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor" style="width: 100%;">
+        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
           <IconFill />
         </TextColorButton>
       </Popover>
@@ -160,7 +160,7 @@
               @update:modelValue="value => updateTheme({ color: value })"
             />
           </template>
-          <ColorButton :color="theme.color" style="width: 100%;" />
+          <ColorButton :color="theme.color" />
         </Popover>
       </div>
     </template>

@@ -1,14 +1,14 @@
 <template>
   <div class="element-opacity">
     <div class="row">
-      <div style="flex: 2;">不透明度：</div>
+      <div style="width: 40%;">不透明度：</div>
       <Slider
-        class="slider"
         :min="0"
         :max="1"
         :step="0.1"
         :value="opacity"
         @update:value="value => updateOpacity(value as number)" 
+        style="width: 60%;"
       />
     </div>
   </div>
@@ -47,8 +47,5 @@ const updateOpacity = (value: number) => {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-}
-.slider {
-  flex: 3;
 }
 </style>

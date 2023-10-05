@@ -1,8 +1,8 @@
 <template>
   <div class="element-outline">
     <div class="row" v-if="!fixed">
-      <div style="flex: 2;">启用边框：</div>
-      <div class="switch-wrapper" style="flex: 3;">
+      <div style="width: 40%;">启用边框：</div>
+      <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="hasOutline" 
           @update:value="value => toggleOutline(value)" 
@@ -11,9 +11,9 @@
     </div>
     <template v-if="hasOutline && outline">
       <div class="row">
-        <div style="flex: 2;">边框样式：</div>
+        <div style="width: 40%;">边框样式：</div>
         <Select 
-          style="flex: 3;" 
+          style="width: 60%;" 
           :value="outline.style || ''" 
           @update:value="value => updateOutline({ style: value as 'dashed' | 'solid' })"
           :options="[
@@ -23,23 +23,23 @@
         />
       </div>
       <div class="row">
-        <div style="flex: 2;">边框颜色：</div>
-        <Popover trigger="click" style="flex: 3;">
+        <div style="width: 40%;">边框颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
               :modelValue="outline.color"
               @update:modelValue="value => updateOutline({ color: value })"
             />
           </template>
-          <ColorButton :color="outline.color || '#000'" style="width: 100%;" />
+          <ColorButton :color="outline.color || '#000'" />
         </Popover>
       </div>
       <div class="row">
-        <div style="flex: 2;">边框粗细：</div>
+        <div style="width: 40%;">边框粗细：</div>
         <NumberInput 
           :value="outline.width || 0" 
           @update:value="value => updateOutline({ width: value })" 
-          style="flex: 3;" 
+          style="width: 60%;" 
         />
       </div>
     </template>
