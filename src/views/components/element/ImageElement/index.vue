@@ -55,8 +55,7 @@
           <div class="color-mask"
             v-if="elementInfo.colorMask"
             :style="{
-              backgroundColor: elementInfo.colorMask.color,
-              opacity: elementInfo.colorMask.opacity,
+              backgroundColor: elementInfo.colorMask,
             }"
           ></div>
         </div>

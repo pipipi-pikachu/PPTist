@@ -15,23 +15,12 @@
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
-              :modelValue="colorMask.color"
-              @update:modelValue="value => updateColorMask({ color: value })"
+              :modelValue="colorMask"
+              @update:modelValue="value => updateColorMask(value)"
             />
           </template>
-          <ColorButton :color="colorMask.color" />
+          <ColorButton :color="colorMask" />
         </Popover>
-      </div>
-      <div class="row">
-        <div style="width: 40%;">不透明度：</div>
-        <Slider
-          :max="1"
-          :min="0"
-          :step="0.05"
-          :value="colorMask.opacity"
-          @update:value="value => updateColorMask({ opacity: value as number })"
-          style="width: 60%;"
-        />
       </div>
     </template>
   </div>
@@ -41,21 +30,19 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { ImageColorElementMask } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ColorButton from './ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
-import Slider from '@/components/Slider.vue'
 import Popover from '@/components/Popover.vue'
 
-const defaultColorMask = { color: 'transparent', opacity: 0.3 }
+const defaultColorMask = 'rgba(226, 83, 77, 0.5)'
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
-const colorMask = ref<ImageColorElementMask>(defaultColorMask)
+const colorMask = ref(defaultColorMask)
 const hasColorMask = ref(false)
 
 const { addHistorySnapshot } = useHistorySnapshot()
@@ -81,9 +68,8 @@ const toggleColorMask = (checked: boolean) => {
   addHistorySnapshot()
 }
 
-const updateColorMask = (colorMaskProp: Partial<ImageColorElementMask>) => {
-  const newColorMask = { ...colorMask.value, ...colorMaskProp }
-  slidesStore.updateElement({ id: handleElementId.value, props: { colorMask: newColorMask } })
+const updateColorMask = (colorMask: string) => {
+  slidesStore.updateElement({ id: handleElementId.value, props: { colorMask } })
   addHistorySnapshot()
 }
 </script>

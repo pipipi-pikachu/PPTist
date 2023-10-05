@@ -217,18 +217,6 @@ export interface ImageElementClip {
 }
 
 /**
- * 图片蒙版
- * 
- * color: 蒙版颜色
- * 
- * opacity: 蒙版透明度
- */
-export interface ImageColorElementMask {
-  color: string
-  opacity: number
-}
-
-/**
  * 图片元素
  * 
  * type: 元素类型（image）
@@ -259,7 +247,7 @@ export interface PPTImageElement extends PPTBaseElement {
   flipH?: boolean
   flipV?: boolean
   shadow?: PPTElementShadow
-  colorMask?: ImageColorElementMask
+  colorMask?: string
 }
 
 
