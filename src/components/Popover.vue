@@ -15,7 +15,7 @@ import 'tippy.js/animations/scale.css'
 
 const props = withDefaults(defineProps<{
   value?: boolean
-  trigger?: 'click' | 'mouseenter'
+  trigger?: 'click' | 'mouseenter' | 'manual'
   placement?: Placement
   appendTo?: HTMLElement | 'parent'
   contentStyle?: CSSProperties

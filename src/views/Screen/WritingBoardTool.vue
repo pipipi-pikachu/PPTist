@@ -28,7 +28,7 @@
     >
       <div class="tools" @mousedown.stop>
         <div class="tool-content">
-          <Popover trigger="click" :value="sizePopoverType === 'pen'">
+          <Popover trigger="manual" :value="sizePopoverType === 'pen'">
             <template #content>
               <div class="size">
                 <div class="label">墨迹粗细：</div>
@@ -39,7 +39,7 @@
               <IconWrite class="icon" />
             </div>
           </Popover>
-          <Popover trigger="click" :value="sizePopoverType === 'mark'">
+          <Popover trigger="manual" :value="sizePopoverType === 'mark'">
             <template #content>
               <div class="size">
                 <div class="label">墨迹粗细：</div>
@@ -50,7 +50,7 @@
               <IconHighLight class="icon" />
             </div>
           </Popover>
-          <Popover trigger="click" :value="sizePopoverType === 'eraser'">
+          <Popover trigger="manual" :value="sizePopoverType === 'eraser'">
             <template #content>
               <div class="size">
                 <div class="label">橡皮大小：</div>
