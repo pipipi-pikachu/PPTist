@@ -71,7 +71,11 @@ const svgHeight = computed(() => {
   return height < 24 ? 24 : height
 })
 
-const lineDashArray = computed(() => props.elementInfo.style === 'dashed' ? '10, 5' : '0, 0')
+const lineDashArray = computed(() => {
+  if (props.elementInfo.style !== 'dashed') return '0 0'
+  const size = props.elementInfo.width
+  return size <= 8 ? `${size * 5} ${size * 2.5}` : `${size * 5} ${size * 1.5}`
+})
 
 const path = computed(() => {
   return getLineElementPath(props.elementInfo)

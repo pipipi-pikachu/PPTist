@@ -7,9 +7,16 @@ export default (outline: Ref<PPTElementOutline | undefined>) => {
   const outlineStyle = computed(() => outline.value?.style || 'solid')
   const outlineColor = computed(() => outline.value?.color || '#d14424')
 
+  const strokeDashArray = computed(() => {
+    if (outlineStyle.value !== 'dashed') return '0 0'
+    const size = outlineWidth.value
+    return size <= 6 ? `${size * 4.5} ${size * 2}` : `${size * 4} ${size * 1.5}`
+  })
+
   return {
     outlineWidth,
     outlineStyle,
     outlineColor,
+    strokeDashArray,
   }
 }

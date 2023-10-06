@@ -53,7 +53,7 @@
               :fill="elementInfo.gradient ? `url(#editabel-gradient-${elementInfo.id})` : elementInfo.fill"
               :stroke="outlineColor"
               :stroke-width="outlineWidth" 
-              :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
+              :stroke-dasharray="strokeDashArray" 
             ></path>
           </g>
         </svg>
@@ -111,7 +111,7 @@ const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
 }
 
 const outline = computed(() => props.elementInfo.outline)
-const { outlineWidth, outlineStyle, outlineColor } = useElementOutline(outline)
+const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline)
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)

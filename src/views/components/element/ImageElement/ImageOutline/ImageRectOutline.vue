@@ -17,7 +17,7 @@
       :height="height"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
-      :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
+      :stroke-dasharray="strokeDashArray" 
     ></rect>
 	</svg>
 </template>
@@ -38,8 +38,8 @@ const props = withDefaults(defineProps<{
 
 const {
   outlineWidth,
-  outlineStyle,
   outlineColor,
+  strokeDashArray,
 } = useElementOutline(toRef(props, 'outline'))
 </script>
 

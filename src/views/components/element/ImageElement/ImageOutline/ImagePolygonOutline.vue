@@ -14,7 +14,7 @@
       :d="createPath(width, height)"
       :stroke="outlineColor"
       :stroke-width="outlineWidth" 
-      :stroke-dasharray="outlineStyle === 'dashed' ? '10 6' : '0 0'" 
+      :stroke-dasharray="strokeDashArray" 
     ></path>
 	</svg>
 </template>
@@ -33,8 +33,8 @@ const props = defineProps<{
 
 const {
   outlineWidth,
-  outlineStyle,
   outlineColor,
+  strokeDashArray,
 } = useElementOutline(toRef(props, 'outline'))
 </script>
 

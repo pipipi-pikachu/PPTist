@@ -47,7 +47,7 @@
               :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : elementInfo.fill"
               :stroke="outlineColor"
               :stroke-width="outlineWidth" 
-              :stroke-dasharray="outlineStyle === 'dashed' ? '10 5' : '0 0'" 
+              :stroke-dasharray="strokeDashArray" 
             ></path>
           </g>
         </svg>
@@ -74,7 +74,7 @@ const props = defineProps<{
 }>()
 
 const outline = computed(() => props.elementInfo.outline)
-const { outlineWidth, outlineStyle, outlineColor } = useElementOutline(outline)
+const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline)
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)
