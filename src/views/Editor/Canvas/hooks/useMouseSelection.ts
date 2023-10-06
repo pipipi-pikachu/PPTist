@@ -60,8 +60,8 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
       // 按四个象限的位置区分，如右下角为第四象限
       let quadrant = 0
       if ( offsetWidth > 0 && offsetHeight > 0 ) quadrant = 4
-      else if ( offsetWidth < 0 && offsetHeight < 0 ) quadrant = 1
-      else if ( offsetWidth > 0 && offsetHeight < 0 ) quadrant = 2
+      else if ( offsetWidth < 0 && offsetHeight < 0 ) quadrant = 2
+      else if ( offsetWidth > 0 && offsetHeight < 0 ) quadrant = 1
       else if ( offsetWidth < 0 && offsetHeight > 0 ) quadrant = 3
 
       // 更新框选范围
@@ -98,13 +98,13 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | u
                       minY > mouseSelectionTop && 
                       maxY < mouseSelectionTop + mouseSelectionHeight
         }
-        else if (mouseSelectionQuadrant.value === 1) {
+        else if (mouseSelectionQuadrant.value === 2) {
           isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
                       maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 
                       maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
         }
-        else if (mouseSelectionQuadrant.value === 2) {
+        else if (mouseSelectionQuadrant.value === 1) {
           isInclude = minX > mouseSelectionLeft && 
                       maxX < mouseSelectionLeft + mouseSelectionWidth && 
                       minY > (mouseSelectionTop - mouseSelectionHeight) && 

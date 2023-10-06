@@ -27,11 +27,11 @@ defineProps<{
   z-index: 200;
 
   &.quadrant-1 {
-    transform-origin: 0 0;
+    transform-origin: 50% 0;
     transform: rotate(180deg);
   }
   &.quadrant-2 {
-    transform-origin: 50% 0;
+    transform-origin: 0 0;
     transform: rotate(180deg);
   }
   &.quadrant-3 {
