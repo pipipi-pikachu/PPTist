@@ -3,11 +3,17 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <FileInput accept=".pptist"  @change="files => importSpecificFile(files)">
-            <PopoverMenuItem @click="mainMenuVisible = false">导入 pptist 文件</PopoverMenuItem>
+          <FileInput accept=".pptist"  @change="files => {
+            importSpecificFile(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
           </FileInput>
-          <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => importPPTXFile(files)">
-            <PopoverMenuItem @click="mainMenuVisible = false">导入 pptx 文件（测试版）</PopoverMenuItem>
+          <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
+            importPPTXFile(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
           </FileInput>
           <PopoverMenuItem @click="setDialogForExport('pptx')">导出文件</PopoverMenuItem>
           <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">重置幻灯片</PopoverMenuItem>
