@@ -11,7 +11,7 @@
       class="rotate-wrapper"
       :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
-      <div class="element-content" :style="{ backgroundImage: `url(${elementInfo.poster})` }">
+      <div class="element-content" :style="{ backgroundImage: elementInfo.poster ? `url(${elementInfo.poster})` : '' }">
         <IconPlayOne class="icon" />
       </div>
     </div>

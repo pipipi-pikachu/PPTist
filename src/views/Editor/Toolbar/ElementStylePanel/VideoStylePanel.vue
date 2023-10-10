@@ -4,7 +4,7 @@
     <div class="background-image-wrapper">
       <FileInput @change="files => setVideoPoster(files)">
         <div class="background-image">
-          <div class="content" :style="{ backgroundImage: `url(${handleVideoElement.poster})` }">
+          <div class="content" :style="{ backgroundImage: handleVideoElement.poster ? `url(${handleVideoElement.poster})` : '' }">
             <IconPlus />
           </div>
         </div>
