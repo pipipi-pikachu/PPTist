@@ -17,6 +17,7 @@
         class="video"
         ref="videoRef"
         :src="src"
+        :autoplay="autoplay"
         :poster="poster"
         webkit-playsinline
         playsinline
@@ -24,7 +25,7 @@
         @timeupdate="handleTimeupdate()"
         @ended="handleEnded()"
         @progress="handleProgress()"
-        @play="autoHideController()"
+        @play="autoHideController(); paused = false"
         @pause="autoHideController()"
         @error="handleError()"
       ></video>
@@ -123,9 +124,11 @@ const props = withDefaults(defineProps<{
   height: number
   src: string
   poster?: string
+  autoplay?: boolean
   scale?: number
 }>(), {
   poster: '',
+  autoplay: false,
   scale: 1,
 })
 

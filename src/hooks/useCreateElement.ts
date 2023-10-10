@@ -305,6 +305,7 @@ export default () => {
       left: (VIEWPORT_SIZE - 500) / 2,
       top: (VIEWPORT_SIZE * viewportRatio.value - 300) / 2,
       src,
+      autoplay: false,
     })
   }
   

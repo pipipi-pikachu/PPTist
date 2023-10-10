@@ -18,6 +18,7 @@
           :height="elementInfo.height"
           :src="elementInfo.src" 
           :poster="elementInfo.poster"  
+          :autoplay="elementInfo.autoplay"
           :scale="scale" 
         />
       </div>

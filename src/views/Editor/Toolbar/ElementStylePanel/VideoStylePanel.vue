@@ -13,6 +13,16 @@
     <div class="row">
       <Button style="flex: 1;" @click="updateVideo({ poster: '' })">重置封面</Button>
     </div>
+
+    <div class="row switch-row">
+      <div style="width: 40%;">自动播放：</div>
+      <div class="switch-wrapper" style="width: 60%;">
+        <Switch 
+          :value="handleVideoElement.autoplay" 
+          @update:value="value => updateVideo({ autoplay: value })" 
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -26,6 +36,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import FileInput from '@/components/FileInput.vue'
 import Button from '@/components/Button.vue'
+import Switch from '@/components/Switch.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())
@@ -85,5 +96,11 @@ const setVideoPoster = (files: FileList) => {
     background-repeat: no-repeat;
     cursor: pointer;
   }
+}
+.switch-row {
+  height: 32px;
+}
+.switch-wrapper {
+  text-align: right;
 }
 </style>
