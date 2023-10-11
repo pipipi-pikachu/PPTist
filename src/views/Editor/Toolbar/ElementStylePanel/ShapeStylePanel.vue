@@ -198,7 +198,7 @@
           style="flex: 1;"
           :checked="!!textFormatPainter"
           v-tooltip="'格式刷'"
-          @click="toggleFormatPainter()"
+          @click="toggleTextFormatPainter()"
         ><IconFormatBrush /></CheckboxButton>
       </ButtonGroup>
 
@@ -234,6 +234,15 @@
     <ElementShadow />
     <Divider />
     <ElementOpacity />
+    <Divider />
+
+    <div class="row">
+      <CheckboxButton
+        style="flex: 1;"
+        :checked="!!shapeFormatPainter"
+        @click="toggleShapeFormatPainter()"
+      ><IconFormatBrush /> 形状格式刷</CheckboxButton>
+    </div>
   </div>
 </template>
 
@@ -247,6 +256,7 @@ import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/s
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
+import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
@@ -269,7 +279,7 @@ import Popover from '@/components/Popover.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore)
+const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter, shapeFormatPainter } = storeToRefs(mainStore)
 
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
@@ -292,7 +302,8 @@ watch(handleElement, () => {
 }, { deep: true, immediate: true })
 
 const { addHistorySnapshot } = useHistorySnapshot()
-const { toggleFormatPainter } = useTextFormatPainter()
+const { toggleTextFormatPainter } = useTextFormatPainter()
+const { toggleShapeFormatPainter } = useShapeFormatPainter()
 
 const updateElement = (props: Partial<PPTShapeElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })

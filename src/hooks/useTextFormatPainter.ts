@@ -5,7 +5,7 @@ export default () => {
   const mainStore = useMainStore()
   const { richTextAttrs, textFormatPainter } = storeToRefs(mainStore)
 
-  const toggleFormatPainter = () => {
+  const toggleTextFormatPainter = () => {
     if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
     else {
       mainStore.setTextFormatPainter({
@@ -23,6 +23,6 @@ export default () => {
   }
 
   return {
-    toggleFormatPainter,
+    toggleTextFormatPainter,
   }
 }

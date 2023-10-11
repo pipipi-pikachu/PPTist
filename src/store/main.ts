@@ -1,7 +1,7 @@
 import { customAlphabet } from 'nanoid'
 import { defineStore } from 'pinia'
 import { ToolbarStates } from '@/types/toolbar'
-import type { CreatingElement, TextFormatPainter } from '@/types/edit'
+import type { CreatingElement, ShapeFormatPainter, TextFormatPainter } from '@/types/edit'
 import type { DialogForExportTypes } from '@/types/export'
 import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
 import { SYS_FONTS } from '@/configs/font'
@@ -34,6 +34,7 @@ export interface MainState {
   dialogForExport: DialogForExportTypes
   databaseId: string
   textFormatPainter: TextFormatPainter | null
+  shapeFormatPainter: ShapeFormatPainter | null
   showSelectPanel: boolean
   showSearchPanel: boolean
 }
@@ -67,6 +68,7 @@ export const useMainStore = defineStore('main', {
     dialogForExport: '', // 导出面板
     databaseId, // 标识当前应用的indexedDB数据库ID
     textFormatPainter: null, // 文字格式刷
+    shapeFormatPainter: null, // 形状格式刷
     showSelectPanel: false, // 打开选择面板
     showSearchPanel: false, // 打开查找替换面板
   }),
@@ -181,6 +183,10 @@ export const useMainStore = defineStore('main', {
 
     setTextFormatPainter(textFormatPainter: TextFormatPainter | null) {
       this.textFormatPainter = textFormatPainter
+    },
+
+    setShapeFormatPainter(shapeFormatPainter: ShapeFormatPainter | null) {
+      this.shapeFormatPainter = shapeFormatPainter
     },
 
     setSelectPanelState(show: boolean) {

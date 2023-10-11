@@ -1,7 +1,10 @@
 <template>
   <div 
     class="editable-element-shape"
-    :class="{ 'lock': elementInfo.lock }"
+    :class="{
+      'lock': elementInfo.lock,
+      'format-painter': shapeFormatPainter,
+    }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -24,6 +27,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
+        @mouseup="execFormatPainter()"
         @touchstart="$event => handleSelectElement($event)"
         @dblclick="startEdit()"
       >
@@ -99,7 +103,7 @@ const props = defineProps<{
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { handleElementId } = storeToRefs(mainStore)
+const { handleElementId, shapeFormatPainter } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -108,6 +112,17 @@ const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
   e.stopPropagation()
 
   props.selectElement(e, props.elementInfo, canMove)
+}
+
+const execFormatPainter = () => {
+  if (!shapeFormatPainter.value) return
+  slidesStore.updateElement({
+    id: props.elementInfo.id, 
+    props: shapeFormatPainter.value,
+  })
+  
+  addHistorySnapshot()
+  mainStore.setShapeFormatPainter(null)
 }
 
 const outline = computed(() => props.elementInfo.outline)
@@ -174,6 +189,9 @@ const startEdit = () => {
 
   &.lock .element-content {
     cursor: default;
+  }
+  &.format-painter .element-content {
+    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAVCAYAAACzK0UYAAAABHNCSVQICAgIfAhkiAAAAVRJREFUSInt1DFuwjAYBeCXUrFavgBN9yB6AKR6Bi7AVLrlBpFYgAUpp2i37AysVDIXcCIuwJRMEEYk9LrQDlVQ7EiVOvSt/v1/tmUbeZ7TGMPL5WLgEJLzNE2ptabWmsfjkTeLjTGUUvJ8Pjsjo9GIUkpKKam1voncuTRumn/EKfd1BSQnAF4qhvyK2k1VD88YQ6UUiqJI2+12r2LiPI7j2Xa7rV9yRZbLpRWiAKhGwjW1x3XN828jD9PpVK3X60bAarWy20lZltjv940QwO4KPzbu7oCgLMu/g3Q6ncZI73Q6WSFhGDZGnrIss0LG4zGEEG4ISZUkiW8DDAYDCCEQBIEbAmAWx7GNgSiKAOB1OBzaIyQnSZIom/cRRRG63e7C87z3MAw/fu7Gy/OcRVEgCIK01Wp9/10k37Ism9TdLCHEFzC/zvMPh8Nmt9v5ANDv9/EJD8ykxYswZDkAAAAASUVORK5CYII=) 1 10, default !important;
   }
 }
 .rotate-wrapper {

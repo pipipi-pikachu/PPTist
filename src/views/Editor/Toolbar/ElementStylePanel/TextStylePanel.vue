@@ -142,7 +142,7 @@
         style="flex: 1;"
         :checked="!!textFormatPainter"
         v-tooltip="'格式刷'"
-        @click="toggleFormatPainter()"
+        @click="toggleTextFormatPainter()"
       ><IconFormatBrush /></CheckboxButton>
       <Popover placement="bottom-end" trigger="click" v-model:value="linkPopoverVisible" style="width: 33.33%;">
         <template #content>
@@ -424,7 +424,7 @@ const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
-const { toggleFormatPainter } = useTextFormatPainter()
+const { toggleTextFormatPainter } = useTextFormatPainter()
 
 const updateElement = (props: Partial<PPTTextElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })
