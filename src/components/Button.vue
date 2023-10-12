@@ -95,7 +95,7 @@ const handleClick = () => {
     border-color: $themeColor;
 
     &:hover {
-      background: $themeHoverColor;
+      background-color: $themeHoverColor;
       border-color: $themeHoverColor;
     }
   }
