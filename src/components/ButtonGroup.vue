@@ -39,7 +39,7 @@ withDefaults(defineProps<{
           right: -1px;
         }
       }
-      
+
       &:first-child {
         border-top-left-radius: $borderRadius;
         border-bottom-left-radius: $borderRadius;
