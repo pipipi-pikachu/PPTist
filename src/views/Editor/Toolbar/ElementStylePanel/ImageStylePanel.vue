@@ -7,8 +7,8 @@
 
     <ElementFlip />
 
-    <ButtonGroup class="row">
-      <Button style="width: calc(100% / 6 * 5);" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
+    <ButtonGroup class="row" passive>
+      <Button first style="width: calc(100% / 6 * 5);" @click="clipImage()"><IconTailoring class="btn-icon" /> 裁剪图片</Button>
       <Popover trigger="click" v-model:value="clipPanelVisible" style="width: calc(100% / 6);">
         <template #content>
           <div class="clip">
@@ -37,7 +37,7 @@
             </template>
           </div>
         </template>
-        <Button class="popover-btn" style="width: 100%;"><IconDown /></Button>
+        <Button last class="popover-btn" style="width: 100%;"><IconDown /></Button>
       </Popover>
     </ButtonGroup>
 

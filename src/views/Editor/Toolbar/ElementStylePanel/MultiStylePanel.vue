@@ -77,7 +77,7 @@
         </template>
       </Select>
     </SelectGroup>
-    <ButtonGroup class="row">
+    <ButtonGroup class="row" passive>
       <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
@@ -85,7 +85,7 @@
             @update:modelValue="value => updateFontStyle('color', value)"
           />
         </template>
-        <TextColorButton :color="richTextAttrs.color" v-tooltip="'文字颜色'">
+        <TextColorButton first :color="richTextAttrs.color" v-tooltip="'文字颜色'">
           <IconText />
         </TextColorButton>
       </Popover>
@@ -106,7 +106,8 @@
         v-tooltip="'增大字号'"
         @click="updateFontStyle('fontsize-add', '2')"
       ><IconFontSize />+</Button>
-      <Button 
+      <Button
+        last
         class="font-size-btn"
         style="width: 20%;"
         v-tooltip="'减小字号'"

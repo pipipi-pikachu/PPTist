@@ -41,7 +41,7 @@
       </Select>
     </SelectGroup>
 
-    <ButtonGroup class="row">
+    <ButtonGroup class="row" passive>
       <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker
@@ -49,7 +49,7 @@
             @update:modelValue="value => emitRichTextCommand('color', value)"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="richTextAttrs.color">
+        <TextColorButton first v-tooltip="'文字颜色'" :color="richTextAttrs.color">
           <IconText />
         </TextColorButton>
       </Popover>
@@ -70,7 +70,8 @@
         v-tooltip="'增大字号'"
         @click="emitRichTextCommand('fontsize-add')"
       ><IconFontSize />+</Button>
-      <Button 
+      <Button
+        last
         class="font-size-btn"
         style="width: 20%;"
         v-tooltip="'减小字号'"
@@ -132,8 +133,9 @@
       ><IconQuote /></CheckboxButton>
     </ButtonGroup>
 
-    <ButtonGroup class="row">
+    <ButtonGroup class="row" passive>
       <CheckboxButton
+        first
         style="flex: 1;"
         v-tooltip="'清除格式'"
         @click="emitRichTextCommand('clear')"
@@ -155,6 +157,7 @@
           </div>
         </template>
         <CheckboxButton
+          last
           style="width: 100%;"
           :checked="!!richTextAttrs.link"
           v-tooltip="'超链接'"
@@ -177,9 +180,10 @@
       <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><IconAlignTextBoth /></RadioButton>
     </RadioGroup>
 
-    <div class="row">
+    <div class="row" passive>
       <ButtonGroup style="flex: 1;">
         <Button
+          first
           :type="richTextAttrs.bulletList ? 'primary' : 'default'"
           style="flex: 1;"
           v-tooltip="'项目符号'"
@@ -198,12 +202,13 @@
               </ul>
             </div>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button last class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
       <div style="width: 10px;"></div>
-      <ButtonGroup style="flex: 1;">
+      <ButtonGroup style="flex: 1;" passive>
         <Button
+          first
           :type="richTextAttrs.orderedList ? 'primary' : 'default'"
           style="flex: 1;"
           v-tooltip="'编号'"
@@ -222,29 +227,29 @@
               </ul>
             </div>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button last class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
     </div>
 
     <div class="row">
-      <ButtonGroup style="flex: 1;">
-        <Button style="flex: 1;" v-tooltip="'减小段落缩进'" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
+      <ButtonGroup style="flex: 1;" passive>
+        <Button first style="flex: 1;" v-tooltip="'减小段落缩进'" @click="emitRichTextCommand('indent', '-1')"><IconIndentLeft /></Button>
         <Popover trigger="click" v-model:value="indentLeftPanelVisible">
           <template #content>
             <PopoverMenuItem @click="emitRichTextCommand('textIndent', '-1')">减小首行缩进</PopoverMenuItem>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button last class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
       <div style="width: 10px;"></div>
-      <ButtonGroup style="flex: 1;">
-        <Button style="flex: 1;" v-tooltip="'增大段落缩进'" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
+      <ButtonGroup style="flex: 1;" passive>
+        <Button first style="flex: 1;" v-tooltip="'增大段落缩进'" @click="emitRichTextCommand('indent', '+1')"><IconIndentRight /></Button>
         <Popover trigger="click" v-model:value="indentRightPanelVisible">
           <template #content>
             <PopoverMenuItem @click="emitRichTextCommand('textIndent', '+1')">增大首行缩进</PopoverMenuItem>
           </template>
-          <Button class="popover-btn"><IconDown /></Button>
+          <Button last class="popover-btn"><IconDown /></Button>
         </Popover>
       </ButtonGroup>
     </div>

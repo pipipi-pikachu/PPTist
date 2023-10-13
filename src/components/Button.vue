@@ -9,6 +9,8 @@
       'checkbox': !disabled && type === 'checkbox',
       'radio': !disabled && type === 'radio',
       'small': size === 'small',
+      'first': first,
+      'last': last,
     }"
     @click="handleClick()"
   >
@@ -22,11 +24,15 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
   type?: 'default' | 'primary' | 'checkbox' | 'radio'
   size?: 'small' | 'normal'
+  first?: boolean
+  last?: boolean
 }>(), {
   checked: false,
   disabled: false,
   type: 'default',
   size: 'normal',
+  first: false,
+  last: false,
 })
 
 const emit = defineEmits<{

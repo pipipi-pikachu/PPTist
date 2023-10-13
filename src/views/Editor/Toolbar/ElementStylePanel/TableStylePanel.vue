@@ -28,7 +28,7 @@
       </Select>
     </SelectGroup>
 
-    <ButtonGroup class="row">
+    <ButtonGroup class="row" passive>
       <Popover trigger="click" style="width: 50%;">
         <template #content>
           <ColorPicker
@@ -36,7 +36,7 @@
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'文字颜色'" :color="textAttrs.color">
+        <TextColorButton first v-tooltip="'文字颜色'" :color="textAttrs.color">
           <IconText />
         </TextColorButton>
       </Popover>
@@ -47,7 +47,7 @@
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <TextColorButton v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
+        <TextColorButton last v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
           <IconFill />
         </TextColorButton>
       </Popover>

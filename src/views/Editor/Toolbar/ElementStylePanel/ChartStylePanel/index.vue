@@ -105,7 +105,7 @@
         </div>
       </Popover>
     </div>
-    <ButtonGroup class="row">
+    <ButtonGroup class="row" passive>
       <Popover trigger="click" v-model:open="presetThemesVisible" style="width: 40%;">
         <template #content>
           <div class="preset-themes">
@@ -123,10 +123,10 @@
             </div>
           </div>
         </template>
-        <Button class="no-padding" style="width: 100%;">推荐主题</Button>
+        <Button first style="width: 100%;">推荐主题</Button>
       </Popover>
-      <Button 
-        class="no-padding" 
+      <Button
+        last
         :disabled="themeColor.length >= 10" 
         style="width: 60%;" 
         @click="addThemeColor()"
