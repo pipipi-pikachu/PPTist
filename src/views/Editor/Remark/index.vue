@@ -49,7 +49,7 @@ const resize = (e: MouseEvent) => {
     let newHeight = -moveY + originHeight
 
     if (newHeight < 40) newHeight = 40
-    if (newHeight > 120) newHeight = 120
+    if (newHeight > 360) newHeight = 360
 
     emit('update:height', newHeight)
   }
@@ -66,8 +66,6 @@ const resize = (e: MouseEvent) => {
 .remark {
   position: relative;
   border-top: 1px solid $borderColor;
-  background-color: $lightGray;
-  line-height: 1.5;
 
   textarea {
     width: 100%;
@@ -79,6 +77,8 @@ const resize = (e: MouseEvent) => {
     padding: 8px;
     font-size: 12px;
     background-color: transparent;
+    box-sizing: border-box;
+    line-height: 1.5;
 
     @include absolute-0();
   }
