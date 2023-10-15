@@ -616,21 +616,6 @@ const updateLink = (link?: string) => {
     background-color: #666;
   }
 }
-.popover-list {
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
-  margin: -12px;
-}
-.popover-item {
-  padding: 9px 12px;
-  border-radius: 2px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-}
 .popover-btn {
   padding: 0 3px;
 }

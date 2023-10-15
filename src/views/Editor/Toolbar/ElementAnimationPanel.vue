@@ -371,7 +371,8 @@ $attentionColor: #e8b76a;
   overflow-y: auto;
   overflow-x: hidden;
   font-size: 12px;
-  margin-right: -12px;
+  margin-right: -10px;
+  padding-right: 5px;
   position: relative;
 
   .mask {
@@ -391,13 +392,16 @@ $attentionColor: #e8b76a;
     background-color: rgba($color: $attentionColor, $alpha: .15);
   }
 }
+.pool-type:not(:last-child) {
+  margin-bottom: 5px;
+}
 .type-title {
   width: 100%;
   font-size: 13px;
   margin-bottom: 10px;
   border-left: 4px solid #aaa;
   background-color: #eee;
-  padding: 2px 0 2px 10px;
+  padding: 4px 0 4px 10px;
 }
 .pool-item-wrapper {
   @include flex-grid-layout();
@@ -405,7 +409,7 @@ $attentionColor: #e8b76a;
 .pool-item {
   @include flex-grid-layout-children(4, 24%);
 
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   height: 40px;
   line-height: 40px;
   text-align: center;
@@ -413,6 +417,7 @@ $attentionColor: #e8b76a;
 }
 .animation-box {
   background-color: $lightGray;
+  border-radius: $borderRadius;
 }
 
 .animation-sequence {

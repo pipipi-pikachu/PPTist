@@ -101,6 +101,7 @@ const onClickMask = () => {
   padding: 20px;
   background: #fff;
   border-radius: $borderRadius;
+  overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
   position: relative;
 }

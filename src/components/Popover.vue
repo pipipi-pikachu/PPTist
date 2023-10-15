@@ -84,7 +84,7 @@ onMounted(() => {
   padding: 10px;
   border: 1px solid $borderColor;
   box-shadow: $boxShadow;
-  border-radius: 2px;
+  border-radius: $borderRadius;
   font-size: 13px;
 }
 </style>

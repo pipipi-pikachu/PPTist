@@ -1,7 +1,7 @@
 .tippy-box[data-theme~='tooltip'] {
   background-color: #262626;
   color: #fff;
-  border-radius: 2px;
+  border-radius: $borderRadius;
   padding: 8px;
   font-size: 12px;
   line-height: 1.5;

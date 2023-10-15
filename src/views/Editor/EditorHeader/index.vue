@@ -164,6 +164,7 @@ const setDialogForExport = (type: DialogForExportTypes) => {
   display: flex;
   margin: 0 8px;
   padding: 0 2px;
+  border-radius: $borderRadius;
 
   &:hover {
     background-color: #f1f1f1;

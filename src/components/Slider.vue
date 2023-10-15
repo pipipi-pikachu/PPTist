@@ -262,7 +262,7 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
     background-color: #262626;
     text-align: center;
     color: #fff;
-    border-radius: 2px;
+    border-radius: $borderRadius;
     padding: 6px 5px;
     font-size: 12px;
   }

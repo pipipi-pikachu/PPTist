@@ -20,7 +20,7 @@ const emit = defineEmits<{
 .popover-menu-item {
   min-width: 80px;
   padding: 6px 10px;
-  border-radius: 2px;
+  border-radius: $borderRadius;
   font-size: 13px;
   cursor: pointer;
 

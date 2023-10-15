@@ -372,6 +372,7 @@ const updateViewportRatio = (value: number) => {
     justify-content: center;
     padding: 8px;
     border: 1px solid $borderColor;
+    border-radius: $borderRadius;
   }
 
   .text {

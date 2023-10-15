@@ -141,6 +141,7 @@ const handleSelect = (option: SelectOption) => {
   height: 32px;
   line-height: 32px;
   padding: 0 5px;
+  border-radius: $borderRadius;
   cursor: pointer;
   @include ellipsis-oneline();
 

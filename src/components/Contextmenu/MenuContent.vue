@@ -50,7 +50,7 @@ $subMenuWidth: 120px;
   background: #fff;
   border: 1px solid $borderColor;
   box-shadow: $boxShadow;
-  border-radius: 2px;
+  border-radius: $borderRadius;
   list-style: none;
   margin: 0;
 }
