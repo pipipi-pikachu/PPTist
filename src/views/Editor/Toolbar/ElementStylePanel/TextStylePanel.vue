@@ -143,8 +143,9 @@
       <CheckboxButton
         style="flex: 1;"
         :checked="!!textFormatPainter"
-        v-tooltip="'格式刷'"
+        v-tooltip="'格式刷（双击连续使用）'"
         @click="toggleTextFormatPainter()"
+        @dblclick="toggleTextFormatPainter(true)"
       ><IconFormatBrush /></CheckboxButton>
       <Popover placement="bottom-end" trigger="click" v-model:value="linkPopoverVisible" style="width: 33.33%;">
         <template #content>

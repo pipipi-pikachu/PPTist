@@ -116,13 +116,15 @@ const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
 
 const execFormatPainter = () => {
   if (!shapeFormatPainter.value) return
+  const { keep, ...newProps } = shapeFormatPainter.value
+
   slidesStore.updateElement({
     id: props.elementInfo.id, 
-    props: shapeFormatPainter.value,
+    props: newProps,
   })
   
   addHistorySnapshot()
-  mainStore.setShapeFormatPainter(null)
+  if (!keep) mainStore.setShapeFormatPainter(null)
 }
 
 const outline = computed(() => props.elementInfo.outline)

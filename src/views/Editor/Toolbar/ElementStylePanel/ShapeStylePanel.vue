@@ -198,8 +198,9 @@
         <CheckboxButton
           style="flex: 1;"
           :checked="!!textFormatPainter"
-          v-tooltip="'格式刷'"
+          v-tooltip="'格式刷（双击连续使用）'"
           @click="toggleTextFormatPainter()"
+          @dblclick="toggleTextFormatPainter(true)"
         ><IconFormatBrush /></CheckboxButton>
       </ButtonGroup>
 
@@ -239,9 +240,11 @@
 
     <div class="row">
       <CheckboxButton
+        v-tooltip="'双击连续使用'"
         style="flex: 1;"
         :checked="!!shapeFormatPainter"
         @click="toggleShapeFormatPainter()"
+        @dblclick="toggleShapeFormatPainter(true)"
       ><IconFormatBrush /> 形状格式刷</CheckboxButton>
     </div>
   </div>

@@ -102,6 +102,7 @@ export type CreatingElement = CreatingTextElement | CreatingShapeElement | Creat
 export type TextFormatPainterKeys = 'bold' | 'em' | 'underline' | 'strikethrough' | 'color' | 'backcolor' | 'fontsize' | 'fontname' | 'align'
 
 export interface TextFormatPainter {
+  keep: boolean
   bold?: boolean
   em?: boolean
   underline?: boolean
@@ -114,6 +115,7 @@ export interface TextFormatPainter {
 }
 
 export interface ShapeFormatPainter {
+  keep: boolean
   fill?: string
   gradient?: ShapeGradient
   outline?: PPTElementOutline

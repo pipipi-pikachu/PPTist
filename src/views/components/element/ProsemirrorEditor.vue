@@ -231,16 +231,17 @@ const execCommand = ({ target, action }: RichTextCommand) => {
 // 鼠标抬起时，执行格式刷命令
 const handleMouseup = () => {
   if (!textFormatPainter.value) return
+  const { keep, ...newProps } = textFormatPainter.value
 
   const actions: RichTextAction[] = [{ command: 'clear' }]
-  for (const key of Object.keys(textFormatPainter.value) as TextFormatPainterKeys[]) {
+  for (const key of Object.keys(newProps) as TextFormatPainterKeys[]) {
     const command = key
     const value = textFormatPainter.value[key]
     if (value === true) actions.push({ command })
     else if (value) actions.push({ command, value })
   }
   execCommand({ action: actions })
-  mainStore.setTextFormatPainter(null)
+  if (!keep) mainStore.setTextFormatPainter(null)
 }
 
 // Prosemirror编辑器的初始化和卸载
