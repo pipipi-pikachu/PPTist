@@ -152,7 +152,7 @@ export default () => {
       enterScreeningFromStart()
       return
     }
-    if (key === KEYS.F) {
+    if (ctrlKey && key === KEYS.F) {
       e.preventDefault()
       mainStore.setSearchPanelState(!showSearchPanel.value)
       return
