@@ -66,7 +66,7 @@ const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
 const keypointStyle = computed(() => {
-  if (!props.elementInfo.pathFormula || !props.elementInfo.keypoint) return {}
+  if (!props.elementInfo.pathFormula || props.elementInfo.keypoint === undefined) return {}
 
   const pathFormula = SHAPE_PATH_FORMULAS[props.elementInfo.pathFormula]
   if ('editable' in pathFormula) {
