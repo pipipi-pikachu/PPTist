@@ -4,8 +4,8 @@
       <IconBack class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'撤销'" @click="undo()" />
       <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'重做'" @click="redo()" />
       <Divider type="vertical" style="height: 20px;" />
-      <IconMoveOne class="handler-item" v-tooltip="'选择窗格'" @click="openSelectPanel()" />
-      <IconSearch class="handler-item" v-tooltip="'查找/替换'" @click="openSraechPanel()" />
+      <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'选择窗格'" @click="toggleSelectPanel()" />
+      <IconSearch class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'查找/替换'" @click="toggleSraechPanel()" />
     </div>
 
     <div class="add-element-handler">
@@ -116,7 +116,7 @@ import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const mainStore = useMainStore()
-const { creatingElement, creatingCustomShape } = storeToRefs(mainStore)
+const { creatingElement, creatingCustomShape, showSelectPanel, showSearchPanel } = storeToRefs(mainStore)
 const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
 const { redo, undo } = useHistorySnapshot()
@@ -191,13 +191,13 @@ const drawLine = (line: LinePoolItem) => {
 }
 
 // 打开选择面板
-const openSelectPanel = () => {
-  mainStore.setSelectPanelState(true)
+const toggleSelectPanel = () => {
+  mainStore.setSelectPanelState(!showSelectPanel.value)
 }
 
 // 打开搜索替换面板
-const openSraechPanel = () => {
-  mainStore.setSearchPanelState(true)
+const toggleSraechPanel = () => {
+  mainStore.setSearchPanelState(!showSearchPanel.value)
 }
 </script>
 
@@ -289,6 +289,7 @@ const openSraechPanel = () => {
   .handler-item {
     padding: 0 8px;
 
+    &.active,
     &:not(.disable):hover {
       background-color: #f1f1f1;
     }

@@ -1,7 +1,7 @@
 <template>
   <MoveablePanel 
     class="search-panel" 
-    :width="300" 
+    :width="330" 
     :height="0"
     :left="-270" 
     :top="90"
@@ -17,8 +17,14 @@
         <template #suffix>
           <span class="count">{{searchIndex + 1}}/{{searchResults.length}}</span>
           <Divider type="vertical" />
-          <IconLeft class="next-btn left" @click="searchPrev()" />
-          <IconRight class="next-btn right" @click="searchNext()" />
+          <span class="ignore-case"
+            :class="{ 'active': modifiers === 'g' }"
+            v-tooltip="'忽略大小写'"
+            @click="toggleModifiers()"
+          >Aa</span>
+          <Divider type="vertical" />
+          <IconLeft class="next-btn left" @click="searchPrev()" v-tooltip="'上一个'" />
+          <IconRight class="next-btn right" @click="searchNext()" v-tooltip="'下一个'" />
         </template>
       </Input>
       <Input class="input" v-model:value="replaceWord" placeholder="输入替换内容" @enter="replace()" v-if="type === 'replace'"></Input>
@@ -53,10 +59,12 @@ const {
   replaceWord,
   searchResults,
   searchIndex,
+  modifiers,
   searchNext,
   searchPrev,
   replace,
   replaceAll,
+  toggleModifiers,
 } = useSearch()
 
 const type = ref<TypeKey>('search')
@@ -97,6 +105,15 @@ watch(type, () => {
   font-size: 12px;
   margin-right: 8px;
   user-select: none;
+}
+.ignore-case {
+  font-size: 12px;
+  user-select: none;
+  cursor: pointer;
+
+  &.active {
+    color: $themeColor;
+  }
 }
 .next-btn {
   width: 22px;

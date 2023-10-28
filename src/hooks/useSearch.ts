@@ -18,6 +18,8 @@ interface SearchTableResult {
 
 type SearchResult = SearchTextResult | SearchTableResult
 
+type Modifiers = 'g' | 'gi'
+
 export default () => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
@@ -28,10 +30,12 @@ export default () => {
   const replaceWord = ref('')
   const searchResults = ref<SearchResult[]>([])
   const searchIndex = ref(-1)
+
+  const modifiers = ref<Modifiers>('g')
   
   const search = () => {
     const textList: SearchResult[] = []
-    const matchRegex = new RegExp(searchWord.value, 'g')
+    const matchRegex = new RegExp(searchWord.value, modifiers.value)
     const textRegex = /(<([^>]+)>)/g
   
     for (const slide of slides.value) {
@@ -116,7 +120,7 @@ export default () => {
   type TextInfoList = ReturnType<typeof getTextInfoList>
   
   const getMatchList = (content: string, keyword: string) => {
-    const reg = new RegExp(keyword, 'g')
+    const reg = new RegExp(keyword, modifiers.value)
     const matchList = []
     let match = reg.exec(content)
     while (match) {
@@ -154,7 +158,7 @@ export default () => {
   
   const highlightTableText = (nodes: NodeListOf<Element>, index: number) => {
     for (const node of nodes) {
-      node.innerHTML = node.innerHTML.replace(new RegExp(searchWord.value, 'g'), () => {
+      node.innerHTML = node.innerHTML.replace(new RegExp(searchWord.value, modifiers.value), () => {
         return `<mark data-index=${index++}>${searchWord.value}</mark>`
       })
     }
@@ -393,13 +397,15 @@ export default () => {
     searchResults.value = []
     searchIndex.value = -1
   }
-  
-  watch(searchWord, () => {
+
+  const reset = () => {
     searchIndex.value = -1
     searchResults.value = []
   
     if (!searchWord.value) clearMarks()
-  })
+  }
+  
+  watch(searchWord, reset)
   
   watch(slideIndex, () => {
     nextTick(() => {
@@ -417,15 +423,22 @@ export default () => {
   })
   
   onBeforeUnmount(clearMarks)
+  
+  const toggleModifiers = () => {
+    modifiers.value = modifiers.value === 'g' ? 'gi' : 'g'
+    reset()
+  }
 
   return {
     searchWord,
     replaceWord,
     searchResults,
     searchIndex,
+    modifiers,
     searchNext,
     searchPrev,
     replace,
     replaceAll,
+    toggleModifiers,
   }
 }
