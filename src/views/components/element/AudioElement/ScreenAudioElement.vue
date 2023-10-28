@@ -1,5 +1,5 @@
 <template>
-  <div class="screen-element-audio"
+  <div class="base-element-audio screen-element-audio"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
