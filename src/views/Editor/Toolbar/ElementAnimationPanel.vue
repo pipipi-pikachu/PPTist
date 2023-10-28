@@ -283,7 +283,9 @@ const updateElementAnimation = (type: AnimationType, effect: string) => {
   const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value)
   const duration = animationItem?.duration || ANIMATION_DEFAULT_DURATION
 
-  runAnimation(handleElementId.value, effect, duration)
+  setTimeout(() => {
+    runAnimation(handleElementId.value, effect, duration)
+  }, 0)
 }
 
 const handleAnimationId = ref('')
@@ -307,7 +309,9 @@ const addAnimation = (type: AnimationType, effect: string) => {
   animationPoolVisible.value = false
   addHistorySnapshot()
 
-  runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
+  setTimeout(() => {
+    runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
+  }, 0)
 }
 
 // 动画选择面板打开600ms后再移除遮罩层，否则打开面板后迅速滑入鼠标预览会导致抖动
