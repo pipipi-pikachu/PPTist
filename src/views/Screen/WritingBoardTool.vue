@@ -117,7 +117,7 @@ const emit = defineEmits<{
 
 const { currentSlide } = storeToRefs(useSlidesStore())
 
-const writingBoardRef = ref<typeof WritingBoard>()
+const writingBoardRef = ref<InstanceType<typeof WritingBoard>>()
 const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
 const blackboard = ref(false)
@@ -164,6 +164,8 @@ watch(currentSlide, () => {
 // 每次绘制完成后将绘制完的图片更新到数据库
 const hanldeWritingEnd = () => {
   const dataURL = writingBoardRef.value!.getImageDataURL()
+  if (!dataURL) return
+
   db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
     const currentImg = ret[0]
     if (currentImg) db.writingBoardImgs.update(currentImg, { dataURL })

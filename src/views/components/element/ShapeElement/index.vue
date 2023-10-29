@@ -177,7 +177,7 @@ const checkEmptyText = () => {
   }
 }
 
-const prosemirrorEditorRef = ref<typeof ProsemirrorEditor>()
+const prosemirrorEditorRef = ref<InstanceType<typeof ProsemirrorEditor>>()
 const startEdit = () => {
   editable.value = true
   nextTick(() => prosemirrorEditorRef.value && prosemirrorEditorRef.value.focus())
