@@ -1,8 +1,7 @@
 import { EditorState } from 'prosemirror-state'
-import { EditorView } from 'prosemirror-view'
+import { type DirectEditorProps, EditorView } from 'prosemirror-view'
 import { Schema, DOMParser } from 'prosemirror-model'
-
-import { buildPlugins } from './plugins/index'
+import { buildPlugins, type PluginOptions } from './plugins/index'
 import { schemaNodes, schemaMarks } from './schema/index'
 
 const schema = new Schema({
@@ -17,11 +16,16 @@ export const createDocument = (content: string) => {
   return DOMParser.fromSchema(schema).parse(element as Element)
 }
 
-export const initProsemirrorEditor = (dom: Element, content: string, props = {}) => {
+export const initProsemirrorEditor = (
+  dom: Element,
+  content: string,
+  props: Omit<DirectEditorProps, 'state'>,
+  pluginOptions?: PluginOptions,
+) => {
   return new EditorView(dom, {
     state: EditorState.create({
       doc: createDocument(content),
-      plugins: buildPlugins(schema),
+      plugins: buildPlugins(schema, pluginOptions),
     }),
     ...props,
   })

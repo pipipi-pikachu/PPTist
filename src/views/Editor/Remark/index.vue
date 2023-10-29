@@ -4,18 +4,20 @@
       class="resize-handler"
       @mousedown="$event => resize($event)"
     ></div>
-    <textarea
+    <Editor
       :value="remark"
-      placeholder="点击输入演讲者备注"
-      @input="$event => handleInput($event)"
-    ></textarea>
+      ref="editorRef"
+      @update="value => handleInput(value)"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
+
+import Editor from './Editor.vue'
 
 const props = defineProps<{
   height: number
@@ -28,11 +30,19 @@ const emit = defineEmits<{
 const slidesStore = useSlidesStore()
 const { currentSlide } = storeToRefs(slidesStore)
 
+const editorRef = ref<InstanceType<typeof Editor>>()
+watch(() => currentSlide.value.id, () => {
+  nextTick(() => {
+    editorRef.value!.updateTextContent()
+  })
+}, {
+  immediate: true,
+})
+
 const remark = computed(() => currentSlide.value?.remark || '')
 
-const handleInput = (e: Event) => {
-  const value = (e.target as HTMLTextAreaElement).value
-  slidesStore.updateSlide({ remark: value })
+const handleInput = (content: string) => {
+  slidesStore.updateSlide({ remark: content })
 }
 
 const resize = (e: MouseEvent) => {
@@ -66,22 +76,6 @@ const resize = (e: MouseEvent) => {
 .remark {
   position: relative;
   border-top: 1px solid $borderColor;
-
-  textarea {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    resize: none;
-    border: 0;
-    outline: 0;
-    padding: 8px;
-    font-size: 12px;
-    background-color: transparent;
-    box-sizing: border-box;
-    line-height: 1.5;
-
-    @include absolute-0();
-  }
 }
 .resize-handler {
   height: 7px;

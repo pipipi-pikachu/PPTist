@@ -7,9 +7,16 @@ import { gapCursor } from 'prosemirror-gapcursor'
 
 import { buildKeymap } from './keymap'
 import { buildInputRules } from './inputrules'
+import { placeholderPlugin } from './placeholder'
 
-export const buildPlugins = (schema: Schema) => {
-  return [
+export interface PluginOptions {
+  placeholder?: string
+}
+
+export const buildPlugins = (schema: Schema, options?: PluginOptions) => {
+  const placeholder = options?.placeholder
+
+  const plugins = [
     buildInputRules(schema),
     keymap(buildKeymap(schema)),
     keymap(baseKeymap),
@@ -17,4 +24,8 @@ export const buildPlugins = (schema: Schema) => {
     gapCursor(),
     history(),
   ]
+
+  if (placeholder) plugins.push(placeholderPlugin(placeholder))
+
+  return plugins
 }
