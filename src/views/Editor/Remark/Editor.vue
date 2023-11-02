@@ -22,6 +22,8 @@
         </template>
         <button><IconHighLight /></button>
       </Popover>
+      <button :class="{ 'active': attr?.bulletList }" @click="execCommand('bulletList')"><IconList /></button>
+      <button :class="{ 'active': attr?.orderedList }" @click="execCommand('orderedList')"><IconOrderedList /></button>
       <button @click="execCommand('clear')"><IconFormat /></button>
     </div>
   </div>
@@ -34,6 +36,7 @@ import { useMainStore } from '@/store'
 import type { EditorView } from 'prosemirror-view'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
 import { addMark, autoSelectAll, getTextAttrs, type TextAttrs } from '@/utils/prosemirror/utils'
+import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import tippy, { type Instance } from 'tippy.js'
 
 import ColorPicker from '@/components/ColorPicker/index.vue'
@@ -99,16 +102,19 @@ const handleMouseup = () => {
   if (menuInstance.value) {
     attr.value = getTextAttrs(editorView)
 
+    const { x, y, left, top } = range.getBoundingClientRect()
+
     menuInstance.value.setProps({
-      getReferenceClientRect: () => range.getBoundingClientRect(),
+      getReferenceClientRect: () => ({
+        x, y, left, top,
+        height: 0,
+        width: 0,
+        right: left,
+        bottom: top,
+      } as DOMRect),
     })
     menuInstance.value.show()
   }
-}
-
-const handleMousedown = () => {
-  hideMenuInstance()
-  window.getSelection()?.removeAllRanges()
 }
 
 const execCommand = (command: string, value?: string) => {
@@ -138,6 +144,14 @@ const execCommand = (command: string, value?: string) => {
     autoSelectAll(editorView)
     toggleMark(editorView.state.schema.marks.strikethrough)(editorView.state, editorView.dispatch)
   }
+  else if (command === 'bulletList') {
+    const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
+    toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
+  }
+  else if (command === 'orderedList') {
+    const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
+    toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
+  }
   else if (command === 'clear') {
     autoSelectAll(editorView)
     const { $from, $to } = editorView.state.selection
@@ -155,7 +169,11 @@ onMounted(() => {
       focus: handleFocus,
       blur: handleBlur,
       mouseup: handleMouseup,
-      mousedown: handleMousedown,
+      mousedown: () => {
+        window.getSelection()?.removeAllRanges()
+        hideMenuInstance()
+      },
+      keydown: hideMenuInstance,
       input: handleInput,
     },
   }, {
@@ -167,7 +185,7 @@ onMounted(() => {
     content: menuRef.value!,
     interactive: true,
     trigger: 'manual',
-    placement: 'top',
+    placement: 'top-start',
     hideOnClick: 'toggle',
     offset: [0, 6],
   })
@@ -179,10 +197,16 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.editor {
+  height: 100%;
+  overflow: auto;
+}
 .prosemirror-editor {
+  height: 100%;
   cursor: text;
 
   ::v-deep(.ProseMirror) {
+    height: 100%;
     font-size: 12px;
     overflow: auto;
     padding: 8px;
@@ -200,7 +224,7 @@ onUnmounted(() => {
 .menu {
   display: flex;
   background-color: #fff;
-  padding: 5px;
+  padding: 6px 4px;
   border-radius: $borderRadius;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
 
@@ -210,8 +234,11 @@ onUnmounted(() => {
     background-color: #fff;
     padding: 3px;
     border-radius: $borderRadius;
-    font-size: 15px;
+    font-size: 16px;
     margin: 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 
     &:hover, &.active {

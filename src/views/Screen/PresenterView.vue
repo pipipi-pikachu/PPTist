@@ -67,7 +67,7 @@
         <span>演讲者备注</span>
         <span>P {{slideIndex + 1}} / {{slides.length}}</span>
       </div>
-      <div class="remark-content" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark"></div>
+      <div class="remark-content ProseMirror-static" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark"></div>
       <div class="remark-scale">
         <div :class="['scale-btn', { 'disable': remarkFontSize === 12 }]" @click="setRemarkFontSize(remarkFontSize - 2)"><IconMinus /></div>
         <div :class="['scale-btn', { 'disable': remarkFontSize === 40 }]" @click="setRemarkFontSize(remarkFontSize + 2)"><IconPlus /></div>
