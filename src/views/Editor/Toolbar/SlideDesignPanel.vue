@@ -119,7 +119,14 @@
 
     <Divider />
 
-    <div class="title">全局主题</div>
+    <div class="title">
+      <span>全局主题</span>
+      <span class="more" @click="moreThemeConfigsVisible = !moreThemeConfigsVisible">
+        <span class="text">更多</span>
+        <IconDown v-if="moreThemeConfigsVisible" />
+        <IconRight v-else />
+      </span>
+    </div>
     <div class="row">
       <div style="width: 40%;">字体：</div>
       <Select
@@ -168,9 +175,89 @@
         <ColorButton :color="theme.themeColor" />
       </Popover>
     </div>
+    
+    <template v-if="moreThemeConfigsVisible">
+      <div class="row">
+        <div style="width: 40%;">边框样式：</div>
+        <Select 
+          style="width: 60%;" 
+          :value="theme.outline.style || ''" 
+          @update:value="value => updateTheme({ outline: { ...theme.outline, style: value as 'dashed' | 'solid' } })"
+          :options="[
+            { label: '实线边框', value: 'solid' },
+            { label: '虚线边框', value: 'dashed' },
+          ]"
+        />
+      </div>
+      <div class="row">
+        <div style="width: 40%;">边框颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
+          <template #content>
+            <ColorPicker
+              :modelValue="theme.outline.color"
+              @update:modelValue="value => updateTheme({ outline: { ...theme.outline, color: value } })"
+            />
+          </template>
+          <ColorButton :color="theme.outline.color || '#000'" />
+        </Popover>
+      </div>
+      <div class="row">
+        <div style="width: 40%;">边框粗细：</div>
+        <NumberInput 
+          :value="theme.outline.width || 0" 
+          @update:value="value => updateTheme({ outline: { ...theme.outline, width: value } })" 
+          style="width: 60%;" 
+        />
+      </div>
+      <div class="row" style="height: 30px;">
+        <div style="width: 40%;">水平阴影：</div>
+        <Slider 
+          style="width: 60%;"
+          :min="-10" 
+          :max="10" 
+          :step="1" 
+          :value="theme.shadow.h" 
+          @update:value="value => updateTheme({ shadow: { ...theme.shadow, h: value as number } })"
+        />
+      </div>
+      <div class="row" style="height: 30px;">
+        <div style="width: 40%;">垂直阴影：</div>
+        <Slider
+          style="width: 60%;"
+          :min="-10"
+          :max="10"
+          :step="1"
+          :value="theme.shadow.v"
+          @update:value="value => updateTheme({ shadow: { ...theme.shadow, v: value as number } })"
+        />
+      </div>
+      <div class="row" style="height: 30px;">
+        <div style="width: 40%;">模糊距离：</div>
+        <Slider
+          style="width: 60%;"
+          :min="1"
+          :max="20"
+          :step="1"
+          :value="theme.shadow.blur"
+          @update:value="value => updateTheme({ shadow: { ...theme.shadow, blur: value as number } })"
+        />
+      </div>
+      <div class="row">
+        <div style="width: 40%;">阴影颜色：</div>
+        <Popover trigger="click" style="width: 60%;">
+          <template #content>
+            <ColorPicker
+              :modelValue="theme.shadow.color"
+              @update:modelValue="value => updateTheme({ shadow: { ...theme.shadow, color: value } })"
+            />
+          </template>
+          <ColorButton :color="theme.shadow.color" />
+        </Popover>
+      </div>
+    </template>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyThemeToAllSlides()">应用主题到全部</Button>
+      <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)">应用主题到全部</Button>
     </div>
 
     <Divider />
@@ -203,7 +290,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { SlideBackground, SlideTheme } from '@/types/slides'
@@ -221,10 +308,13 @@ import Slider from '@/components/Slider.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
+import NumberInput from '@/components/NumberInput.vue'
 
 const slidesStore = useSlidesStore()
 const { availableFonts } = storeToRefs(useMainStore())
 const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
+
+const moreThemeConfigsVisible = ref(false)
 
 const background = computed(() => {
   if (!currentSlide.value.background) {
@@ -322,7 +412,18 @@ const updateViewportRatio = (value: number) => {
   margin-bottom: 10px;
 }
 .title {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 10px;
+
+  .more {
+    cursor: pointer;
+
+    .text {
+      font-size: 12px;
+      margin-right: 3px;
+    }
+  }
 }
 .background-image-wrapper {
   margin-bottom: 10px;

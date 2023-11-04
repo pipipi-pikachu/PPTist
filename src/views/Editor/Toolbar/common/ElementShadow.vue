@@ -70,6 +70,7 @@ import Slider from '@/components/Slider.vue'
 import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
+const { theme } = storeToRefs(slidesStore)
 const { handleElement } = storeToRefs(useMainStore())
 
 const shadow = ref<PPTElementShadow>()
@@ -93,7 +94,7 @@ const updateShadow = (shadowProps: Partial<PPTElementShadow>) => {
 const toggleShadow = (checked: boolean) => {
   if (!handleElement.value) return
   if (checked) {
-    const _shadow: PPTElementShadow = { h: 1, v: 1, blur: 2, color: '#000' }
+    const _shadow: PPTElementShadow = theme.value.shadow
     slidesStore.updateElement({ id: handleElement.value.id, props: { shadow: _shadow } })
   }
   else {
@@ -106,6 +107,7 @@ const toggleShadow = (checked: boolean) => {
 <style lang="scss" scoped>
 .row {
   width: 100%;
+  height: 30px;
   display: flex;
   align-items: center;
   margin-bottom: 10px;

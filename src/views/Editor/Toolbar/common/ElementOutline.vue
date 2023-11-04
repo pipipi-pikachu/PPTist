@@ -67,6 +67,7 @@ withDefaults(defineProps<{
 })
 
 const slidesStore = useSlidesStore()
+const { theme } = storeToRefs(slidesStore)
 const { handleElement } = storeToRefs(useMainStore())
 
 const outline = ref<PPTElementOutline>()
@@ -90,7 +91,7 @@ const updateOutline = (outlineProps: Partial<PPTElementOutline>) => {
 const toggleOutline = (checked: boolean) => {
   if (!handleElement.value) return
   if (checked) {
-    const _outline: PPTElementOutline = { width: 2, color: '#000', style: 'solid' }
+    const _outline: PPTElementOutline = theme.value.outline
     slidesStore.updateElement({ id: handleElement.value.id, props: { outline: _outline } })
   }
   else {
@@ -103,6 +104,7 @@ const toggleOutline = (checked: boolean) => {
 <style lang="scss" scoped>
 .row {
   width: 100%;
+  height: 30px;
   display: flex;
   align-items: center;
   margin-bottom: 10px;

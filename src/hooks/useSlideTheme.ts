@@ -129,9 +129,9 @@ export default () => {
   }
   
   // 将当前主题配置应用到全部页面
-  const applyThemeToAllSlides = () => {
+  const applyThemeToAllSlides = (applyAll = false) => {
     const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
-    const { themeColor, backgroundColor, fontColor, fontName } = theme.value
+    const { themeColor, backgroundColor, fontColor, fontName, outline, shadow } = theme.value
   
     for (const slide of newSlides) {
       if (!slide.background || slide.background.type !== 'image') {
@@ -142,6 +142,11 @@ export default () => {
       }
   
       for (const el of slide.elements) {
+        if (applyAll) {
+          if ('outline' in el && el.outline) el.outline = outline
+          if ('shadow' in el && el.shadow) el.shadow = shadow
+        }
+
         if (el.type === 'shape') el.fill = themeColor
         else if (el.type === 'line') el.color = themeColor
         else if (el.type === 'text') {
