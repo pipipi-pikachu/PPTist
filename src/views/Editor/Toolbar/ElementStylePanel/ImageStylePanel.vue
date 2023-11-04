@@ -82,7 +82,7 @@ import Popover from '@/components/Popover.vue'
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
   {
-    label: '纵横比（方形）',
+    label: '纵横比（正方形）',
     children: [
       { key: '1:1', ratio: 1 / 1 },
     ],

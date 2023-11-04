@@ -290,7 +290,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   padding: 5px 0;
 
   .thumbnail {
-    outline: 1px solid rgba($color: $themeColor, $alpha: .15);
+    outline: 2px solid rgba($color: $themeColor, $alpha: .15);
   }
 
   &.active {

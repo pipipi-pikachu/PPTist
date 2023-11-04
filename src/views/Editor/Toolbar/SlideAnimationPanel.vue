@@ -95,13 +95,14 @@ const applyAllSlide = () => {
   overflow: hidden;
 
   @mixin elAnimation($animationType) {
-    content: 'Slide';
+    content: 'PPTist';
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
-    background-color: #d9dadb;
+    background-color: rgba($color: $themeColor, $alpha: .75);
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
