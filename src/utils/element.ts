@@ -226,3 +226,18 @@ export const getLineElementPath = (element: PPTLineElement) => {
   }
   return `M${start} L${end}`
 }
+
+/**
+ * 判断一个元素是否在可视范围内
+ * @param element 元素
+ * @param parent 父元素
+ */
+export const isElementInViewport = (element: HTMLElement, parent: HTMLElement): boolean => {
+  const elementRect = element.getBoundingClientRect()
+  const parentRect = parent.getBoundingClientRect()
+
+  return (
+    elementRect.top >= parentRect.top &&
+    elementRect.bottom <= parentRect.bottom
+  )
+}
