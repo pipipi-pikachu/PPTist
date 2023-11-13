@@ -3,7 +3,7 @@
     <div class="container">
       <div class="left">
         <div class="input-area">
-          <TextArea v-model:value="latex" placeholder="输入 LaTeX 公式" ref="textAreaRef" />
+          <TextArea v-model:value="latex" placeholder="输入 LaTeX 公式" ref="textAreaRef"/>
         </div>
         <div class="preview">
           <div class="placeholder" v-if="!latex">公式预览</div>
