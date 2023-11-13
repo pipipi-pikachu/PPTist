@@ -107,7 +107,7 @@ const symbolTabs = SYMBOL_LIST.map(item => ({
 
 const latex = ref('')
 const toolbarState = ref<'symbol' | 'formula'>('symbol')
-const textAreaRef = ref<HTMLTextAreaElement>()
+const textAreaRef = ref<TextArea>()
 
 const selectedSymbolKey = ref(SYMBOL_LIST[0].type)
 const symbolPool = computed(() => {
@@ -136,7 +136,7 @@ const update = () => {
 
 const insertSymbol = (latex: string) => {
   if (!textAreaRef.value) return
-  textAreaRef.value.focus()
+  textAreaRef.value.$el.focus()
   document.execCommand('insertText', false, latex)
 }
 </script>
