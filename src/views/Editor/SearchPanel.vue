@@ -77,7 +77,7 @@ const close = () => {
   mainStore.setSearchPanelState(false)
 }
 
-const searchInpRef = ref<HTMLInputElement>()
+const searchInpRef = ref<InstanceType<typeof Input>>()
 onMounted(() => {
   searchInpRef.value!.focus()
 })

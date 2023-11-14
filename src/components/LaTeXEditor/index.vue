@@ -39,7 +39,7 @@
           <div class="formula" v-else>
             <div class="formula-item" v-for="item in formulaList" :key="item.label">
               <div class="formula-title">{{item.label}}</div>
-              <div class="formula-item-content" @click="latex =item.latex">
+              <div class="formula-item-content" @click="latex = item.latex">
                 <FormulaContent
                   :width="236"
                   :height="60"
@@ -107,7 +107,7 @@ const symbolTabs = SYMBOL_LIST.map(item => ({
 
 const latex = ref('')
 const toolbarState = ref<'symbol' | 'formula'>('symbol')
-const textAreaRef = ref<HTMLTextAreaElement>()
+const textAreaRef = ref<InstanceType<typeof TextArea>>()
 
 const selectedSymbolKey = ref(SYMBOL_LIST[0].type)
 const symbolPool = computed(() => {

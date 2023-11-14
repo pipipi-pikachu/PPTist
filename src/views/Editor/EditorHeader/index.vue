@@ -101,7 +101,7 @@ const { resetSlides } = useSlideHandler()
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
 const editingTitle = ref(false)
-const titleInputRef = ref<HTMLInputElement>()
+const titleInputRef = ref<InstanceType<typeof Input>>()
 const titleValue = ref('')
 
 const startEditTitle = () => {

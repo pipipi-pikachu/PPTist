@@ -5,6 +5,7 @@
       'disabled': disabled,
       'resizable': resizable,
     }"
+    ref="textareaRef"
     :disabled="disabled"
     :value="value" 
     :rows="rows"
@@ -14,6 +15,8 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+
 withDefaults(defineProps<{
   value: string
   rows?: number
@@ -34,6 +37,15 @@ const emit = defineEmits<{
 const handleInput = (e: Event) => {
   emit('update:value', (e.target as HTMLInputElement).value)
 }
+
+const textareaRef = ref<HTMLTextAreaElement>()
+const focus = () => {
+  if (textareaRef.value) textareaRef.value.focus()
+}
+
+defineExpose({
+  focus,
+})
 </script>
 
 <style lang="scss" scoped>
