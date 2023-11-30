@@ -182,9 +182,9 @@ export default (elementList: Ref<PPTElement[]>) => {
             end: end,
           }
           if (command === OperateLineHandlers.START || command === OperateLineHandlers.END) {
-            if (element.broken) newEl.broken = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
-            if (element.curve) newEl.curve = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
-            if (element.cubic) newEl.cubic = [[(start[0] + end[0]) / 2, (start[1] + end[1]) / 2], [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]]
+            if (element.broken) newEl.broken = [midX - minX, midY - minY]
+            if (element.curve) newEl.curve = [midX - minX, midY - minY]
+            if (element.cubic) newEl.cubic = [[c1X - minX, c1Y - minY], [c2X - minX, c2Y - minY]]
           }
           else if (command === OperateLineHandlers.C) {
             if (element.broken) newEl.broken = [midX - minX, midY - minY]
