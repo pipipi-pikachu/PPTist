@@ -266,6 +266,8 @@ export interface ShapeGradient {
   rotate: number
 }
 
+export type ShapeTextAlign = 'top' | 'middle' | 'bottom' 
+
 /**
  * 形状内文本
  * 
@@ -281,7 +283,7 @@ export interface ShapeText {
   content: string
   defaultFontName: string
   defaultColor: string
-  align: 'top' | 'middle' | 'bottom'
+  align: ShapeTextAlign
 }
 
 /**

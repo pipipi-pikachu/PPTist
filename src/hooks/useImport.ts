@@ -1,14 +1,25 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { parse, type Shape, type Element } from 'pptxtojson'
+import { parse, type Shape, type Element, type ChartItem } from 'pptxtojson'
 import { nanoid } from 'nanoid'
-import type { Slide, TableCellStyle, TableCell, ChartType, ChartOptions, SlideBackground, PPTShapeElement, PPTLineElement } from '@/types/slides'
 import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import message from '@/utils/message'
+import type {
+  Slide,
+  TableCellStyle,
+  TableCell,
+  ChartType,
+  ChartOptions,
+  SlideBackground,
+  PPTShapeElement,
+  PPTLineElement,
+  ShapeTextAlign,
+  PPTTextElement,
+} from '@/types/slides'
 
 export default () => {
   const slidesStore = useSlidesStore()
@@ -65,7 +76,7 @@ export default () => {
       top: el.top,
       start,
       end,
-      style: el.borderType,
+      style: el.borderType === 'solid' ? 'solid' : 'dashed',
       color: el.borderColor,
       points: ['', el.shapType === 'straightConnector1' ? 'arrow' : '']
     }
@@ -85,7 +96,10 @@ export default () => {
     
     const reader = new FileReader()
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer)
+      const json = await parse(e.target!.result as ArrayBuffer, {
+        slideFactor: 75 / 914400,
+        fontsizeFactor: 100 / 98,
+      })
 
       const width = json.size.width
       const scale = VIEWPORT_SIZE / width
@@ -105,7 +119,7 @@ export default () => {
           background = {
             type: 'gradient',
             gradientType: 'linear',
-            gradientColor: [value.colors[0], value.colors[1]],
+            gradientColor: [value.colors[0].color, value.colors[value.colors.length - 1].color],
             gradientRotate: value.rot,
           }
         }
@@ -130,7 +144,7 @@ export default () => {
             el.top = el.top * scale
   
             if (el.type === 'text') {
-              slide.elements.push({
+              const textEl: PPTTextElement = {
                 type: 'text',
                 id: nanoid(10),
                 width: el.width,
@@ -145,10 +159,13 @@ export default () => {
                 outline: {
                   color: el.borderColor,
                   width: el.borderWidth,
-                  style: el.borderType,
+                  style: el.borderType === 'solid' ? 'solid' : 'dashed',
                 },
                 fill: el.fillColor,
-              })
+                vertical: el.isVertical,
+              }
+              if (el.shadow) textEl.shadow = el.shadow
+              slide.elements.push(textEl)
             }
             else if (el.type === 'image') {
               slide.elements.push({
@@ -163,13 +180,48 @@ export default () => {
                 rotate: el.rotate,
               })
             }
+            else if (el.type === 'audio') {
+              slide.elements.push({
+                type: 'audio',
+                id: nanoid(10),
+                src: el.blob,
+                width: el.width,
+                height: el.height,
+                left: el.left,
+                top: el.top,
+                rotate: 0,
+                fixedRatio: false,
+                color: theme.value.themeColor,
+                loop: false,
+                autoplay: false,
+              })
+            }
+            else if (el.type === 'video') {
+              slide.elements.push({
+                type: 'video',
+                id: nanoid(10),
+                src: (el.blob || el.src)!,
+                width: el.width,
+                height: el.height,
+                left: el.left,
+                top: el.top,
+                rotate: 0,
+                autoplay: false,
+              })
+            }
             else if (el.type === 'shape') {
-              if (el.shapType === 'line' || el.shapType === 'straightConnector1') {
+              if (el.shapType === 'line' || /Connector/.test(el.shapType)) {
                 const lineElement = parseLineElement(el)
                 slide.elements.push(lineElement)
               }
               else {
                 const shape = shapeList.find(item => item.pptxShapeType === el.shapType)
+
+                const vAlignMap: { [key: string]: ShapeTextAlign } = {
+                  'mid': 'middle',
+                  'down': 'bottom',
+                  'up': 'top',
+                }
                 
                 const element: PPTShapeElement = {
                   type: 'shape',
@@ -186,15 +238,18 @@ export default () => {
                   outline: {
                     color: el.borderColor,
                     width: el.borderWidth,
-                    style: el.borderType,
+                    style: el.borderType === 'solid' ? 'solid' : 'dashed',
                   },
                   text: {
                     content: el.content,
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
-                    align: 'middle',
-                  }
+                    align: vAlignMap[el.vAlign] || 'middle',
+                  },
+                  flipH: el.isFlipH,
+                  flipV: el.isFlipV,
                 }
+                if (el.shadow) element.shadow = el.shadow
     
                 if (shape) {
                   element.path = shape.path
@@ -211,6 +266,11 @@ export default () => {
                     }
                     else element.path = pathFormula.formula(el.width, el.height)
                   }
+                }
+                if (el.shapType === 'custom') {
+                  element.special = true
+                  element.path = el.path!
+                  element.viewBox = [el.width, el.height]
                 }
     
                 slide.elements.push(element)
@@ -231,7 +291,7 @@ export default () => {
                   const cellData = el.data[i][j]
                   rowCells.push({
                     id: nanoid(10),
-                    colspan: 1,
+                    colspan: cellData.colSpan || 1,
                     rowspan: cellData.rowSpan || 1,
                     text: cellData.text,
                     style,
@@ -258,7 +318,7 @@ export default () => {
                   color: '#eeece1',
                 },
                 theme: {
-                  color: theme.value.themeColor,
+                  color: el.themeColor,
                   rowHeader: true,
                   rowFooter: false,
                   colHeader: false,
@@ -272,40 +332,47 @@ export default () => {
               let legends: string[]
               let series: number[][]
   
-              if (el.chartType === 'scatterChart') {
-                labels = el.data[0].map(item => item + '')
+              if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
+                const data = el.data
+                labels = data[0].map(item => item + '')
                 legends = ['系列1']
-                series = [el.data[1]]
+                series = [data[1]]
               }
               else {
-                labels = Object.values(el.data[0].xlabels)
-                legends = el.data.map(item => item.key)
-                series = el.data.map(item => item.values.map(v => v.y))
+                const data = el.data as ChartItem[]
+                labels = Object.values(data[0].xlabels)
+                legends = data.map(item => item.key)
+                series = data.map(item => item.values.map(v => v.y))
               }
   
-              let options: ChartOptions = {}
+              const options: ChartOptions = {}
   
               let chartType: ChartType = 'bar'
-              if (el.chartType === 'barChart') {
-                chartType = 'bar'
-              }
-              if (el.chartType === 'stackedBarChart') {
-                chartType = 'bar'
-                options = { stackBars: true }
-              }
-              else if (el.chartType === 'lineChart') {
-                chartType = 'line'
-              }
-              else if (el.chartType === 'areaChart') {
-                chartType = 'line'
-                options = { showArea: true }
-              }
-              else if (el.chartType === 'scatterChart') {
-                chartType = 'line'
-                options = { showLine: false }
-              }
-              else if (el.chartType === 'pieChart' || el.chartType === 'pie3DChart') {
-                chartType = 'pie'
+
+              switch (el.chartType) {
+                case 'barChart':
+                case 'bar3DChart':
+                  chartType = 'bar'
+                  if (el.barDir === 'bar') options.horizontalBars = true
+                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stackBars = true
+                  break
+                case 'lineChart':
+                case 'line3DChart':
+                case 'areaChart':
+                case 'area3DChart':
+                case 'scatterChart':
+                case 'bubbleChart':
+                  chartType = 'line'
+                  if (el.chartType === 'areaChart' || el.chartType === 'area3DChart') options.showArea = true
+                  if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') options.showLine = false
+                  break
+                case 'pieChart':
+                case 'pie3DChart':
+                case 'doughnutChart':
+                  chartType = 'pie'
+                  if (el.chartType === 'doughnutChart') options.donut = true
+                  break
+                default:
               }
   
               slide.elements.push({
@@ -327,7 +394,7 @@ export default () => {
                 options,
               })
             }
-            else if (el.type === 'group') {
+            else if (el.type === 'group' || el.type === 'diagram') {
               const elements = el.elements.map(_el => ({
                 ..._el,
                 left: _el.left + el.left,
