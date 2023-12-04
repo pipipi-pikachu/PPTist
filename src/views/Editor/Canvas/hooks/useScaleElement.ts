@@ -133,6 +133,10 @@ export default (
     // 元素最小缩放限制
     const minSize = MIN_SIZE[element.type] || 20
     const getSizeWithinRange = (size: number) => size < minSize ? minSize : size
+    const getHeightWithinRange = (height: number) => {
+      const minHeight = minSize / aspectRatio
+      return height < minHeight ? minHeight : height
+    }
 
     let points: ReturnType<typeof getRotateElementPoints>
     let baseLeft = 0
@@ -269,22 +273,22 @@ export default (
         // 但此处计算的大小不需要重新校正，因为前面已经重新计算需要缩放的距离，相当于大小已经经过了校正
         if (command === OperateResizeHandlers.RIGHT_BOTTOM) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
-          height = getSizeWithinRange(elOriginHeight + revisedY)
+          height = getHeightWithinRange(elOriginHeight + revisedY)
         }
         else if (command === OperateResizeHandlers.LEFT_BOTTOM) {
           width = getSizeWithinRange(elOriginWidth - revisedX)
-          height = getSizeWithinRange(elOriginHeight + revisedY)
+          height = getHeightWithinRange(elOriginHeight + revisedY)
           left = elOriginLeft - (width - elOriginWidth)
         }
         else if (command === OperateResizeHandlers.LEFT_TOP) {
           width = getSizeWithinRange(elOriginWidth - revisedX)
-          height = getSizeWithinRange(elOriginHeight - revisedY)
+          height = getHeightWithinRange(elOriginHeight - revisedY)
           left = elOriginLeft - (width - elOriginWidth)
           top = elOriginTop - (height - elOriginHeight)
         }
         else if (command === OperateResizeHandlers.RIGHT_TOP) {
           width = getSizeWithinRange(elOriginWidth + revisedX)
-          height = getSizeWithinRange(elOriginHeight - revisedY)
+          height = getHeightWithinRange(elOriginHeight - revisedY)
           top = elOriginTop - (height - elOriginHeight)
         }
         else if (command === OperateResizeHandlers.TOP) {
@@ -336,7 +340,7 @@ export default (
             else moveY = moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth + moveX)
-          height = getSizeWithinRange(elOriginHeight + moveY)
+          height = getHeightWithinRange(elOriginHeight + moveY)
         }
         else if (command === OperateResizeHandlers.LEFT_BOTTOM) {
           const { offsetX, offsetY } = alignedAdsorption(elOriginLeft + moveX, elOriginTop + elOriginHeight + moveY)
@@ -347,7 +351,7 @@ export default (
             else moveY = -moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth - moveX)
-          height = getSizeWithinRange(elOriginHeight + moveY)
+          height = getHeightWithinRange(elOriginHeight + moveY)
           left = elOriginLeft - (width - elOriginWidth)
         }
         else if (command === OperateResizeHandlers.LEFT_TOP) {
@@ -359,7 +363,7 @@ export default (
             else moveY = moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth - moveX)
-          height = getSizeWithinRange(elOriginHeight - moveY)
+          height = getHeightWithinRange(elOriginHeight - moveY)
           left = elOriginLeft - (width - elOriginWidth)
           top = elOriginTop - (height - elOriginHeight)
         }
@@ -372,7 +376,7 @@ export default (
             else moveY = -moveX / aspectRatio
           }
           width = getSizeWithinRange(elOriginWidth + moveX)
-          height = getSizeWithinRange(elOriginHeight - moveY)
+          height = getHeightWithinRange(elOriginHeight - moveY)
           top = elOriginTop - (height - elOriginHeight)
         }
         else if (command === OperateResizeHandlers.LEFT) {
