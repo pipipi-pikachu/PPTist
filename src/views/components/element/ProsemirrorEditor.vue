@@ -262,9 +262,16 @@ onUnmounted(() => {
   editorView && editorView.destroy()
 })
 
+const syncAttrsToStore = () => {
+  if (handleElementId.value !== props.elementId) return
+  handleClick()
+}
+
 emitter.on(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
+emitter.on(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE, syncAttrsToStore)
 onUnmounted(() => {
   emitter.off(EmitterEvents.RICH_TEXT_COMMAND, execCommand)
+  emitter.off(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE, syncAttrsToStore)
 })
 </script>
 
