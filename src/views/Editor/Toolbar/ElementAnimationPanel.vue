@@ -107,6 +107,13 @@
         </div>
       </template>
     </Draggable>
+
+    <template v-if="animationSequence.length >= 2">
+      <Divider />
+      <Button @click="runAllAnimation()">
+        {{ animateIn ? '停止预览' : '预览全部'}}
+      </Button>
+    </template>
   </div>
 </template>
 
@@ -171,7 +178,7 @@ const tabs: TabItem[] = [
   { key: 'attention', label: '强调', color: '#e8b76a' },
 ]
 const activeTab = ref('in')
-
+const animateIn = ref(false)
 watch(() => handleElementId.value, () => {
   animationPoolVisible.value = false
 })
@@ -245,6 +252,18 @@ const runAnimation = (elId: string, effect: string, duration: number) => {
       elRef.classList.remove(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
     }
     elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
+  }
+}
+
+// 执行所有动画预览
+const runAllAnimation = async () => {
+  animateIn.value = !animateIn.value
+  for (let i = 0; i < animationSequence.value.length; i++) {
+    if (!animateIn.value) break
+    const item = animationSequence.value[i]
+    if (item.index !== 1 && item.trigger !== 'meantime') await new Promise(resolve => setTimeout(resolve, item.duration + 100)) 
+    runAnimation(item.elId, item.effect, item.duration)
+    if (i >= animationSequence.value.length - 1) animateIn.value = false
   }
 }
 
