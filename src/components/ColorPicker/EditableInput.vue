@@ -29,7 +29,12 @@ const val = computed(() => {
 
 const handleInput = (e: Event) => {
   const value = (e.target as HTMLInputElement).value
-  if (value.length >= 6) emit('colorChange', tinycolor(value).toRgb())
+  if (value.length >= 6) {
+    const color = tinycolor(value)
+    if (color.isValid()) {
+      emit('colorChange', color.toRgb())
+    }
+  }
 }
 </script>
 

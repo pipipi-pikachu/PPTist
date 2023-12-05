@@ -457,6 +457,7 @@ watch(handleElement, () => {
   lineHeight.value = handleElement.value.lineHeight || 1.5
   wordSpace.value = handleElement.value.wordSpace || 0
   paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
+  emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
 }, { deep: true, immediate: true })
 
 const fontSizeOptions = [
