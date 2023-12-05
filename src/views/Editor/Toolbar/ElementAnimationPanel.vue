@@ -107,9 +107,13 @@
         </div>
       </template>
     </Draggable>
-    <Button class="animation-preview" @click="runAllAnimation" v-if="animationSequence.length >= 2">
-      <IconPlayOne style="margin-right:5px" />{{ animateIn ? '停止' : '预览'}}
-    </Button>
+
+    <template v-if="animationSequence.length >= 2">
+      <Divider />
+      <Button @click="runAllAnimation()">
+        {{ animateIn ? '停止预览' : '预览全部'}}
+      </Button>
+    </template>
   </div>
 </template>
 
@@ -250,6 +254,7 @@ const runAnimation = (elId: string, effect: string, duration: number) => {
     elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
   }
 }
+
 // 执行所有动画预览
 const runAllAnimation = async () => {
   animateIn.value = !animateIn.value
@@ -258,7 +263,7 @@ const runAllAnimation = async () => {
     const item = animationSequence.value[i]
     if (item.index !== 1 && item.trigger !== 'meantime') await new Promise(resolve => setTimeout(resolve, item.duration + 100)) 
     runAnimation(item.elId, item.effect, item.duration)
-    if (i === animationSequence.value.length - 1) animateIn.value = false
+    if (i >= animationSequence.value.length - 1) animateIn.value = false
   }
 }
 
