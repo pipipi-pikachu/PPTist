@@ -65,8 +65,8 @@
       <template #item="{ element }">
         <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
           <div class="sequence-content">
-            <div class="index">{{element.index}}</div>
-            <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
+            <div class="index" @click="mainStore.setActiveElementIdList([element.elId])">{{element.index}}</div>
+            <div class="text" @click="mainStore.setActiveElementIdList([element.elId])">【{{element.elType}}】{{element.animationEffect}}</div>
             <div class="handler">
               <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click="runAnimation(element.elId, element.effect, element.duration)" />
               <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click="deleteAnimation(element.id)" />
@@ -170,6 +170,7 @@ const animationTypes: AnimationType[] = ['in', 'out', 'attention']
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const mainStore = useMainStore()
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
