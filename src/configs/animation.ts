@@ -231,4 +231,5 @@ export const SLIDE_ANIMATIONS: SlideAnimation[] = [
   { label: '左右展开', value: 'scaleX' },
   { label: '放大', value: 'scale' },
   { label: '缩小', value: 'scaleReverse' },
+  { label: '溶解', value: 'dissolve' },
 ]

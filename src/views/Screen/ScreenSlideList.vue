@@ -74,6 +74,7 @@ provide(injectKeySlideScale, scale)
 </script>
 
 <style lang="scss" scoped>
+@import '../../assets/styles/animation.scss';
 .screen-slide-list {
   background: #1d1d1d;
   position: relative;
@@ -194,6 +195,23 @@ provide(injectKeySlideScale, scale)
     }
     &.after {
       transform: scale(2);
+    }
+  }
+  &.turning-mode-dissolve {
+    mask: bgset($count);
+    mask-size: $per $per;
+    mask-repeat: no-repeat;
+    mask-position: positionset($sqrt);
+    transition: transitionset($count);
+    &.before {
+      @for $i from 1 through $count {
+        --m-#{$i}: 0;
+      }
+    }
+    &.after {
+      @for $i from 1 through $count {
+        --m-#{$i}: 0;
+      }
     }
   }
 }

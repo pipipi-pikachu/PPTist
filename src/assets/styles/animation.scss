@@ -1,0 +1,38 @@
+// 溶解动画
+$count: 400;
+$sqrt: 20;
+$per: calc(300% / $sqrt);
+$perWid: 100;
+
+@for $i from 1 to ($count + 1) {
+  @property --m-#{$i} {
+    syntax: '<number>';
+    initial-value: 1;
+    inherits: false;
+  }
+}
+@function bgset($n) {
+  $bg : radial-gradient(rgba(0, 0, 0, var(--m-1)), rgba(0, 0, 0, var(--m-1)));
+  @for $i from 2 through $n {
+    $bg: $bg, radial-gradient(rgba(0, 0, 0, var(--m-#{$i})), rgba(0, 0, 0, var(--m-#{$i})));
+  }
+  @return $bg;
+}
+@function positionset($n) {
+  $bgPosition: ();
+  @for $i from 0 through ($n) {
+    @for $j from 0 through ($n - 1) {
+      $bgPosition: $bgPosition, #{$i * $perWid}px #{$j * $perWid}px;
+    }
+  }
+  @return $bgPosition;
+}
+@function transitionset($n) {
+  $transition: --m-1 0.1s 0.1s;
+  @for $i from 1 through $n {
+    // 从左往右消失
+    // $transition: $transition, --m-#{$i} #{100 + random(500)}ms #{($i / 50) * random(500)}ms;
+    $transition: $transition, --m-#{$i} #{100 + random(500)}ms #{random(500)}ms;
+  }
+  @return $transition;
+}
