@@ -1,7 +1,14 @@
-import type { Node, NodeType, ResolvedPos, Mark, MarkType } from 'prosemirror-model'
+import type { Node, NodeType, ResolvedPos, Mark, MarkType, Schema } from 'prosemirror-model'
 import type { EditorState, Selection } from 'prosemirror-state'
 import type { EditorView } from 'prosemirror-view'
 import { selectAll } from 'prosemirror-commands'
+
+export const isList = (node: Node, schema: Schema) => {
+  return (
+    node.type === schema.nodes.bullet_list ||
+    node.type === schema.nodes.ordered_list
+  )
+}
 
 export const autoSelectAll = (view: EditorView) => {
   const { empty } = view.state.selection
@@ -113,12 +120,20 @@ export const isActiveOfParentNodeType = (nodeType: string, state: EditorState) =
   return !!findParentNodeOfType(node)(state.selection)
 }
 
+export const getLastTextNode = (node: Node | null): Node | null => {
+  if (!node) return null
+  if (node.type.name === 'text') return node
+  if (!node.lastChild) return null
+
+  return getLastTextNode(node.lastChild)
+}
+
 export const getMarkAttrs = (view: EditorView) => {
   const { selection, doc } = view.state
   const { from } = selection
 
   let node = doc.nodeAt(from) || doc.nodeAt(from - 1)
-  if (node?.lastChild) node = node.lastChild
+  node = getLastTextNode(node)
 
   return node?.marks || []
 }

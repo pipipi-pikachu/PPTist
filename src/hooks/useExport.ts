@@ -193,12 +193,12 @@ export default () => {
           if (styleObj['href']) options.hyperlink = { url: styleObj['href'] }
 
           if (bulletFlag && styleObj['list-type'] === 'ol') {
-            options.bullet = { type: 'number', indent: 20 * PT_PX_RATIO }
+            options.bullet = { type: 'number', indent: (options.fontSize || 20) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
           if (bulletFlag && styleObj['list-type'] === 'ul') {
-            options.bullet = { indent: 20 * PT_PX_RATIO }
+            options.bullet = { indent: (options.fontSize || 20) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }

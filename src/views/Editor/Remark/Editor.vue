@@ -146,11 +146,11 @@ const execCommand = (command: string, value?: string) => {
   }
   else if (command === 'bulletList') {
     const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
-    toggleList(bulletList, listItem)(editorView.state, editorView.dispatch)
+    toggleList(bulletList, listItem, '')(editorView.state, editorView.dispatch)
   }
   else if (command === 'orderedList') {
     const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
-    toggleList(orderedList, listItem)(editorView.state, editorView.dispatch)
+    toggleList(orderedList, listItem, '')(editorView.state, editorView.dispatch)
   }
   else if (command === 'clear') {
     autoSelectAll(editorView)

@@ -14,6 +14,12 @@ const orderedList: NodeSpec = {
     listStyleType: {
       default: '',
     },
+    fontsize: {
+      default: '',
+    },
+    color: {
+      default: '',
+    },
   },
   content: 'list_item+',
   group: 'block',
@@ -24,17 +30,21 @@ const orderedList: NodeSpec = {
         const order = ((dom as HTMLElement).hasAttribute('start') ? (dom as HTMLElement).getAttribute('start') : 1) || 1
         const attr: Attr = { order: +order }
 
-        const { listStyleType } = (dom as HTMLElement).style
+        const { listStyleType, fontSize, color } = (dom as HTMLElement).style
         if (listStyleType) attr['listStyleType'] = listStyleType
+        if (fontSize) attr['fontsize'] = fontSize
+        if (color) attr['color'] = color
 
         return attr
       }
     }
   ],
   toDOM: (node: Node) => {
-    const { order, listStyleType } = node.attrs
+    const { order, listStyleType, fontsize, color } = node.attrs
     let style = ''
     if (listStyleType) style += `list-style-type: ${listStyleType};`
+    if (fontsize) style += `font-size: ${fontsize};`
+    if (color) style += `color: ${color};`
 
     const attr: Attr = { style }
     if (order !== 1) attr['start'] = order
@@ -49,6 +59,12 @@ const bulletList: NodeSpec = {
     listStyleType: {
       default: '',
     },
+    fontsize: {
+      default: '',
+    },
+    color: {
+      default: '',
+    },
   },
   content: 'list_item+',
   group: 'block',
@@ -56,15 +72,23 @@ const bulletList: NodeSpec = {
     {
       tag: 'ul',
       getAttrs: dom => {
-        const { listStyleType } = (dom as HTMLElement).style
-        return listStyleType ? { listStyleType } : {}
+        const attr: Attr = {}
+
+        const { listStyleType, fontSize, color } = (dom as HTMLElement).style
+        if (listStyleType) attr['listStyleType'] = listStyleType
+        if (fontSize) attr['fontsize'] = fontSize
+        if (color) attr['color'] = color
+
+        return attr
       }
     }
   ],
   toDOM: (node: Node) => {
-    const { listStyleType } = node.attrs
+    const { listStyleType, fontsize, color } = node.attrs
     let style = ''
     if (listStyleType) style += `list-style-type: ${listStyleType};`
+    if (fontsize) style += `font-size: ${fontsize};`
+    if (color) style += `color: ${color};`
 
     return ['ul', { style }, 0]
   },

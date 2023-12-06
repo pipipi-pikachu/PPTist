@@ -1,16 +1,18 @@
 import { wrapInList, liftListItem } from 'prosemirror-schema-list'
-import type { Schema, Node, NodeType } from 'prosemirror-model'
+import type { Node, NodeType } from 'prosemirror-model'
 import type { Transaction, EditorState } from 'prosemirror-state'
-import { findParentNode } from '../utils'
+import { findParentNode, isList } from '../utils'
 
-export const isList = (node: Node, schema: Schema) => {
-  return (
-    node.type === schema.nodes.bullet_list ||
-    node.type === schema.nodes.ordered_list
-  )
+interface Attr {
+  [key: string]: number | string
 }
 
-export const toggleList = (listType: NodeType, itemType: NodeType, listStyleType?: string) => {
+interface TextStyleAttr {
+  color?: string
+  fontsize?: string
+}
+
+export const toggleList = (listType: NodeType, itemType: NodeType, listStyleType: string, textStyleAttr: TextStyleAttr = {}) => {
   return (state: EditorState, dispatch: (tr: Transaction) => void) => {
     const { schema, selection } = state
     const { $from, $to } = selection
@@ -27,14 +29,14 @@ export const toggleList = (listType: NodeType, itemType: NodeType, listStyleType
 
       if (isList(parentList.node, schema) && listType.validContent(parentList.node.content)) {
         const { tr } = state
-        if (listStyleType) {
-          const nodeAttrs = {
-            ...parentList.node.attrs,
-            listStyleType: listStyleType,
-          }
-          tr.setNodeMarkup(parentList.pos, listType, nodeAttrs)
+
+        const nodeAttrs: Attr = {
+          ...parentList.node.attrs,
+          ...textStyleAttr,
         }
-        else tr.setNodeMarkup(parentList.pos, listType)
+        if (listStyleType) nodeAttrs.listStyleType = listStyleType
+
+        tr.setNodeMarkup(parentList.pos, listType, nodeAttrs)
 
         if (dispatch) dispatch(tr)
 
@@ -42,7 +44,11 @@ export const toggleList = (listType: NodeType, itemType: NodeType, listStyleType
       }
     }
 
-    if (listStyleType) return wrapInList(listType, { listStyleType })(state, dispatch)
-    return wrapInList(listType)(state, dispatch)
+    const nodeAttrs: Attr = {
+      ...textStyleAttr,
+    }
+    if (listStyleType) nodeAttrs.listStyleType = listStyleType
+
+    return wrapInList(listType, nodeAttrs)(state, dispatch)
   }
 }
