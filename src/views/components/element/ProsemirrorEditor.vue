@@ -20,6 +20,7 @@ import emitter, { EmitterEvents, type RichTextAction, type RichTextCommand } fro
 import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
+import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
 import type { TextFormatPainterKeys } from '@/types/edit'
 
 const props = withDefaults(defineProps<{
@@ -42,7 +43,7 @@ const emit = defineEmits<{
 }>()
 
 const mainStore = useMainStore()
-const { handleElementId, textFormatPainter } = storeToRefs(mainStore)
+const { handleElementId, textFormatPainter, richTextAttrs } = storeToRefs(mainStore)
 
 const editorViewRef = ref<HTMLElement>()
 let editorView: EditorView
@@ -115,6 +116,7 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })
       autoSelectAll(editorView)
       addMark(editorView, mark)
+      setListStyle(editorView, { key: 'fontsize', value: item.value })
     }
     else if (item.command === 'fontsize-add') {
       const step = item.value ? +item.value : 2
@@ -122,6 +124,7 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       const fontsize = getFontsize(editorView) + step + 'px'
       const mark = editorView.state.schema.marks.fontsize.create({ fontsize })
       addMark(editorView, mark)
+      setListStyle(editorView, { key: 'fontsize', value: fontsize })
     }
     else if (item.command === 'fontsize-reduce') {
       const step = item.value ? +item.value : 2
@@ -130,11 +133,13 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       if (fontsize < 12) fontsize = 12
       const mark = editorView.state.schema.marks.fontsize.create({ fontsize: fontsize + 'px' })
       addMark(editorView, mark)
+      setListStyle(editorView, { key: 'fontsize', value: fontsize + 'px' })
     }
     else if (item.command === 'color' && item.value) {
       const mark = editorView.state.schema.marks.forecolor.create({ color: item.value })
       autoSelectAll(editorView)
       addMark(editorView, mark)
+      setListStyle(editorView, { key: 'color', value: item.value })
     }
     else if (item.command === 'backcolor' && item.value) {
       const mark = editorView.state.schema.marks.backcolor.create({ backcolor: item.value })
@@ -183,17 +188,29 @@ const execCommand = ({ target, action }: RichTextCommand) => {
     else if (item.command === 'bulletList') {
       const listStyleType = item.value || ''
       const { bullet_list: bulletList, list_item: listItem } = editorView.state.schema.nodes
-      toggleList(bulletList, listItem, listStyleType)(editorView.state, editorView.dispatch)
+      const textStyle = {
+        color: richTextAttrs.value.color,
+        fontsize: richTextAttrs.value.fontsize
+      }
+      toggleList(bulletList, listItem, listStyleType, textStyle)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'orderedList') {
       const listStyleType = item.value || ''
       const { ordered_list: orderedList, list_item: listItem } = editorView.state.schema.nodes
-      toggleList(orderedList, listItem, listStyleType)(editorView.state, editorView.dispatch)
+      const textStyle = {
+        color: richTextAttrs.value.color,
+        fontsize: richTextAttrs.value.fontsize
+      }
+      toggleList(orderedList, listItem, listStyleType, textStyle)(editorView.state, editorView.dispatch)
     }
     else if (item.command === 'clear') {
       autoSelectAll(editorView)
       const { $from, $to } = editorView.state.selection
       editorView.dispatch(editorView.state.tr.removeMark($from.pos, $to.pos))
+      setListStyle(editorView, [
+        { key: 'fontsize', value: '' },
+        { key: 'color', value: '' },
+      ])
     }
     else if (item.command === 'link') {
       const markType = editorView.state.schema.marks.link

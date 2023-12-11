@@ -1,7 +1,7 @@
 import type { Schema } from 'prosemirror-model'
 import { type Transaction, TextSelection, AllSelection } from 'prosemirror-state'
 import type { EditorView } from 'prosemirror-view'
-import { isList } from './toggleList'
+import { isList } from '../utils'
 
 type IndentKey = 'indent' | 'textIndent'
 
