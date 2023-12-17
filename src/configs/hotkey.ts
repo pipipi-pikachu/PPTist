@@ -86,6 +86,7 @@ export const HOTKEY_DOC = [
       { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
       { label: '切换焦点元素', value: 'Tab' },
       { label: '确认图片裁剪', value: 'Enter' },
+      { label: '完成自定义形状绘制', value: 'Enter' },
     ],
   },
   {

@@ -92,7 +92,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .message {
-  max-width: 500px;
+  max-width: 600px;
 
   & + & {
     margin-top: 15px;

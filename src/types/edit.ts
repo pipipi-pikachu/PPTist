@@ -83,6 +83,8 @@ export interface CreateCustomShapeData {
   end: [number, number]
   path: string
   viewBox: [number, number]
+  fill?: string
+  outline?: PPTElementOutline
 }
 
 export interface CreatingTextElement {
