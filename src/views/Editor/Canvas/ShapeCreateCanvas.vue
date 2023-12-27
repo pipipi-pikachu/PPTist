@@ -20,7 +20,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useKeyboardStore, useMainStore } from '@/store'
+import { useKeyboardStore, useMainStore, useSlidesStore } from '@/store'
 import type { CreateCustomShapeData } from '@/types/edit'
 import { KEYS } from '@/configs/hotkey'
 import message from '@/utils/message'
@@ -30,8 +30,10 @@ const emit = defineEmits<{
 }>()
 const mainStore = useMainStore()
 const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
+const { theme } = storeToRefs(useSlidesStore())
 
 const shapeCanvasRef = ref<HTMLElement>()
+const isMouseDown = ref(false)
 const offset = ref({
   x: 0,
   y: 0,
@@ -42,13 +44,15 @@ onMounted(() => {
   offset.value = { x, y }
 })
 
-const mousePosition = ref<[number, number]>()
+const mousePosition = ref<[number, number] | null>(null)
 const points = ref<[number, number][]>([])
 const closed = ref(false)
 
-const getPoint = (e: MouseEvent) => {
+const getPoint = (e: MouseEvent, custom = false) => {
   let pageX = e.pageX - offset.value.x
   let pageY = e.pageY - offset.value.y
+
+  if (custom) return { pageX, pageY }
 
   if (ctrlOrShiftKeyActive.value && points.value.length) {
     const [lastPointX, lastPointY] = points.value[points.value.length - 1]
@@ -61,6 +65,13 @@ const getPoint = (e: MouseEvent) => {
 }
 
 const updateMousePosition = (e: MouseEvent) => {
+  if (isMouseDown.value) {
+    const { pageX, pageY } = getPoint(e, true)
+    points.value.push([pageX, pageY])
+    mousePosition.value = null
+    return
+  }
+
   const { pageX, pageY } = getPoint(e)
   mousePosition.value = [pageX, pageY]
 
@@ -87,48 +98,76 @@ const path = computed(() => {
   return d
 })
 
+const getCreateData = (close = true) => {
+  const xList = points.value.map(item => item[0])
+  const yList = points.value.map(item => item[1])
+  const minX = Math.min(...xList)
+  const minY = Math.min(...yList)
+  const maxX = Math.max(...xList)
+  const maxY = Math.max(...yList)
+
+  const formatedPoints = points.value.map(point => {
+    return [point[0] - minX, point[1] - minY]
+  })
+
+  let path = ''
+  for (let i = 0; i < formatedPoints.length; i++) {
+    const point = formatedPoints[i]
+    if (i === 0) path += `M ${point[0]} ${point[1]} `
+    else path += `L ${point[0]} ${point[1]} `
+  }
+  if (close) path += 'Z'
+
+  const start: [number, number] = [minX + offset.value.x, minY + offset.value.y]
+  const end: [number, number] = [maxX + offset.value.x, maxY + offset.value.y]
+  const viewBox: [number, number] = [maxX - minX, maxY - minY]
+
+  return {
+    start,
+    end,
+    path,
+    viewBox,
+  }
+}
+
 const addPoint = (e: MouseEvent) => {
   const { pageX, pageY } = getPoint(e)
+  isMouseDown.value = true
 
-  if (closed.value) {
-    const xList = points.value.map(item => item[0])
-    const yList = points.value.map(item => item[1])
-    const minX = Math.min(...xList)
-    const minY = Math.min(...yList)
-    const maxX = Math.max(...xList)
-    const maxY = Math.max(...yList)
-
-    const formatedPoints = points.value.map(point => {
-      return [point[0] - minX, point[1] - minY]
-    })
-    let path = ''
-    for (let i = 0; i < formatedPoints.length; i++) {
-      const point = formatedPoints[i]
-      if (i === 0) path += `M ${point[0]} ${point[1]} `
-      else path += `L ${point[0]} ${point[1]} `
-    }
-    path += 'Z'
-    
-    emit('created', {
-      start: [minX + offset.value.x, minY + offset.value.y],
-      end: [maxX + offset.value.x, maxY + offset.value.y],
-      path,
-      viewBox: [maxX - minX, maxY - minY],
-    })
-  }
+  if (closed.value) emit('created', getCreateData())
   else points.value.push([pageX, pageY])
+
+  document.onmouseup = () => {
+    isMouseDown.value = false
+  }
 }
 
 const close = () => {
   mainStore.setCreatingCustomShapeState(false)
 }
 
+const create = () => {
+  emit('created', {
+    ...getCreateData(false),
+    fill: 'rgba(0, 0, 0, 0)',
+    outline: {
+      width: 2,
+      color: theme.value.themeColor,
+      style: 'solid',
+    },
+  })
+  close()
+}
+
 const keydownListener = (e: KeyboardEvent) => {
   const key = e.key.toUpperCase()
   if (key === KEYS.ESC) close()
+  if (key === KEYS.ENTER) create()
 }
 onMounted(() => {
-  message.success('点击开始绘制任意多边形，首尾闭合完成绘制，按 ESC 键或鼠标右键关闭')
+  message.success('点击绘制任意形状，首尾闭合完成绘制，按 ESC 键或鼠标右键取消，按 ENTER 键提前完成', {
+    duration: 5000,
+  })
   document.addEventListener('keydown', keydownListener)
 })
 onUnmounted(() => document.removeEventListener('keydown', keydownListener))

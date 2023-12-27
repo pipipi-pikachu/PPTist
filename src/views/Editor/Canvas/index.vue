@@ -102,7 +102,7 @@ import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import type { PPTElement } from '@/types/slides'
+import type { PPTElement, PPTShapeElement } from '@/types/slides'
 import type { AlignmentLineProps, CreateCustomShapeData } from '@/types/edit'
 import { injectKeySlideScale } from '@/types/injectKey'
 import { removeAllRanges } from '@/utils/selection'
@@ -277,7 +277,12 @@ const insertCustomShape = (data: CreateCustomShapeData) => {
     viewBox,
   } = data
   const position = formatCreateSelection({ start, end })
-  position && createShapeElement(position, { path, viewBox })
+  if (position) {
+    const supplement: Partial<PPTShapeElement> = {}
+    if (data.fill) supplement.fill = data.fill
+    if (data.outline) supplement.outline = data.outline
+    createShapeElement(position, { path, viewBox }, supplement)
+  }
 
   mainStore.setCreatingCustomShapeState(false)
 }

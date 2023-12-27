@@ -213,7 +213,7 @@ export default () => {
    * @param position 位置大小信息
    * @param data 形状路径信息
    */
-  const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem) => {
+  const createShapeElement = (position: CommonElementPosition, data: ShapePoolItem, supplement: Partial<PPTShapeElement> = {}) => {
     const { left, top, width, height } = position
     const newElement: PPTShapeElement = {
       type: 'shape',
@@ -227,6 +227,7 @@ export default () => {
       fill: theme.value.themeColor,
       fixedRatio: false,
       rotate: 0,
+      ...supplement,
     }
     if (data.special) newElement.special = true
     if (data.pathFormula) {
