@@ -113,6 +113,7 @@
           { label: '宽屏 16 : 10', value: 0.625 },
           { label: '标准 4 : 3', value: 0.75 },
           { label: '纸张 A3 / A4', value: 0.70710678 },
+          { label: '竖向 A3 / A4', value: 1.41421356 },
         ]"
       />
     </div>
