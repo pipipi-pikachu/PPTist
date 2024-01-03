@@ -22,7 +22,7 @@
 
 
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，力求还原桌面应用级体验。支持导出本地 PPTX 文件，支持移动端基础编辑和预览，支持 PWA。您可以在此基础上搭建自己的在线幻灯片应用。
+> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，力求还原桌面应用级体验。支持导出本地 PPTX 文件，支持移动端基础编辑和预览。您可以在此基础上搭建自己的在线幻灯片应用。
 
 <b>在线体验地址👉：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
 
@@ -39,7 +39,7 @@
 ```
 npm install
 
-npm run serve
+npm run dev
 ```
 
 
@@ -166,18 +166,6 @@ npm run serve
 - 播放预览
 
 
-# 📅 后续重点规划
-- 项目工程升级：
-    - 升级 TypeScript v5.x；
-    - 将 npm 更换到 pnpm；
-    - 将 Vue CLI 更换到 Vite 生态；
-- 支持 Iframe 引用；
-- 组合元素重构：能够支持组合元素进行旋转、缩放、整体执行动画等；
-- 支持多屏放映；
-- 导出HTML文件；
-- 补充注释/文档；
-- 导入PPTX持续优化；
-
 # 🎯 开发
 目前没有完整的开发文档，但下面这些文档可能会对你有一些帮助：
 - [项目目录与数据结构](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/DirectoryAndData.md)
@@ -185,36 +173,17 @@ npm run serve
 - [如何自定义一个元素](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/CustomElement.md)
 
 
-# 💻 贡献代码
-首先感谢关注本项目的朋友，非常欢迎每一位对本项目感兴趣的朋友贡献代码。
-
-### 具体参考如下：
-- fork 源码，下载到本地并运行项目
-- 添加/修改代码
-- <b>对相关改动进行全面的自我测试（这非常重要，否则作者对提交代码进行阅读、测试、修复的成本很可能远大于自己重新实现）</b>
-- 确认无误后提交修改到 Github
-- 提交 Pull Request
-
-### 另外需要注意的是：
-- 每一次 Pull Request 都不应该提交过多的代码，且务必说明本次改动的具体目的，例如：修复了某个 bug、优化了某个方法 等，方便进行 Code Review；
-- 对于 bug 的修复，应该将本次 Pull Request 和相对应 bug 的 issue 关联起来，让别人知道该问题已经被修复；
-- 对于较大的新功能，你需要先提交 Issues，例如 “添加 XXX 功能”，确认该功能有被添加的必要后，再开始工作；
-- 对于一些主观的样式、交互逻辑调整：如颜色、图标的使用，某些预设配置的增减修改等，一般不予通过。但可以在 Issues 中进行讨论；
-- 其他如简单的代码优化、文档修正等，只要修改合理都会被接受。
-
-在此感谢每一位贡献者。
-
-
 # 📄 版权声明/开源协议
 [AGPL-3.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
 # 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能严格遵循 AGPL-3.0 协议，回馈开源社区；
-- 此外，如果你真的需要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
-    1. 使用 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)（建议）；
+- 如果你希望将本项目商用盈利，我希望你能尊重开源，严格遵循 AGPL-3.0 协议，回馈开源社区；
+- 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
+    1. 使用早期的 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)（建议）；
     2. 成为项目的贡献者，大致包括：
         - 你的代码被本项目作为依赖引用；
-        - 你提交的 PR 被本项目合并（仅限有价值的，不包括简单的错别字或拼写错误修改等）；
-        - 你参与过本项目的设计、实现（也包括对各种功能/模块的实现或Bug的修复提供了有价值的思路）；
-        - 注：先违反协议后再成为贡献者不在此范围；
-    3. 邮件联系作者付费商用（不建议，我更希望你一起加入到开源社区中来）；
+        - 你给本项目提交过重要的 PR 并且被合并；
+        - 你参与过本项目的设计，也包括对各种功能/模块的实现或Bug的修复提供了有价值的思路；
+        - 注1：满足条件的单位在商用前请先联系作者确认资格，避免误会。
+        - 注2：先违反协议后再成为贡献者不在此项范围；
+    3. 邮件联系作者付费商用（如果可以，我更希望你一起加入到开源社区中来）；

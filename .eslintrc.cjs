@@ -1,20 +1,15 @@
-// https://eslint.org/docs/rules/
-
-const isProduction = process.env.NODE_ENV === 'production'
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
-  env: {
-    node: true,
-    'vue/setup-compiler-macros': true,
-  },
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
-    '@vue/typescript/recommended',
+    '@vue/eslint-config-typescript'
   ],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 'latest'
   },
   rules: {
     'curly': ['error', 'multi-line'],
@@ -64,9 +59,9 @@ module.exports = {
     'no-eval': 'error',
     'no-var': 'error',
     'no-with': 'error',
-    'no-alert': isProduction ? 'error' : 'warn',
-    'no-console': isProduction ? 'error' : 'warn',
-    'no-debugger': isProduction ? 'error' : 'warn',
+    'no-alert': 'warn',
+    'no-console': 'warn',
+    'no-debugger': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-types': ['error', {
       'extendDefaults': true,
@@ -78,16 +73,5 @@ module.exports = {
     '@typescript-eslint/consistent-type-imports': 'error',
     'vue/multi-word-component-names': 'off',
     'vue/no-reserved-component-names': 'off',
-  },
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
-      ],
-      env: {
-        jest: true,
-      },
-    },
-  ],
+  }
 }

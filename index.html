@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，实现在线PPT的编辑、演示。支持导出PPT文件。" />
     <meta name="keywords" content="ppt,powerpoint,office powerpoint,在线ppt,幻灯片,演示文稿,ppt在线制作,Vue3,TypeScript" />
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>PPTIST - 在线演示文稿</title>
 
     <style>
@@ -47,18 +47,16 @@
     </style>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app">
       <div class="first-screen-loading">
         <div class="first-screen-loading-spinner"></div>
         <div class="first-screen-loading-text">正在加载中，请稍等 ...</div>
       </div>
     </div>
-
-    <script>
-      document.oncontextmenu = e => e.preventDefault()
-    </script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
+
+  <script>
+    document.oncontextmenu = e => e.preventDefault()
+  </script>
 </html>

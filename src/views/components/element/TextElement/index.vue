@@ -167,7 +167,7 @@ const updateContent = (content: string) => {
 }
 
 const checkEmptyText = debounce(function() {
-  const pureText = props.elementInfo.content.replaceAll(/<[^>]+>/g, '')
+  const pureText = props.elementInfo.content.replace(/<[^>]+>/g, '')
   if (!pureText) slidesStore.deleteElement(props.elementInfo.id)
 }, 300, { trailing: true })
 

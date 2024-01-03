@@ -4,6 +4,8 @@
   <Mobile v-else />
 </template>
 
+
+
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -23,7 +25,7 @@ const snapshotStore = useSnapshotStore()
 const { databaseId } = storeToRefs(mainStore)
 const { screening } = storeToRefs(useScreenStore())
 
-if (process.env.NODE_ENV === 'production') {
+if (import.meta.env.MODE !== 'development') {
   window.onbeforeunload = () => false
 }
 

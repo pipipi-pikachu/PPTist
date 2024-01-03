@@ -96,11 +96,11 @@ export const useSlidesStore = defineStore('slides', {
       const subColor = tinycolor(fontColor).isDark() ? 'rgba(230, 230, 230, 0.5)' : 'rgba(180, 180, 180, 0.5)'
   
       const layoutsString = JSON.stringify(layouts)
-        .replaceAll('{{themeColor}}', themeColor)
-        .replaceAll('{{fontColor}}', fontColor)
-        .replaceAll('{{fontName}}', fontName)
-        .replaceAll('{{backgroundColor}}', backgroundColor)
-        .replaceAll('{{subColor}}', subColor)
+        .replace(/{{themeColor}}/g, themeColor)
+        .replace(/{{fontColor}}/g, fontColor)
+        .replace(/{{fontName}}/g, fontName)
+        .replace(/{{backgroundColor}}/g, backgroundColor)
+        .replace(/{{subColor}}/g, subColor)
       
       return JSON.parse(layoutsString)
     },

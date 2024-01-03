@@ -170,7 +170,7 @@ const updateText = (content: string) => {
 const checkEmptyText = () => {
   if (!props.elementInfo.text) return
 
-  const pureText = props.elementInfo.text.content.replaceAll(/<[^>]+>/g, '')
+  const pureText = props.elementInfo.text.content.replace(/<[^>]+>/g, '')
   if (!pureText) {
     slidesStore.removeElementProps({ id: props.elementInfo.id, propName: 'text' })
     addHistorySnapshot()

@@ -355,7 +355,7 @@ export default () => {
             if (!cell.text) return cell
             return {
               ...cell,
-              text: cell.text.replaceAll(searchWord.value, replaceWord.value),
+              text: cell.text.replace(new RegExp(searchWord.value, 'g'), replaceWord.value),
             }
           })
         })

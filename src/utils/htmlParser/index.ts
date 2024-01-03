@@ -4,7 +4,7 @@ import { lexer } from './lexer'
 import { parser } from './parser'
 import { format } from './format'
 import { toHTML } from './stringify'
-import type { AST } from './types'
+export type { AST } from './types'
 
 export const toAST = (str: string) => {
   const tokens = lexer(str)
@@ -12,4 +12,4 @@ export const toAST = (str: string) => {
   return format(nodes)
 }
 
-export { toHTML, AST }
+export { toHTML }
