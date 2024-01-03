@@ -23,6 +23,11 @@ interface LineElementPosition {
   end: [number, number]
 }
 
+interface CreateTextData {
+  content?: string
+  vertical?: boolean
+}
+
 export default () => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
@@ -177,11 +182,6 @@ export default () => {
    * @param position 位置大小信息
    * @param content 文本内容
    */
-  
-  interface CreateTextData {
-    content?: string
-    vertical?: boolean
-  }
   const createTextElement = (position: CommonElementPosition, data?: CreateTextData) => {
     const { left, top, width, height } = position
     const content = data?.content || ''
