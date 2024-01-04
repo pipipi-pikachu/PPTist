@@ -92,6 +92,7 @@ defineExpose({
     color: $textColor;
     padding: 0 5px;
     flex: 1;
+    font-size: 13px;
     font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
 
     &::placeholder {
