@@ -138,6 +138,11 @@ export default () => {
 
         const parseElements = (elements: Element[]) => {
           for (const el of elements) {
+            const originWidth = el.width
+            const originHeight = el.height
+            const originLeft = el.left
+            const originTop = el.top
+
             el.width = el.width * scale
             el.height = el.height * scale
             el.left = el.left * scale
@@ -178,6 +183,8 @@ export default () => {
                 top: el.top,
                 fixedRatio: true,
                 rotate: el.rotate,
+                flipH: el.isFlipH,
+                flipV: el.isFlipV,
               })
             }
             else if (el.type === 'audio') {
@@ -270,7 +277,7 @@ export default () => {
                 if (el.shapType === 'custom') {
                   element.special = true
                   element.path = el.path!
-                  element.viewBox = [el.width, el.height]
+                  element.viewBox = [originWidth, originHeight]
                 }
     
                 slide.elements.push(element)
@@ -289,13 +296,27 @@ export default () => {
                 const rowCells: TableCell[] = []
                 for (let j = 0; j < col; j++) {
                   const cellData = el.data[i][j]
+
+                  let textDiv: HTMLDivElement | null = document.createElement('div')
+                  textDiv.innerHTML = cellData.text
+                  const p = textDiv.querySelector('p')
+                  const align = p?.style.textAlign || 'left'
+                  const fontsize = p?.style.fontSize || ''
+                  const fontname = p?.style.fontFamily || ''
+
                   rowCells.push({
                     id: nanoid(10),
                     colspan: cellData.colSpan || 1,
                     rowspan: cellData.rowSpan || 1,
-                    text: cellData.text,
-                    style,
+                    text: textDiv.innerText,
+                    style: {
+                      ...style,
+                      align: ['left', 'right', 'center'].includes(align) ? (align as 'left' | 'right' | 'center') : 'left',
+                      fontsize,
+                      fontname,
+                    },
                   })
+                  textDiv = null
                 }
                 data.push(rowCells)
               }
@@ -397,8 +418,8 @@ export default () => {
             else if (el.type === 'group' || el.type === 'diagram') {
               const elements = el.elements.map(_el => ({
                 ..._el,
-                left: _el.left + el.left,
-                top: _el.top + el.top,
+                left: _el.left + originLeft,
+                top: _el.top + originTop,
               }))
               parseElements(elements)
             }
