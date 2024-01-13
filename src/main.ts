@@ -9,8 +9,8 @@ import '@/assets/styles/prosemirror.scss'
 import '@/assets/styles/global.scss'
 import '@/assets/styles/font.scss'
 
-import Icon from '@/plugins/icon'
-import Directive from '@/plugins/directive'
+import Icon from './components/pptist/plugins/icon'
+import Directive from './components/pptist/plugins/directive'
 
 const app = createApp(App)
 app.use(Icon)
