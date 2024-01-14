@@ -43,16 +43,7 @@
 
     <div class="right">
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'幻灯片放映'" @click="enterScreening()">
-          <IconPpt class="icon" />
-        </div>
-        <Popover trigger="click" center>
-          <template #content>
-            <PopoverMenuItem @click="enterScreeningFromStart()">从头开始</PopoverMenuItem>
-            <PopoverMenuItem @click="enterScreening()">从当前页开始</PopoverMenuItem>
-          </template>
-          <div class="arrow-btn"><IconDown class="arrow" /></div>
-        </Popover>
+        <EnterScreen></EnterScreen>
       </div>
       <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
         <IconDownload class="icon" />
@@ -90,6 +81,7 @@ import Drawer from '../../components/Drawer.vue'
 import Input from '../../components/Input.vue'
 import Popover from '../../components/Popover.vue'
 import PopoverMenuItem from '../../components/PopoverMenuItem.vue'
+import EnterScreen from '../EnterScreen/EnterScreen.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()

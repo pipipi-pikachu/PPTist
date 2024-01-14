@@ -78,6 +78,7 @@
       </Popover>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
       <IconFullScreen class="handler-item viewport-size-adaptation" v-tooltip="'适应屏幕'" @click="resetCanvas()" />
+      <EnterScreen v-if="!showEditorHeader"></EnterScreen>
     </div>
 
     <Modal
@@ -102,6 +103,7 @@ import type { LinePoolItem } from '../../configs/lines'
 import useScaleCanvas from '../../hooks/useScaleCanvas'
 import useHistorySnapshot from '../../hooks/useHistorySnapshot'
 import useCreateElement from '../../hooks/useCreateElement'
+import EnterScreen from '../EnterScreen/EnterScreen.vue'
 
 import ShapePool from './ShapePool.vue'
 import LinePool from './LinePool.vue'
@@ -116,7 +118,7 @@ import Popover from '../../components/Popover.vue'
 import PopoverMenuItem from '../../components/PopoverMenuItem.vue'
 
 const mainStore = useMainStore()
-const { creatingElement, creatingCustomShape, showSelectPanel, showSearchPanel } = storeToRefs(mainStore)
+const { creatingElement, creatingCustomShape, showSelectPanel, showSearchPanel, showEditorHeader } = storeToRefs(mainStore)
 const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
 const { redo, undo } = useHistorySnapshot()
