@@ -53,6 +53,8 @@ const slidesStore = useSlidesStore()
 const { title } = storeToRefs(slidesStore)
 const { importSpecificFile, importPPTXFile, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
+const { exportFileTypes } = storeToRefs(mainStore)
+
 
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)

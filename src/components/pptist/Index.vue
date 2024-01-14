@@ -38,18 +38,23 @@ if (import.meta.env.MODE !== 'development') {
 
 // 编辑器配置
 type Options = {
-  showEditorHeader: boolean
+  showEditorHeader: boolean,
+  exportFileTypes: string[]
 }
 const props = withDefaults(defineProps<{
   options: Options
 }>(), {
   options: () => ({
     showEditorHeader: true,
+    exportFileTypes: []
   })
 })
 
 onMounted(async () => {
   mainStore.setShowEditorHeader(props.options.showEditorHeader)
+  if (props.options.exportFileTypes.length > 0) {
+    mainStore.setExportFileTypes(props.options.exportFileTypes)
+  }
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
   mainStore.setAvailableFonts()

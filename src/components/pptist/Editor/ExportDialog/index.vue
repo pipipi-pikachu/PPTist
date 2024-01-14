@@ -31,17 +31,27 @@ interface TabItem {
 }
 
 const mainStore = useMainStore()
-const { dialogForExport } = storeToRefs(mainStore)
+const { dialogForExport, exportFileTypes } = storeToRefs(mainStore)
 
 const setDialogForExport = mainStore.setDialogForExport
 
 const tabs: TabItem[] = [
-  { key: 'pptist', label: '导出 pptist 文件' },
-  { key: 'pptx', label: '导出 PPTX' },
-  { key: 'image', label: '导出图片' },
-  { key: 'json', label: '导出 JSON' },
-  { key: 'pdf', label: '打印 / 导出 PDF' },
 ]
+if (exportFileTypes.value.includes('pptist')) {
+  tabs.push({ key: 'pptist', label: '导出 pptist 文件' })
+}
+if (exportFileTypes.value.includes('pptx')) {
+  tabs.push({ key: 'pptx', label: '导出 PPTX' })
+}
+if (exportFileTypes.value.includes('image')) {
+  tabs.push({ key: 'image', label: '导出图片' })
+}
+if (exportFileTypes.value.includes('json')) {
+  tabs.push({ key: 'json', label: '导出 JSON' })
+}
+if (exportFileTypes.value.includes('pdf')) {
+  tabs.push({ key: 'pdf', label: '打印 / 导出 PDF' })
+}
 
 const currentDialogComponent = computed<unknown>(() => {
   const dialogMap = {
