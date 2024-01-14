@@ -39,14 +39,16 @@ if (import.meta.env.MODE !== 'development') {
 // 编辑器配置
 type Options = {
   showEditorHeader: boolean,
-  exportFileTypes: string[]
+  exportFileTypes: string[],
+  fileMenuItems: string[],
 }
 const props = withDefaults(defineProps<{
   options: Options
 }>(), {
   options: () => ({
     showEditorHeader: true,
-    exportFileTypes: []
+    exportFileTypes: [],
+    fileMenuItems: []
   })
 })
 
@@ -54,6 +56,9 @@ onMounted(async () => {
   mainStore.setShowEditorHeader(props.options.showEditorHeader)
   if (props.options.exportFileTypes.length > 0) {
     mainStore.setExportFileTypes(props.options.exportFileTypes)
+  }
+  if (props.options.fileMenuItems.length > 0) {
+    mainStore.setFileMenuItems(props.options.fileMenuItems)
   }
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()

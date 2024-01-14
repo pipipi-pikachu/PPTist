@@ -38,7 +38,8 @@ export interface MainState {
   showSelectPanel: boolean
   showSearchPanel: boolean,
   showEditorHeader: boolean,
-  exportFileTypes: string[]
+  exportFileTypes: string[],
+  fileMenuItems: string[],
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -75,6 +76,7 @@ export const useMainStore = defineStore('main', {
     showSearchPanel: false, // 打开查找替换面板
     showEditorHeader: true, // 显示页面头部
     exportFileTypes: ['pptist', 'pptx', 'image', 'json', 'pdf'], // 导出文件类型
+    fileMenuItems: ['importPPTIST', 'importPPTX', 'export', 'resetSliders', 'hotkey', 'issues', 'qa'], // 文件菜单项目
   }),
 
   getters: {
@@ -204,8 +206,13 @@ export const useMainStore = defineStore('main', {
     setShowEditorHeader(show: boolean) {
       this.showEditorHeader = show
     },
+
     setExportFileTypes(types: string[]) {
       this.exportFileTypes = types
+    },
+
+    setFileMenuItems(items: string[]) {
+      this.fileMenuItems = items
     },
   },
 })
