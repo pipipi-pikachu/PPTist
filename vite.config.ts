@@ -13,8 +13,8 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-          @import '@/assets/styles/variable.scss';
-          @import '@/assets/styles/mixin.scss';
+          @import '@/components/pptist/styles/variable.scss';
+          @import '@/components/pptist/styles/mixin.scss';
         `
       },
     },

@@ -1,3 +1,12 @@
+<style lang="scss">
+@import '@icon-park/vue-next/styles/index.css';
+@import 'prosemirror-view/style/prosemirror.css';
+@import 'animate.css';
+@import './styles/prosemirror.scss';
+@import './styles/global.scss';
+@import './styles/font.scss';
+</style>
+
 <template>
   <Screen v-if="screening" />
   <Editor v-else-if="_isPC" />
