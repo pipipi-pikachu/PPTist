@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, defineProps } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useScreenStore, useMainStore, useSnapshotStore } from './store'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from './configs/storage'
@@ -36,7 +36,20 @@ if (import.meta.env.MODE !== 'development') {
   window.onbeforeunload = () => false
 }
 
+// 编辑器配置
+type Options = {
+  showEditorHeader: boolean
+}
+const props = withDefaults(defineProps<{
+  options: Options
+}>(), {
+  options: () => ({
+    showEditorHeader: true,
+  })
+})
+
 onMounted(async () => {
+  mainStore.setShowEditorHeader(props.options.showEditorHeader)
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
   mainStore.setAvailableFonts()

@@ -1,6 +1,6 @@
 <template>
   <div class="pptist-editor">
-    <EditorHeader class="layout-header" />
+    <EditorHeader v-if="showEditorHeader" class="layout-header" />
     <div class="layout-content">
       <Thumbnails class="layout-content-left" />
       <div class="layout-content-center">
@@ -47,7 +47,7 @@ import SearchPanel from './SearchPanel.vue'
 import Modal from '../components/Modal.vue'
 
 const mainStore = useMainStore()
-const { dialogForExport, showSelectPanel, showSearchPanel } = storeToRefs(mainStore)
+const { dialogForExport, showSelectPanel, showSearchPanel, showEditorHeader } = storeToRefs(mainStore)
 const closeExportDialog = () => mainStore.setDialogForExport('')
 
 const remarkHeight = ref(40)

@@ -36,7 +36,8 @@ export interface MainState {
   textFormatPainter: TextFormatPainter | null
   shapeFormatPainter: ShapeFormatPainter | null
   showSelectPanel: boolean
-  showSearchPanel: boolean
+  showSearchPanel: boolean,
+  showEditorHeader: boolean,
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -71,6 +72,7 @@ export const useMainStore = defineStore('main', {
     shapeFormatPainter: null, // 形状格式刷
     showSelectPanel: false, // 打开选择面板
     showSearchPanel: false, // 打开查找替换面板
+    showEditorHeader: true, // 显示页面头部
   }),
 
   getters: {
@@ -195,6 +197,10 @@ export const useMainStore = defineStore('main', {
 
     setSearchPanelState(show: boolean) {
       this.showSearchPanel = show
+    },
+
+    setShowEditorHeader(show: boolean) {
+      this.showEditorHeader = show
     },
   },
 })
