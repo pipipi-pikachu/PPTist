@@ -4,6 +4,9 @@
       <IconBack class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'撤销'" @click="undo()" />
       <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'重做'" @click="redo()" />
       <Divider type="vertical" style="height: 20px;" />
+      <div class="handler-item">
+        <FileMenu v-if="!showEditorHeader"></FileMenu>
+      </div>
       <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'选择窗格'" @click="toggleSelectPanel()" />
       <IconSearch class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'查找/替换'" @click="toggleSraechPanel()" />
     </div>
@@ -78,7 +81,9 @@
       </Popover>
       <IconPlus class="handler-item viewport-size" @click="scaleCanvas('+')" />
       <IconFullScreen class="handler-item viewport-size-adaptation" v-tooltip="'适应屏幕'" @click="resetCanvas()" />
-      <EnterScreen v-if="!showEditorHeader"></EnterScreen>
+      <div class="handler-item">
+        <EnterScreen v-if="!showEditorHeader"></EnterScreen>
+      </div>
     </div>
 
     <Modal
@@ -103,6 +108,7 @@ import type { LinePoolItem } from '../../configs/lines'
 import useScaleCanvas from '../../hooks/useScaleCanvas'
 import useHistorySnapshot from '../../hooks/useHistorySnapshot'
 import useCreateElement from '../../hooks/useCreateElement'
+import FileMenu from '../FileMenu/FileMenu.vue'
 import EnterScreen from '../EnterScreen/EnterScreen.vue'
 
 import ShapePool from './ShapePool.vue'
