@@ -491,7 +491,7 @@ const updateViewportRatio = (value: number) => {
   }
 
   &:hover .btns {
-    display: flex;
+    opacity: 1;
   }
 
   .btns {
@@ -500,8 +500,10 @@ const updateViewportRatio = (value: number) => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    display: none;
+    display: flex;
     background-color: rgba($color: #000, $alpha: .25);
+    opacity: 0;
+    transition: opacity $transitionDelay;
   }
   .btn {
     width: 72px;

@@ -76,6 +76,7 @@
             :key="item" 
             @click="applyCanvasPresetScale(item)"
           >{{item}}%</PopoverMenuItem>
+          <PopoverMenuItem center @click="resetCanvas()">适应屏幕</PopoverMenuItem>
         </template>
         <span class="text">{{canvasScalePercentage}}</span>
       </Popover>
@@ -131,7 +132,7 @@ const {
   canvasScalePercentage,
 } = useScaleCanvas()
 
-const canvasScalePresetList = [200, 150, 100, 80, 50]
+const canvasScalePresetList = [200, 150, 125, 100, 75, 50]
 const canvasScaleVisible = ref(false)
 
 const applyCanvasPresetScale = (value: number) => {

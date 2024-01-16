@@ -48,7 +48,8 @@ const selectSlideTemplate = (slide: Slide) => {
   }
 
   .thumbnail {
-    outline: 1px solid $borderColor;
+    outline: 2px solid $borderColor;
+    transition: outline $transitionDelay;
     cursor: pointer;
 
     &:hover {

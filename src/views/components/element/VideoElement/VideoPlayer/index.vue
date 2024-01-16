@@ -517,7 +517,7 @@ useMSE(props.src, videoRef)
       }
 
       .icon-content {
-        transition: all 0.2s ease-in-out;
+        transition: all .2s ease-in-out;
         opacity: 0.8;
         color: #fff;
       }
