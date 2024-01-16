@@ -120,6 +120,8 @@ import {
   CheckOne,
   CloseOne,
   Info,
+  Comment,
+  User,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -245,6 +247,8 @@ export const icons: Icons = {
   IconCheckOne: CheckOne,
   IconCloseOne: CloseOne,
   IconInfo: Info,
+  IconComment: Comment,
+  IconUser: User,
 }
 
 export default {

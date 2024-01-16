@@ -656,12 +656,30 @@ export interface SlideBackground {
 
 export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY' | 'random' | 'slideX3D' | 'slideY3D' | 'rotate' | 'scaleY' | 'scaleX' | 'scale' | 'scaleReverse'
 
+export interface NoteReply {
+  id: string
+  content: string
+  time: number
+  user: string
+}
+
+export interface Note {
+  id: string
+  content: string
+  time: number
+  user: string
+  elId?: string
+  replies?: NoteReply[]
+}
+
 /**
  * 幻灯片页面
  * 
  * id: 页面ID
  * 
  * elements: 元素集合
+ * 
+ * notes: 批注
  * 
  * remark?: 备注
  * 
@@ -674,6 +692,7 @@ export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY' | 'random' | 'slid
 export interface Slide {
   id: string
   elements: PPTElement[]
+  notes: Note[]
   remark?: string
   background?: SlideBackground
   animations?: PPTAnimation[]

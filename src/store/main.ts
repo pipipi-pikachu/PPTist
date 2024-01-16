@@ -37,6 +37,7 @@ export interface MainState {
   shapeFormatPainter: ShapeFormatPainter | null
   showSelectPanel: boolean
   showSearchPanel: boolean
+  showNotesPanel: boolean
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -71,6 +72,7 @@ export const useMainStore = defineStore('main', {
     shapeFormatPainter: null, // 形状格式刷
     showSelectPanel: false, // 打开选择面板
     showSearchPanel: false, // 打开查找替换面板
+    showNotesPanel: false, // 打开批注面板
   }),
 
   getters: {
@@ -195,6 +197,10 @@ export const useMainStore = defineStore('main', {
 
     setSearchPanelState(show: boolean) {
       this.showSearchPanel = show
+    },
+
+    setNotesPanelState(show: boolean) {
+      this.showNotesPanel = show
     },
   },
 })

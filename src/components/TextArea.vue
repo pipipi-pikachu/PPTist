@@ -10,7 +10,12 @@
     :value="value" 
     :rows="rows"
     :placeholder="placeholder"
+    :style="{
+      padding: padding ? `${padding}px` : '10px',
+    }"
     @input="$event => handleInput($event)"
+    @focus="$event => emit('focus', $event)"
+    @blur="$event => emit('blur', $event)"
   ></textarea>
 </template>
 
@@ -20,6 +25,7 @@ import { ref } from 'vue'
 withDefaults(defineProps<{
   value: string
   rows?: number
+  padding?: number
   disabled?: boolean
   resizable?: boolean
   placeholder?: string
@@ -32,6 +38,8 @@ withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:value', payload: string): void
+  (event: 'focus', payload: FocusEvent): void
+  (event: 'blur', payload: FocusEvent): void
 }>()
 
 const handleInput = (e: Event) => {
