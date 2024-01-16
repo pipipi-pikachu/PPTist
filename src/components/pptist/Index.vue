@@ -20,8 +20,9 @@ import { useScreenStore, useMainStore, useSnapshotStore, useSlidesStore } from '
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from './configs/storage'
 import { deleteDiscardedDB } from './utils/database'
 import { isPC } from './utils/common'
-const slidesStore = useSlidesStore()
-const { title, theme, slides } = useSlidesStore()
+// pinia存在此问题https://github.com/vuejs/pinia/discussions/2487
+const slidesStore = useSlidesStore(window.pinia)
+const { title, theme, slides } = slidesStore
 import type { Slide, SlideTheme} from './types/slides'
 
 import Editor from './Editor/index.vue'
