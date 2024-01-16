@@ -13,16 +13,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted, defineAsyncComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '../../store'
 import type { DialogForExportTypes } from '../../types/export'
 
-import ExportImage from './ExportImage.vue'
-import ExportJSON from './ExportJSON.vue'
-import ExportPDF from './ExportPDF.vue'
-import ExportPPTX from './ExportPPTX.vue'
-import ExportSpecificFile from './ExportSpecificFile.vue'
+// import ExportImage from './ExportImage.vue'
+// import ExportJSON from './ExportJSON.vue'
+// import ExportPDF from './ExportPDF.vue'
+// import ExportPPTX from './ExportPPTX.vue'
+// import ExportSpecificFile from './ExportSpecificFile.vue'
 import Tabs from '../../components/Tabs.vue'
 
 interface TabItem {
@@ -53,14 +53,15 @@ if (exportFileTypes.value.includes('pdf')) {
   tabs.push({ key: 'pdf', label: '打印 / 导出 PDF' })
 }
 
+let dialogMap: any = {
+  'image': defineAsyncComponent(() => import('./ExportImage.vue')),
+  'json': defineAsyncComponent(() => import('./ExportJSON.vue')),
+  'pdf': defineAsyncComponent(() => import('./ExportPDF.vue')),
+  'pptx': defineAsyncComponent(() => import('./ExportPPTX.vue')),
+  'pptist': defineAsyncComponent(() => import('./ExportSpecificFile.vue')),
+}
+
 const currentDialogComponent = computed<unknown>(() => {
-  const dialogMap = {
-    'image': ExportImage,
-    'json': ExportJSON,
-    'pdf': ExportPDF,
-    'pptx': ExportPPTX,
-    'pptist': ExportSpecificFile,
-  }
   if (dialogForExport.value) return dialogMap[dialogForExport.value] || null
   return null
 })

@@ -59,12 +59,6 @@ watch(theme,(newValue)=>{ // 监测一个响应式值的变化
     slides: slides
   } )
 })
-watch(
-  () => props.modelValue.title,
-  (newVal) => {
-    slidesStore.setTitle(newVal)
-  }
-)
 
 // 编辑器配置
 type Options = {
@@ -87,6 +81,13 @@ const props = withDefaults(defineProps<{
     fileMenuItems: []
   })
 })
+
+watch(
+  () => props.modelValue.title,
+  (newVal) => {
+    slidesStore.setTitle(newVal)
+  }
+)
 
 onMounted(async () => {
   mainStore.setShowEditorHeader(props.options.showEditorHeader)
