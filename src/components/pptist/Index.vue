@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, onMounted, defineProps, defineEmits } from 'vue'
+import { watch, onMounted, defineEmits } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useScreenStore, useMainStore, useSnapshotStore, useSlidesStore } from './store'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from './configs/storage'
