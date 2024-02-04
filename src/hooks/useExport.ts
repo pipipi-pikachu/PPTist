@@ -352,6 +352,12 @@ export default () => {
     return null
   }
 
+  // 判断是否为Base64图片地址
+  const isBase64Image = (url: string) => {
+    const regex = /^data:image\/[^;]+;base64,/
+    return url.match(regex) !== null
+  }
+
   // 导出PPTX文件
   const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
     exporting.value = true
@@ -383,7 +389,8 @@ export default () => {
       if (slide.background) {
         const background = slide.background
         if (background.type === 'image' && background.image) {
-          pptxSlide.background = { data: background.image }
+          if (isBase64Image(background.image)) pptxSlide.background = { data: background.image }
+          else pptxSlide.background = { path: background.image }
         }
         else if (background.type === 'solid' && background.color) {
           const c = formatColor(background.color)
@@ -439,12 +446,14 @@ export default () => {
 
         else if (el.type === 'image') {
           const options: pptxgen.ImageProps = {
-            path: el.src,
             x: el.left / INCH_PX_RATIO,
             y: el.top / INCH_PX_RATIO,
             w: el.width / INCH_PX_RATIO,
             h: el.height / INCH_PX_RATIO,
           }
+          if (isBase64Image(el.src)) options.data = el.src
+          else options.path = el.src
+
           if (el.flipH) options.flipH = el.flipH
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate
