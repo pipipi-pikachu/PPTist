@@ -692,7 +692,7 @@ export interface Note {
 export interface Slide {
   id: string
   elements: PPTElement[]
-  notes: Note[]
+  notes?: Note[]
   remark?: string
   background?: SlideBackground
   animations?: PPTAnimation[]
