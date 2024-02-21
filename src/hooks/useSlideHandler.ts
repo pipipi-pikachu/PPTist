@@ -10,7 +10,7 @@ import { KEYS } from '@/configs/hotkey'
 import message from '@/utils/message'
 import usePasteTextClipboardData from '@/hooks/usePasteTextClipboardData'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import useAddSlidesOrElements from '@/hooks//useAddSlidesOrElements'
+import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 export default () => {
   const mainStore = useMainStore()
