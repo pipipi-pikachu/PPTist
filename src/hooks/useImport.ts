@@ -138,8 +138,8 @@ export default () => {
 
         const parseElements = (elements: Element[]) => {
           for (const el of elements) {
-            const originWidth = el.width
-            const originHeight = el.height
+            const originWidth = el.width || 1
+            const originHeight = el.height || 1
             const originLeft = el.left
             const originTop = el.top
 
