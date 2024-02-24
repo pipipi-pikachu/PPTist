@@ -20,6 +20,8 @@
     </a>
 </p>
 
+简体中文 | [English](README_EN.md)
+
 
 # 🎨 PPTist
 > 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，力求还原桌面应用级体验。支持导出本地 PPTX 文件，支持移动端基础编辑和预览。您可以在此基础上搭建自己的在线幻灯片应用。
@@ -32,7 +34,7 @@
 2. 本项目的目标受众是<b>有【Web 幻灯片】开发需求的开发者</b>，提供的链接只是一个演示地址，不提供任何在线服务。你不应该直接将本项目作为工具使用，也不支持一键部署。
 如果你只是需要一个服务或工具，可以选择更优秀和成熟的产品，例如：[石墨文档](https://shimo.im/)、[金山文档](https://www.kdocs.cn/)、[Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/) 等。
 3. 本项目是基于 DOM 的渲染方案，优点是简单易上手。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
-4. 这里总结了一些[常见问题](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md)，第一次提 Issues 和 PR 时，务必提前阅读此文档。
+4. 这里总结了一些[常见问题](/doc/Q&A.md)，第一次提 Issues 和 PR 时，务必提前阅读此文档。
 
 
 # 🚀 项目运行
@@ -169,22 +171,26 @@ npm run dev
 
 # 🎯 开发
 目前没有完整的开发文档，但下面这些文档可能会对你有一些帮助：
-- [项目目录与数据结构](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/DirectoryAndData.md)
-- [画布与元素的基本原理](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Canvas.md)
-- [如何自定义一个元素](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/CustomElement.md)
+- [项目目录与数据结构](/doc/DirectoryAndData.md)
+- [画布与元素的基本原理](/doc/Canvas.md)
+- [如何自定义一个元素](/doc/CustomElement.md)
 
 
 # 📄 版权声明/开源协议
-[AGPL-3.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
+[AGPL-3.0 License](/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
 # 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能尊重开源，严格遵循 AGPL-3.0 协议，回馈开源社区；
+- 如果你希望将本项目商用盈利，我希望你能尊重开源，遵循 AGPL-3.0 协议，回馈开源社区；
 - 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
-    1. 使用早期的 [Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)（建议）；
+    1. 使用早期的[Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
     2. 成为项目的贡献者，大致包括：
         - 你的代码被本项目作为依赖引用；
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你参与过本项目的设计，也包括对各种功能/模块的实现或Bug的修复提供了有价值的思路；
         - 注1：满足条件的单位在商用前请先联系作者确认资格，避免误会。
         - 注2：先违反协议后再成为贡献者不在此项范围；
-    3. 邮件联系作者付费商用（如果可以，我更希望你一起加入到开源社区中来）；
+    3. 联系作者付费商用；
+
+### 👎 耻辱柱：
+> 在多次提醒后仍旧无视本开源协议的公司/产品：
+- 爱客易智能科技（上海）有限公司 https://www.mindshow.vip/

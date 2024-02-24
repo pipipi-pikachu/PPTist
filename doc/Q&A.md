@@ -62,6 +62,85 @@ A. 首先需要明确的一点，就是移动端无论怎么做，体验上都�
 
 A. 本项目优先兼容Chrome、Firefox。在Safari下可能存在部分兼容性问题。不兼容IE。
 
+#### Q. 为什么不是NPM包？
+
+A. 大家都知道，对于一般的插件/库而言，一个封装好的npm包能够更方便的接入现有的项目中，但PPTist是特殊的，这是一个完整的程序，而不是作为程序的一部分存在。如果你需要使用PPTist，那么我认为你必然需要在此基础上做很多定制化的开发，包括但不限于：与后台的通信、各种模板和预置素材、新的元素类型、使用其他方案实现现有的某些元素、自己的主题、更换快捷键，等等……而不是仅仅安装一个和现有demo一样的东西就行了（这样虽然方便，但在实际的产品开发中没有任何意义）。正如前面所列举的，需要可配置的东西太多了，如果作为一个插件的存在，很难兼顾得了，或者说这样做的开发量是巨大的，目前个人还承担不起。
+
+因此，使用PPTist开发项目正确的做法是：拉取完整的代码、尝试理解它、基于它改造你自己的东西。社区中也不乏类似的项目，例如 [drawio](https://github.com/jgraph/drawio)
+
 #### Q. 其他
 
 A. 另外，还是没有后台的缘故（没有多余的钱去买服务器或云服务），一些功能我是刻意砍掉的，哪怕这些功能其实很基础，例如上传音视频、例如自定义模板。还有一些功能明明有更好的实现方案，我却没有选择，例如导出PDF。这些需要依靠开发者们自己去实现和完善了。
+
+## FAQ
+#### Q. Why doesn’t the xxx shortcut work?
+
+A. Some shortcuts only work when the focus is on a specific area. For example, the shortcuts for operating pages only work when the focus is on the thumbnail list on the left, and the shortcuts for operating elements only work when the focus is on the canvas area.
+
+#### Q. Why isn’t pasting working?
+
+A. Please make sure to allow the browser access to the system clipboard.
+
+#### Q. Why do my previous PPT disappear after refreshing or reopening the browser?
+
+A. The links provided by the repository are for demonstration purposes only, and the project is deployed as a pure front-end application without a backend, thus it does not save data.
+
+#### Q. How do I adjust the order of slides?
+
+A. You can drag and drop the thumbnails on the left to adjust the order.
+
+#### Q. Why does the application become unresponsive after inserting images?
+
+A. Since this demo project does not rely on a backend, inserting local images actually references Base64 encoded data, which can result in very large data sizes. In a real production environment, you should upload images and reference their addresses to avoid this issue.
+
+#### Q. Why doesn’t the preset theme take effect after being applied?
+
+A. Applying a preset theme affects new elements and pages added, but will not apply to existing elements and pages. You can use the “Apply Theme to All” feature to apply the current theme to all pages.
+
+#### Q. Why doesn’t setting an online font work?
+
+A. Setting an online font involves downloading the corresponding font file, which can be large and requires time to complete the download before the new font is applied.
+
+#### Q. About Importing and Exporting PPTX Files
+
+A. As an online presentation application, the ability to import and export PPTX files is very important. However, it has been found that the complexity of implementing this feature far exceeds expectations. Due to limited personal capacity and time, this functionality can only be achieved with the help of third-party solutions.
+
+Export: The current export function is mainly based on [PptxGenJS](https://github.com/gitbrent/PptxGenJS/), and it can export most basic elements, but there are still many defects that need to be improved. It’s important to note that: 1) This feature relies on PptxGenJS, and for parts that the library itself cannot implement (such as animations), there’s nothing this project can do; 2) The goal of the export function is to export elements with styles as consistent as possible, not to recreate the web page one-to-one in PPT, and some style differences are inevitable.
+
+Import: The import function currently does not have a suitable solution and is still under investigation. If you are interested or have experience in related areas, please discuss in the issues.
+
+> PS. I made an experimental [pptx to json](https://github.com/pipipi-pikachu/pptx2json) converter. If you urgently need to implement the import PPTX file function, you can use this as a reference for your own implementation.
+
+It should be noted that this project is not an exclusive online editor for Office PPT. It is essentially unrelated to Office PPT. The [import/export of PPT files] is just a [feature] of the project, not its [purpose].
+
+#### Q. Which video formats are supported?
+
+A. This project only provides basic video capabilities and can play formats supported by the video tag in normal conditions.
+
+Additionally, you can introduce [hls.js](https://github.com/video-dev/hls.js) or [flv.js](https://github.com/Bilibili/flv.js) to support corresponding formats (.m3u8 .flv) by simply including the corresponding files (such as CDN) in your project, without any other configuration required.
+
+#### Q. About Importing JSON Files
+
+A. Firstly, due to security reasons, I do not recommend exposing such functionality directly to users on the front end, or users should not even come into contact with formats like JSON in the first place (even the export JSON feature was initially intended only for development convenience). If there is a real need, please implement it on the server side, with a focus on data validation, and the same goes for the front end.
+
+#### Q. Print / Export PDF Styles Are Different from the Actual
+
+A. Please adjust the settings in the print dialog that pops up in the browser. It is recommended to set the margins to [default], uncheck [headers and footers], and check [background graphics].
+
+#### Q. Why doesn’t the mobile version support xxx feature?
+
+A. The first thing to clarify is that the mobile experience will inevitably be inferior to the PC experience no matter what. Therefore, the mobile version is positioned for simple, temporary handling in emergency situations. True design and creation of slides should be done on a computer with full functionality. If there is a specific need for the mobile version, you can try opening it in desktop mode on mobile (of course, the experience will be worse), or the developer can do further custom development.
+
+#### Q. About Compatibility?
+
+A. This project prioritizes compatibility with Chrome and Firefox. There may be some compatibility issues under Safari. It is not compatible with IE.
+
+#### Q. Why isn’t it an NPM package?
+
+A. Everyone knows that for general plugins/libraries, a well-packaged NPM package can more easily integrate into existing projects. However, PPTist is special; it is a complete program, not a part of another program. If you need to use PPTist, I believe you will necessarily need to do a lot of custom development based on it, including but not limited to: communication with the backend, various templates and pre-installed materials, new element types, using other solutions to implement certain existing elements, your own themes, changing shortcuts, and so on… It’s not just about installing something that is the same as the existing demo (which may be convenient but has no practical significance in actual product development). As previously mentioned, there are many things that need to be configurable, and it would be difficult to cater to all these needs if it were an NPM plugin. The development effort would be enormous, and currently, I cannot afford it.
+
+Therefore, the correct way to develop a project using PPTist is to pull the complete code, try to understand it, and modify it to suit your own needs. There are also similar projects in the community, such as [drawio](https://github.com/jgraph/drawio).
+
+#### Q. Other
+
+A. Additionally, due to the absence of a backend (and no extra money to buy servers or cloud services), some features are deliberately omitted, even though they are quite basic, such as uploading audio and video, or custom templates. There are also features that have better implementation options, but I have not chosen them, such as exporting to PDF. These will need to be implemented and improved by developers.
