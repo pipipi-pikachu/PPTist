@@ -490,6 +490,7 @@ export default () => {
         else if (el.type === 'shape') {
           if (el.special) {
             const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
+            if (svgRef.clientWidth * svgRef.clientHeight < 1) continue
             const base64SVG = svg2Base64(svgRef)
 
             const options: pptxgen.ImageProps = {
@@ -740,6 +741,7 @@ export default () => {
         
         else if (el.type === 'latex') {
           const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
+          if (svgRef.clientWidth * svgRef.clientHeight < 1) continue
           const base64SVG = svg2Base64(svgRef)
 
           const options: pptxgen.ImageProps = {
