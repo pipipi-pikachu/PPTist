@@ -134,7 +134,7 @@ const top = ref(0)
 const width = ref(0)
 const height = ref(0)
 const rotate = ref(0)
-const fixedRatio = ref(false)
+const fixedRatio = ref(0)
 
 const minSize = computed(() => {
   if (!handleElement.value) return 20
@@ -154,7 +154,14 @@ watch(handleElement, () => {
   left.value = round(handleElement.value.left, 1)
   top.value = round(handleElement.value.top, 1)
 
-  fixedRatio.value = 'fixedRatio' in handleElement.value && !!handleElement.value.fixedRatio
+  if ('fixedRatio' in handleElement.value && !!handleElement.value.fixedRatio) {
+    if (Math.abs(fixedRatio.value) < 1e-9) {
+      fixedRatio.value = handleElement.value.width / handleElement.value.height
+    } 
+  }
+  else {
+    fixedRatio.value = 0
+  }
 
   if (handleElement.value.type !== 'line') {
     width.value = round(handleElement.value.width, 1)
@@ -198,7 +205,7 @@ const updateShapePathData = (width: number, height: number) => {
   return null
 }
 const updateWidth = (value: number) => {
-  let props = { width: value }
+  let props = fixedRatio.value ? {width: value, height: value / fixedRatio.value} : { width: value }
   const shapePathData = updateShapePathData(value, height.value)
   if (shapePathData) props = { ...props, ...shapePathData }
 
@@ -206,7 +213,7 @@ const updateWidth = (value: number) => {
   addHistorySnapshot()
 }
 const updateHeight = (value: number) => {
-  let props = { height: value }
+  let props = fixedRatio.value ? {width: value * fixedRatio.value, height: value} : {height: value}
   const shapePathData = updateShapePathData(width.value, value)
   if (shapePathData) props = { ...props, ...shapePathData }
 
