@@ -22,10 +22,10 @@
         @keydown.enter="$event => emit('enter', $event)"
       />
       <div class="handlers">
-        <span class="handler" @click="number += step">
+        <span class="handler" @click="add(step)">
           <svg fill="currentColor" width="1em" height="1em" viewBox="64 64 896 896"><path d="M890.5 755.3L537.9 269.2c-12.8-17.6-39-17.6-51.7 0L133.5 755.3A8 8 0 00140 768h75c5.1 0 9.9-2.5 12.9-6.6L512 369.8l284.1 391.6c3 4.1 7.8 6.6 12.9 6.6h75c6.5 0 10.3-7.4 6.5-12.7z"></path></svg>
         </span>
-        <span class="handler" @click="number -= step">
+        <span class="handler" @click="add(-step)">
           <svg fill="currentColor" width="1em" height="1em" viewBox="64 64 896 896"><path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"></path></svg>
         </span>
       </div>
@@ -65,9 +65,10 @@ const emit = defineEmits<{
 
 const number = ref(0)
 const focused = ref(false)
+let tmp_value = 0
 
 watch(() => props.value, () => {
-  if (props.value !== number.value) {
+  if (props.value !== tmp_value) {
     number.value = props.value
   }
 }, {
@@ -75,17 +76,26 @@ watch(() => props.value, () => {
 })
 
 watch(number, () => {
-  let value = +number.value
-  if (isNaN(value)) value = props.min
-  else if (value > props.max) value = props.max
-  else if (value < props.min) value = props.min
+  tmp_value = +number.value
+  if (isNaN(tmp_value)) tmp_value = props.min
+  else if (tmp_value > props.max) tmp_value = props.max
+  else if (tmp_value < props.min) tmp_value = props.min
 
-  number.value = value
-  emit('update:value', number.value)
+  emit('update:value', tmp_value)
 })
+
+const add = (value: number) => {
+  tmp_value = +number.value + value
+  if (isNaN(tmp_value)) tmp_value = props.min
+  else if (tmp_value > props.max) tmp_value = props.max
+  else if (tmp_value < props.min) tmp_value = props.min
+
+  number.value = tmp_value
+}
 
 const handleBlur = (e: Event) => {
   focused.value = false
+  number.value = tmp_value
   emit('blur', e)
 }
 const handleFocus = (e: Event) => {
