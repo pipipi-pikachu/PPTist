@@ -66,7 +66,7 @@ import { debounce } from 'lodash'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTextElement } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import useElementShadowGlow from '@/views/components/element/hooks/useElementShadowGlow'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
@@ -87,7 +87,8 @@ const { addHistorySnapshot } = useHistorySnapshot()
 const elementRef = ref<HTMLElement>()
 
 const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const glow = computed(() => props.elementInfo.glow)
+const { shadowStyle } = useElementShadowGlow(shadow, glow)
 
 const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
   if (props.elementInfo.lock) return

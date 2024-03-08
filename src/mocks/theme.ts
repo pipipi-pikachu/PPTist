@@ -11,6 +11,11 @@ export const theme: SlideTheme = {
     blur: 2,
     color: '#808080',
   },
+  glow: {
+    size: 0,
+    opacity: 1,
+    color: '#ffffff',
+  },
   outline: {
     width: 2,
     color: '#525252',

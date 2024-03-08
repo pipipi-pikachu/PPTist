@@ -313,6 +313,8 @@
     </div>
 
     <Divider />
+    <ElementGlow />
+    <Divider />
     <ElementOutline />
     <Divider />
     <ElementShadow />
@@ -333,6 +335,7 @@ import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 import message from '@/utils/message'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
+import ElementGlow from '../common/ElementGlow.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
 import ColorButton from '../common/ColorButton.vue'

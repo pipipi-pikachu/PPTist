@@ -440,6 +440,10 @@ export default () => {
           if (el.opacity !== undefined) options.transparency = (1 - el.opacity) * 100
           if (el.paragraphSpace !== undefined) options.paraSpaceBefore = el.paragraphSpace * PT_PX_RATIO
           if (el.vertical) options.vert = 'eaVert'
+          if (el.glow) {
+            const c = formatColor(el.glow.color || '#ffffff')
+            options.glow = { color: c.color, opacity: c.alpha, size: (el.glow.size || 0) * PT_PX_RATIO }
+          }
 
           pptxSlide.addText(textProps, options)
         }

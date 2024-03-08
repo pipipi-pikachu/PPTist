@@ -53,6 +53,21 @@ export interface PPTElementShadow {
 }
 
 /**
+ * 文字发光
+ * 
+ * size?: 发光大小
+ * 
+ * opacity?: 发光透明度
+ * 
+ * color?: 发光颜色
+ */
+export interface PPTElementGlow {
+  size?: number
+  opacity?: number
+  color?: string
+}
+
+/**
  * 元素边框
  * 
  * style?: 边框样式（实线或虚线）
@@ -149,6 +164,7 @@ export interface PPTTextElement extends PPTBaseElement {
   content: string
   defaultFontName: string
   defaultColor: string
+  glow?: PPTElementGlow
   outline?: PPTElementOutline
   fill?: string
   lineHeight?: number
@@ -715,6 +731,7 @@ export interface SlideTheme {
   themeColor: string
   fontColor: string
   fontName: string
+  glow: PPTElementGlow
   outline: PPTElementOutline
   shadow: PPTElementShadow
 }

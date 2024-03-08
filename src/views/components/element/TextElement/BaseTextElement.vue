@@ -49,14 +49,15 @@ import { computed } from 'vue'
 import type { PPTTextElement } from '@/types/slides'
 import ElementOutline from '@/views/components/element/ElementOutline.vue'
 
-import useElementShadow from '@/views/components/element/hooks/useElementShadow'
+import useElementShadowGlow from '@/views/components/element/hooks/useElementShadowGlow'
 
 const props = defineProps<{
   elementInfo: PPTTextElement
 }>()
 
 const shadow = computed(() => props.elementInfo.shadow)
-const { shadowStyle } = useElementShadow(shadow)
+const glow = computed(() => props.elementInfo.glow)
+const { shadowStyle } = useElementShadowGlow(shadow, glow)
 </script>
 
 <style lang="scss" scoped>

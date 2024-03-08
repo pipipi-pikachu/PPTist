@@ -93,6 +93,10 @@
 
     <Divider />
 
+    <ElementGlow :fixed="true" />
+
+    <Divider />
+
     <ElementOutline :fixed="true" />
 
     <Divider />
@@ -176,6 +180,7 @@ import type { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/t
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import ElementGlow from '../common/ElementGlow.vue'
 import ElementOutline from '../common/ElementOutline.vue'
 import ColorButton from '../common/ColorButton.vue'
 import TextColorButton from '../common/TextColorButton.vue'
