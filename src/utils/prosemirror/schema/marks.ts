@@ -132,7 +132,7 @@ const fontname: MarkSpec = {
   toDOM: mark => {
     const { fontname } = mark.attrs
     let style = ''
-    if (fontname) style += `font-family: ${fontname};`
+    if (fontname) style += `font-family: "${fontname}";`
     return ['span', { style }, 0]
   },
 }
