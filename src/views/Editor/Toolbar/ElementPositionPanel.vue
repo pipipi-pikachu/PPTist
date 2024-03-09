@@ -66,7 +66,7 @@
           </template>
         </NumberInput>
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
-          <IconLock style="width: 10%;" class="icon-btn" v-tooltip="'解除宽高比锁定'" @click="updateFixedRatio(false)" v-if="fixedRatio" />
+          <IconLock style="width: 10%;" class="icon-btn active" v-tooltip="'解除宽高比锁定'" @click="updateFixedRatio(false)" v-if="fixedRatio" />
           <IconUnlock style="width: 10%;" class="icon-btn" v-tooltip="'宽高比锁定'" @click="updateFixedRatio(true)" v-else />
         </template>
         <div style="width: 10%;" v-else></div>
@@ -198,16 +198,24 @@ const updateShapePathData = (width: number, height: number) => {
   return null
 }
 const updateWidth = (value: number) => {
-  let props = { width: value }
-  const shapePathData = updateShapePathData(value, height.value)
+  const ratio = width.value / height.value
+  let props = {
+    width: value,
+    height: fixedRatio.value ? value / ratio : height.value,
+  }
+  const shapePathData = updateShapePathData(value, props.height)
   if (shapePathData) props = { ...props, ...shapePathData }
 
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }
 const updateHeight = (value: number) => {
-  let props = { height: value }
-  const shapePathData = updateShapePathData(width.value, value)
+  const ratio = width.value / height.value
+  let props = {
+    height: value,
+    width: fixedRatio.value ? value * ratio : width.value,
+  }
+  const shapePathData = updateShapePathData(props.width, value)
   if (shapePathData) props = { ...props, ...shapePathData }
 
   slidesStore.updateElement({ id: handleElementId.value, props })
@@ -259,6 +267,10 @@ const updateRotate45 = (command: '+' | '-') => {
 }
 .icon-btn {
   cursor: pointer;
+
+  &.active {
+    color: $themeColor;
+  }
 }
 .text-btn {
   height: 30px;
