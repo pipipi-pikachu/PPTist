@@ -19,7 +19,7 @@
         @focus="$event => handleFocus($event)"
         @blur="$event => handleBlur($event)"
         @change="$event => emit('change', $event)"
-        @keydown.enter="$event => emit('enter', $event)"
+        @keydown.enter="$event => handleEnter($event)"
       />
       <div class="handlers">
         <span class="handler" @click="number += step">
@@ -75,6 +75,16 @@ watch(() => props.value, () => {
 })
 
 watch(number, () => {
+  const value = +number.value
+  if (isNaN(value)) return
+  else if (value > props.max) return
+  else if (value < props.min) return
+
+  number.value = value
+  emit('update:value', number.value)
+})
+
+const checkAndEmitValue = () => {
   let value = +number.value
   if (isNaN(value)) value = props.min
   else if (value > props.max) value = props.max
@@ -82,9 +92,15 @@ watch(number, () => {
 
   number.value = value
   emit('update:value', number.value)
-})
+}
+
+const handleEnter = (e: Event) => {
+  checkAndEmitValue()
+  emit('enter', e)
+}
 
 const handleBlur = (e: Event) => {
+  checkAndEmitValue()
   focused.value = false
   emit('blur', e)
 }
