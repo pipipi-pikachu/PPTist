@@ -139,7 +139,7 @@ npm run dev
 - Play preview
 
 
-# FAQ
+# 👀 FAQ
 [FAQ](/doc/Q&A.md)
 
 
