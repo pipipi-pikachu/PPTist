@@ -13,7 +13,7 @@ export const ELEMENT_TYPE_ZH: { [key: string]: string } = {
 export const MIN_SIZE: { [key: string]: number } = {
   text: 20,
   image: 20,
-  shape: 15,
+  shape: 20,
   chart: 200,
   table: 20,
   video: 250,

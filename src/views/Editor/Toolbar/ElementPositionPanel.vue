@@ -115,6 +115,7 @@ import { computed, ref, watch } from 'vue'
 import { round } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
+import type { PPTElement } from '@/types/slides'
 import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
 import { MIN_SIZE } from '@/configs/element'
 import { SHAPE_PATH_FORMULAS } from '@/configs/shapes'
@@ -197,30 +198,51 @@ const updateShapePathData = (width: number, height: number) => {
   }
   return null
 }
+
 const updateWidth = (value: number) => {
-  const ratio = width.value / height.value
-  let props = {
-    width: value,
-    height: fixedRatio.value ? value / ratio : height.value,
+  let h = height.value
+
+  if (fixedRatio.value) {
+    const ratio = width.value / height.value
+    h = (value / ratio) < minSize.value ? minSize.value : (value / ratio)
   }
-  const shapePathData = updateShapePathData(value, props.height)
-  if (shapePathData) props = { ...props, ...shapePathData }
+  let props: Partial<PPTElement> = { width: value, height: h }
+
+  const shapePathData = updateShapePathData(value, h)
+  if (shapePathData) {
+    props = {
+      width: value,
+      height: h,
+      ...shapePathData,
+    }
+  }
 
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }
+
 const updateHeight = (value: number) => {
-  const ratio = width.value / height.value
-  let props = {
-    height: value,
-    width: fixedRatio.value ? value * ratio : width.value,
+  let w = width.value
+
+  if (fixedRatio.value) {
+    const ratio = width.value / height.value
+    w = (value * ratio) < minSize.value ? minSize.value : (value * ratio)
   }
-  const shapePathData = updateShapePathData(props.width, value)
-  if (shapePathData) props = { ...props, ...shapePathData }
+  let props: Partial<PPTElement> = { width: w, height: value }
+
+  const shapePathData = updateShapePathData(w, value)
+  if (shapePathData) {
+    props = {
+      width: w,
+      height: value,
+      ...shapePathData,
+    }
+  }
 
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }
+
 const updateRotate = (value: number) => {
   const props = { rotate: value }
   slidesStore.updateElement({ id: handleElementId.value, props })
