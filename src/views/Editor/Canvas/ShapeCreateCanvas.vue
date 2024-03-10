@@ -166,11 +166,14 @@ const keydownListener = (e: KeyboardEvent) => {
 }
 onMounted(() => {
   message.success('点击绘制任意形状，首尾闭合完成绘制，按 ESC 键或鼠标右键取消，按 ENTER 键提前完成', {
-    duration: 5000,
+    duration: 0,
   })
   document.addEventListener('keydown', keydownListener)
 })
-onUnmounted(() => document.removeEventListener('keydown', keydownListener))
+onUnmounted(() => {
+  document.removeEventListener('keydown', keydownListener)
+  message.closeAll()
+})
 </script>
 
 <style lang="scss" scoped>

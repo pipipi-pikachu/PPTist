@@ -9,7 +9,7 @@ import useLockElement from './useLockElement'
 import useDeleteElement from './useDeleteElement'
 import useCombineElement from './useCombineElement'
 import useCopyAndPasteElement from './useCopyAndPasteElement'
-import useSelectAllElement from './useSelectAllElement'
+import useSelectElement from './useSelectElement'
 import useMoveElement from './useMoveElement'
 import useOrderElement from './useOrderElement'
 import useHistorySnapshot from './useHistorySnapshot'
@@ -45,7 +45,7 @@ export default () => {
   const { deleteElement } = useDeleteElement()
   const { lockElement } = useLockElement()
   const { copyElement, cutElement, quickCopyElement } = useCopyAndPasteElement()
-  const { selectAllElement } = useSelectAllElement()
+  const { selectAllElements } = useSelectElement()
   const { moveElement } = useMoveElement()
   const { orderElement } = useOrderElement()
   const { redo, undo } = useHistorySnapshot()
@@ -68,7 +68,7 @@ export default () => {
   }
 
   const selectAll = () => {
-    if (editorAreaFocus.value) selectAllElement()
+    if (editorAreaFocus.value) selectAllElements()
     if (thumbnailsFocus.value) selectAllSlide()
   }
 

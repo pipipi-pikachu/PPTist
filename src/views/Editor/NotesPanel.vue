@@ -311,11 +311,11 @@ const close = () => {
 
   
   .footer {
-    margin-top: 5px;
+    margin-top: 10px;
     display: flex;
 
     .btn + .btn {
-      margin-left: 5px;
+      margin-left: 8px;
       flex-shrink: 0;
     }
   }

@@ -215,7 +215,7 @@ const openEyeDropper = () => {
 
 // 原生取色吸管
 const browserEyeDropper = () => {
-  message.success('按 ESC 键关闭取色吸管')
+  message.success('按 ESC 键关闭取色吸管', { duration: 0 })
 
   // eslint-disable-next-line
   const eyeDropper = new (window as any).EyeDropper()
@@ -226,7 +226,7 @@ const browserEyeDropper = () => {
 
     updateRecentColorsCache()
   }).catch(() => {
-    message.success('关闭取色吸管')
+    message.closeAll()
   })
 }
 

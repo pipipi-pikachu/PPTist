@@ -113,7 +113,7 @@ import useMouseSelection from './hooks/useMouseSelection'
 import useDropImageOrText from './hooks/useDropImageOrText'
 import useRotateElement from './hooks/useRotateElement'
 import useScaleElement from './hooks/useScaleElement'
-import useSelectElement from './hooks/useSelectElement'
+import useSelectAndMoveElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
 import useDragLineElement from './hooks/useDragLineElement'
 import useMoveShapeKeypoint from './hooks/useMoveShapeKeypoint'
@@ -121,7 +121,7 @@ import useInsertFromCreateSelection from './hooks/useInsertFromCreateSelection'
 
 import useDeleteElement from '@/hooks/useDeleteElement'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
-import useSelectAllElement from '@/hooks/useSelectAllElement'
+import useSelectElement from '@/hooks/useSelectElement'
 import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -181,12 +181,12 @@ const { mouseSelection, mouseSelectionVisible, mouseSelectionQuadrant, updateMou
 
 const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
 const { dragLineElement } = useDragLineElement(elementList)
-const { selectElement } = useSelectElement(elementList, dragElement)
+const { selectElement } = useSelectAndMoveElement(elementList, dragElement)
 const { scaleElement, scaleMultiElement } = useScaleElement(elementList, alignmentLines, canvasScale)
 const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)
 const { moveShapeKeypoint } = useMoveShapeKeypoint(elementList, canvasScale)
 
-const { selectAllElement } = useSelectAllElement()
+const { selectAllElements } = useSelectElement()
 const { deleteAllElements } = useDeleteElement()
 const { pasteElement } = useCopyAndPasteElement()
 const { enterScreeningFromStart } = useScreening()
@@ -297,7 +297,7 @@ const contextmenus = (): ContextmenuItem[] => {
     {
       text: '全选',
       subText: 'Ctrl + A',
-      handler: selectAllElement,
+      handler: selectAllElements,
     },
     {
       text: '标尺',

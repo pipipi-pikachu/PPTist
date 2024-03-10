@@ -27,7 +27,7 @@ import useCombineElement from '@/hooks/useCombineElement'
 import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
-import useSelectAllElement from '@/hooks/useSelectAllElement'
+import useSelectElement from '@/hooks/useSelectElement'
 
 import { ElementOrderCommands, ElementAlignCommands } from '@/types/edit'
 
@@ -70,7 +70,7 @@ const { combineElements, uncombineElements } = useCombineElement()
 const { deleteElement } = useDeleteElement()
 const { lockElement, unlockElement } = useLockElement()
 const { copyElement, pasteElement, cutElement } = useCopyAndPasteElement()
-const { selectAllElement } = useSelectAllElement()
+const { selectAllElements } = useSelectElement()
 
 const contextmenus = (): ContextmenuItem[] => {
   if (props.elementInfo.lock) {
@@ -150,7 +150,7 @@ const contextmenus = (): ContextmenuItem[] => {
     {
       text: '全选',
       subText: 'Ctrl + A',
-      handler: selectAllElement,
+      handler: selectAllElements,
     },
     {
       text: '锁定',
