@@ -205,6 +205,7 @@ const updateShapePathData = (width: number, height: number) => {
   return null
 }
 const updateWidth = (value: number) => {
+  if (value === width.value) return
   let props = fixedRatio.value ? {width: value, height: value / fixedRatio.value} : { width: value }
   const shapePathData = updateShapePathData(value, height.value)
   if (shapePathData) props = { ...props, ...shapePathData }
@@ -213,6 +214,7 @@ const updateWidth = (value: number) => {
   addHistorySnapshot()
 }
 const updateHeight = (value: number) => {
+  if (value === height.value) return
   let props = fixedRatio.value ? {width: value * fixedRatio.value, height: value} : {height: value}
   const shapePathData = updateShapePathData(width.value, value)
   if (shapePathData) props = { ...props, ...shapePathData }
