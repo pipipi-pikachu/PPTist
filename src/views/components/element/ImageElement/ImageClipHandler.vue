@@ -260,21 +260,16 @@ const moveClipRange = (e: MouseEvent) => {
     const currentPageX = e.pageX
     const currentPageY = e.pageY
 
-    let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
-    let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
+    const _moveX = (currentPageX - startPageX) / canvasScale.value
+    const _moveY = (currentPageY - startPageY) / canvasScale.value
 
-    if (props.rotate > 45 && props.rotate < 135) {
-      moveX = (currentPageY - startPageY) / canvasScale.value / props.width * 100
-      moveY = -(currentPageX - startPageX) / canvasScale.value / props.height * 100
-    }
-    if ((props.rotate >= 135 && props.rotate <= 180) || (props.rotate >= -180 && props.rotate <= -135)) {
-      moveX = -moveX
-      moveY = -moveY
-    }
-    if (props.rotate > -135 && props.rotate < -45) {
-      moveX = -(currentPageY - startPageY) / canvasScale.value / props.width * 100
-      moveY = (currentPageX - startPageX) / canvasScale.value / props.height * 100
-    }
+    const _moveL = Math.sqrt(_moveX * _moveX + _moveY * _moveY)
+    const _moveLRotate = Math.atan2(_moveY, _moveX)
+
+    const rotate = _moveLRotate - (props.rotate / 180) * Math.PI
+
+    const moveX = ((_moveL * Math.cos(rotate)) / props.width) * 100
+    const moveY = ((_moveL * Math.sin(rotate)) / props.height) * 100
 
     let targetLeft = originPositopn.left + moveX
     let targetTop = originPositopn.top + moveY
@@ -329,21 +324,16 @@ const scaleClipRange = (e: MouseEvent, type: OperateResizeHandlers) => {
     const currentPageX = e.pageX
     const currentPageY = e.pageY
 
-    let moveX = (currentPageX - startPageX) / canvasScale.value / props.width * 100
-    let moveY = (currentPageY - startPageY) / canvasScale.value / props.height * 100
+    const _moveX = (currentPageX - startPageX) / canvasScale.value
+    const _moveY = (currentPageY - startPageY) / canvasScale.value
 
-    if (props.rotate > 45 && props.rotate < 135) {
-      moveX = (currentPageY - startPageY) / canvasScale.value / props.width * 100
-      moveY = -(currentPageX - startPageX) / canvasScale.value / props.height * 100
-    }
-    if ((props.rotate >= 135 && props.rotate <= 180) || (props.rotate >= -180 && props.rotate <= -135)) {
-      moveX = -moveX
-      moveY = -moveY
-    }
-    if (props.rotate > -135 && props.rotate < -45) {
-      moveX = -(currentPageY - startPageY) / canvasScale.value / props.width * 100
-      moveY = (currentPageX - startPageX) / canvasScale.value / props.height * 100
-    }
+    const _moveL = Math.sqrt(_moveX * _moveX + _moveY * _moveY)
+    const _moveLRotate = Math.atan2(_moveY, _moveX)
+
+    const rotate = _moveLRotate - (props.rotate / 180) * Math.PI
+
+    let moveX = ((_moveL * Math.cos(rotate)) / props.width) * 100
+    let moveY = ((_moveL * Math.sin(rotate)) / props.height) * 100
 
     if (ctrlOrShiftKeyActive.value) {
       if (type === OperateResizeHandlers.RIGHT_BOTTOM || type === OperateResizeHandlers.LEFT_TOP) moveY = moveX / aspectRatio
