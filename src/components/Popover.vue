@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type CSSProperties, onMounted, ref, watch, computed } from 'vue'
+import { type CSSProperties, onMounted, onUnmounted, ref, watch, computed } from 'vue'
 import tippy, { type Instance, type Placement } from 'tippy.js'
 
 import 'tippy.js/animations/scale.css'
@@ -44,6 +44,10 @@ watch(() => props.value, () => {
   if (!instance.value) return
   if (props.value) instance.value.show()
   else instance.value.hide()
+})
+
+onUnmounted(() => {
+  if (instance.value) instance.value.destroy()
 })
 
 onMounted(() => {
