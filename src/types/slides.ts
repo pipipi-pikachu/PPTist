@@ -452,7 +452,7 @@ export interface TableCellStyle {
   backcolor?: string
   fontsize?: string
   fontname?: string
-  align?: 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right' | 'justify'
 }
 
 

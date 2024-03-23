@@ -84,11 +84,12 @@
       class="row" 
       button-style="solid" 
       :value="textAttrs.align"
-      @update:value="value => updateTextAttrs({ align: value as 'left' | 'center' | 'right' })"
+      @update:value="value => updateTextAttrs({ align: value as 'left' | 'center' | 'right' | 'justify' })"
     >
       <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
       <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+      <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><IconAlignTextBoth /></RadioButton>
     </RadioGroup>
 
     <Divider />
