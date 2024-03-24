@@ -34,6 +34,7 @@
         />
         <div 
           class="text ProseMirror-static" 
+          :class="{ 'thumbnail': target === 'thumbnail' }"
           :style="{
             '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
           }"
@@ -53,6 +54,7 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 const props = defineProps<{
   elementInfo: PPTTextElement
+  target?: string
 }>()
 
 const shadow = computed(() => props.elementInfo.shadow)
@@ -75,6 +77,10 @@ const { shadowStyle } = useElementShadow(shadow)
 
   .text {
     position: relative;
+
+    &.thumbnail {
+      pointer-events: none;
+    }
   }
 }
 </style>
