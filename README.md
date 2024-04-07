@@ -193,10 +193,6 @@ If you wish to use this project for commercial gain, I hope you will respect ope
 
 
 # 👎👎👎 耻辱柱 🤮🤮🤮
-> 👎爱客易智能科技（上海）有限公司、沃慧科技（上海）有限公司 <br> 
-👎产品：麦当秀 https://www.mindshow.vip/ <br> 
-👎劣迹：被热心朋友举报违反协议，在数月时间内多次邮件提醒/沟通后仍旧无视本开源协议，反让我注意跟他们说话的态度。
-
 > 👎桌案（西安）信息科技有限公司、西安即刻易用网络科技有限公司 <br> 
 👎产品：Drawon桌案 https://drawon.cn/ <br> 
 👎劣迹：发现违反协议后多次通过邮件和社交平台私信尝试联系沟通，但均已读不回，并在产品官网宣称为自主开发。
