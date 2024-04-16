@@ -222,8 +222,8 @@ const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue'
-import { PPTFrameElement } from '@/types/slides'
+import type { PropType } from 'vue'
+import type { PPTFrameElement } from '@/types/slides'
 
 const props = defineProps({
   elementInfo: {
@@ -345,10 +345,15 @@ const updateURL = () => {
 }
 </script>
 ```
+
+
+
 ```html
+<!-- src\views\Editor\Toolbar\ElementStylePanel\index.vue -->
+
 <script lang="ts" setup>
 import FrameStylePanel from './FrameStylePanel.vue'
-  
+
 const panelMap = {
   [ElementTypes.TEXT]: TextStylePanel,
   [ElementTypes.IMAGE]: ImageStylePanel,
