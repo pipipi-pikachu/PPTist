@@ -64,6 +64,7 @@ const handleClick = () => {
     line-height: 24px;
     padding: 0 7px;
     letter-spacing: 0;
+    font-size: 12px;
   }
 
   &.default {

@@ -209,7 +209,7 @@ const startResize = (e: MouseEvent) => {
   justify-content: center;
   align-items: center;
   color: #666;
-  font-size: 12px;
+  font-size: 13px;
   cursor: pointer;
 }
 .content {

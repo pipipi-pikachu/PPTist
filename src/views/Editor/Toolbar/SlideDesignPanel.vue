@@ -281,8 +281,8 @@
           </div>
 
           <div class="btns">
-            <div class="btn" @click="applyPresetThemeToSingleSlide(item)">应用</div>
-            <div class="btn" @click="applyPresetThemeToAllSlides(item)">应用全局</div>
+            <Button type="primary" size="small" @click="applyPresetThemeToSingleSlide(item)">应用</Button>
+            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetThemeToAllSlides(item)">应用全局</Button>
           </div>
         </div>
       </div>
@@ -504,23 +504,6 @@ const updateViewportRatio = (value: number) => {
     background-color: rgba($color: #000, $alpha: .25);
     opacity: 0;
     transition: opacity $transitionDelay;
-  }
-  .btn {
-    width: 72px;
-    padding: 5px 0;
-    text-align: center;
-    background-color: $themeColor;
-    color: #fff;
-    font-size: 12px;
-    border-radius: $borderRadius;
-
-    &:hover {
-      background-color: $themeHoverColor;
-    }
-
-    & + .btn {
-      margin-top: 5px;
-    }
   }
 }
 </style>

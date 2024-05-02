@@ -67,7 +67,7 @@
           @focus="replyNoteId = ''; activeNoteId = ''"
         />
         <div class="footer">
-          <Button class="btn" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()"><IconDelete /></Button>
+          <IconDelete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
           <Button type="primary" class="btn" style="flex: 12" @click="createNote()">添加批注</Button>
         </div>
       </div>
@@ -314,9 +314,20 @@ const close = () => {
     margin-top: 10px;
     display: flex;
 
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      &.icon {
+        font-size: 18px;
+        color: #666;
+        cursor: pointer;
+      }
+    }
+
     .btn + .btn {
       margin-left: 8px;
-      flex-shrink: 0;
     }
   }
 }
