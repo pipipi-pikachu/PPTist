@@ -10,7 +10,7 @@
       visibility: needWaitAnimation ? 'hidden' : 'visible',
     }"
     :title="elementInfo.link?.target || ''"
-    @click="openLink()"
+    @click="$event => openLink($event)"
   >
     <component
       :is="currentElementComponent"
@@ -83,7 +83,12 @@ const needWaitAnimation = computed(() => {
 })
 
 // 打开元素绑定的超链接
-const openLink = () => {
+const openLink = (e: MouseEvent) => {
+  if ((e.target as HTMLElement).tagName === 'A') {
+    props.manualExitFullscreen()
+    return
+  }
+
   const link = props.elementInfo.link
   if (!link) return
 
