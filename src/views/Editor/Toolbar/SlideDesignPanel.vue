@@ -258,6 +258,10 @@
     </template>
 
     <div class="row">
+      <Button style="flex: 1;" @click="themeStylesExtractVisible = true">从幻灯片提取</Button>
+    </div>
+
+    <div class="row">
       <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)">应用主题到全部</Button>
     </div>
 
@@ -288,6 +292,14 @@
       </div>
     </div>
   </div>
+
+  <Modal
+    v-model:visible="themeStylesExtractVisible" 
+    :width="320"
+    @closed="themeStylesExtractVisible = false"
+  >
+    <ThemeStylesExtract @close="themeStylesExtractVisible = false" />
+  </Modal>
 </template>
 
 <script lang="ts" setup>
@@ -301,6 +313,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useSlideTheme from '@/hooks/useSlideTheme'
 import { getImageDataURL } from '@/utils/image'
 
+import ThemeStylesExtract from './ThemeStylesExtract.vue'
 import ColorButton from './common/ColorButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
@@ -310,12 +323,14 @@ import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import NumberInput from '@/components/NumberInput.vue'
+import Modal from '@/components/Modal.vue'
 
 const slidesStore = useSlidesStore()
 const { availableFonts } = storeToRefs(useMainStore())
 const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 
 const moreThemeConfigsVisible = ref(false)
+const themeStylesExtractVisible = ref(false)
 
 const background = computed(() => {
   if (!currentSlide.value.background) {

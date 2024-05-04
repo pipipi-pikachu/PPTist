@@ -55,6 +55,7 @@ npm run dev
 - Rulers
 - Canvas zoom and move
 - Theme settings
+- Extract slides style
 - Speaker notes (rich text)
 - Slide templates
 - Transition animations
