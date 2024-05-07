@@ -70,15 +70,15 @@ export default (
     // 如果目标元素已被选中，同时也是当前操作元素，那么当目标元素在该状态下再次被点击时，将被设置为多选元素中的激活成员
     else if (activeGroupElementId.value !== element.id) {
       const startPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
-      const startPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
+      const startPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY;
 
-      ;(e.target as HTMLElement).onmouseup = (e: MouseEvent) => {
+      (e.target as HTMLElement).onmouseup = (e: MouseEvent) => {
         const currentPageX = e.pageX
         const currentPageY = e.pageY
 
         if (startPageX === currentPageX && startPageY === currentPageY) {
-          mainStore.setActiveGroupElementId(element.id)
-          ;(e.target as HTMLElement).onmouseup = null
+          mainStore.setActiveGroupElementId(element.id);
+          (e.target as HTMLElement).onmouseup = null
         }
       }
     }
