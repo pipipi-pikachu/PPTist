@@ -96,10 +96,20 @@ export default () => {
     
     const reader = new FileReader()
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer, {
-        slideFactor: 75 / 914400,
-        fontsizeFactor: 100 / 98,
-      })
+      let json
+      try {
+        json = await parse(e.target!.result as ArrayBuffer, {
+          slideFactor: 75 / 914400,
+          fontsizeFactor: 100 / 98,
+        })
+      }
+      catch {
+        message.error('无法正确读取 / 解析该文件')
+      }
+      if (!json) {
+        exporting.value = false
+        return
+      }
 
       const width = json.size.width
       const scale = VIEWPORT_SIZE / width
