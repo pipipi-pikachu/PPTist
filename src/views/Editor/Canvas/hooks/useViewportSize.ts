@@ -13,43 +13,27 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
 
   // 初始化画布可视区域的位置
   const initViewportPosition = () => {
+    setViewportPosition(canvasPercentage.value)
+  }
+
+  // 更新画布可视区域的位置
+  const setViewportPosition = (canvasPercentage: number) => {
     if (!canvasRef.value) return
     const canvasWidth = canvasRef.value.clientWidth
     const canvasHeight = canvasRef.value.clientHeight
 
     if (canvasHeight / canvasWidth > viewportRatio.value) {
-      const viewportActualWidth = canvasWidth * (canvasPercentage.value / 100)
-      mainStore.setCanvasScale(viewportActualWidth / VIEWPORT_SIZE)
+      const viewportActualWidth = canvasWidth * (canvasPercentage / 100)
+      mainStore.setCanvasScale(viewportActualWidth / viewPortWidth.value)
       viewportLeft.value = (canvasWidth - viewportActualWidth) / 2
       viewportTop.value = (canvasHeight - viewportActualWidth * viewportRatio.value) / 2
     }
     else {
-      const viewportActualHeight = canvasHeight * (canvasPercentage.value / 100)
-      mainStore.setCanvasScale(viewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
+      const viewportActualHeight = canvasHeight * (canvasPercentage / 100)
+      mainStore.setCanvasScale(viewportActualHeight / (viewPortWidth.value * viewportRatio.value))
       viewportLeft.value = (canvasWidth - viewportActualHeight / viewportRatio.value) / 2
       viewportTop.value = (canvasHeight - viewportActualHeight) / 2
     }
-  }
-
-  // 更新画布可视区域的位置
-  const setViewportPosition = (newValue: number, oldValue: number) => {
-    if (!canvasRef.value) return
-    const canvasWidth = canvasRef.value.clientWidth
-    const canvasHeight = canvasRef.value.clientHeight
-
-    const newViewportActualWidth = canvasWidth * (newValue / 100)
-    const oldViewportActualWidth = canvasWidth * (oldValue / 100)
-    const newViewportActualHeight = canvasHeight * (newValue / 100)
-    const oldViewportActualHeight = canvasHeight * (oldValue / 100)
-
-    if (canvasHeight / canvasWidth > viewportRatio.value) {
-      mainStore.setCanvasScale(newViewportActualWidth / VIEWPORT_SIZE)
-    }
-    else {
-      mainStore.setCanvasScale(newViewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
-    }
-    viewportLeft.value = viewportLeft.value - (newViewportActualWidth - oldViewportActualWidth) / 2
-    viewportTop.value = viewportTop.value - (newViewportActualHeight - oldViewportActualHeight) / 2
   }
 
   // 可视区域缩放或比例变化时，重置/更新可视区域的位置
