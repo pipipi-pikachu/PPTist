@@ -45,6 +45,7 @@
     "tinycolor2": "^1.6.0",
     "tippy.js": "^6.3.7",
     "vue": "^3.3.11",
+    "vue-router": "^4.3.2",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
