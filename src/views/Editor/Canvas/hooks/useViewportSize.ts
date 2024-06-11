@@ -37,19 +37,28 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
     const canvasWidth = canvasRef.value.clientWidth
     const canvasHeight = canvasRef.value.clientHeight
 
-    const newViewportActualWidth = canvasWidth * (newValue / 100)
-    const oldViewportActualWidth = canvasWidth * (oldValue / 100)
-    const newViewportActualHeight = canvasHeight * (newValue / 100)
-    const oldViewportActualHeight = canvasHeight * (oldValue / 100)
+    if (canvasHeight / canvasWidth > viewportRatio.value) {      
+      const newViewportActualWidth = canvasWidth * (newValue / 100)
+      const oldViewportActualWidth = canvasWidth * (oldValue / 100)
+      const newViewportActualHeight = newViewportActualWidth * viewportRatio.value
+      const oldViewportActualHeight = oldViewportActualWidth * viewportRatio.value
 
-    if (canvasHeight / canvasWidth > viewportRatio.value) {
       mainStore.setCanvasScale(newViewportActualWidth / VIEWPORT_SIZE)
+
+      viewportLeft.value = viewportLeft.value - (newViewportActualWidth - oldViewportActualWidth) / 2
+      viewportTop.value = viewportTop.value - (newViewportActualHeight - oldViewportActualHeight) / 2
     }
     else {
+      const newViewportActualHeight = canvasHeight * (newValue / 100)
+      const oldViewportActualHeight = canvasHeight * (oldValue / 100)
+      const newViewportActualWidth = newViewportActualHeight / viewportRatio.value
+      const oldViewportActualWidth = oldViewportActualHeight / viewportRatio.value
+
       mainStore.setCanvasScale(newViewportActualHeight / (VIEWPORT_SIZE * viewportRatio.value))
+
+      viewportLeft.value = viewportLeft.value - (newViewportActualWidth - oldViewportActualWidth) / 2
+      viewportTop.value = viewportTop.value - (newViewportActualHeight - oldViewportActualHeight) / 2
     }
-    viewportLeft.value = viewportLeft.value - (newViewportActualWidth - oldViewportActualWidth) / 2
-    viewportTop.value = viewportTop.value - (newViewportActualHeight - oldViewportActualHeight) / 2
   }
 
   // 可视区域缩放或比例变化时，重置/更新可视区域的位置
