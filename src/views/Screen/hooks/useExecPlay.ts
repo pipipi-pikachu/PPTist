@@ -70,6 +70,14 @@ export default () => {
     }
   }
 
+  onMounted(() => {
+    const firstAnimations = formatedAnimations.value[0]
+    if (firstAnimations && firstAnimations.animations.length) {
+      const autoExecFirstAnimations = firstAnimations.animations.every(item => item.trigger === 'auto' || item.trigger === 'meantime')
+      if (autoExecFirstAnimations) runAnimation()
+    }
+  })
+
   // 撤销元素动画，除了将索引前移外，还需要清除动画状态
   const revokeAnimation = () => {
     animationIndex.value -= 1
