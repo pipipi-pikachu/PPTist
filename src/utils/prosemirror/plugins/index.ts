@@ -1,6 +1,5 @@
 import { keymap } from 'prosemirror-keymap'
 import type { Schema } from 'prosemirror-model'
-import { history } from 'prosemirror-history'
 import { baseKeymap } from 'prosemirror-commands'
 import { dropCursor } from 'prosemirror-dropcursor'
 import { gapCursor } from 'prosemirror-gapcursor'
@@ -21,8 +20,7 @@ export const buildPlugins = (schema: Schema, options?: PluginOptions) => {
     keymap(buildKeymap(schema)),
     keymap(baseKeymap),
     dropCursor(),
-    gapCursor(),
-    history(),
+    gapCursor()
   ]
 
   if (placeholder) plugins.push(placeholderPlugin(placeholder))
