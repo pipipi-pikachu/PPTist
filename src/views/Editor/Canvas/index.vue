@@ -85,7 +85,7 @@
 
     <div class="drag-mask" v-if="spaceKeyState"></div>
 
-    <Ruler :viewportStyles="viewportStyles" v-if="showRuler" />
+    <Ruler :viewportStyles="viewportStyles" :elementList="elementList" v-if="showRuler" />
 
     <Modal
       v-model:visible="linkDialogVisible" 
