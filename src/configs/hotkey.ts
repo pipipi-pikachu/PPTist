@@ -93,6 +93,7 @@ export const HOTKEY_DOC = [
     type: '表格编辑',
     children: [
       { label: '聚焦到下一个单元格', value: 'Tab' },
+      { label: '移动焦点单元格', value: '↑ / ← / ↓ / →' },
       { label: '在上方插入一行', value: 'Ctrl + ↑' },
       { label: '在下方插入一行', value: 'Ctrl + ↓' },
       { label: '在左侧插入一列', value: 'Ctrl + ←' },

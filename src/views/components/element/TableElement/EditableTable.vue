@@ -429,6 +429,13 @@ const clearSelectedCellText = () => {
   tableCells.value = _tableCells
 }
 
+const focusActiveCell = () => {
+  nextTick(() => {
+    const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
+    if (textRef) textRef.focus()
+  })
+}
+
 // 将焦点移动到下一个单元格
 // 当前行右边有单元格时，焦点右移
 // 当前行右边无单元格（已处在行末），且存在下一行时，焦点移动至下一行行首
@@ -454,10 +461,86 @@ const tabActiveCell = () => {
   else startCell.value = nextCell
 
   // 移动焦点后自动聚焦文本
-  nextTick(() => {
-    const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
-    if (textRef) textRef.focus()
-  })
+  focusActiveCell()
+}
+
+// 移动焦点（上下左右）
+const moveActiveCell = (dir: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
+  const rowIndex = +selectedCells.value[0].split('_')[0]
+  const colIndex = +selectedCells.value[0].split('_')[1]
+
+  const rowLen = tableCells.value.length
+  const colLen = tableCells.value[0].length
+
+  const getEffectivePos = (pos: [number, number]): [number, number] => {
+    if (pos[0] < 0 || pos[1] < 0 || pos[0] > rowLen - 1 || pos[1] > colLen - 1) return [0, 0]
+
+    const p = `${pos[0]}_${pos[1]}`
+    if (!hideCells.value.includes(p)) return pos
+
+    if (dir === 'UP') {
+      return getEffectivePos([pos[0], pos[1] - 1])
+    }
+    if (dir === 'DOWN') {
+      return getEffectivePos([pos[0], pos[1] - 1])
+    }
+    if (dir === 'LEFT') {
+      return getEffectivePos([pos[0] - 1, pos[1]])
+    }
+    if (dir === 'RIGHT') {
+      return getEffectivePos([pos[0] - 1, pos[1]])
+    }
+
+    return [0, 0]
+  }
+
+  if (dir === 'UP') {
+    const _rowIndex = rowIndex - 1
+    if (_rowIndex < 0) return
+    endCell.value = []
+    startCell.value = getEffectivePos([_rowIndex, colIndex])
+  }
+  else if (dir === 'DOWN') {
+    const _rowIndex = rowIndex + 1
+    if (_rowIndex > rowLen - 1) return
+    endCell.value = []
+    startCell.value = getEffectivePos([_rowIndex, colIndex])
+  }
+  else if (dir === 'LEFT') {
+    const _colIndex = colIndex - 1
+    if (_colIndex < 0) return
+    endCell.value = []
+    startCell.value = getEffectivePos([rowIndex, _colIndex])
+  }
+  else if (dir === 'RIGHT') {
+    const _colIndex = colIndex + 1
+    if (_colIndex > colLen - 1) return
+    endCell.value = []
+    startCell.value = getEffectivePos([rowIndex, _colIndex])
+  }
+
+  focusActiveCell()
+}
+
+// 获取光标位置
+const getCaretPosition = (element: HTMLDivElement) => {
+  const selection = window.getSelection()
+  if (selection && selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0)
+
+    const preCaretRange = range.cloneRange()
+    preCaretRange.selectNodeContents(element)
+
+    preCaretRange.setEnd(range.startContainer, range.startOffset)
+    const start = preCaretRange.toString().length
+    preCaretRange.setEnd(range.endContainer, range.endOffset)
+    const end = preCaretRange.toString().length
+
+    const len = element.textContent?.length || 0
+
+    return { start, end, len }
+  }
+  return null
 }
 
 // 表格快捷键监听
@@ -470,25 +553,49 @@ const keydownListener = (e: KeyboardEvent) => {
       e.preventDefault()
       tabActiveCell()
     }
-    if (e.ctrlKey && key === KEYS.UP) {
+    else if (e.ctrlKey && key === KEYS.UP) {
       e.preventDefault()
       const rowIndex = +selectedCells.value[0].split('_')[0]
       insertRow(rowIndex)
     }
-    if (e.ctrlKey && key === KEYS.DOWN) {
+    else if (e.ctrlKey && key === KEYS.DOWN) {
       e.preventDefault()
       const rowIndex = +selectedCells.value[0].split('_')[0]
       insertRow(rowIndex + 1)
     }
-    if (e.ctrlKey && key === KEYS.LEFT) {
+    else if (e.ctrlKey && key === KEYS.LEFT) {
       e.preventDefault()
       const colIndex = +selectedCells.value[0].split('_')[1]
       insertCol(colIndex)
     }
-    if (e.ctrlKey && key === KEYS.RIGHT) {
+    else if (e.ctrlKey && key === KEYS.RIGHT) {
       e.preventDefault()
       const colIndex = +selectedCells.value[0].split('_')[1]
       insertCol(colIndex + 1)
+    }
+    else if (key === KEYS.UP) {
+      const range = getCaretPosition(e.target as HTMLDivElement)
+      if (range && range.start === range.end && range.start === 0) {
+        moveActiveCell('UP')
+      }
+    }
+    else if (key === KEYS.DOWN) {
+      const range = getCaretPosition(e.target as HTMLDivElement)
+      if (range && range.start === range.end && range.start === range.len) {
+        moveActiveCell('DOWN')
+      }
+    }
+    else if (key === KEYS.LEFT) {
+      const range = getCaretPosition(e.target as HTMLDivElement)
+      if (range && range.start === range.end && range.start === 0) {
+        moveActiveCell('LEFT')
+      }
+    }
+    else if (key === KEYS.RIGHT) {
+      const range = getCaretPosition(e.target as HTMLDivElement)
+      if (range && range.start === range.end && range.start === range.len) {
+        moveActiveCell('RIGHT')
+      }
     }
   }
   else if (key === KEYS.DELETE) {
