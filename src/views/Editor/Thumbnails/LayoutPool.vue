@@ -44,13 +44,13 @@ const insertTemplate = (slide: Slide) => {
 }
 .header {
   height: 40px;
-  margin: -10px -10px 8px -10px;
-  padding: 10px 12px 0 12px;
+  margin: -10px -10px 10px;
+  padding: 10px 12px 0;
   background-color: $lightGray;
   border-bottom: 1px solid $borderColor;
 }
 .list {
-  height: calc(100% - 40px);
+  height: calc(100% - 50px);
   padding: 2px;
   margin-right: -10px;
   padding-right: 10px;
