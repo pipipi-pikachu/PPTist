@@ -2,16 +2,21 @@
 
 
 # 🎨 PPTist
-> 一个基于 Vue3.x + TypeScript 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，每一种元素都拥有高度可编辑能力，同时支持丰富的快捷键和右键菜单，力求还原桌面应用级体验。支持导出本地 PPTX 文件，支持移动端基础编辑和预览。您可以在此基础上搭建自己的在线幻灯片应用。
+> PowerPoint-ist（/'pauəpɔintist/），一个基于 Web 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，可以在 Web 浏览器中编辑/演示幻灯片。
 
 <b>在线体验地址👉：[https://pipipi-pikachu.github.io/PPTist/](https://pipipi-pikachu.github.io/PPTist/)</b>
+
+# ✨ 项目特色
+1. 易开发：基于 Vue3.x + TypeScript 构建，不依赖UI组件库，尽量避免第三方组件，样式定制更轻松、功能扩展更方便。
+2. 易使用：随处可用的右键菜单、几十种快捷键、无数次编辑细节优化，力求还原桌面应用级体验。
+3. 功能丰富：支持 PPT 中的大部分常用元素和功能，支持多种格式导出、支持移动端基础编辑和预览...
 
 
 # 👀 前排提示
 1. 本项目是一个 “Web 幻灯片应用” ，而不是 “低代码平台”、“H5 编辑器”、“图片编辑器” 、“白板应用”等。
 2. 本项目的目标受众是<b>有【Web 幻灯片】开发需求的开发者</b>，提供的链接只是一个演示地址，不提供任何在线服务。你不应该直接将本项目作为工具使用，也不支持一键部署。
 如果你只是需要一个服务或工具，可以选择更优秀和成熟的产品，例如：[石墨文档](https://shimo.im/)、[金山文档](https://www.kdocs.cn/)、[Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/) 等。
-3. 本项目是基于 DOM 的渲染方案，优点是简单易上手。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
+3. 本项目是基于 DOM 的渲染方案，优点是上手简单易扩展。但是相比 Canvas 渲染的方案，在复杂场景下性能会存在一定的差距，所以如果你对性能有较高的要求，本项目可能不是一个好的选择/参考方向。
 4. 这里总结了一些[常见问题](/doc/Q&A.md)，第一次提 Issues 和 PR 时，务必提前阅读此文档。
 
 
@@ -154,6 +159,10 @@ npm run dev
 - [画布与元素的基本原理](/doc/Canvas.md)
 - [如何自定义一个元素](/doc/CustomElement.md)
 
+下面是一些辅助开发的工具/仓库：
+- 导入PPTX文件参考：[pptxtojson](https://github.com/pipipi-pikachu/pptxtojson)
+- 绘制形状：[svgPathCreator](https://github.com/pipipi-pikachu/svgPathCreator)
+
 
 # 📄 版权声明/开源协议
 [AGPL-3.0 License](/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
@@ -167,6 +176,7 @@ npm run dev
         - 你的代码被本项目作为依赖引用；
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你长期参与到本项目的维护工作中；
+    3. 联系作者付费授权。
 
 
 # 👎👎👎 耻辱柱 🤮🤮🤮
