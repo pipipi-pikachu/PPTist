@@ -224,13 +224,13 @@ const changeShape = (shape: ShapePoolItem) => {
     const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
     if ('editable' in pathFormula) {
       props.path = pathFormula.formula(width, height, pathFormula.defaultValue)
-      props.keypoint = pathFormula.defaultValue
+      props.keypoints = pathFormula.defaultValue
     }
     else props.path = pathFormula.formula(width, height)
   }
   else {
     props.pathFormula = undefined
-    props.keypoint = undefined
+    props.keypoints = undefined
   }
   updateElement(props)
 }

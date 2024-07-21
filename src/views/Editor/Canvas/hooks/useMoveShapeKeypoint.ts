@@ -20,7 +20,7 @@ export default (
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
-  const moveShapeKeypoint = (e: MouseEvent | TouchEvent, element: PPTShapeElement) => {
+  const moveShapeKeypoint = (e: MouseEvent | TouchEvent, element: PPTShapeElement, index = 0) => {
     const isTouchEvent = !(e instanceof MouseEvent)
     if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
 
@@ -29,13 +29,19 @@ export default (
     const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
     const startPageY = isTouchEvent ? e.changedTouches[0].pageY : e.pageY
 
+    const originKeypoints = element.keypoints!
+
     const pathFormula = SHAPE_PATH_FORMULAS[element.pathFormula!]
     let shapePathData: ShapePathData | null = null
-    if ('editable' in pathFormula) {
-      const baseSize = pathFormula.getBaseSize(element.width, element.height)
-      const originPos = baseSize * element.keypoint!
-      const [min, max] = pathFormula.range
-      const relative = pathFormula.relative
+    if ('editable' in pathFormula && pathFormula.editable) {
+      const getBaseSize = pathFormula.getBaseSize![index]
+      const range = pathFormula.range![index]
+      const relative = pathFormula.relative![index]
+      const keypoint = originKeypoints[index]
+
+      const baseSize = getBaseSize(element.width, element.height)
+      const originPos = baseSize * keypoint
+      const [min, max] = range
 
       shapePathData = { baseSize, originPos, min, max, relative }
     }
@@ -55,19 +61,30 @@ export default (
 
           let keypoint = 0
 
-          if (relative === 'left') keypoint = (originPos + moveX) / baseSize
-          if (relative === 'right') keypoint = (originPos - moveX) / baseSize
           if (relative === 'center') keypoint = (originPos - moveX * 2) / baseSize
-          if (relative === 'top') keypoint = (originPos + moveY) / baseSize
-          if (relative === 'bottom') keypoint = (originPos - moveY) / baseSize
+          else if (relative === 'left') keypoint = (originPos + moveX) / baseSize
+          else if (relative === 'right') keypoint = (originPos - moveX) / baseSize
+          else if (relative === 'top') keypoint = (originPos + moveY) / baseSize
+          else if (relative === 'bottom') keypoint = (originPos - moveY) / baseSize
+          else if (relative === 'left_bottom') keypoint = (originPos + moveX) / baseSize
+          else if (relative === 'right_bottom') keypoint = (originPos - moveX) / baseSize
+          else if (relative === 'top_right') keypoint = (originPos + moveY) / baseSize
+          else if (relative === 'bottom_right') keypoint = (originPos - moveY) / baseSize
 
           if (keypoint < min) keypoint = min
           if (keypoint > max) keypoint = max
 
+          let keypoints: number[] = []
+          if (Array.isArray(originKeypoints)) {
+            keypoints = [...originKeypoints]
+            keypoints[index] = keypoint
+          }
+          else keypoints = [keypoint]
+
           return {
             ...el,
-            keypoint,
-            path: pathFormula.formula(shapeElement.width, shapeElement.height, keypoint),
+            keypoints,
+            path: pathFormula.formula(shapeElement.width, shapeElement.height, keypoints),
           }
         }
         return el

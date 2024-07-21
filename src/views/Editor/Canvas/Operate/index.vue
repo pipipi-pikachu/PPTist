@@ -69,7 +69,7 @@ const props = defineProps<{
   rotateElement: (e: MouseEvent, element: Exclude<PPTElement, PPTChartElement | PPTLineElement | PPTVideoElement | PPTAudioElement>) => void
   scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
   dragLineElement: (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void
-  moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void
+  moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement, index: number) => void
   openLinkDialog: () => void
 }>()
 

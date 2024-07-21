@@ -405,7 +405,7 @@ export default (
           const pathFormula = SHAPE_PATH_FORMULAS[el.pathFormula]
 
           let path = ''
-          if ('editable' in pathFormula) path = pathFormula.formula(width, height, el.keypoint!)
+          if ('editable' in pathFormula) path = pathFormula.formula(width, height, el.keypoints!)
           else path = pathFormula.formula(width, height)
 
           return {

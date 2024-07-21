@@ -24,9 +24,10 @@
       />
       <div 
         class="operate-keypoint-handler" 
-        v-if="elementInfo.keypoint !== undefined"
-        :style="keypointStyle"
-        @mousedown.stop="$event => moveShapeKeypoint($event, elementInfo)"
+        v-for="(keypoint, index) in keypoints"
+        :key="index"
+        :style="keypoint.styles"
+        @mousedown.stop="$event => moveShapeKeypoint($event, elementInfo, index)"
       ></div>
     </template>
   </div>
@@ -39,7 +40,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, type CSSProperties } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import type { PPTShapeElement } from '@/types/slides'
@@ -56,7 +57,7 @@ const props = defineProps<{
   handlerVisible: boolean
   rotateElement: (e: MouseEvent, element: PPTShapeElement) => void
   scaleElement: (e: MouseEvent, element: PPTShapeElement, command: OperateResizeHandlers) => void
-  moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement) => void
+  moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement, index: number) => void
 }>()
 
 const { canvasScale } = storeToRefs(useMainStore())
@@ -65,19 +66,31 @@ const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 const { resizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
 
-const keypointStyle = computed(() => {
-  if (!props.elementInfo.pathFormula || props.elementInfo.keypoint === undefined) return {}
-
+const keypoints = computed(() => {
+  if (!props.elementInfo.pathFormula || props.elementInfo.keypoints === undefined) return []
   const pathFormula = SHAPE_PATH_FORMULAS[props.elementInfo.pathFormula]
-  if ('editable' in pathFormula) {
-    const keypointPos = pathFormula.getBaseSize(props.elementInfo.width, props.elementInfo.height) * props.elementInfo.keypoint
-    if (pathFormula.relative === 'left') return { left: keypointPos * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'right') return { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'center') return { left: (props.elementInfo.width - keypointPos) / 2 * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'top') return { top: keypointPos * canvasScale.value + 'px' }
-    if (pathFormula.relative === 'bottom') return { top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' }
-  }
-  return {}
+
+  return props.elementInfo.keypoints.map((keypoint, index) => {
+    const getBaseSize = pathFormula.getBaseSize![index]
+    const relative = pathFormula.relative![index]
+    const keypointPos = getBaseSize(props.elementInfo.width, props.elementInfo.height) * keypoint
+
+    let styles: CSSProperties = {}
+    if (relative === 'left') styles = { left: keypointPos * canvasScale.value + 'px' }
+    else if (relative === 'right') styles = { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px' }
+    else if (relative === 'center') styles = { left: (props.elementInfo.width - keypointPos) / 2 * canvasScale.value + 'px' }
+    else if (relative === 'top') styles = { top: keypointPos * canvasScale.value + 'px' }
+    else if (relative === 'bottom') styles = { top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' }
+    else if (relative === 'left_bottom') styles = { left: keypointPos * canvasScale.value + 'px', top: props.elementInfo.height * canvasScale.value + 'px' }
+    else if (relative === 'right_bottom') styles = { left: (props.elementInfo.width - keypointPos) * canvasScale.value + 'px', top: props.elementInfo.height * canvasScale.value + 'px' }
+    else if (relative === 'top_right') styles = { left: props.elementInfo.width * canvasScale.value + 'px', top: keypointPos * canvasScale.value + 'px' }
+    else if (relative === 'bottom_right') styles = { left: props.elementInfo.width * canvasScale.value + 'px', top: (props.elementInfo.height - keypointPos) * canvasScale.value + 'px' }
+
+    return {
+      keypoint,
+      styles,
+    }
+  })
 })
 </script>
 

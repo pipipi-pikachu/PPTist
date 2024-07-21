@@ -319,7 +319,7 @@ export interface ShapeText {
  * 一般情况下，形状的大小变化时仅由宽高基于 viewBox 的缩放比例来调整形状，而 viewBox 本身和 path 不会变化，
  * 但也有一些形状希望能更精确的控制一些关键点的位置，此时就需要提供路径计算公式，通过在缩放时更新 viewBox 并重新计算 path 来重新绘制形状
  * 
- * keypoint?: 关键点位置百分比
+ * keypoints?: 关键点位置百分比
  */
 export interface PPTShapeElement extends PPTBaseElement {
   type: 'shape'
@@ -336,7 +336,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   special?: boolean
   text?: ShapeText
   pathFormula?: ShapePathFormulasKeys
-  keypoint?: number
+  keypoints?: number[]
 }
 
 
