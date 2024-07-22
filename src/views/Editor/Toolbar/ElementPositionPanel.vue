@@ -188,7 +188,7 @@ const updateShapePathData = (width: number, height: number) => {
     const pathFormula = SHAPE_PATH_FORMULAS[handleElement.value.pathFormula]
 
     let path = ''
-    if ('editable' in pathFormula) path = pathFormula.formula(width, height, handleElement.value.keypoint!)
+    if ('editable' in pathFormula && pathFormula.editable) path = pathFormula.formula(width, height, handleElement.value.keypoints!)
     else path = pathFormula.formula(width, height)
 
     return {

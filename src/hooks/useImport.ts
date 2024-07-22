@@ -267,9 +267,9 @@ export default () => {
                     element.viewBox = [el.width, el.height]
     
                     const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
-                    if ('editable' in pathFormula) {
+                    if ('editable' in pathFormula && pathFormula.editable) {
                       element.path = pathFormula.formula(el.width, el.height, pathFormula.defaultValue)
-                      element.keypoint = pathFormula.defaultValue
+                      element.keypoints = pathFormula.defaultValue
                     }
                     else element.path = pathFormula.formula(el.width, el.height)
                   }
