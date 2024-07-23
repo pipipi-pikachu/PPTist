@@ -214,6 +214,11 @@ export const getLineElementPath = (element: PPTLineElement) => {
     const mid = element.broken.join(',')
     return `M${start} L${mid} L${end}`
   }
+  else if (element.broken2) {
+    const { minX, maxX, minY, maxY } = getElementRange(element)
+    if (maxX - minX >= maxY - minY) return `M${start} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${end}`
+    return `M${start} L${element.start[0]},${element.broken2[1]} L${element.end[0]},${element.broken2[1]} ${end}`
+  }
   else if (element.curve) {
     const mid = element.curve.join(',')
     return `M${start} Q${mid} ${end}`

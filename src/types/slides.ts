@@ -361,6 +361,8 @@ export type LinePoint = '' | 'arrow' | 'dot'
  * 
  * broken?: 折线控制点位置（[x, y]）
  * 
+ * broken2?: 双折线控制点位置（[x, y]）
+ * 
  * curve?: 二次曲线控制点位置（[x, y]）
  * 
  * cubic?: 三次曲线控制点位置（[[x1, y1], [x2, y2]]）
@@ -374,6 +376,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
   points: [LinePoint, LinePoint]
   shadow?: PPTElementShadow
   broken?: [number, number]
+  broken2?: [number, number]
   curve?: [number, number]
   cubic?: [[number, number], [number, number]]
 }

@@ -79,7 +79,7 @@ export default (elementList: Ref<PPTElement[]>) => {
       let endX = element.left + element.end[0]
       let endY = element.top + element.end[1]
 
-      const mid = element.broken || element.curve || [0, 0]
+      const mid = element.broken || element.broken2 || element.curve || [0, 0]
       let midX = element.left + mid[0]
       let midY = element.top + mid[1]
 
@@ -192,10 +192,15 @@ export default (elementList: Ref<PPTElement[]>) => {
               if (element.curve) newEl.curve = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
               if (element.cubic) newEl.cubic = [[(start[0] + end[0]) / 2, (start[1] + end[1]) / 2], [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]]
             }
+            if (element.broken2) newEl.broken2 = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
           }
           else if (command === OperateLineHandlers.C) {
             if (element.broken) newEl.broken = [midX - minX, midY - minY]
             if (element.curve) newEl.curve = [midX - minX, midY - minY]
+            if (element.broken2) {
+              if (maxX - minX >= maxY - minY) newEl.broken2 = [midX - minX, newEl.broken2![1]]
+              else newEl.broken2 = [newEl.broken2![0], midY - minY]
+            }
           }
           else {
             if (element.cubic) newEl.cubic = [[c1X - minX, c1Y - minY], [c2X - minX, c2Y - minY]]

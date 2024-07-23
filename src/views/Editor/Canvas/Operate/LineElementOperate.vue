@@ -77,8 +77,8 @@ const resizeHandlers = computed(() => {
     },
   ]
 
-  if (props.elementInfo.curve || props.elementInfo.broken) {
-    const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken) as [number, number]
+  if (props.elementInfo.curve || props.elementInfo.broken || props.elementInfo.broken2) {
+    const ctrlHandler = (props.elementInfo.curve || props.elementInfo.broken || props.elementInfo.broken2) as [number, number]
 
     handlers.push({
       handler: OperateLineHandlers.C,

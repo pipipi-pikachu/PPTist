@@ -120,6 +120,7 @@ npm run dev
 - Shape format painter
 - Edit text (supports rich text, similar to text element’s rich text editing)
 #### Lines
+- Straight lines, polylines, curves
 - Color
 - Width
 - Style
