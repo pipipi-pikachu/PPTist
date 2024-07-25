@@ -38,6 +38,8 @@
         >
           <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
           <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+
+          <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
         </div>
       </template>
     </Draggable>
@@ -180,6 +182,11 @@ const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
   sortSlides(newIndex, oldIndex)
 }
 
+// 打开批注面板
+const openNotesPanel = () => {
+  mainStore.setNotesPanelState(true)
+}
+
 const { enterScreening, enterScreeningFromStart } = useScreening()
 
 const contextmenusThumbnails = (): ContextmenuItem[] => {
@@ -309,6 +316,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   justify-content: center;
   align-items: center;
   padding: 5px 0;
+  position: relative;
 
   .thumbnail {
     outline: 2px solid rgba($color: $themeColor, $alpha: .15);
@@ -325,6 +333,32 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   &.selected {
     .thumbnail {
       outline-color: $themeColor;
+    }
+  }
+
+  .note-flag {
+    width: 18px;
+    height: 14px;
+    border-radius: 2px;
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    font-size: 8px;
+    background-color: $themeColor;
+    color: #fff;
+    text-align: center;
+    line-height: 14px;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 13px;
+      left: 5px;
+      border: 4px solid transparent;
+      border-top-color: $themeColor;
     }
   }
 }

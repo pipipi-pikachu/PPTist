@@ -76,7 +76,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -97,6 +97,11 @@ const notes = computed(() => currentSlide.value?.notes || [])
 const activeNoteId = ref('')
 const replyNoteId = ref('')
 const textAreaRef = ref<InstanceType<typeof TextArea>>()
+
+watch(slideIndex, () => {
+  activeNoteId.value = ''
+  replyNoteId.value = ''
+})
 
 const createNote = () => {
   if (!content.value) {
