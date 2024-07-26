@@ -91,7 +91,7 @@
               <div style="width: 35%;">触发方式：</div>
               <Select
                 :value="element.trigger"
-                @update:value="value => updateElementAnimationTrigger(element.id, value as 'click' | 'meantime' | 'auto')"
+                @update:value="value => updateElementAnimationTrigger(element.id, value as AnimationTrigger)"
                 style="width: 65%;"
                 :options="[
                   { label: '主动触发', value: 'click' },
@@ -122,7 +122,7 @@ import { computed, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTAnimation } from '@/types/slides'
+import type { AnimationTrigger, AnimationType, PPTAnimation } from '@/types/slides'
 import { 
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
@@ -159,7 +159,6 @@ for (const effect of ATTENTION_ANIMATIONS) {
   }
 }
 
-type AnimationType = 'in' | 'out' | 'attention'
 interface TabItem {
   key: AnimationType
   label: string
@@ -280,7 +279,7 @@ const updateElementAnimationDuration = (id: string, duration: number) => {
 }
 
 // 修改触发方式
-const updateElementAnimationTrigger = (id: string, trigger: 'click' | 'meantime' | 'auto') => {
+const updateElementAnimationTrigger = (id: string, trigger: AnimationTrigger) => {
   const animations = currentSlideAnimations.value.map(item => {
     if (item.id === id) return { ...item, trigger }
     return item

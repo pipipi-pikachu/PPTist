@@ -604,6 +604,8 @@ export interface PPTAudioElement extends PPTBaseElement {
 
 export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PPTLineElement | PPTChartElement | PPTTableElement | PPTLatexElement | PPTVideoElement | PPTAudioElement
 
+export type AnimationType = 'in' | 'out' | 'attention'
+export type AnimationTrigger = 'click' | 'meantime' | 'auto'
 
 /**
  * 元素动画
@@ -624,9 +626,9 @@ export interface PPTAnimation {
   id: string
   elId: string
   effect: string
-  type: 'in' | 'out' | 'attention'
+  type: AnimationType
   duration: number
-  trigger: 'click' | 'meantime' | 'auto'
+  trigger: AnimationTrigger
 }
 
 /**
