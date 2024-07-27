@@ -369,14 +369,14 @@ const removeLink = () => {
   height: 12px;
   position: relative;
   font-size: 12px;
-  top: -5px;
+  top: -3px;
 
   span {
     width: 100%;
     height: 2px;
     display: inline-block;
     position: absolute;
-    top: 10px;
+    top: 8px;
     background-color: #666;
   }
 }

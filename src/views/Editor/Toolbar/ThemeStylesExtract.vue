@@ -62,7 +62,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn" type="primary" @click="updateAllThemes()">配置到主题</Button>
+      <Button class="btn" type="primary" @click="updateAllThemes()">将选中配置保存为主题</Button>
     </div>
   </div>
 </template>
