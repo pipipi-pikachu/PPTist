@@ -26,20 +26,38 @@
       itemKey="id"
     >
       <template #item="{ element, index }">
-        <div
-          class="thumbnail-item"
-          :class="{
-            'active': slideIndex === index,
-            'selected': selectedSlidesIndex.includes(index),
-          }"
-          @mousedown="$event => handleClickSlideThumbnail($event, index)"
-          @dblclick="enterScreening()"
-          v-contextmenu="contextmenusThumbnailItem"
-        >
-          <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
-          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
-
-          <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
+        <div class="thumbnail-container">
+          <div class="section-title"
+            :data-section-id="element?.sectionTag?.id || ''"
+            v-if="element.sectionTag || (hasSection && index === 0)" 
+            v-contextmenu="contextmenusSection"
+          >
+            <input 
+              :id="`section-title-input-${element?.sectionTag?.id || 'default'}`" 
+              type="text"
+              :value="element?.sectionTag?.title || ''"
+              placeholder="输入节名称"
+              @blur="$event => saveSection($event)"
+              @keydown.enter.stop="$event => saveSection($event)"
+              v-if="editingSectionId === element?.sectionTag?.id || (index === 0 && editingSectionId === 'default')"
+            >
+            <span class="text" v-else>{{ element?.sectionTag ? (element?.sectionTag?.title || '无标题节') : '默认节' }}</span>
+          </div>
+          <div
+            class="thumbnail-item"
+            :class="{
+              'active': slideIndex === index,
+              'selected': selectedSlidesIndex.includes(index),
+            }"
+            @mousedown="$event => handleClickSlideThumbnail($event, index)"
+            @dblclick="enterScreening()"
+            v-contextmenu="contextmenusThumbnailItem"
+          >
+            <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
+            <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+  
+            <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
+          </div>
         </div>
       </template>
     </Draggable>
@@ -68,7 +86,7 @@ const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const keyboardStore = useKeyboardStore()
 const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
-const { slides, slideIndex } = storeToRefs(slidesStore)
+const { slides, slideIndex, currentSlide } = storeToRefs(slidesStore)
 const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
 
 const { slidesLoadLimit } = useLoadSlides()
@@ -76,6 +94,10 @@ const { slidesLoadLimit } = useLoadSlides()
 const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
 const presetLayoutPopoverVisible = ref(false)
+
+const hasSection = computed(() => {
+  return slides.value.some(item => item.sectionTag)
+})
 
 const {
   copySlide,
@@ -87,6 +109,11 @@ const {
   cutSlide,
   selectAllSlide,
   sortSlides,
+  createSection,
+  removeSection,
+  removeAllSection,
+  removeSectionSlides,
+  updateSectionTitle,
 } = useSlideHandler()
 
 // 页面被切换时
@@ -187,6 +214,49 @@ const openNotesPanel = () => {
   mainStore.setNotesPanelState(true)
 }
 
+const editingSectionId = ref('')
+
+const editSection = (id: string) => {
+  mainStore.setDisableHotkeysState(true)
+  editingSectionId.value = id || 'default'
+
+  nextTick(() => {
+    const inputRef = document.querySelector(`#section-title-input-${id || 'default'}`) as HTMLInputElement
+    inputRef.focus()
+  })
+}
+
+const saveSection = (e: FocusEvent | KeyboardEvent) => {
+  const title = (e.target as HTMLInputElement).value
+  updateSectionTitle(editingSectionId.value, title)
+
+  editingSectionId.value = ''
+  mainStore.setDisableHotkeysState(false)
+}
+
+const contextmenusSection = (el: HTMLElement): ContextmenuItem[] => {
+  const sectionId = el.dataset.sectionId!
+
+  return [
+    {
+      text: '删除节',
+      handler: () => removeSection(sectionId),
+    },
+    {
+      text: '删除节和幻灯片',
+      handler: () => removeSectionSlides(sectionId),
+    },
+    {
+      text: '删除所有节',
+      handler: removeAllSection,
+    },
+    {
+      text: '重命名节',
+      handler: () => editSection(sectionId),
+    },
+  ]
+}
+
 const { enterScreening, enterScreeningFromStart } = useScreening()
 
 const contextmenusThumbnails = (): ContextmenuItem[] => {
@@ -251,6 +321,11 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       text: '删除页面',
       subText: 'Delete',
       handler: () => deleteSlide(),
+    },
+    {
+      text: '增加节',
+      handler: createSection,
+      disable: !!currentSlide.value.sectionTag,
     },
     { divider: true },
     {
@@ -334,20 +409,27 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     .thumbnail {
       outline-color: $themeColor;
     }
+    .note-flag {
+      background-color: $themeColor;
+
+      &::after {
+        border-top-color: $themeColor;
+      }
+    }
   }
 
   .note-flag {
-    width: 18px;
-    height: 14px;
-    border-radius: 2px;
+    width: 16px;
+    height: 12px;
+    border-radius: 1px;
     position: absolute;
-    left: 7px;
-    top: 10px;
+    left: 8px;
+    top: 13px;
     font-size: 8px;
-    background-color: $themeColor;
+    background-color: rgba($color: $themeColor, $alpha: .75);
     color: #fff;
     text-align: center;
-    line-height: 14px;
+    line-height: 12px;
     cursor: pointer;
 
     &::after {
@@ -355,10 +437,10 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       width: 0;
       height: 0;
       position: absolute;
-      top: 13px;
-      left: 5px;
+      top: 10px;
+      left: 4px;
       border: 4px solid transparent;
-      border-top-color: $themeColor;
+      border-top-color: rgba($color: $themeColor, $alpha: .75);
     }
   }
 }
@@ -384,5 +466,48 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   line-height: 40px;
   text-align: center;
   color: #666;
+}
+.section-title {
+  height: 26px;
+  font-size: 12px;
+  padding: 6px 8px 2px 18px;
+  color: #555;
+
+  &.contextmenu-active {
+    color: $themeColor;
+
+    .text::before {
+      border-bottom-color: $themeColor;
+      border-right-color: $themeColor;
+    }
+  }
+
+  .text {
+    width: 100%;
+    display: inline-block;
+    display: flex;
+    align-items: center;
+    position: relative;
+    @include ellipsis-oneline();
+
+    &::before {
+      content: '';
+      width: 0;
+      height: 0;
+      border-top: 3px solid transparent;
+      border-left: 3px solid transparent;
+      border-bottom: 3px solid #555;
+      border-right: 3px solid #555;
+      margin-right: 5px;
+    }
+  }
+
+  input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    padding: 0;
+    font-size: 12px;
+  }
 }
 </style>

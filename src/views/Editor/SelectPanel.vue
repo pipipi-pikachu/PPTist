@@ -34,7 +34,7 @@
             @dblclick="enterEdit(groupItem.id)"
           >
             <input 
-              :id="`input-${groupItem.id}`" 
+              :id="`select-panel-input-${groupItem.id}`" 
               :value="groupItem.name || ELEMENT_TYPE_ZH[groupItem.type]" 
               class="input" 
               type="text" 
@@ -145,7 +145,7 @@ const saveElementName = (e: FocusEvent | KeyboardEvent, id: string) => {
 const enterEdit = (id: string) => {
   editingElId.value = id
   nextTick(() => {
-    const inputRef = document.querySelector(`#input-${id}`) as HTMLInputElement
+    const inputRef = document.querySelector(`#select-panel-input-${id}`) as HTMLInputElement
     inputRef.focus()
   })
 }

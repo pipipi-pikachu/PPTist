@@ -677,6 +677,11 @@ export interface Note {
   replies?: NoteReply[]
 }
 
+export interface SectionTag {
+  id: string
+  title?: string
+}
+
 /**
  * 幻灯片页面
  * 
@@ -702,6 +707,7 @@ export interface Slide {
   background?: SlideBackground
   animations?: PPTAnimation[]
   turningMode?: TurningMode
+  sectionTag?: SectionTag
 }
 
 /**

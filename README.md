@@ -54,6 +54,7 @@ npm run dev
 - Add/delete pages
 - Copy/paste pages
 - Adjust page order
+- Create sections
 - Background settings (solid color, gradient, image)
 - Set canvas size
 - Gridlines

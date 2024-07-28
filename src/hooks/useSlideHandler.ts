@@ -142,12 +142,101 @@ export default () => {
   const sortSlides = (newIndex: number, oldIndex: number) => {
     if (oldIndex === newIndex) return
   
-    const _slides = JSON.parse(JSON.stringify(slides.value))
+    const _slides: Slide[] = JSON.parse(JSON.stringify(slides.value))
+
+    const movingSlide = _slides[oldIndex]
+    const movingSlideSection = movingSlide.sectionTag
+    if (movingSlideSection) {
+      const movingSlideSectionNext = _slides[oldIndex + 1]
+      delete movingSlide.sectionTag
+      if (movingSlideSectionNext && !movingSlideSectionNext.sectionTag) {
+        movingSlideSectionNext.sectionTag = movingSlideSection
+      }
+    }
+    if (newIndex === 0) {
+      const firstSection = _slides[0].sectionTag
+      if (firstSection) {
+        delete _slides[0].sectionTag
+        movingSlide.sectionTag = firstSection
+      }
+    }
+
     const _slide = _slides[oldIndex]
     _slides.splice(oldIndex, 1)
     _slides.splice(newIndex, 0, _slide)
     slidesStore.setSlides(_slides)
     slidesStore.updateSlideIndex(newIndex)
+  }
+
+  const createSection = () => {
+    slidesStore.updateSlide({
+      sectionTag: {
+        id: nanoid(6),
+      },
+    })
+    addHistorySnapshot()
+  }
+
+  const removeSection = (sectionId: string) => {
+    if (!sectionId) return
+
+    const slide = slides.value.find(slide => slide.sectionTag?.id === sectionId)!
+    slidesStore.removeSlideProps({
+      id: slide.id,
+      propName: 'sectionTag',
+    })
+    addHistorySnapshot()
+  }
+
+  const removeAllSection = () => {
+    const _slides = slides.value.map(slide => {
+      if (slide.sectionTag) delete slide.sectionTag
+      return slide
+    })
+    slidesStore.setSlides(_slides)
+    addHistorySnapshot()
+  }
+
+  const removeSectionSlides = (sectionId: string) => {
+    let startIndex = 0
+    if (sectionId) {
+      startIndex = slides.value.findIndex(slide => slide.sectionTag?.id === sectionId)
+    }
+    const ids: string[] = []
+    
+    for (let i = startIndex; i < slides.value.length; i++) {
+      const slide = slides.value[i]
+      if(i !== startIndex && slide.sectionTag) break
+
+      ids.push(slide.id)
+    }
+
+    deleteSlide(ids)
+  }
+
+  const updateSectionTitle = (sectionId: string, title: string) => {
+    if (!title) return
+
+    if (sectionId === 'default') {
+      slidesStore.updateSlide({
+        sectionTag: {
+          id: nanoid(6),
+          title,
+        },
+      }, slides.value[0].id)
+    }
+    else {
+      const slide = slides.value.find(slide => slide.sectionTag?.id === sectionId)
+      if (!slide) return
+
+      slidesStore.updateSlide({
+        sectionTag: {
+          ...slide.sectionTag!,
+          title,
+        },
+      }, slide.id)
+    }
+    addHistorySnapshot()
   }
 
   return {
@@ -162,5 +251,10 @@ export default () => {
     cutSlide,
     selectAllSlide,
     sortSlides,
+    createSection,
+    removeSection,
+    removeAllSection,
+    removeSectionSlides,
+    updateSectionTitle,
   }
 }
