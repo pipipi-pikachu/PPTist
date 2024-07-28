@@ -74,6 +74,7 @@ import { fillDigit } from '@/utils/common'
 import { isElementInViewport } from '@/utils/element'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useSectionHandler from '@/hooks/useSectionHandler'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
@@ -109,12 +110,15 @@ const {
   cutSlide,
   selectAllSlide,
   sortSlides,
+} = useSlideHandler()
+
+const {
   createSection,
   removeSection,
   removeAllSection,
   removeSectionSlides,
   updateSectionTitle,
-} = useSlideHandler()
+} = useSectionHandler()
 
 // 页面被切换时
 const thumbnailsRef = ref<InstanceType<typeof Draggable>>()

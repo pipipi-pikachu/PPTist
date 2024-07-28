@@ -168,76 +168,11 @@ export default () => {
     slidesStore.updateSlideIndex(newIndex)
   }
 
-  const createSection = () => {
-    slidesStore.updateSlide({
-      sectionTag: {
-        id: nanoid(6),
-      },
-    })
-    addHistorySnapshot()
-  }
-
-  const removeSection = (sectionId: string) => {
-    if (!sectionId) return
-
-    const slide = slides.value.find(slide => slide.sectionTag?.id === sectionId)!
-    slidesStore.removeSlideProps({
-      id: slide.id,
-      propName: 'sectionTag',
-    })
-    addHistorySnapshot()
-  }
-
-  const removeAllSection = () => {
-    const _slides = slides.value.map(slide => {
-      if (slide.sectionTag) delete slide.sectionTag
-      return slide
-    })
-    slidesStore.setSlides(_slides)
-    addHistorySnapshot()
-  }
-
-  const removeSectionSlides = (sectionId: string) => {
-    let startIndex = 0
-    if (sectionId) {
-      startIndex = slides.value.findIndex(slide => slide.sectionTag?.id === sectionId)
-    }
-    const ids: string[] = []
-    
-    for (let i = startIndex; i < slides.value.length; i++) {
-      const slide = slides.value[i]
-      if(i !== startIndex && slide.sectionTag) break
-
-      ids.push(slide.id)
-    }
-
-    deleteSlide(ids)
-  }
-
-  const updateSectionTitle = (sectionId: string, title: string) => {
-    if (!title) return
-
-    if (sectionId === 'default') {
-      slidesStore.updateSlide({
-        sectionTag: {
-          id: nanoid(6),
-          title,
-        },
-      }, slides.value[0].id)
-    }
-    else {
-      const slide = slides.value.find(slide => slide.sectionTag?.id === sectionId)
-      if (!slide) return
-
-      slidesStore.updateSlide({
-        sectionTag: {
-          ...slide.sectionTag!,
-          title,
-        },
-      }, slide.id)
-    }
-    addHistorySnapshot()
-  }
+  const isEmptySlide = computed(() => {
+    if (slides.value.length > 1) return false
+    if (slides.value[0].elements.length > 0) return false
+    return true
+  })
 
   return {
     resetSlides,
@@ -251,10 +186,6 @@ export default () => {
     cutSlide,
     selectAllSlide,
     sortSlides,
-    createSection,
-    removeSection,
-    removeAllSection,
-    removeSectionSlides,
-    updateSectionTitle,
+    isEmptySlide,
   }
 }
