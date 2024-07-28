@@ -22,6 +22,7 @@
       :animation="200"
       :scroll="true"
       :scrollSensitivity="50"
+      :disabled="editingSectionId"
       @end="handleDragEnd"
       itemKey="id"
     >
@@ -41,7 +42,9 @@
               @keydown.enter.stop="$event => saveSection($event)"
               v-if="editingSectionId === element?.sectionTag?.id || (index === 0 && editingSectionId === 'default')"
             >
-            <span class="text" v-else>{{ element?.sectionTag ? (element?.sectionTag?.title || '无标题节') : '默认节' }}</span>
+            <span class="text" v-else>
+              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || '无标题节') : '默认节' }}</div>
+            </span>
           </div>
           <div
             class="thumbnail-item"
@@ -490,12 +493,9 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   }
 
   .text {
-    width: 100%;
-    display: inline-block;
     display: flex;
     align-items: center;
     position: relative;
-    @include ellipsis-oneline();
 
     &::before {
       content: '';
@@ -506,6 +506,11 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       border-bottom: 3px solid #555;
       border-right: 3px solid #555;
       margin-right: 5px;
+    }
+
+    .text-content {
+      display: inline-block;
+      @include ellipsis-oneline();
     }
   }
 

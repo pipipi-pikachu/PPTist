@@ -57,7 +57,7 @@
           @dblclick="enterEdit(item.id)"
         >
           <input 
-            :id="`input-${item.id}`" 
+            :id="`select-panel-input-${item.id}`" 
             :value="item.name || ELEMENT_TYPE_ZH[item.type]" 
             class="input" 
             type="text" 
