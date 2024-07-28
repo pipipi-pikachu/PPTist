@@ -248,7 +248,10 @@ const contextmenusSection = (el: HTMLElement): ContextmenuItem[] => {
     },
     {
       text: '删除节和幻灯片',
-      handler: () => removeSectionSlides(sectionId),
+      handler: () => {
+        mainStore.setActiveElementIdList([])
+        removeSectionSlides(sectionId)
+      },
     },
     {
       text: '删除所有节',
