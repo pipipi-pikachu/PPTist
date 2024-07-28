@@ -153,6 +153,8 @@ const changeSlideIndex = (index: number) => {
 
 // 点击缩略图
 const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
+  if (editingSectionId.value) return
+
   const isMultiSelected = selectedSlidesIndex.value.length > 1
 
   if (isMultiSelected && selectedSlidesIndex.value.includes(index) && e.button !== 0) return
