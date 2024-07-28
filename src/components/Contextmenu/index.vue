@@ -2,7 +2,7 @@
   <div 
     class="mask"
     @contextmenu.prevent="removeContextmenu()"
-    @mousedown="removeContextmenu()"
+    @mousedown.left="removeContextmenu()"
   ></div>
 
   <div 
