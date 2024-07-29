@@ -61,6 +61,12 @@
     </div>
 
     <Divider />
+
+    <div class="row">
+      <Button style="flex: 1;" @click="updateLine({ start: handleLineElement.end, end: handleLineElement.start })"><IconSwitch /> 交换方向</Button>
+    </div>
+
+    <Divider />
     <ElementShadow />
   </div>
 </template>
@@ -73,6 +79,7 @@ import type { PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementShadow from '../common/ElementShadow.vue'
+import Button from '@/components/Button.vue'
 import ColorButton from '../common/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
