@@ -200,6 +200,9 @@ const updateShapePathData = (width: number, height: number) => {
 }
 
 const updateWidth = (value: number) => {
+  if (!handleElement.value) return
+  if (handleElement.value.type === 'line' || isVerticalText.value) return
+
   let h = height.value
 
   if (fixedRatio.value) {
@@ -222,6 +225,9 @@ const updateWidth = (value: number) => {
 }
 
 const updateHeight = (value: number) => {
+  if (!handleElement.value) return
+  if (handleElement.value.type === 'line' || handleElement.value.type === 'table' || isHorizontalText.value) return
+
   let w = width.value
 
   if (fixedRatio.value) {
