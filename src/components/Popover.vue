@@ -20,11 +20,13 @@ const props = withDefaults(defineProps<{
   appendTo?: HTMLElement | 'parent'
   contentStyle?: CSSProperties
   center?: boolean
+  offset?: number
 }>(), {
   value: false,
   trigger: 'click',
   placement: 'bottom',
   center: false,
+  offset: 8,
 })
 
 const emit = defineEmits<{
@@ -59,7 +61,7 @@ onMounted(() => {
     interactive: true,
     appendTo: props.appendTo || document.body,
     maxWidth: 'none',
-    offset: [0, 8],
+    offset: [0, props.offset],
     duration: 200,
     animation: 'scale',
     theme: 'popover',

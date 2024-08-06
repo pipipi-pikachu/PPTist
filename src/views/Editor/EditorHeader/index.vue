@@ -43,7 +43,7 @@
 
     <div class="right">
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'幻灯片放映'" @click="enterScreening()">
+        <div class="menu-item" v-tooltip="'幻灯片放映（F5）'" @click="enterScreening()">
           <IconPpt class="icon" />
         </div>
         <Popover trigger="click" center>
@@ -68,6 +68,7 @@
       placement="right"
     >
       <HotkeyDoc />
+      <template v-slot:title>快捷操作</template>
     </Drawer>
 
     <FullscreenSpin :loading="exporting" tip="正在导入..." />

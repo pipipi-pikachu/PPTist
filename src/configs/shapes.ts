@@ -301,11 +301,6 @@ export const SHAPE_LIST: ShapeListItem[] = [
         pathFormula: ShapePathFormulasKeys.ROUND_RECT_DIAGONAL,
         pptxShapeType: 'round2DiagRect',
       },
-      {
-        viewBox: [200, 200],
-        path: 'M 0 80 L 60 0 L 100 40 L 180 20 L 200 120 L 160 200 L 0 200 L 60 140 Z',
-        title: '任意多边形',
-      },
     ]
   },
 

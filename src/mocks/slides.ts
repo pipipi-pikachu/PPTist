@@ -37,7 +37,7 @@ export const slides: Slide[] = [
         id: 'idn7Mx',
         left: 355,
         top: 65.25,
-        width: 585,
+        width: 450,
         height: 188,
         lineHeight: 1.2,
         content: '<p><strong><span style=\'font-size:  112px\'>PPTist</span></strong></p>',

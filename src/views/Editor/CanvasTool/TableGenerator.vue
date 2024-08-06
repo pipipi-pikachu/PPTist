@@ -94,17 +94,19 @@ const close = () => {
 <style lang="scss" scoped>
 .table-generator {
   width: 100%;
-  margin-top: -12px;
+  margin-top: -10px;
 }
 .title {
   height: 28px;
   line-height: 28px;
   background-color: #ededed;
-  margin: 0 -12px 12px -12px;
+  margin: 0 -10px 10px -10px;
   padding: 0 14px;
   font-size: 12px;
   display: flex;
   justify-content: space-between;
+  border-top-left-radius: $borderRadius;
+  border-top-right-radius: $borderRadius;
   user-select: none;
 
   .right {
