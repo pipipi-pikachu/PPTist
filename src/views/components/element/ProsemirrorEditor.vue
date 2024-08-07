@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
@@ -22,6 +22,7 @@ import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/s
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
 import type { TextFormatPainterKeys } from '@/types/edit'
+const snapshotStore = useSnapshotStore()
 
 const props = withDefaults(defineProps<{
   elementId: string
@@ -74,7 +75,36 @@ const handleClick = debounce(function() {
   mainStore.setRichtextAttrs(attrs)
 }, 30, { trailing: true })
 
-const handleKeydown = () => {
+const handleKeydown = (_, event:KeyboardEvent) => {
+  const isUnDo:boolean = (event.ctrlKey || event.metaKey) && event.key === 'z'
+  const isReDo:boolean = (event.ctrlKey || event.metaKey) && event.key === 'y'
+  const onlyCtrlOrCommand:boolean = (event.ctrlKey || event.metaKey) && (event.key === 'Control' || event.key === 'Meta')
+  const isCopy:boolean = (event.ctrlKey || event.metaKey) && event.key === 'c'
+  const isSellectAll:boolean = (event.ctrlKey || event.metaKey) && event.key === 'a'
+
+  // 避免只按ctrl、复制、全选并内有对内容进行更改的操作新增历史记录，否则需要回退多次才能回退
+  if(onlyCtrlOrCommand||isCopy||isSellectAll){
+    return
+  }
+  
+  if (isReDo && snapshotStore.canRedo) {
+    editorView.dom.blur()
+
+    event.preventDefault()
+    nextTick(() => {
+      snapshotStore.reDo()
+    })
+    return
+  }
+
+  if (isUnDo && snapshotStore.canUndo) {
+    editorView.dom.blur()
+    nextTick(() => {
+      snapshotStore.unDo()
+    })
+    event.preventDefault()
+    return
+  }
   handleInput()
   handleClick()
 }
