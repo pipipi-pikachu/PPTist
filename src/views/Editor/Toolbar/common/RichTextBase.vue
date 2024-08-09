@@ -253,7 +253,7 @@ import { WEB_FONTS } from '@/configs/font'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 import message from '@/utils/message'
 
-import TextColorButton from '../common/TextColorButton.vue'
+import TextColorButton from '@/components/TextColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Input from '@/components/Input.vue'

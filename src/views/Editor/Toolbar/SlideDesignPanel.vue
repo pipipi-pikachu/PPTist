@@ -314,7 +314,7 @@ import useSlideTheme from '@/hooks/useSlideTheme'
 import { getImageDataURL } from '@/utils/image'
 
 import ThemeStylesExtract from './ThemeStylesExtract.vue'
-import ColorButton from './common/ColorButton.vue'
+import ColorButton from '@/components/ColorButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'

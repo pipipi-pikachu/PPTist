@@ -80,7 +80,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementShadow from '../common/ElementShadow.vue'
 import Button from '@/components/Button.vue'
-import ColorButton from '../common/ColorButton.vue'
+import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import NumberInput from '@/components/NumberInput.vue'

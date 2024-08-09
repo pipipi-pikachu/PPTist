@@ -32,7 +32,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import ColorButton from './ColorButton.vue'
+import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import Popover from '@/components/Popover.vue'

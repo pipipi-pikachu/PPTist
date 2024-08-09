@@ -50,7 +50,7 @@ import type { PPTLatexElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import ColorButton from '../common/ColorButton.vue'
+import ColorButton from '@/components/ColorButton.vue'
 import LaTeXEditor from '@/components/LaTeXEditor/index.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'

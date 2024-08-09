@@ -53,7 +53,7 @@ import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElementOutline } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import ColorButton from './ColorButton.vue'
+import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import NumberInput from '@/components/NumberInput.vue'
