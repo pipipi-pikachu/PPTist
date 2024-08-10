@@ -255,8 +255,10 @@ const setBackgroundImage = () => {
   const background: SlideBackground = {
     ...currentSlide.value.background,
     type: 'image',
-    image: _handleElement.src,
-    imageSize: 'cover',
+    image: {
+      src: _handleElement.src,
+      size: 'cover'
+    },
   }
   slidesStore.updateSlide({ background })
   addHistorySnapshot()

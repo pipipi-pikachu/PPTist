@@ -10,7 +10,6 @@ export default (background: Ref<SlideBackground | undefined>) => {
       type,
       color,
       image,
-      imageSize,
       gradient,
     } = background.value
 
@@ -19,19 +18,20 @@ export default (background: Ref<SlideBackground | undefined>) => {
 
     // 背景图模式
     // 包括：背景图、背景大小，是否重复
-    else if (type === 'image') {
-      if (!image) return { backgroundColor: '#fff' }
-      if (imageSize === 'repeat') {
+    else if (type === 'image' && image) {
+      const { src, size } = image
+      if (!src) return { backgroundColor: '#fff' }
+      if (size === 'repeat') {
         return {
-          backgroundImage: `url(${image}`,
+          backgroundImage: `url(${src}`,
           backgroundRepeat: 'repeat',
           backgroundSize: 'contain',
         }
       }
       return {
-        backgroundImage: `url(${image}`,
+        backgroundImage: `url(${src}`,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: imageSize || 'cover',
+        backgroundSize: size || 'cover',
       }
     }
 

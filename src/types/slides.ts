@@ -87,6 +87,8 @@ export interface PPTElementOutline {
   color?: string
 }
 
+export type ElementLinkType = 'web' | 'slide'
+
 /**
  * 元素超链接
  * 
@@ -95,7 +97,7 @@ export interface PPTElementOutline {
  * target: 目标地址（网页链接、幻灯片页面ID）
  */
 export interface PPTElementLink {
-  type: 'web' | 'slide'
+  type: ElementLinkType
   target: string
 }
 
@@ -429,6 +431,7 @@ export interface PPTChartElement extends PPTBaseElement {
 }
 
 
+export type TextAlign = 'left' | 'center' | 'right' | 'justify'
 /**
  * 表格单元格样式
  * 
@@ -459,7 +462,7 @@ export interface TableCellStyle {
   backcolor?: string
   fontsize?: string
   fontname?: string
-  align?: 'left' | 'center' | 'right' | 'justify'
+  align?: TextAlign
 }
 
 
@@ -635,6 +638,13 @@ export interface PPTAnimation {
   trigger: AnimationTrigger
 }
 
+export type SlideBackgroundType = 'solid' | 'image' | 'gradient'
+export type SlideBackgroundImageSize = 'cover' | 'contain' | 'repeat'
+export interface SlideBackgroundImage {
+  src: string
+  size: SlideBackgroundImageSize,
+}
+
 /**
  * 幻灯片背景
  * 
@@ -642,21 +652,14 @@ export interface PPTAnimation {
  * 
  * color?: 背景颜色（纯色）
  * 
- * image?: 图片地址（图片）
+ * image?: 图片背景
  * 
- * imageSize?: 图片填充方式
- * 
- * gradientType?: 渐变类型（线性、径向）
- * 
- * gradientColor?: 渐变颜色
- * 
- * gradientRotate?: 渐变角度（线性）
+ * gradientType?: 渐变背景
  */
 export interface SlideBackground {
-  type: 'solid' | 'image' | 'gradient'
+  type: SlideBackgroundType
   color?: string
-  image?: string
-  imageSize?: 'cover' | 'contain' | 'repeat'
+  image?: SlideBackgroundImage
   gradient?: Gradient
 }
 

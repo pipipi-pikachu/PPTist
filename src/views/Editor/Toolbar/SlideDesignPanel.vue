@@ -26,8 +26,8 @@
 
       <Select 
         style="flex: 1;" 
-        :value="background.imageSize || 'cover'" 
-        @update:value="value => updateBackground({ imageSize: value as 'repeat' | 'cover' | 'contain' })"
+        :value="background.image?.size || 'cover'" 
+        @update:value="value => updateImageBackground({ size: value as SlideBackgroundImageSize })"
         v-else-if="background.type === 'image'"
         :options="[
           { label: '缩放', value: 'contain' },
@@ -51,7 +51,7 @@
     <div class="background-image-wrapper" v-if="background.type === 'image'">
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
-          <div class="content" :style="{ backgroundImage: `url(${background.image})` }">
+          <div class="content" :style="{ backgroundImage: `url(${background.image?.src})` }">
             <IconPlus />
           </div>
         </div>
@@ -301,7 +301,15 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { Gradient, GradientType, SlideBackground, SlideTheme } from '@/types/slides'
+import type { 
+  Gradient,
+  GradientType,
+  SlideBackground,
+  SlideBackgroundType,
+  SlideTheme,
+  SlideBackgroundImage,
+  SlideBackgroundImageSize,
+} from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -347,7 +355,7 @@ const {
 } = useSlideTheme()
 
 // 设置背景模式：纯色、图片、渐变色
-const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
+const updateBackgroundType = (type: SlideBackgroundType) => {
   if (type === 'solid') {
     const newBackground: SlideBackground = {
       ...background.value,
@@ -360,8 +368,10 @@ const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
     const newBackground: SlideBackground = {
       ...background.value,
       type: 'image',
-      image: background.value.image || '',
-      imageSize: background.value.imageSize || 'cover',
+      image: background.value.image || {
+        src: '',
+        size: 'cover',
+      },
     }
     slidesStore.updateSlide({ background: newBackground })
   }
@@ -401,11 +411,16 @@ const updateGradientBackgroundColors = (color: string) => {
   updateGradientBackground({ colors })
 }
 
+// 设置图片背景
+const updateImageBackground = (props: Partial<SlideBackgroundImage>) => {
+  updateBackground({ image: { ...background.value.image!, ...props } })
+}
+
 // 上传背景图片
 const uploadBackgroundImage = (files: FileList) => {
   const imageFile = files[0]
   if (!imageFile) return
-  getImageDataURL(imageFile).then(dataURL => updateBackground({ image: dataURL }))
+  getImageDataURL(imageFile).then(dataURL => updateImageBackground({ src: dataURL }))
 }
 
 // 应用当前页背景到全部页面

@@ -389,8 +389,8 @@ export default () => {
       if (slide.background) {
         const background = slide.background
         if (background.type === 'image' && background.image) {
-          if (isBase64Image(background.image)) pptxSlide.background = { data: background.image }
-          else pptxSlide.background = { path: background.image }
+          if (isBase64Image(background.image.src)) pptxSlide.background = { data: background.image.src }
+          else pptxSlide.background = { path: background.image.src }
         }
         else if (background.type === 'solid' && background.color) {
           const c = formatColor(background.color)

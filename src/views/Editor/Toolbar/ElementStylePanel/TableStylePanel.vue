@@ -84,7 +84,7 @@
       class="row" 
       button-style="solid" 
       :value="textAttrs.align"
-      @update:value="value => updateTextAttrs({ align: value as 'left' | 'center' | 'right' | 'justify' })"
+      @update:value="value => updateTextAttrs({ align: value as TextAlign })"
     >
       <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
       <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
@@ -173,7 +173,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTableElement, TableCell, TableCellStyle, TableTheme } from '@/types/slides'
+import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign } from '@/types/slides'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 

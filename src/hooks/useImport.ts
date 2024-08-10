@@ -113,8 +113,10 @@ export default () => {
         if (type === 'image') {
           background = {
             type: 'image',
-            image: value.picBase64,
-            imageSize: 'cover',
+            image: {
+              src: value.picBase64,
+              size: 'cover',
+            },
           }
         }
         else if (type === 'gradient') {

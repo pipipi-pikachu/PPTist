@@ -36,7 +36,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElementLink } from '@/types/slides'
+import type { ElementLinkType, PPTElementLink } from '@/types/slides'
 import useLink from '@/hooks/useLink'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -45,9 +45,8 @@ import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 
-type TypeKey = 'web' | 'slide'
 interface TabItem {
-  key: TypeKey
+  key: ElementLinkType
   label: string
 }
 
@@ -58,7 +57,7 @@ const emit = defineEmits<{
 const { handleElement } = storeToRefs(useMainStore())
 const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
-const type = ref<TypeKey>('web')
+const type = ref<ElementLinkType>('web')
 const address = ref('')
 const slideId = ref('')
 
