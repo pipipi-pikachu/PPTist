@@ -34,6 +34,15 @@ export const enum ElementTypes {
   AUDIO = 'audio',
 }
 
+/**
+ * 渐变
+ * 
+ * type: 渐变类型（径向、线性）
+ * 
+ * colors: 渐变颜色列表（pos: 百分比位置；color: 颜色）
+ * 
+ * rotate: 渐变角度（线性渐变）
+ */
 export type GradientType = 'linear' | 'radial'
 export type GradientColor = {
   pos: number
@@ -261,22 +270,6 @@ export interface PPTImageElement extends PPTBaseElement {
   colorMask?: string
 }
 
-
-/**
- * 形状渐变
- * 
- * type: 渐变类型（径向、线性）
- * 
- * color: 渐变颜色
- * 
- * rotate: 渐变角度（线性渐变）
- */
-export interface ShapeGradient {
-  type: GradientType
-  color: [string, string]
-  rotate: number
-}
-
 export type ShapeTextAlign = 'top' | 'middle' | 'bottom' 
 
 /**
@@ -338,7 +331,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   path: string
   fixedRatio: boolean
   fill: string
-  gradient?: ShapeGradient
+  gradient?: Gradient
   outline?: PPTElementOutline
   opacity?: number
   flipH?: boolean

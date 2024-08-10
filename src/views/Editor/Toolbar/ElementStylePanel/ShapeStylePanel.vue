@@ -52,27 +52,22 @@
     
     <template v-if="fillType === 'gradient'">
       <div class="row">
-        <div style="width: 40%;">起点颜色：</div>
-        <Popover trigger="click" style="width: 60%;">
-          <template #content>
-            <ColorPicker
-              :modelValue="gradient.color[0]"
-              @update:modelValue="value => updateGradient({ color: [value, gradient.color[1]] })"
-            />
-          </template>
-          <ColorButton :color="gradient.color[0]" />
-        </Popover>
+        <GradientBar
+          :value="gradient.colors"
+          @update:value="value => updateGradient({ colors: value })"
+          @update:index="index => currentGradientIndex = index"
+        />
       </div>
       <div class="row">
-        <div style="width: 40%;">终点颜色：</div>
+        <div style="width: 40%;">当前色块：</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
-              :modelValue="gradient.color[1]"
-              @update:modelValue="value => updateGradient({ color: [gradient.color[0], value] })"
+              :modelValue="gradient.colors[currentGradientIndex].color"
+              @update:modelValue="value => updateGradientColors(value)"
             />
           </template>
-          <ColorButton :color="gradient.color[1]" />
+          <ColorButton :color="gradient.colors[currentGradientIndex].color" />
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
@@ -133,7 +128,7 @@
 import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { GradientType, PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
+import type { GradientType, PPTShapeElement, Gradient, ShapeText } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'
@@ -153,6 +148,7 @@ import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
+import GradientBar from '@/components/GradientBar.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -161,19 +157,27 @@ const { handleElement, handleElementId, shapeFormatPainter } = storeToRefs(mainS
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
 const fill = ref<string>('#000')
-const gradient = ref<ShapeGradient>({
+const gradient = ref<Gradient>({
   type: 'linear', 
   rotate: 0,
-  color: ['#fff', '#fff'],
+  colors: [
+    { pos: 0, color: '#fff' },
+    { pos: 100, color: '#fff' },
+  ],
 })
 const fillType = ref('fill')
 const textAlign = ref('middle')
+const currentGradientIndex = ref(0)
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'shape') return
 
   fill.value = handleElement.value.fill || '#fff'
-  gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, color: [fill.value, '#fff'] }
+  const defaultGradientColor = [
+    { pos: 0, color: fill.value },
+    { pos: 100, color: '#fff' },
+  ]
+  gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, colors: defaultGradientColor }
   fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
   textAlign.value = handleElement.value?.text?.align || 'middle'
 }, { deep: true, immediate: true })
@@ -196,10 +200,17 @@ const updateFillType = (type: 'gradient' | 'fill') => {
 }
 
 // 设置渐变填充
-const updateGradient = (gradientProps: Partial<ShapeGradient>) => {
+const updateGradient = (gradientProps: Partial<Gradient>) => {
   if (!gradient.value) return
-  const _gradient: ShapeGradient = { ...gradient.value, ...gradientProps }
+  const _gradient = { ...gradient.value, ...gradientProps }
   updateElement({ gradient: _gradient })
+}
+const updateGradientColors = (color: string) => {
+  const colors = gradient.value.colors.map((item, index) => {
+    if (index === currentGradientIndex.value) return { ...item, color }
+    return item
+  })
+  updateGradient({ colors })
 }
 
 // 设置填充色

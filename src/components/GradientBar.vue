@@ -30,12 +30,13 @@ const emit = defineEmits<{
 
 const points = ref<GradientColor[]>([])
 
-watchEffect(() => {
-  points.value = props.value
-})
-
 const barRef = ref<HTMLElement>()
 const activeIndex = ref(0)
+
+watchEffect(() => {
+  points.value = props.value
+  if (activeIndex.value > props.value.length - 1) activeIndex.value = 0
+})
 
 watch(activeIndex, () => {
   emit('update:index', activeIndex.value)
@@ -51,6 +52,9 @@ const removePoint = (index: number) => {
 
   if (index === activeIndex.value) {
     activeIndex.value = (index - 1 < 0) ? 0 : index - 1
+  }
+  else if (activeIndex.value === props.value.length - 1) {
+    activeIndex.value = props.value.length - 2
   }
 
   const values = props.value.filter((item, _index) => _index !== index)

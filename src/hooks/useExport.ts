@@ -517,7 +517,14 @@ export default () => {
             }
             const points = formatPoints(toPoints(el.path), scale)
   
-            const fillColor = formatColor(el.fill)
+            let fillColor = formatColor(el.fill)
+            if (el.gradient) {
+              const colors = el.gradient.colors
+              const color1 = colors[0].color
+              const color2 = colors[colors.length - 1].color
+              const color = tinycolor.mix(color1, color2).toHexString()
+              fillColor = formatColor(color)
+            }
             const opacity = el.opacity === undefined ? 1 : el.opacity
   
             const options: pptxgen.ShapeProps = {

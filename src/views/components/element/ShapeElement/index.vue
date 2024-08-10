@@ -40,8 +40,7 @@
             <GradientDefs
               :id="`editabel-gradient-${elementInfo.id}`" 
               :type="elementInfo.gradient.type"
-              :color1="elementInfo.gradient.color[0]"
-              :color2="elementInfo.gradient.color[1]"
+              :colors="elementInfo.gradient.colors"
               :rotate="elementInfo.gradient.rotate"
             />
           </defs>
