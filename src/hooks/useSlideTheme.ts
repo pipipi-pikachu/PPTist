@@ -31,8 +31,9 @@ export default () => {
           backgroundColorValues.push({ area: 1, value: slide.background.color })
         }
         else if (slide.background.type === 'gradient' && slide.background.gradient) {
+          const len = slide.background.gradient.colors.length
           backgroundColorValues.push(...slide.background.gradient.colors.map(item => ({
-            area: 1,
+            area: 1 / len,
             value: item.color,
           })))
         }
@@ -53,6 +54,13 @@ export default () => {
         if (el.type === 'shape' || el.type === 'text') {
           if (el.fill) {
             themeColorValues.push({ area, value: el.fill })
+          }
+          if (el.type === 'shape' && el.gradient) {
+            const len = el.gradient.colors.length
+            themeColorValues.push(...el.gradient.colors.map(item => ({
+              area: 1 / len * area,
+              value: item.color,
+            })))
           }
 
           const text = (el.type === 'shape' ? el.text?.content : el.content) || ''
@@ -160,8 +168,8 @@ export default () => {
     for (const item of backgroundColorValues) {
       const color = tinycolor(item.value).toRgbString()
       if (color === 'rgba(0, 0, 0, 0)') continue
-      if (!backgroundColors[color]) backgroundColors[color] = 1
-      else backgroundColors[color] += 1
+      if (!backgroundColors[color]) backgroundColors[color] = item.area
+      else backgroundColors[color] += item.area
     }
 
     const themeColors: { [key: string]: number } = {}

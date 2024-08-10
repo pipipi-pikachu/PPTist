@@ -139,6 +139,7 @@ const addPoint = (e: MouseEvent) => {
     outline: 1px solid #d9d9d9;
     box-shadow: 0 0 2px 2px #d9d9d9;
     border-radius: 1px;
+    cursor: pointer;
 
     &.active {
       outline: 1px solid $themeColor;
