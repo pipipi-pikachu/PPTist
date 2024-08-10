@@ -1,5 +1,6 @@
 import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { parseText2Paragraphs } from '@/utils/textParser'
+import { getImageDataURL, isSVGString, svg2File } from '@/utils/image'
 import useCreateElement from '@/hooks/useCreateElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
@@ -9,7 +10,7 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
-  const { createTextElement } = useCreateElement()
+  const { createTextElement, createImageElement } = useCreateElement()
   const { addElementsFromData, addSlidesFromData } = useAddSlidesOrElements()
 
   /**
@@ -46,8 +47,17 @@ export default () => {
 
     // 普通文本
     else if (!onlyElements && !onlySlide) {
-      const string = parseText2Paragraphs(clipboardData)
-      createTextElementFromClipboard(string)
+      // 尝试检查是否为SVG代码
+      const isSVG = isSVGString(clipboardData)
+      if (isSVG) {
+        const file = svg2File(clipboardData)
+        getImageDataURL(file).then(dataURL => createImageElement(dataURL))
+      }
+      // 普通文字
+      else {
+        const string = parseText2Paragraphs(clipboardData)
+        createTextElementFromClipboard(string)
+      }
     }
   }
 

@@ -46,3 +46,30 @@ export const getImageDataURL = (file: File): Promise<string> => {
     reader.readAsDataURL(file)
   })
 }
+
+/**
+ * 判断是否为SVG代码字符串
+ * @param text 待验证文本
+ */
+export const isSVGString = (text: string): boolean => {
+  const svgRegex = /<svg[\s\S]*?>[\s\S]*?<\/svg>/i
+  if (!svgRegex.test(text)) return false
+
+  try {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(text, 'image/svg+xml')
+    return doc.documentElement.nodeName === 'svg'
+  } 
+  catch {
+    return false
+  }
+}
+
+/**
+ * SVG代码转文件
+ * @param svg SVG代码
+ */
+export const svg2File = (svg: string): File => {
+  const blob = new Blob([svg], { type: 'image/svg+xml' })
+  return new File([blob], `${Date.now()}.svg`, { type: 'image/svg+xml' })
+}
