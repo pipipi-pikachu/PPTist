@@ -34,6 +34,17 @@ export const enum ElementTypes {
   AUDIO = 'audio',
 }
 
+export type GradientType = 'linear' | 'radial'
+export type GradientColor = {
+  pos: number
+  color: string
+}
+export interface Gradient {
+  type: GradientType
+  colors: GradientColor[]
+  rotate: number
+}
+
 /**
  * 元素阴影
  * 
@@ -261,7 +272,7 @@ export interface PPTImageElement extends PPTBaseElement {
  * rotate: 渐变角度（线性渐变）
  */
 export interface ShapeGradient {
-  type: 'linear' | 'radial'
+  type: GradientType
   color: [string, string]
   rotate: number
 }
@@ -653,9 +664,7 @@ export interface SlideBackground {
   color?: string
   image?: string
   imageSize?: 'cover' | 'contain' | 'repeat'
-  gradientType?: 'linear' | 'radial'
-  gradientColor?: [string, string]
-  gradientRotate?: number
+  gradient?: Gradient
 }
 
 

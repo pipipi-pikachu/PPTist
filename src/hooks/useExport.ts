@@ -396,8 +396,10 @@ export default () => {
           const c = formatColor(background.color)
           pptxSlide.background = { color: c.color, transparency: (1 - c.alpha) * 100 }
         }
-        else if (background.type === 'gradient' && background.gradientColor) {
-          const [color1, color2] = background.gradientColor
+        else if (background.type === 'gradient' && background.gradient) {
+          const colors = background.gradient.colors
+          const color1 = colors[0].color
+          const color2 = colors[colors.length - 1].color
           const color = tinycolor.mix(color1, color2).toHexString()
           const c = formatColor(color)
           pptxSlide.background = { color: c.color, transparency: (1 - c.alpha) * 100 }

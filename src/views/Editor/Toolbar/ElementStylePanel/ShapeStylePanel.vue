@@ -41,7 +41,7 @@
       <Select 
         style="flex: 1;" 
         :value="gradient.type" 
-        @update:value="value => updateGradient({ type: value as 'linear' | 'radial' })"
+        @update:value="value => updateGradient({ type: value as GradientType })"
         v-else
         :options="[
           { label: '线性渐变', value: 'linear' },
@@ -133,7 +133,7 @@
 import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
+import type { GradientType, PPTShapeElement, ShapeGradient, ShapeText } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'

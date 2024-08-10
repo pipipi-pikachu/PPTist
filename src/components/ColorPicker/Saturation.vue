@@ -68,7 +68,6 @@ const handleChange = (e: MouseEvent) => {
   })
 }
 
-
 const unbindEventListeners = () => {
   window.removeEventListener('mousemove', handleChange)
   window.removeEventListener('mouseup', unbindEventListeners)

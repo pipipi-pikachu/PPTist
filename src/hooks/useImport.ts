@@ -120,9 +120,14 @@ export default () => {
         else if (type === 'gradient') {
           background = {
             type: 'gradient',
-            gradientType: 'linear',
-            gradientColor: [value.colors[0].color, value.colors[value.colors.length - 1].color],
-            gradientRotate: value.rot,
+            gradient: {
+              type: 'linear',
+              colors: value.colors.map(item => ({
+                ...item,
+                pos: parseInt(item.pos),
+              })),
+              rotate: value.rot,
+            },
           }
         }
         else {

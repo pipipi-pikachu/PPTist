@@ -30,10 +30,10 @@ export default () => {
         if (slide.background.type === 'solid' && slide.background.color) {
           backgroundColorValues.push({ area: 1, value: slide.background.color })
         }
-        else if (slide.background.type === 'gradient' && slide.background.gradientColor) {
-          backgroundColorValues.push(...slide.background.gradientColor.map(item => ({
+        else if (slide.background.type === 'gradient' && slide.background.gradient) {
+          backgroundColorValues.push(...slide.background.gradient.colors.map(item => ({
             area: 1,
-            value: item,
+            value: item.color,
           })))
         }
         else backgroundColorValues.push({ area: 1, value: theme.value.backgroundColor })

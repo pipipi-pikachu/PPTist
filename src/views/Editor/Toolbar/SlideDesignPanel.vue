@@ -38,8 +38,8 @@
 
       <Select 
         style="flex: 1;" 
-        :value="background.gradientType || ''" 
-        @update:value="value => updateBackground({ gradientType: value as 'linear' | 'radial' })"
+        :value="background.gradient?.type || ''" 
+        @update:value="value => updateGradientBackground({ type: value as GradientType })"
         v-else
         :options="[
           { label: '线性渐变', value: 'linear' },
@@ -60,37 +60,32 @@
 
     <div class="background-gradient-wrapper" v-if="background.type === 'gradient'">
       <div class="row">
-        <div style="width: 40%;">起点颜色：</div>
-        <Popover trigger="click" style="width: 60%;">
-          <template #content>
-            <ColorPicker
-              :modelValue="background.gradientColor![0]"
-              @update:modelValue="value => updateBackground({ gradientColor: [value, background.gradientColor![1]] })"
-            />
-          </template>
-          <ColorButton :color="background.gradientColor![0]" />
-        </Popover>
+        <GradientBar
+          :value="background.gradient?.colors || []"
+          @update:value="value => updateGradientBackground({ colors: value })"
+          @update:index="index => currentGradientIndex = index"
+        />
       </div>
       <div class="row">
-        <div style="width: 40%;">终点颜色：</div>
+        <div style="width: 40%;">当前色块：</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
-              :modelValue="background.gradientColor![1]"
-              @update:modelValue="value => updateBackground({ gradientColor: [background.gradientColor![0], value] })"
+              :modelValue="background.gradient!.colors[currentGradientIndex].color"
+              @update:modelValue="value => updateGradientBackgroundColors(value)"
             />
           </template>
-          <ColorButton :color="background.gradientColor![1]" />
+          <ColorButton :color="background.gradient!.colors[currentGradientIndex].color" />
         </Popover>
       </div>
-      <div class="row" v-if="background.gradientType === 'linear'">
+      <div class="row" v-if="background.gradient?.type === 'linear'">
         <div style="width: 40%;">渐变角度：</div>
         <Slider
           :min="0"
           :max="360"
           :step="15"
-          :value="background.gradientRotate || 0"
-          @update:value="value => updateBackground({ gradientRotate: value as number })" 
+          :value="background.gradient.rotate || 0"
+          @update:value="value => updateGradientBackground({ rotate: value as number })"
           style="width: 60%;"
         />
       </div>
@@ -306,7 +301,7 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { SlideBackground, SlideTheme } from '@/types/slides'
+import type { Gradient, GradientType, SlideBackground, SlideTheme } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -324,6 +319,7 @@ import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import NumberInput from '@/components/NumberInput.vue'
 import Modal from '@/components/Modal.vue'
+import GradientBar from '@/components/GradientBar.vue'
 
 const slidesStore = useSlidesStore()
 const { availableFonts } = storeToRefs(useMainStore())
@@ -331,6 +327,7 @@ const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 
 const moreThemeConfigsVisible = ref(false)
 const themeStylesExtractVisible = ref(false)
+const currentGradientIndex = ref(0)
 
 const background = computed(() => {
   if (!currentSlide.value.background) {
@@ -372,19 +369,36 @@ const updateBackgroundType = (type: 'solid' | 'image' | 'gradient') => {
     const newBackground: SlideBackground = {
       ...background.value,
       type: 'gradient',
-      gradientType: background.value.gradientType || 'linear',
-      gradientColor: background.value.gradientColor || ['#fff', '#fff'],
-      gradientRotate: background.value.gradientRotate || 0,
+      gradient: background.value.gradient || {
+        type: 'linear',
+        colors: [
+          { pos: 0, color: '#fff' },
+          { pos: 100, color: '#fff' },
+        ],
+        rotate: 0,
+      },
     }
     slidesStore.updateSlide({ background: newBackground })
   }
   addHistorySnapshot()
 }
 
-// 设置背景图片
+// 设置背景
 const updateBackground = (props: Partial<SlideBackground>) => {
   slidesStore.updateSlide({ background: { ...background.value, ...props } })
   addHistorySnapshot()
+}
+
+// 设置渐变背景
+const updateGradientBackground = (props: Partial<Gradient>) => {
+  updateBackground({ gradient: { ...background.value.gradient!, ...props } })
+}
+const updateGradientBackgroundColors = (color: string) => {
+  const colors = background.value.gradient!.colors.map((item, index) => {
+    if (index === currentGradientIndex.value) return { ...item, color }
+    return item
+  })
+  updateGradientBackground({ colors })
 }
 
 // 上传背景图片

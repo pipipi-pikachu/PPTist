@@ -11,9 +11,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
       color,
       image,
       imageSize,
-      gradientColor,
-      gradientRotate,
-      gradientType,
+      gradient,
     } = background.value
 
     // 纯色背景
@@ -38,13 +36,12 @@ export default (background: Ref<SlideBackground | undefined>) => {
     }
 
     // 渐变色背景
-    else if (type === 'gradient') {
-      const rotate = gradientRotate || 0
-      const color1 = gradientColor ? gradientColor[0] : '#fff'
-      const color2 = gradientColor ? gradientColor[1] : '#fff'
-      
-      if (gradientType === 'radial') return { backgroundImage: `radial-gradient(${color1}, ${color2}` }
-      return { backgroundImage: `linear-gradient(${rotate}deg, ${color1}, ${color2}` }
+    else if (type === 'gradient' && gradient) {
+      const { type, colors, rotate } = gradient
+      const list = colors.map(item => `${item.color} ${item.pos}%`)
+
+      if (type === 'radial') return { backgroundImage: `radial-gradient(${list.join(',')}` }
+      return { backgroundImage: `linear-gradient(${rotate}deg, ${list.join(',')}` }
     }
 
     return { backgroundColor: '#fff' }

@@ -19,9 +19,11 @@
 </template>
 
 <script lang="ts" setup>
+import type { GradientType } from '@/types/slides'
+
 withDefaults(defineProps<{
   id: string
-  type: 'linear' | 'radial'
+  type: GradientType
   color1: string
   color2: string
   rotate?: number
