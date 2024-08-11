@@ -3,21 +3,11 @@
 </p>
 
 <p align="center">
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/stargazers" target="_black">
-        <img src="https://img.shields.io/github/stars/pipipi-pikachu/PPTist?logo=github" alt="stars" />
-    </a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/network/members" target="_black">
-        <img src="https://img.shields.io/github/forks/pipipi-pikachu/PPTist?logo=github" alt="forks" />
-    </a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black">
-        <img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist?color=%232DCE89&logo=github" alt="license" />
-    </a>
-    <a href="https://www.typescriptlang.org" target="_black">
-        <img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language">
-    </a>
-    <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black">
-        <img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue">
-    </a>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/stargazers" target="_black"><img src="https://img.shields.io/github/stars/pipipi-pikachu/PPTist?logo=github" alt="stars" /></a>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/network/members" target="_black"><img src="https://img.shields.io/github/forks/pipipi-pikachu/PPTist?logo=github" alt="forks" /></a>
+    <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black"><img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist?color=%232DCE89&logo=github" alt="license" /></a>
+    <a href="https://www.typescriptlang.org" target="_black"><img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language"></a>
+    <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black"><img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue"></a>
 </p>
 
 [简体中文](README_zh.md) | English
@@ -202,7 +192,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 你的代码被本项目作为依赖引用；
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你长期参与到本项目的维护工作中；
-    3. 联系作者付费授权。
+    3. 联系作者付费获取商业授权。
 
 
 # 👎👎👎 耻辱柱 🤮🤮🤮
