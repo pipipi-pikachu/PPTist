@@ -1,6 +1,6 @@
 import type { ShapePoolItem } from '@/configs/shapes'
 import type { LinePoolItem } from '@/configs/lines'
-import type { ImageClipDataRange, PPTElementOutline, PPTElementShadow, ShapeGradient } from './slides'
+import type { ImageClipDataRange, PPTElementOutline, PPTElementShadow, Gradient } from './slides'
 
 export enum ElementOrderCommands {
   UP = 'up',
@@ -119,7 +119,7 @@ export interface TextFormatPainter {
 export interface ShapeFormatPainter {
   keep: boolean
   fill?: string
-  gradient?: ShapeGradient
+  gradient?: Gradient
   outline?: PPTElementOutline
   opacity?: number
   shadow?: PPTElementShadow
