@@ -196,7 +196,10 @@ const updateFillType = (type: 'gradient' | 'fill') => {
     slidesStore.removeElementProps({ id: handleElementId.value, propName: 'gradient' })
     addHistorySnapshot()
   }
-  else updateElement({ gradient: gradient.value })
+  else {
+    currentGradientIndex.value = 0
+    updateElement({ gradient: gradient.value })
+  }
 }
 
 // 设置渐变填充

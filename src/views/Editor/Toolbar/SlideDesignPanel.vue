@@ -388,6 +388,7 @@ const updateBackgroundType = (type: SlideBackgroundType) => {
         rotate: 0,
       },
     }
+    currentGradientIndex.value = 0
     slidesStore.updateSlide({ background: newBackground })
   }
   addHistorySnapshot()
