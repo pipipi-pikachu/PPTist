@@ -3,13 +3,23 @@ import { useKeyboardStore } from '@/store'
 import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import { getImageDataURL, isSVGString, svg2File } from '@/utils/image'
-import { isValidImgURL, isValidURL } from '@/utils/common'
+import { isValidURL } from '@/utils/common'
 import useCreateElement from '@/hooks/useCreateElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
 interface PasteTextClipboardDataOptions {
   onlySlide?: boolean
   onlyElements?: boolean
+}
+
+/**
+ * 判断图片URL字符串
+ * 
+ * ！！！注意，你需要判断允许哪些来源的图片地址被匹配，然后自行编写正则表达式
+ * ！！！必须确保图片来源都是合法、可靠、可控、无访问限制的
+ */
+const isValidImgURL = (url: string) => {
+  return /^https:\/\/pptist.cn(\/[\w-./?%&=]*)?\.(jpg|jpeg|png|svg|webp)(\?.*)?$/i.test(url)
 }
 
 export default () => {

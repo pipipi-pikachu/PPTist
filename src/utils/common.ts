@@ -22,10 +22,3 @@ export const isPC = () => {
 export const isValidURL = (url: string) => {
   return /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i.test(url)
 }
-
-/**
- * 判断图片URL字符串
- */
-export const isValidImgURL = (url: string) => {
-  return /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?\.(jpg|jpeg|png|svg|webp)(\?.*)?$/i.test(url)
-}
