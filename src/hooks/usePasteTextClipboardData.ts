@@ -1,6 +1,9 @@
+import { storeToRefs } from 'pinia'
+import { useKeyboardStore } from '@/store'
 import { pasteCustomClipboardString } from '@/utils/clipboard'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import { getImageDataURL, isSVGString, svg2File } from '@/utils/image'
+import { isValidImgURL, isValidURL } from '@/utils/common'
 import useCreateElement from '@/hooks/useCreateElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 
@@ -10,6 +13,8 @@ interface PasteTextClipboardDataOptions {
 }
 
 export default () => {
+  const { shiftKeyState } = storeToRefs(useKeyboardStore())
+
   const { createTextElement, createImageElement } = useCreateElement()
   const { addElementsFromData, addSlidesFromData } = useAddSlidesOrElements()
 
@@ -47,16 +52,30 @@ export default () => {
 
     // 普通文本
     else if (!onlyElements && !onlySlide) {
-      // 尝试检查是否为SVG代码
-      const isSVG = isSVGString(clipboardData)
-      if (isSVG) {
-        const file = svg2File(clipboardData)
-        getImageDataURL(file).then(dataURL => createImageElement(dataURL))
-      }
       // 普通文字
-      else {
+      if (shiftKeyState.value) {
         const string = parseText2Paragraphs(clipboardData)
         createTextElementFromClipboard(string)
+      }
+      else {
+        // 尝试检查是否为图片地址链接
+        if (isValidImgURL(clipboardData)) {
+          createImageElement(clipboardData)
+        }
+        // 尝试检查是否为超链接
+        else if (isValidURL(clipboardData)) {
+          createTextElementFromClipboard(`<a href="${clipboardData}" title="${clipboardData}" target="_blank">${clipboardData}</a>`)
+        }
+        // 尝试检查是否为SVG代码
+        else if (isSVGString(clipboardData)) {
+          const file = svg2File(clipboardData)
+          getImageDataURL(file).then(dataURL => createImageElement(dataURL))
+        }
+        // 普通文字
+        else {
+          const string = parseText2Paragraphs(clipboardData)
+          createTextElementFromClipboard(string)
+        }
       }
     }
   }

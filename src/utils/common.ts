@@ -15,3 +15,17 @@ export const fillDigit = (digit: number, len: number) => {
 export const isPC = () => {
   return !navigator.userAgent.match(/(iPhone|iPod|iPad|Android|Mobile|BlackBerry|Symbian|Windows Phone)/i)
 }
+
+/**
+ * 判断URL字符串
+ */
+export const isValidURL = (url: string) => {
+  return /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i.test(url)
+}
+
+/**
+ * 判断图片URL字符串
+ */
+export const isValidImgURL = (url: string) => {
+  return /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?\.(jpg|jpeg|png|svg|webp)(\?.*)?$/i.test(url)
+}

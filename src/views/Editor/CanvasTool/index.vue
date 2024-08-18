@@ -255,7 +255,7 @@ const toggleNotesPanel = () => {
 
     &.group-btn {
       width: auto;
-      margin-right: 4px;
+      margin-right: 5px;
 
       &:hover {
         background-color: #f3f3f3;
