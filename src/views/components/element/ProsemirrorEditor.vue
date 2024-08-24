@@ -22,6 +22,7 @@ import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/s
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
 import type { TextFormatPainterKeys } from '@/types/edit'
+import { KEYS } from '@/configs/hotkey'
 
 const props = withDefaults(defineProps<{
   elementId: string
@@ -36,7 +37,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'update', payload: string): void
+  (event: 'update', payload: { value: string; ignore: boolean }): void
   (event: 'focus'): void
   (event: 'blur'): void
   (event: 'mousedown', payload: MouseEvent): void
@@ -52,8 +53,12 @@ let editorView: EditorView
 // 聚焦时取消全局快捷键事件
 // 输入文字时同步数据到vuex
 // 点击鼠标和键盘时同步富文本状态到工具栏
-const handleInput = debounce(function() {
-  emit('update', editorView.dom.innerHTML)
+const handleInput = debounce(function(isHanldeHistory = false) {
+  if (props.value.replace(/ style=\"\"/g, '') === editorView.dom.innerHTML.replace(/ style=\"\"/g, '')) return
+  emit('update', {
+    value: editorView.dom.innerHTML,
+    ignore: isHanldeHistory,
+  })
 }, 300, { trailing: true })
 
 const handleFocus = () => {
@@ -74,8 +79,14 @@ const handleClick = debounce(function() {
   mainStore.setRichtextAttrs(attrs)
 }, 30, { trailing: true })
 
-const handleKeydown = () => {
-  handleInput()
+const handleKeydown = (editorView: EditorView, e: KeyboardEvent) => {
+  const { ctrlKey, shiftKey, metaKey } = e
+  const ctrlActive = ctrlKey || shiftKey || metaKey
+  const key = e.key.toUpperCase()
+  
+  const isHanldeHistory = ctrlActive && (key === KEYS.Z || key === KEYS.Y)
+
+  handleInput(isHanldeHistory)
   handleClick()
 }
 
