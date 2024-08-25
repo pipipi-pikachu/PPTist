@@ -63,9 +63,10 @@ pre {
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
-  background-color: #f9f9f9;
+  background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
   background-color: #e1e1e1;
+  border-radius: 5px;
 }
 </style>

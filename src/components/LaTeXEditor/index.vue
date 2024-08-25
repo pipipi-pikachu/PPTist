@@ -163,6 +163,7 @@ const insertSymbol = (latex: string) => {
     height: 100% !important;
     border-color: $borderColor !important;
     padding: 10px !important;
+    font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 
     &:focus {
       box-shadow: none !important;

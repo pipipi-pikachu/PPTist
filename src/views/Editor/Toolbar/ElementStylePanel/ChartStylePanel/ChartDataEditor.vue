@@ -381,6 +381,7 @@ table {
     height: 100%;
     border: 0;
     outline: 0;
+    padding: 0;
     font-size: 13px;
     text-align: center;
     background-color: transparent;

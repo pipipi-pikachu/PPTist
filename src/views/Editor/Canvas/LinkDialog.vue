@@ -121,6 +121,7 @@ const save = () => {
 .thumbnail {
   border: 1px solid rgba($color: $themeColor, $alpha: .15);
   margin-top: 5px;
+  border-radius: $borderRadius;
 }
 .btns {
   margin-top: 20px;
