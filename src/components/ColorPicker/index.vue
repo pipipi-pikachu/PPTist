@@ -224,6 +224,7 @@ const browserEyeDropper = () => {
     hue.value = tColor.toHsl().h
     color.value = tColor.toRgb()
 
+    message.closeAll()
     updateRecentColorsCache()
   }).catch(() => {
     message.closeAll()
