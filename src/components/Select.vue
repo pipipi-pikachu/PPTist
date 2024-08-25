@@ -142,19 +142,19 @@ const handleSelect = (option: SelectOption) => {
   line-height: 32px;
   padding: 0 5px;
   border-radius: $borderRadius;
-  cursor: pointer;
   @include ellipsis-oneline();
 
   &.disabled {
     color: #b7b7b7;
-    cursor: default;
   }
   &:not(.disabled, .selected):hover {
-    background-color: rgba($color: #666, $alpha: .05);
+    background-color: rgba($color: $themeColor, $alpha: .05);
+    cursor: pointer;
   }
 
   &.selected {
-    background-color: rgba($color: $themeColor, $alpha: .05);
+    color: $themeColor;
+    font-weight: 700;
   }
 }
 .icon {

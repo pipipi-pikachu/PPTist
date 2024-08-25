@@ -162,7 +162,7 @@ const startResize = (e: MouseEvent) => {
 .moveable-panel {
   position: fixed;
   background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgba(56, 56, 56, .15);
+  box-shadow: $boxShadow;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
   display: flex;

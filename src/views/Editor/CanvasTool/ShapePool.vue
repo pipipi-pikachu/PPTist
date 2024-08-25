@@ -33,11 +33,11 @@ const selectShape = (shape: ShapePoolItem) => {
   width: 340px;
   max-height: 520px;
   overflow: auto;
-  margin-top: -12px;
-  margin-bottom: -12px;
-  margin-right: -12px;
-  padding-right: 12px;
-  padding-top: 12px;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  margin-right: -10px;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 .category-name {
   width: 100%;

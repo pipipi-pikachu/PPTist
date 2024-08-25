@@ -34,7 +34,7 @@ const props = defineProps<{
 }>()
 
 const style = computed(() => {
-  const MENU_WIDTH = 170
+  const MENU_WIDTH = 180
   const MENU_HEIGHT = 30
   const DIVIDER_HEIGHT = 11
   const PADDING = 5

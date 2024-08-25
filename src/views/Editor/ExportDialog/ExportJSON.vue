@@ -66,6 +66,6 @@ pre {
   background-color: #f9f9f9;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
+  background-color: #e1e1e1;
 }
 </style>

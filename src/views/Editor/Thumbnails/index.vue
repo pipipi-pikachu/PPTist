@@ -406,6 +406,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   position: relative;
 
   .thumbnail {
+    border-radius: $borderRadius;
     outline: 2px solid rgba($color: $themeColor, $alpha: .15);
   }
 
