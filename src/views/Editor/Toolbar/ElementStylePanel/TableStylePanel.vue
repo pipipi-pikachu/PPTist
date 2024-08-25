@@ -4,6 +4,8 @@
       <Select
         style="width: 50%;"
         :value="textAttrs.fontname"
+        search
+        searchLabel="搜索字体"
         @update:value="value => updateTextAttrs({ fontname: value as string })"
         :options="[
           ...availableFonts,
@@ -17,6 +19,8 @@
       <Select
         style="width: 50%;"
         :value="textAttrs.fontsize"
+        search
+        searchLabel="搜索字号"
         @update:value="value => updateTextAttrs({ fontsize: value as string })"
         :options="fontSizeOptions.map(item => ({
           label: item, value: item

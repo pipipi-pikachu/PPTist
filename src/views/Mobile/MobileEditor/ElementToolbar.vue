@@ -46,7 +46,7 @@
           ><IconFontSize />-</Button>
         </ButtonGroup>
         
-        <Divider style="margin: 20px 0;" />
+        <Divider :margin="20" />
 
         <RadioGroup 
           class="row" 
@@ -59,7 +59,7 @@
           <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
         </RadioGroup>
         
-        <Divider style="margin: 20px 0;" />
+        <Divider :margin="20" />
 
         <div class="row-block">
           <div class="label">文字颜色：</div>
@@ -93,7 +93,7 @@
           <Button style="flex: 1;" @click="deleteElement()"><IconDelete class="icon" /> 删除</Button>
         </ButtonGroup>
         
-        <Divider style="margin: 20px 0;" />
+        <Divider :margin="20" />
 
         <ButtonGroup class="row">
           <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
@@ -102,7 +102,7 @@
           <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
         </ButtonGroup>
         
-        <Divider style="margin: 20px 0;" />
+        <Divider :margin="20" />
 
         <ButtonGroup class="row">
           <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft class="icon" /> 左对齐</Button>

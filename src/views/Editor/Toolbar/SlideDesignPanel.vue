@@ -128,6 +128,8 @@
       <Select
         style="width: 60%;"
         :value="theme.fontName"
+        search
+        searchLabel="搜索字体"
         @update:value="value => updateTheme({ fontName: value as string })"
         :options="[
           ...availableFonts,

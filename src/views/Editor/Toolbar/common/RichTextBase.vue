@@ -5,6 +5,8 @@
         class="font-select"
         style="width: 60%;"
         :value="richTextAttrs.fontname"
+        search
+        searchLabel="搜索字体"
         @update:value="value => emitRichTextCommand('fontname', value as string)"
         :options="[
           ...availableFonts,
@@ -18,6 +20,8 @@
       <Select
         style="width: 40%;"
         :value="richTextAttrs.fontsize"
+        search
+        searchLabel="搜索字号"
         @update:value="value => emitRichTextCommand('fontsize', value as string)"
         :options="fontSizeOptions.map(item => ({
           label: item, value: item

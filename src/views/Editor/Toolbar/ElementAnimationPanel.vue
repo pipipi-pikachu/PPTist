@@ -74,7 +74,7 @@
           </div>
 
           <div class="configs" v-if="handleElementAnimation[0]?.elId === element.elId">
-            <Divider style="margin: 16px 0;" />
+            <Divider :margin="16" />
 
             <div class="config-item">
               <div style="width: 35%;">持续时长：</div>

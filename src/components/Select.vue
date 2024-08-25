@@ -21,13 +21,17 @@
     v-else
   >
     <template #content>
+      <template v-if="search">
+        <Input ref="searchInputRef" simple :placeholder="searchLabel" v-model:value="searchKey" :style="{ width: width + 2 + 'px' }" />
+        <Divider :margin="0" />
+      </template>
       <div class="options" :style="{ width: width + 2 + 'px' }">
         <div class="option" 
           :class="{
             'disabled': option.disabled,
             'selected': option.value === value,
           }"
-          v-for="option in options" 
+          v-for="option in showOptions" 
           :key="option.value"
           @click="handleSelect(option)"
         >{{ option.label }}</div>
@@ -47,6 +51,11 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import Popover from './Popover.vue'
+import Input from './Input.vue'
+import Divider from './Divider.vue'
+import { watch } from 'vue';
+import { nextTick } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 interface SelectOption {
   label: string
@@ -58,12 +67,12 @@ const props = withDefaults(defineProps<{
   value: string | number
   options: SelectOption[]
   disabled?: boolean
+  search?: boolean
+  searchLabel?: string
 }>(), {
   disabled: false,
-})
-
-const showLabel = computed(() => {
-  return props.options.find(item => item.value === props.value)?.label || props.value
+  search: false,
+  searchLabel: '搜索',
 })
 
 const emit = defineEmits<{
@@ -72,7 +81,34 @@ const emit = defineEmits<{
 
 const popoverVisible = ref(false)
 const selectRef = ref<HTMLElement>()
+const searchInputRef = ref<InstanceType<typeof Input>>()
 const width = ref(0)
+const searchKey = ref('')
+
+const showLabel = computed(() => {
+  return props.options.find(item => item.value === props.value)?.label || props.value
+})
+
+const showOptions = computed(() => {
+  if (!props.search) return props.options
+  if (!searchKey.value.trim()) return props.options
+  const opts = props.options.filter(item => {
+    return item.label.toLowerCase().indexOf(searchKey.value.toLowerCase()) !== -1
+  })
+  return opts.length ? opts : props.options
+})
+
+watch(popoverVisible, () => {
+  if (popoverVisible.value) {
+    nextTick(() => {
+      if (searchInputRef.value) searchInputRef.value.focus()
+    })
+  }
+  else searchKey.value = ''
+})
+onBeforeUnmount(() => {
+  searchKey.value = ''
+})
 
 const updateWidth = () => {
   if (!selectRef.value) return

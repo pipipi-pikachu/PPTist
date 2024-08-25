@@ -1,7 +1,7 @@
 <template>
   <div :class="['divider', type]"
     :style="{
-      margin: type === 'horizontal' ? `${margin || 24}px 0` : `0 ${margin || 8}px`
+      margin: type === 'horizontal' ? `${margin >= 0 ? margin : 24}px 0` : `0 ${margin >= 0 ? margin : 8}px`
     }"
   ></div>
 </template>
@@ -12,7 +12,7 @@ withDefaults(defineProps<{
   margin?: number
 }>(), {
   type: 'horizontal',
-  margin: 0,
+  margin: -1,
 })
 </script>
 
