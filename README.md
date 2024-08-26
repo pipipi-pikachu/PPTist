@@ -91,6 +91,7 @@ npm run dev
 - Vertical text
 #### Images
 - Crop (custom, shape, aspect ratio)
+- Rounding
 - Filters
 - Tint (mask)
 - Flip

@@ -258,6 +258,10 @@ export interface ImageElementClip {
  * flipV?: 垂直翻转
  * 
  * shadow?: 阴影
+ * 
+ * radius?: 圆角半径
+ * 
+ * colorMask?: 颜色蒙版
  */
 export interface PPTImageElement extends PPTBaseElement {
   type: 'image'
@@ -269,6 +273,7 @@ export interface PPTImageElement extends PPTBaseElement {
   flipH?: boolean
   flipV?: boolean
   shadow?: PPTElementShadow
+  radius?: number
   colorMask?: string
 }
 

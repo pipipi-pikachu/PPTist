@@ -67,8 +67,8 @@ const flipH = computed(() => props.elementInfo.flipH)
 const flipV = computed(() => props.elementInfo.flipV)
 const { flipStyle } = useElementFlip(flipH, flipV)
 
-const clip = computed(() => props.elementInfo.clip)
-const { clipShape, imgPosition } = useClipImage(clip)
+const imageElement = computed(() => props.elementInfo)
+const { clipShape, imgPosition } = useClipImage(imageElement)
 
 const filters = computed(() => props.elementInfo.filters)
 const { filter } = useFilter(filters)

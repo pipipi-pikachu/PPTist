@@ -51,7 +51,7 @@ export const CLIPPATHS: ClipPath = {
     name: '圆角矩形',
     type: ClipPathTypes.RECT,
     radius: '10px',
-    style: 'inset(0 0 0 0 round 10px 10px 10px 10px)',
+    style: 'inset(0 round 10px)',
   },
   ellipse: {
     name: '圆形',

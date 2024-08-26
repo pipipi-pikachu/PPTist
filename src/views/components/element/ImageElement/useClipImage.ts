@@ -1,17 +1,28 @@
 import { computed, type Ref } from 'vue'
 import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
-import type { ImageElementClip } from '@/types/slides'
+import type { PPTImageElement } from '@/types/slides'
 
-export default (clip: Ref<ImageElementClip | undefined>) => {
+export default (element: Ref<PPTImageElement>) => {
   const clipShape = computed(() => {
-    if (!clip.value) return CLIPPATHS.rect
-    const shape = clip.value.shape || ClipPathTypes.RECT
+    let _clipShape = CLIPPATHS.rect
+    
+    if (element.value.clip) {
+      const shape = element.value.clip.shape || ClipPathTypes.RECT
+      _clipShape = CLIPPATHS[shape]
+    }
+    if (_clipShape.radius !== undefined && element.value.radius) {
+      _clipShape = {
+        ..._clipShape,
+        radius: `${element.value.radius}px`,
+        style: `inset(0 round ${element.value.radius}px)`,
+      }
+    }
 
-    return CLIPPATHS[shape]
+    return _clipShape
   })
 
   const imgPosition = computed(() => {
-    if (!clip.value) {
+    if (!element.value.clip) {
       return {
         top: '0',
         left: '0',
@@ -20,7 +31,7 @@ export default (clip: Ref<ImageElementClip | undefined>) => {
       }
     }
 
-    const [start, end] = clip.value.range
+    const [start, end] = element.value.clip.range
 
     const widthScale = (end[0] - start[0]) / 100
     const heightScale = (end[1] - start[1]) / 100

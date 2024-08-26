@@ -40,6 +40,15 @@
         <Button last class="popover-btn" style="width: 100%;"><IconDown /></Button>
       </Popover>
     </ButtonGroup>
+    
+    <div class="row">
+      <div style="width: 40%;">圆角半径：</div>
+      <NumberInput 
+        :value="handleImageElement.radius || 0" 
+        @update:value="value => updateImage({ radius: value })" 
+        style="width: 60%;" 
+      />
+    </div>
 
     <Divider />
     <ElementColorMask />
@@ -78,6 +87,7 @@ import Divider from '@/components/Divider.vue'
 import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import Popover from '@/components/Popover.vue'
+import NumberInput from '@/components/NumberInput.vue'
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
@@ -155,6 +165,12 @@ const getImageElementDataBeforeClip = () => {
   }
 }
 
+const updateImage = (props: Partial<PPTImageElement>) => {
+  if (!handleElement.value) return
+  slidesStore.updateElement({ id: handleElementId.value, props })
+  addHistorySnapshot()
+}
+
 // 预设裁剪
 const presetImageClip = (shape: string, ratio = 0) => {
   const _handleElement = handleElement.value as PPTImageElement
@@ -183,28 +199,22 @@ const presetImageClip = (shape: string, ratio = 0) => {
       const distance = ((1 - imageRatio / ratio) / 2) * 100
       range = [[distance, min], [max - distance, max]]
     }
-    slidesStore.updateElement({
-      id: handleElementId.value,
-      props: {
-        clip: { ..._handleElement.clip, shape, range },
-        left: originLeft + originWidth * (range[0][0] / 100),
-        top: originTop + originHeight * (range[0][1] / 100),
-        width: originWidth * (range[1][0] - range[0][0]) / 100,
-        height: originHeight * (range[1][1] - range[0][1]) / 100,
-      },
+    updateImage({
+      clip: { ..._handleElement.clip, shape, range },
+      left: originLeft + originWidth * (range[0][0] / 100),
+      top: originTop + originHeight * (range[0][1] / 100),
+      width: originWidth * (range[1][0] - range[0][0]) / 100,
+      height: originHeight * (range[1][1] - range[0][1]) / 100,
     })
   }
   // 形状裁剪（保持当前裁剪范围）
   else {
-    slidesStore.updateElement({
-      id: handleElementId.value,
-      props: {
-        clip: { ..._handleElement.clip, shape, range: originClipRange }
-      },
-    })
+    const clipData = { ..._handleElement.clip, shape, range: originClipRange }
+    let props: Partial<PPTImageElement> = { clip: clipData }
+    if (shape === 'rect') props = { clip: clipData, radius: 0 }
+    updateImage(props)
   }
   clipImage()
-  addHistorySnapshot()
 }
 
 // 替换图片（保持当前的样式）
@@ -213,9 +223,8 @@ const replaceImage = (files: FileList) => {
   if (!imageFile) return
   getImageDataURL(imageFile).then(dataURL => {
     const props = { src: dataURL }
-    slidesStore.updateElement({ id: handleElementId.value, props })
+    updateImage(props)
   })
-  addHistorySnapshot()
 }
 
 // 重置图片：清除全部样式
@@ -230,14 +239,11 @@ const resetImage = () => {
       originTop,
     } = getImageElementDataBeforeClip()
 
-    slidesStore.updateElement({
-      id: handleElementId.value,
-      props: {
-        left: originLeft,
-        top: originTop,
-        width: originWidth,
-        height: originHeight,
-      },
+    updateImage({
+      left: originLeft,
+      top: originTop,
+      width: originWidth,
+      height: originHeight,
     })
   }
 

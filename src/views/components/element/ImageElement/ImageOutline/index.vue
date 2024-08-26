@@ -36,6 +36,6 @@ const props = defineProps<{
   elementInfo: PPTImageElement
 }>()
 
-const clip = computed(() => props.elementInfo.clip)
-const { clipShape } = useClipImage(clip)
+const imageElement = computed(() => props.elementInfo)
+const { clipShape } = useClipImage(imageElement)
 </script>
