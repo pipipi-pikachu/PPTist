@@ -213,7 +213,7 @@ export interface ImageOrShapeFlip {
  * 
  * 'opacity'?: 不透明度，默认100（%）
  */
-export type ImageElementFilterKeys = 'blur' | 'brightness' | 'contrast' | 'grayscale' | 'saturate' | 'hue-rotate' | 'opacity'
+export type ImageElementFilterKeys = 'blur' | 'brightness' | 'contrast' | 'grayscale' | 'saturate' | 'hue-rotate' | 'opacity' | 'sepia' | 'invert'
 export interface ImageElementFilters {
   'blur'?: string
   'brightness'?: string
@@ -221,6 +221,8 @@ export interface ImageElementFilters {
   'grayscale'?: string
   'saturate'?: string
   'hue-rotate'?: string
+  'sepia'?: string
+  'invert'?: string
   'opacity'?: string
 }
 
