@@ -22,6 +22,12 @@ import type {
   PPTTextElement,
 } from '@/types/slides'
 
+const convertFontSizePtToPx = (html: string, ratio: number) =>  {
+  return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
+    return `font-size: ${(parseFloat(p1) * ratio).toFixed(1)}px`
+  })
+}
+
 export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
@@ -98,13 +104,11 @@ export default () => {
     
     const reader = new FileReader()
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer, {
-        slideFactor: 75 / 914400,
-        fontsizeFactor: 100 / 98,
-      })
+      const json = await parse(e.target!.result as ArrayBuffer)
 
       const width = json.size.width
-      const scale = VIEWPORT_SIZE / width
+      const ratio = VIEWPORT_SIZE / width
+      const fontsizeRatio = 96 / 72
 
       const slides: Slide[] = []
       for (const item of json.slides) {
@@ -152,10 +156,10 @@ export default () => {
             const originLeft = el.left
             const originTop = el.top
 
-            el.width = el.width * scale
-            el.height = el.height * scale
-            el.left = el.left * scale
-            el.top = el.top * scale
+            el.width = el.width * ratio
+            el.height = el.height * ratio
+            el.left = el.left * ratio
+            el.top = el.top * ratio
   
             if (el.type === 'text') {
               const textEl: PPTTextElement = {
@@ -168,7 +172,7 @@ export default () => {
                 rotate: el.rotate,
                 defaultFontName: theme.value.fontName,
                 defaultColor: theme.value.fontColor,
-                content: el.content,
+                content: convertFontSizePtToPx(el.content, fontsizeRatio),
                 lineHeight: 1,
                 outline: {
                   color: el.borderColor,
@@ -178,7 +182,14 @@ export default () => {
                 fill: el.fillColor,
                 vertical: el.isVertical,
               }
-              if (el.shadow) textEl.shadow = el.shadow
+              if (el.shadow) {
+                textEl.shadow = {
+                  h: el.shadow.h * fontsizeRatio,
+                  v: el.shadow.v * fontsizeRatio,
+                  blur: el.shadow.blur * fontsizeRatio,
+                  color: el.shadow.color,
+                }
+              }
               slide.elements.push(textEl)
             }
             else if (el.type === 'image') {
@@ -257,7 +268,7 @@ export default () => {
                     style: el.borderType === 'solid' ? 'solid' : 'dashed',
                   },
                   text: {
-                    content: el.content,
+                    content: convertFontSizePtToPx(el.content, fontsizeRatio),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: vAlignMap[el.vAlign] || 'middle',
@@ -265,7 +276,14 @@ export default () => {
                   flipH: el.isFlipH,
                   flipV: el.isFlipV,
                 }
-                if (el.shadow) element.shadow = el.shadow
+                if (el.shadow) {
+                  element.shadow = {
+                    h: el.shadow.h * fontsizeRatio,
+                    v: el.shadow.v * fontsizeRatio,
+                    blur: el.shadow.blur * fontsizeRatio,
+                    color: el.shadow.color,
+                  }
+                }
     
                 if (shape) {
                   element.path = shape.path
@@ -310,8 +328,11 @@ export default () => {
                   textDiv.innerHTML = cellData.text
                   const p = textDiv.querySelector('p')
                   const align = p?.style.textAlign || 'left'
-                  const fontsize = p?.style.fontSize || ''
-                  const fontname = p?.style.fontFamily || ''
+
+                  const span = textDiv.querySelector('span')
+                  const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * fontsizeRatio).toFixed(1) + 'px' : ''
+                  const fontname = span?.style.fontFamily || ''
+                  const color = span?.style.color || cellData.fontColor
 
                   rowCells.push({
                     id: nanoid(10),
@@ -323,6 +344,9 @@ export default () => {
                       align: ['left', 'right', 'center'].includes(align) ? (align as 'left' | 'right' | 'center') : 'left',
                       fontsize,
                       fontname,
+                      color,
+                      bold: cellData.fontBold,
+                      backcolor: cellData.fillColor,
                     },
                   })
                   textDiv = null
@@ -343,16 +367,9 @@ export default () => {
                 rotate: 0,
                 data,
                 outline: {
-                  width: 2,
-                  style: 'solid',
-                  color: '#eeece1',
-                },
-                theme: {
-                  color: el.themeColor,
-                  rowHeader: true,
-                  rowFooter: false,
-                  colHeader: false,
-                  colFooter: false,
+                  width: el.borderWidth || 2,
+                  style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                  color: el.borderColor || '#eeece1',
                 },
                 cellMinHeight: 36,
               })
