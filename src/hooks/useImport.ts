@@ -106,9 +106,9 @@ export default () => {
     reader.onload = async e => {
       const json = await parse(e.target!.result as ArrayBuffer)
 
+      const ratioForPt2Px = 96 / 72
       const width = json.size.width
       const ratio = VIEWPORT_SIZE / width
-      const fontsizeRatio = 96 / 72
 
       const slides: Slide[] = []
       for (const item of json.slides) {
@@ -172,7 +172,7 @@ export default () => {
                 rotate: el.rotate,
                 defaultFontName: theme.value.fontName,
                 defaultColor: theme.value.fontColor,
-                content: convertFontSizePtToPx(el.content, fontsizeRatio),
+                content: convertFontSizePtToPx(el.content, ratioForPt2Px),
                 lineHeight: 1,
                 outline: {
                   color: el.borderColor,
@@ -184,9 +184,9 @@ export default () => {
               }
               if (el.shadow) {
                 textEl.shadow = {
-                  h: el.shadow.h * fontsizeRatio,
-                  v: el.shadow.v * fontsizeRatio,
-                  blur: el.shadow.blur * fontsizeRatio,
+                  h: el.shadow.h * ratioForPt2Px,
+                  v: el.shadow.v * ratioForPt2Px,
+                  blur: el.shadow.blur * ratioForPt2Px,
                   color: el.shadow.color,
                 }
               }
@@ -268,7 +268,7 @@ export default () => {
                     style: el.borderType === 'solid' ? 'solid' : 'dashed',
                   },
                   text: {
-                    content: convertFontSizePtToPx(el.content, fontsizeRatio),
+                    content: convertFontSizePtToPx(el.content, ratioForPt2Px),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: vAlignMap[el.vAlign] || 'middle',
@@ -278,9 +278,9 @@ export default () => {
                 }
                 if (el.shadow) {
                   element.shadow = {
-                    h: el.shadow.h * fontsizeRatio,
-                    v: el.shadow.v * fontsizeRatio,
-                    blur: el.shadow.blur * fontsizeRatio,
+                    h: el.shadow.h * ratioForPt2Px,
+                    v: el.shadow.v * ratioForPt2Px,
+                    blur: el.shadow.blur * ratioForPt2Px,
                     color: el.shadow.color,
                   }
                 }
@@ -330,7 +330,7 @@ export default () => {
                   const align = p?.style.textAlign || 'left'
 
                   const span = textDiv.querySelector('span')
-                  const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * fontsizeRatio).toFixed(1) + 'px' : ''
+                  const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * ratioForPt2Px).toFixed(1) + 'px' : ''
                   const fontname = span?.style.fontFamily || ''
                   const color = span?.style.color || cellData.fontColor
 
