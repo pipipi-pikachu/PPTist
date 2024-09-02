@@ -37,9 +37,8 @@
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import { SLIDE_ANIMATIONS } from '@/configs/animation'
 
 import ScreenSlide from './ScreenSlide.vue'
@@ -53,6 +52,7 @@ const props = defineProps<{
 }>()
 
 const { slides, slideIndex } = storeToRefs(useSlidesStore())
+const { viewportSize } = storeToRefs(useMainStore())
 
 const slidesWithTurningMode = computed(() => {
   return slides.value.map(slide => {
@@ -69,7 +69,7 @@ const slidesWithTurningMode = computed(() => {
   })
 })
 
-const scale = computed(() => props.slideWidth / VIEWPORT_SIZE)
+const scale = computed(() => props.slideWidth / viewportSize.value)
 provide(injectKeySlideScale, scale)
 </script>
 

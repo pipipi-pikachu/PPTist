@@ -47,7 +47,6 @@ import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import type { AlignmentLineProps } from '@/types/edit'
 import type { Mode } from '@/types/mobile'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 import useDragElement from '@/views/Editor/Canvas/hooks/useDragElement'
 import useScaleElement from '@/views/Editor/Canvas/hooks/useScaleElement'
@@ -67,7 +66,7 @@ defineProps<{
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
 const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
-const { activeElementIdList, handleElement } = storeToRefs(mainStore)
+const { activeElementIdList, handleElement, viewportSize } = storeToRefs(mainStore)
 
 const contentRef = ref<HTMLElement>()
 const viewportRef = ref<HTMLElement>()
@@ -83,8 +82,8 @@ const canvasScale = computed(() => {
   const contentheight = contentRef.value.clientHeight
 
   const contentRatio = contentheight / contentWidth
-  if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / VIEWPORT_SIZE
-  return (contentheight - 20) / viewportRatio.value / VIEWPORT_SIZE
+  if (contentRatio >= viewportRatio.value) return (contentWidth - 20) / viewportSize.value
+  return (contentheight - 20) / viewportRatio.value / viewportSize.value
 })
 
 onMounted(() => {
@@ -93,8 +92,8 @@ onMounted(() => {
 })
 
 const viewportStyles = computed(() => ({
-  width: VIEWPORT_SIZE * canvasScale.value + 'px',
-  height: VIEWPORT_SIZE * viewportRatio.value * canvasScale.value + 'px',
+  width: viewportSize.value * canvasScale.value + 'px',
+  height: viewportSize.value * viewportRatio.value * canvasScale.value + 'px',
 }))
 
 const elementList = ref<PPTElement[]>([])

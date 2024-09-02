@@ -45,7 +45,6 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTAudioElement } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 
 import AudioPlayer from './AudioPlayer.vue'
 
@@ -55,15 +54,15 @@ const props = defineProps<{
   contextmenus: () => ContextmenuItem[] | null
 }>()
 
-const { canvasScale, handleElementId } = storeToRefs(useMainStore())
+const { canvasScale, handleElementId, viewportSize } = storeToRefs(useMainStore())
 const { viewportRatio } = storeToRefs(useSlidesStore())
 
 const audioIconSize = computed(() => {
   return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'
 })
 const audioPlayerPosition = computed(() => {
-  const canvasWidth = VIEWPORT_SIZE
-  const canvasHeight = VIEWPORT_SIZE * viewportRatio.value
+  const canvasWidth = viewportSize.value
+  const canvasHeight = viewportSize.value * viewportRatio.value
 
   const audioWidth = 280 / canvasScale.value
   const audioHeight = 50 / canvasScale.value

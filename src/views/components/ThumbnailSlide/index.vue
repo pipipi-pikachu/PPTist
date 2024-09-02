@@ -8,8 +8,8 @@
     <div 
       class="elements"
       :style="{
-        width: VIEWPORT_SIZE + 'px',
-        height: VIEWPORT_SIZE * viewportRatio + 'px',
+        width: viewportSize + 'px',
+        height: viewportSize * viewportRatio + 'px',
         transform: `scale(${scale})`,
       }"
       v-if="visible"
@@ -29,10 +29,9 @@
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
-import { VIEWPORT_SIZE } from '@/configs/canvas'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 import ThumbnailElement from './ThumbnailElement.vue'
@@ -46,11 +45,12 @@ const props = withDefaults(defineProps<{
 })
 
 const { viewportRatio } = storeToRefs(useSlidesStore())
+const { viewportSize } = storeToRefs(useMainStore())
 
 const background = computed(() => props.slide.background)
 const { backgroundStyle } = useSlideBackgroundStyle(background)
 
-const scale = computed(() => props.size / VIEWPORT_SIZE)
+const scale = computed(() => props.size / viewportSize.value)
 provide(injectKeySlideScale, scale)
 </script>
 
