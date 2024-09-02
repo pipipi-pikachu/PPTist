@@ -11,9 +11,10 @@
         class="ruler-marker-100" 
         :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
         v-for="marker in 20" 
-        :key="`marker-100-${marker}`"
+        :key="`h-marker-100-${marker}`"
+        :style="{ width: markerSize + 'px' }"
       >
-        <span>{{ marker * 100 }}</span>
+        <span v-if="marker * 100 <= viewportSize">{{ marker * 100 }}</span>
       </div>
 
       <div class="range" 
@@ -35,10 +36,10 @@
         class="ruler-marker-100" 
         :class="{ 'hide': markerSize < 36, 'omit': markerSize < 72 }"
         v-for="marker in 20" 
-        :key="marker" 
+        :key="`v-marker-100-${marker}`"
         :style="{ height: markerSize + 'px' }"
       >
-        <span>{{ marker * 100 }}</span>
+        <span v-if="marker * 100 <= viewportSize * viewportRatio">{{ marker * 100 }}</span>
       </div>
 
       <div class="range" 
@@ -55,7 +56,7 @@
 <script lang="ts" setup>
 import { watchEffect, computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import { getElementListRange } from '@/utils/element'
 import type { PPTElement } from '@/types/slides'
 
@@ -71,7 +72,8 @@ const props = defineProps<{
   elementList: PPTElement[]
 }>()
 
-const { canvasScale, activeElementIdList } = storeToRefs(useMainStore())
+const { canvasScale, activeElementIdList, viewportSize } = storeToRefs(useMainStore())
+const { viewportRatio } = storeToRefs(useSlidesStore())
 
 const elementListRange = ref<null | ReturnType<typeof getElementListRange>>(null)
 
@@ -82,7 +84,7 @@ watchEffect(() => {
 })
 
 const markerSize = computed(() => {
-  return props.viewportStyles.width * canvasScale.value / 10
+  return props.viewportStyles.width * canvasScale.value / (viewportSize.value / 100)
 })
 </script>
 
@@ -111,7 +113,6 @@ const markerSize = computed(() => {
 
   .ruler-marker-100 {
     height: 100%;
-    width: 10%;
     line-height: 20px;
     text-align: right;
     flex-shrink: 0;
