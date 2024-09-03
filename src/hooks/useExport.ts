@@ -1,11 +1,11 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
-import { useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { type AST, toAST } from '@/utils/htmlParser'
@@ -13,9 +13,6 @@ import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
 import message from '@/utils/message'
-
-const INCH_PX_RATIO = 100
-const PT_PX_RATIO = 0.75
 
 interface ExportImageConfig {
   quality: number
@@ -26,6 +23,14 @@ interface ExportImageConfig {
 export default () => {
   const slidesStore = useSlidesStore()
   const { slides, theme, viewportRatio, title } = storeToRefs(slidesStore)
+  const { viewportSize } = storeToRefs(useMainStore())
+
+  const ratioPx2Inch = computed(() => {
+    return 96 * (viewportSize.value / 960)
+  })
+  const ratioPx2Pt = computed(() => {
+    return 96 / 72 * (viewportSize.value / 960)
+  })
 
   const exporting = ref(false)
 
@@ -152,7 +157,7 @@ export default () => {
           const options: pptxgen.TextPropsOptions = {}
 
           if (styleObj['font-size']) {
-            options.fontSize = parseInt(styleObj['font-size']) * PT_PX_RATIO
+            options.fontSize = parseInt(styleObj['font-size']) / ratioPx2Pt.value
           }
           if (styleObj['color']) {
             options.color = formatColor(styleObj['color']).color
@@ -232,40 +237,40 @@ export default () => {
       }
       else if (point.type === 'M') {
         return {
-          x: point.x / INCH_PX_RATIO * scale.x,
-          y: point.y / INCH_PX_RATIO * scale.y,
+          x: point.x / ratioPx2Inch.value * scale.x,
+          y: point.y / ratioPx2Inch.value * scale.y,
           moveTo: true,
         }
       }
       else if (point.curve) {
         if (point.curve.type === 'cubic') {
           return {
-            x: point.x / INCH_PX_RATIO * scale.x,
-            y: point.y / INCH_PX_RATIO * scale.y,
+            x: point.x / ratioPx2Inch.value * scale.x,
+            y: point.y / ratioPx2Inch.value * scale.y,
             curve: {
               type: 'cubic',
-              x1: (point.curve.x1 as number) / INCH_PX_RATIO * scale.x,
-              y1: (point.curve.y1 as number) / INCH_PX_RATIO * scale.y,
-              x2: (point.curve.x2 as number) / INCH_PX_RATIO * scale.x,
-              y2: (point.curve.y2 as number) / INCH_PX_RATIO * scale.y,
+              x1: (point.curve.x1 as number) / ratioPx2Inch.value * scale.x,
+              y1: (point.curve.y1 as number) / ratioPx2Inch.value * scale.y,
+              x2: (point.curve.x2 as number) / ratioPx2Inch.value * scale.x,
+              y2: (point.curve.y2 as number) / ratioPx2Inch.value * scale.y,
             },
           }
         }
         else if (point.curve.type === 'quadratic') {
           return {
-            x: point.x / INCH_PX_RATIO * scale.x,
-            y: point.y / INCH_PX_RATIO * scale.y,
+            x: point.x / ratioPx2Inch.value * scale.x,
+            y: point.y / ratioPx2Inch.value * scale.y,
             curve: {
               type: 'quadratic',
-              x1: (point.curve.x1 as number) / INCH_PX_RATIO * scale.x,
-              y1: (point.curve.y1 as number) / INCH_PX_RATIO * scale.y,
+              x1: (point.curve.x1 as number) / ratioPx2Inch.value * scale.x,
+              y1: (point.curve.y1 as number) / ratioPx2Inch.value * scale.y,
             },
           }
         }
       }
       return {
-        x: point.x / INCH_PX_RATIO * scale.x,
-        y: point.y / INCH_PX_RATIO * scale.y,
+        x: point.x / ratioPx2Inch.value * scale.x,
+        y: point.y / ratioPx2Inch.value * scale.y,
       }
     })
   }
@@ -323,7 +328,7 @@ export default () => {
       type: 'outer',
       color: c.color.replace('#', ''),
       opacity: c.alpha,
-      blur: shadow.blur * PT_PX_RATIO,
+      blur: shadow.blur / ratioPx2Pt.value,
       offset,
       angle,
     }
@@ -335,7 +340,7 @@ export default () => {
     return {
       color: c.color, 
       transparency: (1 - c.alpha) * 100,
-      width: (outline.width || 1) * PT_PX_RATIO, 
+      width: (outline.width || 1) / ratioPx2Pt.value, 
       dashType: outline.style === 'solid' ? 'solid' : 'dash',
     }
   }
@@ -414,21 +419,21 @@ export default () => {
           const textProps = formatHTML(el.content)
 
           const options: pptxgen.TextPropsOptions = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
-            fontSize: 20 * PT_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
+            fontSize: 20 / ratioPx2Pt.value,
             fontFace: '微软雅黑',
             color: '#000000',
             valign: 'top',
-            margin: 10 * PT_PX_RATIO,
-            paraSpaceBefore: 5 * PT_PX_RATIO,
+            margin: 10 / ratioPx2Pt.value,
+            paraSpaceBefore: 5 / ratioPx2Pt.value,
             lineSpacingMultiple: 1.5 / 1.25,
             autoFit: true,
           }
           if (el.rotate) options.rotate = el.rotate
-          if (el.wordSpace) options.charSpacing = el.wordSpace * PT_PX_RATIO
+          if (el.wordSpace) options.charSpacing = el.wordSpace / ratioPx2Pt.value
           if (el.lineHeight) options.lineSpacingMultiple = el.lineHeight / 1.25
           if (el.fill) {
             const c = formatColor(el.fill)
@@ -440,7 +445,7 @@ export default () => {
           if (el.shadow) options.shadow = getShadowOption(el.shadow)
           if (el.outline?.width) options.line = getOutlineOption(el.outline)
           if (el.opacity !== undefined) options.transparency = (1 - el.opacity) * 100
-          if (el.paragraphSpace !== undefined) options.paraSpaceBefore = el.paragraphSpace * PT_PX_RATIO
+          if (el.paragraphSpace !== undefined) options.paraSpaceBefore = el.paragraphSpace / ratioPx2Pt.value
           if (el.vertical) options.vert = 'eaVert'
 
           pptxSlide.addText(textProps, options)
@@ -448,10 +453,10 @@ export default () => {
 
         else if (el.type === 'image') {
           const options: pptxgen.ImageProps = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
           }
           if (isBase64Image(el.src)) options.data = el.src
           else options.path = el.src
@@ -471,18 +476,18 @@ export default () => {
             const [startX, startY] = start
             const [endX, endY] = end
 
-            const originW = el.width / ((endX - startX) / INCH_PX_RATIO)
-            const originH = el.height / ((endY - startY) / INCH_PX_RATIO)
+            const originW = el.width / ((endX - startX) / ratioPx2Inch.value)
+            const originH = el.height / ((endY - startY) / ratioPx2Inch.value)
 
-            options.w = originW / INCH_PX_RATIO
-            options.h = originH / INCH_PX_RATIO
+            options.w = originW / ratioPx2Inch.value
+            options.h = originH / ratioPx2Inch.value
 
             options.sizing = {
               type: 'crop',
-              x: startX / INCH_PX_RATIO * originW / INCH_PX_RATIO,
-              y: startY / INCH_PX_RATIO * originH / INCH_PX_RATIO,
-              w: (endX - startX) / INCH_PX_RATIO * originW / INCH_PX_RATIO,
-              h: (endY - startY) / INCH_PX_RATIO * originH / INCH_PX_RATIO,
+              x: startX / ratioPx2Inch.value * originW / ratioPx2Inch.value,
+              y: startY / ratioPx2Inch.value * originH / ratioPx2Inch.value,
+              w: (endX - startX) / ratioPx2Inch.value * originW / ratioPx2Inch.value,
+              h: (endY - startY) / ratioPx2Inch.value * originH / ratioPx2Inch.value,
             }
           }
 
@@ -497,10 +502,10 @@ export default () => {
 
             const options: pptxgen.ImageProps = {
               data: base64SVG,
-              x: el.left / INCH_PX_RATIO,
-              y: el.top / INCH_PX_RATIO,
-              w: el.width / INCH_PX_RATIO,
-              h: el.height / INCH_PX_RATIO,
+              x: el.left / ratioPx2Inch.value,
+              y: el.top / ratioPx2Inch.value,
+              w: el.width / ratioPx2Inch.value,
+              h: el.height / ratioPx2Inch.value,
             }
             if (el.rotate) options.rotate = el.rotate
             if (el.link) {
@@ -528,10 +533,10 @@ export default () => {
             const opacity = el.opacity === undefined ? 1 : el.opacity
   
             const options: pptxgen.ShapeProps = {
-              x: el.left / INCH_PX_RATIO,
-              y: el.top / INCH_PX_RATIO,
-              w: el.width / INCH_PX_RATIO,
-              h: el.height / INCH_PX_RATIO,
+              x: el.left / ratioPx2Inch.value,
+              y: el.top / ratioPx2Inch.value,
+              w: el.width / ratioPx2Inch.value,
+              h: el.height / ratioPx2Inch.value,
               fill: { color: fillColor.color, transparency: (1 - fillColor.alpha * opacity) * 100 },
               points,
             }
@@ -551,14 +556,14 @@ export default () => {
             const textProps = formatHTML(el.text.content)
 
             const options: pptxgen.TextPropsOptions = {
-              x: el.left / INCH_PX_RATIO,
-              y: el.top / INCH_PX_RATIO,
-              w: el.width / INCH_PX_RATIO,
-              h: el.height / INCH_PX_RATIO,
-              fontSize: 20 * PT_PX_RATIO,
+              x: el.left / ratioPx2Inch.value,
+              y: el.top / ratioPx2Inch.value,
+              w: el.width / ratioPx2Inch.value,
+              h: el.height / ratioPx2Inch.value,
+              fontSize: 20 / ratioPx2Pt.value,
               fontFace: '微软雅黑',
               color: '#000000',
-              paraSpaceBefore: 5 * PT_PX_RATIO,
+              paraSpaceBefore: 5 / ratioPx2Pt.value,
               valign: el.text.align,
             }
             if (el.rotate) options.rotate = el.rotate
@@ -576,14 +581,14 @@ export default () => {
           const c = formatColor(el.color)
 
           const options: pptxgen.ShapeProps = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: (maxX - minX) / INCH_PX_RATIO,
-            h: (maxY - minY) / INCH_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: (maxX - minX) / ratioPx2Inch.value,
+            h: (maxY - minY) / ratioPx2Inch.value,
             line: {
               color: c.color, 
               transparency: (1 - c.alpha) * 100,
-              width: el.width * PT_PX_RATIO, 
+              width: el.width / ratioPx2Pt.value, 
               dashType: el.style === 'solid' ? 'solid' : 'dash',
               beginArrowType: el.points[0] ? 'arrow' : 'none',
               endArrowType: el.points[1] ? 'arrow' : 'none',
@@ -616,10 +621,10 @@ export default () => {
           }
           
           const options: pptxgen.IChartOpts = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
             chartColors: el.chartType === 'pie' ? chartColors : chartColors.slice(0, el.data.series.length),
           }
 
@@ -628,7 +633,7 @@ export default () => {
             options.showLegend = true
             options.legendPos = el.legend === 'top' ? 't' : 'b'
             options.legendColor = formatColor(el.gridColor || '#000000').color
-            options.legendFontSize = 14 * PT_PX_RATIO
+            options.legendFontSize = 14 / ratioPx2Pt.value
           }
 
           let type = pptx.ChartType.bar
@@ -699,7 +704,7 @@ export default () => {
                 align: cell.style?.align || 'left',
                 valign: 'middle',
                 fontFace: cell.style?.fontname || '微软雅黑',
-                fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) * PT_PX_RATIO,
+                fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) / ratioPx2Pt.value,
               }
               if (theme && themeColor) {
                 let c: FormatColor
@@ -730,17 +735,17 @@ export default () => {
           }
 
           const options: pptxgen.TableProps = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
-            colW: el.colWidths.map(item => el.width * item / INCH_PX_RATIO),
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
+            colW: el.colWidths.map(item => el.width * item / ratioPx2Inch.value),
           }
           if (el.theme) options.fill = { color: '#ffffff' }
           if (el.outline.width && el.outline.color) {
             options.border = {
               type: el.outline.style === 'solid' ? 'solid' : 'dash',
-              pt: el.outline.width * PT_PX_RATIO,
+              pt: el.outline.width / ratioPx2Pt.value,
               color: formatColor(el.outline.color).color,
             }
           }
@@ -754,10 +759,10 @@ export default () => {
 
           const options: pptxgen.ImageProps = {
             data: base64SVG,
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
           }
           if (el.link) {
             const linkOption = getLinkOption(el.link)
@@ -769,10 +774,10 @@ export default () => {
         
         else if (!ignoreMedia && (el.type === 'video' || el.type === 'audio')) {
           const options: pptxgen.MediaProps = {
-            x: el.left / INCH_PX_RATIO,
-            y: el.top / INCH_PX_RATIO,
-            w: el.width / INCH_PX_RATIO,
-            h: el.height / INCH_PX_RATIO,
+            x: el.left / ratioPx2Inch.value,
+            y: el.top / ratioPx2Inch.value,
+            w: el.width / ratioPx2Inch.value,
+            h: el.height / ratioPx2Inch.value,
             path: el.src,
             type: el.type,
           }
