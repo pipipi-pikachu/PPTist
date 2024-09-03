@@ -63,6 +63,7 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
   // 可视区域缩放或比例变化时，重置/更新可视区域的位置
   watch(canvasPercentage, setViewportPosition)
   watch(viewportRatio, initViewportPosition)
+  watch(viewportSize, initViewportPosition)
 
   // 画布拖拽状态改变（复原）时，重置可视区域的位置
   watch(canvasDragged, () => {

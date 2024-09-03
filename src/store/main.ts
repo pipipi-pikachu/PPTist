@@ -117,6 +117,10 @@ export const useMainStore = defineStore('main', {
       this.canvasPercentage = percentage
     },
   
+    setViewportSize(size: number) {
+      this.viewportSize = size
+    },
+  
     setCanvasScale(scale: number) {
       this.canvasScale = scale
     },

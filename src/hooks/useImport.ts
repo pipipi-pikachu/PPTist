@@ -31,7 +31,8 @@ export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
 
-  const { viewportSize } = storeToRefs(useMainStore())
+  const mainStore = useMainStore()
+  const { viewportSize } = storeToRefs(mainStore)
 
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
@@ -107,9 +108,10 @@ export default () => {
     reader.onload = async e => {
       const json = await parse(e.target!.result as ArrayBuffer)
 
-      const ratioForPt2Px = 96 / 72
+      const ratio = 96 / 72
       const width = json.size.width
-      const ratio = viewportSize.value / width
+
+      mainStore.setViewportSize(width * ratio)
 
       const slides: Slide[] = []
       for (const item of json.slides) {
@@ -173,7 +175,7 @@ export default () => {
                 rotate: el.rotate,
                 defaultFontName: theme.value.fontName,
                 defaultColor: theme.value.fontColor,
-                content: convertFontSizePtToPx(el.content, ratioForPt2Px),
+                content: convertFontSizePtToPx(el.content, ratio),
                 lineHeight: 1,
                 outline: {
                   color: el.borderColor,
@@ -185,9 +187,9 @@ export default () => {
               }
               if (el.shadow) {
                 textEl.shadow = {
-                  h: el.shadow.h * ratioForPt2Px,
-                  v: el.shadow.v * ratioForPt2Px,
-                  blur: el.shadow.blur * ratioForPt2Px,
+                  h: el.shadow.h * ratio,
+                  v: el.shadow.v * ratio,
+                  blur: el.shadow.blur * ratio,
                   color: el.shadow.color,
                 }
               }
@@ -269,7 +271,7 @@ export default () => {
                     style: el.borderType === 'solid' ? 'solid' : 'dashed',
                   },
                   text: {
-                    content: convertFontSizePtToPx(el.content, ratioForPt2Px),
+                    content: convertFontSizePtToPx(el.content, ratio),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: vAlignMap[el.vAlign] || 'middle',
@@ -279,9 +281,9 @@ export default () => {
                 }
                 if (el.shadow) {
                   element.shadow = {
-                    h: el.shadow.h * ratioForPt2Px,
-                    v: el.shadow.v * ratioForPt2Px,
-                    blur: el.shadow.blur * ratioForPt2Px,
+                    h: el.shadow.h * ratio,
+                    v: el.shadow.v * ratio,
+                    blur: el.shadow.blur * ratio,
                     color: el.shadow.color,
                   }
                 }
@@ -331,7 +333,7 @@ export default () => {
                   const align = p?.style.textAlign || 'left'
 
                   const span = textDiv.querySelector('span')
-                  const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * ratioForPt2Px).toFixed(1) + 'px' : ''
+                  const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * ratio).toFixed(1) + 'px' : ''
                   const fontname = span?.style.fontFamily || ''
                   const color = span?.style.color || cellData.fontColor
 
@@ -455,8 +457,7 @@ export default () => {
         parseElements(item.elements)
         slides.push(slide)
       }
-      if (isEmptySlide.value) slidesStore.setSlides(slides)
-      else addSlidesFromData(slides)
+      slidesStore.setSlides(slides)
       exporting.value = false
     }
     reader.readAsArrayBuffer(file)
