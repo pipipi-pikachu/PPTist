@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import type { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { type AST, toAST } from '@/utils/htmlParser'
@@ -22,8 +22,7 @@ interface ExportImageConfig {
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, theme, viewportRatio, title } = storeToRefs(slidesStore)
-  const { viewportSize } = storeToRefs(useMainStore())
+  const { slides, theme, viewportRatio, title, viewportSize } = storeToRefs(slidesStore)
 
   const ratioPx2Inch = computed(() => {
     return 96 * (viewportSize.value / 960)

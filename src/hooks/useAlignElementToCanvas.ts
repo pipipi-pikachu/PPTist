@@ -7,8 +7,8 @@ import useHistorySnapshot from './useHistorySnapshot'
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeElementList, viewportSize } = storeToRefs(useMainStore())
-  const { currentSlide, viewportRatio } = storeToRefs(slidesStore)
+  const { activeElementIdList, activeElementList } = storeToRefs(useMainStore())
+  const { currentSlide, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 

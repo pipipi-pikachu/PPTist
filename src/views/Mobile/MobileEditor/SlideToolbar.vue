@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useCreateElement from '@/hooks/useCreateElement'
 import { getImageDataURL } from '@/utils/image'
@@ -44,8 +44,7 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 
 const slidesStore = useSlidesStore()
-const { viewportRatio, currentSlide } = storeToRefs(slidesStore)
-const { viewportSize } = storeToRefs(useMainStore())
+const { viewportRatio, currentSlide, viewportSize } = storeToRefs(slidesStore)
 
 const { createSlide, copyAndPasteSlide, deleteSlide, } = useSlideHandler()
 const { createTextElement, createImageElement, createShapeElement } = useCreateElement()

@@ -27,6 +27,7 @@ export interface SlidesState {
   theme: SlideTheme
   slides: Slide[]
   slideIndex: number
+  viewportSize: number
   viewportRatio: number
 }
 
@@ -36,6 +37,7 @@ export const useSlidesStore = defineStore('slides', {
     theme: theme, // 主题样式
     slides: slides, // 幻灯片页面数据
     slideIndex: 0, // 当前页面索引
+    viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
   }),
 
@@ -114,6 +116,10 @@ export const useSlidesStore = defineStore('slides', {
 
     setTheme(themeProps: Partial<SlideTheme>) {
       this.theme = { ...this.theme, ...themeProps }
+    },
+  
+    setViewportSize(size: number) {
+      this.viewportSize = size
     },
   
     setViewportRatio(viewportRatio: number) {

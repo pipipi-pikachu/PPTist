@@ -20,8 +20,8 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { SlideBackground } from '@/types/slides'
 
-const { canvasScale, gridLineSize, viewportSize } = storeToRefs(useMainStore())
-const { currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
+const { canvasScale, gridLineSize } = storeToRefs(useMainStore())
+const { currentSlide, viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const background = computed<SlideBackground | undefined>(() => currentSlide.value?.background)
 

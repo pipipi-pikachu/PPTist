@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 import { computed, inject, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import type { PPTAudioElement } from '@/types/slides'
 import { injectKeySlideId, injectKeySlideScale } from '@/types/injectKey'
 
@@ -48,8 +48,7 @@ const props = defineProps<{
   elementInfo: PPTAudioElement
 }>()
 
-const { viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
-const { viewportSize } = storeToRefs(useMainStore())
+const { viewportRatio, currentSlide, viewportSize } = storeToRefs(useSlidesStore())
 
 const scale = inject(injectKeySlideScale) || ref(1)
 const slideId = inject(injectKeySlideId) || ref('')

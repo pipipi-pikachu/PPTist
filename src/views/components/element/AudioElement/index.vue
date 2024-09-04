@@ -54,8 +54,8 @@ const props = defineProps<{
   contextmenus: () => ContextmenuItem[] | null
 }>()
 
-const { canvasScale, handleElementId, viewportSize } = storeToRefs(useMainStore())
-const { viewportRatio } = storeToRefs(useSlidesStore())
+const { canvasScale, handleElementId } = storeToRefs(useMainStore())
+const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const audioIconSize = computed(() => {
   return Math.min(props.elementInfo.width, props.elementInfo.height) + 'px'

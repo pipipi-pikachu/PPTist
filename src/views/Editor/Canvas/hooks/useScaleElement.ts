@@ -99,8 +99,8 @@ export default (
 ) => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeGroupElementId, viewportSize } = storeToRefs(mainStore)
-  const { viewportRatio } = storeToRefs(slidesStore)
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(mainStore)
+  const { viewportRatio, viewportSize } = storeToRefs(slidesStore)
   const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   const { addHistorySnapshot } = useHistorySnapshot()

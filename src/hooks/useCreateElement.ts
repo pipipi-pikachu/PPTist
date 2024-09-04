@@ -30,8 +30,8 @@ interface CreateTextData {
 export default () => {
   const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
-  const { creatingElement, viewportSize } = storeToRefs(mainStore)
-  const { theme, viewportRatio } = storeToRefs(slidesStore)
+  const { creatingElement } = storeToRefs(mainStore)
+  const { theme, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 

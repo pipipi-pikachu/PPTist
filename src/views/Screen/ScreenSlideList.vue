@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
 import { SLIDE_ANIMATIONS } from '@/configs/animation'
 
@@ -51,8 +51,7 @@ const props = defineProps<{
   manualExitFullscreen: () => void
 }>()
 
-const { slides, slideIndex } = storeToRefs(useSlidesStore())
-const { viewportSize } = storeToRefs(useMainStore())
+const { slides, slideIndex, viewportSize } = storeToRefs(useSlidesStore())
 
 const slidesWithTurningMode = computed(() => {
   return slides.value.map(slide => {

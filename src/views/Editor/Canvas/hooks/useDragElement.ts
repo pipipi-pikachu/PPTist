@@ -12,9 +12,9 @@ export default (
   canvasScale: Ref<number>,
 ) => {
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeGroupElementId, viewportSize } = storeToRefs(useMainStore())
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(useMainStore())
   const { shiftKeyState } = storeToRefs(useKeyboardStore())
-  const { viewportRatio } = storeToRefs(slidesStore)
+  const { viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 

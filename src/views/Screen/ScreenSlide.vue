@@ -23,7 +23,7 @@
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
 import { injectKeySlideId } from '@/types/injectKey'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -38,8 +38,7 @@ const props = defineProps<{
   manualExitFullscreen: () => void
 }>()
 
-const { viewportRatio } = storeToRefs(useSlidesStore())
-const { viewportSize } = storeToRefs(useMainStore())
+const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const background = computed(() => props.slide.background)
 const { backgroundStyle } = useSlideBackgroundStyle(background)

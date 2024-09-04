@@ -65,8 +65,8 @@ defineProps<{
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
-const { slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
-const { activeElementIdList, handleElement, viewportSize } = storeToRefs(mainStore)
+const { slideIndex, currentSlide, viewportRatio, viewportSize } = storeToRefs(slidesStore)
+const { activeElementIdList, handleElement } = storeToRefs(mainStore)
 
 const contentRef = ref<HTMLElement>()
 const viewportRef = ref<HTMLElement>()

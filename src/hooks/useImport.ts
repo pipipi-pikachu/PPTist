@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { parse, type Shape, type Element, type ChartItem } from 'pptxtojson'
 import { nanoid } from 'nanoid'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
@@ -30,9 +30,6 @@ const convertFontSizePtToPx = (html: string, ratio: number) =>  {
 export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
-
-  const mainStore = useMainStore()
-  const { viewportSize } = storeToRefs(mainStore)
 
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
@@ -111,7 +108,7 @@ export default () => {
       const ratio = 96 / 72
       const width = json.size.width
 
-      mainStore.setViewportSize(width * ratio)
+      slidesStore.setViewportSize(width * ratio)
 
       const slides: Slide[] = []
       for (const item of json.slides) {

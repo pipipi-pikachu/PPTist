@@ -7,8 +7,8 @@ export default (canvasRef: Ref<HTMLElement | undefined>) => {
   const viewportTop = ref(0)
 
   const mainStore = useMainStore()
-  const { canvasPercentage, canvasDragged, viewportSize } = storeToRefs(mainStore)
-  const { viewportRatio } = storeToRefs(useSlidesStore())
+  const { canvasPercentage, canvasDragged } = storeToRefs(mainStore)
+  const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
   // 初始化画布可视区域的位置
   const initViewportPosition = () => {

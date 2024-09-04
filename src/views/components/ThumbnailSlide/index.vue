@@ -29,7 +29,7 @@
 <script lang="ts" setup>
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
 import { injectKeySlideScale } from '@/types/injectKey'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
@@ -44,8 +44,7 @@ const props = withDefaults(defineProps<{
   visible: true,
 })
 
-const { viewportRatio } = storeToRefs(useSlidesStore())
-const { viewportSize } = storeToRefs(useMainStore())
+const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const background = computed(() => props.slide.background)
 const { backgroundStyle } = useSlideBackgroundStyle(background)

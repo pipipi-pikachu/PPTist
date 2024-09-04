@@ -72,8 +72,8 @@ const props = defineProps<{
   elementList: PPTElement[]
 }>()
 
-const { canvasScale, activeElementIdList, viewportSize } = storeToRefs(useMainStore())
-const { viewportRatio } = storeToRefs(useSlidesStore())
+const { canvasScale, activeElementIdList } = storeToRefs(useMainStore())
+const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
 
 const elementListRange = ref<null | ReturnType<typeof getElementListRange>>(null)
 
