@@ -8,6 +8,7 @@ import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/s
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import message from '@/utils/message'
+import { getSvgPathRange } from '@/utils/svgPathParser'
 import type {
   Slide,
   TableCellStyle,
@@ -304,7 +305,9 @@ export default () => {
                 if (el.shapType === 'custom') {
                   element.special = true
                   element.path = el.path!
-                  element.viewBox = [originWidth, originHeight]
+
+                  const { maxX, maxY } = getSvgPathRange(element.path)
+                  element.viewBox = [maxX || originWidth, maxY || originHeight]
                 }
     
                 slide.elements.push(element)
