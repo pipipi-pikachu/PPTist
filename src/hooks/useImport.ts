@@ -45,7 +45,10 @@ export default () => {
     reader.addEventListener('load', () => {
       try {
         const slides = JSON.parse(decrypt(reader.result as string))
-        if (cover) slidesStore.setSlides(slides)
+        if (cover) {
+          slidesStore.updateSlideIndex(0)
+          slidesStore.setSlides(slides)
+        }
         else if (isEmptySlide.value) slidesStore.setSlides(slides)
         else addSlidesFromData(slides)
       }
@@ -303,14 +306,17 @@ export default () => {
                   }
                 }
                 if (el.shapType === 'custom') {
-                  element.special = true
-                  element.path = el.path!
-
-                  const { maxX, maxY } = getSvgPathRange(element.path)
-                  element.viewBox = [maxX || originWidth, maxY || originHeight]
+                  if (el.path!.indexOf('NaN') !== -1) element.path = ''
+                  else {
+                    element.special = true
+                    element.path = el.path!
+  
+                    const { maxX, maxY } = getSvgPathRange(element.path)
+                    element.viewBox = [maxX || originWidth, maxY || originHeight]
+                  }
                 }
     
-                slide.elements.push(element)
+                if (element.path) slide.elements.push(element)
               }
             }
             else if (el.type === 'table') {
@@ -457,6 +463,7 @@ export default () => {
         parseElements(item.elements)
         slides.push(slide)
       }
+      slidesStore.updateSlideIndex(0)
       slidesStore.setSlides(slides)
       exporting.value = false
     }
