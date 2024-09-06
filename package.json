@@ -41,7 +41,7 @@
     "prosemirror-state": "^1.4.3",
     "prosemirror-view": "^1.33.9",
     "svg-arc-to-cubic-bezier": "^3.2.0",
-    "svg-pathdata": "^6.0.3",
+    "svg-pathdata": "^7.1.0",
     "tinycolor2": "^1.6.0",
     "tippy.js": "^6.3.7",
     "vue": "^3.4.34",
