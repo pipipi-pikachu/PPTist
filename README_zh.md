@@ -172,7 +172,7 @@ npm run dev
 
 
 # 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能尊重开源，遵循 AGPL-3.0 协议，回馈开源社区；
+- 注意：本项目禁止闭源商用，如果你希望将PPTist用于商业项目盈利，请尊重开源，**严格遵循 [AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)**，回馈开源社区；
 - 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
     1. 使用早期的[Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
     2. 成为项目的重要贡献者（先违反协议后再成为贡献者不在此项范围）；

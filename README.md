@@ -186,7 +186,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
 
 
 # 🧮 商业用途
-- 如果你希望将本项目商用盈利，我希望你能尊重开源，严格遵循 AGPL-3.0 协议，回馈开源社区；
+- 注意：本项目禁止闭源商用，如果你希望将PPTist用于商业项目盈利，请尊重开源，**严格遵循 [AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)**，回馈开源社区；
 - 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，你也可以选择：
     1. 使用早期的[Apache 2.0 LICENSE 版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
     2. 成为项目的重要贡献者（先违反协议后再成为贡献者不在此项范围）；
@@ -194,7 +194,6 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你长期参与到本项目的维护工作中；
     3. [邮件联系作者](pipipi_pikachu@163.com)付费获取商业授权。（注：仅授权，不存在额外商业化版本和技术支持）
-
 
 # 👎👎👎 耻辱柱 🤮🤮🤮
 > 👎桌案（西安）信息科技有限公司、西安即刻易用网络科技有限公司 <br> 
