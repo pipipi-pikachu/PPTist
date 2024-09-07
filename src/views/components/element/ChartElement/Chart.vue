@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, onMounted, ref, watch } from 'vue'
+import { computed, inject, nextTick, onMounted, ref, watch } from 'vue'
 import tinycolor from 'tinycolor2'
 import { BarChart, LineChart, PieChart } from 'chartist'
 import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
@@ -78,13 +78,15 @@ const renderChart = () => {
 }
 
 const updateChart = () => {
-  if (!chart) {
-    renderChart()
-    return
-  }
-  const options = getOptions()
-  const data = props.type === 'pie' ? getPieChartData() : props.data
-  chart.update(data, options)
+  nextTick(() => {
+    if (!chart) {
+      renderChart()
+      return
+    }
+    const options = getOptions()
+    const data = props.type === 'pie' ? getPieChartData() : props.data
+    chart.update(data, options)
+  })
 }
 
 watch([
