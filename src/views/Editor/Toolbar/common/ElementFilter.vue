@@ -177,12 +177,16 @@ const applyPresetFilters = (filters: ImageElementFilters) => {
   @include flex-grid-layout();
 }
 .preset-item {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   @include flex-grid-layout-children(3, 31%);
 
   img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 120px;
   }
   .preset-label {
     font-size: 12px;
