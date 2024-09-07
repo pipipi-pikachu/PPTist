@@ -1,6 +1,29 @@
 <template>
   <div class="chart-data-editor">
     <div class="editor-content">
+      <div class="handler">
+        <div class="col-header">
+          <div class="col-header-item"
+            v-for="colIndex in 7" 
+            :key="colIndex"
+          >
+            <div class="col-key">{{ alphabet[colIndex - 1] }}</div>
+          </div>
+        </div>
+        <div class="row-header">
+          <div class="row-header-item"
+            v-for="rowIndex in 31" 
+            :key="rowIndex"
+          >
+            <div class="row-key">{{ rowIndex }}</div>
+          </div>
+        </div>
+        <div class="all-header">
+          <svg class="triangle" width="8" height="8" viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8,0 L8,8 L0,8 L8,0" fill="#ccc" />
+          </svg>
+        </div>
+      </div>
       <div class="range-box">
         <div 
           class="temp-range" 
@@ -32,6 +55,7 @@
               <input 
                 :class="['item', { 'selected': rowIndex <= selectedRange[1] && colIndex <= selectedRange[0] }]"
                 :id="`cell-${rowIndex - 1}-${colIndex - 1}`"
+                v-if="!(rowIndex === 1 && colIndex === 1)"
                 autocomplete="off"
                 @focus="focusCell = [rowIndex - 1, colIndex - 1]"
                 @paste="$event => handlePaste($event, rowIndex - 1, colIndex - 1)"
@@ -70,6 +94,7 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const CELL_WIDTH = 100
 const CELL_HEIGHT = 32
 
@@ -292,13 +317,15 @@ const changeSelectRange = (e: MouseEvent) => {
   position: relative;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  padding-left: 30px;
+  padding-top: 20px;
 
   @include overflow-overlay();
 }
 .range-box {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 30px;
   z-index: 100;
   user-select: none;
 }
@@ -373,7 +400,7 @@ table {
     height: 32px;
 
     &.head {
-      background-color: rgba($color: $themeColor, $alpha: .1);
+      background-color: rgba($color: $themeColor, $alpha: .08);
     }
   }
   .item {
@@ -385,15 +412,75 @@ table {
     font-size: 13px;
     text-align: center;
     background-color: transparent;
-
-    &.selected {
-      background-color: rgba($color: $themeColor, $alpha: .02);
-    }
   }
 }
 .btns {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+.col-header {
+  width: auto;
+  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 30px;
+  display: flex;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  border-right: 0;
+  background-color: $lightGray;
+}
+.col-header-item {
+  width: 100px;
+  position: relative;
+  border-right: 1px solid #ccc;
+}
+.col-key {
+  font-size: 10px;
+  text-align: center;
+  line-height: 20px;
+}
+.row-header {
+  height: auto;
+  width: 30px;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  border-right: 0;
+  background-color: $lightGray;
+}
+.row-header-item {
+  height: 32px;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+}
+.row-key {
+  height: 100%;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.all-header {
+  width: 30px;
+  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #ccc;
+  border-bottom: 0;
+  border-right: 0;
+  background-color: $lightGray;
+
+  .triangle {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+  }
 }
 </style>
