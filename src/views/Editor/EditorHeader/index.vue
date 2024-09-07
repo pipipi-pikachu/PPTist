@@ -182,7 +182,7 @@ const setDialogForExport = (type: DialogForExportTypes) => {
   }
 }
 .title {
-  height: 32px;
+  height: 30px;
   margin-left: 2px;
   font-size: 13px;
 
@@ -191,11 +191,16 @@ const setDialogForExport = (type: DialogForExportTypes) => {
     height: 100%;
     padding-left: 0;
     padding-right: 0;
+
+    ::v-deep(input) {
+      height: 28px;
+      line-height: 28px;
+    }
   }
   .title-text {
     min-width: 20px;
     max-width: 400px;
-    line-height: 32px;
+    line-height: 30px;
     padding: 0 6px;
     border-radius: $borderRadius;
     cursor: pointer;

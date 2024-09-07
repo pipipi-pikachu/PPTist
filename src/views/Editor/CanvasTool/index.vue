@@ -290,7 +290,7 @@ const toggleNotesPanel = () => {
   }
 }
 .handler-item {
-  height: 24px;
+  height: 30px;
   font-size: 14px;
   margin: 0 2px;
   display: flex;

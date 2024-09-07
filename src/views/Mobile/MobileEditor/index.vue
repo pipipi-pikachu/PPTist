@@ -136,7 +136,7 @@ const handleClickBlankArea = () => {
 }
 .viewport-wrapper {
   position: relative;
-  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.01), 0 0 12px 0 rgba(0, 0, 0, 0.1);
 }
 .background {
   width: 100%;
