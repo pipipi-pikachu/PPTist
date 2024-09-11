@@ -12,6 +12,7 @@ export interface ShapePoolItem {
   outlined?: boolean
   pptxShapeType?: string
   title?: string
+  withborder?: boolean
 }
 
 interface ShapeListItem {
@@ -399,7 +400,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 90 L 50 200 L 150 200 L 200 90 L 100 0 Z',
+        path: `M100,0 L200,76.6 L161.8,200 L38.2,200 L0,76.6 Z`,
         pptxShapeType: 'pentagon',
       },
       {
@@ -410,6 +411,10 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 0 60 L 0 140 L 100 200 L 200 140 L 200 60 L 100 0 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: `M100,0 L170.71,29.29 L200,100 L170.71,170.71 L100,200 L29.29,170.71 L0,100 L29.29,29.29 Z`,
       },
       {
         viewBox: [200, 200],
@@ -469,7 +474,23 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
+        path: 'M 0 70 L 200 70 L 200 130 L 0 130 Z',
+      },
+      {
+        viewBox: [200, 200],
         path: 'M 40 0 L 0 40 L 60 100 L 0 160 L 40 200 L 100 140 L 160 200 L 200 160 L 140 100 L 200 40 L 160 0 L 100 60 L 40 0 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 80 L 200 80 L 200 120 L 0 120 Z M 100 0 A 25 25 0 1 1 100 50 A 25 25 0 1 1 100 0 M 100 200 A 25 25 0 1 1 100 150 A 25 25 0 1 1 100 200'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 30 L 200 30 L 200 80 L 0 80 Z M 0 120 L 200 120 L 200 170 L 0 170 Z',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 120 0 L 170 0 L 150 40 L 200 40 L 200 80 L 130 80 L 110 120 L 200 120 L 200 160 L 90 160 L 70 200 L 20 200 L 40 160 L 0 160 L 0 120 L 60 120 L 80 80 L 0 80 L 0 40 L 100 40 Z',
       },
       {
         viewBox: [200, 200],
@@ -531,7 +552,55 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 200 0 C 80 40 80 160 200 200 C -60 200 -60 0 200 0 Z',
+        path: 'M 100 0 A 50 50 0 1 0 200 120 A 100 100 0 1 1 100 0 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 120 0 L 100 80 L 200 80 L 80 200 L 100 120 L 0 120 L 120 0 Z'
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 30 50 Q 40 -20 120 10 Q 180 -10 180 40 Q 210 70 190 100 C 210 140 180 170 160 170 Q 140 210 100 180 C 70 210 20 190 30 150 C -10 140 -10 80 30 50',
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 L 0 100 L 100 200 L 200 100 L 100 0 Z M 200 100 L 0 100',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z M 170 30 L 30 170',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z M 30 30 L 170 170',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z M 170 30 L 30 170 M 30 30 L 170 170',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z M 200 100 L 0 100 M 100 0 L 100 200',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 160 0 A 40 100 0 1 1 160 200 L 40 200 A 40 100 0 1 1 40 0 L 160 0 Z M 160 200 A 40 100 0 1 1 160 0',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 0 40 A 50 20 0 1 1 200 40 L 200 160 A 50 20 0 1 1 0 160 L 0 40 Z M 200 40 A 50 20 0 1 1 0 40',
+        withborder: true,
+      },
+      {
+        viewBox: [200, 200],
+        path: 'M 200 0 L 50 0 L 0 50 L 0 200 L 150 200 L 200 150 L 200 0 Z M 200 0 L 150 50 M 150 50 L 0 50 M 150 50 L 150 200',
+        withborder: true,
       },
     ],
   },

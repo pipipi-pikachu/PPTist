@@ -228,6 +228,7 @@ export default () => {
       rotate: 0,
       ...supplement,
     }
+    if (data.withborder) newElement.outline = theme.value.outline
     if (data.special) newElement.special = true
     if (data.pathFormula) {
       newElement.pathFormula = data.pathFormula

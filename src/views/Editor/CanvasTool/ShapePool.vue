@@ -41,11 +41,12 @@ const selectShape = (shape: ShapePoolItem) => {
 }
 .category-name {
   width: 100%;
-  font-size: 13px;
+  font-size: 12px;
   margin-bottom: 10px;
   border-left: 4px solid #aaa;
   background-color: #eee;
-  padding: 2px 0 2px 10px;
+  padding: 3px 0 3px 8px;
+  color: #555;
 }
 .shape-list {
   @include flex-grid-layout();
