@@ -5,7 +5,7 @@
         <IconChartLine size="24" v-if="chart === 'line'" />
         <IconChartHistogram size="24" v-else-if="chart === 'bar'" />
         <IconChartPie size="24" v-else-if="chart === 'pie'" />
-        <IconChartHistogramOne size="24" v-else-if="chart === 'horizontalBar'" />
+        <IconChartHistogramOne size="24" v-else-if="chart === 'column'" />
         <IconChartLineArea size="24" v-else-if="chart === 'area'" />
         <IconChartRing size="24" v-else-if="chart === 'ring'" />
         <IconChartScatter size="24" v-else-if="chart === 'scatter'" />
@@ -15,15 +15,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { PresetChartType } from '@/types/slides'
+import type { ChartType } from '@/types/slides'
 
 const emit = defineEmits<{
-  (event: 'select', payload: PresetChartType): void
+  (event: 'select', payload: ChartType): void
 }>()
 
-const chartList: PresetChartType[] = ['bar', 'horizontalBar', 'line', 'area', 'scatter', 'pie', 'ring']
+const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring']
 
-const selectChart = (chart: PresetChartType) => {
+const selectChart = (chart: ChartType) => {
   emit('select', chart)
 }
 </script>

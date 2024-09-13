@@ -611,12 +611,12 @@ export default () => {
           }
 
           let chartColors: string[] = []
-          if (el.themeColor.length === 10) chartColors = el.themeColor.map(color => formatColor(color).color)
-          else if (el.themeColor.length === 1) chartColors = tinycolor(el.themeColor[0]).analogous(10).map(color => formatColor(color.toHexString()).color)
+          if (el.themeColors.length === 10) chartColors = el.themeColors.map(color => formatColor(color).color)
+          else if (el.themeColors.length === 1) chartColors = tinycolor(el.themeColors[0]).analogous(10).map(color => formatColor(color.toHexString()).color)
           else {
-            const len = el.themeColor.length
-            const supplement = tinycolor(el.themeColor[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
-            chartColors = [...el.themeColor.slice(0, len - 1), ...supplement].map(color => formatColor(color).color)
+            const len = el.themeColors.length
+            const supplement = tinycolor(el.themeColors[len - 1]).analogous(10 + 1 - len).map(color => color.toHexString())
+            chartColors = [...el.themeColors.slice(0, len - 1), ...supplement].map(color => formatColor(color).color)
           }
           
           const options: pptxgen.IChartOpts = {
@@ -624,40 +624,63 @@ export default () => {
             y: el.top / ratioPx2Inch.value,
             w: el.width / ratioPx2Inch.value,
             h: el.height / ratioPx2Inch.value,
-            chartColors: el.chartType === 'pie' ? chartColors : chartColors.slice(0, el.data.series.length),
+            chartColors: (el.chartType === 'pie' || el.chartType === 'ring') ? chartColors : chartColors.slice(0, el.data.series.length),
           }
 
-          if (el.fill) options.plotArea = { fill: { color: formatColor(el.fill).color } }
-          if (el.legend) {
+          const textColor = formatColor(el.textColor || '#000000').color
+          options.catAxisLabelColor = textColor
+          options.valAxisLabelColor = textColor
+
+          const fontSize = 14 / ratioPx2Pt.value
+          options.catAxisLabelFontSize = fontSize
+          options.valAxisLabelFontSize = fontSize
+          
+          if (el.fill || el.outline) {
+            const plotArea: pptxgen.IChartPropsFillLine = {}
+            if (el.fill) {
+              plotArea.fill = { color: formatColor(el.fill).color }
+            }
+            if (el.outline) {
+              plotArea.border = {
+                pt: el.outline.width! / ratioPx2Pt.value,
+                color: formatColor(el.outline.color!).color,
+              }
+            }
+            options.plotArea = plotArea
+          }
+
+          if ((el.data.series.length > 1 && el.chartType !== 'scatter') || el.chartType === 'pie' || el.chartType === 'ring') {
             options.showLegend = true
-            options.legendPos = el.legend === 'top' ? 't' : 'b'
-            options.legendColor = formatColor(el.gridColor || '#000000').color
-            options.legendFontSize = 14 / ratioPx2Pt.value
+            options.legendPos = 'b'
+            options.legendColor = textColor
+            options.legendFontSize = fontSize
           }
 
           let type = pptx.ChartType.bar
           if (el.chartType === 'bar') {
             type = pptx.ChartType.bar
-            options.barDir = el.options?.horizontalBars ? 'bar' : 'col'
+            options.barDir = 'col'
+          }
+          else if (el.chartType === 'column') {
+            type = pptx.ChartType.bar
+            options.barDir = 'bar'
           }
           else if (el.chartType === 'line') {
-            if (el.options?.showArea) type = pptx.ChartType.area
-            else if (el.options?.showLine === false) {
-              type = pptx.ChartType.scatter
-
-              chartData.unshift({ name: 'X-Axis', values: Array(el.data.series[0].length).fill(0).map((v, i) => i) })
-              options.lineSize = 0
-            }
-            else type = pptx.ChartType.line
-
-            if (el.options?.lineSmooth) options.lineSmooth = true
+            type = pptx.ChartType.line
+          }
+          else if (el.chartType === 'area') {
+            type = pptx.ChartType.area
+          }
+          else if (el.chartType === 'scatter') {
+            type = pptx.ChartType.scatter
+            options.lineSize = 0
           }
           else if (el.chartType === 'pie') {
-            if (el.options?.donut) {
-              type = pptx.ChartType.doughnut
-              options.holeSize = 75
-            }
-            else type = pptx.ChartType.pie
+            type = pptx.ChartType.pie
+          }
+          else if (el.chartType === 'ring') {
+            type = pptx.ChartType.doughnut
+            options.holeSize = 60
           }
           
           pptxSlide.addChart(type, chartData, options)

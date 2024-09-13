@@ -14,7 +14,6 @@ import type {
   TableCellStyle,
   TableCell,
   ChartType,
-  ChartOptions,
   SlideBackground,
   PPTShapeElement,
   PPTLineElement,
@@ -389,10 +388,9 @@ export default () => {
               let series: number[][]
   
               if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
-                const data = el.data
-                labels = data[0].map(item => item + '')
-                legends = ['系列1']
-                series = [data[1]]
+                labels = el.data[0].map((item, index) => `坐标${index + 1}`)
+                legends = ['X', 'Y']
+                series = el.data
               }
               else {
                 const data = el.data as ChartItem[]
@@ -401,32 +399,32 @@ export default () => {
                 series = data.map(item => item.values.map(v => v.y))
               }
   
-              const options: ChartOptions = {}
-  
               let chartType: ChartType = 'bar'
 
               switch (el.chartType) {
                 case 'barChart':
                 case 'bar3DChart':
                   chartType = 'bar'
-                  if (el.barDir === 'bar') options.horizontalBars = true
-                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stackBars = true
+                  if (el.barDir === 'bar') chartType = 'column'
                   break
                 case 'lineChart':
                 case 'line3DChart':
+                  chartType = 'line'
+                  break
                 case 'areaChart':
                 case 'area3DChart':
+                  chartType = 'area'
+                  break
                 case 'scatterChart':
                 case 'bubbleChart':
-                  chartType = 'line'
-                  if (el.chartType === 'areaChart' || el.chartType === 'area3DChart') options.showArea = true
-                  if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') options.showLine = false
+                  chartType = 'scatter'
                   break
                 case 'pieChart':
                 case 'pie3DChart':
-                case 'doughnutChart':
                   chartType = 'pie'
-                  if (el.chartType === 'doughnutChart') options.donut = true
+                  break
+                case 'doughnutChart':
+                  chartType = 'ring'
                   break
                 default:
               }
@@ -440,14 +438,13 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                themeColor: [theme.value.themeColor],
-                gridColor: theme.value.fontColor,
+                themeColors: [theme.value.themeColor],
+                textColor: theme.value.fontColor,
                 data: {
                   labels,
                   legends,
                   series,
                 },
-                options,
               })
             }
             else if (el.type === 'group' || el.type === 'diagram') {

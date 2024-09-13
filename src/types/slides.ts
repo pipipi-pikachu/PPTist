@@ -395,9 +395,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
 }
 
 
-export type PresetChartType = 'bar' | 'horizontalBar' | 'line' | 'area' | 'scatter' | 'pie' | 'ring'
-export type ChartType = 'bar' | 'line' | 'pie'
-export type ChartOptions = LineChartOptions & BarChartOptions & PieChartOptions
+export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'scatter'
 export interface ChartData {
   labels: string[]
   legends: string[]
@@ -415,26 +413,20 @@ export interface ChartData {
  * 
  * data: 图表数据
  * 
- * options?: 图表配置项
- * 
  * outline?: 边框
  * 
- * themeColor: 主题色
+ * themeColors: 主题色
  * 
- * gridColor?: 网格&坐标颜色
- * 
- * legend?: 图例/位置
+ * textColor?: 文字颜色
  */
 export interface PPTChartElement extends PPTBaseElement {
   type: 'chart'
   fill?: string
   chartType: ChartType
   data: ChartData
-  options?: ChartOptions
   outline?: PPTElementOutline
-  themeColor: string[]
-  gridColor?: string
-  legend?: '' | 'top' | 'bottom'
+  themeColors: string[]
+  textColor?: string
 }
 
 

@@ -6,63 +6,6 @@
 
     <Divider />
 
-    <template v-if="handleChartElement.chartType === 'line'">
-      <div class="row">
-        <Checkbox 
-          @update:value="value => updateOptions({ showArea: value })"
-          :value="showArea" 
-          style="flex: 1;"
-        >面积图样式</Checkbox>
-        <Checkbox 
-          @update:value="value => updateOptions({ showLine: value })"
-          :value="!showLine" 
-          style="flex: 1;"
-        >散点图样式</Checkbox>
-      </div>
-      <div class="row">
-        <Checkbox 
-          @update:value="value => updateOptions({ lineSmooth: value })" 
-          :value="lineSmooth"
-        >使用平滑曲线</Checkbox>
-      </div>
-    </template>
-    <div class="row" v-if="handleChartElement.chartType === 'bar'">
-      <Checkbox 
-        @update:value="value => updateOptions({ horizontalBars: value })" 
-        :value="horizontalBars"
-        style="flex: 1;"
-      >条形图样式</Checkbox>
-      <Checkbox 
-        @update:value="value => updateOptions({ stackBars: value })" 
-        :value="stackBars"
-        style="flex: 1;"
-      >堆叠样式</Checkbox>
-    </div>
-    <div class="row" v-if="handleChartElement.chartType === 'pie'">
-      <Checkbox 
-        @update:value="value => updateOptions({ donut: value })" 
-        :value="donut"
-      >环形图样式</Checkbox>
-    </div>
-
-    <Divider />
-
-    <div class="row">
-      <div style="width: 40%;">图例：</div>
-      <Select 
-        style="width: 60%;" 
-        :value="legend" 
-        @update:value="value => updateLegend(value as '' | 'top' | 'bottom')"
-        :options="[
-          { label: '不显示', value: '' },
-          { label: '显示在上方', value: 'top' },
-          { label: '显示在下方', value: 'bottom' },
-        ]"
-      />
-    </div>
-
-    <Divider />
-
     <div class="row">
       <div style="width: 40%;">背景填充：</div>
       <Popover trigger="click" style="width: 60%;">
@@ -76,21 +19,21 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">网格颜色：</div>
+      <div style="width: 40%;">文字颜色：</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
-            :modelValue="gridColor"
-            @update:modelValue="value => updateGridColor(value)"
+            :modelValue="textColor"
+            @update:modelValue="value => updateTextColor(value)"
           />
         </template>
-        <ColorButton :color="gridColor" />
+        <ColorButton :color="textColor" />
       </Popover>
     </div>
 
     <Divider />
 
-    <div class="row" v-for="(color, index) in themeColor" :key="index">
+    <div class="row" v-for="(color, index) in themeColors" :key="index">
       <div style="width: 40%;">{{index === 0 ? '主题配色：' : ''}}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
@@ -109,7 +52,7 @@
       <Popover trigger="click" v-model:open="presetThemesVisible" style="width: 40%;">
         <template #content>
           <div class="preset-themes">
-            <div class="preset-theme" v-for="(item, index) in presetChartThemes" :key="index">
+            <div class="preset-theme" v-for="(item, index) in CHART_PRESET_THEMES" :key="index">
               <div 
                 class="preset-theme-color" 
                 :class="{ 'select': presetThemeColorHoverIndex[0] === index && itemIndex <= presetThemeColorHoverIndex[1] }"
@@ -127,7 +70,7 @@
       </Popover>
       <Button
         last
-        :disabled="themeColor.length >= 10" 
+        :disabled="themeColors.length >= 10" 
         style="width: 60%;" 
         @click="addThemeColor()"
       >
@@ -156,9 +99,10 @@
 import { onUnmounted, ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
+import type { ChartData, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { CHART_PRESET_THEMES } from '@/configs/chart'
 
 import ElementOutline from '../../common/ElementOutline.vue'
 import ChartDataEditor from './ChartDataEditor.vue'
@@ -166,26 +110,9 @@ import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
-import Checkbox from '@/components/Checkbox.vue'
 import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
-import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
-
-const presetChartThemes = [
-  ['#d87c7c', '#919e8b', '#d7ab82', '#6e7074', '#61a0a8', '#efa18d'],
-  ['#dd6b66', '#759aa0', '#e69d87', '#8dc1a9', '#ea7e53', '#eedd78'],
-  ['#516b91', '#59c4e6', '#edafda', '#93b7e3', '#a5e7f0', '#cbb0e3'],
-  ['#893448', '#d95850', '#eb8146', '#ffb248', '#f2d643', '#ebdba4'],
-  ['#4ea397', '#22c3aa', '#7bd9a5', '#d0648a', '#f58db2', '#f2b3c9'],
-  ['#3fb1e3', '#6be6c1', '#626c91', '#a0a7e6', '#c4ebad', '#96dee8'],
-  ['#fc97af', '#87f7cf', '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb'],
-  ['#c1232b', '#27727b', '#fcce10', '#e87c25', '#b5c334', '#fe8463'],
-  ['#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80', '#8d98b3'],
-  ['#e01f54', '#001852', '#f5e8c8', '#b8d2c7', '#c6b38e', '#a4d8c2'],
-  ['#c12e34', '#e6b600', '#0098d9', '#2b821d', '#005eaa', '#339ca8'],
-  ['#8a7ca8', '#e098c7', '#8fd3e8', '#71669e', '#cc70af', '#7cb4cc'],
-]
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -202,42 +129,15 @@ const { addHistorySnapshot } = useHistorySnapshot()
 
 const fill = ref<string>('#000')
 
-const themeColor = ref<string[]>([])
-const gridColor = ref('')
-const legend = ref('')
-
-const lineSmooth = ref(true)
-const showLine = ref(true)
-const showArea = ref(false)
-const horizontalBars = ref(false)
-const donut = ref(false)
-const stackBars = ref(false)
+const themeColors = ref<string[]>([])
+const textColor = ref('')
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'chart') return
   fill.value = handleElement.value.fill || '#fff'
 
-  if (handleElement.value.options) {
-    const {
-      lineSmooth: _lineSmooth,
-      showLine: _showLine,
-      showArea: _showArea,
-      horizontalBars: _horizontalBars,
-      donut: _donut,
-      stackBars: _stackBars,
-    } = handleElement.value.options
-
-    lineSmooth.value = !!_lineSmooth
-    showLine.value = !!_showLine
-    showArea.value = !!_showArea
-    horizontalBars.value = !!_horizontalBars
-    donut.value = !!_donut
-    stackBars.value = !!_stackBars
-  }
-
-  themeColor.value = handleElement.value.themeColor
-  gridColor.value = handleElement.value.gridColor || '#333'
-  legend.value = handleElement.value.legend || ''
+  themeColors.value = handleElement.value.themeColors
+  textColor.value = handleElement.value.textColor || '#333'
 }, { deep: true, immediate: true })
 
 const updateElement = (props: Partial<PPTChartElement>) => {
@@ -256,18 +156,10 @@ const updateFill = (value: string) => {
   updateElement({ fill: value })
 }
 
-// 设置其他选项：柱状图转条形图、折线图转面积图、折线图转散点图、饼图转环形图、折线图开关平滑曲线
-const updateOptions = (optionProps: ChartOptions) => {
-  const _handleElement = handleElement.value as PPTChartElement
-
-  const newOptions = { ..._handleElement.options, ...optionProps }
-  updateElement({ options: newOptions })
-}
-
 // 设置主题色
 const updateTheme = (color: string, index: number) => {
   const props = {
-    themeColor: themeColor.value.map((c, i) => i === index ? color : c),
+    themeColors: themeColors.value.map((c, i) => i === index ? color : c),
   }
   updateElement(props)
 }
@@ -275,34 +167,29 @@ const updateTheme = (color: string, index: number) => {
 // 添加主题色
 const addThemeColor = () => {
   const props = {
-    themeColor: [...themeColor.value, theme.value.themeColor],
+    themeColors: [...themeColors.value, theme.value.themeColor],
   }
   updateElement(props)
 }
 
 // 使用预置主题配色
 const applyPresetTheme = (colors: string[], index: number) => {
-  const themeColor = colors.slice(0, index + 1)
-  updateElement({ themeColor })
+  const themeColors = colors.slice(0, index + 1)
+  updateElement({ themeColors })
   presetThemesVisible.value = false
 }
 
 // 删除主题色
 const deleteThemeColor = (index: number) => {
   const props = {
-    themeColor: themeColor.value.filter((c, i) => i !== index),
+    themeColors: themeColors.value.filter((c, i) => i !== index),
   }
   updateElement(props)
 }
 
-// 设置网格颜色
-const updateGridColor = (gridColor: string) => {
-  updateElement({ gridColor })
-}
-
-// 设置图例位置/不显示
-const updateLegend = (legend: '' | 'top' | 'bottom') => {
-  updateElement({ legend })
+// 设置文字颜色
+const updateTextColor = (textColor: string) => {
+  updateElement({ textColor })
 }
 
 const openDataEditor = () => chartDataEditorVisible.value = true

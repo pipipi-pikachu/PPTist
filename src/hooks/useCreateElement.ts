@@ -2,10 +2,10 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { getImageSize } from '@/utils/image'
-import type { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, PPTChartElement, ChartOptions, PresetChartType } from '@/types/slides'
+import type { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, ChartType } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import type { LinePoolItem } from '@/configs/lines'
-import { CHART_TYPES } from '@/configs/chartTypes'
+import { CHART_DEFAULT_DATA } from '@/configs/chart'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface CommonElementPosition {
@@ -86,40 +86,19 @@ export default () => {
    * 创建图表元素
    * @param chartType 图表类型
    */
-  const createChartElement = (type: PresetChartType) => {
-    const newElement: PPTChartElement = {
+  const createChartElement = (type: ChartType) => {
+    createElement({
       type: 'chart',
       id: nanoid(10),
-      chartType: CHART_TYPES[type],
+      chartType: type,
       left: 300,
       top: 81.25,
       width: 400,
       height: 400,
       rotate: 0,
-      themeColor: [theme.value.themeColor],
-      gridColor: theme.value.fontColor,
-      data: {
-        labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-        legends: ['系列1'],
-        series: [
-          [12, 19, 5, 2, 18],
-        ],
-      },
-    }
-
-    const options: ChartOptions = {
-      ...(type === 'bar' ? { horizontalBars: false, stackBars: false } : {}),
-      ...(type === 'horizontalBar' ? { horizontalBars: true, stackBars: false } : {}),
-      ...(type === 'line' ? { showLine: true, lineSmooth: true, showArea: false } : {}),
-      ...(type === 'area' ? { showLine: true, lineSmooth: true, showArea: true } : {}),
-      ...(type === 'scatter' ? { showLine: false, lineSmooth: true, showArea: false } : {}),
-      ...(type === 'pie' ? { donut: false } : {}),
-      ...(type === 'ring' ? { donut: true } : {}),
-    }
-
-    createElement({
-      ...newElement,
-      options,
+      themeColors: [theme.value.themeColor],
+      textColor: theme.value.fontColor,
+      data: CHART_DEFAULT_DATA[type],
     })
   }
   
