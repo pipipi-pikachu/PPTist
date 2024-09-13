@@ -1,5 +1,6 @@
 <template>
   <div class="base-element-chart"
+    :class="{ 'is-thumbnail': target === 'thumbnail' }"
     :style="{
       top: elementInfo.top + 'px',
       left: elementInfo.left + 'px',
@@ -44,12 +45,17 @@ import Chart from './Chart.vue'
 
 defineProps<{
   elementInfo: PPTChartElement
+  target?: string
 }>()
 </script>
 
 <style lang="scss" scoped>
 .base-element-chart {
   position: absolute;
+
+  &.is-thumbnail {
+    pointer-events: none;
+  }
 }
 .rotate-wrapper {
   width: 100%;
