@@ -1,5 +1,3 @@
-import type { BarChartOptions, LineChartOptions, PieChartOptions } from 'chartist'
-
 export const enum ShapePathFormulasKeys {
   ROUND_RECT = 'roundRect',
   ROUND_RECT_DIAGONAL = 'roundRectDiagonal',

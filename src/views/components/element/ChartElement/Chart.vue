@@ -9,8 +9,6 @@ import tinycolor from 'tinycolor2'
 import type { ChartData, ChartType } from '@/types/slides'
 import { getChartOption } from './chartOption'
 
-import 'chartist/dist/index.css'
-
 const props = defineProps<{
   width: number
   height: number
