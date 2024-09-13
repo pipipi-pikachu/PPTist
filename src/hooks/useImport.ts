@@ -19,6 +19,7 @@ import type {
   PPTLineElement,
   ShapeTextAlign,
   PPTTextElement,
+  ChartOptions,
 } from '@/types/slides'
 
 const convertFontSizePtToPx = (html: string, ratio: number) =>  {
@@ -398,6 +399,8 @@ export default () => {
                 legends = data.map(item => item.key)
                 series = data.map(item => item.values.map(v => v.y))
               }
+
+              const options: ChartOptions = {}
   
               let chartType: ChartType = 'bar'
 
@@ -406,6 +409,7 @@ export default () => {
                 case 'bar3DChart':
                   chartType = 'bar'
                   if (el.barDir === 'bar') chartType = 'column'
+                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
                   break
                 case 'lineChart':
                 case 'line3DChart':
@@ -413,6 +417,7 @@ export default () => {
                   break
                 case 'areaChart':
                 case 'area3DChart':
+                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
                   chartType = 'area'
                   break
                 case 'scatterChart':
@@ -445,6 +450,7 @@ export default () => {
                   legends,
                   series,
                 },
+                options,
               })
             }
             else if (el.type === 'group' || el.type === 'diagram') {

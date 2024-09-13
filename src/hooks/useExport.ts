@@ -660,13 +660,16 @@ export default () => {
           if (el.chartType === 'bar') {
             type = pptx.ChartType.bar
             options.barDir = 'col'
+            if (el.options?.stack) options.barGrouping = 'stacked'
           }
           else if (el.chartType === 'column') {
             type = pptx.ChartType.bar
             options.barDir = 'bar'
+            if (el.options?.stack) options.barGrouping = 'stacked'
           }
           else if (el.chartType === 'line') {
             type = pptx.ChartType.line
+            if (el.options?.lineSmooth) options.lineSmooth = true
           }
           else if (el.chartType === 'area') {
             type = pptx.ChartType.area

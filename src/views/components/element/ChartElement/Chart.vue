@@ -6,7 +6,7 @@
 import { onMounted, ref, computed, watch } from 'vue'
 import * as echarts from 'echarts'
 import tinycolor from 'tinycolor2'
-import type { ChartData, ChartType } from '@/types/slides'
+import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { getChartOption } from './chartOption'
 
 const props = defineProps<{
@@ -15,8 +15,8 @@ const props = defineProps<{
   type: ChartType
   data: ChartData
   themeColors: string[]
-  legends: string[]
   textColor?: string
+  options?: ChartOptions
 }>()
 
 let chart: echarts.ECharts | null = null
@@ -40,6 +40,8 @@ const updateOption = () => {
     data: props.data,
     themeColors: themeColors.value,
     textColor: props.textColor,
+    lineSmooth: props.options?.lineSmooth || false,
+    stack: props.options?.stack || false,
   })
   if (option) chart!.setOption(option, true)
 }

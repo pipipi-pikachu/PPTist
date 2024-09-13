@@ -6,6 +6,24 @@
 
     <Divider />
 
+    <template v-if="['bar', 'column', 'area', 'line'].includes(handleChartElement.chartType)">
+      <div class="row">
+        <Checkbox 
+          v-if="handleChartElement.chartType === 'line'"
+          @update:value="value => updateOptions({ lineSmooth: value })" 
+          :value="lineSmooth"
+        >使用平滑曲线</Checkbox>
+        <Checkbox 
+          v-if="['bar', 'column', 'area'].includes(handleChartElement.chartType)"
+          @update:value="value => updateOptions({ stack: value })" 
+          :value="stack"
+          style="flex: 1;"
+        >堆叠样式</Checkbox>
+      </div>
+  
+      <Divider />
+    </template>
+
     <div class="row">
       <div style="width: 40%;">背景填充：</div>
       <Popover trigger="click" style="width: 60%;">
@@ -99,7 +117,7 @@
 import { onUnmounted, ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { ChartData, PPTChartElement } from '@/types/slides'
+import type { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { CHART_PRESET_THEMES } from '@/configs/chart'
@@ -110,6 +128,7 @@ import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Modal from '@/components/Modal.vue'
 import Divider from '@/components/Divider.vue'
+import Checkbox from '@/components/Checkbox.vue'
 import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import Popover from '@/components/Popover.vue'
@@ -131,10 +150,25 @@ const fill = ref<string>('#000')
 
 const themeColors = ref<string[]>([])
 const textColor = ref('')
+const lineSmooth = ref(false)
+const stack = ref(false)
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'chart') return
   fill.value = handleElement.value.fill || '#fff'
+
+  lineSmooth.value = false
+  stack.value = false
+
+  if (handleElement.value.options) {
+    const {
+      lineSmooth: _lineSmooth,
+      stack: _stack,
+    } = handleElement.value.options
+
+    if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth
+    if (_stack !== undefined) stack.value = _stack
+  }
 
   themeColors.value = handleElement.value.themeColors
   textColor.value = handleElement.value.textColor || '#333'
@@ -154,6 +188,15 @@ const updateData = (data: ChartData) => {
 // 设置填充色
 const updateFill = (value: string) => {
   updateElement({ fill: value })
+}
+
+// 设置扩展选项
+const updateOptions = (optionProps: ChartOptions) => {
+  console.log(optionProps)
+  const _handleElement = handleElement.value as PPTChartElement
+
+  const newOptions = { ..._handleElement.options, ...optionProps }
+  updateElement({ options: newOptions })
 }
 
 // 设置主题色

@@ -6,6 +6,8 @@ export interface ChartOptionPayload {
   data: ChartData
   themeColors: string[]
   textColor?: string
+  lineSmooth?: boolean
+  stack?: boolean
 }
 
 export const getChartOption = ({
@@ -13,6 +15,8 @@ export const getChartOption = ({
   data,
   themeColors,
   textColor,
+  lineSmooth,
+  stack,
 }: ChartOptionPayload): echarts.EChartsOption | null => {
   if(type === 'bar') {
     return {
@@ -39,14 +43,18 @@ export const getChartOption = ({
       yAxis: {
         type: 'value',
       },
-      series: data.series.map((item, index) => ({
-        data: item,
-        name: data.legends[index],
-        type: 'bar',
-        label: {
-          show: true,
-        },
-      })),
+      series: data.series.map((item, index) => {
+        const seriesItem: echarts.SeriesOption = {
+          data: item,
+          name: data.legends[index],
+          type: 'bar',
+          label: {
+            show: true,
+          },
+        }
+        if (stack) seriesItem.stack = 'A'
+        return seriesItem
+      }),
     }
   }
   if(type === 'column') {
@@ -74,14 +82,18 @@ export const getChartOption = ({
       xAxis: {
         type: 'value',
       },
-      series: data.series.map((item, index) => ({
-        data: item,
-        name: data.legends[index],
-        type: 'bar',
-        label: {
-          show: true,
-        },
-      })),
+      series: data.series.map((item, index) => {
+        const seriesItem: echarts.SeriesOption = {
+          data: item,
+          name: data.legends[index],
+          type: 'bar',
+          label: {
+            show: true,
+          },
+        }
+        if (stack) seriesItem.stack = 'A'
+        return seriesItem
+      }),
     }
   }
   if(type === 'line') {
@@ -113,6 +125,7 @@ export const getChartOption = ({
         data: item,
         name: data.legends[index],
         type: 'line',
+        smooth: lineSmooth,
         label: {
           show: true,
         },
@@ -230,15 +243,19 @@ export const getChartOption = ({
       yAxis: {
         type: 'value',
       },
-      series: data.series.map((item, index) => ({
-        data: item,
-        name: data.legends[index],
-        type: 'line',
-        areaStyle: {},
-        label: {
-          show: true,
-        },
-      })),
+      series: data.series.map((item, index) => {
+        const seriesItem: echarts.SeriesOption = {
+          data: item,
+          name: data.legends[index],
+          type: 'line',
+          areaStyle: {},
+          label: {
+            show: true,
+          },
+        }
+        if (stack) seriesItem.stack = 'A'
+        return seriesItem
+      }),
     }
   }
   if(type === 'scatter') {

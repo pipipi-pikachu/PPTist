@@ -29,7 +29,7 @@
           :data="elementInfo.data"
           :themeColors="elementInfo.themeColors"
           :textColor="elementInfo.textColor"
-          :legends="elementInfo.data.legends"
+          :options="elementInfo.options"
         />
       </div>
     </div>
