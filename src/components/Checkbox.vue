@@ -8,7 +8,7 @@
     @change="$event => handleChange($event)"
   >
     <span class="checkbox-input"></span>
-    <input class="checkbox-original" type="checkbox">
+    <input class="checkbox-original" type="checkbox" :checked="value">
     <span class="checkbox-label">
       <slot></slot>
     </span>

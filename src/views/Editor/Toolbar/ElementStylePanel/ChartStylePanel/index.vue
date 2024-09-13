@@ -192,7 +192,6 @@ const updateFill = (value: string) => {
 
 // 设置扩展选项
 const updateOptions = (optionProps: ChartOptions) => {
-  console.log(optionProps)
   const _handleElement = handleElement.value as PPTChartElement
 
   const newOptions = { ..._handleElement.options, ...optionProps }
