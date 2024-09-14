@@ -31,6 +31,11 @@ export const CHART_DEFAULT_DATA: { [key: string]: ChartData } = {
     legends: ['系列1', '系列2'],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
+  'radar': {
+    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
+    legends: ['系列1', '系列2'],
+    series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
+  },
   'scatter': {
     labels: ['坐标1', '坐标2', '坐标3', '坐标4', '坐标5'],
     legends: ['X', 'Y'],

@@ -258,6 +258,42 @@ export const getChartOption = ({
       }),
     }
   }
+  if(type === 'radar') {
+    // indicator 中不设置max时显示异常，设置max后控制台警告，无解，等EChart官方修复此bug
+    // const values: number[] = []
+    // for (const item of data.series) {
+    //   values.push(...item)
+    // }
+    // const max = Math.max(...values)
+
+    return {
+      color: themeColors,
+      textStyle: textColor ? {
+        color: textColor,
+      } : {},
+      tooltip: {
+        trigger: 'item',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
+      legend: data.series.length > 1 ? {
+        top: 'bottom',
+        textStyle: textColor ? {
+          color: textColor,
+        } : {},
+      } : undefined,
+      radar: {
+        indicator: data.labels.map(item => ({ name: item })),
+      },
+      series: [
+        {
+          data: data.series.map((item, index) => ({ value: item, name: data.legends[index] })),
+          type: 'radar',
+        },
+      ],
+    }
+  }
   if(type === 'scatter') {
     const formatedData = []
     for(let i = 0; i < data.series[0].length; i++) {

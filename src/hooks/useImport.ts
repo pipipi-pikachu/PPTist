@@ -428,6 +428,9 @@ export default () => {
                 case 'pie3DChart':
                   chartType = 'pie'
                   break
+                case 'radarChart':
+                  chartType = 'radar'
+                  break
                 case 'doughnutChart':
                   chartType = 'ring'
                   break

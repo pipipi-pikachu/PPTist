@@ -9,6 +9,7 @@
         <IconChartLineArea size="24" v-else-if="chart === 'area'" />
         <IconChartRing size="24" v-else-if="chart === 'ring'" />
         <IconChartScatter size="24" v-else-if="chart === 'scatter'" />
+        <IconRadarChart size="23" v-else-if="chart === 'radar'" />
       </div>
     </li>
   </ul>
@@ -21,7 +22,7 @@ const emit = defineEmits<{
   (event: 'select', payload: ChartType): void
 }>()
 
-const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring']
+const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'radar', 'pie', 'ring']
 
 const selectChart = (chart: ChartType) => {
   emit('select', chart)

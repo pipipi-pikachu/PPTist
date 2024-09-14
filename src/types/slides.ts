@@ -393,7 +393,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
 }
 
 
-export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'scatter'
+export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'radar' | 'scatter'
 
 export interface ChartOptions {
   lineSmooth?: boolean

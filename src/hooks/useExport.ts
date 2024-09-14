@@ -674,6 +674,9 @@ export default () => {
           else if (el.chartType === 'area') {
             type = pptx.ChartType.area
           }
+          else if (el.chartType === 'radar') {
+            type = pptx.ChartType.radar
+          }
           else if (el.chartType === 'scatter') {
             type = pptx.ChartType.scatter
             options.lineSize = 0
