@@ -117,7 +117,7 @@ npm run dev
 - Width
 - Style
 - Endpoint style
-#### Charts (bar, column, line, area, scatter, pie, donut)
+#### Charts (bar, column, line, area, scatter, pie, donut, radar)
 - Chart conversion
 - Data editing
 - Background fill
@@ -125,7 +125,6 @@ npm run dev
 - Coordinate system and axis text color
 - Other chart settings
 - Border
-- Legend
 #### Tables
 - Add/delete rows and columns
 - Theme settings (theme color, header, total row, first column, last column)
