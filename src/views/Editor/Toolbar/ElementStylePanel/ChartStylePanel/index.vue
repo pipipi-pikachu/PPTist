@@ -9,16 +9,16 @@
     <template v-if="['bar', 'column', 'area', 'line'].includes(handleChartElement.chartType)">
       <div class="row">
         <Checkbox 
+          @update:value="value => updateOptions({ stack: value })" 
+          :value="stack"
+          style="flex: 2;"
+        >堆叠样式</Checkbox>
+        <Checkbox 
           v-if="handleChartElement.chartType === 'line'"
           @update:value="value => updateOptions({ lineSmooth: value })" 
           :value="lineSmooth"
+          style="flex: 3;"
         >使用平滑曲线</Checkbox>
-        <Checkbox 
-          v-if="['bar', 'column', 'area'].includes(handleChartElement.chartType)"
-          @update:value="value => updateOptions({ stack: value })" 
-          :value="stack"
-          style="flex: 1;"
-        >堆叠样式</Checkbox>
       </div>
   
       <Divider />

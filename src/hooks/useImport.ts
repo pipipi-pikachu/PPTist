@@ -413,6 +413,7 @@ export default () => {
                   break
                 case 'lineChart':
                 case 'line3DChart':
+                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
                   chartType = 'line'
                   break
                 case 'areaChart':

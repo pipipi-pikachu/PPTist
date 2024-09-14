@@ -121,15 +121,19 @@ export const getChartOption = ({
       yAxis: {
         type: 'value',
       },
-      series: data.series.map((item, index) => ({
-        data: item,
-        name: data.legends[index],
-        type: 'line',
-        smooth: lineSmooth,
-        label: {
-          show: true,
-        },
-      })),
+      series: data.series.map((item, index) => {
+        const seriesItem: echarts.SeriesOption = {
+          data: item,
+          name: data.legends[index],
+          type: 'line',
+          smooth: lineSmooth,
+          label: {
+            show: true,
+          },
+        }
+        if (stack) seriesItem.stack = 'A'
+        return seriesItem
+      }),
     }
   }
   if(type === 'pie') {
