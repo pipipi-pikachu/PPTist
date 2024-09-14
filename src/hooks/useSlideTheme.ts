@@ -150,7 +150,7 @@ export default () => {
           if (el.fill) {
             themeColorValues.push({ area: area * 0.5, value: el.fill })
           }
-          themeColorValues.push({ area: area * 0.5, value: el.themeColor[0] })
+          themeColorValues.push({ area: area * 0.5, value: el.themeColors[0] })
         }
         else if (el.type === 'line') {
           themeColorValues.push({ area, value: el.color })
@@ -218,8 +218,8 @@ export default () => {
         const color = tinycolor(el.theme.color).toRgbString()
         if (!colors.includes(color)) colors.push(color)
       }
-      if (el.type === 'chart' && el.fill && tinycolor(el.fill).getAlpha() !== 0) {
-        const color = tinycolor(el.fill).toRgbString()
+      if (el.type === 'chart' && el.themeColors[0] && tinycolor(el.themeColors[0]).getAlpha() !== 0) {
+        const color = tinycolor(el.themeColors[0]).toRgbString()
         if (!colors.includes(color)) colors.push(color)
       }
       if (el.type === 'line' && tinycolor(el.color).getAlpha() !== 0) {
@@ -283,8 +283,8 @@ export default () => {
         }
       }
       if (el.type === 'chart') {
-        el.themeColor = [colorMap[tinycolor(el.themeColor[0]).toRgbString()]] || el.themeColor
-        el.gridColor = theme.fontColor
+        el.themeColors = [colorMap[tinycolor(el.themeColors[0]).toRgbString()]] || el.themeColors
+        el.textColor = theme.fontColor
       }
       if (el.type === 'line') el.color = colorMap[tinycolor(el.color).toRgbString()] || el.color
       if (el.type === 'audio') el.color = colorMap[tinycolor(el.color).toRgbString()] || el.color
@@ -357,8 +357,8 @@ export default () => {
           }
         }
         else if (el.type === 'chart') {
-          el.themeColor = [themeColor]
-          el.gridColor = fontColor
+          el.themeColors = [themeColor]
+          el.textColor = fontColor
         }
         else if (el.type === 'latex') el.color = fontColor
         else if (el.type === 'audio') el.color = themeColor

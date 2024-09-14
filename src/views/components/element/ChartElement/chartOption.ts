@@ -204,11 +204,10 @@ export const getChartOption = ({
           } : {},
           type: 'pie',
           radius: ['40%', '70%'],
+          padAngle: 1,
           avoidLabelOverlap: false,
           itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2
+            borderRadius: 4,
           },
           emphasis: {
             label: {
