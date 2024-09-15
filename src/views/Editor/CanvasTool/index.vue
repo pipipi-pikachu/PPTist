@@ -5,7 +5,15 @@
       <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'重做（Ctrl + Y）'" @click="redo()" />
       <div class="more">
         <Divider type="vertical" style="height: 20px;" />
-        <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'批注'" @click="toggleNotesPanel()" />
+        <Popover class="more-icon" trigger="click" v-model:value="moreVisible" :offset="10">
+          <template #content>
+            <PopoverMenuItem center @click="toggleNotesPanel(); moreVisible = false">批注面板</PopoverMenuItem>
+            <PopoverMenuItem center @click="toggleSelectPanel(); moreVisible = false">选择窗格</PopoverMenuItem>
+            <PopoverMenuItem center @click="toggleSraechPanel(); moreVisible = false">查找替换</PopoverMenuItem>
+          </template>
+          <IconMore class="handler-item" />
+        </Popover>
+        <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'批注面板'" @click="toggleNotesPanel()" />
         <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'选择窗格'" @click="toggleSelectPanel()" />
         <IconSearch class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'查找/替换（Ctrl + F）'" @click="toggleSraechPanel()" />
       </div>
@@ -172,6 +180,7 @@ const mediaInputVisible = ref(false)
 const latexEditorVisible = ref(false)
 const textTypeSelectVisible = ref(false)
 const shapeMenuVisible = ref(false)
+const moreVisible = ref(false)
 
 // 绘制文字范围
 const drawText = (vertical = false) => {
@@ -234,6 +243,9 @@ const toggleNotesPanel = () => {
 .left-handler, .more {
   display: flex;
   align-items: center;
+}
+.more-icon {
+  display: none;
 }
 .add-element-handler {
   position: absolute;
@@ -334,8 +346,11 @@ const toggleNotesPanel = () => {
   .right-handler .text {
     display: none;
   }
-  .more {
+  .more > .handler-item {
     display: none;
+  }
+  .more-icon {
+    display: block;
   }
 }
 @media screen and (width <= 1000px) {
