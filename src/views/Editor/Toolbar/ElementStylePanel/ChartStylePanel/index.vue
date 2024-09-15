@@ -1,7 +1,7 @@
 <template>
   <div class="chart-style-panel">
     <Button class="full-width-btn" @click="chartDataEditorVisible = true">
-      <IconEdit class="btn-icon" /> 编辑图表数据
+      <IconEdit class="btn-icon" /> 编辑图表
     </Button>
 
     <Divider />
@@ -118,7 +118,7 @@
 import { onUnmounted, ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { ChartData, ChartOptions, PPTChartElement } from '@/types/slides'
+import type { ChartData, ChartOptions, ChartType, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { CHART_PRESET_THEMES } from '@/configs/chart'
@@ -181,9 +181,12 @@ const updateElement = (props: Partial<PPTChartElement>) => {
 }
 
 // 设置图表数据
-const updateData = (data: ChartData) => {
+const updateData = (payload: {
+  data: ChartData
+  type: ChartType
+}) => {
   chartDataEditorVisible.value = false
-  updateElement({ data })
+  updateElement({ data: payload.data, chartType: payload.type })
 }
 
 // 设置填充色

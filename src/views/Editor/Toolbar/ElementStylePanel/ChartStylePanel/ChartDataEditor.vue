@@ -68,11 +68,23 @@
 
     <div class="btns">
       <div class="left">
-        <Button class="btn" @click="clear()">清空</Button>
+        图表类型：{{ CHART_TYPE_MAP[chartType] }}
+        <Popover trigger="click" placement="top" v-model:value="chartTypeSelectVisible">
+          <template #content>
+            <PopoverMenuItem
+              center
+              v-for="item in chartList" 
+              :key="item" 
+              @click="chartType = item; chartTypeSelectVisible = false"
+            >{{CHART_TYPE_MAP[item]}}</PopoverMenuItem>
+          </template>
+          <span class="change">点击更换</span>
+        </Popover>
       </div>
       <div class="right">
         <Button class="btn" @click="closeEditor()">取消</Button>
-        <Button type="primary" class="btn" @click="getTableData()" style="margin-left: 10px;">确认</Button>
+        <Button class="btn" @click="clear()">清空数据</Button>
+        <Button type="primary" class="btn" @click="getTableData()">确认</Button>
       </div>
     </div>
   </div>
@@ -82,8 +94,11 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { ChartData, ChartType } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
+import { CHART_TYPE_MAP } from '@/configs/chart'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 import Button from '@/components/Button.vue'
+import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const props = defineProps<{
   type: ChartType
@@ -91,7 +106,10 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (event: 'save', payload: ChartData): void
+  (event: 'save', payload: {
+    data: ChartData
+    type: ChartType
+  }): void
   (event: 'close'): void
 }>()
 
@@ -99,9 +117,12 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const CELL_WIDTH = 100
 const CELL_HEIGHT = 32
 
+const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring', 'radar']
+const chartTypeSelectVisible = ref(false)
 const selectedRange = ref([0, 0])
 const tempRangeSize = ref({ width: 0, height: 0 })
 const focusCell = ref<[number, number] | null>(null)
+const chartType = ref<ChartType>('bar')
 
 // 当前选区的边框线条位置
 const rangeLines = computed(() => {
@@ -124,6 +145,8 @@ const resizablePointStyle = computed(() => {
 
 // 初始化图表数据：将数据格式化并填充到DOM
 const initData = () => {
+  chartType.value = props.type
+
   const _data: string[][] = []
 
   const { labels, legends, series } = props.data
@@ -210,7 +233,7 @@ const getTableData = () => {
 
   // 一些特殊图表类型，数据需要单独处理
   // 散点图有且只有两列数据
-  if (props.type === 'scatter') {
+  if (chartType.value === 'scatter') {
     if (legends.length > 2) {
       legends = legends.slice(0, 2)
       series = series.slice(0, 2)
@@ -221,14 +244,14 @@ const getTableData = () => {
     }
   }
   // 饼图和环形图只有一列数据
-  if (props.type === 'ring' || props.type === 'pie') {
+  if (chartType.value === 'ring' || chartType.value === 'pie') {
     if (legends.length > 1) {
       legends = legends.slice(0, 1)
       series = series.slice(0, 1)
     }
   }
 
-  emit('save', { labels, legends, series })
+  emit('save', { data: { labels, legends, series }, type: chartType.value })
 }
 
 // 清空表格数据
@@ -439,6 +462,26 @@ table {
   margin-top: 10px;
   display: flex;
   justify-content: space-between;
+
+  .btn {
+    margin-left: 10px;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+
+    .change {
+      color: #ccc;
+      margin-left: 5px;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
 .col-header {

@@ -118,7 +118,7 @@ npm run dev
 - Style
 - Endpoint style
 #### Charts (bar, column, line, area, scatter, pie, donut, radar)
-- Chart conversion
+- Chart type conversion
 - Data editing
 - Background fill
 - Theme color
