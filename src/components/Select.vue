@@ -49,10 +49,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch, nextTick, onBeforeUnmount } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import Popover from './Popover.vue'
 import Input from './Input.vue'
 import Divider from './Divider.vue'
+import { watch } from 'vue';
+import { nextTick } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 interface SelectOption {
   label: string

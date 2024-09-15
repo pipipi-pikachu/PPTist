@@ -165,9 +165,9 @@ export const useSlidesStore = defineStore('slides', {
         deleteSlidesIndex.push(index)
 
         const deletedSlideSection = slides[index].sectionTag
-        if (deletedSlideSection) {
+        if(deletedSlideSection) {
           const handleSlideNext = slides[index + 1]
-          if (handleSlideNext && !handleSlideNext.sectionTag) {
+          if(handleSlideNext && !handleSlideNext.sectionTag) {
             delete slides[index].sectionTag
             slides[index + 1].sectionTag = deletedSlideSection
           }

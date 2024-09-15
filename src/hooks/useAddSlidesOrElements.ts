@@ -1,3 +1,4 @@
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useSlidesStore, useMainStore } from '@/store'
