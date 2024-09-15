@@ -49,7 +49,7 @@ export default () => {
     
     for (let i = startIndex; i < slides.value.length; i++) {
       const slide = slides.value[i]
-      if(i !== startIndex && slide.sectionTag) break
+      if (i !== startIndex && slide.sectionTag) break
 
       ids.push(slide.id)
     }
