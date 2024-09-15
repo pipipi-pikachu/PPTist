@@ -10,6 +10,8 @@
         <IconChartRing size="24" v-else-if="chart === 'ring'" />
         <IconChartScatter size="24" v-else-if="chart === 'scatter'" />
         <IconRadarChart size="23" v-else-if="chart === 'radar'" />
+
+        <div class="name">{{ CHART_TYPE_MAP[chart] }}</div>
       </div>
     </li>
   </ul>
@@ -17,12 +19,13 @@
 
 <script lang="ts" setup>
 import type { ChartType } from '@/types/slides'
+import { CHART_TYPE_MAP } from '@/configs/chart'
 
 const emit = defineEmits<{
   (event: 'select', payload: ChartType): void
 }>()
 
-const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'radar', 'pie', 'ring']
+const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring', 'radar']
 
 const selectChart = (chart: ChartType) => {
   emit('select', chart)
@@ -31,16 +34,16 @@ const selectChart = (chart: ChartType) => {
 
 <style lang="scss" scoped>
 .chart-pool {
-  width: 200px;
+  width: 240px;
   margin-bottom: -5px;
 
   @include flex-grid-layout();
 }
 .chart-item {
-  @include flex-grid-layout-children(5, 19%);
+  @include flex-grid-layout-children(4, 24%);
 
   height: 0;
-  padding-bottom: 19%;
+  padding-bottom: 25%;
   flex-shrink: 0;
   position: relative;
   cursor: pointer;
@@ -49,12 +52,17 @@ const selectChart = (chart: ChartType) => {
   @include absolute-0();
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #999;
 
   &:hover {
     color: $themeColor;
+  }
+
+  .name {
+    margin-top: 4px;
   }
 }
 </style>

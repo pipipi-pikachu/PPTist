@@ -43,8 +43,8 @@ const selectShape = (shape: ShapePoolItem) => {
   width: 100%;
   font-size: 12px;
   margin-bottom: 10px;
-  border-left: 4px solid #aaa;
-  background-color: #eee;
+  border-left: 4px solid #bbb;
+  background-color: #f1f1f1;
   padding: 3px 0 3px 8px;
   color: #555;
 }

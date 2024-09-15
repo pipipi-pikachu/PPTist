@@ -99,7 +99,7 @@ const close = () => {
 .title {
   height: 28px;
   line-height: 28px;
-  background-color: #ededed;
+  background-color: $lightGray;
   margin: 0 -10px 10px -10px;
   padding: 0 14px;
   font-size: 12px;
