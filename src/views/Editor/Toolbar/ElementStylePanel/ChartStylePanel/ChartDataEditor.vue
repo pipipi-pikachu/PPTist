@@ -80,12 +80,13 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import type { ChartData } from '@/types/slides'
+import type { ChartData, ChartType } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
 import Button from '@/components/Button.vue'
 
 const props = defineProps<{
+  type: ChartType
   data: ChartData
 }>()
 
@@ -177,8 +178,8 @@ const getTableData = () => {
   const [col, row] = selectedRange.value
 
   const labels: string[] = []
-  const legends: string[] = []
-  const series: number[][] = []
+  let legends: string[] = []
+  let series: number[][] = []
 
   // 第一行为系列名，第一列为项目名，实际数据从第二行第二列开始
   for (let rowIndex = 1; rowIndex < row; rowIndex++) {
@@ -205,6 +206,26 @@ const getTableData = () => {
       seriesItem.push(value)
     }
     series.push(seriesItem)
+  }
+
+  // 一些特殊图表类型，数据需要单独处理
+  // 散点图有且只有两列数据
+  if (props.type === 'scatter') {
+    if (legends.length > 2) {
+      legends = legends.slice(0, 2)
+      series = series.slice(0, 2)
+    }
+    if (legends.length < 2) {
+      legends.push('Y')
+      series.push(series[0])
+    }
+  }
+  // 饼图和环形图只有一列数据
+  if (props.type === 'ring' || props.type === 'pie') {
+    if (legends.length > 1) {
+      legends = legends.slice(0, 1)
+      series = series.slice(0, 1)
+    }
   }
 
   emit('save', { labels, legends, series })

@@ -105,6 +105,7 @@
       :width="640"
     >
       <ChartDataEditor 
+        :type="handleChartElement.chartType"
         :data="handleChartElement.data"
         @close="chartDataEditorVisible = false"
         @save="value => updateData(value)"
