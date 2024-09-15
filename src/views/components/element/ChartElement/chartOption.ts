@@ -1,4 +1,4 @@
-import * as echarts from 'echarts'
+import type * as echarts from 'echarts'
 import type { ChartData, ChartType } from '@/types/slides'
 
 export interface ChartOptionPayload {
@@ -18,7 +18,7 @@ export const getChartOption = ({
   lineSmooth,
   stack,
 }: ChartOptionPayload): echarts.EChartsOption | null => {
-  if(type === 'bar') {
+  if (type === 'bar') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -57,7 +57,7 @@ export const getChartOption = ({
       }),
     }
   }
-  if(type === 'column') {
+  if (type === 'column') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -96,7 +96,7 @@ export const getChartOption = ({
       }),
     }
   }
-  if(type === 'line') {
+  if (type === 'line') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -136,7 +136,7 @@ export const getChartOption = ({
       }),
     }
   }
-  if(type === 'pie') {
+  if (type === 'pie') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -178,7 +178,7 @@ export const getChartOption = ({
       ],
     }
   }
-  if(type === 'ring') {
+  if (type === 'ring') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -220,7 +220,7 @@ export const getChartOption = ({
       ],
     }
   }
-  if(type === 'area') {
+  if (type === 'area') {
     return {
       color: themeColors,
       textStyle: textColor ? {
@@ -261,7 +261,7 @@ export const getChartOption = ({
       }),
     }
   }
-  if(type === 'radar') {
+  if (type === 'radar') {
     // indicator 中不设置max时显示异常，设置max后控制台警告，无解，等EChart官方修复此bug
     // const values: number[] = []
     // for (const item of data.series) {
@@ -297,9 +297,9 @@ export const getChartOption = ({
       ],
     }
   }
-  if(type === 'scatter') {
+  if (type === 'scatter') {
     const formatedData = []
-    for(let i = 0; i < data.series[0].length; i++) {
+    for (let i = 0; i < data.series[0].length; i++) {
       const x = data.series[0][i]
       const y = data.series[1] ? data.series[1][i] : x
       formatedData.push([x, y])

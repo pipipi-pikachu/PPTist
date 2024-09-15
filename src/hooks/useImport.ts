@@ -22,7 +22,7 @@ import type {
   ChartOptions,
 } from '@/types/slides'
 
-const convertFontSizePtToPx = (html: string, ratio: number) =>  {
+const convertFontSizePtToPx = (html: string, ratio: number) => {
   return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
     return `font-size: ${(parseFloat(p1) * ratio).toFixed(1)}px`
   })
