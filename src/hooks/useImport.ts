@@ -59,7 +59,7 @@ export default () => {
     reader.readAsText(file)
   }
 
-  const parseLineElement = (el: Shape): PPTLineElement => {
+  const parseLineElement = (el: Shape) => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
 
@@ -79,7 +79,8 @@ export default () => {
       start = [el.width, 0]
       end = [0, el.height]
     }
-    return {
+
+    const data: PPTLineElement = {
       type: 'line',
       id: nanoid(10),
       width: el.borderWidth || 1,
@@ -89,8 +90,16 @@ export default () => {
       end,
       style: el.borderType === 'solid' ? 'solid' : 'dashed',
       color: el.borderColor,
-      points: ['', el.shapType === 'straightConnector1' ? 'arrow' : '']
+      points: ['', /straightConnector/.test(el.shapType) ? 'arrow' : '']
     }
+    if (/bentConnector/.test(el.shapType)) {
+      data.broken2 = [
+        Math.abs(start[0] - end[0]) / 2,
+        Math.abs(start[1] - end[1]) / 2,
+      ]
+    }
+
+    return data
   }
 
   // 导入PPTX文件
