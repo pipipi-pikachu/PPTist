@@ -1,5 +1,14 @@
-import type * as echarts from 'echarts'
+import type { ComposeOption } from 'echarts/core'
+import type {
+  BarSeriesOption,
+  LineSeriesOption,
+  PieSeriesOption,
+  ScatterSeriesOption,
+  RadarSeriesOption,
+} from 'echarts/charts'
 import type { ChartData, ChartType } from '@/types/slides'
+
+type EChartOption = ComposeOption<BarSeriesOption | LineSeriesOption | PieSeriesOption | ScatterSeriesOption | RadarSeriesOption>
 
 export interface ChartOptionPayload {
   type: ChartType
@@ -17,19 +26,13 @@ export const getChartOption = ({
   textColor,
   lineSmooth,
   stack,
-}: ChartOptionPayload): echarts.EChartsOption | null => {
+}: ChartOptionPayload): EChartOption | null => {
   if (type === 'bar') {
     return {
       color: themeColors,
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: data.series.length > 1 ? {
         top: 'bottom',
         textStyle: textColor ? {
@@ -44,7 +47,7 @@ export const getChartOption = ({
         type: 'value',
       },
       series: data.series.map((item, index) => {
-        const seriesItem: echarts.SeriesOption = {
+        const seriesItem: BarSeriesOption = {
           data: item,
           name: data.legends[index],
           type: 'bar',
@@ -63,12 +66,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: data.series.length > 1 ? {
         top: 'bottom',
         textStyle: textColor ? {
@@ -83,7 +80,7 @@ export const getChartOption = ({
         type: 'value',
       },
       series: data.series.map((item, index) => {
-        const seriesItem: echarts.SeriesOption = {
+        const seriesItem: BarSeriesOption = {
           data: item,
           name: data.legends[index],
           type: 'bar',
@@ -102,12 +99,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: data.series.length > 1 ? {
         top: 'bottom',
         textStyle: textColor ? {
@@ -122,7 +113,7 @@ export const getChartOption = ({
         type: 'value',
       },
       series: data.series.map((item, index) => {
-        const seriesItem: echarts.SeriesOption = {
+        const seriesItem: LineSeriesOption = {
           data: item,
           name: data.legends[index],
           type: 'line',
@@ -142,12 +133,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'item',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: {
         top: 'bottom',
         textStyle: textColor ? {
@@ -184,12 +169,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'item',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: {
         top: 'bottom',
         textStyle: textColor ? {
@@ -226,12 +205,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: data.series.length > 1 ? {
         top: 'bottom',
         textStyle: textColor ? {
@@ -247,7 +220,7 @@ export const getChartOption = ({
         type: 'value',
       },
       series: data.series.map((item, index) => {
-        const seriesItem: echarts.SeriesOption = {
+        const seriesItem: LineSeriesOption = {
           data: item,
           name: data.legends[index],
           type: 'line',
@@ -274,12 +247,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'item',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       legend: data.series.length > 1 ? {
         top: 'bottom',
         textStyle: textColor ? {
@@ -310,12 +277,6 @@ export const getChartOption = ({
       textStyle: textColor ? {
         color: textColor,
       } : {},
-      tooltip: {
-        trigger: 'item',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
       xAxis: {},
       yAxis: {},
       series: [

@@ -4,10 +4,24 @@
 
 <script lang="ts" setup>
 import { onMounted, ref, computed, watch } from 'vue'
-import * as echarts from 'echarts'
 import tinycolor from 'tinycolor2'
 import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { getChartOption } from './chartOption'
+
+import * as echarts from 'echarts/core'
+import { BarChart, LineChart, PieChart, ScatterChart, RadarChart } from 'echarts/charts'
+import { LegendComponent } from 'echarts/components'
+import { SVGRenderer } from 'echarts/renderers'
+
+echarts.use([
+  BarChart,
+  LineChart,
+  PieChart,
+  ScatterChart,
+  RadarChart,
+  LegendComponent,
+  SVGRenderer,
+])
 
 const props = defineProps<{
   width: number
