@@ -115,7 +115,7 @@ npm run dev
 - Straight lines, polylines, curves
 - Color
 - Width
-- Style
+- Style (solid, dashed, dotted)
 - Endpoint style
 #### Charts (bar, column, line, area, scatter, pie, donut, radar)
 - Chart type conversion
@@ -192,7 +192,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 你的代码被本项目作为依赖引用；
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你长期参与到本项目的维护工作中；
-    3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取商业授权。（注：仅授权，不存在额外商业化版本和技术支持）
+    3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取商业授权。（注：仅授权，无其他版本和技术支持）
 
 # 👎👎👎 耻辱柱 🤮🤮🤮
 > 👎桌案（西安）信息科技有限公司、西安即刻易用网络科技有限公司 <br> 

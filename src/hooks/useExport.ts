@@ -333,14 +333,21 @@ export default () => {
     }
   }
 
+  const dashTypeMap = {
+    'solid': 'solid',
+    'dashed': 'dash',
+    'dotted': 'sysDot',
+  }
+
   // 获取边框配置
   const getOutlineOption = (outline: PPTElementOutline): pptxgen.ShapeLineProps => {
     const c = formatColor(outline?.color || '#000000')
+    
     return {
       color: c.color, 
       transparency: (1 - c.alpha) * 100,
       width: (outline.width || 1) / ratioPx2Pt.value, 
-      dashType: outline.style === 'solid' ? 'solid' : 'dash',
+      dashType: outline.style ? dashTypeMap[outline.style] as 'solid' | 'dash' | 'sysDot' : 'solid',
     }
   }
 
@@ -588,7 +595,7 @@ export default () => {
               color: c.color, 
               transparency: (1 - c.alpha) * 100,
               width: el.width / ratioPx2Pt.value, 
-              dashType: el.style === 'solid' ? 'solid' : 'dash',
+              dashType: dashTypeMap[el.style] as 'solid' | 'dash' | 'sysDot',
               beginArrowType: el.points[0] ? 'arrow' : 'none',
               endArrowType: el.points[1] ? 'arrow' : 'none',
             },

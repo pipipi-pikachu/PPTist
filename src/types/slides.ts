@@ -80,7 +80,7 @@ export interface PPTElementShadow {
  * color?: 边框颜色
  */
 export interface PPTElementOutline {
-  style?: 'dashed' | 'solid'
+  style?: 'dashed' | 'solid' | 'dotted'
   width?: number
   color?: string
 }
@@ -362,7 +362,7 @@ export type LinePoint = '' | 'arrow' | 'dot'
  * 
  * end: 终点位置（[x, y]）
  * 
- * style: 线条样式（实线、虚线）
+ * style: 线条样式（实线、虚线、点线）
  * 
  * color: 线条颜色
  * 
@@ -382,7 +382,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
   type: 'line'
   start: [number, number]
   end: [number, number]
-  style: 'solid' | 'dashed'
+  style: 'solid' | 'dashed' | 'dotted'
   color: string
   points: [LinePoint, LinePoint]
   shadow?: PPTElementShadow

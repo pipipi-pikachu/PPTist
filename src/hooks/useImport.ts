@@ -88,7 +88,7 @@ export default () => {
       top: el.top,
       start,
       end,
-      style: el.borderType === 'solid' ? 'solid' : 'dashed',
+      style: el.borderType,
       color: el.borderColor,
       points: ['', /straightConnector/.test(el.shapType) ? 'arrow' : '']
     }
@@ -190,7 +190,7 @@ export default () => {
                 outline: {
                   color: el.borderColor,
                   width: el.borderWidth,
-                  style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                  style: el.borderType,
                 },
                 fill: el.fillColor,
                 vertical: el.isVertical,
@@ -278,7 +278,7 @@ export default () => {
                   outline: {
                     color: el.borderColor,
                     width: el.borderWidth,
-                    style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                    style: el.borderType,
                   },
                   text: {
                     content: convertFontSizePtToPx(el.content, ratio),
@@ -386,7 +386,7 @@ export default () => {
                 data,
                 outline: {
                   width: el.borderWidth || 2,
-                  style: el.borderType === 'solid' ? 'solid' : 'dashed',
+                  style: el.borderType,
                   color: el.borderColor || '#eeece1',
                 },
                 cellMinHeight: 36,

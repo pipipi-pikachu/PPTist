@@ -9,6 +9,7 @@
         :options="[
           { label: '实线', value: 'solid' },
           { label: '虚线', value: 'dashed' },
+          { label: '点线', value: 'dotted' },
         ]"
       />
     </div>

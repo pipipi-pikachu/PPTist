@@ -180,10 +180,11 @@
         <Select 
           style="width: 60%;" 
           :value="theme.outline.style || ''" 
-          @update:value="value => updateTheme({ outline: { ...theme.outline, style: value as 'dashed' | 'solid' } })"
+          @update:value="value => updateTheme({ outline: { ...theme.outline, style: value as 'dashed' | 'solid' | 'dotted' } })"
           :options="[
             { label: '实线边框', value: 'solid' },
             { label: '虚线边框', value: 'dashed' },
+            { label: '点线边框', value: 'dotted' },
           ]"
         />
       </div>
