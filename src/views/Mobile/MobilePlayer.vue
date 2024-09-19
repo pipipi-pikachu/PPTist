@@ -1,42 +1,43 @@
 <template>
-  <div class="mobile-player" 
+  <div class="mobile-player"
     :style="{
       width: playerSize.width + 'px',
       height: playerSize.height + 'px',
       transform: `rotate(90deg) translateY(-${playerSize.height}px)`,
     }"
   >
-    <div 
-      class="screen-slide-list" 
+    <div
+      class="screen-slide-list"
+      ref="slideList"
       @click="toolVisible = !toolVisible"
       @touchstart="$event => touchStartListener($event)"
       @touchend="$event => touchEndListener($event)"
     >
-      <div 
+      <div
         :class="[
-          'slide-item', 
+          'slide-item',
           `turning-mode-${slide.turningMode || 'slideY'}`,
           {
-            'current': index === slideIndex,
+            // 'current': index === slideIndex,
             'before': index < slideIndex,
-            'after': index > slideIndex,
+            'after': (slideIndex == 0 && oldSlideIndex < 0) || index > slideIndex,
             'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== currentSlide.turningMode,
           }
         ]"
-        v-for="(slide, index) in slides" 
+        v-for="(slide, index) in slides"
         :key="slide.id"
       >
-        <div 
-          class="slide-content" 
+        <div
+          class="slide-content"
           :style="{
             width: slideSize.width + 'px',
             height: slideSize.height + 'px',
           }"
           v-if="Math.abs(slideIndex - index) < 2"
         >
-          <ThumbnailSlide 
-            :slide="slide" 
-            :size="slideSize.width" 
+          <ThumbnailSlide
+            :slide="slide"
+            :size="slideSize.width"
           />
         </div>
       </div>
@@ -52,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { Mode } from '@/types/mobile'
@@ -100,6 +101,35 @@ const slideSize = computed(() => {
     height: slideHeight,
   }
 })
+
+
+const slideList = ref<HTMLDivElement | null>(null)
+
+const oldSlideIndex = ref(-1)
+watch(
+  () => slideIndex.value,
+  (newIindex: any, oldIndex: any) => {
+    if (oldIndex >= 0) oldSlideIndex.value = oldIndex
+
+    nextTick(() => {
+      const slideItems: any = slideList.value?.querySelectorAll('.slide-item')
+      if (!slideItems) return
+      if (newIindex == 0) {
+        if (!slideItems[newIindex].classList.contains('before')) {
+          setTimeout(() => {
+            slideItems[newIindex].classList.remove('after')
+            slideItems[newIindex].classList.add('current')
+          }, 350)
+        } else {
+          slideItems[newIindex].classList.add('current')
+        }
+      } else {
+        slideItems[newIindex].classList.add('current')
+      }
+    })
+  },
+  { immediate: true }
+)
 
 const touchInfo = ref<{ x: number; y: number; } | null>(null)
 const touchStartListener = (e: TouchEvent) => {

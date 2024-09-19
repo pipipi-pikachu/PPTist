@@ -1,29 +1,29 @@
 <template>
-  <div class="screen-slide-list">
-    <div 
+  <div class="screen-slide-list" ref="slideList">
+    <div
       :class="[
-        'slide-item', 
+        'slide-item',
         `turning-mode-${slide.turningMode}`,
         {
-          'current': index === slideIndex,
+          // 'current': index === slideIndex,
           'before': index < slideIndex,
-          'after': index > slideIndex,
+          'after':  (slideIndex == 0 && oldSlideIndex < 0) || index > slideIndex,
           'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== slidesWithTurningMode[slideIndex].turningMode,
         }
       ]"
-      v-for="(slide, index) in slidesWithTurningMode" 
+      v-for="(slide, index) in slidesWithTurningMode"
       :key="slide.id"
     >
-      <div 
-        class="slide-content" 
+      <div
+        class="slide-content"
         :style="{
           width: slideWidth + 'px',
           height: slideHeight + 'px',
         }"
         v-if="Math.abs(slideIndex - index) < 2 || slide.animations?.length"
       >
-        <ScreenSlide 
-          :slide="slide" 
+        <ScreenSlide
+          :slide="slide"
           :scale="scale"
           :animationIndex="animationIndex"
           :turnSlideToId="turnSlideToId"
@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, provide } from 'vue'
+import { computed, nextTick, provide, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { injectKeySlideScale } from '@/types/injectKey'
@@ -53,17 +53,48 @@ const props = defineProps<{
 
 const { slides, slideIndex, viewportSize } = storeToRefs(useSlidesStore())
 
+const slideList = ref<HTMLDivElement | null>(null)
+
+const oldSlideIndex = ref(-1)
+watch(
+  () => slideIndex.value,
+  (newIindex: any, oldIndex: any) => {
+    if (oldIndex >= 0) oldSlideIndex.value = oldIndex
+
+    nextTick(() => {
+      const slideItems: any = slideList.value?.querySelectorAll('.slide-item')
+      if (!slideItems) return
+      if (newIindex == 0) {
+        if (!slideItems[newIindex].classList.contains('before')) {
+          setTimeout(() => {
+            slideItems[newIindex].classList.remove('after')
+            slideItems[newIindex].classList.add('current')
+          }, 350)
+        } else {
+          slideItems[newIindex].classList.add('current')
+        }
+      } else {
+        slideItems[newIindex].classList.add('current')
+      }
+    })
+  },
+  { immediate: true }
+)
+
 const slidesWithTurningMode = computed(() => {
-  return slides.value.map(slide => {
+  return slides.value.map((slide) => {
     let turningMode = slide.turningMode
     if (!turningMode) turningMode = 'slideY'
     if (turningMode === 'random') {
-      const turningModeKeys = SLIDE_ANIMATIONS.filter(item => !['random', 'no'].includes(item.value)).map(item => item.value)
-      turningMode = turningModeKeys[Math.floor(Math.random() * turningModeKeys.length)]
+      const turningModeKeys = SLIDE_ANIMATIONS.filter(
+        (item) => !['random', 'no'].includes(item.value)
+      ).map((item) => item.value)
+      turningMode =
+        turningModeKeys[Math.floor(Math.random() * turningModeKeys.length)]
     }
     return {
       ...slide,
-      turningMode,
+      turningMode
     }
   })
 })
