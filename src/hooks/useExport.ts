@@ -67,7 +67,13 @@ export default () => {
   
   // 导出JSON文件
   const exportJSON = () => {
-    const blob = new Blob([JSON.stringify(slides.value)], { type: '' })
+    const json = {
+      title: title.value,
+      width: viewportSize.value,
+      height: viewportSize.value * viewportRatio.value,
+      slides: slides.value,
+    }
+    const blob = new Blob([JSON.stringify(json)], { type: '' })
     saveAs(blob, `${title.value}.json`)
   }
 

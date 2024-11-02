@@ -1,7 +1,7 @@
 <template>
   <div class="export-json-dialog">
     <div class="preview">
-      <pre>{{slides}}</pre>
+      <pre>{{ json }}</pre>
     </div>
 
     <div class="btns">
@@ -12,6 +12,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
@@ -21,8 +22,17 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const { slides } = storeToRefs(useSlidesStore())
+const { slides, viewportRatio, title, viewportSize } = storeToRefs(useSlidesStore())
 const { exportJSON } = useExport()
+
+const json = computed(() => {
+  return {
+    title: title.value,
+    width: viewportSize.value,
+    height: viewportSize.value * viewportRatio.value,
+    slides: slides.value,
+  }
+})
 </script>
 
 <style lang="scss" scoped>
