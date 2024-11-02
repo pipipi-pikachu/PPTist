@@ -338,7 +338,10 @@ export default () => {
           if ('shadow' in el && el.shadow) el.shadow = shadow
         }
 
-        if (el.type === 'shape') el.fill = themeColor
+        if (el.type === 'shape') {
+          el.fill = themeColor
+          if (el.gradient) delete el.gradient
+        }
         else if (el.type === 'line') el.color = themeColor
         else if (el.type === 'text') {
           el.defaultColor = fontColor
