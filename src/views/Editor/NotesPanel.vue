@@ -14,7 +14,7 @@
     @close="close()"
   >
     <div class="container">
-      <div class="notes">
+      <div class="notes" ref="notesRef">
         <div class="note" :class="{ 'active': activeNoteId === note.id }" v-for="note in notes" :key="note.id" @click="handleClickNote(note)">
           <div class="header note-header">
             <div class="user">
@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -98,11 +98,18 @@ const notes = computed(() => currentSlide.value?.notes || [])
 const activeNoteId = ref('')
 const replyNoteId = ref('')
 const textAreaRef = ref<InstanceType<typeof TextArea>>()
+const notesRef = ref<HTMLElement>()
 
 watch(slideIndex, () => {
   activeNoteId.value = ''
   replyNoteId.value = ''
 })
+
+const scrollToBottom = () => {
+  if (notesRef.value) {
+    notesRef.value.scrollTop = notesRef.value.scrollHeight
+  }
+}
 
 const createNote = () => {
   if (!content.value) {
@@ -125,6 +132,8 @@ const createNote = () => {
   slidesStore.updateSlide({ notes: newNotes })
 
   content.value = ''
+
+  nextTick(scrollToBottom)
 }
 
 const deleteNote = (id: string) => {
@@ -156,6 +165,8 @@ const createNoteReply = () => {
 
   replyContent.value = ''
   replyNoteId.value = ''
+
+  nextTick(scrollToBottom)
 }
 
 const deleteReply = (noteId: string, replyId: string) => {
