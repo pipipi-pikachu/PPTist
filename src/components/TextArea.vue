@@ -16,6 +16,7 @@
     @input="$event => handleInput($event)"
     @focus="$event => emit('focus', $event)"
     @blur="$event => emit('blur', $event)"
+    @keydown.enter="$event => emit('enter', $event)"
   ></textarea>
 </template>
 
@@ -40,6 +41,7 @@ const emit = defineEmits<{
   (event: 'update:value', payload: string): void
   (event: 'focus', payload: FocusEvent): void
   (event: 'blur', payload: FocusEvent): void
+  (event: 'enter', payload: FocusEvent): void
 }>()
 
 const handleInput = (e: Event) => {

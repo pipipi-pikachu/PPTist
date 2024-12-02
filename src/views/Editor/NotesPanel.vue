@@ -48,7 +48,7 @@
             </div>
           </div>
           <div class="note-reply" v-if="replyNoteId === note.id">
-            <TextArea :padding="6" v-model:value="replyContent" placeholder="输入回复内容" :rows="1" />
+            <TextArea :padding="6" v-model:value="replyContent" placeholder="输入回复内容" :rows="1" @enter.prevent="createNoteReply()" />
             <div class="reply-btns">
               <Button class="btn" size="small" @click="replyNoteId = ''">取消</Button>
               <Button class="btn" size="small" type="primary" @click="createNoteReply()">回复</Button>
@@ -65,6 +65,7 @@
           :placeholder="`输入批注（为${handleElementId ? '选中元素' : '当前页幻灯片' }）`"
           :rows="2"
           @focus="replyNoteId = ''; activeNoteId = ''"
+          @enter.prevent="createNote()"
         />
         <div class="footer">
           <IconDelete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
