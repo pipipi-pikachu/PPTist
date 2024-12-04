@@ -137,6 +137,8 @@ interface PPTBaseElement {
 }
 
 
+export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'notes' | 'header' | 'footer'
+
 /**
  * 文本元素
  * 
@@ -163,6 +165,8 @@ interface PPTBaseElement {
  * paragraphSpace?: 段间距，默认 5px
  * 
  * vertical?: 竖向文本
+ * 
+ * textType?: 文本类型
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
@@ -177,6 +181,7 @@ export interface PPTTextElement extends PPTBaseElement {
   shadow?: PPTElementShadow
   paragraphSpace?: number
   vertical?: boolean
+  textType?: TextType
 }
 
 
@@ -289,12 +294,15 @@ export type ShapeTextAlign = 'top' | 'middle' | 'bottom'
  * defaultColor: 默认颜色（会被文本内容中的HTML内联样式覆盖）
  * 
  * align: 文本对齐方向（垂直方向）
+ * 
+ * type: 文本类型
  */
 export interface ShapeText {
   content: string
   defaultFontName: string
   defaultColor: string
   align: ShapeTextAlign
+  type?: TextType
 }
 
 /**
@@ -693,6 +701,8 @@ export interface SectionTag {
   title?: string
 }
 
+export type SlideType = 'cover' | 'contents' | 'transition' | 'content' | 'end'
+
 /**
  * 幻灯片页面
  * 
@@ -700,7 +710,7 @@ export interface SectionTag {
  * 
  * elements: 元素集合
  * 
- * notes: 批注
+ * notes?: 批注
  * 
  * remark?: 备注
  * 
@@ -709,6 +719,8 @@ export interface SectionTag {
  * animations?: 元素动画集合
  * 
  * turningMode?: 翻页方式
+ * 
+ * slideType?: 页面类型
  */
 export interface Slide {
   id: string
@@ -719,6 +731,7 @@ export interface Slide {
   animations?: PPTAnimation[]
   turningMode?: TurningMode
   sectionTag?: SectionTag
+  type?: SlideType
 }
 
 /**

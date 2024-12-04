@@ -38,6 +38,7 @@ export interface MainState {
   showSelectPanel: boolean
   showSearchPanel: boolean
   showNotesPanel: boolean
+  showMarkupPanel: boolean
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -73,6 +74,7 @@ export const useMainStore = defineStore('main', {
     showSelectPanel: false, // 打开选择面板
     showSearchPanel: false, // 打开查找替换面板
     showNotesPanel: false, // 打开批注面板
+    showMarkupPanel: false, // 打开类型标注面板
   }),
 
   getters: {
@@ -201,6 +203,10 @@ export const useMainStore = defineStore('main', {
 
     setNotesPanelState(show: boolean) {
       this.showNotesPanel = show
+    },
+
+    setMarkupPanelState(show: boolean) {
+      this.showMarkupPanel = show
     },
   },
 })

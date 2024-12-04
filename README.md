@@ -57,6 +57,7 @@ npm run dev
 - Transition animations
 - Element animations (entrance, exit, emphasis)
 - Selection panel (hide elements, layer sorting, element naming)
+- Labels for Page and Node Types (usable for template-related features)
 - Find/replace
 - Annotations
 ### Slide Element Editing
