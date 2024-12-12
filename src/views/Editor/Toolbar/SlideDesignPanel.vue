@@ -177,16 +177,16 @@
     <template v-if="moreThemeConfigsVisible">
       <div class="row">
         <div style="width: 40%;">边框样式：</div>
-        <Select 
-          style="width: 60%;" 
-          :value="theme.outline.style || ''" 
-          @update:value="value => updateTheme({ outline: { ...theme.outline, style: value as 'dashed' | 'solid' | 'dotted' } })"
-          :options="[
-            { label: '实线边框', value: 'solid' },
-            { label: '虚线边框', value: 'dashed' },
-            { label: '点线边框', value: 'dotted' },
-          ]"
-        />
+        <SelectCustom style="width: 60%;">
+          <template #options>
+            <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateTheme({ outline: { ...theme.outline, style: item } })">
+              <SVGLine :type="item" />
+            </div>
+          </template>
+          <template #label>
+            <SVGLine :type="theme.outline.style" />
+          </template>
+        </SelectCustom>
       </div>
       <div class="row">
         <div style="width: 40%;">边框颜色：</div>
@@ -312,6 +312,7 @@ import type {
   SlideTheme,
   SlideBackgroundImage,
   SlideBackgroundImageSize,
+  LineStyleType,
 } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
 import { WEB_FONTS } from '@/configs/font'
@@ -320,6 +321,7 @@ import useSlideTheme from '@/hooks/useSlideTheme'
 import { getImageDataURL } from '@/utils/image'
 
 import ThemeStylesExtract from './ThemeStylesExtract.vue'
+import SVGLine from './common/SVGLine.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
@@ -328,6 +330,7 @@ import Slider from '@/components/Slider.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
+import SelectCustom from '@/components/SelectCustom.vue'
 import NumberInput from '@/components/NumberInput.vue'
 import Modal from '@/components/Modal.vue'
 import GradientBar from '@/components/GradientBar.vue'
@@ -339,6 +342,7 @@ const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 const moreThemeConfigsVisible = ref(false)
 const themeStylesExtractVisible = ref(false)
 const currentGradientIndex = ref(0)
+const lineStyleOptions = ref<LineStyleType[]>(['solid', 'dashed', 'dotted'])
 
 const background = computed(() => {
   if (!currentSlide.value.background) {
@@ -552,6 +556,21 @@ const updateViewportRatio = (value: number) => {
     background-color: rgba($color: #000, $alpha: .25);
     opacity: 0;
     transition: opacity $transitionDelay;
+  }
+}
+.option {
+  height: 32px;
+  padding: 0 5px;
+  border-radius: $borderRadius;
+
+  &:not(.selected):hover {
+    background-color: rgba($color: $themeColor, $alpha: .05);
+    cursor: pointer;
+  }
+
+  &.selected {
+    color: $themeColor;
+    font-weight: 700;
   }
 }
 </style>

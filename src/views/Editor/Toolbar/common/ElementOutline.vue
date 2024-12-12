@@ -12,16 +12,16 @@
     <template v-if="hasOutline && outline">
       <div class="row">
         <div style="width: 40%;">边框样式：</div>
-        <Select 
-          style="width: 60%;" 
-          :value="outline.style || ''" 
-          @update:value="value => updateOutline({ style: value as 'dashed' | 'solid' | 'dotted' })"
-          :options="[
-            { label: '实线边框', value: 'solid' },
-            { label: '虚线边框', value: 'dashed' },
-            { label: '点线边框', value: 'dotted' },
-          ]"
-        />
+        <SelectCustom style="width: 60%;">
+          <template #options>
+            <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateOutline({ style: item })">
+              <SVGLine :type="item" />
+            </div>
+          </template>
+          <template #label>
+            <SVGLine :type="outline.style" />
+          </template>
+        </SelectCustom>
       </div>
       <div class="row">
         <div style="width: 40%;">边框颜色：</div>
@@ -51,14 +51,15 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElementOutline } from '@/types/slides'
+import type { LineStyleType, PPTElementOutline } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
+import SVGLine from '../common/SVGLine.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import NumberInput from '@/components/NumberInput.vue'
-import Select from '@/components/Select.vue'
+import SelectCustom from '@/components/SelectCustom.vue'
 import Popover from '@/components/Popover.vue'
 
 withDefaults(defineProps<{
@@ -73,6 +74,7 @@ const { handleElement } = storeToRefs(useMainStore())
 
 const outline = ref<PPTElementOutline>()
 const hasOutline = ref(false)
+const lineStyleOptions = ref<LineStyleType[]>(['solid', 'dashed', 'dotted'])
 
 watch(handleElement, () => {
   if (!handleElement.value) return
@@ -112,5 +114,20 @@ const toggleOutline = (checked: boolean) => {
 }
 .switch-wrapper {
   text-align: right;
+}
+.option {
+  height: 32px;
+  padding: 0 5px;
+  border-radius: $borderRadius;
+
+  &:not(.selected):hover {
+    background-color: rgba($color: $themeColor, $alpha: .05);
+    cursor: pointer;
+  }
+
+  &.selected {
+    color: $themeColor;
+    font-weight: 700;
+  }
 }
 </style>

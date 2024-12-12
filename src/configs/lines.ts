@@ -1,9 +1,9 @@
-import type { LinePoint } from '@/types/slides'
+import type { LinePoint, LineStyleType } from '@/types/slides'
 
 
 export interface LinePoolItem {
   path: string
-  style: 'solid' | 'dashed'
+  style: LineStyleType
   points: [LinePoint, LinePoint]
   isBroken?: boolean
   isBroken2?: boolean

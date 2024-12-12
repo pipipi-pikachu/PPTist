@@ -2,16 +2,16 @@
   <div class="line-style-panel">
     <div class="row">
       <div style="width: 40%;">线条样式：</div>
-      <Select 
-        style="width: 60%;" 
-        :value="handleLineElement.style" 
-        @update:value="value => updateLine({ style: value as 'solid' | 'dashed' })"
-        :options="[
-          { label: '实线', value: 'solid' },
-          { label: '虚线', value: 'dashed' },
-          { label: '点线', value: 'dotted' },
-        ]"
-      />
+      <SelectCustom style="width: 60%;">
+        <template #options>
+          <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateLine({ style: item })">
+            <SVGLine :type="item" />
+          </div>
+        </template>
+        <template #label>
+          <SVGLine :type="handleLineElement.style" />
+        </template>
+      </SelectCustom>
     </div>
     <div class="row">
       <div style="width: 40%;">线条颜色：</div>
@@ -36,29 +36,29 @@
     
     <div class="row">
       <div style="width: 40%;">起点样式：</div>
-      <Select 
-        style="width: 60%;" 
-        :value="handleLineElement.points[0]" 
-        @update:value="value => updateLine({ points: [value as 'arrow' | 'dot', handleLineElement.points[1]] })"
-        :options="[
-          { label: '无', value: '' },
-          { label: '箭头', value: 'arrow' },
-          { label: '圆点', value: 'dot' },
-        ]"
-      />
+      <SelectCustom style="width: 60%;">
+        <template #options>
+          <div class="option" v-for="item in lineMarkerOptions" :key="item" @click="updateLine({ points: [item, handleLineElement.points[1]] })">
+            <SVGLine :padding="5" :markers="[item, '']" />
+          </div>
+        </template>
+        <template #label>
+          <SVGLine :padding="5" :markers="[handleLineElement.points[0], '']" />
+        </template>
+      </SelectCustom>
     </div>
     <div class="row">
       <div style="width: 40%;">终点样式：</div>
-      <Select 
-        style="width: 60%;" 
-        :value="handleLineElement.points[1]" 
-        @update:value="value => updateLine({ points: [handleLineElement.points[0], value as 'arrow' | 'dot'] })"
-        :options="[
-          { label: '无', value: '' },
-          { label: '箭头', value: 'arrow' },
-          { label: '圆点', value: 'dot' },
-        ]"
-      />
+      <SelectCustom style="width: 60%;">
+        <template #options>
+          <div class="option" v-for="item in lineMarkerOptions" :key="item" @click="updateLine({ points: [handleLineElement.points[0], item] })">
+            <SVGLine :padding="5" :markers="['', item]" />
+          </div>
+        </template>
+        <template #label>
+          <SVGLine :padding="5" :markers="['', handleLineElement.points[1]]" />
+        </template>
+      </SelectCustom>
     </div>
 
     <Divider />
@@ -73,19 +73,20 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTLineElement } from '@/types/slides'
+import type { LinePoint, LineStyleType, PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementShadow from '../common/ElementShadow.vue'
+import SVGLine from '../common/SVGLine.vue'
 import Button from '@/components/Button.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import NumberInput from '@/components/NumberInput.vue'
-import Select from '@/components/Select.vue'
+import SelectCustom from '@/components/SelectCustom.vue'
 import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
@@ -94,6 +95,9 @@ const { handleElement } = storeToRefs(useMainStore())
 const handleLineElement = handleElement as Ref<PPTLineElement>
 
 const { addHistorySnapshot } = useHistorySnapshot()
+
+const lineStyleOptions = ref<LineStyleType[]>(['solid', 'dashed', 'dotted'])
+const lineMarkerOptions = ref<LinePoint[]>(['', 'arrow', 'dot'])
 
 const updateLine = (props: Partial<PPTLineElement>) => {
   if (!handleElement.value) return
@@ -133,6 +137,21 @@ const updateLine = (props: Partial<PPTLineElement>) => {
 
   & + .preset-point-style {
     margin-top: 10px;
+  }
+}
+.option {
+  height: 32px;
+  padding: 0 5px;
+  border-radius: $borderRadius;
+
+  &:not(.selected):hover {
+    background-color: rgba($color: $themeColor, $alpha: .05);
+    cursor: pointer;
+  }
+
+  &.selected {
+    color: $themeColor;
+    font-weight: 700;
   }
 }
 </style>

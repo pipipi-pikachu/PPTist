@@ -18,11 +18,14 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import type { LinePoint } from '@/types/slides'
+
+type NonEmptyLinePoint = Exclude<LinePoint, ''>
 
 const props = defineProps<{
   id: string
   position: 'start' | 'end'
-  type: 'dot' | 'arrow'
+  type: NonEmptyLinePoint
   baseSize: number
   color?: string
 }>()

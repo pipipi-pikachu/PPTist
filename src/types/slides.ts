@@ -52,6 +52,8 @@ export interface Gradient {
   rotate: number
 }
 
+export type LineStyleType = 'solid' | 'dashed' | 'dotted'
+
 /**
  * 元素阴影
  * 
@@ -80,7 +82,7 @@ export interface PPTElementShadow {
  * color?: 边框颜色
  */
 export interface PPTElementOutline {
-  style?: 'dashed' | 'solid' | 'dotted'
+  style?: LineStyleType
   width?: number
   color?: string
 }
@@ -390,7 +392,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
   type: 'line'
   start: [number, number]
   end: [number, number]
-  style: 'solid' | 'dashed' | 'dotted'
+  style: LineStyleType
   color: string
   points: [LinePoint, LinePoint]
   shadow?: PPTElementShadow
