@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (event: 'update:value', payload: string): void
   (event: 'focus', payload: FocusEvent): void
   (event: 'blur', payload: FocusEvent): void
-  (event: 'enter', payload: FocusEvent): void
+  (event: 'enter', payload: KeyboardEvent): void
 }>()
 
 const handleInput = (e: Event) => {
