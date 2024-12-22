@@ -160,6 +160,7 @@ export default () => {
           id: nanoid(10),
           elements: [],
           background,
+          remark: item.note || '',
         }
 
         const parseElements = (elements: Element[]) => {

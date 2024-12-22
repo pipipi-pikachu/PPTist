@@ -67,7 +67,7 @@
         <span>演讲者备注</span>
         <span>P {{slideIndex + 1}} / {{slides.length}}</span>
       </div>
-      <div class="remark-content ProseMirror-static" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark"></div>
+      <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || '无备注'"></div>
       <div class="remark-scale">
         <div :class="['scale-btn', { 'disable': remarkFontSize === 12 }]" @click="setRemarkFontSize(remarkFontSize - 2)"><IconMinus /></div>
         <div :class="['scale-btn', { 'disable': remarkFontSize === 40 }]" @click="setRemarkFontSize(remarkFontSize + 2)"><IconPlus /></div>
@@ -125,7 +125,8 @@ const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
 const remarkFontSize = ref(16)
 const currentSlideRemark = computed(() => {
-  return parseText2Paragraphs(currentSlide.value.remark || '无备注')
+  if (!currentSlide.value.remark) return ''
+  return parseText2Paragraphs(currentSlide.value.remark)
 })
 
 const handleMousewheelThumbnails = (e: WheelEvent) => {
@@ -297,6 +298,11 @@ const contextmenus = (): ContextmenuItem[] => {
     padding: 20px;
     line-height: 1.5;
     @include overflow-overlay();
+
+    &.empty {
+      color: #999;
+      font-style: italic;
+    }
   }
 
   .remark-scale {
