@@ -210,7 +210,7 @@ const textAttrs = ref({
   color: '#000',
   backcolor: '',
   fontsize: '12px',
-  fontname: '微软雅黑',
+  fontname: '',
   align: 'left',
 })
 
@@ -258,7 +258,7 @@ const updateTextAttrState = () => {
       color: '#000',
       backcolor: '',
       fontsize: '12px',
-      fontname: '微软雅黑',
+      fontname: '',
       align: 'left',
     }
   }
@@ -271,7 +271,7 @@ const updateTextAttrState = () => {
       color: style.color || '#000',
       backcolor: style.backcolor || '',
       fontsize: style.fontsize || '12px',
-      fontname: style.fontname || '微软雅黑',
+      fontname: style.fontname || '',
       align: style.align || 'left',
     }
   }

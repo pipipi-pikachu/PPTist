@@ -252,7 +252,7 @@ const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
   
   const defaultText: ShapeText = {
     content: '',
-    defaultFontName: '微软雅黑',
+    defaultFontName: '',
     defaultColor: '#000',
     align: 'middle',
   }

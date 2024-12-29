@@ -147,7 +147,7 @@ watch(handleElementId, () => {
 const text = computed<ShapeText>(() => {
   const defaultText: ShapeText = {
     content: '',
-    defaultFontName: '微软雅黑',
+    defaultFontName: '',
     defaultColor: '#000',
     align: 'middle',
   }
