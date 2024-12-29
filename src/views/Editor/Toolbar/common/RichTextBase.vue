@@ -8,10 +8,7 @@
         search
         searchLabel="搜索字体"
         @update:value="value => emitRichTextCommand('fontname', value as string)"
-        :options="[
-          ...availableFonts,
-          ...WEB_FONTS
-        ]"
+        :options="FONTS"
       >
         <template #icon>
           <IconFontSize />
@@ -253,7 +250,7 @@ import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import emitter, { EmitterEvents } from '@/utils/emitter'
-import { WEB_FONTS } from '@/configs/font'
+import { FONTS } from '@/configs/font'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 import message from '@/utils/message'
 
@@ -271,7 +268,7 @@ import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
-const { richTextAttrs, availableFonts, textFormatPainter } = storeToRefs(useMainStore())
+const { richTextAttrs, textFormatPainter } = storeToRefs(useMainStore())
 
 const { toggleTextFormatPainter } = useTextFormatPainter()
 

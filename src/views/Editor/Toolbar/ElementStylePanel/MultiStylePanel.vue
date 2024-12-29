@@ -58,10 +58,7 @@
         search
         searchLabel="搜索字体"
         @update:value="value => updateFontStyle('fontname', value as string)"
-        :options="[
-          ...availableFonts,
-          ...WEB_FONTS
-        ]"
+        :options="FONTS"
       >
         <template #icon>
           <IconFontSize />
@@ -139,7 +136,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { LineStyleType, PPTElement, PPTElementOutline, TableCell } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
-import { WEB_FONTS } from '@/configs/font'
+import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import SVGLine from '../common/SVGLine.vue'
@@ -158,7 +155,7 @@ import SelectCustom from '@/components/SelectCustom.vue'
 import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
-const { richTextAttrs, availableFonts, activeElementList } = storeToRefs(useMainStore())
+const { richTextAttrs, activeElementList } = storeToRefs(useMainStore())
 
 const { addHistorySnapshot } = useHistorySnapshot()
 

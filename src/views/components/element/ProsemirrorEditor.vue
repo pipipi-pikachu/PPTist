@@ -22,6 +22,7 @@ import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/s
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
 import type { TextFormatPainterKeys } from '@/types/edit'
+import message from '@/utils/message'
 import { KEYS } from '@/configs/hotkey'
 
 const props = withDefaults(defineProps<{
@@ -118,10 +119,14 @@ const execCommand = ({ target, action }: RichTextCommand) => {
   const actions = ('command' in action) ? [action] : action
 
   for (const item of actions) {
-    if (item.command === 'fontname' && item.value) {
+    if (item.command === 'fontname' && item.value !== undefined) {
       const mark = editorView.state.schema.marks.fontname.create({ fontname: item.value })
       autoSelectAll(editorView)
       addMark(editorView, mark)
+
+      if (item.value && !document.fonts.check(`16px ${item.value}`)) {
+        message.warning('字体需要等待加载下载后生效，请稍等')
+      }
     }
     else if (item.command === 'fontsize' && item.value) {
       const mark = editorView.state.schema.marks.fontsize.create({ fontsize: item.value })

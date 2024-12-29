@@ -7,10 +7,7 @@
         search
         searchLabel="搜索字体"
         @update:value="value => updateTextAttrs({ fontname: value as string })"
-        :options="[
-          ...availableFonts,
-          ...WEB_FONTS
-        ]"
+        :options="FONTS"
       >
         <template #icon>
           <IconFontSize />
@@ -178,7 +175,7 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign } from '@/types/slides'
-import { WEB_FONTS } from '@/configs/font'
+import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
@@ -198,7 +195,7 @@ import SelectGroup from '@/components/SelectGroup.vue'
 import Popover from '@/components/Popover.vue'
 
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, selectedTableCells: selectedCells, availableFonts } = storeToRefs(useMainStore())
+const { handleElement, handleElementId, selectedTableCells: selectedCells } = storeToRefs(useMainStore())
 const themeColor = computed(() => slidesStore.theme.themeColor)
 
 const fontSizeOptions = [

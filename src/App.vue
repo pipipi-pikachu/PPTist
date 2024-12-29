@@ -32,7 +32,6 @@ if (import.meta.env.MODE !== 'development') {
 onMounted(async () => {
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
-  mainStore.setAvailableFonts()
 })
 
 // 应用注销时向 localStorage 中记录下本次 indexedDB 的数据库ID，用于之后清除数据库

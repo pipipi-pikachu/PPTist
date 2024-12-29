@@ -71,7 +71,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { SYS_FONTS, WEB_FONTS } from '@/configs/font'
+import { FONTS } from '@/configs/font'
 import useSlideTheme from '@/hooks/useSlideTheme'
 import Tabs from '@/components/Tabs.vue'
 import Button from '@/components/Button.vue'
@@ -99,10 +99,7 @@ const activeTab = ref<'single' | 'all'>('single')
 const fontMap = ref<{ [key: string]: string }>({})
 onMounted(() => {
   const map: { [key: string]: string } = {}
-  for (const item of SYS_FONTS) {
-    map[item.value] = item.label
-  }
-  for (const item of WEB_FONTS) {
+  for (const item of FONTS) {
     map[item.value] = item.label
   }
   fontMap.value = map
