@@ -184,9 +184,9 @@ interface DefaultAttrs {
   align: Align
 }
 const _defaultAttrs: DefaultAttrs = {
-  color: '#000',
+  color: '#000000',
   backcolor: '',
-  fontsize: '20px',
+  fontsize: '16px',
   fontname: '微软雅黑',
   align: 'left',
 }
@@ -248,9 +248,9 @@ export const defaultRichTextAttrs: TextAttrs = {
   superscript: false,
   subscript: false,
   code: false,
-  color: '#000',
+  color: '#000000',
   backcolor: '',
-  fontsize: '20px',
+  fontsize: '16px',
   fontname: '微软雅黑',
   link: '',
   align: 'left',

@@ -1,7 +1,7 @@
 .ProseMirror, .ProseMirror-static {
   outline: 0;
   border: 0;
-  font-size: 20px;
+  font-size: 16px;
   word-break: break-word;
   white-space: normal;
 
@@ -15,19 +15,24 @@
   }
 
   p {
+    margin: 0;
     margin-top: var(--paragraphSpace);
   }
   p:first-child {
     margin-top: 0;
   }
 
+  ul, ol, li {
+    margin: 0;
+    margin-top: var(--paragraphSpace);
+  }
   ul {
     list-style-type: disc;
     padding-inline-start: 1.25em;
 
     li {
       list-style-type: inherit;
-      padding: 2px 0;
+      padding: 0.125em 0;
     }
   }
 
@@ -37,12 +42,12 @@
 
     li {
       list-style-type: inherit;
-      padding: 2px 0;
+      padding: 0.125em 0;
     }
   }
 
   code {
-    background-color: $borderColor;
+    background-color: #f1f1f1;
     padding: 2px 6px;
     margin: 0 1px;
     border-radius: 4px;
@@ -60,37 +65,35 @@
 
   blockquote {
     overflow: hidden;
-    padding-right: 1.2em;
-    padding-left: 1.2em;
-    margin-left: 0;
-    margin-right: 0;
+    padding: 0 1.2em;
+    margin: 0.6em 0;
     font-style: italic;
-    border-left: 4px solid #ddd;
+    border-left: 4px solid #e0e0e0;
   }
 
   [data-indent='1'] {
-    padding-left: 20px;
+    padding-left: 1em;
   }
   [data-indent='2'] {
-    padding-left: 40px;
+    padding-left: 2em;
   }
   [data-indent='3'] {
-    padding-left: 60px;
+    padding-left: 3em;
   }
   [data-indent='4'] {
-    padding-left: 80px;
+    padding-left: 4em;
   }
   [data-indent='5'] {
-    padding-left: 100px;
+    padding-left: 5em;
   }
   [data-indent='6'] {
-    padding-left: 120px;
+    padding-left: 6em;
   }
   [data-indent='7'] {
-    padding-left: 140px;
+    padding-left: 7em;
   }
   [data-indent='8'] {
-    padding-left: 160px;
+    padding-left: 8em;
   }
 }
 

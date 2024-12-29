@@ -203,12 +203,12 @@ export default () => {
           if (styleObj['href']) options.hyperlink = { url: styleObj['href'] }
 
           if (bulletFlag && styleObj['list-type'] === 'ol') {
-            options.bullet = { type: 'number', indent: (options.fontSize || 20) * 1.25 }
+            options.bullet = { type: 'number', indent: (options.fontSize || 16) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
           if (bulletFlag && styleObj['list-type'] === 'ul') {
-            options.bullet = { indent: (options.fontSize || 20) * 1.25 }
+            options.bullet = { indent: (options.fontSize || 16) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }

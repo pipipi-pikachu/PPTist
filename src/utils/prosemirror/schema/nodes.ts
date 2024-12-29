@@ -129,7 +129,7 @@ const paragraph: NodeSpec = {
             textIndentLevel = parseInt(textIndent)
           }
           else if (/px/.test(textIndent)) {
-            textIndentLevel = Math.floor(parseInt(textIndent) / 20)
+            textIndentLevel = Math.floor(parseInt(textIndent) / 16)
             if (!textIndentLevel) textIndentLevel = 1
           }
         }
@@ -152,7 +152,7 @@ const paragraph: NodeSpec = {
     const { align, indent, textIndent } = node.attrs
     let style = ''
     if (align && align !== 'left') style += `text-align: ${align};`
-    if (textIndent) style += `text-indent: ${textIndent * 20}px;`
+    if (textIndent) style += `text-indent: ${textIndent}em;`
 
     const attr: Attr = { style }
     if (indent) attr['data-indent'] = indent
