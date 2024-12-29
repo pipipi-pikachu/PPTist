@@ -24,6 +24,8 @@ export default () => {
   const slidesStore = useSlidesStore()
   const { slides, theme, viewportRatio, title, viewportSize } = storeToRefs(slidesStore)
 
+  const defaultFontSize = 16
+
   const ratioPx2Inch = computed(() => {
     return 96 * (viewportSize.value / 960)
   })
@@ -203,12 +205,12 @@ export default () => {
           if (styleObj['href']) options.hyperlink = { url: styleObj['href'] }
 
           if (bulletFlag && styleObj['list-type'] === 'ol') {
-            options.bullet = { type: 'number', indent: (options.fontSize || 16) * 1.25 }
+            options.bullet = { type: 'number', indent: (options.fontSize || defaultFontSize) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
           if (bulletFlag && styleObj['list-type'] === 'ul') {
-            options.bullet = { indent: (options.fontSize || 16) * 1.25 }
+            options.bullet = { indent: (options.fontSize || defaultFontSize) * 1.25 }
             options.paraSpaceBefore = 0.1
             bulletFlag = false
           }
@@ -435,7 +437,7 @@ export default () => {
             y: el.top / ratioPx2Inch.value,
             w: el.width / ratioPx2Inch.value,
             h: el.height / ratioPx2Inch.value,
-            fontSize: 20 / ratioPx2Pt.value,
+            fontSize: defaultFontSize / ratioPx2Pt.value,
             fontFace: '微软雅黑',
             color: '#000000',
             valign: 'top',
@@ -572,7 +574,7 @@ export default () => {
               y: el.top / ratioPx2Inch.value,
               w: el.width / ratioPx2Inch.value,
               h: el.height / ratioPx2Inch.value,
-              fontSize: 20 / ratioPx2Pt.value,
+              fontSize: defaultFontSize / ratioPx2Pt.value,
               fontFace: '微软雅黑',
               color: '#000000',
               paraSpaceBefore: 5 / ratioPx2Pt.value,
