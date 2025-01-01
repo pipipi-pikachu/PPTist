@@ -19,7 +19,9 @@ interface PasteTextClipboardDataOptions {
  * ！！！必须确保图片来源都是合法、可靠、可控、无访问限制的
  */
 const isValidImgURL = (url: string) => {
-  return /^https:\/\/pptist.cn(\/[\w-./?%&=]*)?\.(jpg|jpeg|png|svg|webp)(\?.*)?$/i.test(url)
+  const pexels = /^https?:\/\/(?:[a-zA-Z0-9-]+\.)*pexels\.com\/[^\s]+\.(?:jpg|jpeg|png|svg|webp)(?:\?.*)?$/i.test(url)
+  const pptist = /^https?:\/\/(?:[a-zA-Z0-9-]+\.)*pptist\.cn\/[^\s]+\.(?:jpg|jpeg|png|svg|webp)(?:\?.*)?$/i.test(url)
+  return pexels || pptist
 }
 
 export default () => {
