@@ -66,6 +66,7 @@ const textTypeOptions = ref<{ label: string; value: TextType | '' }[]>([
   { label: '页眉', value: 'header' },
   { label: '页脚', value: 'footer' },
   { label: '节编号', value: 'partNumber' },
+  { label: '项目编号', value: 'itemNumber' },
 ])
 
 const slideType = computed(() => currentSlide.value?.type || '')
