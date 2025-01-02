@@ -3,17 +3,18 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <FileInput accept=".pptist"  @change="files => {
-            importSpecificFile(files)
-            mainMenuVisible = false
-          }">
-            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
-          </FileInput>
+          <PopoverMenuItem @click="AIPPT(); mainMenuVisible = false">AI PPT（测试版）</PopoverMenuItem>
           <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
             importPPTXFile(files)
             mainMenuVisible = false
           }">
             <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
+          </FileInput>
+          <FileInput accept=".pptist"  @change="files => {
+            importSpecificFile(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
           </FileInput>
           <PopoverMenuItem @click="setDialogForExport('pptx')">导出文件</PopoverMenuItem>
           <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">重置幻灯片</PopoverMenuItem>
@@ -83,6 +84,7 @@ import { useMainStore, useSlidesStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
 import useImport from '@/hooks/useImport'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useAIPPT from '@/hooks/useAIPPT'
 import type { DialogForExportTypes } from '@/types/export'
 
 import HotkeyDoc from './HotkeyDoc.vue'
@@ -99,6 +101,7 @@ const { title } = storeToRefs(slidesStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { importSpecificFile, importPPTXFile, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
+const { AIPPT } = useAIPPT()
 
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
