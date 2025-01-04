@@ -11,6 +11,7 @@ export interface AIPPTContents {
   data: {
     items: string[]
   }
+  offset?: number
 }
 
 export interface AIPPTTransition {
@@ -29,7 +30,8 @@ export interface AIPPTContent {
       title: string
       text: string
     }[]
-  }
+  },
+  offset?: number
 }
 
 export interface AIPPTEnd {
