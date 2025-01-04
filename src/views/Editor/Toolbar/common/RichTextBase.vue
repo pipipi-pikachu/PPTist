@@ -2,7 +2,6 @@
   <div class="rich-text-base">
     <SelectGroup class="row">
       <Select
-        class="font-select"
         style="width: 60%;"
         :value="richTextAttrs.fontname"
         search
@@ -124,7 +123,6 @@
 
     <ButtonGroup class="row" passive>
       <CheckboxButton
-        first
         style="flex: 1;"
         v-tooltip="'清除格式'"
         @click="emitRichTextCommand('clear')"
