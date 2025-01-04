@@ -150,7 +150,7 @@ const getNewTextElement = ({
 
   content = doc.body.innerHTML.replace(/font-size:(.+?)px/g, `font-size: ${size}px`)
 
-  return el.type === 'text' ? { ...el, content } : { ...el, text: { ...el.text!, content } }
+  return el.type === 'text' ? { ...el, content, lineHeight: size < 15 ? 1.2 : el.lineHeight } : { ...el, text: { ...el.text!, content } }
 }
 
 export default () => {
