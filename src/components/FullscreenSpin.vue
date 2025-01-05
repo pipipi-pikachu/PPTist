@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen-spin" v-if="loading">
+  <div class="fullscreen-spin" :class="{ 'mask': mask }" v-if="loading">
     <div class="spin">
       <div class="spinner"></div>
       <div class="text">{{tip}}</div>
@@ -10,9 +10,11 @@
 <script lang="ts" setup>
 withDefaults(defineProps<{
   loading?: boolean
+  mask?: boolean
   tip?: string
 }>(), {
   loading: false,
+  mask: true,
   tip: '',
 })
 </script>
@@ -28,7 +30,10 @@ withDefaults(defineProps<{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba($color: #f1f1f1, $alpha: .7);
+
+  &.mask {
+    background-color: rgba($color: #f1f1f1, $alpha: .7);
+  }
 }
 .spin {
   width: 200px;

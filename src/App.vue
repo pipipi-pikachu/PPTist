@@ -4,7 +4,7 @@
     <Editor v-else-if="_isPC" />
     <Mobile v-else />
   </template>
-  <Loading text="数据初始化中，请稍等 ..." v-else />
+  <FullscreenSpin tip="数据初始化中，请稍等 ..." v-else  loading :mask="false" />
 </template>
 
 
@@ -22,7 +22,7 @@ import api from '@/services'
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
 import Mobile from './views/Mobile/index.vue'
-import Loading from './components/Loading.vue'
+import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const _isPC = isPC()
 
@@ -38,10 +38,10 @@ if (import.meta.env.MODE !== 'development') {
 }
 
 onMounted(async () => {
-  api.getMockData('slides').then((slides: Slide[]) => {
+  api.getFileData('slides').then((slides: Slide[]) => {
     slidesStore.setSlides(slides)
   })
-  api.getMockData('layouts').then((slides: Slide[]) => {
+  api.getFileData('layouts').then((slides: Slide[]) => {
     slidesStore.setLayouts(slides)
   })
 

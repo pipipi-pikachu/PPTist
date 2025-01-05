@@ -1,4 +1,3 @@
-import api from '@/services'
 import { nanoid } from 'nanoid'
 import type { PPTElement, PPTShapeElement, PPTTextElement, Slide, TextType } from '@/types/slides'
 import type { AIPPTSlide } from '@/types/AIPPT'
@@ -158,10 +157,14 @@ export default () => {
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
 
-  const AIPPT = async () => {
-    const templateSlides: Slide[] = await api.getMockData('template').then(ret => ret.slides)
-    const _AISlides: AIPPTSlide[] = await api.getMockData('AIPPT')
+  const getMdContent = (content: string) => {
+    const regex = /```markdown([^```]*)```/
+    const match = content.match(regex)
+    if (match) return match[1].trim()
+    return content.replace('```markdown', '').replace('```', '')
+  }
 
+  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[]) => {
     const AISlides: AIPPTSlide[] = []
     for (const template of _AISlides) {
       if (template.type === 'content') {
@@ -411,5 +414,6 @@ export default () => {
 
   return {
     AIPPT,
+    getMdContent,
   }
 }
