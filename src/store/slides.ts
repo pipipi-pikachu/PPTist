@@ -5,6 +5,7 @@ import type { Slide, SlideTheme, PPTElement, PPTAnimation } from '@/types/slides
 import { slides } from '@/mocks/slides'
 import { theme } from '@/mocks/theme'
 import { layouts } from '@/mocks/layout'
+import { useScreenStore } from '@/store'
 
 interface RemovePropData {
   id: string
@@ -184,7 +185,17 @@ export const useSlidesStore = defineStore('slides', {
       this.slides = slides
     },
   
-    updateSlideIndex(index: number) {
+    updateSlideIndex(index: number, disableBCAction?: string) {
+      const screenStore = useScreenStore()
+      if (screenStore.screening && !disableBCAction && screenStore.presenterBCChannel) {
+        screenStore.presenterBCChannel.bc.postMessage({
+          origin: screenStore.presenterBCChannel.bcID,
+          message: {
+            action: 'updateSlideIndexByBC',
+            value: index,
+          },
+        })
+      }
       this.slideIndex = index
     },
   

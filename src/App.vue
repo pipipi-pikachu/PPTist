@@ -7,7 +7,7 @@
 
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useScreenStore, useMainStore, useSnapshotStore } from '@/store'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
@@ -29,10 +29,24 @@ if (import.meta.env.MODE !== 'development') {
   window.onbeforeunload = () => false
 }
 
+const screenStore = useScreenStore()
+
 onMounted(async () => {
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
   mainStore.setAvailableFonts()
+
+  // 进入演讲者模式
+  const currentUrl = window.location.href
+  const url = new URL(currentUrl)
+  const params = new URLSearchParams(url.search)
+  const viewMode = params.get('viewMode')
+  if (viewMode === 'presenter') {
+    screenStore.setScreening(true)
+  }
+  nextTick(() => {
+    screenStore.changeScreeningMode(viewMode)
+  })
 })
 
 // 应用注销时向 localStorage 中记录下本次 indexedDB 的数据库ID，用于之后清除数据库

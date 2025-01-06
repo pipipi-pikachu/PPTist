@@ -11,7 +11,7 @@
         <span>{{ fullscreenState ? '退出全屏' : '全屏' }}</span>
       </div>
       <Divider class="divider" />
-      <div class="tool-btn" @click="exitScreening()"><IconPower class="tool-icon" /><span>结束放映</span></div>
+      <div class="tool-btn" @click="exitPresenterView()"><IconPower class="tool-icon" /><span>结束放映</span></div>
     </div>
 
     <div class="content">
@@ -79,7 +79,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
+import { useSlidesStore, useScreenStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { enterFullscreen } from '@/utils/fullscreen'
 import { parseText2Paragraphs } from '@/utils/textParser'
@@ -119,9 +119,21 @@ const {
 } = useExecPlay()
 
 const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
-const { exitScreening } = useScreening()
 const { slidesLoadLimit } = useLoadSlides()
 const { fullscreenState, manualExitFullscreen } = useFullscreen()
+const screenStore = useScreenStore()
+
+const exitPresenterView = () => {
+  if (screenStore.presenterBCChannel) {
+    screenStore.presenterBCChannel.bc.postMessage({
+      origin: screenStore.presenterBCChannel.bcID,
+      message: {
+        action: 'exitScreeningByBC'
+      },
+    })
+  }
+  window.close()
+}
 
 const remarkFontSize = ref(16)
 const currentSlideRemark = computed(() => {
@@ -189,7 +201,7 @@ const contextmenus = (): ContextmenuItem[] => {
     {
       text: '结束放映',
       subText: 'ESC',
-      handler: exitScreening,
+      handler: exitPresenterView,
     },
   ]
 }

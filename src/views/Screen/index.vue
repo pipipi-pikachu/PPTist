@@ -1,22 +1,25 @@
 <template>
   <div class="pptist-screen">
-    <BaseView :changeViewMode="changeViewMode" v-if="viewMode === 'base'" />
-    <PresenterView :changeViewMode="changeViewMode" v-else-if="viewMode === 'presenter'" />
+    <BaseView :changeViewMode="changeViewMode" v-if="screeningMode === 'base'" />
+    <PresenterView :changeViewMode="changeViewMode" v-else-if="screeningMode === 'presenter'" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { KEYS } from '@/configs/hotkey'
 import useScreening from '@/hooks/useScreening'
 
 import BaseView from './BaseView.vue'
 import PresenterView from './PresenterView.vue'
+import { useScreenStore } from '@/store'
+import { storeToRefs } from 'pinia'
 
-const viewMode = ref<'base' | 'presenter'>('base')
+const screenStore = useScreenStore()
+const { screeningMode } = storeToRefs(screenStore)
 
 const changeViewMode = (mode: 'base' | 'presenter') => {
-  viewMode.value = mode
+  screenStore.changeScreeningMode(mode)
 }
 
 const { exitScreening } = useScreening()
