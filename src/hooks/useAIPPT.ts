@@ -1,162 +1,204 @@
+import { ref } from 'vue'
 import { nanoid } from 'nanoid'
-import type { PPTElement, PPTShapeElement, PPTTextElement, Slide, TextType } from '@/types/slides'
-import type { AIPPTSlide } from '@/types/AIPPT'
+import type { ImageClipDataRange, PPTElement, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, TextType } from '@/types/slides'
+import type { AIPPTSlide, PexelsImage } from '@/types/AIPPT'
 import { useSlidesStore } from '@/store'
 import useAddSlidesOrElements from './useAddSlidesOrElements'
 import useSlideHandler from './useSlideHandler'
-
-const checkTextType = (el: PPTElement, type: TextType) => {
-  return (el.type === 'text' && el.textType === type) || (el.type === 'shape' && el.text && el.text.type === type)
-}
-
-const getUseableTemplates = (templates: Slide[], n: number, type: TextType) => {
-  if (n === 1) {
-    const list = templates.filter(slide => {
-      const items = slide.elements.filter(el => checkTextType(el, type))
-      const titles = slide.elements.filter(el => checkTextType(el, 'title'))
-      const texts = slide.elements.filter(el => checkTextType(el, 'content'))
-
-      return !items.length && titles.length === 1 && texts.length === 1
-    })
-
-    if (list.length) return list
-  }
-
-  let target: Slide | null = null
-
-  const list = templates.filter(slide => {
-    const len = slide.elements.filter(el => checkTextType(el, type)).length
-    return len >= n
-  })
-  if (list.length === 0) {
-    const sorted = templates.sort((a, b) => {
-      const aLen = a.elements.filter(el => checkTextType(el, type)).length
-      const bLen = b.elements.filter(el => checkTextType(el, type)).length
-      return aLen - bLen
-    })
-    target = sorted[sorted.length - 1]
-  }
-  else {
-    target = list.reduce((closest, current) => {
-      const currentLen = current.elements.filter(el => checkTextType(el, type)).length
-      const closestLen = closest.elements.filter(el => checkTextType(el, type)).length
-      return (currentLen - n) <= (closestLen - n) ? current : closest
-    })
-  }
-
-  return templates.filter(slide => {
-    const len = slide.elements.filter(el => checkTextType(el, type)).length
-    const targetLen = target!.elements.filter(el => checkTextType(el, type)).length
-    return len === targetLen
-  })
-}
-
-const getAdaptedFontsize = ({
-  text,
-  fontSize,
-  fontFamily,
-  width,
-  maxLine,
-}: {
-  text: string
-  fontSize: number
-  fontFamily: string
-  width: number
-  maxLine: number
-}) => {
-  const canvas = document.createElement('canvas')
-  const context = canvas.getContext('2d')!
-
-  let newFontSize = fontSize
-  const minFontSize = 10
-
-  while (newFontSize >= minFontSize) {
-    context.font = `${newFontSize}px ${fontFamily}`
-    const textWidth = context.measureText(text).width
-    const line = Math.ceil(textWidth / width)
-
-    if (line <= maxLine) return newFontSize
-
-    const step = newFontSize <= 22 ? 1 : 2
-    newFontSize = newFontSize - step
-  }
-
-  return minFontSize
-}
-
-const getFontInfo = (htmlString: string) => {
-  const fontSizeRegex = /font-size:\s*(\d+)\s*px/i
-  const fontFamilyRegex = /font-family:\s*['"]?([^'";]+)['"]?\s*(?=;|>|$)/i
-
-  const defaultInfo = {
-    fontSize: 16,
-    fontFamily: 'Microsoft Yahei',
-  }
-
-  const fontSizeMatch = htmlString.match(fontSizeRegex)
-  const fontFamilyMatch = htmlString.match(fontFamilyRegex)
-
-  return {
-    fontSize: fontSizeMatch ? (+fontSizeMatch[1].trim()) : defaultInfo.fontSize,
-    fontFamily: fontFamilyMatch ? fontFamilyMatch[1].trim() : defaultInfo.fontFamily,
-  }
-}
-
-const getNewTextElement = ({
-  el,
-  text,
-  maxLine,
-  longestText,
-  digitPadding,
-}: {
-  el: PPTTextElement | PPTShapeElement
-  text: string
-  maxLine: number
-  longestText?: string
-  digitPadding?: boolean
-}): PPTTextElement | PPTShapeElement => {
-  const padding = 10
-  const width = el.width - padding * 2 - 10
-
-  let content = el.type === 'text' ? el.content : el.text!.content
-
-  const fontInfo = getFontInfo(content)
-  const size = getAdaptedFontsize({
-    text: longestText || text,
-    fontSize: fontInfo.fontSize,
-    fontFamily: fontInfo.fontFamily,
-    width,
-    maxLine,
-  })
-
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(content, 'text/html')
-
-  const treeWalker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT)
-
-  const firstTextNode = treeWalker.nextNode()
-  if (firstTextNode) {
-    if (digitPadding && firstTextNode.textContent && firstTextNode.textContent.length === 2 && text.length === 1) {
-      firstTextNode.textContent = '0' + text
-    }
-    else firstTextNode.textContent = text
-  }
-
-  if (doc.body.innerHTML.indexOf('font-size') === -1) {
-    const p = doc.querySelector('p')
-    if (p) p.style.fontSize = '16px'
-  }
-
-  content = doc.body.innerHTML.replace(/font-size:(.+?)px/g, `font-size: ${size}px`)
-
-  return el.type === 'text' ? { ...el, content, lineHeight: size < 15 ? 1.2 : el.lineHeight } : { ...el, text: { ...el.text!, content } }
-}
 
 export default () => {
   const slidesStore = useSlidesStore()
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
 
+  const imgPool = ref<PexelsImage[]>([])
+
+  const checkTextType = (el: PPTElement, type: TextType) => {
+    return (el.type === 'text' && el.textType === type) || (el.type === 'shape' && el.text && el.text.type === type)
+  }
+  
+  const getUseableTemplates = (templates: Slide[], n: number, type: TextType) => {
+    if (n === 1) {
+      const list = templates.filter(slide => {
+        const items = slide.elements.filter(el => checkTextType(el, type))
+        const titles = slide.elements.filter(el => checkTextType(el, 'title'))
+        const texts = slide.elements.filter(el => checkTextType(el, 'content'))
+  
+        return !items.length && titles.length === 1 && texts.length === 1
+      })
+  
+      if (list.length) return list
+    }
+  
+    let target: Slide | null = null
+  
+    const list = templates.filter(slide => {
+      const len = slide.elements.filter(el => checkTextType(el, type)).length
+      return len >= n
+    })
+    if (list.length === 0) {
+      const sorted = templates.sort((a, b) => {
+        const aLen = a.elements.filter(el => checkTextType(el, type)).length
+        const bLen = b.elements.filter(el => checkTextType(el, type)).length
+        return aLen - bLen
+      })
+      target = sorted[sorted.length - 1]
+    }
+    else {
+      target = list.reduce((closest, current) => {
+        const currentLen = current.elements.filter(el => checkTextType(el, type)).length
+        const closestLen = closest.elements.filter(el => checkTextType(el, type)).length
+        return (currentLen - n) <= (closestLen - n) ? current : closest
+      })
+    }
+  
+    return templates.filter(slide => {
+      const len = slide.elements.filter(el => checkTextType(el, type)).length
+      const targetLen = target!.elements.filter(el => checkTextType(el, type)).length
+      return len === targetLen
+    })
+  }
+  
+  const getAdaptedFontsize = ({
+    text,
+    fontSize,
+    fontFamily,
+    width,
+    maxLine,
+  }: {
+    text: string
+    fontSize: number
+    fontFamily: string
+    width: number
+    maxLine: number
+  }) => {
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')!
+  
+    let newFontSize = fontSize
+    const minFontSize = 10
+  
+    while (newFontSize >= minFontSize) {
+      context.font = `${newFontSize}px ${fontFamily}`
+      const textWidth = context.measureText(text).width
+      const line = Math.ceil(textWidth / width)
+  
+      if (line <= maxLine) return newFontSize
+  
+      const step = newFontSize <= 22 ? 1 : 2
+      newFontSize = newFontSize - step
+    }
+  
+    return minFontSize
+  }
+  
+  const getFontInfo = (htmlString: string) => {
+    const fontSizeRegex = /font-size:\s*(\d+)\s*px/i
+    const fontFamilyRegex = /font-family:\s*['"]?([^'";]+)['"]?\s*(?=;|>|$)/i
+  
+    const defaultInfo = {
+      fontSize: 16,
+      fontFamily: 'Microsoft Yahei',
+    }
+  
+    const fontSizeMatch = htmlString.match(fontSizeRegex)
+    const fontFamilyMatch = htmlString.match(fontFamilyRegex)
+  
+    return {
+      fontSize: fontSizeMatch ? (+fontSizeMatch[1].trim()) : defaultInfo.fontSize,
+      fontFamily: fontFamilyMatch ? fontFamilyMatch[1].trim() : defaultInfo.fontFamily,
+    }
+  }
+  
+  const getNewTextElement = ({
+    el,
+    text,
+    maxLine,
+    longestText,
+    digitPadding,
+  }: {
+    el: PPTTextElement | PPTShapeElement
+    text: string
+    maxLine: number
+    longestText?: string
+    digitPadding?: boolean
+  }): PPTTextElement | PPTShapeElement => {
+    const padding = 10
+    const width = el.width - padding * 2 - 10
+  
+    let content = el.type === 'text' ? el.content : el.text!.content
+  
+    const fontInfo = getFontInfo(content)
+    const size = getAdaptedFontsize({
+      text: longestText || text,
+      fontSize: fontInfo.fontSize,
+      fontFamily: fontInfo.fontFamily,
+      width,
+      maxLine,
+    })
+  
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(content, 'text/html')
+  
+    const treeWalker = document.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT)
+  
+    const firstTextNode = treeWalker.nextNode()
+    if (firstTextNode) {
+      if (digitPadding && firstTextNode.textContent && firstTextNode.textContent.length === 2 && text.length === 1) {
+        firstTextNode.textContent = '0' + text
+      }
+      else firstTextNode.textContent = text
+    }
+  
+    if (doc.body.innerHTML.indexOf('font-size') === -1) {
+      const p = doc.querySelector('p')
+      if (p) p.style.fontSize = '16px'
+    }
+  
+    content = doc.body.innerHTML.replace(/font-size:(.+?)px/g, `font-size: ${size}px`)
+  
+    return el.type === 'text' ? { ...el, content, lineHeight: size < 15 ? 1.2 : el.lineHeight } : { ...el, text: { ...el.text!, content } }
+  }
+  
+  const getNewImgElement = (el: PPTImageElement): PPTImageElement => {
+    let targetImg: PexelsImage | null = null
+  
+    let imgs = []
+  
+    if (el.width === el.height) imgs = imgPool.value.filter(img => img.width === img.height)
+    else if (el.width > el.height) imgs = imgPool.value.filter(img => img.width > img.height)
+    else imgs = imgPool.value.filter(img => img.width <= img.height)
+    if (!imgs.length) imgs = imgPool.value
+  
+    targetImg = imgs[Math.floor(Math.random() * imgs.length)]
+    imgPool.value = imgPool.value.filter(item => item.id !== targetImg!.id)
+  
+    if (!targetImg) return el
+  
+    let scale = 1
+    let w = el.width
+    let h = el.height
+    let range: ImageClipDataRange = [[0, 0], [0, 0]]
+    const radio = el.width / el.height
+    if (targetImg.width / targetImg.height >= radio) {
+      scale = targetImg.height / el.height
+      w = targetImg.width / scale
+      const diff = (w - el.width) / 2 / w * 100
+      range = [[diff, 0], [100 - diff, 100]]
+    }
+    else {
+      scale = targetImg.width / el.width
+      h = targetImg.height / scale
+      const diff = (h - el.height) / 2 / h * 100
+      range = [[0, diff], [100, 100 - diff]]
+    }
+    const clipShape = (el.clip && el.clip.shape) ? el.clip.shape : 'rect'
+    const clip = { range, shape: clipShape }
+    const src = targetImg.src
+  
+    return { ...el, src, clip }
+  }
+  
   const getMdContent = (content: string) => {
     const regex = /```markdown([^```]*)```/
     const match = content.match(regex)
@@ -164,7 +206,9 @@ export default () => {
     return content.replace('```markdown', '').replace('```', '')
   }
 
-  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[]) => {
+  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs: PexelsImage[]) => {
+    imgPool.value = imgs
+
     const AISlides: AIPPTSlide[] = []
     for (const template of _AISlides) {
       if (template.type === 'content') {
@@ -255,6 +299,7 @@ export default () => {
     for (const item of AISlides) {
       if (item.type === 'cover') {
         const elements = coverTemplate.elements.map(el => {
+          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'title') && item.data.title) {
             return getNewTextElement({ el, text: item.data.title, maxLine: 1 })
@@ -289,6 +334,7 @@ export default () => {
         const longestText = item.data.items.reduce((longest, current) => current.length > longest.length ? current : longest, '')
 
         const elements = contentsTemplate.elements.map(el => {
+          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'item')) {
             const index = sortedItemIds.findIndex(id => id === el.id)
@@ -311,6 +357,7 @@ export default () => {
       else if (item.type === 'transition') {
         transitionIndex++
         const elements = transitionTemplate.elements.map(el => {
+          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'title') && item.data.title) {
             return getNewTextElement({ el, text: item.data.title, maxLine: 1 })
@@ -362,6 +409,7 @@ export default () => {
         const longestText = itemTexts.reduce((longest, current) => current.length > longest.length ? current : longest, '')
 
         const elements = contentTemplate.elements.map(el => {
+          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (item.data.items.length === 1) {
             const contentItem = item.data.items[0]
@@ -402,9 +450,14 @@ export default () => {
         })
       }
       else if (item.type === 'end') {
+        const elements = endTemplate.elements.map(el => {
+          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          return el
+        })
         slides.push({
           ...endTemplate,
           id: nanoid(10),
+          elements,
         })
       }
     }

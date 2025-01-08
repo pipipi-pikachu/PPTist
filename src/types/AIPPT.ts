@@ -39,3 +39,10 @@ export interface AIPPTEnd {
 }
 
 export type AIPPTSlide = AIPPTCover | AIPPTContents | AIPPTTransition | AIPPTContent | AIPPTEnd
+
+export interface PexelsImage {
+  id: string
+  src: string
+  width: number
+  height: number
+}

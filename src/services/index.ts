@@ -12,11 +12,15 @@ export default {
     return axios.get(`${ASSET_URL}/data/${filename}.json`)
   },
 
-  AIPPT_Outline(content: string) {
-    return axios.post(`${SERVER_URL}/tools/aippt_outline`, { content })
+  AIPPT_Outline(content: string, language: string) {
+    return axios.post(`${SERVER_URL}/tools/aippt_outline`, { content, language })
   },
 
-  AIPPT(content: string) {
-    return axios.post(`${SERVER_URL}/tools/aippt`, { content })
+  AIPPT(content: string, language: string) {
+    return axios.post(`${SERVER_URL}/tools/aippt`, { content, language })
+  },
+
+  AISearchImage(text: string) {
+    return axios.post(`${SERVER_URL}/tools/ai_search_image`, { text })
   },
 }
