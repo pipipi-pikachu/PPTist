@@ -22,29 +22,9 @@
       >
         <template #suffix>
           <span class="count">{{ keyword.length }} / 50</span>
+          <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI 生成</div>
         </template>
       </Input>
-      <div class="configs">
-        <div class="items">
-          <Select 
-            class="item"
-            v-model:value="language"
-            :options="[
-              { label: '中文', value: 'zh' },
-              { label: '英文', value: 'en' },
-            ]"
-          />
-          <Select 
-            class="item"
-            v-model:value="imageMatching"
-            :options="[
-              { label: '无需配图', value: 'none' },
-              { label: 'AI搜图匹配', value: 'search' },
-            ]"
-          />
-        </div>
-        <Button class="submit" type="primary" @click="createOutline()">AI 生成</Button>
-      </div>
       <div class="recommends">
         <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="keyword = item">{{ item }}</div>
       </div>
@@ -58,20 +38,18 @@
 import { ref, onMounted } from 'vue'
 import api from '@/services'
 import useAIPPT from '@/hooks/useAIPPT'
-import type { AIPPTSlide, PexelsImage } from '@/types/AIPPT'
+import type { AIPPTSlide } from '@/types/AIPPT'
 import type { Slide } from '@/types/slides'
 import message from '@/utils/message'
 import { useMainStore } from '@/store'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
-import Select from '@/components/Select.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
 const { getMdContent, AIPPT } = useAIPPT()
 
 const language = ref<'zh' | 'en'>('zh')
-const imageMatching = ref<'none' | 'search'>('none')
 const keyword = ref('')
 const outline = ref('')
 const loading = ref(false)
@@ -112,20 +90,9 @@ const createPPT = async () => {
     const obj = JSON.parse(ret.data[0].content)
     return obj.data
   })
-  let imgs: PexelsImage[] = []
-  if (imageMatching.value === 'search') {
-    imgs = await api.AISearchImage(keyword.value).then(ret => {
-      return ret.data.photos.map((item: any) => ({
-        id: item.id,
-        src: item.src.large,
-        width: item.width,
-        height: item.height,
-      }))
-    })
-  }
   const templateSlides: Slide[] = await api.getFileData('template_1').then(ret => ret.slides)
 
-  AIPPT(templateSlides, AISlides, imgs)
+  AIPPT(templateSlides, AISlides)
 
   loading.value = false
 
@@ -199,6 +166,26 @@ const createPPT = async () => {
 .count {
   font-size: 12px;
   color: #999;
-  margin-right: 3px;
+  margin-right: 5px;
+}
+.submit {
+  height: 20px;
+  font-size: 12px;
+  background-color: $themeColor;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  border-radius: $borderRadius;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $themeHoverColor;
+  }
+
+  .icon {
+    font-size: 15px;
+    margin-right: 3px;
+  }
 }
 </style>

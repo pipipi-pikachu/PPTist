@@ -19,8 +19,4 @@ export default {
   AIPPT(content: string, language: string) {
     return axios.post(`${SERVER_URL}/tools/aippt`, { content, language })
   },
-
-  AISearchImage(text: string) {
-    return axios.post(`${SERVER_URL}/tools/ai_search_image`, { text })
-  },
 }
