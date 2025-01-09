@@ -299,7 +299,7 @@ export default () => {
     for (const item of AISlides) {
       if (item.type === 'cover') {
         const elements = coverTemplate.elements.map(el => {
-          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'title') && item.data.title) {
             return getNewTextElement({ el, text: item.data.title, maxLine: 1 })
@@ -334,7 +334,7 @@ export default () => {
         const longestText = item.data.items.reduce((longest, current) => current.length > longest.length ? current : longest, '')
 
         const elements = contentsTemplate.elements.map(el => {
-          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'item')) {
             const index = sortedItemIds.findIndex(id => id === el.id)
@@ -357,7 +357,7 @@ export default () => {
       else if (item.type === 'transition') {
         transitionIndex++
         const elements = transitionTemplate.elements.map(el => {
-          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (checkTextType(el, 'title') && item.data.title) {
             return getNewTextElement({ el, text: item.data.title, maxLine: 1 })
@@ -409,7 +409,7 @@ export default () => {
         const longestText = itemTexts.reduce((longest, current) => current.length > longest.length ? current : longest, '')
 
         const elements = contentTemplate.elements.map(el => {
-          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
           if (item.data.items.length === 1) {
             const contentItem = item.data.items[0]
@@ -451,7 +451,7 @@ export default () => {
       }
       else if (item.type === 'end') {
         const elements = endTemplate.elements.map(el => {
-          if (el.type === 'image' && !el.lock && imgPool.value.length) return getNewImgElement(el)
+          if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           return el
         })
         slides.push({
