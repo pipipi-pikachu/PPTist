@@ -27,7 +27,7 @@
           :options="textTypeOptions"
         />
       </div>
-      <div class="row" v-if="handleElement && handleElement.type === 'image'">
+      <div class="row" v-else-if="handleElement && handleElement.type === 'image'">
         <div style="width: 40%;">当前图片类型：</div>
         <Select
           style="width: 60%;"
