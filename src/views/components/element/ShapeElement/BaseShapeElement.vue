@@ -111,6 +111,7 @@ const text = computed<ShapeText>(() => {
   svg {
     transform-origin: 0 0;
     overflow: visible;
+    display: block;
   }
 }
 .shape-text {

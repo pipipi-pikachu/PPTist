@@ -102,6 +102,32 @@ export default () => {
     return data
   }
 
+  const calculateRotatedPosition = (
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    ox: number,
+    oy: number,
+    k: number,
+  ) => {
+    const radians = k * (Math.PI / 180)
+
+    const containerCenterX = x + w / 2
+    const containerCenterY = y + h / 2
+
+    const relativeX = ox - w / 2
+    const relativeY = oy - h / 2
+
+    const rotatedX = relativeX * Math.cos(radians) + relativeY * Math.sin(radians)
+    const rotatedY = -relativeX * Math.sin(radians) + relativeY * Math.cos(radians)
+
+    const graphicX = containerCenterX + rotatedX
+    const graphicY = containerCenterY + rotatedY
+
+    return { x: graphicX, y: graphicY }
+  }
+
   // 导入PPTX文件
   const importPPTXFile = (files: FileList) => {
     const file = files[0]
@@ -467,7 +493,26 @@ export default () => {
                 options,
               })
             }
-            else if (el.type === 'group' || el.type === 'diagram') {
+            else if (el.type === 'group') {
+              const elements = el.elements.map(_el => {
+                let left = _el.left + originLeft
+                let top = _el.top + originTop
+
+                if (el.rotate) {
+                  const { x, y } = calculateRotatedPosition(originLeft, originTop, originWidth, originHeight, _el.left, _el.top, el.rotate)
+                  left = x
+                  top = y
+                }
+
+                return {
+                  ..._el,
+                  left,
+                  top,
+                }
+              })
+              parseElements(elements)
+            }
+            else if (el.type === 'diagram') {
               const elements = el.elements.map(_el => ({
                 ..._el,
                 left: _el.left + originLeft,
