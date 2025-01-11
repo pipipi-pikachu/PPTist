@@ -190,7 +190,9 @@ export default () => {
         }
 
         const parseElements = (elements: Element[]) => {
-          for (const el of elements) {
+          const sortedElements = elements.sort((a, b) => a.order - b.order)
+
+          for (const el of sortedElements) {
             const originWidth = el.width || 1
             const originHeight = el.height || 1
             const originLeft = el.left
