@@ -16,6 +16,7 @@
       :disabled="disabled"
       :value="value" 
       :placeholder="placeholder"
+      :maxlength="maxlength"
       @input="$event => handleInput($event)"
       @focus="$event => handleFocus($event)"
       @blur="$event => handleBlur($event)"
@@ -36,6 +37,7 @@ withDefaults(defineProps<{
   disabled?: boolean
   placeholder?: string
   simple?: boolean
+  maxlength?: number
 }>(), {
   disabled: false,
   placeholder: '',

@@ -139,7 +139,7 @@ interface PPTBaseElement {
 }
 
 
-export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'notes' | 'header' | 'footer'
+export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'itemTitle' | 'notes' | 'header' | 'footer' | 'partNumber' | 'itemNumber'
 
 /**
  * 文本元素
@@ -245,6 +245,8 @@ export interface ImageElementClip {
   shape: string
 }
 
+export type ImageType = 'pageFigure' | 'itemFigure' | 'background'
+
 /**
  * 图片元素
  * 
@@ -269,6 +271,8 @@ export interface ImageElementClip {
  * radius?: 圆角半径
  * 
  * colorMask?: 颜色蒙版
+ * 
+ * imageType?: 图片类型
  */
 export interface PPTImageElement extends PPTBaseElement {
   type: 'image'
@@ -282,6 +286,7 @@ export interface PPTImageElement extends PPTBaseElement {
   shadow?: PPTElementShadow
   radius?: number
   colorMask?: string
+  imageType?: ImageType
 }
 
 export type ShapeTextAlign = 'top' | 'middle' | 'bottom' 

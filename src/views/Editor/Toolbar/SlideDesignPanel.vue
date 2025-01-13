@@ -131,10 +131,7 @@
         search
         searchLabel="搜索字体"
         @update:value="value => updateTheme({ fontName: value as string })"
-        :options="[
-          ...availableFonts,
-          ...WEB_FONTS
-        ]"
+        :options="FONTS"
       />
     </div>
     <div class="row">
@@ -303,7 +300,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useSlidesStore } from '@/store'
 import type { 
   Gradient,
   GradientType,
@@ -315,7 +312,7 @@ import type {
   LineStyleType,
 } from '@/types/slides'
 import { PRESET_THEMES } from '@/configs/theme'
-import { WEB_FONTS } from '@/configs/font'
+import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useSlideTheme from '@/hooks/useSlideTheme'
 import { getImageDataURL } from '@/utils/image'
@@ -336,7 +333,6 @@ import Modal from '@/components/Modal.vue'
 import GradientBar from '@/components/GradientBar.vue'
 
 const slidesStore = useSlidesStore()
-const { availableFonts } = storeToRefs(useMainStore())
 const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
 
 const moreThemeConfigsVisible = ref(false)

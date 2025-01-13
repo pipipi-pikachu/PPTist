@@ -28,6 +28,7 @@
 
     <div class="row">
       <NumberInput
+        :min="-1000"
         :step="5"
         :value="left"
         @update:value="value => updateLeft(value)"
@@ -39,6 +40,7 @@
       </NumberInput>
       <div style="width: 10%;"></div>
       <NumberInput
+        :min="-1000"
         :step="5"
         :value="top"
         @update:value="value => updateTop(value)"

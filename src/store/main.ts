@@ -4,8 +4,6 @@ import { ToolbarStates } from '@/types/toolbar'
 import type { CreatingElement, ShapeFormatPainter, TextFormatPainter } from '@/types/edit'
 import type { DialogForExportTypes } from '@/types/export'
 import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
-import { SYS_FONTS } from '@/configs/font'
-import { isSupportFont } from '@/utils/font'
 
 import { useSlidesStore } from './slides'
 
@@ -24,7 +22,6 @@ export interface MainState {
   showRuler: boolean
   creatingElement: CreatingElement | null
   creatingCustomShape: boolean
-  availableFonts: typeof SYS_FONTS
   toolbarState: ToolbarStates
   clipingImageElementId: string
   isScaling: boolean
@@ -39,6 +36,7 @@ export interface MainState {
   showSearchPanel: boolean
   showNotesPanel: boolean
   showMarkupPanel: boolean
+  showAIPPTDialog: boolean
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -60,7 +58,6 @@ export const useMainStore = defineStore('main', {
     showRuler: false, // 显示标尺
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     creatingCustomShape: false, // 正在绘制任意多边形
-    availableFonts: SYS_FONTS, // 当前环境可用字体
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
     richTextAttrs: defaultRichTextAttrs, // 富文本状态
@@ -75,6 +72,7 @@ export const useMainStore = defineStore('main', {
     showSearchPanel: false, // 打开查找替换面板
     showNotesPanel: false, // 打开批注面板
     showMarkupPanel: false, // 打开类型标注面板
+    showAIPPTDialog: false, // 打开AIPPT创建窗口
   }),
 
   getters: {
@@ -153,10 +151,6 @@ export const useMainStore = defineStore('main', {
       this.creatingCustomShape = state
     },
   
-    setAvailableFonts() {
-      this.availableFonts = SYS_FONTS.filter(font => isSupportFont(font.value))
-    },
-  
     setToolbarState(toolbarState: ToolbarStates) {
       this.toolbarState = toolbarState
     },
@@ -207,6 +201,10 @@ export const useMainStore = defineStore('main', {
 
     setMarkupPanelState(show: boolean) {
       this.showMarkupPanel = show
+    },
+
+    setAIPPTDialogState(show: boolean) {
+      this.showAIPPTDialog = show
     },
   },
 })

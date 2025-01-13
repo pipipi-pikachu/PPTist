@@ -272,7 +272,7 @@ const resetImage = () => {
 
   slidesStore.removeElementProps({
     id: handleElementId.value,
-    propName: ['clip', 'outline', 'flip', 'shadow', 'filters', 'colorMask'],
+    propName: ['clip', 'outline', 'flip', 'shadow', 'filters', 'colorMask', 'radius'],
   })
   addHistorySnapshot()
 }

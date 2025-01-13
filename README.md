@@ -21,7 +21,7 @@
 # ✨ Highlights
 1. <b>Easy Development</b>: Built with Vue 3.x and TypeScript, it does not rely on UI component libraries and avoids third-party components as much as possible. This makes styling customization easier and functionality extension more convenient.
 2. <b>User Friendly</b>: It offers a context menu available everywhere, dozens of keyboard shortcuts, and countless editing detail optimizations, striving to replicate a desktop application-level experience.
-3. <b>Feature Rich</b>: Supports most of the commonly used elements and functionalities found in PowerPoint, supports exporting in various formats, and offers basic editing and previewing on mobile devices.
+3. <b>Feature Rich</b>: Supports most of the commonly used elements and functionalities found in PowerPoint, supports generate PPT by AI, supports exporting in various formats, and offers basic editing and previewing on mobile devices.
 
 
 # 🚀 Installation
@@ -40,6 +40,7 @@ npm run dev
 - Export local files (PPTX, JSON, images, PDF)
 - Import and export pptist files
 - Print
+- AI PPT
 ### Slide Page Editing
 - Add/delete pages
 - Copy/paste pages

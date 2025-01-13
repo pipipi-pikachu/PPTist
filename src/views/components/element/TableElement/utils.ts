@@ -29,7 +29,7 @@ export const getTextStyle = (style?: TableCellStyle): CSSProperties => {
     color: color || '#000',
     backgroundColor: backcolor || '',
     fontSize: fontsize || '14px',
-    fontFamily: fontname || '微软雅黑',
+    fontFamily: fontname || '',
     textAlign: align || 'left',
   }
 }

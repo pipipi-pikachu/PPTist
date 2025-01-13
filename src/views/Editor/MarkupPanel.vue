@@ -27,7 +27,16 @@
           :options="textTypeOptions"
         />
       </div>
-      <div class="placeholder" v-else>选中文本框或带文本的形状，标记文本类型</div>
+      <div class="row" v-else-if="handleElement && handleElement.type === 'image'">
+        <div style="width: 40%;">当前图片类型：</div>
+        <Select
+          style="width: 60%;"
+          :value="imageType"
+          @update:value="value => updateElement(value as ImageType | '')"
+          :options="imageTypeOptions"
+        />
+      </div>
+      <div class="placeholder" v-else>选中图片、文字、带文字的形状，标记类型</div>
     </div>
   </MoveablePanel>
 </template>
@@ -36,7 +45,7 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { SlideType, TextType } from '@/types/slides'
+import type { ImageType, SlideType, TextType } from '@/types/slides'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Select from '@/components/Select.vue'
@@ -61,9 +70,19 @@ const textTypeOptions = ref<{ label: string; value: TextType | '' }[]>([
   { label: '副标题', value: 'subtitle' },
   { label: '正文', value: 'content' },
   { label: '列表项目', value: 'item' },
+  { label: '列表项标题', value: 'itemTitle' },
   { label: '注释', value: 'notes' },
   { label: '页眉', value: 'header' },
   { label: '页脚', value: 'footer' },
+  { label: '节编号', value: 'partNumber' },
+  { label: '项目编号', value: 'itemNumber' },
+])
+
+const imageTypeOptions = ref<{ label: string; value: ImageType | '' }[]>([
+  { label: '未标记类型', value: '' },
+  { label: '页面插图', value: 'pageFigure' },
+  { label: '项目插图', value: 'itemFigure' },
+  { label: '背景图', value: 'background' },
 ])
 
 const slideType = computed(() => currentSlide.value?.type || '')
@@ -71,6 +90,11 @@ const textType = computed(() => {
   if (!handleElement.value) return ''
   if (handleElement.value.type === 'text') return handleElement.value.textType || ''
   if (handleElement.value.type === 'shape' && handleElement.value.text) return handleElement.value.text.type || ''
+  return ''
+})
+const imageType = computed(() => {
+  if (!handleElement.value) return ''
+  if (handleElement.value.type === 'image') return handleElement.value.imageType || ''
   return ''
 })
 
@@ -84,11 +108,22 @@ const updateSlide = (type: SlideType | '') => {
   }
 }
 
-const updateElement = (type: TextType | '') => {
+const updateElement = (type: TextType | ImageType | '') => {
   if (!handleElement.value) return
+  if (handleElement.value.type === 'image') {
+    if (type) {
+      slidesStore.updateElement({ id: handleElementId.value, props: { imageType: type as ImageType } })
+    }
+    else {
+      slidesStore.removeElementProps({
+        id: handleElementId.value,
+        propName: 'imageType',
+      })
+    }
+  }
   if (handleElement.value.type === 'text') {
     if (type) {
-      slidesStore.updateElement({ id: handleElementId.value, props: { textType: type } })
+      slidesStore.updateElement({ id: handleElementId.value, props: { textType: type as TextType } })
     }
     else {
       slidesStore.removeElementProps({
@@ -104,7 +139,7 @@ const updateElement = (type: TextType | '') => {
     if (type) {
       slidesStore.updateElement({
         id: handleElementId.value,
-        props: { text: { ...text, type } },
+        props: { text: { ...text, type: type as TextType } },
       })
     }
     else {

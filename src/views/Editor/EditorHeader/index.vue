@@ -3,17 +3,18 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <FileInput accept=".pptist"  @change="files => {
-            importSpecificFile(files)
-            mainMenuVisible = false
-          }">
-            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
-          </FileInput>
+          <PopoverMenuItem @click="openAIPPTDialog(); mainMenuVisible = false">AI 生成 PPT（测试版）</PopoverMenuItem>
           <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
             importPPTXFile(files)
             mainMenuVisible = false
           }">
             <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
+          </FileInput>
+          <FileInput accept=".pptist"  @change="files => {
+            importSpecificFile(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
           </FileInput>
           <PopoverMenuItem @click="setDialogForExport('pptx')">导出文件</PopoverMenuItem>
           <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">重置幻灯片</PopoverMenuItem>
@@ -54,6 +55,9 @@
           </template>
           <div class="arrow-btn"><IconDown class="arrow" /></div>
         </Popover>
+      </div>
+      <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+        <span class="text">AI</span>
       </div>
       <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
         <IconDownload class="icon" />
@@ -130,6 +134,10 @@ const setDialogForExport = (type: DialogForExportTypes) => {
 const openMarkupPanel = () => {
   mainStore.setMarkupPanelState(true)
 }
+
+const openAIPPTDialog = () => {
+  mainStore.setAIPPTDialogState(true)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -159,6 +167,11 @@ const openMarkupPanel = () => {
   .icon {
     font-size: 18px;
     color: #666;
+  }
+  .text {
+    width: 18px;
+    text-align: center;
+    font-size: 16px;
   }
 
   &:hover {

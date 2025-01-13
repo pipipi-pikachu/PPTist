@@ -30,16 +30,34 @@ export interface SlidesState {
   slideIndex: number
   viewportSize: number
   viewportRatio: number
+  _layouts: Slide[]
 }
 
 export const useSlidesStore = defineStore('slides', {
   state: (): SlidesState => ({
     title: '未命名演示文稿', // 幻灯片标题
-    theme: theme, // 主题样式
-    slides: slides, // 幻灯片页面数据
+    theme: {
+      themeColor: '#5b9bd5',
+      fontColor: '#333',
+      fontName: '',
+      backgroundColor: '#fff',
+      shadow: {
+        h: 3,
+        v: 3,
+        blur: 2,
+        color: '#808080',
+      },
+      outline: {
+        width: 2,
+        color: '#525252',
+        style: 'solid',
+      },
+    }, // 主题样式
+    slides: [], // 幻灯片页面数据
     slideIndex: 0, // 当前页面索引
     viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
+    _layouts: [], // 布局模板
   }),
 
   getters: {
@@ -98,7 +116,7 @@ export const useSlidesStore = defineStore('slides', {
   
       const subColor = tinycolor(fontColor).isDark() ? 'rgba(230, 230, 230, 0.5)' : 'rgba(180, 180, 180, 0.5)'
   
-      const layoutsString = JSON.stringify(layouts)
+      const layoutsString = JSON.stringify(state._layouts)
         .replace(/{{themeColor}}/g, themeColor)
         .replace(/{{fontColor}}/g, fontColor)
         .replace(/{{fontName}}/g, fontName)
@@ -129,6 +147,10 @@ export const useSlidesStore = defineStore('slides', {
   
     setSlides(slides: Slide[]) {
       this.slides = slides
+    },
+  
+    setLayouts(layouts: Slide[]) {
+      this._layouts = layouts
     },
   
     addSlide(slide: Slide | Slide[]) {

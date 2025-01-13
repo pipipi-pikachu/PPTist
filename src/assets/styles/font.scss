@@ -1,9 +1,9 @@
-$fontList: '仓耳小丸子', '优设标题黑', '字制区喜脉体', '峰广明锐体', '得意黑', '摄图摩登小方体', '站酷快乐体', '素材集市康康体', '素材集市酷方体', '途牛类圆体', '锐字真言体';
+$fonts: 'SourceHanSans', 'SourceHanSerif', 'FangZhengHeiTi', 'FangZhengKaiTi', 'FangZhengShuSong', 'FangZhengFangSong', 'AlibabaPuHuiTi', 'ZhuQueFangSong', 'LXGWWenKai', 'WenDingPLKaiTi', 'DeYiHei', 'MiSans', 'CangerXiaowanzi', 'YousheTitleBlack', 'FengguangMingrui', 'ShetuModernSquare', 'ZcoolHappy', 'ZizhiQuXiMai', 'SucaiJishiKangkang', 'SucaiJishiCoolSquare', 'TuniuRounded', 'RuiziZhenyan';
 
-@each $font in $fontList {
+@each $font in $fonts {
   @font-face {
     font-display: swap;
     font-family: $font;
-    src: url('../fonts/#{$font}.woff2') format('woff2');
+    src: url('https://asset.pptist.cn/font/#{$font}.woff2') format('woff2');
   }
 }

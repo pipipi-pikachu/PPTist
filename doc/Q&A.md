@@ -32,9 +32,9 @@ A. 设置在线字体时会下载对应的字体文件，该文件较大，需�
 
 A. 作为一个在线幻灯片应用，导出、导入 PPTX 文件是非常重要的功能，但是经过调研发现，该功能实现起来的复杂度远超过了预期。由于个人能力和时间有限，这部分功能只能借助第三方的轮子来完成。
 
-导出：目前导出功能主要基于 [PptxGenJS](https://github.com/gitbrent/PptxGenJS/) 完成，能够实现大多数基本元素的导出，但还有非常多的缺陷需要一点点完善。同时需要知晓的是：1、该功能依赖 PptxGenJS，对于该库本身无法实现的部分（如动画），本项目也无能为力；2、导出功能的目标只是【导出样式尽可能一致的元素】，而不是一比一将网页还原到PPT，一些样式差异是必然存在的。
+- 导出：目前导出功能主要基于 [PptxGenJS](https://github.com/gitbrent/PptxGenJS/) 完成，能够实现大多数基本元素的导出，但还有非常多的缺陷需要一点点完善。同时需要知晓的是：1、该功能依赖 PptxGenJS，对于该库本身无法实现的部分（如动画），本项目也无能为力；2、导出功能的目标只是【导出样式尽可能一致的元素】，而不是一比一将网页还原到PPT，一些样式差异是必然存在的。
 
-导入：导入功能目前暂时没有合适的解决方案，还在调研和观望中。如果有感兴趣或做过相关内容的朋友，欢迎来 issues 中讨论。
+- 导入：导入功能目前暂时没有合适的解决方案，还在调研和观望中。如果有感兴趣或做过相关内容的朋友，欢迎来 issues 中讨论。
 
 > PS. 我做了一个 [pptx转json](https://github.com/pipipi-pikachu/pptx2json) 的实验，如果你急需实现导入PPTX文件功能，可以此为参考自行实现。
 
@@ -52,7 +52,7 @@ A. 首先，出于安全等原因，个人并不建议将这种功能在前端�
 
 #### Q. 打印 / 导出 PDF 样式与实际有出入
 
-A. 请注意在浏览器弹出的打印窗口调整相关的设置。建议：设置边距为【默认】、取消勾选【页眉和页脚】、勾选【背景图形】
+A. 请注意在浏览器弹出的打印窗口调整相关的设置。建议：设置边距为【默认】、取消勾选【页眉和页脚】、勾选【背景图形】。另外，建议在正式环境中采用后端生成PDF的方案效果更佳（如puppeteer）。
 
 #### Q. 为什么移动端不支持 xxx 功能？
 
@@ -68,9 +68,15 @@ A. 大家都知道，对于一般的插件/库而言，一个封装好的npm包�
 
 因此，使用PPTist开发项目正确的做法是：拉取完整的代码、尝试理解它、基于它改造你自己的东西。社区中也不乏类似的项目，例如 [drawio](https://github.com/jgraph/drawio)
 
+#### Q. 关于 AI PPT
+
+A. 目前此功能仅作参考，内部实现了最基础的AIPPT生成逻辑，即：模板定制 + AI生成数据与模板结合 + 配图替换。为控制成本暂时只能做到这里，但为了达到生产环节的效果，你还需要做更多。
+
+注：配图替换仅提供方法，不提供实际演示功能，你需要自己提供图片源接入（如AI文生图、图库搜索匹配等方法）
+
 #### Q. 其他
 
-A. 另外，还是没有后台的缘故（没有多余的钱去买服务器或云服务），一些功能我是刻意砍掉的，哪怕这些功能其实很基础，例如上传音视频、例如自定义模板。还有一些功能明明有更好的实现方案，我却没有选择，例如导出PDF。这些需要依靠开发者们自己去实现和完善了。
+A. 另外需要强调，PPTist只是一个开源项目而非面向普通用户的产品，主要提供的是技术解决方案，一些产品化的需求/优化还需要开发者自己去实现和完善。
 
 ## FAQ
 #### Q. Why doesn’t the xxx shortcut work?
@@ -125,7 +131,7 @@ A. Firstly, due to security reasons, I do not recommend exposing such functional
 
 #### Q. Print / Export PDF Styles Are Different from the Actual
 
-A. Please adjust the settings in the print dialog that pops up in the browser. It is recommended to set the margins to [default], uncheck [headers and footers], and check [background graphics].
+A. Please adjust the settings in the print dialog that pops up in the browser. It is recommended to set the margins to [default], uncheck [headers and footers], and check [background graphics]. Furthermore, it is recommended to adopt a backend-generated PDF solution (such as Puppeteer) for a more optimal outcome in a formal environment.
 
 #### Q. Why doesn’t the mobile version support xxx feature?
 
@@ -141,6 +147,11 @@ A. Everyone knows that for general plugins/libraries, a well-packaged NPM packag
 
 Therefore, the correct way to develop a project using PPTist is to pull the complete code, try to understand it, and modify it to suit your own needs. There are also similar projects in the community, such as [drawio](https://github.com/jgraph/drawio).
 
+#### Q. About AI PPT
+A. Currently, this feature is for reference only. The most basic AI PPT generation logic has been implemented internally, which includes: template customization + AI-generated data combined with templates + image replacement. Due to cost control, we can only go this far for now. However, to achieve the desired production-level results, you will need to do more.
+
+Note: Image replacement only provides the method and does not offer an actual demonstration function. You will need to provide your own image sources (such as AI text-to-image generation, image library search matching, etc.).
+
 #### Q. Other
 
-A. Additionally, due to the absence of a backend (and no extra money to buy servers or cloud services), some features are deliberately omitted, even though they are quite basic, such as uploading audio and video, or custom templates. There are also features that have better implementation options, but I have not chosen them, such as exporting to PDF. These will need to be implemented and improved by developers.
+A. Additionally, it is important to emphasize that PPTist is merely an open-source project, not a product tailored for the average user. It primarily offers technical solutions. Some product-oriented demands and optimizations require developers to implement and refine on their own.

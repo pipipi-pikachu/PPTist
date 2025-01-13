@@ -141,7 +141,7 @@ watch(() => slideIndex.value, () => {
       }, 100)
     }
   })
-})
+}, { immediate: true })
 
 // 切换页面
 const changeSlideIndex = (index: number) => {
