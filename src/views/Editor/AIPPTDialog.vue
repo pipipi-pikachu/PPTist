@@ -6,8 +6,8 @@
       <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
     </div>
     <div class="preview" v-if="outline">
-      <pre>{{ outline }}</pre>
-      <div class="btns">
+      <pre ref="outlineRef">{{ outline }}</pre>
+      <div class="btns" v-if="!outlineCreating">
         <Button class="btn" type="primary" @click="createPPT()">继续</Button>
         <Button class="btn" @click="outline = ''">返回重新生成</Button>
       </div>
@@ -22,6 +22,7 @@
       >
         <template #suffix>
           <span class="count">{{ keyword.length }} / 50</span>
+          <span class="language" v-tooltip="'切换语言'" @click="language = language === 'zh' ? 'en' : 'zh'">{{ language === 'zh' ? '中' : '英' }}</span>
           <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI 生成</div>
         </template>
       </Input>
@@ -47,19 +48,25 @@ import Button from '@/components/Button.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
-const { getMdContent, AIPPT } = useAIPPT()
+const { AIPPT } = useAIPPT()
 
 const language = ref<'zh' | 'en'>('zh')
 const keyword = ref('')
 const outline = ref('')
 const loading = ref(false)
+const outlineCreating = ref(false)
+const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const recommends = ref([
-  '年度工作总结',
   '大学生职业生涯规划',
   '公司年会策划方案',
   '大数据如何改变世界',
   '餐饮市场调查与研究',
+  'AIGC在教育领域的应用',
+  '5G技术如何改变我们的生活',
+  '社交媒体与品牌营销',
+  '年度工作总结与展望',
+  '区块链技术及其应用',
 ]) 
 
 onMounted(() => {
@@ -72,12 +79,33 @@ const createOutline = async () => {
   if (!keyword.value) return message.error('请先输入PPT主题')
 
   loading.value = true
-
-  outline.value = await api.AIPPT_Outline(keyword.value, language.value).then(ret => {
-    return getMdContent(ret.data[0].content)
-  })
+  outlineCreating.value = true
+  
+  const stream = await api.AIPPT_Outline(keyword.value, language.value)
 
   loading.value = false
+
+  const reader: ReadableStreamDefaultReader = stream.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  
+  const readStream = () => {
+    reader.read().then(({ done, value }) => {
+      if (done) {
+        outlineCreating.value = false
+        return
+      }
+  
+      const chunk = decoder.decode(value, { stream: true })
+      outline.value += chunk
+
+      if (outlineRef.value) {
+        outlineRef.value.scrollTop = outlineRef.value.scrollHeight + 20
+      }
+
+      readStream()
+    })
+  }
+  readStream()
 }
 
 const createPPT = async () => {
@@ -152,21 +180,32 @@ const createPPT = async () => {
 .recommends {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 15px;
+  margin-top: 10px;
 
   .recommend {
     font-size: 12px;
     background-color: #f1f1f1;
     border-radius: $borderRadius;
-    padding: 2px 4px;
+    padding: 3px 5px;
     margin-right: 5px;
+    margin-top: 5px;
     cursor: pointer;
+
+    &:hover {
+      color: $themeColor;
+    }
   }
 }
 .count {
   font-size: 12px;
   color: #999;
-  margin-right: 5px;
+  margin-right: 10px;
+}
+.language {
+  font-size: 12px;
+  margin-right: 10px;
+  color: $themeColor;
+  cursor: pointer;
 }
 .submit {
   height: 20px;

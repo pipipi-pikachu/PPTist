@@ -1,7 +1,7 @@
 import axios from './config'
 
-const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'https://server.pptist.cn'
-const ASSET_URL = 'https://asset.pptist.cn'
+export const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'https://server.pptist.cn'
+export const ASSET_URL = 'https://asset.pptist.cn'
 
 export default {
   getMockData(filename: string): Promise<any> {
@@ -12,8 +12,18 @@ export default {
     return axios.get(`${ASSET_URL}/data/${filename}.json`)
   },
 
-  AIPPT_Outline(content: string, language: string) {
-    return axios.post(`${SERVER_URL}/tools/aippt_outline`, { content, language })
+  AIPPT_Outline(content: string, language: string): Promise<any> {
+    return fetch(`${SERVER_URL}/tools/aippt_outline`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+        language,
+        stream: true,
+      }),
+    })
   },
 
   AIPPT(content: string, language: string) {
