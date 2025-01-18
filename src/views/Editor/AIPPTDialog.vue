@@ -2,17 +2,12 @@
   <div class="aippt-dialog">
     <div class="header">
       <span class="title">AIPPT</span>
-      <span class="subtite" v-if="outline">检查确认下方PPT大纲，点击继续生成PPT</span>
+      <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板，开始生成PPT</span>
+      <span class="subtite" v-else-if="step === 'outline'">检查确认下方内容大纲，开始挑选模板</span>
       <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
     </div>
-    <div class="preview" v-if="outline">
-      <pre ref="outlineRef">{{ outline }}</pre>
-      <div class="btns" v-if="!outlineCreating">
-        <Button class="btn" type="primary" @click="createPPT()">继续</Button>
-        <Button class="btn" @click="outline = ''">返回重新生成</Button>
-      </div>
-    </div>
-    <template v-else>
+    
+    <template v-if="step === 'setup'">
       <Input class="input" 
         ref="inputRef"
         v-model:value="keyword" 
@@ -30,8 +25,31 @@
         <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="keyword = item">{{ item }}</div>
       </div>
     </template>
+    <div class="preview" v-if="step === 'outline'">
+      <pre ref="outlineRef">{{ outline }}</pre>
+      <div class="btns" v-if="!outlineCreating">
+        <Button class="btn" type="primary" @click="step = 'template'">挑选模板</Button>
+        <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
+      </div>
+    </div>
+    <div class="select-template" v-if="step === 'template'">
+      <div class="templates">
+        <div class="template" 
+          :class="{ 'selected': selectedTemplate === template.id }" 
+          v-for="template in templates" 
+          :key="template.id" 
+          @click="selectedTemplate = template.id"
+        >
+          <img :src="template.cover" :alt="template.name">
+        </div>
+      </div>
+      <div class="btns">
+        <Button class="btn" type="primary" @click="createPPT()">继续</Button>
+        <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
+      </div>
+    </div>
 
-    <FullscreenSpin :loading="loading" tip="AI生成中，请稍等 ..." />
+    <FullscreenSpin :loading="loading" tip="AI生成中，请耐心等待 ..." />
   </div>
 </template>
 
@@ -53,10 +71,16 @@ const { AIPPT } = useAIPPT()
 const language = ref<'zh' | 'en'>('zh')
 const keyword = ref('')
 const outline = ref('')
+const selectedTemplate = ref('template_1')
 const loading = ref(false)
 const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
+const step = ref<'setup' | 'outline' | 'template'>('setup')
+const templates = ref([
+  { name: '红色通用模板', id: 'template_1', cover: 'https://asset.pptist.cn/img/template_1.jpg' },
+  { name: '蓝色通用模板', id: 'template_2', cover: 'https://asset.pptist.cn/img/template_2.jpg' },
+])
 const recommends = ref([
   '大学生职业生涯规划',
   '公司年会策划方案',
@@ -84,6 +108,7 @@ const createOutline = async () => {
   const stream = await api.AIPPT_Outline(keyword.value, language.value)
 
   loading.value = false
+  step.value = 'outline'
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
@@ -109,8 +134,6 @@ const createOutline = async () => {
 }
 
 const createPPT = async () => {
-  if (!outline.value) return message.error('缺少PPT大纲')
-
   loading.value = true
 
   // const AISlides: AIPPTSlide[] = await api.getMockData('AIPPT')
@@ -118,7 +141,8 @@ const createPPT = async () => {
     const obj = JSON.parse(ret.data[0].content)
     return obj.data
   })
-  const templateSlides: Slide[] = await api.getFileData('template_1').then(ret => ret.slides)
+  const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)
+  // const templateSlides: Slide[] = await api.getMockData(selectedTemplate.value).then(ret => ret.slides)
 
   AIPPT(templateSlides, AISlides)
 
@@ -153,6 +177,37 @@ const createPPT = async () => {
     margin-bottom: 15px;
     background-color: #f1f1f1;
     overflow: auto;
+  }
+  .btns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btn {
+      width: 120px;
+      margin: 0 5px;
+    }
+  }
+}
+.select-template {
+  .templates {
+    display: flex;
+    margin-bottom: 10px;
+    @include flex-grid-layout();
+  
+    .template {
+      border: 2px solid $borderColor;
+      border-radius: $borderRadius;
+      @include flex-grid-layout-children(2, 49%);
+
+      &.selected {
+        border-color: $themeColor;
+      }
+  
+      img {
+        width: 100%;
+      }
+    }
   }
   .btns {
     display: flex;
