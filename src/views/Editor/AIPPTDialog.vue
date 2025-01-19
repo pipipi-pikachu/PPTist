@@ -198,7 +198,13 @@ const createPPT = async () => {
     .template {
       border: 2px solid $borderColor;
       border-radius: $borderRadius;
-      @include flex-grid-layout-children(2, 49%);
+      width: 304px;
+      height: 172.75px;
+      margin-bottom: 12px;
+
+      &:not(:nth-child(2n)) {
+        margin-right: 12px;
+      }
 
       &.selected {
         border-color: $themeColor;
