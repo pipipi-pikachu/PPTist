@@ -62,6 +62,7 @@
       <div class="row">
         <GradientBar
           :value="background.gradient?.colors || []"
+          :index="currentGradientIndex"
           @update:value="value => updateGradientBackground({ colors: value })"
           @update:index="index => currentGradientIndex = index"
         />
@@ -298,7 +299,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { 
@@ -333,7 +334,7 @@ import Modal from '@/components/Modal.vue'
 import GradientBar from '@/components/GradientBar.vue'
 
 const slidesStore = useSlidesStore()
-const { slides, currentSlide, viewportRatio, theme } = storeToRefs(slidesStore)
+const { slides, currentSlide, slideIndex, viewportRatio, theme } = storeToRefs(slidesStore)
 
 const moreThemeConfigsVisible = ref(false)
 const themeStylesExtractVisible = ref(false)
@@ -356,6 +357,10 @@ const {
   applyPresetThemeToAllSlides,
   applyThemeToAllSlides,
 } = useSlideTheme()
+
+watch(slideIndex, () => {
+  currentGradientIndex.value = 0
+})
 
 // 设置背景模式：纯色、图片、渐变色
 const updateBackgroundType = (type: SlideBackgroundType) => {

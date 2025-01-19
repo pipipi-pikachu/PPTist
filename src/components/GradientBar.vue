@@ -2,25 +2,26 @@
   <div class="gradient-bar">
     <div class="bar" ref="barRef" :style="{ backgroundImage: gradientStyle }" @click="$event => addPoint($event)"></div>
     <div class="point" 
-      :class="{ 'active': activeIndex === index }"
-      v-for="(item, index) in points" 
-      :key="item.pos + '-' + index" 
+      :class="{ 'active': index === i }"
+      v-for="(item, i) in points" 
+      :key="item.pos + '-' + i" 
       :style="{
         backgroundColor: item.color,
         left: `calc(${item.pos}% - 5px)`,
       }"
-      @mousedown.left="movePoint(index)"
-      @click.right="removePoint(index)"
+      @mousedown.left="movePoint(i)"
+      @click.right="removePoint(i)"
     ></div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { GradientColor } from '@/types/slides'
-import { ref, computed, watchEffect, watch } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 
 const props = defineProps<{
   value: GradientColor[]
+  index: number
 }>()
 
 const emit = defineEmits<{
@@ -31,15 +32,10 @@ const emit = defineEmits<{
 const points = ref<GradientColor[]>([])
 
 const barRef = ref<HTMLElement>()
-const activeIndex = ref(0)
 
 watchEffect(() => {
   points.value = props.value
-  if (activeIndex.value > props.value.length - 1) activeIndex.value = 0
-})
-
-watch(activeIndex, () => {
-  emit('update:index', activeIndex.value)
+  if (props.index > props.value.length - 1) emit('update:index', 0)
 })
 
 const gradientStyle = computed(() => {
@@ -50,14 +46,17 @@ const gradientStyle = computed(() => {
 const removePoint = (index: number) => {
   if (props.value.length <= 2) return
 
-  if (index === activeIndex.value) {
-    activeIndex.value = (index - 1 < 0) ? 0 : index - 1
+  let targetIndex = 0
+
+  if (index === props.index) {
+    targetIndex = (index - 1 < 0) ? 0 : index - 1
   }
-  else if (activeIndex.value === props.value.length - 1) {
-    activeIndex.value = props.value.length - 2
+  else if (props.index === props.value.length - 1) {
+    targetIndex = props.value.length - 2
   }
 
   const values = props.value.filter((item, _index) => _index !== index)
+  emit('update:index', targetIndex)
   emit('update:value', values)
 }
 
@@ -89,9 +88,9 @@ const movePoint = (index: number) => {
       if (point.pos > _points[i].pos) targetIndex = i + 1
     }
 
-    activeIndex.value = targetIndex
     _points.splice(targetIndex, 0, point)
 
+    emit('update:index', targetIndex)
     emit('update:value', _points)
     
     document.onmousemove = null
@@ -111,7 +110,7 @@ const addPoint = (e: MouseEvent) => {
   const color = props.value[targetIndex - 1] ? props.value[targetIndex - 1].color : props.value[targetIndex].color
   const values = [...props.value]
   values.splice(targetIndex, 0, { pos, color })
-  activeIndex.value = targetIndex
+  emit('update:index', targetIndex)
   emit('update:value', values)
 }
 </script>

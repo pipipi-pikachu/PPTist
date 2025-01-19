@@ -54,6 +54,7 @@
       <div class="row">
         <GradientBar
           :value="gradient.colors"
+          :index="currentGradientIndex"
           @update:value="value => updateGradient({ colors: value })"
           @update:index="index => currentGradientIndex = index"
         />
@@ -181,6 +182,10 @@ watch(handleElement, () => {
   fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
   textAlign.value = handleElement.value?.text?.align || 'middle'
 }, { deep: true, immediate: true })
+
+watch(handleElementId, () => {
+  currentGradientIndex.value = 0
+})
 
 const { addHistorySnapshot } = useHistorySnapshot()
 const { toggleShapeFormatPainter } = useShapeFormatPainter()
