@@ -17,6 +17,7 @@ import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 import { deleteDiscardedDB } from '@/utils/database'
 import { isPC } from '@/utils/common'
 import type { Slide } from '@/types/slides'
+import message from './utils/message'
 import api from '@/services'
 
 import Editor from './views/Editor/index.vue'
@@ -38,6 +39,10 @@ if (import.meta.env.MODE !== 'development') {
 }
 
 onMounted(async () => {
+  if (location.hostname === 'localhost') {
+    message.error('请访问 http://127.0.0.1:5173/ 进入开发环境', { duration: 0 })
+    return
+  }
   api.getFileData('slides').then((slides: Slide[]) => {
     slidesStore.setSlides(slides)
   })
