@@ -40,15 +40,22 @@ if (import.meta.env.MODE !== 'development') {
 
 onMounted(async () => {
   if (location.hostname === 'localhost') {
-    message.error('请访问 http://127.0.0.1:5173/ 进入开发环境', { duration: 0 })
-    return
+    message.error('本地开发请访问 http://127.0.0.1:5173，否则不保证数据可靠性', { duration: 0, closable: true })
+    api.getMockData('slides').then((slides: Slide[]) => {
+      slidesStore.setSlides(slides)
+    })
+    api.getMockData('layouts').then((slides: Slide[]) => {
+      slidesStore.setLayouts(slides)
+    })
   }
-  api.getFileData('slides').then((slides: Slide[]) => {
-    slidesStore.setSlides(slides)
-  })
-  api.getFileData('layouts').then((slides: Slide[]) => {
-    slidesStore.setLayouts(slides)
-  })
+  else {
+    api.getFileData('slides').then((slides: Slide[]) => {
+      slidesStore.setSlides(slides)
+    })
+    api.getFileData('layouts').then((slides: Slide[]) => {
+      slidesStore.setLayouts(slides)
+    })
+  }
 
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
