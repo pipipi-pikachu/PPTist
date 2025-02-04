@@ -1,10 +1,16 @@
 <template>
-  <div class="layout-pool">
-    <div class="header">页面模板</div>
+  <div class="templates">
+    <div class="header">
+      <Tabs 
+        :tabs="tabs" 
+        v-model:value="activeTab"
+        card 
+      />
+    </div>
     <div class="list">
       <div 
-        class="layout-item"
-        v-for="slide in layouts" 
+        class="slide-item"
+        v-for="slide in slides" 
         :key="slide.id"
       >
         <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
@@ -14,40 +20,64 @@
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
+import api from '@/services'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Button from '@/components/Button.vue'
+import Tabs from '@/components/Tabs.vue'
+
+interface TabItem {
+  key: string
+  label: string
+}
 
 const emit = defineEmits<{
   (event: 'select', payload: Slide): void
 }>()
 
 const slidesStore = useSlidesStore()
-const { layouts } = storeToRefs(slidesStore)
+const { templates } = storeToRefs(slidesStore)
+const slides = ref<Slide[]>([])
+
+const tabs = computed<TabItem[]>(() => {
+  return templates.value.map(item => ({
+    label: item.name,
+    key: item.id,
+  }))
+})
+const activeTab = ref('')
 
 const insertTemplate = (slide: Slide) => {
   emit('select', slide)
 }
+
+watch(activeTab, () => {
+  if (!activeTab.value) return
+  api.getFileData(activeTab.value).then(ret => {
+    slides.value = ret.slides
+  })
+})
+
+onMounted(() => {
+  activeTab.value = templates.value[0].id
+})
 </script>
 
 <style lang="scss" scoped>
-.layout-pool {
+.templates {
   width: 382px;
   height: 500px;
 }
 .header {
-  height: 40px;
   margin: -10px -10px 10px;
-  padding: 10px 12px 0;
-  background-color: $lightGray;
-  border-bottom: 1px solid $borderColor;
 }
 .list {
   height: calc(100% - 50px);
@@ -57,13 +87,9 @@ const insertTemplate = (slide: Slide) => {
   overflow: auto;
   @include flex-grid-layout();
 }
-.layout-item {
+.slide-item {
   position: relative;
   @include flex-grid-layout-children(2, 48%);
-
-  &:nth-last-child(2), &:last-child {
-    margin-bottom: 0;
-  }
 
   &:hover .btns {
     opacity: 1;

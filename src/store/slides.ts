@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
-import tinycolor from 'tinycolor2'
 import { omit } from 'lodash'
-import type { Slide, SlideTheme, PPTElement, PPTAnimation } from '@/types/slides'
+import type { Slide, SlideTheme, PPTElement, PPTAnimation, SlideTemplate } from '@/types/slides'
 
 interface RemovePropData {
   id: string
@@ -26,7 +25,7 @@ export interface SlidesState {
   slideIndex: number
   viewportSize: number
   viewportRatio: number
-  _layouts: Slide[]
+  templates: SlideTemplate[]
 }
 
 export const useSlidesStore = defineStore('slides', {
@@ -53,7 +52,10 @@ export const useSlidesStore = defineStore('slides', {
     slideIndex: 0, // 当前页面索引
     viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
-    _layouts: [], // 布局模板
+    templates: [
+      { name: '红色通用模板', id: 'template_1', cover: 'https://asset.pptist.cn/img/template_1.jpg' },
+      { name: '蓝色通用模板', id: 'template_2', cover: 'https://asset.pptist.cn/img/template_2.jpg' },
+    ], // 模板
   }),
 
   getters: {
@@ -101,26 +103,6 @@ export const useSlidesStore = defineStore('slides', {
       }
       return formatedAnimations
     },
-  
-    layouts(state) {
-      const {
-        themeColor,
-        fontColor,
-        fontName,
-        backgroundColor,
-      } = state.theme
-  
-      const subColor = tinycolor(fontColor).isDark() ? 'rgba(230, 230, 230, 0.5)' : 'rgba(180, 180, 180, 0.5)'
-  
-      const layoutsString = JSON.stringify(state._layouts)
-        .replace(/{{themeColor}}/g, themeColor)
-        .replace(/{{fontColor}}/g, fontColor)
-        .replace(/{{fontName}}/g, fontName)
-        .replace(/{{backgroundColor}}/g, backgroundColor)
-        .replace(/{{subColor}}/g, subColor)
-      
-      return JSON.parse(layoutsString)
-    },
   },
 
   actions: {
@@ -145,8 +127,8 @@ export const useSlidesStore = defineStore('slides', {
       this.slides = slides
     },
   
-    setLayouts(layouts: Slide[]) {
-      this._layouts = layouts
+    setTemplates(templates: SlideTemplate[]) {
+      this.templates = templates
     },
   
     addSlide(slide: Slide | Slide[]) {

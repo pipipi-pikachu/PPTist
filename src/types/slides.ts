@@ -760,3 +760,9 @@ export interface SlideTheme {
   outline: PPTElementOutline
   shadow: PPTElementShadow
 }
+
+export interface SlideTemplate {
+  name: string
+  id: string
+  cover: string
+}

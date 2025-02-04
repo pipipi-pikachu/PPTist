@@ -44,16 +44,10 @@ onMounted(async () => {
     api.getMockData('slides').then((slides: Slide[]) => {
       slidesStore.setSlides(slides)
     })
-    api.getMockData('layouts').then((slides: Slide[]) => {
-      slidesStore.setLayouts(slides)
-    })
   }
   else {
     api.getFileData('slides').then((slides: Slide[]) => {
       slidesStore.setSlides(slides)
-    })
-    api.getFileData('layouts').then((slides: Slide[]) => {
-      slidesStore.setLayouts(slides)
     })
   }
 

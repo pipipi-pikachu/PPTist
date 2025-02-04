@@ -55,17 +55,19 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import api from '@/services'
 import useAIPPT from '@/hooks/useAIPPT'
 import type { AIPPTSlide } from '@/types/AIPPT'
 import type { Slide } from '@/types/slides'
 import message from '@/utils/message'
-import { useMainStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
+const { templates } = storeToRefs(useSlidesStore())
 const { AIPPT } = useAIPPT()
 
 const language = ref<'zh' | 'en'>('zh')
@@ -77,10 +79,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const templates = ref([
-  { name: '红色通用模板', id: 'template_1', cover: 'https://asset.pptist.cn/img/template_1.jpg' },
-  { name: '蓝色通用模板', id: 'template_2', cover: 'https://asset.pptist.cn/img/template_2.jpg' },
-])
+
 const recommends = ref([
   '大学生职业生涯规划',
   '公司年会策划方案',

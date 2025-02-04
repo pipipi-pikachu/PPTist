@@ -9,7 +9,7 @@
       <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
       <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
-          <LayoutPool @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
         </template>
         <div class="select-btn"><IconDown /></div>
       </Popover>
@@ -82,7 +82,7 @@ import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
-import LayoutPool from './LayoutPool.vue'
+import Templates from './Templates.vue'
 import Popover from '@/components/Popover.vue'
 import Draggable from 'vuedraggable'
 
