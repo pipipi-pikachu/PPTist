@@ -157,17 +157,23 @@ export default () => {
       mainStore.setSearchPanelState(!showSearchPanel.value)
       return
     }
-    
-    if (!editorAreaFocus.value && !thumbnailsFocus.value) {
-      if (
-        !disableHotkeys.value &&
-        ((ctrlOrMetaKeyActive && key === KEYS.MINUS) || (ctrlOrMetaKeyActive && key === KEYS.EQUAL))
-      ) {
-        // 禁止浏览器默认缩放
-        e.preventDefault()
-      }
+    if (ctrlKey && key === KEYS.MINUS) {
+      e.preventDefault()
+      scaleCanvas('-')
       return
     }
+    if (ctrlKey && key === KEYS.EQUAL) {
+      e.preventDefault()
+      scaleCanvas('+')
+      return
+    }
+    if (ctrlKey && key === KEYS.DIGIT_0) {
+      e.preventDefault()
+      resetCanvas()
+      return
+    }
+    
+    if (!editorAreaFocus.value && !thumbnailsFocus.value) return
 
     if (ctrlOrMetaKeyActive && key === KEYS.C) {
       if (disableHotkeys.value) return
@@ -263,21 +269,6 @@ export default () => {
       if (disableHotkeys.value) return
       e.preventDefault()
       create()
-    }
-    if (ctrlOrMetaKeyActive && key === KEYS.MINUS) {
-      if (disableHotkeys.value) return
-      e.preventDefault()
-      scaleCanvas('-')
-    }
-    if (ctrlOrMetaKeyActive && key === KEYS.EQUAL) {
-      if (disableHotkeys.value) return
-      e.preventDefault()
-      scaleCanvas('+')
-    }
-    if (ctrlOrMetaKeyActive && key === KEYS.DIGIT_0) {
-      if (disableHotkeys.value) return
-      e.preventDefault()
-      resetCanvas()
     }
     if (key === KEYS.TAB) {
       if (disableHotkeys.value) return
