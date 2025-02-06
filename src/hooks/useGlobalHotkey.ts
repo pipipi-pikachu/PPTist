@@ -158,7 +158,16 @@ export default () => {
       return
     }
     
-    if (!editorAreaFocus.value && !thumbnailsFocus.value) return      
+    if (!editorAreaFocus.value && !thumbnailsFocus.value) {
+      if (
+        !disableHotkeys.value &&
+        ((ctrlOrMetaKeyActive && key === KEYS.MINUS) || (ctrlOrMetaKeyActive && key === KEYS.EQUAL))
+      ) {
+        // 禁止浏览器默认缩放
+        e.preventDefault()
+      }
+      return
+    }
 
     if (ctrlOrMetaKeyActive && key === KEYS.C) {
       if (disableHotkeys.value) return
@@ -255,17 +264,17 @@ export default () => {
       e.preventDefault()
       create()
     }
-    if (key === KEYS.MINUS) {
+    if (ctrlOrMetaKeyActive && key === KEYS.MINUS) {
       if (disableHotkeys.value) return
       e.preventDefault()
       scaleCanvas('-')
     }
-    if (key === KEYS.EQUAL) {
+    if (ctrlOrMetaKeyActive && key === KEYS.EQUAL) {
       if (disableHotkeys.value) return
       e.preventDefault()
       scaleCanvas('+')
     }
-    if (key === KEYS.DIGIT_0) {
+    if (ctrlOrMetaKeyActive && key === KEYS.DIGIT_0) {
       if (disableHotkeys.value) return
       e.preventDefault()
       resetCanvas()
