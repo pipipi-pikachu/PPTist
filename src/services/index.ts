@@ -12,7 +12,11 @@ export default {
     return axios.get(`${ASSET_URL}/data/${filename}.json`)
   },
 
-  AIPPT_Outline(content: string, language: string): Promise<any> {
+  AIPPT_Outline(
+    content: string,
+    language: string,
+    model = 'doubao-1.5-pro-32k'
+  ): Promise<any> {
     return fetch(`${SERVER_URL}/tools/aippt_outline`, {
       method: 'POST',
       headers: {
@@ -21,12 +25,21 @@ export default {
       body: JSON.stringify({
         content,
         language,
+        model,
         stream: true,
       }),
     })
   },
 
-  AIPPT(content: string, language: string) {
-    return axios.post(`${SERVER_URL}/tools/aippt`, { content, language })
+  AIPPT(
+    content: string,
+    language: string,
+    model = 'doubao-1.5-pro-32k'
+  ) {
+    return axios.post(`${SERVER_URL}/tools/aippt`, {
+      content,
+      language,
+      model,
+    })
   },
 }

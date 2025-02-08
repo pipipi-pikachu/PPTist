@@ -68,7 +68,7 @@ import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
 const { templates } = storeToRefs(useSlidesStore())
-const { AIPPT } = useAIPPT()
+const { AIPPT, getJSONContent } = useAIPPT()
 
 const language = ref<'zh' | 'en'>('zh')
 const keyword = ref('')
@@ -137,7 +137,7 @@ const createPPT = async () => {
 
   // const AISlides: AIPPTSlide[] = await api.getMockData('AIPPT')
   const AISlides: AIPPTSlide[] = await api.AIPPT(outline.value, language.value).then(ret => {
-    const obj = JSON.parse(ret.data[0].content)
+    const obj = JSON.parse(getJSONContent(ret.data[0].content))
     return obj.data
   })
   const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)

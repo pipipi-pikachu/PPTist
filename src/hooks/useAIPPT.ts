@@ -217,6 +217,13 @@ export default () => {
     if (match) return match[1].trim()
     return content.replace('```markdown', '').replace('```', '')
   }
+  
+  const getJSONContent = (content: string) => {
+    const regex = /```json([^```]*)```/
+    const match = content.match(regex)
+    if (match) return match[1].trim()
+    return content.replace('```json', '').replace('```', '')
+  }
 
   const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: PexelsImage[]) => {
     if (imgs) imgPool.value = imgs
@@ -480,5 +487,6 @@ export default () => {
   return {
     AIPPT,
     getMdContent,
+    getJSONContent,
   }
 }
