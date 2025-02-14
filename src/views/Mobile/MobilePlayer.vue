@@ -20,10 +20,12 @@
             'current': index === slideIndex,
             'before': index < slideIndex,
             'after': index > slideIndex,
-            'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== currentSlide.turningMode,
+            'hide': (index === slideIndex - 1 || index === slideIndex + 1) && slide.turningMode !== slidesWithTurningMode[slideIndex].turningMode,
+            'last': index === slideIndex - 1,
+            'next': index === slideIndex + 1,
           }
         ]"
-        v-for="(slide, index) in slides" 
+        v-for="(slide, index) in slidesWithTurningMode" 
         :key="slide.id"
       >
         <div 
@@ -56,6 +58,7 @@ import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { Mode } from '@/types/mobile'
+import useSlidesWithTurningMode from '../Screen/hooks/useSlidesWithTurningMode'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import MobileThumbnails from './MobileThumbnails.vue'
@@ -65,7 +68,9 @@ defineProps<{
 }>()
 
 const slidesStore = useSlidesStore()
-const { slides, slideIndex, currentSlide, viewportRatio } = storeToRefs(slidesStore)
+const { slides, slideIndex, viewportRatio } = storeToRefs(slidesStore)
+
+const { slidesWithTurningMode } = useSlidesWithTurningMode()
 
 const toolVisible = ref(false)
 
@@ -140,6 +145,10 @@ const touchEndListener = (e: TouchEvent) => {
   left: 0;
   width: 100%;
   height: 100%;
+
+  &:not(.last, .next) {
+    z-index: -1;
+  }
 
   &.current {
     z-index: 2;
