@@ -24,6 +24,17 @@
       <div class="recommends">
         <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="keyword = item">{{ item }}</div>
       </div>
+      <div class="model-selector">
+        <div class="label">选择AI模型：</div>
+        <Select 
+          style="width: 160px;"
+          v-model:value="model"
+          :options="[
+            { label: 'DeepSeek-v3', value: 'ark-deepseek-v3' },
+            { label: 'Doubao-1.5-Pro', value: 'doubao-1.5-pro-32k' },
+          ]"
+        />
+      </div>
     </template>
     <div class="preview" v-if="step === 'outline'">
       <pre ref="outlineRef">{{ outline }}</pre>
@@ -64,6 +75,7 @@ import message from '@/utils/message'
 import { useMainStore, useSlidesStore } from '@/store'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
+import Select from '@/components/Select.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
@@ -79,6 +91,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template'>('setup')
+const model = ref('ark-deepseek-v3')
 
 const recommends = ref([
   '大学生职业生涯规划',
@@ -104,7 +117,7 @@ const createOutline = async () => {
   loading.value = true
   outlineCreating.value = true
   
-  const stream = await api.AIPPT_Outline(keyword.value, language.value)
+  const stream = await api.AIPPT_Outline(keyword.value, language.value, model.value)
 
   loading.value = false
   step.value = 'outline'
@@ -136,7 +149,7 @@ const createPPT = async () => {
   loading.value = true
 
   // const AISlides: AIPPTSlide[] = await api.getMockData('AIPPT')
-  const AISlides: AIPPTSlide[] = await api.AIPPT(outline.value, language.value).then(ret => {
+  const AISlides: AIPPTSlide[] = await api.AIPPT(outline.value, language.value, 'doubao-1.5-pro-32k').then(ret => {
     const obj = JSON.parse(getJSONContent(ret.data[0].content))
     return obj.data
   })
@@ -255,6 +268,12 @@ const createPPT = async () => {
       color: $themeColor;
     }
   }
+}
+.model-selector {
+  margin-top: 10px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
 }
 .count {
   font-size: 12px;

@@ -15,7 +15,7 @@ export default {
   AIPPT_Outline(
     content: string,
     language: string,
-    model = 'doubao-1.5-pro-32k'
+    model: string,
   ): Promise<any> {
     return fetch(`${SERVER_URL}/tools/aippt_outline`, {
       method: 'POST',
@@ -34,7 +34,7 @@ export default {
   AIPPT(
     content: string,
     language: string,
-    model = 'doubao-1.5-pro-32k'
+    model: string,
   ) {
     return axios.post(`${SERVER_URL}/tools/aippt`, {
       content,
