@@ -3,7 +3,7 @@
     <div class="header">
       <span class="title">AIPPT</span>
       <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板，开始生成PPT</span>
-      <span class="subtite" v-else-if="step === 'outline'">检查确认下方内容大纲，开始挑选模板</span>
+      <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始挑选模板</span>
       <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
     </div>
     
@@ -37,7 +37,10 @@
       </div>
     </template>
     <div class="preview" v-if="step === 'outline'">
-      <pre ref="outlineRef">{{ outline }}</pre>
+      <pre ref="outlineRef" v-if="outlineCreating">{{ outline }}</pre>
+       <div class="outline-view" v-else>
+         <OutlineEditor v-model:value="outline" />
+       </div>
       <div class="btns" v-if="!outlineCreating">
         <Button class="btn" type="primary" @click="step = 'template'">挑选模板</Button>
         <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
@@ -77,6 +80,7 @@ import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+import OutlineEditor from '@/components/OutlineEditor.vue'
 
 const mainStore = useMainStore()
 const { templates } = storeToRefs(useSlidesStore())
@@ -184,6 +188,13 @@ const createPPT = async () => {
 }
 .preview {
   pre {
+    max-height: 450px;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f1f1f1;
+    overflow: auto;
+  }
+  .outline-view {
     max-height: 450px;
     padding: 10px;
     margin-bottom: 15px;

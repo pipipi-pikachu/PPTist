@@ -22,6 +22,7 @@
       @blur="$event => handleBlur($event)"
       @change="$event => emit('change', $event)"
       @keydown.enter="$event => emit('enter', $event)"
+      @keydown.backspace="$event => emit('backspace', $event)"
     />
     <span class="suffix">
       <slot name="suffix"></slot>
@@ -51,6 +52,7 @@ const emit = defineEmits<{
   (event: 'blur', payload: Event): void
   (event: 'focus', payload: Event): void
   (event: 'enter', payload: Event): void
+  (event: 'backspace', payload: Event): void
 }>()
 
 const focused = ref(false)
