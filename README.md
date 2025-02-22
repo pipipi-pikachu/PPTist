@@ -181,7 +181,7 @@ Here are some auxiliary development tools/repositories:
 [AGPL-3.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
 # 🧮 Commercial
-If you wish to use this project for commercial gain, I hope you will respect open source and strictly adhere to the AGPL-3.0 license, giving back to the open source community.
+If you wish to use this project for commercial gain, I hope you will respect open source and strictly adhere to the AGPL-3.0 license, giving back to the open source community. Or contact the author for an independent commercial license.
 
 
 
@@ -190,17 +190,21 @@ If you wish to use this project for commercial gain, I hope you will respect ope
 # 🧮 商业用途
 - 本项目禁止闭源商用，如果你希望将PPTist用于商业项目盈利，请尊重开源，**严格遵循 [AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)**，回馈开源社区；
 - 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
-    1. 使用早期的[Apache 2.0 协议版本](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
+    1. 使用早期的 Apache 2.0 协议版本 [点击此处下载](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
     2. 成为项目的重要贡献者（先违反协议后再成为贡献者不在此项范围），包括：
         - 你的代码被本项目作为依赖引用；
         - 你给本项目提交过重要的 PR 并且被合并；
         - 你长期参与到本项目的维护工作中；
-    3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权。（注：仅授权，不存在额外商业化版本和技术支持）
+    3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权（注：仅授权，无额外商业化版本和技术支持）。独立授权价格：
+        - 一年1999
+        - 三年2999
+        - 永久5499（无发票）
+        - 永久6999（可开电子发票）
 
 ---
 #### 什么是 AGPL-3.0 协议 ？
 协议的核心要求用通俗的语言解释如下：
-- **开源义务**：如果你用了 AGPL 的代码，无论你或你的下游怎么改，都必须把修改后的代码公开出来，继续以 AGPL 协议开源，保持传染性。
+- **开源义务**：如果你用了 AGPL 的代码，无论你或你的下游怎么使用/修改，都必须把你的代码公开出来，继续以 AGPL 协议开源，保持传染性。
 - **网络服务也要开源**：如果你用 AGPL 的代码做了一个网站或网络服务，别人通过网络用你的服务时，你也得把源代码公开。
 - **保留版权声明**：你不能删掉代码里原来的作者信息和许可证声明，得告诉大家这代码是从哪儿来的。
 - **不能加额外限制**：你不能在 AGPL 代码上加一些限制，比如不让别人再分发，或者要求别人付费才能用。
