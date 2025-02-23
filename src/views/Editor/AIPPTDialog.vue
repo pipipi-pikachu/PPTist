@@ -3,7 +3,7 @@
     <div class="header">
       <span class="title">AIPPT</span>
       <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板，开始生成PPT</span>
-      <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始挑选模板</span>
+      <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板</span>
       <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
     </div>
     
@@ -30,8 +30,9 @@
           style="width: 160px;"
           v-model:value="model"
           :options="[
-            { label: 'DeepSeek-v3', value: 'ark-deepseek-v3' },
             { label: 'Doubao-1.5-Pro', value: 'doubao-1.5-pro-32k' },
+            { label: 'DeepSeek-v3', value: 'ark-deepseek-v3' },
+            { label: 'GLM-4-Flash', value: 'GLM-4-flash' },
           ]"
         />
       </div>
@@ -42,7 +43,7 @@
          <OutlineEditor v-model:value="outline" />
        </div>
       <div class="btns" v-if="!outlineCreating">
-        <Button class="btn" type="primary" @click="step = 'template'">挑选模板</Button>
+        <Button class="btn" type="primary" @click="step = 'template'">选择模板</Button>
         <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
       </div>
     </div>
@@ -58,7 +59,7 @@
         </div>
       </div>
       <div class="btns">
-        <Button class="btn" type="primary" @click="createPPT()">继续</Button>
+        <Button class="btn" type="primary" @click="createPPT()">生成</Button>
         <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
       </div>
     </div>
@@ -84,7 +85,7 @@ import OutlineEditor from '@/components/OutlineEditor.vue'
 
 const mainStore = useMainStore()
 const { templates } = storeToRefs(useSlidesStore())
-const { AIPPT, getJSONContent } = useAIPPT()
+const { AIPPT } = useAIPPT()
 
 const language = ref<'zh' | 'en'>('zh')
 const keyword = ref('')
@@ -95,7 +96,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const model = ref('ark-deepseek-v3')
+const model = ref('doubao-1.5-pro-32k')
 
 const recommends = ref([
   '大学生职业生涯规划',
@@ -152,19 +153,34 @@ const createOutline = async () => {
 const createPPT = async () => {
   loading.value = true
 
-  // const AISlides: AIPPTSlide[] = await api.getMockData('AIPPT')
-  const AISlides: AIPPTSlide[] = await api.AIPPT(outline.value, language.value, 'doubao-1.5-pro-32k').then(ret => {
-    const obj = JSON.parse(getJSONContent(ret.data[0].content))
-    return obj.data
-  })
+  const stream = await api.AIPPT(outline.value, language.value, 'doubao-1.5-pro-32k')
   const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)
-  // const templateSlides: Slide[] = await api.getMockData(selectedTemplate.value).then(ret => ret.slides)
 
-  AIPPT(templateSlides, AISlides)
+  const reader: ReadableStreamDefaultReader = stream.body.getReader()
+  const decoder = new TextDecoder('utf-8')
+  
+  const readStream = () => {
+    reader.read().then(({ done, value }) => {
+      if (done) {
+        loading.value = false
+        mainStore.setAIPPTDialogState(false)
+        return
+      }
+  
+      const chunk = decoder.decode(value, { stream: true })
+      try {
+        const slide: AIPPTSlide = JSON.parse(chunk)
+        AIPPT(templateSlides, [slide])
+      }
+      catch (err) {
+        // eslint-disable-next-line
+        console.error(err)
+      }
 
-  loading.value = false
-
-  mainStore.setAIPPTDialogState(false)
+      readStream()
+    })
+  }
+  readStream()
 }
 </script>
 

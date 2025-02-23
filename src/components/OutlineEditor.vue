@@ -256,6 +256,10 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
 
     &.contextmenu-active {
       color: $themeColor;
+
+      .text {
+        background-color: rgba($color: $themeColor, $alpha: .08);
+      }
     }
 
     &.title {
@@ -279,7 +283,14 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     height: 100%;
     padding: 0 11px;
     line-height: 32px;
+    border-radius: $borderRadius;
+    transition: background-color .2s;
+    cursor: pointer;
     @include ellipsis-oneline();
+
+    &:hover {
+      background-color: rgba($color: $themeColor, $alpha: .08);
+    }
   }
   .flag {
     width: 32px;
