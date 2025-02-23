@@ -99,9 +99,8 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">画布尺寸：</div>
       <Select 
-        style="width: 60%;" 
+        style="width: 100%;" 
         :value="viewportRatio" 
         @update:value="value => updateViewportRatio(value as number)"
         :options="[
@@ -112,6 +111,10 @@
           { label: '竖向 A3 / A4', value: 1.41421356 },
         ]"
       />
+    </div>
+
+    <div class="row">
+      <div class="canvas-size">画布尺寸：{{  viewportSize  }} × {{ toFixed(viewportSize * viewportRatio) }}</div>
     </div>
 
     <Divider />
@@ -334,7 +337,7 @@ import Modal from '@/components/Modal.vue'
 import GradientBar from '@/components/GradientBar.vue'
 
 const slidesStore = useSlidesStore()
-const { slides, currentSlide, slideIndex, viewportRatio, theme } = storeToRefs(slidesStore)
+const { slides, currentSlide, slideIndex, viewportRatio, viewportSize, theme } = storeToRefs(slidesStore)
 
 const moreThemeConfigsVisible = ref(false)
 const themeStylesExtractVisible = ref(false)
@@ -453,6 +456,13 @@ const updateTheme = (themeProps: Partial<SlideTheme>) => {
 const updateViewportRatio = (value: number) => {
   slidesStore.setViewportRatio(value)
 }
+
+const toFixed = (num: number) => {
+  if (num % 1 !== 0) {
+    return parseFloat(num.toFixed(1))
+  } 
+  return Math.floor(num)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -506,6 +516,12 @@ const updateViewportRatio = (value: number) => {
     background-repeat: no-repeat;
     cursor: pointer;
   }
+}
+.canvas-size {
+  width: 100%;
+  color: #888;
+  font-size: 12px;
+  text-align: center;
 }
 
 .theme-list {
