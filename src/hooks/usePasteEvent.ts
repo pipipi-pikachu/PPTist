@@ -32,13 +32,16 @@ export default () => {
     if (!clipboardDataFirstItem) return
 
     // 如果剪贴板内有图片，优先尝试读取图片
+    let isImage = false
     for (const item of clipboardDataItems) {
       if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
         const imageFile = item.getAsFile()
         if (imageFile) pasteImageFile(imageFile)
-        return
+        isImage = true
       }
     }
+
+    if (isImage) return
     
     // 如果剪贴板内没有图片，但有文字内容，尝试解析文字内容
     if (clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {

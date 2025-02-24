@@ -13,17 +13,26 @@ export default (elementRef: Ref<HTMLElement | undefined>) => {
   // 拖拽元素到画布中
   const handleDrop = (e: DragEvent) => {
     if (!e.dataTransfer || e.dataTransfer.items.length === 0) return
-    const dataTransferItem = e.dataTransfer.items[0]
+
+    const dataItems = e.dataTransfer.items
+    const dataTransferFirstItem = dataItems[0]
 
     // 检查事件对象中是否存在图片，存在则插入图片，否则继续检查是否存在文字，存在则插入文字
-    if (dataTransferItem.kind === 'file' && dataTransferItem.type.indexOf('image') !== -1) {
-      const imageFile = dataTransferItem.getAsFile()
-      if (imageFile) {
-        getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
+    let isImage = false
+    for (const item of dataItems) {
+      if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
+        const imageFile = item.getAsFile()
+        if (imageFile) {
+          getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
+        }
+        isImage = true
       }
     }
-    else if (dataTransferItem.kind === 'string' && dataTransferItem.type === 'text/plain') {
-      dataTransferItem.getAsString(text => {
+
+    if (isImage) return
+    
+    if (dataTransferFirstItem.kind === 'string' && dataTransferFirstItem.type === 'text/plain') {
+      dataTransferFirstItem.getAsString(text => {
         if (disableHotkeys.value) return
         const string = parseText2Paragraphs(text)
         createTextElement({

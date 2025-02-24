@@ -141,6 +141,7 @@ export const HOTKEY_DOC: HotkeyItem[] = [
       { label: '添加图片 - 将本地图片拖拽到画布中' },
       { label: '添加图片 - 在画布中粘贴SVG代码' },
       { label: '添加图片 - 粘贴来自 pexels 的图片链接' },
+      { label: '添加文本 - 粘贴来自系统剪贴板的文字' },
       { label: '添加文本 - 将外部选中文字拖拽到画布中' },
       { label: '文本编辑 - 支持 markdown 语法创建列表和引用' },
     ],
