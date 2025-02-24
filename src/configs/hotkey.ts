@@ -31,7 +31,15 @@ export const enum KEYS {
   F5 = 'F5',
 }
 
-export const HOTKEY_DOC = [
+interface HotkeyItem {
+  type: string
+  children: {
+    label: string
+    value?: string
+  }[] 
+}
+
+export const HOTKEY_DOC: HotkeyItem[] = [
   {
     type: '通用',
     children: [
@@ -124,6 +132,17 @@ export const HOTKEY_DOC = [
       { label: '上角标', value: 'Ctrl + ;' },
       { label: '下角标', value: `Ctrl + '` },
       { label: '选中段落', value: `ESC` },
+    ],
+  },
+  {
+    type: '其他快捷操作',
+    children: [
+      { label: '添加图片 - 粘贴来自系统剪贴板的图片' },
+      { label: '添加图片 - 将本地图片拖拽到画布中' },
+      { label: '添加图片 - 在画布中粘贴SVG代码' },
+      { label: '添加图片 - 粘贴来自 pexels 的图片链接' },
+      { label: '添加文本 - 将外部选中文字拖拽到画布中' },
+      { label: '文本编辑 - 支持 markdown 语法创建列表和引用' },
     ],
   },
 ]

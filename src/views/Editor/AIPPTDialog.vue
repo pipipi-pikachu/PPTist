@@ -60,7 +60,7 @@
       </div>
       <div class="btns">
         <Button class="btn" type="primary" @click="createPPT()">生成</Button>
-        <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
+        <Button class="btn" @click="step = 'outline'">返回大纲</Button>
       </div>
     </div>
 
