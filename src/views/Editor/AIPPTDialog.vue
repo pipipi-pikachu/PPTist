@@ -22,7 +22,7 @@
         </template>
       </Input>
       <div class="recommends">
-        <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="keyword = item">{{ item }}</div>
+        <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="setKeyword(item)">{{ item }}</div>
       </div>
       <div class="model-selector">
         <div class="label">选择AI模型：</div>
@@ -116,6 +116,11 @@ onMounted(() => {
   }, 500)
 })
 
+const setKeyword = (value: string) => {
+  keyword.value = value
+  inputRef.value!.focus()
+}
+
 const createOutline = async () => {
   if (!keyword.value) return message.error('请先输入PPT主题')
 
@@ -194,8 +199,13 @@ const createPPT = async () => {
 
   .title {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 20px;
     margin-right: 8px;
+    background: linear-gradient(270deg, #d897fd, #33bcfc);
+    background-clip: text;
+    color: transparent;
+    vertical-align: text-bottom;
+    line-height: 1.1;
   }
   .subtite {
     color: #888;

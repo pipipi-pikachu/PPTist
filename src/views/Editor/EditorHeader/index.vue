@@ -57,7 +57,7 @@
         </Popover>
       </div>
       <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
-        <span class="text">AI</span>
+        <span class="text ai">AI</span>
       </div>
       <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
         <IconDownload class="icon" />
@@ -171,7 +171,13 @@ const openAIPPTDialog = () => {
   .text {
     width: 18px;
     text-align: center;
-    font-size: 16px;
+    font-size: 17px;
+  }
+  .ai {
+    background: linear-gradient(270deg, #d897fd, #33bcfc);
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
   }
 
   &:hover {
