@@ -168,9 +168,10 @@ Some common problems: [FAQ](/doc/Q&A.md)
 
 # 🎯 Supplement
 There is currently no complete development documentation, but the following documents may be of some help to you:
-- [Project Directory and Data Structure](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/DirectoryAndData.md)
-- [Fundamentals of Canvas and Elements](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Canvas.md)
-- [How to Customize an Element](https://github.com/pipipi-pikachu/PPTist/blob/master/doc/CustomElement.md)
+- [Project Directory and Data Structure](/doc/DirectoryAndData.md)
+- [Fundamentals of Canvas and Elements](/doc/Canvas.md)
+- [How to Customize an Element](/doc/CustomElement.md)
+- [About AIPPT](/doc/AIPPT.md)
 
 Here are some auxiliary development tools/repositories:
 - Import PPTX file reference: [pptxtojson](https://github.com/pipipi-pikachu/pptxtojson)

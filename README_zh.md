@@ -162,6 +162,7 @@ npm run dev
 - [项目目录与数据结构](/doc/DirectoryAndData.md)
 - [画布与元素的基本原理](/doc/Canvas.md)
 - [如何自定义一个元素](/doc/CustomElement.md)
+- [关于AIPPT](/doc/AIPPT.md)
 
 下面是一些辅助开发的工具/仓库：
 - 导入PPTX文件参考：[pptxtojson](https://github.com/pipipi-pikachu/pptxtojson)
