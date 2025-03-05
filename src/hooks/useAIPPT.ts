@@ -394,7 +394,7 @@ export default () => {
           return el
         })
         slides.push({
-          ...transitionTemplate,
+          ...transitionTemplate.value,
           id: nanoid(10),
           elements,
         })
