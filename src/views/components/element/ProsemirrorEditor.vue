@@ -11,7 +11,7 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
+import { useKeyboardStore, useMainStore } from '@/store'
 import type { EditorView } from 'prosemirror-view'
 import { toggleMark, wrapIn, lift } from 'prosemirror-commands'
 import { initProsemirrorEditor, createDocument } from '@/utils/prosemirror'
@@ -45,7 +45,8 @@ const emit = defineEmits<{
 }>()
 
 const mainStore = useMainStore()
-const { handleElementId, textFormatPainter, richTextAttrs } = storeToRefs(mainStore)
+const { handleElementId, textFormatPainter, richTextAttrs, activeElementIdList } = storeToRefs(mainStore)
+const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
 const editorViewRef = ref<HTMLElement>()
 let editorView: EditorView
@@ -63,7 +64,10 @@ const handleInput = debounce(function(isHanldeHistory = false) {
 }, 300, { trailing: true })
 
 const handleFocus = () => {
-  mainStore.setDisableHotkeysState(true)
+  // 多选且按下了ctrl或shift键时，不禁用全局快捷键
+  if (!ctrlOrShiftKeyActive.value || activeElementIdList.value.length <= 1) {
+    mainStore.setDisableHotkeysState(true)
+  }
   emit('focus')
 }
 

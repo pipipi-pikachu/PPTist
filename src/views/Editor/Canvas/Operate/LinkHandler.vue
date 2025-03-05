@@ -58,6 +58,7 @@ const turnTarget = (slideId: string) => {
   margin-right: 20px;
   word-break: keep-all;
   white-space: nowrap;
+  cursor: pointer;
 
   @include ellipsis-oneline();
 }
