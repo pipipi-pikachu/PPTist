@@ -424,7 +424,16 @@ export default () => {
           pptxSlide.background = { color: c.color, transparency: (1 - c.alpha) * 100 }
         }
       }
-      if (slide.remark) pptxSlide.addNotes(slide.remark)
+      if (slide.remark) {
+        const doc = new DOMParser().parseFromString(slide.remark, 'text/html')
+        const pList = doc.body.querySelectorAll('p')
+        const text = []
+        for (const p of pList) {
+          const textContent = p.textContent
+          text.push(textContent || '')
+        }
+        pptxSlide.addNotes(text.join('\n'))
+      }
 
       if (!slide.elements) continue
 
