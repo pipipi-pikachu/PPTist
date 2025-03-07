@@ -8,17 +8,28 @@
         @click="changeCatalog(item.id)"
       >{{ item.name }}</div>
     </div>
-    <div class="list" ref="listRef">
-      <div 
-        class="slide-item"
-        v-for="slide in slides" 
-        :key="slide.id"
-      >
-        <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
-
-        <div class="btns">
-          <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">插入模板</Button>
-        </div>
+    <div class="content">
+      <div class="types">
+        <div class="type" 
+          :class="{ 'active': activeType === item.value }"
+          v-for="item in types"
+          :key="item.value"
+          @click="activeType = item.value"
+        >{{ item.label }}</div>
+      </div>
+      <div class="list" ref="listRef">
+        <template v-for="slide in slides" :key="slide.id">
+          <div 
+            class="slide-item"
+            v-if="slide.type === activeType || activeType === 'all'"
+          >
+            <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
+    
+            <div class="btns">
+              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">插入模板</Button>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -42,6 +53,18 @@ const slidesStore = useSlidesStore()
 const { templates } = storeToRefs(slidesStore)
 const slides = ref<Slide[]>([])
 const listRef = ref<HTMLElement>()
+const types = ref<{
+  label: string
+  value: string
+}[]>([
+  { label: '全部', value: 'all' },
+  { label: '封面', value: 'cover' },
+  { label: '目录', value: 'contents' },
+  { label: '过渡', value: 'transition' },
+  { label: '内容', value: 'content' },
+  { label: '结束', value: 'end' },
+])
+const activeType = ref('all')
 
 const activeCatalog = ref('')
 
@@ -68,6 +91,7 @@ onMounted(() => {
   width: 500px;
   height: 500px;
   display: flex;
+  user-select: none;
 }
 .catalogs {
   width: 108px;
@@ -94,6 +118,36 @@ onMounted(() => {
 
     & + .catalog {
       margin-top: 3px; 
+    }
+  }
+}
+.content {
+  display: flex;
+  flex-direction: column;
+}
+.types {
+  display: flex;
+  padding: 2px 0;
+  margin-bottom: 8px;
+
+  .type {
+    border-radius: $borderRadius;
+    padding: 3px 8px;
+    font-size: 12px;
+    cursor: pointer;
+
+    & +.type {
+      margin-left: 4px;
+    }
+
+    &.active {
+      color: $themeColor;
+      background-color: rgba($color: $themeColor, $alpha:.05);
+      font-weight: 700;
+    }
+
+    &:hover {
+      background-color: #f5f5f5;
     }
   }
 }
