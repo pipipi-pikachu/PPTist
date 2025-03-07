@@ -282,6 +282,7 @@ const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
 .title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 .shape-pool {
