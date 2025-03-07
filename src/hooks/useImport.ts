@@ -7,6 +7,7 @@ import { decrypt } from '@/utils/crypto'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange } from '@/utils/svgPathParser'
 import type {
@@ -32,6 +33,7 @@ export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
 
+  const { addHistorySnapshot } = useHistorySnapshot()
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
 
@@ -48,8 +50,12 @@ export default () => {
         if (cover) {
           slidesStore.updateSlideIndex(0)
           slidesStore.setSlides(slides)
+          addHistorySnapshot()
         }
-        else if (isEmptySlide.value) slidesStore.setSlides(slides)
+        else if (isEmptySlide.value) {
+          slidesStore.setSlides(slides)
+          addHistorySnapshot()
+        }
         else addSlidesFromData(slides)
       }
       catch {
@@ -129,7 +135,7 @@ export default () => {
   }
 
   // 导入PPTX文件
-  const importPPTXFile = (files: FileList) => {
+  const importPPTXFile = (files: FileList, cover = false) => {
     const file = files[0]
     if (!file) return
 
@@ -527,8 +533,18 @@ export default () => {
         parseElements(item.elements)
         slides.push(slide)
       }
-      slidesStore.updateSlideIndex(0)
-      slidesStore.setSlides(slides)
+
+      if (cover) {
+        slidesStore.updateSlideIndex(0)
+        slidesStore.setSlides(slides)
+        addHistorySnapshot()
+      }
+      else if (isEmptySlide.value) {
+        slidesStore.setSlides(slides)
+        addHistorySnapshot()
+      }
+      else addSlidesFromData(slides)
+
       exporting.value = false
     }
     reader.readAsArrayBuffer(file)
