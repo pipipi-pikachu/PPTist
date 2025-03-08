@@ -139,7 +139,7 @@ import emitter, { EmitterEvents } from '@/utils/emitter'
 import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
-import SVGLine from '../common/SVGLine.vue'
+import SVGLine from './common/SVGLine.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import TextColorButton from '@/components/TextColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'

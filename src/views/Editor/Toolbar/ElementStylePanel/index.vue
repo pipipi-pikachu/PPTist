@@ -19,7 +19,6 @@ import TableStylePanel from './TableStylePanel.vue'
 import LatexStylePanel from './LatexStylePanel.vue'
 import VideoStylePanel from './VideoStylePanel.vue'
 import AudioStylePanel from './AudioStylePanel.vue'
-import MultiStylePanel from './MultiStylePanel.vue'
 
 const panelMap = {
   [ElementTypes.TEXT]: TextStylePanel,
@@ -33,16 +32,9 @@ const panelMap = {
   [ElementTypes.AUDIO]: AudioStylePanel,
 }
 
-const { activeElementIdList, activeElementList, handleElement, activeGroupElementId } = storeToRefs(useMainStore())
+const { handleElement } = storeToRefs(useMainStore())
 
 const currentPanelComponent = computed<unknown>(() => {
-  if (activeElementIdList.value.length > 1) {
-    if (!activeGroupElementId.value) return MultiStylePanel
-
-    const activeGroupElement = activeElementList.value.find(item => item.id === activeGroupElementId.value)
-    return activeGroupElement ? (panelMap[activeGroupElement.type] || null) : null
-  }
-
   return handleElement.value ? (panelMap[handleElement.value.type] || null) : null
 })
 </script>
