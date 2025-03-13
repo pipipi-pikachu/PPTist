@@ -21,6 +21,7 @@ import type {
   ShapeTextAlign,
   PPTTextElement,
   ChartOptions,
+  Gradient,
 } from '@/types/slides'
 
 const convertFontSizePtToPx = (html: string, ratio: number) => {
@@ -227,7 +228,7 @@ export default () => {
                   width: el.borderWidth,
                   style: el.borderType,
                 },
-                fill: el.fillColor,
+                fill: el.fill.type === 'color' ? el.fill.value : '',
                 vertical: el.isVertical,
               }
               if (el.shadow) {
@@ -297,6 +298,17 @@ export default () => {
                   'down': 'bottom',
                   'up': 'top',
                 }
+
+                const gradient: Gradient | undefined = el.fill?.type === 'gradient' ? {
+                  type: 'linear',
+                  colors: el.fill.value.colors.map(item => ({
+                    ...item,
+                    pos: parseInt(item.pos),
+                  })),
+                  rotate: el.fill.value.rot,
+                } : undefined
+
+                const fill = el.fill?.type === 'color' ? el.fill.value : ''
                 
                 const element: PPTShapeElement = {
                   type: 'shape',
@@ -307,7 +319,8 @@ export default () => {
                   top: el.top,
                   viewBox: [200, 200],
                   path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
-                  fill: el.fillColor || 'none',
+                  fill: fill || 'none',
+                  gradient,
                   fixedRatio: false,
                   rotate: el.rotate,
                   outline: {
@@ -491,7 +504,7 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                themeColors: [theme.value.themeColor],
+                themeColors: el.colors.length ? el.colors : [theme.value.themeColor],
                 textColor: theme.value.fontColor,
                 data: {
                   labels,
@@ -530,7 +543,7 @@ export default () => {
             }
           }
         }
-        parseElements(item.elements)
+        parseElements([...item.elements, ...item.layoutElements])
         slides.push(slide)
       }
 
