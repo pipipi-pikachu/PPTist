@@ -43,7 +43,7 @@
               stroke-linecap="butt" 
               stroke-miterlimit="8"
               :d="elementInfo.path" 
-              :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : elementInfo.fill"
+              :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : (elementInfo.fill || 'none')"
               :stroke="outlineColor"
               :stroke-width="outlineWidth" 
               :stroke-dasharray="strokeDashArray" 

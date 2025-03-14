@@ -81,6 +81,11 @@ export default () => {
 
   // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
   const formatColor = (_color: string) => {
+    if (!_color) return {
+      alpha: 0,
+      color: '#000000',
+    }
+
     const c = tinycolor(_color)
     const alpha = c.getAlpha()
     const color = alpha === 0 ? '#ffffff' : c.setAlpha(1).toHexString()
