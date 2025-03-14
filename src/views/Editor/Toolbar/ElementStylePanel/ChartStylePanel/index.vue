@@ -213,7 +213,7 @@ const updateTheme = (color: string, index: number) => {
 // 添加主题色
 const addThemeColor = () => {
   const props = {
-    themeColors: [...themeColors.value, theme.value.themeColor],
+    themeColors: [...themeColors.value, theme.value.themeColors[0]],
   }
   updateElement(props)
 }

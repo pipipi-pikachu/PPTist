@@ -96,7 +96,7 @@ export default () => {
       width: 400,
       height: 400,
       rotate: 0,
-      themeColors: [theme.value.themeColor],
+      themeColors: theme.value.themeColors,
       textColor: theme.value.fontColor,
       data: CHART_DEFAULT_DATA[type],
     })
@@ -145,7 +145,7 @@ export default () => {
         color: '#eeece1',
       },
       theme: {
-        color: theme.value.themeColor,
+        color: theme.value.themeColors[0],
         rowHeader: true,
         rowFooter: false,
         colHeader: false,
@@ -202,7 +202,7 @@ export default () => {
       height,
       viewBox: data.viewBox,
       path: data.path,
-      fill: theme.value.themeColor,
+      fill: theme.value.themeColors[0],
       fixedRatio: false,
       rotate: 0,
       ...supplement,
@@ -239,7 +239,7 @@ export default () => {
       start,
       end,
       points: data.points,
-      color: theme.value.themeColor,
+      color: theme.value.themeColors[0],
       style: data.style,
       width: 2,
     }
@@ -306,7 +306,7 @@ export default () => {
       loop: false,
       autoplay: false,
       fixedRatio: true,
-      color: theme.value.themeColor,
+      color: theme.value.themeColors[0],
       src,
     })
   }

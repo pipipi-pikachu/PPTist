@@ -152,7 +152,7 @@ const create = () => {
     fill: 'rgba(0, 0, 0, 0)',
     outline: {
       width: 2,
-      color: theme.value.themeColor,
+      color: theme.value.themeColors[0],
       style: 'solid',
     },
   })

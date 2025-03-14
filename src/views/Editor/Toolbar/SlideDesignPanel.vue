@@ -162,18 +162,18 @@
         <ColorButton :color="theme.backgroundColor" />
       </Popover>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div style="width: 40%;">主题色：</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
-            :modelValue="theme.themeColor"
-            @update:modelValue="value => updateTheme({ themeColor: value })"
+            :modelValue="theme.themeColors[0]"
+            @update:modelValue="value => updateTheme({ themeColors: value })"
           />
         </template>
-        <ColorButton :color="theme.themeColor" />
+        <ColorButton :color="theme.themeColors[0]" />
       </Popover>
-    </div>
+    </div> -->
     
     <template v-if="moreThemeConfigsVisible">
       <div class="row">

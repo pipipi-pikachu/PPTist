@@ -267,7 +267,7 @@ export default () => {
                 top: el.top,
                 rotate: 0,
                 fixedRatio: false,
-                color: theme.value.themeColor,
+                color: theme.value.themeColors[0],
                 loop: false,
                 autoplay: false,
               })
@@ -504,7 +504,7 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                themeColors: el.colors.length ? el.colors : [theme.value.themeColor],
+                themeColors: el.colors.length ? el.colors : theme.value.themeColors,
                 textColor: theme.value.fontColor,
                 data: {
                   labels,

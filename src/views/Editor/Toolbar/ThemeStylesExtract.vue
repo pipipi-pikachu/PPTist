@@ -54,7 +54,7 @@
             <div class="handler">
               <div class="state" :class="{ 'active': selectedIndex.themeColor === index }">√</div>
               <div class="config-btn" @click="selectedIndex.themeColor = index">选择</div>
-              <div class="config-btn" @click="updateTheme({ themeColor: item }); selectedIndex.themeColor = index">配置到主题</div>
+              <!-- <div class="config-btn" @click="updateTheme({ themeColor: item }); selectedIndex.themeColor = index">配置到主题</div> -->
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@ const updateTheme = (themeProps: Partial<SlideTheme>) => {
 const updateAllThemes = () => {
   slidesStore.setTheme({
     backgroundColor: themeStyles.value.backgroundColors[selectedIndex.value.backgroundColor],
-    themeColor: themeStyles.value.themeColors[selectedIndex.value.themeColor],
+    themeColors: themeStyles.value.themeColors,
     fontColor: themeStyles.value.fontColors[selectedIndex.value.fontColor],
     fontName: themeStyles.value.fontNames[selectedIndex.value.fontName],
   })

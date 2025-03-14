@@ -754,7 +754,7 @@ export interface Slide {
  */
 export interface SlideTheme {
   backgroundColor: string
-  themeColor: string
+  themeColors: string[]
   fontColor: string
   fontName: string
   outline: PPTElementOutline
