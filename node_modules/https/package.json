@@ -1,0 +1,15 @@
+{
+  "name": "https",
+  "version": "1.0.0",
+  "description": "https mediation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "https",
+    "mediation"
+  ],
+  "author": "hardus van der berg <hardus@sunfork.com> (http://www.sunfork.com)",
+  "license": "ISC"
+}

@@ -1,0 +1,33 @@
+{
+  "extends": ["tslint:recommended"],
+  "rules": {
+    "arrow-parens": false,
+    "arrow-return-shorthand": [true],
+    "import-spacing": true,
+    "interface-name": [false],
+    "interface-over-type-literal": false,
+    "linebreak-style": [true, "LF"],
+    "max-classes-per-file": [false],
+    "member-access": [false],
+    "no-require-imports": true,
+    "object-literal-sort-keys": false,
+    "ordered-imports": [false],
+    "no-console": false,
+    "prefer-const": true,
+    "quotemark": [true, "single", "jsx-double"],
+    "space-before-function-paren": [true, {
+      "anonymous": "always",
+      "asyncArrow": "always",
+      "constructor": "never",
+      "method": "never",
+      "named": "never"
+    }],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ]
+  }
+}

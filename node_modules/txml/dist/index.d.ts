@@ -1,0 +1,2 @@
+export var __esModule: boolean;
+export { transformStream, filter, getElementById, getElementsByClassName, parse, simplify, simplifyLostLess, stringify, toContentString };

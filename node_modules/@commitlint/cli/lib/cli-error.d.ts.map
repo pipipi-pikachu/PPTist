@@ -1,0 +1,1 @@
+{"version":3,"file":"cli-error.d.ts","sourceRoot":"","sources":["../src/cli-error.ts"],"names":[],"mappings":"AAAA,qBAAa,QAAS,SAAQ,KAAK;IAClC,SAAS,mBAAS;IAEX,IAAI,EAAE,MAAM,CAAC;IACb,UAAU,EAAE,MAAM,CAAC;gBAEd,OAAO,EAAE,MAAM,EAAE,IAAI,EAAE,MAAM,EAAE,UAAU,SAAI;CAQzD"}

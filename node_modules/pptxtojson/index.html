@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Office PowerPoint(.pptx) file to JSON | 将 PPTX 文件转为可读的 JSON 数据" />
+	<meta name="keywords" content="pptx2json,pptxtojson,ppt,powerpoint,json,javascript,PPT解析,PPT转JSON" />
+	<link rel="icon" href="favicon.ico">
+	<title>pptxtojson - PPTX转JSON</title>	
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/jsoneditor@9.9.2/dist/jsoneditor.min.js"></script>
+	<script src="dist/index.umd.js"></script>
+
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+  		box-sizing: border-box;
+		}
+		html, body {
+			height: 100%;
+		}
+		::-webkit-scrollbar {
+			width: 5px;
+			height: 5px;
+			background-color: #fff;
+		}
+		::-webkit-scrollbar-thumb {
+			background-color: #c1c1c1;
+		}
+
+		body {
+			display: flex;
+		}
+		.main {
+			width: 40%;
+			min-width: 600px;
+			height: 100%;
+			margin-right: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		#jsoneditor {
+			flex: 1;
+			height: 100%;
+			padding: 10px;
+		}
+		.jsoneditor-mode-view {
+			border: 2px solid #ddd;
+		}
+		.jsoneditor-menu {
+			display: none;
+		}
+		.jsoneditor-navigation-bar {
+			display: none;
+		}
+		.jsoneditor-outer.has-nav-bar.has-main-menu-bar {
+			margin-top: 0 !important;
+			padding-top: 0 !important;
+		}
+
+		.input-wrap {
+			width: 300px;
+			height: 80px;
+			background-color: #d14424;
+			color: #fff;
+			border-radius: 2px;
+			line-height: 80px;
+			font-size: 18px;
+			font-weight: 700;
+			text-align: center;
+			cursor: pointer;
+			user-select: none;
+			margin-bottom: 20px;
+		}
+		.upload-input {
+			display: none;
+		}
+		.link {
+			display: flex;
+		}
+		.link a {
+			padding: 5px 10px;
+			color: #d14424;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="main">
+		<div class="input-wrap">
+			点击上传 .pptx 文件
+			<input class="upload-input" type="file" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"/>
+		</div>
+
+		<div class="link">
+			<a target="_blank" href="https://github.com/pipipi-pikachu/pptx2json">Github仓库</a>
+			<a target="_blank" href="https://pipipi-pikachu.github.io/PPTist/">可视化测试</a>
+		</div>
+	</div>
+	<div id="jsoneditor"></div>
+	
+	<script>
+		const container = document.querySelector('#jsoneditor')
+		const inputWrapRef = document.querySelector('.input-wrap')
+		const inputRef = document.querySelector('.upload-input')
+
+		const editor = new JSONEditor(container, { mode: 'view' }, {})
+
+		inputRef.addEventListener('change', evt => {
+			const fileName = evt.target.files[0]
+			
+			const reader = new FileReader()
+			reader.onload = async e => {
+				const json = await pptxtojson.parse(e.target.result)
+				editor.set(json)
+				console.log(json)
+			}
+			reader.readAsArrayBuffer(fileName)
+		})
+
+		inputWrapRef.addEventListener('click', () => {
+			inputRef.value = ''
+			inputRef.click()
+		})
+	</script>
+</body>
+</html>

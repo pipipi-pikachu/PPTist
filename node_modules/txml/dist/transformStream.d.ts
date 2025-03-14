@@ -1,0 +1,2 @@
+export var __esModule: boolean;
+export function transformStream(offset: any, parseOptions: any): any;

@@ -1,0 +1,25 @@
+{
+    "name": "@types/svg-arc-to-cubic-bezier",
+    "version": "3.2.2",
+    "description": "TypeScript definitions for svg-arc-to-cubic-bezier",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/svg-arc-to-cubic-bezier",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Fabien Caylus",
+            "githubUsername": "fcaylus",
+            "url": "https://github.com/fcaylus"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/svg-arc-to-cubic-bezier"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "73c4294f413a8f8de59bddae8e0e6da2f62cd0546e808181a0ea52de04198ee0",
+    "typeScriptVersion": "4.5"
+}

@@ -1,0 +1,33 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _vue = require("vue");
+
+var _runtime = require("../runtime");
+
+var _default = (0, _runtime.IconWrapper)('link-cloud-sucess', true, function (props) {
+  return (0, _vue.createVNode)("svg", {
+    "width": props.size,
+    "height": props.size,
+    "viewBox": "0 0 48 48",
+    "fill": "none"
+  }, [(0, _vue.createVNode)("path", {
+    "d": "M12 33C8.66666 33 4 31.5 4 25.5C4 18.5 11 17 13 17C14 13.5 16 8 24 8C31 8 34 12 35 15.5C35 15.5 44 16.5 44 25C44 31 40 33 36 33",
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M18 33L24 38L32 28",
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null)]);
+});
+
+exports.default = _default;

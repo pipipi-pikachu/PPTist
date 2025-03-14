@@ -1,0 +1,50 @@
+{
+  "name": "@commitlint/resolve-extends",
+  "version": "18.4.3",
+  "description": "Lint your commit messages",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "deps": "dep-check",
+    "pkg": "pkg-check"
+  },
+  "engines": {
+    "node": ">=v18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conventional-changelog/commitlint.git",
+    "directory": "@commitlint/resolve-extends"
+  },
+  "bugs": {
+    "url": "https://github.com/conventional-changelog/commitlint/issues"
+  },
+  "homepage": "https://commitlint.js.org/",
+  "keywords": [
+    "conventional-changelog",
+    "commitlint",
+    "library",
+    "core"
+  ],
+  "author": {
+    "name": "Mario Nebl",
+    "email": "hello@herebecode.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/utils": "^18.4.3",
+    "@types/lodash.mergewith": "^4.6.8"
+  },
+  "dependencies": {
+    "@commitlint/config-validator": "^18.4.3",
+    "@commitlint/types": "^18.4.3",
+    "import-fresh": "^3.0.0",
+    "lodash.mergewith": "^4.6.2",
+    "resolve-from": "^5.0.0",
+    "resolve-global": "^1.0.0"
+  },
+  "gitHead": "970b806bdd338e8b3e4529f21f20e795e66cd48f"
+}

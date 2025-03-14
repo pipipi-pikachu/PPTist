@@ -1,0 +1,52 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _vue = require("vue");
+
+var _runtime = require("../runtime");
+
+var _default = (0, _runtime.IconWrapper)('exchange-two', true, function (props) {
+  return (0, _vue.createVNode)("svg", {
+    "width": props.size,
+    "height": props.size,
+    "viewBox": "0 0 48 48",
+    "fill": "none"
+  }, [(0, _vue.createVNode)("path", {
+    "d": "M9 18V42H39V18L24 6L9 18Z",
+    "fill": props.colors[1],
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M24 30V36",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M31 26V36",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M17 32V36",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M17 25L22 21L25 24L31 19",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null)]);
+});
+
+exports.default = _default;

@@ -1,0 +1,107 @@
+{
+	"name": "meow",
+	"version": "12.1.1",
+	"description": "CLI app helper",
+	"license": "MIT",
+	"repository": "sindresorhus/meow",
+	"funding": "https://github.com/sponsors/sindresorhus",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "https://sindresorhus.com"
+	},
+	"type": "module",
+	"exports": {
+		"types": "./build/index.d.ts",
+		"default": "./build/index.js"
+	},
+	"sideEffects": false,
+	"engines": {
+		"node": ">=16.10"
+	},
+	"scripts": {
+		"prepare": "npm run build",
+		"build": "rollup --config",
+		"test": "xo && npm run build && ava && tsd --typings build/index.d.ts"
+	},
+	"files": [
+		"build"
+	],
+	"keywords": [
+		"cli",
+		"bin",
+		"util",
+		"utility",
+		"helper",
+		"argv",
+		"command",
+		"line",
+		"meow",
+		"cat",
+		"kitten",
+		"parser",
+		"option",
+		"flags",
+		"input",
+		"cmd",
+		"console"
+	],
+	"_actualDependencies": [
+		"@types/minimist",
+		"camelcase-keys",
+		"decamelize",
+		"decamelize-keys",
+		"hard-rejection",
+		"minimist-options",
+		"normalize-package-data",
+		"read-pkg-up",
+		"redent",
+		"trim-newlines",
+		"type-fest",
+		"yargs-parser"
+	],
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^25.0.3",
+		"@rollup/plugin-json": "^6.0.0",
+		"@rollup/plugin-node-resolve": "^15.1.0",
+		"@types/minimist": "^1.2.2",
+		"ava": "^5.3.1",
+		"camelcase-keys": "^8.0.2",
+		"common-tags": "^2.0.0-alpha.1",
+		"decamelize": "^6.0.0",
+		"decamelize-keys": "^2.0.1",
+		"delete_comments": "^0.0.2",
+		"execa": "^7.2.0",
+		"globby": "^13.2.2",
+		"hard-rejection": "^2.1.0",
+		"indent-string": "^5.0.0",
+		"minimist-options": "4.1.0",
+		"normalize-package-data": "^5.0.0",
+		"read-pkg": "^8.0.0",
+		"read-pkg-up": "^10.0.0",
+		"redent": "^4.0.0",
+		"rollup": "^3.27.0",
+		"rollup-plugin-dts": "^6.0.0",
+		"rollup-plugin-license": "^3.0.1",
+		"trim-newlines": "^5.0.0",
+		"tsd": "^0.28.1",
+		"type-fest": "^4.3.1",
+		"typescript": "~5.1.6",
+		"xo": "^0.56.0",
+		"yargs-parser": "^21.1.1"
+	},
+	"xo": {
+		"rules": {
+			"unicorn/no-process-exit": "off",
+			"unicorn/error-message": "off"
+		},
+		"ignores": [
+			"build"
+		]
+	},
+	"ava": {
+		"files": [
+			"test/*"
+		]
+	}
+}

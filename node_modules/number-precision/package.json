@@ -1,0 +1,52 @@
+{
+  "name": "number-precision",
+  "version": "1.6.0",
+  "description": "Perform addition, subtraction, multiplication and division operations precisely using javascript",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "types": "build/index.d.ts",
+  "author": "cam song",
+  "keywords": [
+    "number precision",
+    "floating problem",
+    "rounding error"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nefe/number-precision.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nefe/number-precision/issues"
+  },
+  "homepage": "https://github.com/nefe/number-precision",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -cw",
+    "test": "tsc -p tsconfig.test.json && nyc --reporter=lcov --reporter=text --reporter=json ava && rm -rf .nyc_output",
+    "posttest": "codecov -f coverage/*.json -t 072762c4-c5bc-4393-bcd9-71eac9e7725b",
+    "prepublish": "rm -rf build && tsc && npm run build",
+    "tslint": "tslint ./src/**/*.ts --fix"
+  },
+  "ava": {
+    "files": [
+      "build-test/**/*.test.js"
+    ]
+  },
+  "pre-commit": [
+    "tslint"
+  ],
+  "devDependencies": {
+    "ava": "^3.8.2",
+    "braces": ">=2.3.1",
+    "codecov": "^3.1.0",
+    "nyc": "^15.0.1",
+    "pre-commit": "^1.2.2",
+    "rollup": "^0.52.2",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-typescript2": "^0.8.4",
+    "rollup-watch": "^4.3.1",
+    "tslint": "^5.8.0",
+    "typescript": "^3.8.3"
+  },
+  "license": "MIT"
+}

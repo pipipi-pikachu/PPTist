@@ -1,0 +1,27 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _vue = require("vue");
+
+var _runtime = require("../runtime");
+
+var _default = (0, _runtime.IconWrapper)('puzzle', true, function (props) {
+  return (0, _vue.createVNode)("svg", {
+    "width": props.size,
+    "height": props.size,
+    "viewBox": "0 0 48 48",
+    "fill": "none"
+  }, [(0, _vue.createVNode)("path", {
+    "d": "M4 24V12H13V10C13 6.68629 15.6863 4 19 4C22.3137 4 25 6.68629 25 10V12H34V24H38C41.3137 24 44 26.6863 44 30C44 33.3137 41.3137 36 38 36H34V44H4V36H8C11.3137 36 14 33.3137 14 30C14 26.6863 11.3137 24 8 24H4Z",
+    "fill": props.colors[1],
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null)]);
+});
+
+exports.default = _default;

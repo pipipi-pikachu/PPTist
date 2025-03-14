@@ -1,0 +1,79 @@
+{
+  "name": "image-size",
+  "version": "1.1.0",
+  "description": "get dimensions of any image file",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "bin/image-size.js"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "yarn@3.5.1",
+  "bin": "bin/image-size.js",
+  "scripts": {
+    "lint": "eslint --ext .ts,.js bin lib specs",
+    "format": "prettier --write lib specs",
+    "test": "nyc mocha",
+    "clean": "rm -rf dist docs",
+    "generate-docs": "typedoc",
+    "build": "tsc",
+    "prepack": "yarn clean && yarn build"
+  },
+  "keywords": [
+    "image",
+    "size",
+    "dimensions",
+    "resolution",
+    "width",
+    "height",
+    "avif",
+    "bmp",
+    "cur",
+    "gif",
+    "heic",
+    "heif",
+    "icns",
+    "ico",
+    "jpeg",
+    "png",
+    "psd",
+    "svg",
+    "tga",
+    "tiff",
+    "webp"
+  ],
+  "repository": "git://github.com/image-size/image-size.git",
+  "author": "netroy <aditya@netroy.in> (http://netroy.in/)",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "4.3.5",
+    "@types/glob": "8.1.0",
+    "@types/mocha": "10.0.1",
+    "@types/node": "18.16.16",
+    "@types/sinon": "10.0.15",
+    "@typescript-eslint/eslint-plugin": "5.59.8",
+    "@typescript-eslint/parser": "5.59.8",
+    "chai": "4.3.7",
+    "eslint": "8.41.0",
+    "eslint-config-prettier": "8.8.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "glob": "10.2.6",
+    "mocha": "10.2.0",
+    "nyc": "15.1.0",
+    "prettier": "2.8.8",
+    "sinon": "15.1.0",
+    "ts-node": "10.9.1",
+    "typedoc": "0.24.7",
+    "typescript": "5.0.4"
+  },
+  "nyc": {
+    "include": "lib",
+    "exclude": "specs/*.spec.ts"
+  },
+  "dependencies": {
+    "queue": "6.0.2"
+  }
+}

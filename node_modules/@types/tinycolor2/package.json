@@ -1,0 +1,35 @@
+{
+    "name": "@types/tinycolor2",
+    "version": "1.4.6",
+    "description": "TypeScript definitions for tinycolor2",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/tinycolor2",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Mordechai Zuber",
+            "githubUsername": "M-Zuber",
+            "url": "https://github.com/M-Zuber"
+        },
+        {
+            "name": "Geert Jansen",
+            "githubUsername": "geertjansen",
+            "url": "https://github.com/geertjansen"
+        },
+        {
+            "name": "Niels van Hoorn",
+            "githubUsername": "nvh",
+            "url": "https://github.com/nvh"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/tinycolor2"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "c26276aefe032ca2f9187a5df23f239a447b4191d50a1417e8b9c916a20f29c0",
+    "typeScriptVersion": "4.5"
+}

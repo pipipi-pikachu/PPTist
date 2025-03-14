@@ -1,0 +1,37 @@
+{
+  "name": "conventional-changelog-conventionalcommits",
+  "version": "7.0.2",
+  "description": "conventional-changelog conventionalcommits.org preset",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conventional-changelog/conventional-changelog.git"
+  },
+  "keywords": [
+    "conventional-changelog",
+    "conventionalcommits.org",
+    "preset"
+  ],
+  "files": [
+    "utils.js",
+    "conventionalChangelog.js",
+    "conventionalRecommendedBump.js",
+    "index.js",
+    "parserOpts.js",
+    "writerOpts.js",
+    "templates",
+    "constants.js"
+  ],
+  "author": "Ben Coe",
+  "engines": {
+    "node": ">=16"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/conventional-changelog/conventional-changelog/issues"
+  },
+  "homepage": "https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-conventionalcommits#readme",
+  "dependencies": {
+    "compare-func": "^2.0.0"
+  }
+}

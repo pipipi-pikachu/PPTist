@@ -1,0 +1,55 @@
+{
+  "name": "@commitlint/ensure",
+  "version": "18.4.3",
+  "description": "Lint your commit messages",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "deps": "dep-check",
+    "pkg": "pkg-check"
+  },
+  "engines": {
+    "node": ">=v18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conventional-changelog/commitlint.git",
+    "directory": "@commitlint/ensure"
+  },
+  "bugs": {
+    "url": "https://github.com/conventional-changelog/commitlint/issues"
+  },
+  "homepage": "https://commitlint.js.org/",
+  "keywords": [
+    "conventional-changelog",
+    "commitlint",
+    "library",
+    "core"
+  ],
+  "author": {
+    "name": "Mario Nebl",
+    "email": "hello@herebecode.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/utils": "^18.4.3",
+    "@types/lodash.camelcase": "^4.3.8",
+    "@types/lodash.kebabcase": "^4.1.8",
+    "@types/lodash.snakecase": "^4.1.8",
+    "@types/lodash.startcase": "^4.4.8",
+    "@types/lodash.upperfirst": "^4.3.8",
+    "glob": "^8.0.3"
+  },
+  "dependencies": {
+    "@commitlint/types": "^18.4.3",
+    "lodash.camelcase": "^4.3.0",
+    "lodash.kebabcase": "^4.1.1",
+    "lodash.snakecase": "^4.1.1",
+    "lodash.startcase": "^4.4.0",
+    "lodash.upperfirst": "^4.3.1"
+  },
+  "gitHead": "970b806bdd338e8b3e4529f21f20e795e66cd48f"
+}

@@ -1,0 +1,41 @@
+# Installation
+> `npm install --save @types/svg-arc-to-cubic-bezier`
+
+# Summary
+This package contains type definitions for svg-arc-to-cubic-bezier (https://github.com/colinmeinke/svg-arc-to-cubic-bezier#readme).
+
+# Details
+Files were exported from https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/svg-arc-to-cubic-bezier.
+## [index.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/svg-arc-to-cubic-bezier/index.d.ts)
+````ts
+export interface Arc {
+    px: number;
+    py: number;
+    cx: number;
+    cy: number;
+    rx: number;
+    ry: number;
+    xAxisRotation: number;
+    largeArcFlag: 0 | 1;
+    sweepFlag: 0 | 1;
+}
+
+export interface CubicBezierCurve {
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    x: number;
+    y: number;
+}
+
+export default function arcToBezier(x: Arc): CubicBezierCurve[];
+
+````
+
+### Additional Details
+ * Last updated: Tue, 07 Nov 2023 15:11:36 GMT
+ * Dependencies: none
+
+# Credits
+These definitions were written by [Fabien Caylus](https://github.com/fcaylus).

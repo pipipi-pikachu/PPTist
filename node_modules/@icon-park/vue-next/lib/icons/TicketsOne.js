@@ -1,0 +1,65 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _vue = require("vue");
+
+var _runtime = require("../runtime");
+
+var _default = (0, _runtime.IconWrapper)('tickets-one', true, function (props) {
+  return (0, _vue.createVNode)("svg", {
+    "width": props.size,
+    "height": props.size,
+    "viewBox": "0 0 48 48",
+    "fill": "none"
+  }, [(0, _vue.createVNode)("rect", {
+    "x": "5",
+    "y": "42",
+    "width": "26",
+    "height": "38",
+    "rx": "2",
+    "transform": "rotate(-90 5 42)",
+    "fill": props.colors[1],
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M9.00002 16L32 4.99999L37 16",
+    "stroke": props.colors[0],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("circle", {
+    "cx": "13",
+    "cy": "23",
+    "r": "2",
+    "fill": props.colors[2]
+  }, null), (0, _vue.createVNode)("circle", {
+    "cx": "13",
+    "cy": "29",
+    "r": "2",
+    "fill": props.colors[2]
+  }, null), (0, _vue.createVNode)("circle", {
+    "cx": "13",
+    "cy": "35",
+    "r": "2",
+    "fill": props.colors[2]
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M21 35H25L36 23",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null), (0, _vue.createVNode)("path", {
+    "d": "M24 29H30",
+    "stroke": props.colors[2],
+    "stroke-width": props.strokeWidth,
+    "stroke-linecap": props.strokeLinecap,
+    "stroke-linejoin": props.strokeLinejoin
+  }, null)]);
+});
+
+exports.default = _default;

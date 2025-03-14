@@ -1,0 +1,11 @@
+import type { ScriptRanges } from '../../parsers/scriptRanges';
+import type { ScriptSetupRanges } from '../../parsers/scriptSetupRanges';
+import type { Code, Sfc } from '../../types';
+import type { ScriptCodegenContext } from './context';
+import { ScriptCodegenOptions } from './index';
+export declare function generateComponent(options: ScriptCodegenOptions, ctx: ScriptCodegenContext, scriptSetup: NonNullable<Sfc['scriptSetup']>, scriptSetupRanges: ScriptSetupRanges): Generator<Code>;
+export declare function generateComponentSetupReturns(scriptSetupRanges: ScriptSetupRanges): Generator<Code>;
+export declare function generateScriptOptions(script: NonNullable<Sfc['script']>, scriptRanges: ScriptRanges): Generator<Code>;
+export declare function generateScriptSetupOptions(options: ScriptCodegenOptions, ctx: ScriptCodegenContext, scriptSetup: NonNullable<Sfc['scriptSetup']>, scriptSetupRanges: ScriptSetupRanges): Generator<Code>;
+export declare function generatePropsOption(options: ScriptCodegenOptions, ctx: ScriptCodegenContext, scriptSetup: NonNullable<Sfc['scriptSetup']>, scriptSetupRanges: ScriptSetupRanges): Generator<Code, void, unknown>;
+export declare function generateEmitsOption(options: ScriptCodegenOptions, scriptSetup: NonNullable<Sfc['scriptSetup']>, scriptSetupRanges: ScriptSetupRanges): Generator<Code>;

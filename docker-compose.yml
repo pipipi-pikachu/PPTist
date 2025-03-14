@@ -2,12 +2,29 @@ version: '3'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pptist-app-1
     ports:
-      - "5173:5173"
+      - "5174:5173"
     volumes:
       - ./src:/app/src
+      - ./public:/app/public
     environment:
-      - NODE_ENV=development
-    # Enable hot reloading
-    command: npm run dev -- --host 0.0.0.0
+      - NODE_ENV=production
+      - VITE_ASSET_URL=/public
+    networks:
+      - infra
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+networks:
+  infra:
+    external: true
+    name: infra
