@@ -162,18 +162,10 @@
         <ColorButton :color="theme.backgroundColor" />
       </Popover>
     </div>
-    <!-- <div class="row">
+    <div class="row">
       <div style="width: 40%;">主题色：</div>
-      <Popover trigger="click" style="width: 60%;">
-        <template #content>
-          <ColorPicker
-            :modelValue="theme.themeColors[0]"
-            @update:modelValue="value => updateTheme({ themeColors: value })"
-          />
-        </template>
-        <ColorButton :color="theme.themeColors[0]" />
-      </Popover>
-    </div> -->
+      <ColorListButton style="width: 60%;" :colors="theme.themeColors" @click="themeColorsSettingVisible = true" />
+    </div>
     
     <template v-if="moreThemeConfigsVisible">
       <div class="row">
@@ -284,8 +276,8 @@
           </div>
 
           <div class="btns">
-            <Button type="primary" size="small" @click="applyPresetThemeToSingleSlide(item)">应用</Button>
-            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetThemeToAllSlides(item)">应用全局</Button>
+            <Button type="primary" size="small" @click="applyPresetTheme(item)">应用</Button>
+            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetTheme(item, true)">应用全局</Button>
           </div>
         </div>
       </div>
@@ -298,6 +290,14 @@
     @closed="themeStylesExtractVisible = false"
   >
     <ThemeStylesExtract @close="themeStylesExtractVisible = false" />
+  </Modal>
+
+  <Modal
+    v-model:visible="themeColorsSettingVisible" 
+    :width="310"
+    @closed="themeColorsSettingVisible = false"
+  >
+    <ThemeColorsSetting @close="themeColorsSettingVisible = false" />
   </Modal>
 </template>
 
@@ -322,8 +322,10 @@ import useSlideTheme from '@/hooks/useSlideTheme'
 import { getImageDataURL } from '@/utils/image'
 
 import ThemeStylesExtract from './ThemeStylesExtract.vue'
-import SVGLine from './common/SVGLine.vue'
+import ThemeColorsSetting from './ThemeColorsSetting.vue'
+import SVGLine from '../common/SVGLine.vue'
 import ColorButton from '@/components/ColorButton.vue'
+import ColorListButton from '@/components/ColorListButton.vue'
 import FileInput from '@/components/FileInput.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
@@ -341,6 +343,7 @@ const { slides, currentSlide, slideIndex, viewportRatio, viewportSize, theme } =
 
 const moreThemeConfigsVisible = ref(false)
 const themeStylesExtractVisible = ref(false)
+const themeColorsSettingVisible = ref(false)
 const currentGradientIndex = ref(0)
 const lineStyleOptions = ref<LineStyleType[]>(['solid', 'dashed', 'dotted'])
 
@@ -356,8 +359,7 @@ const background = computed(() => {
 
 const { addHistorySnapshot } = useHistorySnapshot()
 const {
-  applyPresetThemeToSingleSlide,
-  applyPresetThemeToAllSlides,
+  applyPresetTheme,
   applyThemeToAllSlides,
 } = useSlideTheme()
 

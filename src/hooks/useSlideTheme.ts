@@ -292,31 +292,23 @@ export default () => {
     }
   }
   
-  // 应用预置主题（单页）
-  const applyPresetThemeToSingleSlide = (theme: PresetTheme) => {
-    const newSlide: Slide = JSON.parse(JSON.stringify(currentSlide.value))
-    setSlideTheme(newSlide, theme)
-    slidesStore.updateSlide({
-      background: newSlide.background,
-      elements: newSlide.elements,
-    })
-    addHistorySnapshot()
-  }
-  
-  // 应用预置主题（全部）
-  const applyPresetThemeToAllSlides = (theme: PresetTheme) => {
-    const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
-    for (const slide of newSlides) {
-      setSlideTheme(slide, theme)
-    }
+  // 应用预置主题
+  const applyPresetTheme = (theme: PresetTheme, resetSlides = false) => {
     slidesStore.setTheme({
       backgroundColor: theme.background,
       themeColors: theme.colors,
       fontColor: theme.fontColor,
       fontName: theme.fontname,
     })
-    slidesStore.setSlides(newSlides)
-    addHistorySnapshot()
+
+    if (resetSlides) {
+      const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
+      for (const slide of newSlides) {
+        setSlideTheme(slide, theme)
+      }
+      slidesStore.setSlides(newSlides)
+      addHistorySnapshot()
+    }
   }
   
   // 将当前主题配置应用到全部页面
@@ -373,8 +365,7 @@ export default () => {
 
   return {
     getSlidesThemeStyles,
-    applyPresetThemeToSingleSlide,
-    applyPresetThemeToAllSlides,
+    applyPresetTheme,
     applyThemeToAllSlides,
   }
 }

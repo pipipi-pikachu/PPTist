@@ -155,6 +155,7 @@ export default () => {
       const width = json.size.width
 
       slidesStore.setViewportSize(width * ratio)
+      slidesStore.setTheme({ themeColors: json.themeColors })
 
       const slides: Slide[] = []
       for (const item of json.slides) {
