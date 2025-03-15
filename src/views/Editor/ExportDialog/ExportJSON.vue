@@ -22,7 +22,7 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const { slides, viewportRatio, title, viewportSize } = storeToRefs(useSlidesStore())
+const { slides, viewportRatio, title, viewportSize, theme } = storeToRefs(useSlidesStore())
 const { exportJSON } = useExport()
 
 const json = computed(() => {
@@ -30,6 +30,7 @@ const json = computed(() => {
     title: title.value,
     width: viewportSize.value,
     height: viewportSize.value * viewportRatio.value,
+    theme: theme.value,
     slides: slides.value,
   }
 })

@@ -73,6 +73,7 @@ export default () => {
       title: title.value,
       width: viewportSize.value,
       height: viewportSize.value * viewportRatio.value,
+      theme: theme.value,
       slides: slides.value,
     }
     const blob = new Blob([JSON.stringify(json)], { type: '' })
