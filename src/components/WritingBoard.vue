@@ -37,7 +37,7 @@
         }"
         v-if="model === 'pen'"
       >
-        <IconWrite class="icon" :size="penSize * 6" v-if="model === 'pen'" />
+        <IconWrite class="icon" :size="penSize * 6" />
       </div>
       <div 
         class="pen"
@@ -48,7 +48,18 @@
         }"
         v-if="model === 'mark'"
       >
-        <IconHighLight class="icon" :size="markSize * 1.5" v-if="model === 'mark'" />
+        <IconHighLight class="icon" :size="markSize * 1.5" />
+      </div>
+      <div 
+        class="pen"
+        :style="{
+          left: mouse.x - 20 + 'px',
+          top: mouse.y - 20 + 'px',
+          color: color,
+        }"
+        v-if="model === 'shape'"
+      >
+        <IconPlus class="icon" :size="40" />
       </div>
     </template>
   </div>
@@ -59,18 +70,22 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{
   color?: string
-  model?: 'pen' | 'eraser' | 'mark'
+  model?: 'pen' | 'eraser' | 'mark' | 'shape'
+  shapeType?: 'rect' | 'circle' | 'arrow'
   blackboard?: boolean
   penSize?: number
   markSize?: number
   rubberSize?: number
+  shapeSize?: number
 }>(), {
   color: '#ffcc00',
   model: 'pen',
+  shapeType: 'rect',
   blackboard: false,
   penSize: 6,
   markSize: 24,
   rubberSize: 80,
+  shapeSize: 4,
 })
 
 const emit = defineEmits<{
@@ -88,6 +103,8 @@ let lastPos = {
 let isMouseDown = false
 let lastTime = 0
 let lastLineWidth = -1
+
+let initialImageData: ImageData | null = null
 
 // 鼠标位置坐标：用于画笔或橡皮位置跟随
 const mouse = ref({
@@ -140,7 +157,7 @@ const updateCtx = () => {
     ctx.globalCompositeOperation = 'xor'
     ctx.globalAlpha = 0.5
   }
-  else if (props.model === 'pen') {
+  else if (props.model === 'pen' || props.model === 'shape') {
     ctx.globalCompositeOperation = 'source-over'
     ctx.globalAlpha = 1
   }
@@ -221,6 +238,92 @@ const getLineWidth = (s: number, t: number) => {
   return lineWidth * 1 / 3 + lastLineWidth * 2 / 3
 }
 
+// 形状绘制
+const drawShape = (currentX: number, currentY: number) => {
+  if (!ctx || !initialImageData) return
+
+  ctx.putImageData(initialImageData, 0, 0)
+
+  const startX = lastPos.x
+  const startY = lastPos.y
+
+  ctx.save()
+  ctx.lineCap = 'butt'
+  ctx.lineJoin = 'miter'
+
+  ctx.beginPath()
+  if (props.shapeType === 'rect') {
+    const width = currentX - startX
+    const height = currentY - startY
+    ctx.rect(startX, startY, width, height)
+  } 
+  else if (props.shapeType === 'circle') {
+    const width = currentX - startX
+    const height = currentY - startY
+    const centerX = startX + width / 2
+    const centerY = startY + height / 2
+    const radiusX = Math.abs(width) / 2
+    const radiusY = Math.abs(height) / 2
+
+    ctx.ellipse(
+      centerX,
+      centerY,
+      Math.abs(radiusX),
+      Math.abs(radiusY),
+      0,
+      0,
+      Math.PI * 2,
+    )
+  }
+  else if (props.shapeType === 'arrow') {
+    const dx = currentX - startX
+    const dy = currentY - startY
+    const angle = Math.atan2(dy, dx)
+    const arrowLength = Math.max(props.shapeSize, 4) * 2
+    
+    const endX = currentX - (Math.cos(angle) * arrowLength)
+    const endY = currentY - (Math.sin(angle) * arrowLength)
+
+    ctx.moveTo(startX, startY)
+    ctx.lineTo(endX, endY)
+  }
+
+  ctx.strokeStyle = props.color
+  ctx.lineWidth = props.shapeSize
+  ctx.stroke()
+  ctx.restore()
+
+  if (props.shapeType === 'arrow') {
+    const dx = currentX - startX
+    const dy = currentY - startY
+    const angle = Math.atan2(dy, dx)
+    
+    const arrowLength = Math.max(props.shapeSize, 4) * 2.6
+    const arrowWidth = Math.max(props.shapeSize, 4) * 1.6
+    
+    const arrowBaseX = currentX - (Math.cos(angle) * arrowLength)
+    const arrowBaseY = currentY - (Math.sin(angle) * arrowLength)
+
+    ctx.save()
+    ctx.beginPath()
+    
+    ctx.moveTo(currentX, currentY)
+    
+    const leftX = arrowBaseX + arrowWidth * Math.cos(angle + Math.PI / 2)
+    const leftY = arrowBaseY + arrowWidth * Math.sin(angle + Math.PI / 2)
+    const rightX = arrowBaseX + arrowWidth * Math.cos(angle - Math.PI / 2)
+    const rightY = arrowBaseY + arrowWidth * Math.sin(angle - Math.PI / 2)
+
+    ctx.lineTo(leftX, leftY)
+    ctx.lineTo(rightX, rightY)
+    ctx.closePath()
+
+    ctx.fillStyle = props.color
+    ctx.fill()
+    ctx.restore()
+  }
+}
+
 // 路径操作
 const handleMove = (x: number, y: number) => {
   const time = new Date().getTime()
@@ -232,12 +335,21 @@ const handleMove = (x: number, y: number) => {
 
     draw(x, y, lineWidth)
     lastLineWidth = lineWidth
-  }
-  else if (props.model === 'mark') draw(x, y, props.markSize)
-  else erase(x, y)
 
-  lastPos = { x, y }
-  lastTime = new Date().getTime()
+    lastPos = { x, y }
+    lastTime = new Date().getTime()
+  }
+  else if (props.model === 'mark') {
+    draw(x, y, props.markSize)
+    lastPos = { x, y }
+  }
+  else if (props.model ==='eraser') {
+    erase(x, y)
+    lastPos = { x, y }
+  }
+  else if (props.model === 'shape') {
+    drawShape(x, y)
+  }
 }
 
 // 获取鼠标在canvas中的相对位置
@@ -257,6 +369,9 @@ const handleMousedown = (e: MouseEvent | TouchEvent) => {
   const x = mouseX / widthScale.value
   const y = mouseY / heightScale.value
 
+  if (props.model === 'shape') {
+    initialImageData = ctx!.getImageData(0, 0, canvasRef.value!.width, canvasRef.value!.height)
+  }
   isMouseDown = true
   lastPos = { x, y }
   lastTime = new Date().getTime()

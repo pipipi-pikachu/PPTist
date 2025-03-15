@@ -14,23 +14,24 @@
         :penSize="penSize"
         :markSize="markSize"
         :rubberSize="rubberSize"
+        :shapeSize="shapeSize"
+        :shapeType="shapeType"
         @end="hanldeWritingEnd()"
       />
     </div>
 
     <MoveablePanel 
       class="tools-panel" 
-      :width="520" 
+      :width="510" 
       :height="50"
       :left="left" 
       :top="top"
-      :moveable="sizePopoverType === ''"
     >
       <div class="tools" @mousedown.stop>
         <div class="tool-content">
-          <Popover trigger="manual" :value="sizePopoverType === 'pen'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'pen'">
             <template #content>
-              <div class="size">
+              <div class="setting">
                 <div class="label">墨迹粗细：</div>
                 <Slider class="size-slider" :min="4" :max="10" :step="2" v-model:value="penSize" />
               </div>
@@ -39,9 +40,26 @@
               <IconWrite class="icon" />
             </div>
           </Popover>
-          <Popover trigger="manual" :value="sizePopoverType === 'mark'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'shape'">
             <template #content>
-              <div class="size">
+              <div class="setting shape">
+                <div class="shapes">
+                  <IconSquare class="icon" :class="{ 'active': shapeType === 'rect' }" @click="shapeType = 'rect'" />
+                  <IconRound class="icon" :class="{ 'active': shapeType === 'circle' }" @click="shapeType = 'circle'" />
+                  <IconArrowRight class="icon" :class="{ 'active': shapeType === 'arrow' }" @click="shapeType = 'arrow'" />
+                </div>
+                <Divider type="vertical" />
+                <div class="label">墨迹粗细：</div>
+                <Slider class="size-slider" :min="2" :max="8" :step="2" v-model:value="shapeSize" />
+              </div>
+            </template>
+            <div class="btn" :class="{ 'active': writingBoardModel === 'shape' }" v-tooltip="'形状'" @click="changeModel('shape')">
+              <IconGraphicDesign class="icon" />
+            </div>
+          </Popover>
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'mark'">
+            <template #content>
+              <div class="setting">
                 <div class="label">墨迹粗细：</div>
                 <Slider class="size-slider" :min="16" :max="40" :step="4" v-model:value="markSize" />
               </div>
@@ -50,9 +68,9 @@
               <IconHighLight class="icon" />
             </div>
           </Popover>
-          <Popover trigger="manual" :value="sizePopoverType === 'eraser'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'eraser'">
             <template #content>
-              <div class="size">
+              <div class="setting">
                 <div class="label">橡皮大小：</div>
                 <Slider class="size-slider" :min="20" :max="200" :step="20" v-model:value="rubberSize" />
               </div>
@@ -70,7 +88,7 @@
           <div class="colors">
             <div 
               class="color" 
-              :class="{ 'active': color === writingBoardColor }"
+              :class="{ 'active': color === writingBoardColor, 'white': color === '#ffffff' }"
               v-for="color in writingBoardColors"
               :key="color"
               :style="{ backgroundColor: color }"
@@ -78,7 +96,7 @@
             ></div>
           </div>
         </div>
-        <div class="btn" v-tooltip="'关闭画笔'" @click="closeWritingBoard()">
+        <div class="btn close" v-tooltip="'关闭画笔'" @click="closeWritingBoard()">
           <IconClose class="icon" />
         </div>
       </div>
@@ -96,10 +114,11 @@ import WritingBoard from '@/components/WritingBoard.vue'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Slider from '@/components/Slider.vue'
 import Popover from '@/components/Popover.vue'
+import Divider from '@/components//Divider.vue'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 
-type WritingBoardModel = 'pen' | 'mark' | 'eraser'
+type WritingBoardModel = 'pen' | 'mark' | 'eraser' | 'shape'
 
 withDefaults(defineProps<{
   slideWidth: number
@@ -122,10 +141,12 @@ const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
 const blackboard = ref(false)
 const sizePopoverType = ref<'' | WritingBoardModel>('')
+const shapeType = ref<'rect' | 'circle' | 'arrow'>('rect')
 
 const penSize = ref(6)
 const markSize = ref(24)
 const rubberSize = ref(80)
+const shapeSize = ref(4)
 
 const changeModel = (model: WritingBoardModel) => {
   if (writingBoardModel.value === model) {
@@ -199,7 +220,9 @@ const hanldeWritingEnd = () => {
     align-items: center;
   }
   .btn {
-    padding: 5px 10px;
+    padding: 5px;
+    margin-right: 5px; 
+    border-radius: $borderRadius;
     cursor: pointer;
 
     &:hover {
@@ -209,13 +232,17 @@ const hanldeWritingEnd = () => {
       background-color: rgba($color: $themeColor, $alpha: .5);
       color: #fff;
     }
+    &.close {
+      margin-right: 0;
+      margin-left: 5px;
+    }
   }
   .icon {
     font-size: 20px;
   }
   .colors {
     display: flex;
-    padding: 0 10px;
+    padding: 0 5px;
   }
   .color {
     width: 16px;
@@ -229,18 +256,43 @@ const hanldeWritingEnd = () => {
     &.active {
       transform: scale(1.3);
     }
+    &.white {
+      border: 1px solid #f1f1f1; 
+    }
 
     & + .color {
       margin-left: 8px;
     }
   }
 }
-.size {
+.setting {
   width: 200px;
   display: flex;
   align-items: center;
   user-select: none;
   font-size: 13px;
+
+  &.shape {
+    width: 280px;
+  }
+
+  .shapes {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      font-size: 20px;
+      cursor: pointer;
+
+      & + .icon {
+        margin-left: 6px; 
+      }
+
+      &.active {
+        color: $themeColor;
+      }
+    }
+  }
 
   .label {
     width: 70px;

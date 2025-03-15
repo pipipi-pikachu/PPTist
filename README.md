@@ -147,7 +147,7 @@ Browser access: http://127.0.0.1:5173/
 - Formula line thickness settings
 ### Slide Show
 - Preview all slides
-- Pen and blackboard tools
+- Brush tools (pen/shape/arrow/highlighter annotation, eraser, blackboard mode)
 - Timer tool
 - Laser pointer
 - Auto play

@@ -76,7 +76,7 @@ onMounted(() => {
   else x.value = document.body.clientWidth + props.left - props.width
 
   if (props.top >= 0) y.value = props.top
-  else y.value = document.body.clientHeight + props.top - realHeight.value
+  else y.value = document.body.clientHeight + props.top - (props.height || realHeight.value)
 
   w.value = props.width
   h.value = props.height
