@@ -162,7 +162,6 @@ const changeTime = (e: FocusEvent | KeyboardEvent, type: 'minute' | 'second') =>
   height: 54px;
   border-radius: 50%;
   background-color: rgba($color: $themeColor, $alpha: .05);
-  font-size: 22px;
   overflow: hidden;
 
   input {
@@ -172,6 +171,7 @@ const changeTime = (e: FocusEvent | KeyboardEvent, type: 'minute' | 'second') =>
     outline: 0;
     background-color: transparent;
     text-align: center;
+    font-size: 22px;
   }
 }
 .colon {
