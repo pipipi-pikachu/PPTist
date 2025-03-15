@@ -149,7 +149,15 @@ export default () => {
     
     const reader = new FileReader()
     reader.onload = async e => {
-      const json = await parse(e.target!.result as ArrayBuffer)
+      let json = null
+      try {
+        json = await parse(e.target!.result as ArrayBuffer)
+      }
+      catch {
+        exporting.value = false
+        message.error('无法正确读取 / 解析该文件')
+        return
+      }
 
       const ratio = 96 / 72
       const width = json.size.width
