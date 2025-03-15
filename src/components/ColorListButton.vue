@@ -10,11 +10,17 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import Button from './Button.vue'
 
-defineProps<{
+const props = defineProps<{
   colors: string[]
 }>()
+
+const colors = computed(() => {
+  if (props.colors.length > 12) return props.colors.slice(0, 12)
+  return props.colors
+})
 </script>
 
 <style lang="scss" scoped>

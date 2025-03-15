@@ -12,7 +12,7 @@ interface ThemeValueWithArea {
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, currentSlide, theme } = storeToRefs(slidesStore)
+  const { slides, theme } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
 
