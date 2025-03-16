@@ -198,6 +198,7 @@ const changeTime = (e: FocusEvent | KeyboardEvent, type: 'minute' | 'second') =>
   top: 0;
   right: 0;
   padding: 10px;
+  line-height: 1;
   cursor: pointer;
 }
 </style>

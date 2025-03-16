@@ -29,7 +29,7 @@
     >
       <div class="tools" @mousedown.stop>
         <div class="tool-content">
-          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'pen'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'pen'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting">
                 <div class="label">墨迹粗细：</div>
@@ -40,7 +40,7 @@
               <IconWrite class="icon" />
             </div>
           </Popover>
-          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'shape'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'shape'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting shape">
                 <div class="shapes">
@@ -57,7 +57,7 @@
               <IconGraphicDesign class="icon" />
             </div>
           </Popover>
-          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'mark'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'mark'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting">
                 <div class="label">墨迹粗细：</div>
@@ -68,7 +68,7 @@
               <IconHighLight class="icon" />
             </div>
           </Popover>
-          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'eraser'">
+          <Popover placement="top" trigger="manual" :value="sizePopoverType === 'eraser'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting">
                 <div class="label">橡皮大小：</div>
@@ -149,13 +149,8 @@ const rubberSize = ref(80)
 const shapeSize = ref(4)
 
 const changeModel = (model: WritingBoardModel) => {
-  if (writingBoardModel.value === model) {
-    sizePopoverType.value = sizePopoverType.value === model ? '' : model
-  }
-  else {
-    if (sizePopoverType.value) sizePopoverType.value = ''
-    writingBoardModel.value = model
-  }
+  writingBoardModel.value = model
+  sizePopoverType.value = sizePopoverType.value === model ? '' : model
 }
 
 // 清除画布上的墨迹

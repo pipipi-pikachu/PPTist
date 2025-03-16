@@ -31,6 +31,8 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:value', payload: boolean): void
+  (event: 'show'): void
+  (event: 'hide'): void
 }>()
 
 const instance = ref<Instance>()
@@ -69,10 +71,16 @@ onMounted(() => {
       contentVisible.value = true
     },
     onShown() {
-      if (!props.value) emit('update:value', true)
+      if (!props.value) {
+        emit('update:value', true)
+        emit('show')
+      }
     },
     onHidden() {
-      if (props.value) emit('update:value', false)
+      if (props.value) {
+        emit('update:value', false)
+        emit('hide')
+      }
       contentVisible.value = false
     },
   })

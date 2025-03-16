@@ -207,11 +207,12 @@ const contextmenus = (): ContextmenuItem[] => {
   z-index: 10;
 
   .tool-btn {
-    opacity: .35;
+    opacity: .3;
     cursor: pointer;
+    transition: opacity $transitionDelay;
 
     &:hover {
-      opacity: .9;
+      opacity: .95;
     }
     & + .tool-btn {
       margin-left: 8px;
