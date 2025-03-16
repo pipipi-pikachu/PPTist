@@ -147,7 +147,7 @@ watch(slideIndex, () => {
     if (!activeThumbnailRef) return
 
     const width = thumbnailsRef.value.offsetWidth
-    const offsetLeft = activeThumbnailRef.offsetLeft
+    const offsetLeft = activeThumbnailRef.offsetLeft + activeThumbnailRef.clientWidth / 2
     thumbnailsRef.value.scrollTo({ left: offsetLeft - width / 2, behavior: 'smooth' })
   })
 })
@@ -257,6 +257,7 @@ const contextmenus = (): ContextmenuItem[] => {
   overflow-x: auto;
   overflow-y: hidden;
   border-top: solid 1px #3a3a3a;
+  position: relative;
 }
 .thumbnail {
   display: inline-block;

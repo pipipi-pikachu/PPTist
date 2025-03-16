@@ -51,6 +51,8 @@
         <IconPower class="tool-btn" v-tooltip="'结束放映'" @click="exitScreening()" />
       </div>
     </div>
+
+    <BottomThumbnails v-if="bottomThumbnailsVisible" />
   </div>
 </template>
 
@@ -69,6 +71,7 @@ import ScreenSlideList from './ScreenSlideList.vue'
 import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
+import BottomThumbnails from './BottomThumbnails.vue'
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
@@ -104,6 +107,7 @@ const rightToolsVisible = ref(false)
 const writingBoardToolVisible = ref(false)
 const timerlVisible = ref(false)
 const slideThumbnailModelVisible = ref(false)
+const bottomThumbnailsVisible = ref(false)
 const laserPen = ref(false)
 
 const contextmenus = (): ContextmenuItem[] => {
@@ -170,6 +174,11 @@ const contextmenus = (): ContextmenuItem[] => {
     {
       text: '查看所有幻灯片',
       handler: () => slideThumbnailModelVisible.value = true,
+    },
+    {
+      text: '触底显示缩略图',
+      subText: bottomThumbnailsVisible.value ? '√' : '',
+      handler: () => bottomThumbnailsVisible.value = !bottomThumbnailsVisible.value,
     },
     {
       text: '画笔工具',
