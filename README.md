@@ -107,7 +107,7 @@ Browser access: http://127.0.0.1:5173/
 - Draw any polygon
 - Draw any line (unclosed shape simulation)
 - Replace shape
-- Fill color
+- Fill (solid color, gradient, image)
 - Border
 - Shadow
 - Transparency

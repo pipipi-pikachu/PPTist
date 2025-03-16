@@ -327,6 +327,8 @@ export interface ShapeText {
  * 
  * gradient?: 渐变，该属性存在时将优先作为填充
  * 
+ * pattern?: 图案，该属性存在时将优先作为填充
+ * 
  * outline?: 边框
  * 
  * opacity?: 不透明度
@@ -354,6 +356,7 @@ export interface PPTShapeElement extends PPTBaseElement {
   fixedRatio: boolean
   fill: string
   gradient?: Gradient
+  pattern?: string
   outline?: PPTElementOutline
   opacity?: number
   flipH?: boolean

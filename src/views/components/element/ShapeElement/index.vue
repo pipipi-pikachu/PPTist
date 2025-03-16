@@ -36,9 +36,15 @@
           :width="elementInfo.width"
           :height="elementInfo.height"
         >
-          <defs v-if="elementInfo.gradient">
+          <defs>
+            <PatternDefs
+              v-if="elementInfo.pattern"
+              :id="`editable-pattern-${elementInfo.id}`" 
+              :src="elementInfo.pattern"
+            />
             <GradientDefs
-              :id="`editabel-gradient-${elementInfo.id}`" 
+              v-else-if="elementInfo.gradient"
+              :id="`editable-gradient-${elementInfo.id}`" 
               :type="elementInfo.gradient.type"
               :colors="elementInfo.gradient.colors"
               :rotate="elementInfo.gradient.rotate"
@@ -53,7 +59,7 @@
               stroke-linecap="butt" 
               stroke-miterlimit="8"
               :d="elementInfo.path" 
-              :fill="elementInfo.gradient ? `url(#editabel-gradient-${elementInfo.id})` : (elementInfo.fill || 'none')"
+              :fill="fill"
               :stroke="outlineColor"
               :stroke-width="outlineWidth" 
               :stroke-dasharray="strokeDashArray" 
@@ -89,9 +95,11 @@ import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useElementFill from '@/views/components/element/hooks/useElementFill'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import GradientDefs from './GradientDefs.vue'
+import PatternDefs from './PatternDefs.vue'
 import ProsemirrorEditor from '@/views/components/element/ProsemirrorEditor.vue'
 
 const props = defineProps<{
@@ -125,6 +133,9 @@ const execFormatPainter = () => {
   addHistorySnapshot()
   if (!keep) mainStore.setShapeFormatPainter(null)
 }
+
+const element = computed(() => props.elementInfo)
+const { fill } = useElementFill(element, 'editable')
 
 const outline = computed(() => props.elementInfo.outline)
 const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline)
@@ -187,6 +198,7 @@ const startEdit = () => {
 .editable-element-shape {
   position: absolute;
   pointer-events: none;
+  background-size: contain;
 
   &.lock .element-content {
     cursor: default;

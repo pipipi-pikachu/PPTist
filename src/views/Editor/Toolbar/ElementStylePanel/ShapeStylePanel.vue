@@ -22,13 +22,14 @@
       <Select 
         style="flex: 1;" 
         :value="fillType" 
-        @update:value="value => updateFillType(value as 'fill' | 'gradient')"
+        @update:value="value => updateFillType(value as 'fill' | 'gradient' | 'pattern')"
         :options="[
           { label: '纯色填充', value: 'fill' },
           { label: '渐变填充', value: 'gradient' },
+          { label: '图片填充', value: 'pattern' },
         ]"
       />
-      <div style="width: 10px;"></div>
+      <div style="width: 10px;" v-if="fillType !== 'pattern'"></div>
       <Popover trigger="click" v-if="fillType === 'fill'" style="flex: 1;">
         <template #content>
           <ColorPicker
@@ -42,7 +43,7 @@
         style="flex: 1;" 
         :value="gradient.type" 
         @update:value="value => updateGradient({ type: value as GradientType })"
-        v-else
+        v-else-if="fillType === 'gradient'"
         :options="[
           { label: '线性渐变', value: 'linear' },
           { label: '径向渐变', value: 'radial' },
@@ -81,6 +82,18 @@
           :value="gradient.rotate"
           @update:value="value => updateGradient({ rotate: value as number })" 
         />
+      </div>
+    </template>
+    
+    <template v-if="fillType === 'pattern'">
+      <div class="pattern-image-wrapper">
+        <FileInput @change="files => uploadPattern(files)">
+          <div class="pattern-image">
+            <div class="content" :style="{ backgroundImage: `url(${pattern})` }">
+              <IconPlus />
+            </div>
+          </div>
+        </FileInput>
       </div>
     </template>
 
@@ -131,6 +144,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { GradientType, PPTShapeElement, Gradient, ShapeText } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
+import { getImageDataURL } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'
 
@@ -150,6 +164,7 @@ import RadioGroup from '@/components/RadioGroup.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import GradientBar from '@/components/GradientBar.vue'
+import FileInput from '@/components/FileInput.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -158,6 +173,7 @@ const { handleElement, handleElementId, shapeFormatPainter } = storeToRefs(mainS
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
 const fill = ref<string>('#000')
+const pattern = ref<string>('')
 const gradient = ref<Gradient>({
   type: 'linear', 
   rotate: 0,
@@ -179,7 +195,8 @@ watch(handleElement, () => {
     { pos: 100, color: '#fff' },
   ]
   gradient.value = handleElement.value.gradient || { type: 'linear', rotate: 0, colors: defaultGradientColor }
-  fillType.value = handleElement.value.gradient ? 'gradient' : 'fill'
+  pattern.value = handleElement.value.pattern || ''
+  fillType.value = (handleElement.value.pattern !== undefined) ? 'pattern' : (handleElement.value.gradient ? 'gradient' : 'fill')
   textAlign.value = handleElement.value?.text?.align || 'middle'
 }, { deep: true, immediate: true })
 
@@ -196,14 +213,19 @@ const updateElement = (props: Partial<PPTShapeElement>) => {
 }
 
 // 设置填充类型：渐变、纯色
-const updateFillType = (type: 'gradient' | 'fill') => {
+const updateFillType = (type: 'gradient' | 'fill' | 'pattern') => {
   if (type === 'fill') {
-    slidesStore.removeElementProps({ id: handleElementId.value, propName: 'gradient' })
+    slidesStore.removeElementProps({ id: handleElementId.value, propName: ['gradient', 'pattern'] })
     addHistorySnapshot()
   }
-  else {
+  else if (type === 'gradient') {
     currentGradientIndex.value = 0
+    slidesStore.removeElementProps({ id: handleElementId.value, propName: 'pattern' })
     updateElement({ gradient: gradient.value })
+  }
+  else if (type === 'pattern') {
+    slidesStore.removeElementProps({ id: handleElementId.value, propName: 'gradient' })
+    updateElement({ pattern: '' })
   }
 }
 
@@ -219,6 +241,16 @@ const updateGradientColors = (color: string) => {
     return item
   })
   updateGradient({ colors })
+}
+
+// 上传填充图片
+const uploadPattern = (files: FileList) => {
+  const imageFile = files[0]
+  if (!imageFile) return
+  getImageDataURL(imageFile).then(dataURL => {
+    pattern.value = dataURL
+    updateElement({ pattern: dataURL })
+  })
 }
 
 // 设置填充色
@@ -303,5 +335,34 @@ const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
   height: 0;
   padding-bottom: 14%;
   flex-shrink: 0;
+}
+
+.pattern-image-wrapper {
+  margin-bottom: 10px;
+}
+.pattern-image {
+  height: 0;
+  padding-bottom: 56.25%;
+  border: 1px dashed $borderColor;
+  border-radius: $borderRadius;
+  position: relative;
+  transition: all $transitionDelay;
+
+  &:hover {
+    border-color: $themeColor;
+    color: $themeColor;
+  }
+
+  .content {
+    @include absolute-0();
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
 }
 </style>

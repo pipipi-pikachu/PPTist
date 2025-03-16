@@ -27,8 +27,14 @@
           :width="elementInfo.width"
           :height="elementInfo.height"
         >
-          <defs v-if="elementInfo.gradient">
+          <defs>
+            <PatternDefs
+              v-if="elementInfo.pattern"
+              :id="`base-pattern-${elementInfo.id}`" 
+              :src="elementInfo.pattern"
+            />
             <GradientDefs
+              v-else-if="elementInfo.gradient"
               :id="`base-gradient-${elementInfo.id}`" 
               :type="elementInfo.gradient.type"
               :colors="elementInfo.gradient.colors"
@@ -43,7 +49,7 @@
               stroke-linecap="butt" 
               stroke-miterlimit="8"
               :d="elementInfo.path" 
-              :fill="elementInfo.gradient ? `url(#base-gradient-${elementInfo.id})` : (elementInfo.fill || 'none')"
+              :fill="fill"
               :stroke="outlineColor"
               :stroke-width="outlineWidth" 
               :stroke-dasharray="strokeDashArray" 
@@ -65,12 +71,17 @@ import type { PPTShapeElement, ShapeText } from '@/types/slides'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
+import useElementFill from '@/views/components/element/hooks/useElementFill'
 
 import GradientDefs from './GradientDefs.vue'
+import PatternDefs from './PatternDefs.vue'
 
 const props = defineProps<{
   elementInfo: PPTShapeElement
 }>()
+
+const element = computed(() => props.elementInfo)
+const { fill } = useElementFill(element, 'base')
 
 const outline = computed(() => props.elementInfo.outline)
 const { outlineWidth, outlineColor, strokeDashArray } = useElementOutline(outline)

@@ -317,6 +317,8 @@ export default () => {
                   rotate: el.fill.value.rot,
                 } : undefined
 
+                const pattern: string | undefined = el.fill?.type === 'image' ? el.fill.value.picBase64 : undefined
+
                 const fill = el.fill?.type === 'color' ? el.fill.value : ''
                 
                 const element: PPTShapeElement = {
@@ -330,6 +332,7 @@ export default () => {
                   path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
                   fill,
                   gradient,
+                  pattern,
                   fixedRatio: false,
                   rotate: el.rotate,
                   outline: {
