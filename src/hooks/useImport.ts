@@ -182,12 +182,12 @@ export default () => {
           background = {
             type: 'gradient',
             gradient: {
-              type: 'linear',
+              type: value.path === 'line' ? 'linear' : 'radial',
               colors: value.colors.map(item => ({
                 ...item,
                 pos: parseInt(item.pos),
               })),
-              rotate: value.rot,
+              rotate: value.rot + 90,
             },
           }
         }
@@ -309,7 +309,7 @@ export default () => {
                 }
 
                 const gradient: Gradient | undefined = el.fill?.type === 'gradient' ? {
-                  type: 'linear',
+                  type: el.fill.value.path === 'line' ? 'linear' : 'radial',
                   colors: el.fill.value.colors.map(item => ({
                     ...item,
                     pos: parseInt(item.pos),
