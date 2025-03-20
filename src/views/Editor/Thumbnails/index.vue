@@ -25,6 +25,7 @@
       :disabled="editingSectionId"
       @end="handleDragEnd"
       itemKey="id"
+      @scroll="listenThumbnailsScroll"
     >
       <template #item="{ element, index }">
         <div class="thumbnail-container">
@@ -57,7 +58,7 @@
             v-contextmenu="contextmenusThumbnailItem"
           >
             <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
-            <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+            <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="thumbnailVisible(index)" />
   
             <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
           </div>
@@ -79,7 +80,8 @@ import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useSectionHandler from '@/hooks/useSectionHandler'
 import useScreening from '@/hooks/useScreening'
-import useLoadSlides from '@/hooks/useLoadSlides'
+// import useLoadSlides from '@/hooks/useLoadSlides'
+import useThumbnailVisibleScope from '@/hooks/useThumbnailVisibleScope'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
@@ -93,7 +95,8 @@ const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRe
 const { slides, slideIndex, currentSlide } = storeToRefs(slidesStore)
 const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
 
-const { slidesLoadLimit } = useLoadSlides()
+// const { slidesLoadLimit } = useLoadSlides()
+const { thumbnailVisible, listenThumbnailsScroll } = useThumbnailVisibleScope()
 
 const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
