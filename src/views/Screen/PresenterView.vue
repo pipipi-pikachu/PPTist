@@ -7,7 +7,7 @@
       <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><IconStopwatchStart class="tool-icon" /><span>计时器</span></div>
       <div class="tool-btn" @click="() => fullscreenState ? manualExitFullscreen() : enterFullscreen()">
         <IconOffScreenOne class="tool-icon" v-if="fullscreenState" />
-        <IconOffScreenOne class="tool-icon" v-else />
+        <IconFullScreenOne class="tool-icon" v-else />
         <span>{{ fullscreenState ? '退出全屏' : '全屏' }}</span>
       </div>
       <Divider class="divider" />

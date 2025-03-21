@@ -6,7 +6,7 @@ import { useSlidesStore } from '@/store'
 import useAddSlidesOrElements from './useAddSlidesOrElements'
 import useSlideHandler from './useSlideHandler'
 
-interface PexelsImage {
+interface ImgPoolItem {
   id: string
   src: string
   width: number
@@ -18,7 +18,7 @@ export default () => {
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
 
-  const imgPool = ref<PexelsImage[]>([])
+  const imgPool = ref<ImgPoolItem[]>([])
   const transitionIndex = ref(0)
   const transitionTemplate = ref<Slide | null>(null)
 
@@ -169,8 +169,8 @@ export default () => {
     return el.type === 'text' ? { ...el, content, lineHeight: size < 15 ? 1.2 : el.lineHeight } : { ...el, text: { ...el.text!, content } }
   }
 
-  const getUseableImage = (el: PPTImageElement): PexelsImage | null => {
-    let img: PexelsImage | null = null
+  const getUseableImage = (el: PPTImageElement): ImgPoolItem | null => {
+    let img: ImgPoolItem | null = null
   
     let imgs = []
   
@@ -227,7 +227,7 @@ export default () => {
     return content.replace('```json', '').replace('```', '')
   }
 
-  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: PexelsImage[]) => {
+  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: ImgPoolItem[]) => {
     slidesStore.updateSlideIndex(slidesStore.slides.length - 1)
 
     if (imgs) imgPool.value = imgs
