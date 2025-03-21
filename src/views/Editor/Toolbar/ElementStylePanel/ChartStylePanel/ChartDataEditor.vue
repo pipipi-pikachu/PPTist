@@ -95,7 +95,7 @@ import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { ChartData, ChartType } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { CHART_TYPE_MAP } from '@/configs/chart'
-import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
+import { pasteCustomClipboardString, pasteExcelClipboardString, pasteHTMLTableClipboardString } from '@/utils/clipboard'
 import Button from '@/components/Button.vue'
 import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
@@ -265,6 +265,18 @@ const clear = () => {
   }
 }
 
+const fillTableData = (data: string[][], rowIndex: number, colIndex: number) => {
+  const maxRow = rowIndex + data.length
+  const maxCol = colIndex + data[0].length
+  for (let i = rowIndex; i < maxRow; i++) {
+    for (let j = colIndex; j < maxCol; j++) {
+      const inputRef = document.querySelector(`#cell-${i}-${j}`) as HTMLInputElement
+      if (!inputRef) continue
+      inputRef.value = data[i - rowIndex][j - colIndex]
+    }
+  }
+}
+
 // 自定义粘贴事件（尝试读取剪贴板中的表格数据）
 const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
   e.preventDefault()
@@ -273,24 +285,22 @@ const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
 
   const clipboardDataFirstItem = e.clipboardData.items[0]
 
-  if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
-    clipboardDataFirstItem.getAsString(text => {
-      const clipboardData = pasteCustomClipboardString(text)
-      if (typeof clipboardData === 'object') return
- 
-      const excelData = pasteExcelClipboardString(text)
-      if (excelData) {
-        const maxRow = rowIndex + excelData.length
-        const maxCol = colIndex + excelData[0].length
-        for (let i = rowIndex; i < maxRow; i++) {
-          for (let j = colIndex; j < maxCol; j++) {
-            const inputRef = document.querySelector(`#cell-${i}-${j}`) as HTMLInputElement
-            if (!inputRef) continue
-            inputRef.value = excelData[i - rowIndex][j - colIndex]
-          }
-        }
-      }
-    })
+  if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string') {
+    if (clipboardDataFirstItem.type === 'text/plain') {
+      clipboardDataFirstItem.getAsString(text => {
+        const clipboardData = pasteCustomClipboardString(text)
+        if (typeof clipboardData === 'object') return
+   
+        const excelData = pasteExcelClipboardString(text)
+        if (excelData) fillTableData(excelData, rowIndex, colIndex)
+      })
+    }
+    else if (clipboardDataFirstItem.type === 'text/html') {
+      clipboardDataFirstItem.getAsString(html => {
+        const htmlData = pasteHTMLTableClipboardString(html)
+        if (htmlData) fillTableData(htmlData, rowIndex, colIndex)
+      }) 
+    }
   }
 }
 

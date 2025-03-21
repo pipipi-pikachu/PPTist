@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { pasteCustomClipboardString, pasteExcelClipboardString } from '@/utils/clipboard'
+import { pasteCustomClipboardString, pasteExcelClipboardString, pasteHTMLTableClipboardString } from '@/utils/clipboard'
 
 const props = withDefaults(defineProps<{
   value?: string
@@ -54,20 +54,32 @@ const handleFocus = () => {
 
     const clipboardDataFirstItem = e.clipboardData.items[0]
 
-    if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
-      clipboardDataFirstItem.getAsString(text => {
-        const clipboardData = pasteCustomClipboardString(text)
-        if (typeof clipboardData === 'object') return
- 
-        const excelData = pasteExcelClipboardString(text)
-        if (excelData) {
-          emit('insertExcelData', excelData)
-          if (textareaRef.value) textareaRef.value.innerHTML = excelData[0][0]
-          return
-        }
-
-        document.execCommand('insertText', false, text)
-      })
+    if (clipboardDataFirstItem && clipboardDataFirstItem.kind === 'string') {
+      if (clipboardDataFirstItem.type === 'text/plain') {
+        clipboardDataFirstItem.getAsString(text => {
+          const clipboardData = pasteCustomClipboardString(text)
+          if (typeof clipboardData === 'object') return
+   
+          const excelData = pasteExcelClipboardString(text)
+          if (excelData) {
+            emit('insertExcelData', excelData)
+            if (textareaRef.value) textareaRef.value.innerHTML = excelData[0][0]
+            return
+          }
+  
+          document.execCommand('insertText', false, text)
+        })
+      }
+      else if (clipboardDataFirstItem.type === 'text/html') {
+        clipboardDataFirstItem.getAsString(html => {
+          const htmlData = pasteHTMLTableClipboardString(html)
+          if (htmlData) {
+            emit('insertExcelData', htmlData)
+            if (textareaRef.value) textareaRef.value.innerHTML = htmlData[0][0]
+            return
+          }
+        }) 
+      }
     }
   }
 }

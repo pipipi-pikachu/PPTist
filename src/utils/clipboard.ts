@@ -70,3 +70,29 @@ export const pasteExcelClipboardString = (text: string): string[][] | null => {
   }
   return data
 }
+
+// 尝试解析剪贴板内容是否为HTML table代码
+export const pasteHTMLTableClipboardString = (text: string): string[][] | null => {
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(text, 'text/html')
+  const table = doc.querySelector('table')
+  const data: string[][] = []
+
+  if (!table) return data
+
+  const rows = table.querySelectorAll('tr')
+  for (const row of rows) {
+    const rowData = []
+    const cells = row.querySelectorAll('td, th')
+    for (const cell of cells) {
+      const text = cell.textContent ? cell.textContent.trim() : ''
+      const colspan = parseInt(cell.getAttribute('colspan') || '1', 10)
+      for (let i = 0; i < colspan; i++) {
+        rowData.push(text)
+      }
+    }
+    data.push(rowData)
+  }
+
+  return data
+}
