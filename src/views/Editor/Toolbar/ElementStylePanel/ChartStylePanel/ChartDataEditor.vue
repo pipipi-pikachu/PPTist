@@ -292,7 +292,12 @@ const handlePaste = (e: ClipboardEvent, rowIndex: number, colIndex: number) => {
         if (typeof clipboardData === 'object') return
    
         const excelData = pasteExcelClipboardString(text)
-        if (excelData) fillTableData(excelData, rowIndex, colIndex)
+        if (excelData) {
+          fillTableData(excelData, rowIndex, colIndex)
+          return
+        }
+  
+        document.execCommand('insertText', false, text)
       })
     }
     else if (clipboardDataFirstItem.type === 'text/html') {

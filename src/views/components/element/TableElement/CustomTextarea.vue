@@ -76,7 +76,6 @@ const handleFocus = () => {
           if (htmlData) {
             emit('insertExcelData', htmlData)
             if (textareaRef.value) textareaRef.value.innerHTML = htmlData[0][0]
-            return
           }
         }) 
       }
