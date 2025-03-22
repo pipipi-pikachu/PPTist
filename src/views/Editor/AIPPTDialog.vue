@@ -2,9 +2,9 @@
   <div class="aippt-dialog">
     <div class="header">
       <span class="title">AIPPT</span>
-      <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板，开始生成PPT</span>
-      <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板</span>
-      <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
+      <span class="subtite" v-if="step === 'template'">Select the appropriate template from the following to start generating PPT</span>
+      <span class="subtite" v-else-if="step === 'outline'">Confirm the content outline below (click to edit content, right-click to add/delete outline items), and start selecting a template</span>
+      <span class="subtite" v-else>Enter your PPT topic below and add appropriate information, such as industry, position, subject, purpose, etc.</span>
     </div>
     
     <template v-if="step === 'setup'">
@@ -12,20 +12,20 @@
         ref="inputRef"
         v-model:value="keyword" 
         :maxlength="50" 
-        placeholder="请输入PPT主题，如：大学生职业生涯规划" 
+        placeholder="Please enter the PPT topic, such as: College Students' Career Planning" 
         @enter="createOutline()"
       >
         <template #suffix>
           <span class="count">{{ keyword.length }} / 50</span>
-          <span class="language" v-tooltip="'切换语言'" @click="language = language === 'zh' ? 'en' : 'zh'">{{ language === 'zh' ? '中' : '英' }}</span>
-          <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI 生成</div>
+          <span class="language" v-tooltip="'Switch language'" @click="language = language === 'zh' ? 'en' : 'zh'">{{ language === 'zh' ? '中' : '英' }}</span>
+          <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI Generate</div>
         </template>
       </Input>
       <div class="recommends">
         <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="setKeyword(item)">{{ item }}</div>
       </div>
       <div class="model-selector">
-        <div class="label">选择AI模型：</div>
+        <div class="label">Select AI model:</div>
         <Select 
           style="width: 160px;"
           v-model:value="model"
@@ -43,8 +43,8 @@
          <OutlineEditor v-model:value="outline" />
        </div>
       <div class="btns" v-if="!outlineCreating">
-        <Button class="btn" type="primary" @click="step = 'template'">选择模板</Button>
-        <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
+        <Button class="btn" type="primary" @click="step = 'template'">Select a template</Button>
+        <Button class="btn" @click="outline = ''; step = 'setup'">Return to Setup</Button>
       </div>
     </div>
     <div class="select-template" v-if="step === 'template'">
@@ -59,12 +59,12 @@
         </div>
       </div>
       <div class="btns">
-        <Button class="btn" type="primary" @click="createPPT()">生成</Button>
-        <Button class="btn" @click="step = 'outline'">返回大纲</Button>
+        <Button class="btn" type="primary" @click="createPPT()">Generate</Button>
+        <Button class="btn" @click="step = 'outline'">Back to outline</Button>
       </div>
     </div>
 
-    <FullscreenSpin :loading="loading" tip="AI生成中，请耐心等待 ..." />
+    <FullscreenSpin :loading="loading" tip="AI is generating, please wait patiently ..." />
   </div>
 </template>
 
@@ -99,15 +99,15 @@ const step = ref<'setup' | 'outline' | 'template'>('setup')
 const model = ref('doubao-1.5-pro-32k')
 
 const recommends = ref([
-  '大学生职业生涯规划',
-  '公司年会策划方案',
-  '大数据如何改变世界',
-  '餐饮市场调查与研究',
-  'AIGC在教育领域的应用',
-  '5G技术如何改变我们的生活',
-  '社交媒体与品牌营销',
-  '年度工作总结与展望',
-  '区块链技术及其应用',
+  'Career planning for college students',
+  'Company annual meeting planning',
+  'How Big Data is Changing the World',
+  'Catering market survey and research',
+  'Application of AIGC in education',
+  'How 5G technology will change our lives',
+  'Social Media and Brand Marketing',
+  'Annual work summary and outlook',
+  'Blockchain technology and its applications',
 ]) 
 
 onMounted(() => {
@@ -122,7 +122,7 @@ const setKeyword = (value: string) => {
 }
 
 const createOutline = async () => {
-  if (!keyword.value) return message.error('请先输入PPT主题')
+  if (!keyword.value) return message.error('Please enter the PPT theme first')
 
   loading.value = true
   outlineCreating.value = true

@@ -1,10 +1,10 @@
 <template>
   <div class="theme-colors-setting">
-    <div class="title">编辑主题色</div>
+    <div class="title">Edit theme color</div>
 
     <div class="list">
       <div class="row" v-for="(item, index) in themeColors" :key="index">
-        <div class="label" style="width: 40%;">幻灯片主题色{{ index + 1 }}：</div>
+        <div class="label" style="width: 40%;">Slideshow theme color{{ index + 1 }}：</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <Button class="btn" type="primary" @click="setThemeColors()">确认</Button>
+    <Button class="btn" type="primary" @click="setThemeColors()">Confirm</Button>
   </div>
 </template>
 

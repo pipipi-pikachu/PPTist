@@ -1,25 +1,25 @@
 <template>
   <div class="multi-position-panel">
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'左对齐'" @click="alignElement(ElementAlignCommands.LEFT)"><IconAlignLeft /></Button>
-      <Button style="flex: 1;" v-tooltip="'水平居中'" @click="alignElement(ElementAlignCommands.HORIZONTAL)"><IconAlignHorizontally /></Button>
-      <Button style="flex: 1;" v-tooltip="'右对齐'" @click="alignElement(ElementAlignCommands.RIGHT)"><IconAlignRight /></Button>
+      <Button style="flex: 1;" v-tooltip="'Align Left'" @click="alignElement(ElementAlignCommands.LEFT)"><IconAlignLeft /></Button>
+      <Button style="flex: 1;" v-tooltip="'Align Center'" @click="alignElement(ElementAlignCommands.HORIZONTAL)"><IconAlignHorizontally /></Button>
+      <Button style="flex: 1;" v-tooltip="'Align Right'" @click="alignElement(ElementAlignCommands.RIGHT)"><IconAlignRight /></Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'上对齐'" @click="alignElement(ElementAlignCommands.TOP)"><IconAlignTop /></Button>
-      <Button style="flex: 1;" v-tooltip="'垂直居中'" @click="alignElement(ElementAlignCommands.VERTICAL)"><IconAlignVertically /></Button>
-      <Button style="flex: 1;" v-tooltip="'下对齐'" @click="alignElement(ElementAlignCommands.BOTTOM)"><IconAlignBottom /></Button>
+      <Button style="flex: 1;" v-tooltip="'Top'" @click="alignElement(ElementAlignCommands.TOP)"><IconAlignTop /></Button>
+      <Button style="flex: 1;" v-tooltip="'Center'" @click="alignElement(ElementAlignCommands.VERTICAL)"><IconAlignVertically /></Button>
+      <Button style="flex: 1;" v-tooltip="'Bottom'" @click="alignElement(ElementAlignCommands.BOTTOM)"><IconAlignBottom /></Button>
     </ButtonGroup>
     <ButtonGroup class="row" v-if="displayItemCount > 2">
-      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">水平均匀分布</Button>
-      <Button style="flex: 1;" @click="uniformVerticalDisplay()">垂直均匀分布</Button>
+      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">Uniform Horizontal Display</Button>
+      <Button style="flex: 1;" @click="uniformVerticalDisplay()">Uniform Vertical Display</Button>
     </ButtonGroup>
 
     <Divider />
 
     <ButtonGroup class="row">
-      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconGroup style="margin-right: 3px;" />组合</Button>
-      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconUngroup style="margin-right: 3px;" />取消组合</Button>
+      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><IconGroup style="margin-right: 3px;" />Combine</Button>
+      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><IconUngroup style="margin-right: 3px;" />Uncombine</Button>
     </ButtonGroup>
   </div>
 </template>

@@ -10,7 +10,7 @@
       class="input"
       v-if="type === 'web'" 
       v-model:value="address" 
-      placeholder="请输入网页链接地址"
+      placeholder="Please enter the web link address"
     />
 
     <Select 
@@ -26,8 +26,8 @@
     </div>
 
     <div class="btns">
-      <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-      <Button type="primary" @click="save()">确认</Button>
+      <Button @click="emit('close')" style="margin-right: 10px;">Cancel</Button>
+      <Button type="primary" @click="save()">Confirm</Button>
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@ const slideId = ref('')
 
 const slideOptions = computed(() => {
   return slides.value.map((item, index) => ({
-    label: `幻灯片 ${index + 1}`,
+    label: `Slideshow ${index + 1}`,
     value: item.id,
     disabled: currentSlide.value.id === item.id,
   }))
@@ -78,8 +78,8 @@ const selectedSlide = computed(() => {
 })
 
 const tabs: TabItem[] = [
-  { key: 'web', label: '网页链接' },
-  { key: 'slide', label: '幻灯片页面' },
+  { key: 'web', label: 'Web' },
+  { key: 'slide', label: 'Slideshow' },
 ]
 
 const { setLink } = useLink()

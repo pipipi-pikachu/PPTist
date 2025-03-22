@@ -13,7 +13,7 @@
     </div>
     <div class="configs">
       <div class="row">
-        <div class="title">导出格式：</div>
+        <div class="title">Export formats:</div>
         <RadioGroup
           class="config-item"
           v-model:value="format"
@@ -23,18 +23,18 @@
         </RadioGroup>
       </div>
       <div class="row">
-        <div class="title">导出范围：</div>
+        <div class="title">Export range:</div>
         <RadioGroup
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 33.33%;" value="all">全部</RadioButton>
-          <RadioButton style="width: 33.33%;" value="current">当前页</RadioButton>
-          <RadioButton style="width: 33.33%;" value="custom">自定义</RadioButton>
+          <RadioButton style="width: 33.33%;" value="all">All</RadioButton>
+          <RadioButton style="width: 33.33%;" value="current">Current</RadioButton>
+          <RadioButton style="width: 33.33%;" value="custom">Custom</RadioButton>
         </RadioGroup>
       </div>
       <div class="row" v-if="rangeType === 'custom'">
-        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">自定义范围：</div>
+        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">Scope:</div>
         <Slider
           class="config-item"
           range
@@ -46,7 +46,7 @@
       </div>
 
       <div class="row">
-        <div class="title">图片质量：</div>
+        <div class="title">Image Quality:</div>
         <Slider
           class="config-item"
           :min="0"
@@ -57,19 +57,19 @@
       </div>
 
       <div class="row">
-        <div class="title">忽略在线字体：</div>
+        <div class="title">Ignore online fonts:</div>
         <div class="config-item">
-          <Switch v-model:value="ignoreWebfont" v-tooltip="'导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭【忽略在线字体】选项，但要注意这将会增加导出用时。'" />
+          <Switch v-model:value="ignoreWebfont" v-tooltip="'Online fonts are ignored by default when exporting，If you use online fonts in your slides，I hope to keep the relevant styles after exporting，You can choose to turn off the [Ignore online fonts] option，But be aware that this will increase export time.'" />
         </div>
       </div>
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expImage()">导出图片</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn export" type="primary" @click="expImage()">Exporting images</Button>
+      <Button class="btn close" @click="emit('close')">Close</Button>
     </div>
 
-    <FullscreenSpin :loading="exporting" tip="正在导出..." />
+    <FullscreenSpin :loading="exporting" tip="Exporting..." />
   </div>
 </template>
 

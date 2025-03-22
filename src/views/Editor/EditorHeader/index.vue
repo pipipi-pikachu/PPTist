@@ -3,25 +3,25 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <PopoverMenuItem @click="openAIPPTDialog(); mainMenuVisible = false">AI 生成 PPT</PopoverMenuItem>
+          <PopoverMenuItem @click="openAIPPTDialog(); mainMenuVisible = false">Generate AI PPT</PopoverMenuItem>
           <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
             importPPTXFile(files)
             mainMenuVisible = false
           }">
-            <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
+            <PopoverMenuItem>Import pptx files (beta)</PopoverMenuItem>
           </FileInput>
           <FileInput accept=".pptist"  @change="files => {
             importSpecificFile(files)
             mainMenuVisible = false
           }">
-            <PopoverMenuItem>导入 pptist 文件</PopoverMenuItem>
+            <PopoverMenuItem>Import pptist file</PopoverMenuItem>
           </FileInput>
-          <PopoverMenuItem @click="setDialogForExport('pptx')">导出文件</PopoverMenuItem>
-          <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">重置幻灯片</PopoverMenuItem>
-          <PopoverMenuItem @click="openMarkupPanel(); mainMenuVisible = false">幻灯片类型标注</PopoverMenuItem>
-          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">意见反馈</PopoverMenuItem>
-          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">常见问题</PopoverMenuItem>
-          <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">快捷操作</PopoverMenuItem>
+          <PopoverMenuItem @click="setDialogForExport('pptx')">Exporting Files</PopoverMenuItem>
+          <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">Reset Slideshow</PopoverMenuItem>
+          <PopoverMenuItem @click="openMarkupPanel(); mainMenuVisible = false">Slide type label</PopoverMenuItem>
+          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">Feedback</PopoverMenuItem>
+          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">Frequently asked questions</PopoverMenuItem>
+          <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">Quick Operations</PopoverMenuItem>
         </template>
         <div class="menu-item"><IconHamburgerButton class="icon" /></div>
       </Popover>
@@ -45,21 +45,21 @@
 
     <div class="right">
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'幻灯片放映（F5）'" @click="enterScreening()">
+        <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
           <IconPpt class="icon" />
         </div>
         <Popover trigger="click" center>
           <template #content>
-            <PopoverMenuItem @click="enterScreeningFromStart()">从头开始</PopoverMenuItem>
-            <PopoverMenuItem @click="enterScreening()">从当前页开始</PopoverMenuItem>
+            <PopoverMenuItem @click="enterScreeningFromStart()">Start from scratch</PopoverMenuItem>
+            <PopoverMenuItem @click="enterScreening()">Start from current page</PopoverMenuItem>
           </template>
           <div class="arrow-btn"><IconDown class="arrow" /></div>
         </Popover>
       </div>
-      <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+      <div class="menu-item" v-tooltip="'Generate AI PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
       </div>
-      <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
+      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pptx')">
         <IconDownload class="icon" />
       </div>
       <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
@@ -73,10 +73,10 @@
       placement="right"
     >
       <HotkeyDoc />
-      <template v-slot:title>快捷操作</template>
+      <template v-slot:title>Quick Operations</template>
     </Drawer>
 
-    <FullscreenSpin :loading="exporting" tip="正在导入..." />
+    <FullscreenSpin :loading="exporting" tip="Importing..." />
   </div>
 </template>
 

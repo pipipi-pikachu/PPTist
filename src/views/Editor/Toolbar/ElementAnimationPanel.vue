@@ -43,12 +43,12 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <IconEffects style="margin-right: 5px;" /> 添加动画
+          <IconEffects style="margin-right: 5px;" /> Add animation
         </Button>
       </Popover>
     </div>
 
-    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
+    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> Select the element in the canvas to add animation</div>
     
     <Divider />
 
@@ -68,8 +68,8 @@
             <div class="index">{{element.index}}</div>
             <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
             <div class="handler">
-              <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click="runAnimation(element.elId, element.effect, element.duration)" />
-              <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click="deleteAnimation(element.id)" />
+              <IconPlayOne class="handler-btn" v-tooltip="'Preview'" @click="runAnimation(element.elId, element.effect, element.duration)" />
+              <IconCloseSmall class="handler-btn" v-tooltip="'Delete animation'" @click="deleteAnimation(element.id)" />
             </div>
           </div>
 
@@ -77,7 +77,7 @@
             <Divider :margin="16" />
 
             <div class="config-item">
-              <div style="width: 35%;">持续时长：</div>
+              <div style="width: 35%;">Duration:</div>
               <NumberInput 
                 :min="500"
                 :max="3000"
@@ -88,20 +88,20 @@
               />
             </div>
             <div class="config-item">
-              <div style="width: 35%;">触发方式：</div>
+              <div style="width: 35%;">Trigger mode:</div>
               <Select
                 :value="element.trigger"
                 @update:value="value => updateElementAnimationTrigger(element.id, value as AnimationTrigger)"
                 style="width: 65%;"
                 :options="[
-                  { label: '主动触发', value: 'click' },
-                  { label: '与上一动画同时', value: 'meantime' },
-                  { label: '上一动画之后', value: 'auto' },
+                  { label: 'Active trigger', value: 'click' },
+                  { label: 'Simultaneous with the previous animation', value: 'meantime' },
+                  { label: 'After the previous animation', value: 'auto' },
                 ]"
               />
             </div>
             <div class="config-item">
-              <Button style="width: 100%;" @click="openAnimationPool(element.id)">更换动画</Button>
+              <Button style="width: 100%;" @click="openAnimationPool(element.id)">Change animation</Button>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
     <template v-if="animationSequence.length >= 2">
       <Divider />
       <Button @click="runAllAnimation()">
-        {{ animateIn ? '停止预览' : '预览全部'}}
+        {{ animateIn ? 'Stop Preview' : 'Preview All'}}
       </Button>
     </template>
   </div>
@@ -172,9 +172,9 @@ const { handleElement, handleElementId } = storeToRefs(useMainStore())
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
-  { key: 'in', label: '入场', color: '#68a490' },
-  { key: 'out', label: '退场', color: '#d86344' },
-  { key: 'attention', label: '强调', color: '#e8b76a' },
+  { key: 'in', label: 'In', color: '#68a490' },
+  { key: 'out', label: 'Out', color: '#d86344' },
+  { key: 'attention', label: 'Emphasize', color: '#e8b76a' },
 ]
 const activeTab = ref('in')
 const animateIn = ref(false)

@@ -46,7 +46,7 @@
 
     <template v-if="toolVisible">
       <div class="header">
-        <div class="back" @click="changeMode('preview')"><IconLogout /> 退出播放</div>
+        <div class="back" @click="changeMode('preview')"><IconLogout /> Exit</div>
       </div>
       <MobileThumbnails class="thumbnails" />
     </template>

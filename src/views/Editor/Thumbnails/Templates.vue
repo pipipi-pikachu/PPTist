@@ -26,7 +26,7 @@
             <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
     
             <div class="btns">
-              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">插入模板</Button>
+              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">Insert template</Button>
             </div>
           </div>
         </template>
@@ -57,12 +57,12 @@ const types = ref<{
   label: string
   value: string
 }[]>([
-  { label: '全部', value: 'all' },
-  { label: '封面', value: 'cover' },
-  { label: '目录', value: 'contents' },
-  { label: '过渡', value: 'transition' },
-  { label: '内容', value: 'content' },
-  { label: '结束', value: 'end' },
+  { label: 'All', value: 'all' },
+  { label: 'Cover', value: 'cover' },
+  { label: 'Table of contents', value: 'contents' },
+  { label: 'transition', value: 'transition' },
+  { label: 'Content', value: 'content' },
+  { label: 'Finish', value: 'end' },
 ])
 const activeType = ref('all')
 

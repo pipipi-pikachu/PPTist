@@ -1,7 +1,7 @@
 <template>
   <div class="chart-style-panel">
     <Button class="full-width-btn" @click="chartDataEditorVisible = true">
-      <IconEdit class="btn-icon" /> 编辑图表
+      <IconEdit class="btn-icon" /> Edit a chart
     </Button>
 
     <Divider />
@@ -12,20 +12,20 @@
           @update:value="value => updateOptions({ stack: value })" 
           :value="stack"
           style="flex: 2;"
-        >堆叠样式</Checkbox>
+        >Stacked Style</Checkbox>
         <Checkbox 
           v-if="handleChartElement.chartType === 'line'"
           @update:value="value => updateOptions({ lineSmooth: value })" 
           :value="lineSmooth"
           style="flex: 3;"
-        >使用平滑曲线</Checkbox>
+        >Use Smooth Curve</Checkbox>
       </div>
   
       <Divider />
     </template>
 
     <div class="row">
-      <div style="width: 40%;">背景填充：</div>
+      <div style="width: 40%;">Background fill:</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -37,7 +37,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">文字颜色：</div>
+      <div style="width: 40%;">Text Color:</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -50,11 +50,11 @@
     </div>
 
     <div class="row">
-      <div style="width: 40%;">主题配色：</div>
+      <div style="width: 40%;">Theme color:</div>
       <Popover trigger="click" v-model:value="themesVisible" style="width: 60%;">
         <template #content>
           <div class="themes">
-            <div class="label">预置图表主题：</div>
+            <div class="label">Preset chart themes:</div>
             <div class="preset-themes">
               <div class="preset-theme" v-for="(item, index) in CHART_PRESET_THEMES" :key="index" @click="setThemeColors(item)">
                 <div 
@@ -65,7 +65,7 @@
                 ></div>
               </div>
             </div>
-            <div class="label">幻灯片主题：</div>
+            <div class="label">Slideshow topic:</div>
             <div class="preset-themes" :style="{ marginBottom: '-10px' }">
               <div class="preset-theme" @click="setThemeColors(theme.themeColors)">
                 <div 
@@ -77,7 +77,7 @@
               </div>
             </div>
             <Divider :margin="10" />
-            <Button class="full-width-btn" @click="themesVisible = false; themeColorsSettingVisible = true">自定义配色</Button>
+            <Button class="full-width-btn" @click="themesVisible = false; themeColorsSettingVisible = true">Custom color scheme</Button>
           </div>
         </template>
         <ColorListButton :colors="themeColors" />

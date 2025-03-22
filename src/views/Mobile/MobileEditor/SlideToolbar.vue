@@ -3,25 +3,25 @@
     <div class="remark">
       <textarea
         :value="remark"
-        placeholder="点击输入演讲者备注"
+        placeholder="Click to enter speaker notes"
         @input="$event => handleInputMark($event)"
       ></textarea>
     </div>
     <div class="toolbar">
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="createSlide()"><IconPlus class="icon" /> 新幻灯片</Button>
-        <Button style="flex: 1;" @click="copyAndPasteSlide()"><IconCopy class="icon" /> 复制</Button>
-        <Button style="flex: 1;" @click="deleteSlide()"><IconDelete class="icon" /> 删除</Button>
+        <Button style="flex: 1;" @click="createSlide()"><IconPlus class="icon" /> New Slide</Button>
+        <Button style="flex: 1;" @click="copyAndPasteSlide()"><IconCopy class="icon" /> Copy</Button>
+        <Button style="flex: 1;" @click="deleteSlide()"><IconDelete class="icon" /> Delete</Button>
       </ButtonGroup>
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="insertTextElement()"><IconFontSize class="icon" /> 文字</Button>
+        <Button style="flex: 1;" @click="insertTextElement()"><IconFontSize class="icon" /> Add Text</Button>
         <Button style="flex: 1;">
           <FileInput @change="files => insertImageElement(files)">
-            <IconPicture class="icon" />图片
+            <IconPicture class="icon" />Add Image
           </FileInput>
         </Button>
-        <Button style="flex: 1;" @click="insertShapeElement('square')"><IconSquare class="icon" /> 矩形</Button>
-        <Button style="flex: 1;" @click="insertShapeElement('round')"><IconRound class="icon" /> 圆形</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('square')"><IconSquare class="icon" /> Rectangle</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('round')"><IconRound class="icon" /> Round</Button>
       </ButtonGroup>
     </div>
 
@@ -58,7 +58,7 @@ const insertTextElement = () => {
     top: (viewportSize.value * viewportRatio.value - height) / 2,
     width,
     height,
-  }, { content: '<p>新添加文本</p>' })
+  }, { content: '<p>Newly added text</p>' })
 }
 
 const insertImageElement = (files: FileList) => {

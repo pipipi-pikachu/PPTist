@@ -69,7 +69,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   disabled: false,
   search: false,
-  searchLabel: '搜索',
+  searchLabel: 'search',
 })
 
 const emit = defineEmits<{

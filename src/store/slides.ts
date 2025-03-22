@@ -30,7 +30,7 @@ export interface SlidesState {
 
 export const useSlidesStore = defineStore('slides', {
   state: (): SlidesState => ({
-    title: '未命名演示文稿', // 幻灯片标题
+    title: 'Untitled Presentation', // 幻灯片标题
     theme: {
       themeColors: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#4472c4', '#70ad47'],
       fontColor: '#333',
@@ -53,10 +53,10 @@ export const useSlidesStore = defineStore('slides', {
     viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
     templates: [
-      { name: '红色通用', id: 'template_1', cover: 'https://asset.pptist.cn/img/template_1.jpg' },
-      { name: '蓝色通用', id: 'template_2', cover: 'https://asset.pptist.cn/img/template_2.jpg' },
-      { name: '紫色通用', id: 'template_3', cover: 'https://asset.pptist.cn/img/template_3.jpg' },
-      { name: '莫兰迪配色', id: 'template_4', cover: 'https://asset.pptist.cn/img/template_4.jpg' },
+      { name: 'Red Universal', id: 'template_1', cover: 'https://asset.pptist.cn/img/template_1.jpg' },
+      { name: 'Blue Universal', id: 'template_2', cover: 'https://asset.pptist.cn/img/template_2.jpg' },
+      { name: 'Purple Universal', id: 'template_3', cover: 'https://asset.pptist.cn/img/template_3.jpg' },
+      { name: 'Morandi color matching', id: 'template_4', cover: 'https://asset.pptist.cn/img/template_4.jpg' },
     ], // 模板
   }),
 
@@ -109,7 +109,7 @@ export const useSlidesStore = defineStore('slides', {
 
   actions: {
     setTitle(title: string) {
-      if (!title) this.title = '未命名演示文稿'
+      if (!title) this.title = 'Untitled Presentation'
       else this.title = title
     },
 

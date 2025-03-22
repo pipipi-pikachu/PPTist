@@ -11,7 +11,7 @@
     @click="autoHideController()"
   >
     <div class="video-wrap" @click="toggle()">
-      <div class="load-error" v-if="loadError">视频加载失败</div>
+      <div class="load-error" v-if="loadError">Video loading failed</div>
 
       <video
         class="video"
@@ -75,7 +75,7 @@
       <div class="icons icons-right">
         <div class="speed">
           <div class="icon speed-icon">
-            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">{{playbackRate === 1 ? '倍速' : (playbackRate + 'x')}}</span>
+            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">{{playbackRate === 1 ? 'Speed' : (playbackRate + 'x')}}</span>
             <div class="speed-menu" v-if="speedMenuVisible" @mouseleave="speedMenuVisible = false">
               <div 
                 class="speed-menu-item" 
@@ -89,7 +89,7 @@
         </div>
         <div class="loop" @click="toggleLoop()">
           <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content">循环{{loop ? '开' : '关'}}</span>
+            <span class="icon-content">cycle{{loop ? 'open' : 'close'}}</span>
           </div>
         </div>
       </div>

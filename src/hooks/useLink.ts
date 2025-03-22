@@ -11,11 +11,11 @@ export default () => {
   const setLink = (handleElement: PPTElement, link: PPTElementLink) => {
     const linkRegExp = /^(https?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-.,@?^=%&:\/~+#]*[\w\-@?^=%&\/~+#])?$/
     if (link.type === 'web' && !linkRegExp.test(link.target)) {
-      message.error('不是正确的网页链接地址')
+      message.error('Not a correct web link address')
       return false
     }
     if (link.type === 'slide' && !link.target) {
-      message.error('请先选择链接目标')
+      message.error('Please select the link target first')
       return false
     }
     const props = { link }

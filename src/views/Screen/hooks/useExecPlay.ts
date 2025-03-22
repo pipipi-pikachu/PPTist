@@ -135,7 +135,7 @@ export default () => {
     }
     else {
       if (loopPlay.value) turnSlideToIndex(slides.value.length - 1)
-      else throttleMassage('已经是第一页了')
+      else throttleMassage('Already the first page')
     }
     inAnimation.value = false
   }
@@ -151,7 +151,7 @@ export default () => {
     else {
       if (loopPlay.value) turnSlideToIndex(0)
       else {
-        throttleMassage('已经是最后一页了')
+        throttleMassage('This is the last page')
         closeAutoPlay()
       }
       inAnimation.value = false
@@ -162,7 +162,7 @@ export default () => {
   const autoPlayInterval = ref(2500)
   const autoPlay = () => {
     closeAutoPlay()
-    message.success('开始自动放映')
+    message.success('Start AutoShow')
     autoPlayTimer.value = setInterval(execNext, autoPlayInterval.value)
   }
 

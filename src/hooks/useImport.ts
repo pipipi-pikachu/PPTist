@@ -60,7 +60,7 @@ export default () => {
         else addSlidesFromData(slides)
       }
       catch {
-        message.error('无法正确读取 / 解析该文件')
+        message.error('The file could not be read/parsed correctly')
       }
     })
     reader.readAsText(file)
@@ -155,7 +155,7 @@ export default () => {
       }
       catch {
         exporting.value = false
-        message.error('无法正确读取 / 解析该文件')
+        message.error('The file could not be read/parsed correctly')
         return
       }
 

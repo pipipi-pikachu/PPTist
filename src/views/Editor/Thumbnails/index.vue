@@ -6,7 +6,7 @@
     v-contextmenu="contextmenusThumbnails"
   >
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
+      <div class="btn" @click="createSlide()"><IconPlus class="icon" />Add a slide</div>
       <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
           <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
@@ -37,13 +37,13 @@
               :id="`section-title-input-${element?.sectionTag?.id || 'default'}`" 
               type="text"
               :value="element?.sectionTag?.title || ''"
-              placeholder="输入节名称"
+              placeholder="Input section name"
               @blur="$event => saveSection($event)"
               @keydown.enter.stop="$event => saveSection($event)"
               v-if="editingSectionId === element?.sectionTag?.id || (index === 0 && editingSectionId === 'default')"
             >
             <span class="text" v-else>
-              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || '无标题节') : '默认节' }}</div>
+              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || 'Untitled Section') : 'Default Section' }}</div>
             </span>
           </div>
           <div
@@ -65,7 +65,7 @@
       </template>
     </Draggable>
 
-    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+    <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div>
   </div>
 </template>
 
@@ -248,22 +248,22 @@ const contextmenusSection = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '删除节',
+      text: 'Remove Section',
       handler: () => removeSection(sectionId),
     },
     {
-      text: '删除节和幻灯片',
+      text: 'Deleting Sections & Slides',
       handler: () => {
         mainStore.setActiveElementIdList([])
         removeSectionSlides(sectionId)
       },
     },
     {
-      text: '删除所有节',
+      text: 'Delete All',
       handler: removeAllSection,
     },
     {
-      text: '重命名节',
+      text: 'Rename Section',
       handler: () => editSection(sectionId),
     },
   ]
@@ -274,22 +274,22 @@ const { enterScreening, enterScreeningFromStart } = useScreening()
 const contextmenusThumbnails = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: 'Paste',
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: 'Select All',
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     {
-      text: '新建页面',
+      text: 'Create a new page',
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '幻灯片放映',
+      text: 'Slideshow',
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
@@ -299,49 +299,49 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
-      text: '剪切',
+      text: 'Cut',
       subText: 'Ctrl + X',
       handler: cutSlide,
     },
     {
-      text: '复制',
+      text: 'Copy',
       subText: 'Ctrl + C',
       handler: copySlide,
     },
     {
-      text: '粘贴',
+      text: 'Paste',
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: 'Select All',
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     { divider: true },
     {
-      text: '新建页面',
+      text: 'Create a new page',
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '复制页面',
+      text: 'Copy Page',
       subText: 'Ctrl + D',
       handler: copyAndPasteSlide,
     },
     {
-      text: '删除页面',
+      text: 'Delete a page',
       subText: 'Delete',
       handler: () => deleteSlide(),
     },
     {
-      text: '增加节',
+      text: 'Add a section',
       handler: createSection,
       disable: !!currentSlide.value.sectionTag,
     },
     { divider: true },
     {
-      text: '从当前放映',
+      text: 'From the current show',
       subText: 'Shift + F5',
       handler: enterScreening,
     },

@@ -1,13 +1,13 @@
 <template>
   <div class="latex-style-panel">
     <div class="row">
-      <Button style="flex: 1;" @click="latexEditorVisible = true">编辑 LaTeX</Button>
+      <Button style="flex: 1;" @click="latexEditorVisible = true">Edit LaTeX</Button>
     </div>
 
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">颜色：</div>
+      <div style="width: 40%;">Color:</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -19,7 +19,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">粗细：</div>
+      <div style="width: 40%;">Thickness:</div>
       <NumberInput 
         :min="1"
         :max="3"

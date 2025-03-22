@@ -9,7 +9,7 @@ instance.interceptors.response.use(
       return Promise.resolve(response.data)
     }
 
-    message.error('未知的请求错误！')
+    message.error('Unknown request error!')
     return Promise.reject(response)
   },
   error => {
@@ -21,11 +21,11 @@ instance.interceptors.response.use(
         return Promise.reject(error.message)
       }
       
-      message.error('服务器遇到未知错误！')
+      message.error('The server encountered an unknown error!')
       return Promise.reject(error.message)
     }
 
-    message.error('连接到服务器失败 或 服务器响应超时！')
+    message.error('Failed to connect to the server or the server response timed out!')
     return Promise.reject(error)
   }
 )

@@ -7,9 +7,9 @@
     :top="top"
   >
     <div class="header">
-      <span class="text-btn" @click="toggle()">{{ inTiming ? '暂停' : '开始'}}</span>
-      <span class="text-btn" @click="reset()">重置</span>
-      <span class="text-btn" @click="toggleCountdown()" :class="{ 'active': isCountdown }">倒计时</span>
+      <span class="text-btn" @click="toggle()">{{ inTiming ? 'Pause' : 'Start'}}</span>
+      <span class="text-btn" @click="reset()">Reset</span>
+      <span class="text-btn" @click="toggleCountdown()" :class="{ 'active': isCountdown }">Countdown</span>
     </div>
     <div class="content">
       <div class="timer">

@@ -83,7 +83,7 @@ export default () => {
       highlightCurrentSlide()
     }
     else {
-      message.warning('未查找到匹配项')
+      message.warning('No matches found')
       clearMarks()
     }
   }
@@ -229,7 +229,7 @@ export default () => {
   }
   
   const searchNext = () => {
-    if (!searchWord.value) return message.warning('请先输入查找内容')
+    if (!searchWord.value) return message.warning('Please enter the search content first')
     mainStore.setActiveElementIdList([])
     if (searchIndex.value === -1) search()
     else if (searchIndex.value < searchResults.value.length - 1) searchIndex.value += 1
@@ -238,7 +238,7 @@ export default () => {
   }
   
   const searchPrev = () => {
-    if (!searchWord.value) return message.warning('请先输入查找内容')
+    if (!searchWord.value) return message.warning('Please enter the search content first')
     mainStore.setActiveElementIdList([])
     if (searchIndex.value === -1) search()
     else if (searchIndex.value > 0) searchIndex.value -= 1

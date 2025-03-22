@@ -61,7 +61,7 @@
       ></div>
     </div>
 
-    <div class="recent-colors-title" v-if="recentColors.length">最近使用：</div>
+    <div class="recent-colors-title" v-if="recentColors.length">Recently used:</div>
     <div class="picker-presets">
       <div
         v-for="c in recentColors"

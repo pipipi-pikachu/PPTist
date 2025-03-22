@@ -5,12 +5,12 @@
         style="flex: 1;"
         :checked="flipV"
         @click="updateFlip({ flipV: !flipV })"
-      ><IconFlipVertically /> 垂直翻转</CheckboxButton>
+      ><IconFlipVertically /> Flip Vertically</CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="flipH"
         @click="updateFlip({ flipH: !flipH })"
-      ><IconFlipHorizontally /> 水平翻转</CheckboxButton>
+      ><IconFlipHorizontally /> Flip Horizontal</CheckboxButton>
     </ButtonGroup>
   </div>
 </template>

@@ -165,7 +165,7 @@ const keydownListener = (e: KeyboardEvent) => {
   if (key === KEYS.ENTER) create()
 }
 onMounted(() => {
-  message.success('点击绘制任意形状，首尾闭合完成绘制，按 ESC 键或鼠标右键取消，按 ENTER 键提前完成', {
+  message.success('Click to draw any shape，The drawing is completed by closing the beginning and the end，according to ESC key or right click to cancel，according to ENTER Key completed early', {
     duration: 0,
   })
   document.addEventListener('keydown', keydownListener)

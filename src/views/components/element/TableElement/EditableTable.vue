@@ -692,51 +692,51 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '插入列',
+      text: 'Insert Column',
       children: [
-        { text: '到左侧', handler: () => insertCol(colIndex) },
-        { text: '到右侧', handler: () => insertCol(colIndex + 1) },
+        { text: 'To the left', handler: () => insertCol(colIndex) },
+        { text: 'To the right', handler: () => insertCol(colIndex + 1) },
       ],
     },
     {
-      text: '插入行',
+      text: 'Insert Row',
       children: [
-        { text: '到上方', handler: () => insertRow(rowIndex) },
-        { text: '到下方', handler: () => insertRow(rowIndex + 1) },
+        { text: 'To the top', handler: () => insertRow(rowIndex) },
+        { text: 'To the bottom', handler: () => insertRow(rowIndex + 1) },
       ],
     },
     {
-      text: '删除列',
+      text: 'Deleting a column',
       disable: !canDeleteCol,
       handler: () => deleteCol(colIndex),
     },
     {
-      text: '删除行',
+      text: 'Deleting a row',
       disable: !canDeleteRow,
       handler: () => deleteRow(rowIndex),
     },
     { divider: true },
     {
-      text: '合并单元格',
+      text: 'Merge cells',
       disable: !canMerge,
       handler: mergeCells,
     },
     {
-      text: '取消合并单元格',
+      text: 'Unmerge cells',
       disable: !canSplit,
       handler: () => splitCells(rowIndex, colIndex),
     },
     { divider: true },
     {
-      text: '选中当前列',
+      text: 'Select the current column',
       handler: () => selectCol(colIndex),
     },
     {
-      text: '选中当前行',
+      text: 'Select the current row',
       handler: () => selectRow(rowIndex),
     },
     {
-      text: '选中全部单元格',
+      text: 'Select all cells',
       handler: selectAll,
     },
   ]

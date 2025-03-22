@@ -1,6 +1,6 @@
 <template>
   <div class="video-style-panel">
-    <div class="title">视频预览封面</div>
+    <div class="title">Video preview cover</div>
     <div class="background-image-wrapper">
       <FileInput @change="files => setVideoPoster(files)">
         <div class="background-image">
@@ -11,11 +11,11 @@
       </FileInput>
     </div>
     <div class="row">
-      <Button style="flex: 1;" @click="updateVideo({ poster: '' })">重置封面</Button>
+      <Button style="flex: 1;" @click="updateVideo({ poster: '' })">Reset Cover</Button>
     </div>
 
     <div class="row switch-row">
-      <div style="width: 40%;">自动播放：</div>
+      <div style="width: 40%;">Autoplay:</div>
       <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="handleVideoElement.autoplay" 

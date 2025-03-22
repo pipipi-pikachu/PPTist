@@ -1,14 +1,14 @@
 export const ELEMENT_TYPE_ZH: { [key: string]: string } = {
-  text: '文本',
-  image: '图片',
-  shape: '形状',
-  line: '线条',
-  chart: '图表',
-  table: '表格',
-  video: '视频',
-  audio: '音频',
-  latex: '公式',
-}
+  text: "text",
+  image: "image",
+  shape: "shape",
+  line: "line",
+  chart: "chart",
+  table: "table",
+  video: "video",
+  audio: "audio",
+  latex: "latex",
+};
 
 export const MIN_SIZE: { [key: string]: number } = {
   text: 40,
@@ -19,4 +19,4 @@ export const MIN_SIZE: { [key: string]: number } = {
   video: 250,
   audio: 20,
   latex: 20,
-}
+};

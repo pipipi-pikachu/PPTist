@@ -7,18 +7,18 @@
     />
 
     <template v-if="type === 'video'">
-      <Input v-model:value="videoSrc" placeholder="请输入视频地址，e.g. https://xxx.mp4"></Input>
+      <Input v-model:value="videoSrc" placeholder="Please enter the video URL，e.g. https://xxx.mp4"></Input>
       <div class="btns">
-        <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-        <Button type="primary" @click="insertVideo()">确认</Button>
+        <Button @click="emit('close')" style="margin-right: 10px;">Cancel</Button>
+        <Button type="primary" @click="insertVideo()">Confirm</Button>
       </div>
     </template>
 
     <template v-if="type === 'audio'">
-      <Input v-model:value="audioSrc" placeholder="请输入音频地址，e.g. https://xxx.mp3"></Input>
+      <Input v-model:value="audioSrc" placeholder="Please enter the audio URL，e.g. https://xxx.mp3"></Input>
       <div class="btns">
-        <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-        <Button type="primary" @click="insertAudio()">确认</Button>
+        <Button @click="emit('close')" style="margin-right: 10px;">Cancel</Button>
+        <Button type="primary" @click="insertAudio()">Confirm</Button>
       </div>
     </template>
   </div>
@@ -49,17 +49,17 @@ const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_w
 const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
 const tabs: TabItem[] = [
-  { key: 'video', label: '视频' },
-  { key: 'audio', label: '音频' },
+  { key: 'video', label: 'Video' },
+  { key: 'audio', label: 'Audio' },
 ]
 
 const insertVideo = () => {
-  if (!videoSrc.value) return message.error('请先输入正确的视频地址')
+  if (!videoSrc.value) return message.error('Please enter the correct video address first')
   emit('insertVideo', videoSrc.value)
 }
 
 const insertAudio = () => {
-  if (!audioSrc.value) return message.error('请先输入正确的音频地址')
+  if (!audioSrc.value) return message.error('Please enter the correct audio address first')
   emit('insertAudio', audioSrc.value)
 }
 </script>

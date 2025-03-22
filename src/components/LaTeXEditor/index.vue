@@ -3,10 +3,10 @@
     <div class="container">
       <div class="left">
         <div class="input-area">
-          <TextArea v-model:value="latex" placeholder="输入 LaTeX 公式" ref="textAreaRef" />
+          <TextArea v-model:value="latex" placeholder="Input LaTeX Official" ref="textAreaRef" />
         </div>
         <div class="preview">
-          <div class="placeholder" v-if="!latex">公式预览</div>
+          <div class="placeholder" v-if="!latex">Official preview</div>
           <div class="preview-content" v-else>
             <FormulaContent
               :width="518"
@@ -52,8 +52,8 @@
       </div>
     </div>
     <div class="footer">
-      <Button class="btn" @click="emit('close')">取消</Button>
-      <Button class="btn" type="primary" @click="update()">确定</Button>
+      <Button class="btn" @click="emit('close')">Cancel</Button>
+      <Button class="btn" type="primary" @click="update()">Confirm</Button>
     </div>
   </div>
 </template>

@@ -12,7 +12,7 @@
         <div class="animation-text">{{item.label}}</div>
       </div>
     </div>
-    <Button style="width: 100%;" @click="applyAllSlide()">应用到全部</Button>
+    <Button style="width: 100%;" @click="applyAllSlide()">Apply to All</Button>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ const applyAllSlide = () => {
     }
   })
   slidesStore.setSlides(newSlides)
-  message.success('已应用到全部')
+  message.success('Applied to all')
   addHistorySnapshot()
 }
 </script>

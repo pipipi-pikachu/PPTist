@@ -39,26 +39,26 @@ const { activeElementIdList, activeElementList, activeGroupElementId, handleElem
 const elementTabs = computed<ElementTabs[]>(() => {
   if (handleElement.value?.type === 'text') {
     return [
-      { label: '样式', key: ToolbarStates.EL_STYLE },
-      { label: '符号', key: ToolbarStates.SYMBOL },
-      { label: '位置', key: ToolbarStates.EL_POSITION },
-      { label: '动画', key: ToolbarStates.EL_ANIMATION },
+    { label: 'Style', key: ToolbarStates.EL_STYLE },
+    { label: 'Symbol', key: ToolbarStates.SYMBOL },
+    { label: 'Position', key: ToolbarStates.EL_POSITION },
+    { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
     ]
   }
   return [
-    { label: '样式', key: ToolbarStates.EL_STYLE },
-    { label: '位置', key: ToolbarStates.EL_POSITION },
-    { label: '动画', key: ToolbarStates.EL_ANIMATION },
+    { label: 'Style', key: ToolbarStates.EL_STYLE },
+    { label: 'Position', key: ToolbarStates.EL_POSITION },
+    { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
   ]
 })
 const slideTabs = [
-  { label: '设计', key: ToolbarStates.SLIDE_DESIGN },
-  { label: '切换', key: ToolbarStates.SLIDE_ANIMATION },
-  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+  { label: 'Design', key: ToolbarStates.SLIDE_DESIGN },
+  { label: 'Switch', key: ToolbarStates.SLIDE_ANIMATION },
+  { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
 ]
 const multiSelectTabs = [
-  { label: '样式（多选）', key: ToolbarStates.MULTI_STYLE },
-  { label: '位置（多选）', key: ToolbarStates.MULTI_POSITION },
+  { label: 'Style (multiple choices)', key: ToolbarStates.MULTI_STYLE },
+  { label: 'Position (multiple choices)', key: ToolbarStates.MULTI_POSITION },
 ]
 
 const setToolbarState = (value: ToolbarStates) => {

@@ -176,7 +176,7 @@ const deleteItem = (itemId: string, isTitle?: boolean) => {
     const item = data.value[index]
     const nextItem = data.value[index + 1]
     if (nextItem && nextItem.lv > item.lv) {
-      message.error('请先将子级大纲全部删除')
+      message.error('Please delete all of them')
       return
     }
   }
@@ -190,23 +190,23 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   if (lv === 1) {
     return [
       {
-        text: '添加子级大纲（章）',
-        handler: () => addItem(id, 'next', '新的一章'),
+        text: 'Add sub-level outline (chapter)',
+        handler: () => addItem(id, 'next', 'New chapter'),
       },
     ]
   }
   else if (lv === 2) {
     return [
       {
-        text: '上方添加同级大纲（章）',
-        handler: () => addItem(id, 'prev', '新的一章'),
+        text: 'Add the same level outline (chapter) above',
+        handler: () => addItem(id, 'prev', 'A new chapter'),
       },
       {
-        text: '添加子级大纲（节）',
-        handler: () => addItem(id, 'next', '新的一节'),
+        text: 'Add a sub-outline (section)',
+        handler: () => addItem(id, 'next', 'New section'),
       },
       {
-        text: '删除此章',
+        text: 'Delete this chapter',
         handler: () => deleteItem(id, true),
       },
     ]
@@ -214,30 +214,30 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   else if (lv === 3) {
     return [
       {
-        text: '上方添加同级大纲（节）',
+        text: 'Add the same level outline (section) above',
         handler: () => addItem(id, 'prev', '新的一节'),
       },
       {
-        text: '添加子级大纲（项）',
-        handler: () => addItem(id, 'next', '新的一项'),
+        text: 'Add sub-level outline (item) ',
+        handler: () => addItem(id, 'next', 'A new one'),
       },
       {
-        text: '删除此节',
+        text: 'Delete this section',
         handler: () => deleteItem(id, true),
       },
     ]
   }
   return [
     {
-      text: '上方添加同级大纲（项）',
-      handler: () => addItem(id, 'prev', '新的一项'),
+      text: 'Add the same level outline (item) above',
+      handler: () => addItem(id, 'prev', 'A new one'),
     },
     {
-      text: '下方添加同级大纲（项）',
-      handler: () => addItem(id, 'next', '新的一项'),
+      text: 'Add the same level outline (item) below',
+      handler: () => addItem(id, 'next', 'A new one'),
     },
     {
-      text: '删除此项',
+      text: 'Delete this item',
       handler: () => deleteItem(id),
     },
   ]
@@ -329,13 +329,13 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     }
   }
   .item.lv-1 .flag::after {
-    content: '主题';
+    content: 'theme';
   }
   .item.lv-2 .flag::after {
-    content: '章';
+    content: 'chapter';
   }
   .item.lv-3 .flag::after {
-    content: '节';
+    content: 'Festival';
   }
   .item.lv-4 .flag::after {
     opacity: 0;
