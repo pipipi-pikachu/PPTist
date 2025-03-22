@@ -194,7 +194,7 @@ export default () => {
         else {
           background = {
             type: 'solid',
-            color: value,
+            color: value || '#fff',
           }
         }
 
@@ -263,6 +263,19 @@ export default () => {
                 rotate: el.rotate,
                 flipH: el.isFlipH,
                 flipV: el.isFlipV,
+              })
+            }
+            else if (el.type === 'math') {
+              slide.elements.push({
+                type: 'image',
+                id: nanoid(10),
+                src: el.picBase64,
+                width: el.width,
+                height: el.height,
+                left: el.left,
+                top: el.top,
+                fixedRatio: true,
+                rotate: 0,
               })
             }
             else if (el.type === 'audio') {
