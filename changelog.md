@@ -17,6 +17,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Hidden Slide Number at left-hand side bottom
 - Commented out Vue code for remarks, as it was hidden.
 - Fixed layout due to changes to `remarks` footer.
+- Changed slide number to appear above the slide in thumbnail left-hand sidebar.
 
 ### Fixed
 - 

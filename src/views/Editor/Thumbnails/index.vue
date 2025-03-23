@@ -56,10 +56,13 @@
             @dblclick="enterScreening()"
             v-contextmenu="contextmenusThumbnailItem"
           >
-            <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
-            <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+            <div>
+              <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
+              <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+            </div>
+
   
-            <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
+            <!-- <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div> -->
           </div>
         </div>
       </template>
@@ -400,7 +403,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
 }
 .thumbnail-item {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: 5px 0;
   position: relative;
@@ -408,6 +411,10 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   .thumbnail {
     border-radius: $borderRadius;
     outline: 2px solid rgba($color: $themeColor, $alpha: .15);
+  }
+
+  .label {
+    padding: 0.5rem 0;
   }
 
   &.active {
