@@ -136,7 +136,13 @@ export default () => {
   }
 
   // 导入PPTX文件
-  const importPPTXFile = (files: FileList, cover = false) => {
+  const importPPTXFile = (files: FileList, options?: { cover?: boolean; fixedViewport?: boolean }) => {
+    const defaultOptions = {
+      cover: false,
+      fixedViewport: false, 
+    }
+    const { cover, fixedViewport } = { ...defaultOptions, ...options }
+
     const file = files[0]
     if (!file) return
 
@@ -159,10 +165,12 @@ export default () => {
         return
       }
 
-      const ratio = 96 / 72
+      let ratio = 96 / 72
       const width = json.size.width
+      
+      if (fixedViewport) ratio = 1000 / width
+      else slidesStore.setViewportSize(width * ratio)
 
-      slidesStore.setViewportSize(width * ratio)
       slidesStore.setTheme({ themeColors: json.themeColors })
 
       const slides: Slide[] = []
