@@ -6,11 +6,11 @@
       ref="editorRef"
       @update="value => handleInput(value)"
     /> -->
-  </div>
-  <div class="attribution-block">
+    <div class="attribution-block">
         <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/ninode97/PPTist" target="_blank">
         <div class="menu-item"><IconGithub fill="#111" class="icon" /></div>
         </a>
+  </div>
   </div>
 </template>
 
@@ -92,10 +92,13 @@ const resize = (e: MouseEvent) => {
   height: 100%;
   display: flex;
   justify-content: center;
-  position: relative;
+ 
+  display: flex;
+    align-items: center;
+    height: 100%;
 
   .github-link {
-    position: absolute;
+  
     top: 0.5%;
     display: flex;
     align-items: center;

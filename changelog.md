@@ -16,6 +16,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Moved attribution and copyright to bottom.
 - Hidden Slide Number at left-hand side bottom
 - Commented out Vue code for remarks, as it was hidden.
+- Fixed layout due to changes to `remarks` footer.
 
 ### Fixed
 - 
