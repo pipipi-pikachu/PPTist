@@ -3,24 +3,24 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <PopoverMenuItem @click="openAIPPTDialog(); mainMenuVisible = false">Generate AI PPT</PopoverMenuItem>
-          <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
+          <!-- <PopoverMenuItem @click="openAIPPTDialog(); mainMenuVisible = false">Generate AI PPT</PopoverMenuItem> -->
+          <!-- <FileInput accept="application/vnd.openxmlformats-officedocument.presentationml.presentation"  @change="files => {
             importPPTXFile(files)
             mainMenuVisible = false
           }">
             <PopoverMenuItem>Import pptx files (beta)</PopoverMenuItem>
-          </FileInput>
-          <FileInput accept=".pptist"  @change="files => {
+          </FileInput> -->
+          <!-- <FileInput accept=".pptist"  @change="files => {
             importSpecificFile(files)
             mainMenuVisible = false
           }">
             <PopoverMenuItem>Import pptist file</PopoverMenuItem>
-          </FileInput>
-          <PopoverMenuItem @click="setDialogForExport('pptx')">Exporting Files</PopoverMenuItem>
-          <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">Reset Slideshow</PopoverMenuItem>
-          <PopoverMenuItem @click="openMarkupPanel(); mainMenuVisible = false">Slide type label</PopoverMenuItem>
-          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">Feedback</PopoverMenuItem>
-          <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">Frequently asked questions</PopoverMenuItem>
+          </FileInput> -->
+          <PopoverMenuItem @click="setDialogForExport('pdf')">Export</PopoverMenuItem>
+          <!-- <PopoverMenuItem @click="resetSlides(); mainMenuVisible = false">Reset Slideshow</PopoverMenuItem> -->
+          <!-- <PopoverMenuItem @click="openMarkupPanel(); mainMenuVisible = false">Slide type label</PopoverMenuItem> -->
+          <!-- <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')">Feedback</PopoverMenuItem> -->
+          <!-- <PopoverMenuItem @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')">Frequently asked questions</PopoverMenuItem> -->
           <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">Quick Operations</PopoverMenuItem>
         </template>
         <div class="menu-item"><IconHamburgerButton class="icon" /></div>
@@ -48,18 +48,18 @@
         <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
           <IconPpt class="icon" />
         </div>
-        <Popover trigger="click" center>
+        <!-- <Popover trigger="click" center>
           <template #content>
             <PopoverMenuItem @click="enterScreeningFromStart()">Start from scratch</PopoverMenuItem>
             <PopoverMenuItem @click="enterScreening()">Start from current page</PopoverMenuItem>
           </template>
           <div class="arrow-btn"><IconDown class="arrow" /></div>
-        </Popover>
+        </Popover> -->
       </div>
-      <div class="menu-item" v-tooltip="'Generate AI PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+      <!-- <div class="menu-item" v-tooltip="'Generate AI PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
-      </div>
-      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pptx')">
+      </div> -->
+      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
         <IconDownload class="icon" />
       </div>
       <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">

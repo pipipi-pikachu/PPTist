@@ -4,11 +4,11 @@
       class="resize-handler"
       @mousedown="$event => resize($event)"
     ></div>
-    <Editor
+    <!-- <Editor
       :value="remark"
       ref="editorRef"
       @update="value => handleInput(value)"
-    />
+    /> -->
   </div>
 </template>
 

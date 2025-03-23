@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
+
+## [v2.0.2] - 2025-03-24
+
+### Added
+-
+
+### Changed
+- Incremented version in `package.json`, `package-lock.json`.
+- Hidden `Annotation Panel` control.
+- Hidden exports of `PPTist, pptx, image, json` to keep only PDF export.
+- Set PDF export as default when clicking `Export`.
+- Hidden `AI` control in the top bar.
+- Hidden `Insert Audio and Video ` control in the top bar.
+- Hidden `Generate AI PPT` control from `left-hand` side top bar menu.
+- Hidden `Import pptx files(beta), Import pptist file, Reset Slideshow` controls from `left-hand` side top bar menu.
+- Changed label of `Exporting Files` to `Export` within `right-hand` side top bar menu.
+- Changed export type to `pdf` when clicking `Export` within top-left control bar.
+- Hidden `Reset slideshow` within left top-bar menu. 
+- Hidden `Slide type label` within left top-bar menu.
+- Hidden `Feedback` within left top-bar menu.
+- Hidden `Frequently asked questions` within left top-bar menu.
+- Hidden `Switch, Animation` from `right-hand sidebar`. 
+- Hidden `Insert forumula` from center menu within top bar.
+- Hidden `Start from scratch, Start from current page` from top right-hand sidebar menu.
+- Hidden `Editor for Remarks` bottom center Editor for remarks.
+
+
+
+### Fixed
+- 
+
+### Removed
+-
+
+
+
+
 ## [v2.0.1] - 2025-03-23
 
 ### Added
@@ -99,13 +136,3 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Translated `src/views/Screen/PresenterView.vue` to english.
 - Translated `src/views/Screen/WritingBoardTool.vue` to english.
 - Incremented version in `package.json`, `package-lock.json`.
-- 
-
-
-### Fixed
-- 
-
-### Removed
-- 
-
-

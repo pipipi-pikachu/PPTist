@@ -42,19 +42,19 @@ const elementTabs = computed<ElementTabs[]>(() => {
     { label: 'Style', key: ToolbarStates.EL_STYLE },
     { label: 'Symbol', key: ToolbarStates.SYMBOL },
     { label: 'Position', key: ToolbarStates.EL_POSITION },
-    { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
+    // { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
     ]
   }
   return [
     { label: 'Style', key: ToolbarStates.EL_STYLE },
     { label: 'Position', key: ToolbarStates.EL_POSITION },
-    { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
+    // { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
   ]
 })
 const slideTabs = [
   { label: 'Design', key: ToolbarStates.SLIDE_DESIGN },
-  { label: 'Switch', key: ToolbarStates.SLIDE_ANIMATION },
-  { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
+  // { label: 'Switch', key: ToolbarStates.SLIDE_ANIMATION },
+  // { label: 'Animation', key: ToolbarStates.EL_ANIMATION },
 ]
 const multiSelectTabs = [
   { label: 'Style (multiple choices)', key: ToolbarStates.MULTI_STYLE },

@@ -7,13 +7,13 @@
         <Divider type="vertical" style="height: 20px;" />
         <Popover class="more-icon" trigger="click" v-model:value="moreVisible" :offset="10">
           <template #content>
-            <PopoverMenuItem center @click="toggleNotesPanel(); moreVisible = false">Annotation Panel</PopoverMenuItem>
+            <!-- <PopoverMenuItem center @click="toggleNotesPanel(); moreVisible = false">Annotation Panel</PopoverMenuItem> -->
             <PopoverMenuItem center @click="toggleSelectPanel(); moreVisible = false">Selection Pane</PopoverMenuItem>
             <PopoverMenuItem center @click="toggleSraechPanel(); moreVisible = false">Find and Replace</PopoverMenuItem>
           </template>
           <IconMore class="handler-item" />
         </Popover>
-        <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'Annotation Panel'" @click="toggleNotesPanel()" />
+        <!-- <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'Annotation Panel'" @click="toggleNotesPanel()" /> -->
         <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'Selection Pane'" @click="toggleSelectPanel()" />
         <IconSearch class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'Find/Replace（Ctrl + F）'" @click="toggleSraechPanel()" />
       </div>
@@ -70,8 +70,8 @@
         </template>
         <IconInsertTable class="handler-item" v-tooltip="'Insert a table'" />
       </Popover>
-      <IconFormula class="handler-item" v-tooltip="'Insert formula'" @click="latexEditorVisible = true" />
-      <Popover trigger="click" v-model:value="mediaInputVisible" :offset="10">
+      <!-- <IconFormula class="handler-item" v-tooltip="'Insert formula'" @click="latexEditorVisible = true" /> -->
+      <!-- <Popover trigger="click" v-model:value="mediaInputVisible" :offset="10">
         <template #content>
           <MediaInput 
             @close="mediaInputVisible = false"
@@ -80,7 +80,7 @@
           />
         </template>
         <IconVideoTwo class="handler-item" v-tooltip="'Insert audio and video'" />
-      </Popover>
+      </Popover> -->
     </div>
 
     <div class="right-handler">

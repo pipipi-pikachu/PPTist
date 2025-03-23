@@ -36,20 +36,20 @@ const { dialogForExport } = storeToRefs(mainStore)
 const setDialogForExport = mainStore.setDialogForExport
 
 const tabs: TabItem[] = [
-  { key: 'pptist', label: 'Export pptist file' },
-  { key: 'pptx', label: 'Export PPTX' },
-  { key: 'image', label: 'Export images' },
-  { key: 'json', label: 'Export JSON' },
-  { key: 'pdf', label: 'Export PDF' },
+  { key: 'pdf', label: 'PDF' },
+  // { key: 'pptist', label: 'PPTIST' },
+  // { key: 'pptx', label: 'Export PPTX' },
+  // { key: 'image', label: 'Export images' },
+  // { key: 'json', label: 'JSON' },
 ]
 
 const currentDialogComponent = computed<unknown>(() => {
   const dialogMap = {
-    'image': ExportImage,
-    'json': ExportJSON,
+    // 'image': ExportImage,
+    // 'json': ExportJSON,
     'pdf': ExportPDF,
-    'pptx': ExportPPTX,
-    'pptist': ExportSpecificFile,
+    // 'pptx': ExportPPTX,
+    // 'pptist': ExportSpecificFile,
   }
   if (dialogForExport.value) return dialogMap[dialogForExport.value] || null
   return null
