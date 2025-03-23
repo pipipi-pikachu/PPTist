@@ -9,11 +9,12 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 ## [v2.1.0] - 2025-03-24
 
 ### Added
-- 
+- Installed `lucide-vue` dependency.
 
 ### Changed
 - Incremented version in `package.json`, `package-lock.json`.
-- Moved attribution and copyright to bottom
+- Moved attribution and copyright to bottom.
+
 
 ### Fixed
 - 
