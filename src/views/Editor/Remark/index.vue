@@ -77,7 +77,8 @@ const resize = (e: MouseEvent) => {
 <style lang="scss" scoped>
 .remark {
   position: relative;
-  border-top: 1px solid $borderColor;
+  background: $lightGray;
+  // border-top: 1px solid $borderColor;
 }
 .resize-handler {
   height: 7px;
