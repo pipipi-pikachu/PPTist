@@ -85,7 +85,7 @@ usePasteEvent()
   display: flex;
 }
 .layout-content-left {
-  width: 160px;
+  width: 200px;
   height: 100%;
   flex-shrink: 0;
 }

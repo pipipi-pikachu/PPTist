@@ -19,6 +19,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Fixed layout due to changes to `remarks` footer.
 - Changed slide number to appear above the slide in thumbnail left-hand sidebar.
 - Changed variable values for theme.
+- Increased width of the thumbnail sidebar to 200px.
 
 ### Fixed
 - 
