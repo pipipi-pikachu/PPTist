@@ -33,13 +33,13 @@ const slidesStore = useSlidesStore()
 const { currentSlide } = storeToRefs(slidesStore)
 
 const editorRef = ref<InstanceType<typeof Editor>>()
-watch(() => currentSlide.value.id, () => {
-  nextTick(() => {
-    editorRef.value!.updateTextContent()
-  })
-}, {
-  immediate: true,
-})
+// watch(() => currentSlide.value.id, () => {
+//   nextTick(() => {
+//     editorRef.value!.updateTextContent()
+//   })
+// }, {
+//   immediate: true,
+// })
 
 const remark = computed(() => currentSlide.value?.remark || '')
 

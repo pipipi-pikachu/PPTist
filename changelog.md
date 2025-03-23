@@ -15,6 +15,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Incremented version in `package.json`, `package-lock.json`.
 - Moved attribution and copyright to bottom.
 - Hidden Slide Number at left-hand side bottom
+- Commented out Vue code for remarks, as it was hidden.
 
 ### Fixed
 - 
