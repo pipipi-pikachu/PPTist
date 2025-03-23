@@ -1,14 +1,16 @@
 <template>
   <div class="remark">
-    <div 
-      class="resize-handler"
-      @mousedown="$event => resize($event)"
-    ></div>
+    <div class="resize-handler"></div>
     <!-- <Editor
       :value="remark"
       ref="editorRef"
       @update="value => handleInput(value)"
     /> -->
+  </div>
+  <div class="attribution-block">
+        <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/ninode97/PPTist" target="_blank">
+        <div class="menu-item"><IconGithub fill="#111" class="icon" /></div>
+        </a>
   </div>
 </template>
 
@@ -85,5 +87,26 @@ const resize = (e: MouseEvent) => {
   right: 0;
   cursor: n-resize;
   z-index: 2;
+}
+.attribution-block {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  .github-link {
+    position: absolute;
+    top: 0.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    &:hover {
+    opacity: 0.5;
+  }
+  }
 }
 </style>

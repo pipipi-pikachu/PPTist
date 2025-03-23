@@ -6,10 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
 
-## [v2.0.2] - 2025-03-24
+## [v2.1.0] - 2025-03-24
 
 ### Added
+- 
+
+### Changed
+- Incremented version in `package.json`, `package-lock.json`.
+- Moved attribution and copyright to bottom
+
+### Fixed
+- 
+
+### Removed
 -
+
+
+## [v2.0.2] - 2025-03-23
 
 ### Changed
 - Incremented version in `package.json`, `package-lock.json`.
@@ -30,16 +43,6 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Hidden `Insert forumula` from center menu within top bar.
 - Hidden `Start from scratch, Start from current page` from top right-hand sidebar menu.
 - Hidden `Editor for Remarks` bottom center Editor for remarks.
-
-
-
-### Fixed
-- 
-
-### Removed
--
-
-
 
 
 ## [v2.0.1] - 2025-03-23
