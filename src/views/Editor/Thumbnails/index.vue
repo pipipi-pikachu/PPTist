@@ -65,7 +65,7 @@
       </template>
     </Draggable>
 
-    <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div>
+    <!-- <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div> -->
   </div>
 </template>
 
