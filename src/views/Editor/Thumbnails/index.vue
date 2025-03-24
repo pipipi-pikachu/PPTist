@@ -7,14 +7,28 @@
   >
     <div class="add-slide">
       <div class="add-slide__container">
-        <div class="handler-item first" @click="createSlide()"><IconPlus class="icon" />New</div>
+        <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
+        <template #content>
+          <PopoverMenuItem @click="setDialogForExport('pdf')">Export</PopoverMenuItem>
+          <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">Hotkeys</PopoverMenuItem>
+        </template>
+        <div class="handler-item"><IconHamburgerButton class="icon" /></div>
+      </Popover>
+        <div class="handler-item" @click="createSlide()"><IconPlus class="icon" /></div>
         <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
           <template #content>
             <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
           </template>
           <div class="handler-item"><IconDown /></div>
-      </Popover>
+        </Popover>
+        <div class="handler-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+            <IconPpt class="icon" />
+        </div>
+        <div class="handler-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
+          <IconDownload class="icon" />
+        </div>
       </div>
+
     </div>
 
     <Draggable 
@@ -71,6 +85,14 @@
     </Draggable>
 
     <!-- <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div> -->
+    <Drawer
+      :width="320"
+      v-model:visible="hotkeyDrawerVisible"
+      placement="right"
+    >
+      <HotkeyDoc />
+      <template v-slot:title>Quick Operations</template>
+    </Drawer>
   </div>
 </template>
 
@@ -90,6 +112,10 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
 import Popover from '@/components/Popover.vue'
 import Draggable from 'vuedraggable'
+import type { DialogForExportTypes } from '@/types/export'
+import Drawer from '@/components/Drawer.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import HotkeyDoc from '../EditorHeader/HotkeyDoc.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -97,12 +123,15 @@ const keyboardStore = useKeyboardStore()
 const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
 const { slides, slideIndex, currentSlide } = storeToRefs(slidesStore)
 const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
-
+const mainMenuVisible = ref(false)
+const hotkeyDrawerVisible = ref(false)
 const { slidesLoadLimit } = useLoadSlides()
 
 const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
 const presetLayoutPopoverVisible = ref(false)
+
+
 
 const hasSection = computed(() => {
   return slides.value.some(item => item.sectionTag)
@@ -301,6 +330,10 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
   ]
 }
 
+const setDialogForExport = (type: DialogForExportTypes) => {
+  mainStore.setDialogForExport(type)
+}
+
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
@@ -372,6 +405,9 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   flex-shrink: 0;
   // border-bottom: 1px solid $borderColor;
   cursor: pointer;
+  position: fixed;
+  top: 1vh;
+  left: 0;
 
   &__container {
     padding: 0;
@@ -393,40 +429,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
       color: $themeColor;
     }
 
-    &.group-btn {
-      width: auto;
-      margin-right: 5px;
 
-      &:hover {
-        background-color: #f3f3f3;
-      }
-
-      .icon, .arrow {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .icon {
-        width: 26px;
-        padding: 0 2px;
-
-        &:hover {
-          background-color: #e9e9e9;
-        }
-        &.active {
-          color: $themeColor;
-        }
-      }
-      .arrow {
-        font-size: 12px;
-
-        &:hover {
-          background-color: #e9e9e9;
-        }
-      }
-    }
   }
   }
 
@@ -440,6 +443,8 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   border-radius: 2rem;
   overflow: hidden;
   cursor: pointer;
+
+
 
   &.disable {
     opacity: .5;
