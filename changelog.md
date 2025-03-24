@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
 
-## [v2.1.0] - 2025-03-24
+## [v2.1.1] - 2025-03-24
 
 ### Added
 - Created new component `src/views/Editor/Remark/License.vue` for displaying LICENSE popup.
