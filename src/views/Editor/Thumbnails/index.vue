@@ -6,13 +6,15 @@
     v-contextmenu="contextmenusThumbnails"
   >
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><IconPlus class="icon" />Add a slide</div>
-      <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
-        <template #content>
-          <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
-        </template>
-        <div class="select-btn"><IconDown /></div>
+      <div class="add-slide__container">
+        <div class="handler-item first" @click="createSlide()"><IconPlus class="icon" />New</div>
+        <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
+          <template #content>
+            <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          </template>
+          <div class="handler-item"><IconDown /></div>
       </Popover>
+      </div>
     </div>
 
     <Draggable 
@@ -364,10 +366,89 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   height: 40px;
   font-size: 12px;
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   flex-shrink: 0;
   // border-bottom: 1px solid $borderColor;
   cursor: pointer;
 
+  &__container {
+    padding: 0;
+    border: 1px solid gainsboro;
+    border-radius: 2rem;
+    background-color: white;
+    display: flex;
+    margin-left:30px;
+
+    
+    .handler-item {
+      width: 32px;
+
+    &:not(.group-btn):hover {
+      background-color: #f1f1f1;
+    }
+
+    &.active {
+      color: $themeColor;
+    }
+
+    &.group-btn {
+      width: auto;
+      margin-right: 5px;
+
+      &:hover {
+        background-color: #f3f3f3;
+      }
+
+      .icon, .arrow {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .icon {
+        width: 26px;
+        padding: 0 2px;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+        &.active {
+          color: $themeColor;
+        }
+      }
+      .arrow {
+        font-size: 12px;
+
+        &:hover {
+          background-color: #e9e9e9;
+        }
+      }
+    }
+  }
+  }
+
+.handler-item {
+  height: 30px;
+  font-size: 14px;
+  // margin: 0 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  overflow: hidden;
+  cursor: pointer;
+
+  &.disable {
+    opacity: .5;
+  }
+  } 
+
+  .first {
+    width:75px;
+  }
   .btn {
     flex: 1;
     display: flex;
@@ -375,7 +456,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     align-items: center;
 
     &:hover {
-      background-color: $lightGray;
+      // background-color: $lightGray;
     }
   }
   .select-btn {

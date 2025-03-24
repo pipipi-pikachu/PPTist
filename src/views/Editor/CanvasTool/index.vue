@@ -329,11 +329,11 @@ const toggleNotesPanel = () => {
 .handler-item {
   height: 30px;
   font-size: 14px;
-  margin: 0 2px;
+  padding: 0 2px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: $borderRadius;
+  border-radius: 2rem;
   overflow: hidden;
   cursor: pointer;
 
