@@ -734,6 +734,7 @@ export type SlideType = 'cover' | 'contents' | 'transition' | 'content' | 'end'
  */
 export interface Slide {
   id: string
+  viewportRatio: number; 
   elements: PPTElement[]
   notes?: Note[]
   remark?: string

@@ -97,7 +97,7 @@
     </div>
 
     <Divider />
-
+<!-- 
     <div class="row">
       <Select 
         style="width: 100%;" 
@@ -111,13 +111,13 @@
           { label: 'Vertical A3 / A4', value: 1.41421356 },
         ]"
       />
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="canvas-size">Canvas size:{{  viewportSize  }} × {{ toFixed(viewportSize * viewportRatio) }}</div>
-    </div>
+    </div> -->
 
-    <Divider />
+    <!-- <Divider /> -->
 
     <div class="title">
       <span>Global Theme</span>

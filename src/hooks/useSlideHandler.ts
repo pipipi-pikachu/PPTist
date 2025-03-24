@@ -30,6 +30,7 @@ export default () => {
   const resetSlides = () => {
     const emptySlide: Slide = {
       id: nanoid(10),
+      viewportRatio: slidesStore.viewportRatio,
       elements: [],
       background: {
         type: 'solid',
@@ -78,6 +79,7 @@ export default () => {
   // 创建一页空白页并添加到下一页
   const createSlide = () => {
     const emptySlide: Slide = {
+      viewportRatio: slidesStore.viewportRatio,
       id: nanoid(10),
       elements: [],
       background: {

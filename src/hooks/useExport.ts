@@ -80,6 +80,17 @@ export default () => {
     saveAs(blob, `${title.value}.json`)
   }
 
+  const printJSON = () => {
+    const json = {
+      title: title.value,
+      width: viewportSize.value,
+      height: viewportSize.value * viewportRatio.value,
+      theme: theme.value,
+      slides: slides.value,
+    }
+    console.log(json);
+  }
+
   // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
   const formatColor = (_color: string) => {
     if (!_color) return {
@@ -866,6 +877,7 @@ export default () => {
     exporting,
     exportImage,
     exportJSON,
+    printJSON,
     exportSpecificFile,
     exportPPTX,
   }

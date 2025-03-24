@@ -136,6 +136,7 @@ export const useSlidesStore = defineStore('slides', {
     addSlide(slide: Slide | Slide[]) {
       const slides = Array.isArray(slide) ? slide : [slide]
       for (const slide of slides) {
+        slide.viewportRatio = this.viewportRatio;
         if (slide.sectionTag) delete slide.sectionTag
       }
 

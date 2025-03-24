@@ -242,6 +242,7 @@ const toggleNotesPanel = () => {
   padding: 0 10px;
   font-size: 13px;
   user-select: none;
+  
 }
 .left-handler {
   border: 1px solid gainsboro;
@@ -278,6 +279,8 @@ const toggleNotesPanel = () => {
   border: 1px solid gainsboro;
   border-radius: 2rem;
   background-color: white;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.15), 
+              -10px -10px 30px rgba(255, 255, 255, 0.6);
 
   .handler-item {
     width: 32px;

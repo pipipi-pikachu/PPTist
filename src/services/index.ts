@@ -3,6 +3,8 @@ import axios from './config'
 // export const SERVER_URL = 'http://localhost:5000'
 export const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'http://127.0.0.1:5001/api'
 export const ASSET_URL = 'http://127.0.0.1:5001/assets'
+export const API_URL = `http://127.0.0.1:5001/api`;
+
 
 export default {
   getMockData(filename: string): Promise<any> {
@@ -10,9 +12,9 @@ export default {
   },
 
   getFileData(filename: string): Promise<any> {
-    return axios.get(`${ASSET_URL}/data/${filename}.json`)
+    return axios.get(`${API_URL}/documents/${filename}`);
   },
-
+  
   AIPPT_Outline(
     content: string,
     language: string,

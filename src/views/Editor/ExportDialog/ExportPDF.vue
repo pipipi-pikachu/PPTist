@@ -73,11 +73,16 @@ import Button from '@/components/Button.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
 import Select from '@/components/Select.vue'
+import useExport from '@/hooks/useExport'
 
 const emit = defineEmits<{
   (event: 'close'): void
 }>()
-
+const { printJSON } = useExport()
+const w = window as unknown as {
+  printJSON: () => void
+}
+w.printJSON = printJSON;
 const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
 const pdfThumbnailsRef = ref<HTMLElement>()
@@ -86,6 +91,7 @@ const count = ref(1)
 const padding = ref(true)
 
 const expPDF = () => {
+  
   if (!pdfThumbnailsRef.value) return
   const pageSize = {
     width: 1600,

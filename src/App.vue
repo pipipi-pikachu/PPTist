@@ -46,7 +46,13 @@ onMounted(async () => {
     })
   }
   else {
-    api.getFileData('slides').then((slides: Slide[]) => {
+    const pathPattern = /^\/documents\/([^/]+)$/;
+    const match = window.location.pathname.match(pathPattern);
+    const id = match && match[1] || ""
+    api.getFileData(id).then((slides: Slide[]) => {
+      if(slides.length > 0 && slides[0].viewportRatio) {
+        slidesStore.setViewportRatio(slides[0].viewportRatio)
+      }
       slidesStore.setSlides(slides)
     })
   }

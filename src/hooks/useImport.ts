@@ -199,6 +199,7 @@ export default () => {
         }
 
         const slide: Slide = {
+          viewportRatio: slidesStore.viewportRatio,
           id: nanoid(10),
           elements: [],
           background,

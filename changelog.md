@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
+## [v2.1.2] - 2025-03-24
+
+### Added
+- Added basic ppt standard template data `server/documents/0.js`
+- Added advanved ppt standard template data `server/documents/1.js`
+- Added advanved ppt Portrait (A4) template data `server/documents/2.js`
+- Added document loader `server/documents/_load.js` that will preload all available templates and allow to retrieve them by function `getTemplateById`.
+- Added automation that detects what is the canvas size based on the preloaded slide data defined in the first slide.
+- Added `viewportRatio` property to json templates `server/documents/*.js`
+- Added a dev function that allows to print JSON state of the slides when `pdf export popup` was triggered.
+
+### Changed
+- Incremented version in `package.json`, `package-lock.json`.
+- Moved `server.js` to `server/index.js`
+- Changed `server/index.js` endpoint `/assets/data/slides.json` to `/api/documents/:id` in order to allow preloading documents dynamically.
+- Changed the loading of `PPTist` actual editor data, it will now be loading data from remote server based on document id, additionally the page will fail if `window.location.pathname` is not matching the pattern of `/^\/documents\/[^/]+$/`
+- Hidden `Aspect Ratio Selector` and `Canvas resolution label` within `right-hand-sidebar`.
+- Changed label within `src/views/Editor/Thumbnails/index.vue` to `Preview (F5)`.
+- Added missing tooltips `src/views/Editor/Thumbnails/index.vue`.
+- Added shadow to left-hand-sidebar and increased z-index `src/views/Editor/Thumbnails/index.vue`.
+- Added shadow to `src/views/Editor/CanvasTool/index.vue`.
+- Adjusted usage of `Slide` and `DialogForExportTypes` to prevent build errors.
+
+### Fixed
+- 
+
+### Removed
+-
 
 ## [v2.1.1] - 2025-03-24
 
@@ -14,12 +42,6 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 ### Changed
 - Changed footer to include `LICENSE` that provides more information about the license of the product
 - Incremented version in `package.json`, `package-lock.json`.
-
-### Fixed
-- 
-
-### Removed
--
 
 ## [v2.1.0] - 2025-03-24
 

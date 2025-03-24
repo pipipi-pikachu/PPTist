@@ -12,16 +12,22 @@
           <PopoverMenuItem @click="setDialogForExport('pdf')">Export</PopoverMenuItem>
           <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">Hotkeys</PopoverMenuItem>
         </template>
-        <div class="handler-item"><IconHamburgerButton class="icon" /></div>
+        <div class="handler-item" v-tooltip="'App Menu'"><IconHamburgerButton class="icon" /></div>
       </Popover>
-        <div class="handler-item" @click="createSlide()"><IconPlus class="icon" /></div>
+      <div class="handler-item" v-tooltip="'Add Slide'" @click="createSlide()">
+          <IconPlus class="icon" />
+      </div>
+      
         <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
           <template #content>
             <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
           </template>
-          <div class="handler-item"><IconDown /></div>
+          <div class="handler-item" v-tooltip="'Insert Template'">
+            <div class="handler-item"><IconDown /></div>
+          </div>
+          
         </Popover>
-        <div class="handler-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+        <div class="handler-item" v-tooltip="'Preview (F5)'" @click="enterScreening()">
             <IconPpt class="icon" />
         </div>
         <div class="handler-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
@@ -408,6 +414,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   position: fixed;
   top: 1vh;
   left: 0;
+  z-index: 1;
 
   &__container {
     padding: 0;
@@ -416,6 +423,9 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     background-color: white;
     display: flex;
     margin-left:30px;
+    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.15), 
+    -10px -10px 30px rgba(255, 255, 255, 0.6);
+    
 
     
     .handler-item {
