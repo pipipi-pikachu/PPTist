@@ -77,13 +77,13 @@ const handleBlur = () => {
   mainStore.setDisableHotkeysState(false)
 }
 
-const updateTextContent = () => {
-  if (!editorView) return
-  const { doc, tr } = editorView.state
-  editorView.dispatch(tr.replaceRangeWith(0, doc.content.size, createDocument(props.value)))
-}
+// const updateTextContent = () => {
+//   if (!editorView) return
+//   const { doc, tr } = editorView.state
+//   editorView.dispatch(tr.replaceRangeWith(0, doc.content.size, createDocument(props.value)))
+// }
 
-defineExpose({ updateTextContent })
+// defineExpose({ updateTextContent })
 
 const handleMouseup = () => {
   const selection = window.getSelection()

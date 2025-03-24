@@ -1,6 +1,6 @@
 {
   "name": "pptist",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,6 +20,7 @@
     "crypto-js": "^4.2.0",
     "dexie": "3.0.3",
     "echarts": "^5.5.1",
+    "express": "^4.21.2",
     "file-saver": "^2.0.5",
     "hfmath": "^0.0.2",
     "html-to-image": "^1.11.11",

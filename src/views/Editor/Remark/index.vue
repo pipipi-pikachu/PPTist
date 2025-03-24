@@ -1,14 +1,16 @@
 <template>
   <div class="remark">
-    <div 
-      class="resize-handler"
-      @mousedown="$event => resize($event)"
-    ></div>
+    <div class="resize-handler"></div>
     <!-- <Editor
       :value="remark"
       ref="editorRef"
       @update="value => handleInput(value)"
     /> -->
+    <div class="attribution-block">
+        <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/ninode97/PPTist" target="_blank">
+        <div class="menu-item"><IconGithub fill="#111" class="icon" /></div>
+        </a>
+  </div>
   </div>
 </template>
 
@@ -31,13 +33,13 @@ const slidesStore = useSlidesStore()
 const { currentSlide } = storeToRefs(slidesStore)
 
 const editorRef = ref<InstanceType<typeof Editor>>()
-watch(() => currentSlide.value.id, () => {
-  nextTick(() => {
-    editorRef.value!.updateTextContent()
-  })
-}, {
-  immediate: true,
-})
+// watch(() => currentSlide.value.id, () => {
+//   nextTick(() => {
+//     editorRef.value!.updateTextContent()
+//   })
+// }, {
+//   immediate: true,
+// })
 
 const remark = computed(() => currentSlide.value?.remark || '')
 
@@ -75,7 +77,8 @@ const resize = (e: MouseEvent) => {
 <style lang="scss" scoped>
 .remark {
   position: relative;
-  border-top: 1px solid $borderColor;
+  background: $lightGray;
+  // border-top: 1px solid $borderColor;
 }
 .resize-handler {
   height: 7px;
@@ -85,5 +88,29 @@ const resize = (e: MouseEvent) => {
   right: 0;
   cursor: n-resize;
   z-index: 2;
+}
+.attribution-block {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+ 
+  display: flex;
+    align-items: center;
+    height: 100%;
+
+  .github-link {
+  
+    top: 0.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    &:hover {
+    opacity: 0.5;
+  }
+  }
 }
 </style>

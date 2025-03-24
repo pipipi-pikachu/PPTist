@@ -6,13 +6,29 @@
     v-contextmenu="contextmenusThumbnails"
   >
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><IconPlus class="icon" />Add a slide</div>
-      <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
+      <div class="add-slide__container">
+        <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          <PopoverMenuItem @click="setDialogForExport('pdf')">Export</PopoverMenuItem>
+          <PopoverMenuItem @click="mainMenuVisible = false; hotkeyDrawerVisible = true">Hotkeys</PopoverMenuItem>
         </template>
-        <div class="select-btn"><IconDown /></div>
+        <div class="handler-item"><IconHamburgerButton class="icon" /></div>
       </Popover>
+        <div class="handler-item" @click="createSlide()"><IconPlus class="icon" /></div>
+        <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
+          <template #content>
+            <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          </template>
+          <div class="handler-item"><IconDown /></div>
+        </Popover>
+        <div class="handler-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+            <IconPpt class="icon" />
+        </div>
+        <div class="handler-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
+          <IconDownload class="icon" />
+        </div>
+      </div>
+
     </div>
 
     <Draggable 
@@ -56,16 +72,27 @@
             @dblclick="enterScreening()"
             v-contextmenu="contextmenusThumbnailItem"
           >
-            <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
-            <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+            <div>
+              <div class="label" :class="{ 'offset-left': index >= 99 }">{{ fillDigit(index + 1, 2) }}</div>
+              <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+            </div>
+
   
-            <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div>
+            <!-- <div class="note-flag" v-if="element.notes && element.notes.length" @click="openNotesPanel()">{{ element.notes.length }}</div> -->
           </div>
         </div>
       </template>
     </Draggable>
 
-    <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div>
+    <!-- <div class="page-number">Slideshow {{slideIndex + 1}} / {{slides.length}}</div> -->
+    <Drawer
+      :width="320"
+      v-model:visible="hotkeyDrawerVisible"
+      placement="right"
+    >
+      <HotkeyDoc />
+      <template v-slot:title>Quick Operations</template>
+    </Drawer>
   </div>
 </template>
 
@@ -85,6 +112,10 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
 import Popover from '@/components/Popover.vue'
 import Draggable from 'vuedraggable'
+import type { DialogForExportTypes } from '@/types/export'
+import Drawer from '@/components/Drawer.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import HotkeyDoc from '../EditorHeader/HotkeyDoc.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -92,12 +123,15 @@ const keyboardStore = useKeyboardStore()
 const { selectedSlidesIndex: _selectedSlidesIndex, thumbnailsFocus } = storeToRefs(mainStore)
 const { slides, slideIndex, currentSlide } = storeToRefs(slidesStore)
 const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
-
+const mainMenuVisible = ref(false)
+const hotkeyDrawerVisible = ref(false)
 const { slidesLoadLimit } = useLoadSlides()
 
 const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
 
 const presetLayoutPopoverVisible = ref(false)
+
+
 
 const hasSection = computed(() => {
   return slides.value.some(item => item.sectionTag)
@@ -296,6 +330,10 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
   ]
 }
 
+const setDialogForExport = (type: DialogForExportTypes) => {
+  mainStore.setDialogForExport(type)
+}
+
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
@@ -351,8 +389,8 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
 
 <style lang="scss" scoped>
 .thumbnails {
-  border-right: solid 1px $borderColor;
-  background-color: #fff;
+  // border-right: solid 1px $borderColor;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   user-select: none;
@@ -361,10 +399,61 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   height: 40px;
   font-size: 12px;
   display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   flex-shrink: 0;
-  border-bottom: 1px solid $borderColor;
+  // border-bottom: 1px solid $borderColor;
+  cursor: pointer;
+  position: fixed;
+  top: 1vh;
+  left: 0;
+
+  &__container {
+    padding: 0;
+    border: 1px solid gainsboro;
+    border-radius: 2rem;
+    background-color: white;
+    display: flex;
+    margin-left:30px;
+
+    
+    .handler-item {
+      width: 32px;
+
+    &:not(.group-btn):hover {
+      background-color: #f1f1f1;
+    }
+
+    &.active {
+      color: $themeColor;
+    }
+
+
+  }
+  }
+
+.handler-item {
+  height: 30px;
+  font-size: 14px;
+  // margin: 0 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2rem;
+  overflow: hidden;
   cursor: pointer;
 
+
+
+  &.disable {
+    opacity: .5;
+  }
+  } 
+
+  .first {
+    width:75px;
+  }
   .btn {
     flex: 1;
     display: flex;
@@ -372,7 +461,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     align-items: center;
 
     &:hover {
-      background-color: $lightGray;
+      // background-color: $lightGray;
     }
   }
   .select-btn {
@@ -381,7 +470,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 1px solid $borderColor;
+    // border-left: 1px solid $borderColor;
 
     &:hover {
       background-color: $lightGray;
@@ -400,7 +489,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
 }
 .thumbnail-item {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: 5px 0;
   position: relative;
@@ -408,6 +497,10 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   .thumbnail {
     border-radius: $borderRadius;
     outline: 2px solid rgba($color: $themeColor, $alpha: .15);
+  }
+
+  .label {
+    padding: 0.5rem 0;
   }
 
   &.active {
