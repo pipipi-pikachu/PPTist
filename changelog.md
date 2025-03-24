@@ -25,7 +25,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Installed `express` dependency for local server.
 - Changed styling for `right-hand-sidebar` tabs section header, by adding `border-bottom: 1px solid $borderColor`.
 - Updated `right-hand-sidebar`  to have better background contrast for new theme.
-- Restyled `views/Editor/` to showcase more modernistic styling. (By adding repeating backgroun, making most of the web app have transparent background, updated position of certain menu actions, to use available space in better way)
+- Restyled `views/Editor/` to showcase more modernistic styling. (By adding repeating backgroun, making most of the web app have transparent background, updated position of certain menu actions that were visible in top menu bars)
 
 
 ### Fixed
