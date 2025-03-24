@@ -21,7 +21,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Changed variable values for theme.
 - Increased width of the thumbnail sidebar to 200px.
 - Changed background to $lightGray, commented out border-top css rule for bottom-center container.
-- Updated $borderColor to #FCFCFF
+- Updated $borderColor: darken(#FCFCFF, 2%)
 
 ### Fixed
 - 
