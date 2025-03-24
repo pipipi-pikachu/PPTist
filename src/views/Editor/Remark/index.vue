@@ -3,7 +3,11 @@
     <div 
       class="resize-handler"
       @mousedown="$event => resize($event)"
-    ></div>
+    >
+      <div class="drag-handler">
+        <Drag size="14"/>
+      </div>
+    </div>
     <Editor
       :value="remark"
       ref="editorRef"
@@ -18,6 +22,7 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
 import Editor from './Editor.vue'
+import { Drag } from '@icon-park/vue-next'
 
 const props = defineProps<{
   height: number
@@ -80,10 +85,33 @@ const resize = (e: MouseEvent) => {
 .resize-handler {
   height: 7px;
   position: absolute;
-  top: -3px;
   left: 0;
   right: 0;
   cursor: n-resize;
   z-index: 2;
+
+  &:hover {
+    .drag-handler {
+      opacity: 1;
+    }
+  }
+
+  .drag-handler {
+    position: absolute;
+    display: flex;
+    background-color:rgba(240, 243, 243, 1) ;
+    height: 28px;
+    width: 14px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px 0 0 4px;
+    bottom:1px;
+    left: 50%;
+    transform-origin: center center;
+    transform: rotate(90deg)translateY(10px);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+
+  }
 }
 </style>
