@@ -99,5 +99,13 @@ usePasteEvent()
 .layout-content-right {
   width: 260px;
   height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+  background: linear-gradient(to bottom, #ffffff, #f5f3ff);
+  border-left: 1px solid rgba(124, 58, 237, 0.1);
+}
+.center-bottom {
+  background: transparent;
 }
 </style>
