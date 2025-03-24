@@ -9,6 +9,21 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 ## [v2.1.0] - 2025-03-24
 
 ### Added
+- Created new component `src/views/Editor/Remark/License.vue` for displaying LICENSE popup.
+
+### Changed
+- Changed footer to include `LICENSE` that provides more information about the license of the product
+- Incremented version in `package.json`, `package-lock.json`.
+
+### Fixed
+- 
+
+### Removed
+-
+
+## [v2.1.0] - 2025-03-24
+
+### Added
 - Added local server that can serve the demo presentation json data
 
 ### Changed
@@ -30,13 +45,6 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Hidden the title input field in `top-left menu bar`.
 - Hidden Hamburger menu in top right section of EditorHeader component.
 - Updated styling of `add-slide` block within `Editro/Thumbnails/index.vue`, as well moved hamburger menu to the newly structured menu.
-
-
-### Fixed
-- 
-
-### Removed
--
 
 
 ## [v2.0.2] - 2025-03-23

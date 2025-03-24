@@ -7,10 +7,16 @@
       @update="value => handleInput(value)"
     /> -->
     <div class="attribution-block">
+      <LicensePopup 
+        originalProjectName="PPTist"
+        githubRepositoryLink="https://github.com/ninode97/PPTist"
+        copyrightNotices="AGPL-3.0 License | Copyright © 2020-PRESENT pipipi-pikachu"
+      />
+        &nbsp;&nbsp;
         <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/ninode97/PPTist" target="_blank">
-        <div class="menu-item"><IconGithub fill="#111" class="icon" /></div>
+          <div class="menu-item"><IconGithub fill="#111" class="icon" /></div>
         </a>
-  </div>
+    </div>
   </div>
 </template>
 
@@ -18,6 +24,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
+import LicensePopup from './License.vue'
 
 import Editor from './Editor.vue'
 
@@ -93,10 +100,18 @@ const resize = (e: MouseEvent) => {
   height: 100%;
   display: flex;
   justify-content: center;
- 
+  align-items: center;
   display: flex;
-    align-items: center;
-    height: 100%;
+  align-items: center;
+  height: 100%;
+
+  .license-link {
+    font-size: 12px;
+    color: gray;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   .github-link {
   
