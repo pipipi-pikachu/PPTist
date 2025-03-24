@@ -54,6 +54,7 @@ const emit = defineEmits<{
   display: flex;
   user-select: none;
   line-height: 1;
+  border-bottom: 1px solid $borderColor;
 
   &:not(.card) {
     font-size: 13px;
