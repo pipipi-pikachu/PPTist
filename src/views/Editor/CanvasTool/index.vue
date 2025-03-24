@@ -1,25 +1,28 @@
 <template>
   <div class="canvas-tool">
-    <div class="left-handler">
+    <!-- <div class="left-handler">
       <IconBack class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'Undo（Ctrl + Z）'" @click="undo()" />
       <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'Redo（Ctrl + Y）'" @click="redo()" />
       <div class="more">
         <Divider type="vertical" style="height: 20px;" />
         <Popover class="more-icon" trigger="click" v-model:value="moreVisible" :offset="10">
           <template #content>
-            <!-- <PopoverMenuItem center @click="toggleNotesPanel(); moreVisible = false">Annotation Panel</PopoverMenuItem> -->
+            <PopoverMenuItem center @click="toggleNotesPanel(); moreVisible = false">Annotation Panel</PopoverMenuItem>
             <PopoverMenuItem center @click="toggleSelectPanel(); moreVisible = false">Selection Pane</PopoverMenuItem>
             <PopoverMenuItem center @click="toggleSraechPanel(); moreVisible = false">Find and Replace</PopoverMenuItem>
           </template>
           <IconMore class="handler-item" />
         </Popover>
-        <!-- <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'Annotation Panel'" @click="toggleNotesPanel()" /> -->
+        <IconComment class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'Annotation Panel'" @click="toggleNotesPanel()" />
         <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'Selection Pane'" @click="toggleSelectPanel()" />
         <IconSearch class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'Find/Replace（Ctrl + F）'" @click="toggleSraechPanel()" />
       </div>
-    </div>
+    </div> -->
 
     <div class="add-element-handler">
+      <IconMoveOne class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'Selection Pane'" @click="toggleSelectPanel()" />
+      <IconBack class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'Undo（Ctrl + Z）'" @click="undo()" />
+      <IconNext class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'Redo（Ctrl + Y）'" @click="redo()" />
       <div class="handler-item group-btn" v-tooltip="'Insert text'">
         <IconFontSize class="icon" :class="{ 'active': creatingElement?.type === 'text' }" @click="drawText()" />
         
@@ -241,15 +244,22 @@ const toggleNotesPanel = () => {
   user-select: none;
 }
 .left-handler {
+  border: 1px solid gainsboro;
+  border-radius: 2rem;
+  background-color: white;
   position: fixed;
-  top: 4.5%;
-  right: 15.5%;
+  left: 20vw;
+  
+
 }
 .right-handler {
   position: fixed;
-  bottom: 4%;
-  right: 16.5%;
+  bottom: 2%;
+  right: calc(260px + 3%);
   z-index: 2;
+  border: 1px solid gainsboro;
+  border-radius: 2rem;
+  background-color: white;
 }
 
 .left-handler, .more {
@@ -265,6 +275,9 @@ const toggleNotesPanel = () => {
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  border: 1px solid gainsboro;
+  border-radius: 2rem;
+  background-color: white;
 
   .handler-item {
     width: 32px;
