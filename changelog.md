@@ -28,6 +28,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Restyled `views/Editor/` to showcase more modernistic styling. (By adding repeating backgroun, making most of the web app have transparent background, updated position of certain menu actions that were visible in top menu bars)
 - Updated structure for `CanvasTool` and `New Slide / Template` controls
 - Hidden the title input field in `top-left menu bar`.
+- Hidden Hamburger menu in top right section of EditorHeader component.
 
 
 ### Fixed

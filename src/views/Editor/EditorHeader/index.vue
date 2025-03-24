@@ -41,12 +41,12 @@
           v-else
         >{{ title }}</div>
       </div>
-      <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+      <!-- <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
           <IconPpt class="icon" />
-      </div>
-      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
+      </div> -->
+      <!-- <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
         <IconDownload class="icon" />
-      </div>
+      </div> -->
     </div>
 
     <div class="right">
@@ -156,6 +156,7 @@ const openAIPPTDialog = () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  display: none;
 }
 .menu-item {
   height: 30px;
