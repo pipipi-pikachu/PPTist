@@ -9,7 +9,7 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 ## [v2.1.0] - 2025-03-24
 
 ### Added
-- Installed `lucide-vue` dependency.
+- Added local server that can serve the demo presentation json data
 
 ### Changed
 - Incremented version in `package.json`, `package-lock.json`.
@@ -22,6 +22,11 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Increased width of the thumbnail sidebar to 200px.
 - Changed background to $lightGray, commented out border-top css rule for bottom-center container.
 - Updated $borderColor: darken(#FCFCFF, 2%)
+- Installed `express` dependency for local server.
+- Changed styling for `right-hand-sidebar` tabs section header, by adding `border-bottom: 1px solid $borderColor`.
+- Updated `right-hand-sidebar`  to have better background contrast for new theme.
+- Restyled `views/Editor/` to showcase more modernistic styling. (By adding repeating backgroun, making most of the web app have transparent background, updated position of certain menu actions, to use available space in better way)
+
 
 ### Fixed
 - 

@@ -41,13 +41,19 @@
           v-else
         >{{ title }}</div>
       </div>
+      <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+          <IconPpt class="icon" />
+      </div>
+      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
+        <IconDownload class="icon" />
+      </div>
     </div>
 
     <div class="right">
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
+        <!-- <div class="menu-item" v-tooltip="'Slide Show (F5)'" @click="enterScreening()">
           <IconPpt class="icon" />
-        </div>
+        </div> -->
         <!-- <Popover trigger="click" center>
           <template #content>
             <PopoverMenuItem @click="enterScreeningFromStart()">Start from scratch</PopoverMenuItem>
@@ -59,9 +65,9 @@
       <!-- <div class="menu-item" v-tooltip="'Generate AI PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
       </div> -->
-      <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
+      <!-- <div class="menu-item" v-tooltip="'Export'" @click="setDialogForExport('pdf')">
         <IconDownload class="icon" />
-      </div>
+      </div> -->
     </div>
 
     <Drawer
@@ -139,9 +145,9 @@ const openAIPPTDialog = () => {
 
 <style lang="scss" scoped>
 .editor-header {
-  background-color: #fff;
+  background-color: transparent;
   user-select: none;
-  border-bottom: 1px solid $borderColor;
+  // border-bottom: 1px solid $borderColor;
   display: flex;
   justify-content: space-between;
   padding: 0 5px;

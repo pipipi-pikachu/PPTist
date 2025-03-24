@@ -354,8 +354,8 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
 
 <style lang="scss" scoped>
 .thumbnails {
-  border-right: solid 1px $borderColor;
-  background-color: #fff;
+  // border-right: solid 1px $borderColor;
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   user-select: none;
@@ -365,7 +365,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   font-size: 12px;
   display: flex;
   flex-shrink: 0;
-  border-bottom: 1px solid $borderColor;
+  // border-bottom: 1px solid $borderColor;
   cursor: pointer;
 
   .btn {
@@ -384,7 +384,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 1px solid $borderColor;
+    // border-left: 1px solid $borderColor;
 
     &:hover {
       background-color: $lightGray;

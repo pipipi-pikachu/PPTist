@@ -351,7 +351,7 @@ provide(injectKeySlideScale, canvasScale)
   height: 100%;
   user-select: none;
   overflow: hidden;
-  background-color: $lightGray;
+  background-color: transparent;
   position: relative;
 }
 .drag-mask {

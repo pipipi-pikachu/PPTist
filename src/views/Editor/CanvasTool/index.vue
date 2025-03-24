@@ -232,14 +232,26 @@ const toggleNotesPanel = () => {
 <style lang="scss" scoped>
 .canvas-tool {
   position: relative;
-  border-bottom: 1px solid $borderColor;
-  background-color: #fff;
+  border-bottom: 1px solid transparent;
+  background-color: transparent;
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
   font-size: 13px;
   user-select: none;
 }
+.left-handler {
+  position: fixed;
+  top: 4.5%;
+  right: 15.5%;
+}
+.right-handler {
+  position: fixed;
+  bottom: 4%;
+  right: 16.5%;
+  z-index: 2;
+}
+
 .left-handler, .more {
   display: flex;
   align-items: center;
