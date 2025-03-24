@@ -212,6 +212,7 @@ const openAIPPTDialog = () => {
   height: 30px;
   margin-left: 2px;
   font-size: 13px;
+  display: none;
 
   .title-input {
     width: 200px;
