@@ -45,7 +45,7 @@
         <IconWrite class="tool-btn" v-tooltip="'画笔工具'" @click="writingBoardToolVisible = true" />
         <IconMagic class="tool-btn" v-tooltip="'激光笔'" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
         <IconStopwatchStart class="tool-btn" v-tooltip="'计时器'" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
-        <IconListView class="tool-btn" v-tooltip="'演讲者视图'" @click="changeViewMode('presenter')" />
+        <IconListView class="tool-btn" v-tooltip="'演讲者视图'" @click="enterPresenterView" />
         <IconOffScreenOne class="tool-btn" v-tooltip="'退出全屏'" v-if="fullscreenState" @click="manualExitFullscreen()" />
         <IconFullScreenOne class="tool-btn" v-tooltip="'进入全屏'" v-else @click="enterFullscreen()" />
         <IconPower class="tool-btn" v-tooltip="'结束放映'" @click="exitScreening()" />
@@ -59,7 +59,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useSlidesStore } from '@/store'
+import { useSlidesStore, useScreenStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { enterFullscreen } from '@/utils/fullscreen'
 import useScreening from '@/hooks/useScreening'
@@ -109,7 +109,15 @@ const timerlVisible = ref(false)
 const slideThumbnailModelVisible = ref(false)
 const bottomThumbnailsVisible = ref(false)
 const laserPen = ref(false)
+const slidesStore = useSlidesStore()
 
+// 演讲者
+const enterPresenterView = () => {
+  const currentUrl = window.location.href
+  const url = new URL(currentUrl)
+  window.open(`${url.href}?viewMode=presenter`, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes')
+  slidesStore.updateSlideIndex(0)
+}
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
@@ -186,7 +194,7 @@ const contextmenus = (): ContextmenuItem[] => {
     },
     {
       text: '演讲者视图',
-      handler: () => props.changeViewMode('presenter'),
+      handler: enterPresenterView,
     },
     { divider: true },
     {
