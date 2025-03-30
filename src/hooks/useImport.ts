@@ -66,7 +66,7 @@ export default () => {
     reader.readAsText(file)
   }
 
-  const parseLineElement = (el: Shape) => {
+  const parseLineElement = (el: Shape, ratio: number) => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
 
@@ -90,7 +90,7 @@ export default () => {
     const data: PPTLineElement = {
       type: 'line',
       id: nanoid(10),
-      width: el.borderWidth || 1,
+      width: +((el.borderWidth || 1) * ratio).toFixed(2),
       left: el.left,
       top: el.top,
       start,
@@ -242,7 +242,7 @@ export default () => {
                 lineHeight: 1,
                 outline: {
                   color: el.borderColor,
-                  width: el.borderWidth,
+                  width: +(el.borderWidth * ratio).toFixed(2),
                   style: el.borderType,
                 },
                 fill: el.fill.type === 'color' ? el.fill.value : '',
@@ -317,7 +317,7 @@ export default () => {
             }
             else if (el.type === 'shape') {
               if (el.shapType === 'line' || /Connector/.test(el.shapType)) {
-                const lineElement = parseLineElement(el)
+                const lineElement = parseLineElement(el, ratio)
                 slide.elements.push(lineElement)
               }
               else {
@@ -358,7 +358,7 @@ export default () => {
                   rotate: el.rotate,
                   outline: {
                     color: el.borderColor,
-                    width: el.borderWidth,
+                    width: +(el.borderWidth * ratio).toFixed(2),
                     style: el.borderType,
                   },
                   text: {
@@ -453,7 +453,21 @@ export default () => {
                 data.push(rowCells)
               }
   
-              const colWidths: number[] = new Array(col).fill(1 / col)
+              const allWidth = el.colWidths.reduce((a, b) => a + b, 0)
+              const colWidths: number[] = el.colWidths.map(item => item / allWidth)
+
+              const firstCell = el.data[0][0]
+              const border = firstCell.borders.top ||
+                firstCell.borders.bottom ||
+                el.borders.top ||
+                el.borders.bottom ||
+                firstCell.borders.left ||
+                firstCell.borders.right ||
+                el.borders.left ||
+                el.borders.right
+              const borderWidth = border?.borderWidth || 0
+              const borderStyle = border?.borderType || 'solid'
+              const borderColor = border?.borderColor || '#eeece1'
   
               slide.elements.push({
                 type: 'table',
@@ -466,11 +480,11 @@ export default () => {
                 rotate: 0,
                 data,
                 outline: {
-                  width: el.borderWidth || 2,
-                  style: el.borderType,
-                  color: el.borderColor || '#eeece1',
+                  width: +(borderWidth * ratio || 2).toFixed(2),
+                  style: borderStyle,
+                  color: borderColor,
                 },
-                cellMinHeight: 36,
+                cellMinHeight: el.rowHeights[0] ? el.rowHeights[0] * ratio : 36,
               })
             }
             else if (el.type === 'chart') {
