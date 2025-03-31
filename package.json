@@ -1,6 +1,6 @@
 {
   "name": "pptist",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -15,10 +15,11 @@
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
     "animate.css": "^4.1.1",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "clipboard": "^2.0.11",
     "crypto-js": "^4.2.0",
     "dexie": "3.0.3",
+    "dotenv": "^16.4.7",
     "echarts": "^5.5.1",
     "express": "^4.21.2",
     "file-saver": "^2.0.5",

@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
+
+## [v2.2.0] - 2025-04-01
+
+### Added
+- Installed `dotenv` library.
+- Installed `axios` - `^1.8.4`.
+- Added `.env-cp` file, to provide template for required env variables when starting server via `node server`.
+- Production server `server/index.js` to be able to server production build of the app.
+- Production server `server.index.js` to apply token `t` in search params for `/api/documents/:id` received from frontend application.
+- Production server `server.index.js` to use `dotenv` library to load env variables.
+- Added `server/dev-server.js` (it provides same functionality as original `server/index.js` express server).
+- Added `chunkSizeWarningLimit` option to `vite.config.ts` to prevent warning appearing of the chunk sizes.
+- Added `entrypoint.sh` file which will be used by Dockerfile workflow.
+- Added `Dockerfile` to specify how the app should be built in containerized environment.
+- Added `compose.yaml` that allows to do some quick testing for dockerized production deployment.
+
+
+### Changed
+- Incremented version in `package.json`, `package-lock.json`.
+- Changed `server` directory, now `server/index.js` will start production server that allows to retrieve data of slides from different origin, for development server we can still use `node server/dev-server.js`.
+- Changed `.gitignore` to exclude `.env` files.
+- Chanded `src/services/index.ts` to pass `t` query param to backend server via url search params.
+- Changed server port to `3001`.
+
+
+
+### Fixed
+- 
+
+### Removed
+-
+
 ## [v2.1.2] - 2025-03-24
 
 ### Added
@@ -28,11 +60,6 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Added shadow to `src/views/Editor/CanvasTool/index.vue`.
 - Adjusted usage of `Slide` and `DialogForExportTypes` to prevent build errors.
 
-### Fixed
-- 
-
-### Removed
--
 
 ## [v2.1.1] - 2025-03-24
 

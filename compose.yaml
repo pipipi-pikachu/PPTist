@@ -1,0 +1,13 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATA_SERVER: ${DATA_SERVER}
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env
+    environment:
+      - DATA_SERVER=${DATA_SERVER}
