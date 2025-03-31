@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { IndexableTypeArray } from 'dexie'
+import { cloneDeep } from 'lodash'
 import { db, type Snapshot } from '@/utils/database'
 
 import { useSlidesStore } from './slides'
@@ -38,7 +39,7 @@ export const useSnapshotStore = defineStore('snapshot', {
   
       const newFirstSnapshot = {
         index: slidesStore.slideIndex,
-        slides: slidesStore.slides,
+        slides: cloneDeep(slidesStore.slides),
       }
       await db.snapshots.add(newFirstSnapshot)
       this.setSnapshotCursor(0)
@@ -63,7 +64,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       // 添加新快照
       const snapshot = {
         index: slidesStore.slideIndex,
-        slides: slidesStore.slides,
+        slides: cloneDeep(slidesStore.slides),
       }
       await db.snapshots.add(snapshot)
   
@@ -83,7 +84,7 @@ export const useSnapshotStore = defineStore('snapshot', {
         db.snapshots.update(allKeys[snapshotLength - 2] as number, { index: slidesStore.slideIndex })
       }
   
-      await db.snapshots.bulkDelete(needDeleteKeys)
+      await db.snapshots.bulkDelete(needDeleteKeys as number[])
   
       this.setSnapshotCursor(snapshotLength - 1)
       this.setSnapshotLength(snapshotLength)
