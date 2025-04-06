@@ -27,8 +27,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import tinycolor from 'tinycolor2'
 import { useMainStore, useSlidesStore } from '@/store'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -37,15 +38,18 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 import Switch from '@/components/Switch.vue'
 import Popover from '@/components/Popover.vue'
 
-const defaultColorMask = 'rgba(226, 83, 77, 0.5)'
-
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
-
-const colorMask = ref(defaultColorMask)
-const hasColorMask = ref(false)
+const { theme } = storeToRefs(slidesStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
+
+const defaultColorMask = computed(() => {
+  const themeColor = theme.value.themeColors[0]
+  return tinycolor(themeColor).setAlpha(0.5).toRgbString()
+})
+const colorMask = ref('')
+const hasColorMask = ref(false)
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'image') return
@@ -60,7 +64,7 @@ watch(handleElement, () => {
 const toggleColorMask = (checked: boolean) => {
   if (!handleElement.value) return
   if (checked) {
-    slidesStore.updateElement({ id: handleElement.value.id, props: { colorMask: defaultColorMask } })
+    slidesStore.updateElement({ id: handleElement.value.id, props: { colorMask: defaultColorMask.value } })
   }
   else {
     slidesStore.removeElementProps({ id: handleElement.value.id, propName: 'colorMask' })
