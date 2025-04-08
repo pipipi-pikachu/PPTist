@@ -17,6 +17,7 @@ export interface ChartOptionPayload {
   textColor?: string
   lineSmooth?: boolean
   stack?: boolean
+  barWidth?: number
 }
 
 export const getChartOption = ({
@@ -26,6 +27,7 @@ export const getChartOption = ({
   textColor,
   lineSmooth,
   stack,
+  barWidth
 }: ChartOptionPayload): EChartOption | null => {
   if (type === 'bar') {
     return {
@@ -51,6 +53,7 @@ export const getChartOption = ({
           data: item,
           name: data.legends[index],
           type: 'bar',
+          barWidth,
           label: {
             show: true,
           },
