@@ -23,11 +23,11 @@
 
       <div class="row">
         <div style="width: 40%;">
-          柱子宽度
+          柱条宽度
         </div>
         <NumberInput
             v-if="handleChartElement.chartType === 'bar'"
-            v-tooltip="'柱子宽度为0或者不设置时，柱子宽度为默认宽度'"
+            v-tooltip="'柱条宽度为0或者不设置时，柱子宽度为默认宽度'"
             style="width: 60%;"
             :value="barWidth"
             @update:value="value => updateOptions({ barWidth: value })"
