@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { parse, type Shape, type Element, type ChartItem } from 'pptxtojson'
+import { parse, type Shape, type Element, type ChartItem, type BaseElement } from 'pptxtojson'
 import { nanoid } from 'nanoid'
 import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
@@ -18,11 +18,14 @@ import type {
   SlideBackground,
   PPTShapeElement,
   PPTLineElement,
+  PPTImageElement,
   ShapeTextAlign,
   PPTTextElement,
   ChartOptions,
   Gradient,
+  PPTElement,
 } from '@/types/slides'
+import { getElementListRange } from '@/utils/element'
 
 const convertFontSizePtToPx = (html: string, ratio: number) => {
   return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
@@ -107,6 +110,25 @@ export default () => {
     }
 
     return data
+  }
+
+  const flipGroupElements = (elements: BaseElement[], axis: 'x' | 'y') => {
+    const minX = Math.min(...elements.map(el => el.left))
+    const maxX = Math.max(...elements.map(el => el.left + el.width))
+    const minY = Math.min(...elements.map(el => el.top))
+    const maxY = Math.max(...elements.map(el => el.top + el.height))
+
+    const centerX = (minX + maxX) / 2
+    const centerY = (minY + maxY) / 2
+
+    return elements.map(element => {
+      const newElement = { ...element }
+
+      if (axis === 'y') newElement.left = 2 * centerX - element.left - element.width
+      if (axis === 'x') newElement.top = 2 * centerY - element.top - element.height
+  
+      return newElement
+    })
   }
 
   const calculateRotatedPosition = (
@@ -259,7 +281,7 @@ export default () => {
               slide.elements.push(textEl)
             }
             else if (el.type === 'image') {
-              slide.elements.push({
+              const element: PPTImageElement = {
                 type: 'image',
                 id: nanoid(10),
                 src: el.src,
@@ -271,7 +293,37 @@ export default () => {
                 rotate: el.rotate,
                 flipH: el.isFlipH,
                 flipV: el.isFlipV,
-              })
+              }
+              if (el.borderWidth) {
+                element.outline = {
+                  color: el.borderColor,
+                  width: +(el.borderWidth * ratio).toFixed(2),
+                  style: el.borderType,
+                }
+              }
+              const clipShapeTypes = ['roundRect', 'ellipse', 'triangle', 'rhombus', 'pentagon', 'hexagon', 'heptagon', 'octagon', 'parallelogram', 'trapezoid']
+              if (el.rect) {
+                element.clip = {
+                  shape: (el.geom && clipShapeTypes.includes(el.geom)) ? el.geom : 'rect',
+                  range: [
+                    [
+                      el.rect.l || 0,
+                      el.rect.t || 0,
+                    ],
+                    [
+                      100 - (el.rect.r || 0),
+                      100 - (el.rect.b || 0),
+                    ],
+                  ]
+                }
+              }
+              else if (el.geom && clipShapeTypes.includes(el.geom)) {
+                element.clip = {
+                  shape: el.geom,
+                  range: [[0, 0], [100, 100]]
+                }
+              }
+              slide.elements.push(element)
             }
             else if (el.type === 'math') {
               slide.elements.push({
@@ -562,7 +614,7 @@ export default () => {
               })
             }
             else if (el.type === 'group') {
-              const elements = el.elements.map(_el => {
+              let elements: BaseElement[] = el.elements.map(_el => {
                 let left = _el.left + originLeft
                 let top = _el.top + originTop
 
@@ -572,12 +624,18 @@ export default () => {
                   top = y
                 }
 
-                return {
+                const element = {
                   ..._el,
                   left,
                   top,
                 }
+                if (el.isFlipH && 'isFlipH' in element) element.isFlipH = true
+                if (el.isFlipV && 'isFlipV' in element) element.isFlipV = true
+
+                return element
               })
+              if (el.isFlipH) elements = flipGroupElements(elements, 'y')
+              if (el.isFlipV) elements = flipGroupElements(elements, 'x')
               parseElements(elements)
             }
             else if (el.type === 'diagram') {
