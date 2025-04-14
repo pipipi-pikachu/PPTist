@@ -4,7 +4,7 @@ import type { Slide } from '@/types/slides'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 
 export interface writingBoardImg {
-  id: number
+  id: string
   dataURL: string
 }
 
@@ -49,7 +49,7 @@ const db = new Dexie(`${databaseNamePrefix}_${databaseId}_${new Date().getTime()
 
 db.version(1).stores({
   snapshots: '++id',
-  writingBoardImgs: '++id',
+  writingBoardImgs: 'id',
 })
 
 export { db }
