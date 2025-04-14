@@ -1,0 +1,166 @@
+@use "sass:map";
+@import "animate.css";
+
+//#region 动画创建 mixin
+
+/*
+* 创建动画
+* $name: 动画名称
+*/
+@mixin base_animate_mixin($name) {
+  @-webkit-keyframes #{$name} {
+    @content ('keyframes');
+  }
+  @keyframes #{$name} {
+    @content ('keyframes');
+  }
+  .animate__#{$name} {
+    -webkit-animation-duration: var(--animate-duration);
+    animation-duration: var(--animate-duration);
+    -webkit-animation-name: #{$name};
+    animation-name: #{$name};
+    @content ('animate');
+  }
+}
+
+/*
+* 创建入场和出场动画
+* $name: 动画名称
+* $reverse: 入场或出场 （In,Out， 与 animate.css 一致）
+* $type: 动画类型 (style_map 中对应 key )
+* $style_map: 动画样式
+*/
+@mixin create_animate_mixin($name, $reverse: "", $type: "", $style_map: ()) {
+  $animate_name: $name + $reverse + $type;
+  $style: map.get($style_map, $type);
+
+  @if ($style == null) {
+    @error '#{$type} is not in style map';
+  }
+
+  @include base_animate_mixin($animate_name) using ($content_type) {
+    @if $content_type == "animate" {
+      @if $reverse == "Out" {
+        animation-direction: reverse;
+      }
+      @content;
+    }
+    @if $content_type == "keyframes" {
+      @each $state, $properties in $style {
+        #{$state} {
+          @each $property, $value in $properties {
+            #{$property}: $value;
+          }
+        }
+      }
+    }
+  }
+}
+
+/*
+* 创建入场和出场动画 - 根据 style_map 创建动画
+* $name: 动画名称
+* $style_map: 动画样式
+* $isCreateReverse: 是否创建反向动画
+* $forwardKey: 正向动画的 key
+* $reverseKey: 反向动画的 key
+*/
+@mixin create_animate_mixin_with_map(
+  $name,
+  $style_map: (),
+  $isCreateReverse: false,
+  $forwardKey: "In",
+  $reverseKey: "Out"
+) {
+  @each $key, $properties in $style_map {
+    @if $isCreateReverse {
+      @include create_animate_mixin($name, $forwardKey, $key, $style_map);
+      @include create_animate_mixin($name, $reverseKey, $key, $style_map);
+    } @else {
+      @include create_animate_mixin($name, "", $key, $style_map);
+    }
+  }
+}
+
+//#endregion
+
+//#region erase 擦除动画
+
+$erase_map: (
+  "Left": (
+    "from": (
+      clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0 100%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%)
+    )
+  ),
+  "Right": (
+    "from": (
+      clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)
+    )
+  ),
+  "Top": (
+    "from": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0 0%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%)
+    )
+  ),
+  "Bottom": (
+    "from": (
+      clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0 100%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%)
+    )
+  )
+);
+
+@include create_animate_mixin_with_map("erase", $erase_map, true);
+
+//#endregion
+
+//#region split 裂开动画
+$split_map: (
+  "ToCenter": (
+    "from": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%, 0% 100%, 100% 100%, 100% 0%, 0% 0%, 0 100%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%, 0% 50%, 100% 50%, 100% 50%, 0% 50%, 0% 100%)
+    )
+  ),
+  "FromCenter": (
+    "from": (
+      clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%)
+    )
+  ),
+  "ToBetween": (
+    "from": (
+      clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, 50% 0%, 50% 100%, 50% 100%, 50% 0%)
+    )
+  ),
+  "FromBetween": (
+    "from": (
+      clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%)
+    ),
+    "to": (
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0 100%)
+    )
+  )
+);
+
+@include create_animate_mixin_with_map("split", $split_map, true);
+
+//#endregion
