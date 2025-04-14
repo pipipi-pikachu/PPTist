@@ -18,7 +18,7 @@
     "axios": "^1.7.9",
     "clipboard": "^2.0.11",
     "crypto-js": "^4.2.0",
-    "dexie": "3.0.3",
+    "dexie": "^4.0.11",
     "echarts": "^5.5.1",
     "file-saver": "^2.0.5",
     "hfmath": "^0.0.2",
