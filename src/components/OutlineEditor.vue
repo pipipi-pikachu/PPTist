@@ -173,14 +173,21 @@ const addItem = (itemId: string, pos: 'next' | 'prev', content: string) => {
 const deleteItem = (itemId: string, isTitle?: boolean) => {
   if (isTitle) {
     const index = data.value.findIndex(item => item.id === itemId)
+
+    const targetIds = [itemId]
     const item = data.value[index]
-    const nextItem = data.value[index + 1]
-    if (nextItem && nextItem.lv > item.lv) {
-      message.error('请先将子级大纲全部删除')
-      return
+    for (let i = index + 1; i < data.value.length; i++) {
+      const afterItem = data.value[i]
+      if (afterItem && afterItem.lv > item.lv) {
+        targetIds.push(afterItem.id)
+      }
+      else break
     }
+    data.value = data.value.filter(item => !targetIds.includes(item.id))
   }
-  data.value = data.value.filter(item => item.id !== itemId)
+  else {
+    data.value = data.value.filter(item => item.id !== itemId)
+  }
 }
 
 const contextmenus = (el: HTMLElement): ContextmenuItem[] => {

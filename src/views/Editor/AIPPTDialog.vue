@@ -33,7 +33,6 @@
             { label: 'Doubao-1.5-Pro', value: 'doubao-1.5-pro-32k' },
             { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
             { label: 'GLM-4-Z1-Flash', value: 'GLM-4-Z1-Flash' },
-            { label: 'DeepSeek-v3', value: 'ark-deepseek-v3' },
           ]"
         />
       </div>
