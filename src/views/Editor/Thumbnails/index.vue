@@ -9,7 +9,10 @@
       <div class="btn" @click="createSlide()"><IconPlus class="icon" />添加幻灯片</div>
       <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
-          <Templates @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }" />
+          <Templates 
+            @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }"
+            @selectAll="slides => { insertAllTemplates(slides); presetLayoutPopoverVisible = false }"
+          />
         </template>
         <div class="select-btn"><IconDown /></div>
       </Popover>
@@ -80,6 +83,8 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import useSectionHandler from '@/hooks/useSectionHandler'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
+import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
+import type { Slide } from '@/types/slides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
@@ -103,6 +108,8 @@ const hasSection = computed(() => {
   return slides.value.some(item => item.sectionTag)
 })
 
+const { addSlidesFromData } = useAddSlidesOrElements()
+
 const {
   copySlide,
   pasteSlide,
@@ -113,6 +120,7 @@ const {
   cutSlide,
   selectAllSlide,
   sortSlides,
+  isEmptySlide,
 } = useSlideHandler()
 
 const {
@@ -241,6 +249,11 @@ const saveSection = (e: FocusEvent | KeyboardEvent) => {
 
   editingSectionId.value = ''
   mainStore.setDisableHotkeysState(false)
+}
+
+const insertAllTemplates = (slides: Slide[]) => {
+  if (isEmptySlide.value) slidesStore.setSlides(slides)
+  else addSlidesFromData(slides)
 }
 
 const contextmenusSection = (el: HTMLElement): ContextmenuItem[] => {

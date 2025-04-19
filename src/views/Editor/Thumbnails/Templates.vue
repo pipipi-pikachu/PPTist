@@ -9,13 +9,16 @@
       >{{ item.name }}</div>
     </div>
     <div class="content">
-      <div class="types">
-        <div class="type" 
-          :class="{ 'active': activeType === item.value }"
-          v-for="item in types"
-          :key="item.value"
-          @click="activeType = item.value"
-        >{{ item.label }}</div>
+      <div class="header">
+        <div class="types">
+          <div class="type" 
+            :class="{ 'active': activeType === item.value }"
+            v-for="item in types"
+            :key="item.value"
+            @click="activeType = item.value"
+          >{{ item.label }}</div>
+        </div>
+        <div class="insert-all" @click="insertTemplates(slides)">插入全部</div>
       </div>
       <div class="list" ref="listRef">
         <template v-for="slide in slides" :key="slide.id">
@@ -47,6 +50,7 @@ import Button from '@/components/Button.vue'
 
 const emit = defineEmits<{
   (event: 'select', payload: Slide): void
+  (event: 'selectAll', payload: Slide[]): void
 }>()
 
 const slidesStore = useSlidesStore()
@@ -70,6 +74,10 @@ const activeCatalog = ref('')
 
 const insertTemplate = (slide: Slide) => {
   emit('select', slide)
+}
+
+const insertTemplates = (slides: Slide[]) => {
+  emit('selectAll', slides)
 }
 
 const changeCatalog = (id: string) => {
@@ -125,10 +133,20 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 }
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-right: 4px;
+
+  &:hover .insert-all {
+    opacity: 1;
+    transition: opacity $transitionDelay;
+  }
+}
 .types {
   display: flex;
-  padding: 2px 0;
-  margin-bottom: 8px;
 
   .type {
     border-radius: $borderRadius;
@@ -150,6 +168,13 @@ onMounted(() => {
       background-color: #f5f5f5;
     }
   }
+}
+.insert-all {
+  opacity: 0;
+  font-size: 12px;
+  color: $themeColor;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .list {
   width: 392px;
