@@ -4,6 +4,7 @@ import { useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
 import type { PresetTheme } from '@/configs/theme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { getLineElementLength } from '@/utils/element'
 
 interface ThemeValueWithArea {
   area: number
@@ -202,40 +203,50 @@ export default () => {
     }
   }
 
-  // 获取指定幻灯片内所有颜色（主要的）
+  // 获取指定幻灯片内的主要颜色（忽略透明度），并按颜色面积排序
   const getSlideAllColors = (slide: Slide) => {
-    const colors: string[] = []
+    const colorMap: { [key: string]: number } = {}
+
+    const record = (color: string, area: number) => {
+      const _color = tinycolor(color).setAlpha(1).toRgbString()
+      if (!colorMap[_color]) colorMap[_color] = area
+      else colorMap[_color] = colorMap[_color] + area
+    }
+
     for (const el of slide.elements) {
+      const width = el.width
+      const height = el.type === 'line' ? getLineElementLength(el) : el.height
+      const area = width * height
+
       if (el.type === 'shape' && tinycolor(el.fill).getAlpha() !== 0) {
-        const color = tinycolor(el.fill).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.fill, area)
       }
       if (el.type === 'text' && el.fill && tinycolor(el.fill).getAlpha() !== 0) {
-        const color = tinycolor(el.fill).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.fill, area)
+      }
+      if (el.type === 'image' && el.colorMask && tinycolor(el.colorMask).getAlpha() !== 0) {
+        record(el.colorMask, area)
       }
       if (el.type === 'table' && el.theme && tinycolor(el.theme.color).getAlpha() !== 0) {
-        const color = tinycolor(el.theme.color).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.theme.color, area)
       }
       if (el.type === 'chart' && el.themeColors[0] && tinycolor(el.themeColors[0]).getAlpha() !== 0) {
-        const color = tinycolor(el.themeColors[0]).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.themeColors[0], area)
       }
       if (el.type === 'line' && tinycolor(el.color).getAlpha() !== 0) {
-        const color = tinycolor(el.color).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.color, area)
       }
       if (el.type === 'audio' && tinycolor(el.color).getAlpha() !== 0) {
-        const color = tinycolor(el.color).toRgbString()
-        if (!colors.includes(color)) colors.push(color)
+        record(el.color, area)
       }
     }
+    const colors = Object.keys(colorMap).sort((a, b) => colorMap[b] - colorMap[a])
     return colors
   }
   
   // 创建原颜色与新颜色的对应关系表
-  const createSlideThemeColorMap = (slide: Slide, newColors: string[]): { [key: string]: string } => {
+  const createSlideThemeColorMap = (slide: Slide, _newColors: string[]): { [key: string]: string } => {
+    const newColors = [..._newColors]
     const oldColors = getSlideAllColors(slide)
     const themeColorMap: { [key: string]: string } = {}
   
@@ -254,6 +265,12 @@ export default () => {
   // 设置幻灯片主题
   const setSlideTheme = (slide: Slide, theme: PresetTheme) => {
     const colorMap = createSlideThemeColorMap(slide, theme.colors)
+
+    const getColor = (color: string) => {
+      const alpha = tinycolor(color).getAlpha()
+      const _color = colorMap[tinycolor(color).setAlpha(1).toRgbString()]
+      return _color ? tinycolor(_color).setAlpha(alpha).toRgbString() : color
+    }
   
     if (!slide.background || slide.background.type !== 'image') {
       slide.background = {
@@ -263,16 +280,23 @@ export default () => {
     }
     for (const el of slide.elements) {
       if (el.type === 'shape') {
-        el.fill = colorMap[tinycolor(el.fill).toRgbString()] || el.fill
+        if (el.fill) el.fill = getColor(el.fill)
         if (el.gradient) delete el.gradient
+        if (el.text) {
+          el.text.defaultColor = theme.fontColor
+          el.text.defaultFontName = theme.fontname
+        }
       }
       if (el.type === 'text') {
-        if (el.fill) el.fill = colorMap[tinycolor(el.fill).toRgbString()] || el.fill
+        if (el.fill) el.fill = getColor(el.fill)
         el.defaultColor = theme.fontColor
         el.defaultFontName = theme.fontname
       }
+      if (el.type === 'image' && el.colorMask) {
+        el.colorMask = getColor(el.colorMask)
+      }
       if (el.type === 'table') {
-        if (el.theme) el.theme.color = colorMap[tinycolor(el.theme.color).toRgbString()] || el.theme.color
+        if (el.theme) el.theme.color = getColor(el.theme.color)
         for (const rowCells of el.data) {
           for (const cell of rowCells) {
             if (cell.style) {
@@ -283,11 +307,11 @@ export default () => {
         }
       }
       if (el.type === 'chart') {
-        el.themeColors = [colorMap[tinycolor(el.themeColors[0]).toRgbString()]] || el.themeColors
+        el.themeColors = getColor(el.themeColors[0]) ? [getColor(el.themeColors[0])] : el.themeColors
         el.textColor = theme.fontColor
       }
-      if (el.type === 'line') el.color = colorMap[tinycolor(el.color).toRgbString()] || el.color
-      if (el.type === 'audio') el.color = colorMap[tinycolor(el.color).toRgbString()] || el.color
+      if (el.type === 'line') el.color = getColor(el.color)
+      if (el.type === 'audio') el.color = getColor(el.color)
       if (el.type === 'latex') el.color = theme.fontColor
     }
   }

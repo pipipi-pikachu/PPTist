@@ -130,6 +130,17 @@ export const getElementListRange = (elementList: PPTElement[]) => {
   return { minX, maxX, minY, maxY }
 }
 
+/**
+ * 计算线条元素的长度
+ * @param element 线条元素
+ */
+export const getLineElementLength = (element: PPTLineElement) => {
+  const deltaX = element.end[0] - element.start[0]
+  const deltaY = element.end[1] - element.start[1]
+  const len = Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+  return len
+}
+
 export interface AlignLine {
   value: number
   range: [number, number]
