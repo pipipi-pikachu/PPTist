@@ -313,6 +313,10 @@ export default () => {
       if (el.type === 'line') el.color = getColor(el.color)
       if (el.type === 'audio') el.color = getColor(el.color)
       if (el.type === 'latex') el.color = theme.fontColor
+
+      if ('outline' in el && el.outline) {
+        el.outline.color = theme.borderColor
+      }
     }
   }
   
@@ -322,6 +326,11 @@ export default () => {
       backgroundColor: theme.background,
       themeColors: theme.colors,
       fontColor: theme.fontColor,
+      outline: {
+        width: 2,
+        style: 'solid',
+        color: theme.borderColor,
+      },
       fontName: theme.fontname,
     })
 

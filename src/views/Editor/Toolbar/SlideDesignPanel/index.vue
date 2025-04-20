@@ -276,8 +276,8 @@
           </div>
 
           <div class="btns">
-            <Button type="primary" size="small" @click="applyPresetTheme(item)">应用</Button>
-            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetTheme(item, true)">应用全局</Button>
+            <Button type="primary" size="small" @click="applyPresetTheme(item)">设置</Button>
+            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetTheme(item, true)">设置并应用</Button>
           </div>
         </div>
       </div>
@@ -532,7 +532,7 @@ const toFixed = (num: number) => {
 .theme-item {
   @include flex-grid-layout-children(2, 48%);
 
-  padding-bottom: 30%;
+  padding-bottom: 27%;
   border-radius: $borderRadius;
   position: relative;
   cursor: pointer;
@@ -549,13 +549,13 @@ const toFixed = (num: number) => {
   }
 
   .text {
-    font-size: 16px;
+    font-size: 15px;
   }
   .colors {
     display: flex;
+    margin-top: 6px;
   }
   .color-block {
-    margin-top: 8px;
     width: 12px;
     height: 12px;
     margin-right: 2px;
