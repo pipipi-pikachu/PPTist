@@ -145,6 +145,7 @@ import { useMainStore, useSlidesStore } from '@/store'
 import type { GradientType, PPTShapeElement, Gradient, ShapeText } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { getImageDataURL } from '@/utils/image'
+import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'
 
@@ -198,6 +199,10 @@ watch(handleElement, () => {
   pattern.value = handleElement.value.pattern || ''
   fillType.value = (handleElement.value.pattern !== undefined) ? 'pattern' : (handleElement.value.gradient ? 'gradient' : 'fill')
   textAlign.value = handleElement.value?.text?.align || 'middle'
+
+  if (handleElement.value.text?.content) {
+    emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
+  }
 }, { deep: true, immediate: true })
 
 watch(handleElementId, () => {
