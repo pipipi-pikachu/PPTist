@@ -85,6 +85,11 @@ export default () => {
     if (!_color) return {
       alpha: 0,
       color: '#000000',
+    if (!_color) {
+      return {
+        alpha: 0,
+        color: '#000000',
+      }
     }
 
     const c = tinycolor(_color)
@@ -410,9 +415,10 @@ export default () => {
 
     for (const slide of _slides) {
       const pptxSlide = pptx.addSlide()
-
+     
       if (slide.background) {
         const background = slide.background
+        console.log(background)
         if (background.type === 'image' && background.image) {
           if (isBase64Image(background.image.src)) pptxSlide.background = { data: background.image.src }
           else pptxSlide.background = { path: background.image.src }
@@ -487,9 +493,28 @@ export default () => {
             w: el.width / ratioPx2Inch.value,
             h: el.height / ratioPx2Inch.value,
           }
-          if (isBase64Image(el.src)) options.data = el.src
-          else options.path = el.src
-
+          
+          // 处理图片源
+          if (isBase64Image(el.src)) {
+            options.data = el.src
+          }
+          else {
+            // 对于本地图片，需要转换为base64
+            try {
+              const img = document.createElement('img')
+              img.src = el.src
+              const canvas = document.createElement('canvas')
+              canvas.width = img.naturalWidth
+              canvas.height = img.naturalHeight
+              const ctx = canvas.getContext('2d')
+              ctx?.drawImage(img, 0, 0)
+              options.data = canvas.toDataURL('image/png')
+            }
+            catch (error) {
+              console.error('图片转换失败:', error)
+              options.path = el.src // 转换失败时保持原有行为
+            }
+          }
           if (el.flipH) options.flipH = el.flipH
           if (el.flipV) options.flipV = el.flipV
           if (el.rotate) options.rotate = el.rotate

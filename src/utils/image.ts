@@ -1,6 +1,6 @@
 interface ImageSize {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 /**
@@ -8,7 +8,7 @@ interface ImageSize {
  * @param src 图片地址
  */
 export const getImageSize = (src: string): Promise<ImageSize> => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const img = document.createElement('img')
     img.src = src
     img.style.opacity = '0'
@@ -17,7 +17,7 @@ export const getImageSize = (src: string): Promise<ImageSize> => {
     img.onload = () => {
       const imgWidth = img.clientWidth
       const imgHeight = img.clientHeight
-    
+
       img.onload = null
       img.onerror = null
 
@@ -38,12 +38,40 @@ export const getImageSize = (src: string): Promise<ImageSize> => {
  * @param file 图片文件
  */
 export const getImageDataURL = (file: File): Promise<string> => {
-  return new Promise(resolve => {
-    const reader = new FileReader()
-    reader.addEventListener('load', () => {
-      resolve(reader.result as string)
+  return new Promise((resolve, reject) => {
+    // 检查文件类型
+    if (!file.type.startsWith('image/')) {
+      reject(new Error('不支持的文件类型'))
+      return
+    }
+
+    // 如果是本地文件，返回相对路径
+    if (file instanceof File && file.path) {
+      resolve(file.path)
+      return
+    }
+
+    // 创建文件流
+    const stream = file.stream()
+    const reader = stream.getReader()
+
+    // 收集数据块
+    const chunks: Uint8Array[] = []
+    
+    reader.read().then(function processData({ done, value }): Promise<void> | void {
+      if (done) {
+        // 合并所有数据块
+        const blob = new Blob(chunks, { type: file.type })
+        const url = URL.createObjectURL(blob)
+        resolve(url)
+        return
+      }
+
+      chunks.push(value)
+      return reader.read().then(processData)
+    }).catch(error => {
+      reject(new Error('文件读取失败: ' + error.message))
     })
-    reader.readAsDataURL(file)
   })
 }
 
@@ -59,7 +87,7 @@ export const isSVGString = (text: string): boolean => {
     const parser = new DOMParser()
     const doc = parser.parseFromString(text, 'image/svg+xml')
     return doc.documentElement.nodeName === 'svg'
-  } 
+  }
   catch {
     return false
   }
