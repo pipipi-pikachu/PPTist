@@ -81,10 +81,8 @@ export default () => {
   }
 
   // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
+  // 格式化颜色值为 透明度 + HexString，供pptxgenjs使用
   const formatColor = (_color: string) => {
-    if (!_color) return {
-      alpha: 0,
-      color: '#000000',
     if (!_color) {
       return {
         alpha: 0,
@@ -100,6 +98,7 @@ export default () => {
       color,
     }
   }
+
 
   type FormatColor = ReturnType<typeof formatColor>
 

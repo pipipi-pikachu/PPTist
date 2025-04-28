@@ -45,11 +45,6 @@ export const getImageDataURL = (file: File): Promise<string> => {
       return
     }
 
-    // 如果是本地文件，返回相对路径
-    if (file instanceof File && file.path) {
-      resolve(file.path)
-      return
-    }
 
     // 创建文件流
     const stream = file.stream()
