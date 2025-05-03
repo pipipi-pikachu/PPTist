@@ -40,7 +40,18 @@ app.get("/api/documents/:id", async (req, res) => {
     return res.json(result.data.data);
   } catch (error) {
     console.error(`Failed to retrieve document data due to - ${error.message}`);
-    return res.status(400).json({ success: false });
+    const status = error.response?.status || 500;
+    const message =
+      error.response?.data?.message || error.message || "Unknown error";
+
+    console.error(
+      `Failed to retrieve document data - ${message} (status: ${status})`
+    );
+
+    return res.status(status).json({
+      success: false,
+      message,
+    });
   }
 });
 

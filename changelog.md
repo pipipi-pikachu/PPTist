@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver.org/spec/v2.0.0.html)).
 
+## [v2.2.1] - 2025-05-03
+
+### Added
+- 
+
+### Changed
+- Changed error long when the slide data fails to load from remote server
+
+
+
+### Fixed
+- 
+
+### Removed
+-
+
 
 ## [v2.2.0] - 2025-04-01
 
@@ -29,13 +45,6 @@ and this project adheres to([https://semver.org/spec/v2.0.0.html](https://semver
 - Chanded `src/services/index.ts` to pass `t` query param to backend server via url search params.
 - Changed server port to `3001`.
 
-
-
-### Fixed
-- 
-
-### Removed
--
 
 ## [v2.1.2] - 2025-03-24
 

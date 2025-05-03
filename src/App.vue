@@ -4,7 +4,7 @@
     <Editor v-else-if="_isPC" />
     <Mobile v-else />
   </template>
-  <FullscreenSpin tip="Initialized..." v-else  loading :mask="false" />
+  <FullscreenSpin tip="Initialized..." v-else loading :mask="false" />
 </template>
 
 
@@ -50,11 +50,15 @@ onMounted(async () => {
     const match = window.location.pathname.match(pathPattern);
     const id = match && match[1] || ""
     api.getFileData(id).then((slides: Slide[]) => {
-      if(slides.length > 0 && slides[0].viewportRatio) {
+      if (slides.length > 0 && slides[0].viewportRatio) {
         slidesStore.setViewportRatio(slides[0].viewportRatio)
       }
       slidesStore.setSlides(slides)
-    })
+    }).catch(err => {
+      const message = err?.response?.data?.message || err?.message || "Failed to load slides. Session ended. Re-open the editor from the app dashboard.";
+      window.document.write(`
+        <div style='color:red; height: 100%; display: flex; align-items: center; justify-content: center;'>${message}</div>`)
+    });
   }
 
   await deleteDiscardedDB()
