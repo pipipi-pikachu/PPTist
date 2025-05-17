@@ -25,7 +25,7 @@
 
 # 👀 Front-Row Reminder
 1. This project is a "Web Slideshow Application", not a "low-code platform", "H5 editor", "image editor", "whiteboard application", or similar tools.
-2. The target audience for this project is <b>developers with needs for [Web slideshow] development</b>. The provided link is merely a demo address and does not offer any online services. You should not use this project directly as a tool, nor does it support out-of-the-box functionality. If you simply need a service or tool, you can opt for more excellent and mature products such as: [Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/), etc.
+2. The target audience for this project is <b>developers with needs for [Web slideshow] development, basic web development experience is required</b>. The provided link is merely a demo address and does not offer any online services. You should not use this project directly as a tool, nor does it support out-of-the-box functionality. If you simply need a service or tool, you can opt for more excellent and mature products such as: [Slidev](https://sli.dev/)、[revealjs](https://revealjs.com/), etc.
 3. Here are some summarized [Frequently Asked Questions](/doc/Q&A.md). When raising Issues or submitting PRs for the first time, be sure to read this document in advance.
 
 
@@ -206,26 +206,23 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 一年1999元
         - 三年2999元
         - 永久5499元
-- 建议优先考虑执行AGPL-3.0 协议，如考虑付费获取独立的商业授权，还请注意：
-    - 独立商业授权的意思是：单独授权您将代码用于商业行为，且不必执行 AGPL-3.0 协议；
-    - 仅授权，不存在其他“高级版本/付费版本”、不提供任何在线服务、不提供技术支持或技术咨询、不包含定制开发、不提供更多模板、更不提供可直接交付的产品；
-    - 授权后，仍禁止将源代码二次售卖、授权、开源或恶意传播。
+- 建议优先考虑执行AGPL-3.0 协议，如希望付费获取独立的商业授权，还请注意：
+    - 独立商业授权的意思是：单独授权您将代码用于商业行为且不必执行 AGPL-3.0 协议；
+    - 仅授权（而不是出售软件或服务），不存在其他“高级版本/付费版本”、不提供任何在线服务、不提供技术支持或技术咨询、不提供定制开发、不提供更多模板、更不提供可直接交付的产品；
+    - 该软件无法开箱即用，至少也需自行接入后端数据读取/存储相关能力。因此，使用本项目需要有最基本的web开发经验（能理解什么是前端&后端、数据从哪来&怎么存、什么是接口、什么是跨域等）；
+    - 授权后，仍禁止将源代码二次售卖、授权、开源或恶意传播；
     - 授权后，如有需要可提供AIPPT相关后台逻辑和当前模板数据以供参考（但都非常简单，无任何核心逻辑，更建议自己实现）；
     - 请务必提前做好调研，判断PPTist是否符合需求，无论是功能（是否能满足业务需求）还是开发（是否接受当前技术栈/实现方案）；
-    - 作者是异步沟通践行者，非必要不加微信，有疑问请邮件联系，谢谢理解。
+    - 作者是异步沟通践行者，**不加微信/QQ/手机号等**，有任何授权相关疑问请邮件联系，提需求/报bug/询问技术方案等请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行，谢谢理解。
 
 ---
 # 🔔 其他说明
 ## 什么是 AGPL-3.0 协议
 协议的核心要求用通俗的语言解释如下：
-- **开源义务**：如果你用了 AGPL 的代码，无论你或你的下游怎么使用/修改，都必须把你最终的代码全部完整公开出来（不只是给出修改的部分），并继续以 AGPL 协议开源，保持开源的传染性。
+- **开源义务**：如果你用了 AGPL 的代码，无论你或你的下游怎么使用/修改，都必须把你最终的代码全部完整公开出来（不只是给出修改的部分，也不是说换个框架重写一遍就能和原始代码脱离关系了），并继续以 AGPL 协议开源，保持开源的传染性。
 - **网络服务也要开源**：哪怕你只是用 AGPL 的代码做了一个网站或网络服务，别人通过网络用你的服务时，你也需要遵守上一条**开源义务**。
 - **保留版权声明**：你不能删掉代码里原来的作者信息和许可证声明，得告诉大家这代码是从哪儿来的。
 - **不能加额外限制**：你不能在 AGPL 代码上加一些限制，比如不让别人再分发，或者要求别人付费才能使用代码。
 - **免责声明**：作者不保证代码没有 bug，也不对使用后果负责。
 
 详细协议内容见官方文档：[AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)
-
-## 问题反馈
-- 提需求/报bug/询问技术方案等请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行，而不是邮件；
-- 确保问题的内容不是 [Issues](https://github.com/pipipi-pikachu/PPTist/issues)（特别是置顶 Issues）和 [常见问题](/doc/Q&A.md) 中已经存在的。
