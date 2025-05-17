@@ -285,12 +285,14 @@ export default () => {
         if (el.text) {
           el.text.defaultColor = theme.fontColor
           el.text.defaultFontName = theme.fontname
+          if(el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
         }
       }
       if (el.type === 'text') {
         if (el.fill) el.fill = getColor(el.fill)
         el.defaultColor = theme.fontColor
         el.defaultFontName = theme.fontname
+        if(el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
       }
       if (el.type === 'image' && el.colorMask) {
         el.colorMask = getColor(el.colorMask)
@@ -364,18 +366,24 @@ export default () => {
         }
 
         if (el.type === 'shape') {
-          el.fill = themeColors[0]
+          const alpha = tinycolor(el.fill).getAlpha()
+          if (alpha > 0) el.fill = themeColors[0]
           if (el.text) {
             el.text.defaultColor = fontColor
             el.text.defaultFontName = fontName
+            if(el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
           }
           if (el.gradient) delete el.gradient
         }
         else if (el.type === 'line') el.color = themeColors[0]
         else if (el.type === 'text') {
+          if (el.fill) {
+            const alpha = tinycolor(el.fill).getAlpha()
+            if (alpha > 0) el.fill = themeColors[0]
+          }
           el.defaultColor = fontColor
           el.defaultFontName = fontName
-          if (el.fill) el.fill = themeColors[0]
+          if(el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
         }
         else if (el.type === 'table') {
           if (el.theme) el.theme.color = themeColors[0]
