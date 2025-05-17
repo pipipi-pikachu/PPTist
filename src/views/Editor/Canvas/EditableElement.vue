@@ -28,6 +28,7 @@ import useOrderElement from '@/hooks/useOrderElement'
 import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useCopyAndPasteElement from '@/hooks/useCopyAndPasteElement'
 import useSelectElement from '@/hooks/useSelectElement'
+import useFavoriteComponents from '@/hooks/useFavoriteComponents'
 
 import { ElementOrderCommands, ElementAlignCommands } from '@/types/edit'
 
@@ -40,6 +41,9 @@ import TableElement from '@/views/components/element/TableElement/index.vue'
 import LatexElement from '@/views/components/element/LatexElement/index.vue'
 import VideoElement from '@/views/components/element/VideoElement/index.vue'
 import AudioElement from '@/views/components/element/AudioElement/index.vue'
+
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
 
 const props = defineProps<{
   elementInfo: PPTElement
@@ -72,6 +76,15 @@ const { lockElement, unlockElement } = useLockElement()
 const { copyElement, pasteElement, cutElement } = useCopyAndPasteElement()
 const { selectAllElements } = useSelectElement()
 
+const mainStore = useMainStore()
+const { activeElementList } = storeToRefs(mainStore)
+const { addFavorite } = useFavoriteComponents()
+
+const addToFavoritesHandler = () => {
+  addFavorite(activeElementList.value)
+  // console.log('Selected elements added to favorites.')
+}
+
 const contextmenus = (): ContextmenuItem[] => {
   if (props.elementInfo.lock) {
     return [{
@@ -95,6 +108,10 @@ const contextmenus = (): ContextmenuItem[] => {
       text: '粘贴',
       subText: 'Ctrl + V',
       handler: pasteElement,
+    },
+    {
+      text: '添加到收藏夹',
+      handler: addToFavoritesHandler,
     },
     { divider: true },
     {

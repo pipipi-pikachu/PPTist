@@ -102,7 +102,7 @@ export default () => {
   }
   
   const getFontInfo = (htmlString: string) => {
-    const fontSizeRegex = /font-size:\s*(\d+)\s*px/i
+    const fontSizeRegex = /font-size:\s*(\d+(?:\.\d+)?)\s*px/i
     const fontFamilyRegex = /font-family:\s*['"]?([^'";]+)['"]?\s*(?=;|>|$)/i
   
     const defaultInfo = {

@@ -93,6 +93,13 @@
     >
       <LinkDialog @close="linkDialogVisible = false" />
     </Modal>
+
+    <FavoriteComponentsModal 
+      :visible="favoriteComponentsModalVisible"
+      :favorites="favoriteComponents"
+      @select-favorite="addFavoriteComponentsToCanvas"
+      @update:visible="newValue => favoriteComponentsModalVisible = newValue"
+    />
   </div>
 </template>
 
@@ -126,6 +133,7 @@ import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useCreateElement from '@/hooks/useCreateElement'
+import useFavoriteComponents from '@/hooks/useFavoriteComponents'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
@@ -138,8 +146,10 @@ import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
 import Modal from '@/components/Modal.vue'
+import FavoriteComponentsModal from '@/components/FavoriteComponentsModal.vue'
 
 const mainStore = useMainStore()
+const slidesStore = useSlidesStore()
 const {
   activeElementIdList,
   activeGroupElementId,
@@ -153,7 +163,7 @@ const {
   canvasScale,
   textFormatPainter,
 } = storeToRefs(mainStore)
-const { currentSlide } = storeToRefs(useSlidesStore())
+const { currentSlide } = storeToRefs(slidesStore)
 const { ctrlKeyState, spaceKeyState } = storeToRefs(useKeyboardStore())
 
 const viewportRef = ref<HTMLElement>()
@@ -161,6 +171,13 @@ const alignmentLines = ref<AlignmentLineProps[]>([])
 
 const linkDialogVisible = ref(false)
 const openLinkDialog = () => linkDialogVisible.value = true
+
+const favoriteComponentsModalVisible = ref(false)
+const favoriteComponents = ref<PPTElement[][]>([])
+
+watch(favoriteComponentsModalVisible, (newValue) => {
+  console.log('favoriteComponentsModalVisible changed:', newValue)
+})
 
 watch(handleElementId, () => {
   mainStore.setActiveGroupElementId('')
@@ -192,6 +209,8 @@ const { pasteElement } = useCopyAndPasteElement()
 const { enterScreeningFromStart } = useScreening()
 const { updateSlideIndex } = useSlideHandler()
 const { createTextElement, createShapeElement } = useCreateElement()
+
+const { getFavorites } = useFavoriteComponents()
 
 // 组件渲染时，如果存在元素焦点，需要清除
 // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
@@ -300,6 +319,19 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: selectAllElements,
     },
     {
+      text: '从收藏夹选择',
+      handler: () => {
+        const favorites = getFavorites()
+        if (favorites.length === 0) {
+          alert('收藏夹中还没有组件。') // Show an alert for now
+        } 
+        else {
+          favoriteComponents.value = favorites
+          favoriteComponentsModalVisible.value = true
+        }
+      },
+    },
+    {
       text: '标尺',
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
@@ -341,6 +373,46 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: enterScreeningFromStart,
     },
   ]
+}
+
+// TODO: Implement function to add selected favorite components to canvas
+const addFavoriteComponentsToCanvas = (elements: PPTElement[]) => {
+  if (!elements || elements.length === 0) return
+
+  const currentElements = JSON.parse(JSON.stringify(currentSlide.value.elements))
+
+  const newElements: PPTElement[] = []
+  const groupIdMap = new Map<string, string>() // Map original group IDs to new group IDs
+
+  elements.forEach(element => {
+    const newElement = { ...element }
+    // Generate a simple unique ID
+    newElement.id = Date.now().toString() + Math.random().toString(36).substring(2)
+
+    // Handle grouped elements
+    if (element.groupId) {
+      if (!groupIdMap.has(element.groupId)) {
+        // Generate a new group ID for this original group
+        groupIdMap.set(element.groupId, Date.now().toString() + Math.random().toString(36).substring(2))
+      }
+      newElement.groupId = groupIdMap.get(element.groupId)
+    }
+
+    // Adjust position (can refine later)
+    newElement.left = (element.left || 0) + 50
+    newElement.top = (element.top || 0) + 50
+
+    newElements.push(newElement)
+  })
+
+  const updatedElements = [...currentElements, ...newElements]
+  currentSlide.value.elements = updatedElements
+
+  // Select the newly added elements
+  const newElementIds = newElements.map(el => el.id)
+  mainStore.setActiveElementIdList(newElementIds)
+
+  favoriteComponentsModalVisible.value = false
 }
 
 provide(injectKeySlideScale, canvasScale)
