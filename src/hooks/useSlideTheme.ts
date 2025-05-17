@@ -365,6 +365,10 @@ export default () => {
 
         if (el.type === 'shape') {
           el.fill = themeColors[0]
+          if (el.text) {
+            el.text.defaultColor = fontColor
+            el.text.defaultFontName = fontName
+          }
           if (el.gradient) delete el.gradient
         }
         else if (el.type === 'line') el.color = themeColors[0]

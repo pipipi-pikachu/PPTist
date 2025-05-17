@@ -110,6 +110,7 @@ const props = defineProps<{
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
+const { theme } = storeToRefs(slidesStore)
 const { handleElementId, shapeFormatPainter } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
@@ -158,9 +159,9 @@ watch(handleElementId, () => {
 const text = computed<ShapeText>(() => {
   const defaultText: ShapeText = {
     content: '',
-    defaultFontName: '',
-    defaultColor: '#000',
     align: 'middle',
+    defaultFontName: theme.value.fontName,
+    defaultColor: theme.value.fontColor,
   }
   if (!props.elementInfo.text) return defaultText
 

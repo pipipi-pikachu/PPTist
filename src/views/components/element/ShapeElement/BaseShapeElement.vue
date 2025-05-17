@@ -67,7 +67,9 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import type { PPTShapeElement, ShapeText } from '@/types/slides'
+import { useSlidesStore } from '@/store'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
@@ -79,6 +81,9 @@ import PatternDefs from './PatternDefs.vue'
 const props = defineProps<{
   elementInfo: PPTShapeElement
 }>()
+
+
+const { theme } = storeToRefs(useSlidesStore())
 
 const element = computed(() => props.elementInfo)
 const { fill } = useElementFill(element, 'base')
@@ -96,9 +101,9 @@ const { flipStyle } = useElementFlip(flipH, flipV)
 const text = computed<ShapeText>(() => {
   const defaultText: ShapeText = {
     content: '',
-    defaultFontName: '',
-    defaultColor: '#000',
     align: 'middle',
+    defaultFontName: theme.value.fontName,
+    defaultColor: theme.value.fontColor,
   }
   if (!props.elementInfo.text) return defaultText
 
