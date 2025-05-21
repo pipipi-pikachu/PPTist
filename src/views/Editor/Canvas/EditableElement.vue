@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { ElementTypes, type PPTElement } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 
@@ -81,8 +81,11 @@ const { activeElementList } = storeToRefs(mainStore)
 const { addFavorite } = useFavoriteComponents()
 
 const addToFavoritesHandler = () => {
-  addFavorite(activeElementList.value)
-  // console.log('Selected elements added to favorites.')
+  const favoriteName = prompt('请输入收藏组件的名称：')
+  if (favoriteName !== null && favoriteName.trim() !== '') {
+    addFavorite(activeElementList.value, favoriteName.trim())
+    // console.log('Selected elements added to favorites.')
+  }
 }
 
 const contextmenus = (): ContextmenuItem[] => {

@@ -12,17 +12,8 @@
             :key="index"
             @click="selectFavorite(favorite)"
           >
-            <!-- Display a simple preview based on component type -->
-            <div v-if="favorite.length === 1">
-              <span v-if="favorite[0].type === 'text'">文本: {{ favorite[0].content.replace(/<[^>]+>/g, '').substring(0, 50) + '...' }}</span>
-              <span v-else-if="favorite[0].type === 'image'">图片</span>
-              <span v-else-if="favorite[0].type === 'shape'">形状</span>
-              <span v-else>单个元素 ({{ favorite[0].type }})</span>
-            </div>
-            <div v-else>
-              组合 {{ index + 1 }} ({{ favorite.length }} 个元素)
-            </div>
-            
+            <!-- Display the favorite name -->
+            <div>{{ favorite.name }}</div>
             <!-- TODO: Add a more sophisticated preview -->
           </li>
         </ul>
@@ -39,9 +30,12 @@
 import { ref, watch } from 'vue'
 import type { PPTElement } from '@/types/slides'
 
+// Assuming FavoriteItem is defined in useFavoriteComponents and includes 'name'
+import type { FavoriteItem } from '@/hooks/useFavoriteComponents'
+
 const props = defineProps<{
   visible: boolean;
-  favorites: PPTElement[][];
+  favorites: FavoriteItem[]; // Use FavoriteItem type
 }>()
 
 const emit = defineEmits<{
@@ -56,8 +50,9 @@ const closeModal = () => {
 }
 
 // Function to handle favorite selection
-const selectFavorite = (favorite: PPTElement[]) => {
-  emit('select-favorite', favorite)
+const selectFavorite = (favorite: FavoriteItem) => {
+  // Emit the elements array part of the FavoriteItem
+  emit('select-favorite', favorite.elements)
   closeModal()
 }
 
