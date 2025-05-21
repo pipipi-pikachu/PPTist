@@ -78,7 +78,7 @@ const { selectAllElements } = useSelectElement()
 
 const mainStore = useMainStore()
 const { activeElementList } = storeToRefs(mainStore)
-const { addFavorite } = useFavoriteComponents()
+const { addFavorite } = useFavoriteComponents() 
 
 const addToFavoritesHandler = () => {
   const favoriteName = prompt('请输入收藏组件的名称：')

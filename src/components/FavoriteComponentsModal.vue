@@ -13,8 +13,9 @@
             @click="selectFavorite(favorite)"
           >
             <!-- Display the favorite name -->
-            <div>{{ favorite.name }}</div>
+            <div class="favorite-name">{{ favorite.name }}</div>
             <!-- TODO: Add a more sophisticated preview -->
+            <button class="delete-button" @click.stop="handleDeleteFavorite(favorite.name)">删除</button>
           </li>
         </ul>
       </div>
@@ -31,7 +32,7 @@ import { ref, watch } from 'vue'
 import type { PPTElement } from '@/types/slides'
 
 // Assuming FavoriteItem is defined in useFavoriteComponents and includes 'name'
-import type { FavoriteItem } from '@/hooks/useFavoriteComponents'
+import useFavoriteComponents, { type FavoriteItem } from '@/hooks/useFavoriteComponents'
 
 const props = defineProps<{
   visible: boolean;
@@ -42,6 +43,18 @@ const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void;
   (e: 'select-favorite', elements: PPTElement[]): void;
 }>()
+
+const { getFavorites, removeFavorite } = useFavoriteComponents()
+
+// We need a local ref to manage the displayed favorites in the modal
+const displayedFavorites = ref<FavoriteItem[]>([])
+
+// Watch the visible prop to load favorites when the modal opens
+watch(() => props.visible, (isVisible) => {
+  if (isVisible) {
+    displayedFavorites.value = getFavorites()
+  }
+})
 
 const closeModal = () => {
   console.log('closeModal called')
@@ -54,6 +67,11 @@ const selectFavorite = (favorite: FavoriteItem) => {
   // Emit the elements array part of the FavoriteItem
   emit('select-favorite', favorite.elements)
   closeModal()
+}
+
+const handleDeleteFavorite = (name: string) => {
+  removeFavorite(name)
+  displayedFavorites.value = getFavorites() // This line refreshes the displayed list
 }
 
 // TODO: Implement selection logic
@@ -114,10 +132,29 @@ const selectFavorite = (favorite: FavoriteItem) => {
   padding: 10px 0;
   border-bottom: 1px solid #eee;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .modal-body li:last-child {
   border-bottom: none;
+}
+
+.favorite-name {
+  flex-grow: 1;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  text-decoration: underline;
 }
 
 .modal-footer {

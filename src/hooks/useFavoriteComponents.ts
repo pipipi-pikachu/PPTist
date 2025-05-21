@@ -6,7 +6,7 @@ const STORAGE_KEY = 'pptist-favorite-components'
 const generateSvgPreview = async (elements: PPTElement[]): Promise<string> => {
   console.log('Generating SVG preview for:', elements)
   // Placeholder implementation
-  await Promise.resolve() // Add this line
+  await Promise.resolve()
   return ''
 }
 
@@ -23,26 +23,32 @@ export default () => {
     return favoritesJson ? JSON.parse(favoritesJson) : []
   }
 
-  const addFavorite = (elements: PPTElement[], name: string) => { // Remove 'async' here
+  const addFavorite = (elements: PPTElement[], name: string) => {
     if (!elements || elements.length === 0 || !name) return
 
     const favorites = getFavorites()
-
+    
     const newFavorite: FavoriteItem = {
       elements: elements,
       name: name,
       previewSvg: '',
     }
 
-    favorites.push(newFavorite) // Remove semicolon here
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites)) // Remove semicolon here
+    favorites.push(newFavorite)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
   }
 
+  const removeFavorite = (name: string) => {
+    const favorites = getFavorites()
+    const updatedFavorites = favorites.filter(favorite => favorite.name !== name)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedFavorites))
+  }
 
-  // TODO: Implement other necessary functions later (like removing favorites)
+  // TODO: Implement other necessary functions later
 
   return {
     addFavorite,
     getFavorites,
+    removeFavorite,
   }
 }
