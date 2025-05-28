@@ -39,17 +39,8 @@ if (import.meta.env.MODE !== 'development') {
 }
 
 onMounted(async () => {
-  if (location.hostname === 'localhost') {
-    message.error('本地开发请访问 http://127.0.0.1:5173，否则不保证数据可靠性', { duration: 0, closable: true })
-    api.getMockData('slides').then((slides: Slide[]) => {
-      slidesStore.setSlides(slides)
-    })
-  }
-  else {
-    api.getFileData('slides').then((slides: Slide[]) => {
-      slidesStore.setSlides(slides)
-    })
-  }
+  const slides = await api.getFileData('slides')
+  slidesStore.setSlides(slides)
 
   await deleteDiscardedDB()
   snapshotStore.initSnapshotDatabase()
