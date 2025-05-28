@@ -28,7 +28,6 @@ import { ref, nextTick, onMounted, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import Input from './Input.vue'
-import message from '@/utils/message'
 
 interface OutlineItem {
   id: string
