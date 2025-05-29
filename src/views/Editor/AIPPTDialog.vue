@@ -30,10 +30,8 @@
           style="width: 160px;"
           v-model:value="model"
           :options="[
-            { label: 'Doubao-1.5-Lite', value: 'doubao-1.5-lite-32k' },
-            { label: 'Doubao-1.5-Pro', value: 'doubao-1.5-pro-32k' },
             { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
-            { label: 'GLM-4-Z1-Flash', value: 'GLM-4-Z1-Flash' },
+            { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
           ]"
         />
       </div>
@@ -97,7 +95,7 @@ const outlineCreating = ref(false)
 const outlineRef = ref<HTMLElement>()
 const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const model = ref('doubao-1.5-lite-32k')
+const model = ref('GLM-4-Flash')
 
 const recommends = ref([
   '大学生职业生涯规划',
@@ -161,7 +159,7 @@ const createOutline = async () => {
 const createPPT = async () => {
   loading.value = true
 
-  const stream = await api.AIPPT(outline.value, language.value, 'doubao-1.5-pro-32k')
+  const stream = await api.AIPPT(outline.value, language.value, model.value)
   const templateSlides: Slide[] = await api.getFileData(selectedTemplate.value).then(ret => ret.slides)
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
