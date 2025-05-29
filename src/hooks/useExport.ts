@@ -537,6 +537,8 @@ export default () => {
               h: el.height / ratioPx2Inch.value,
             }
             if (el.rotate) options.rotate = el.rotate
+            if (el.flipH) options.flipH = el.flipH
+            if (el.flipV) options.flipV = el.flipV
             if (el.link) {
               const linkOption = getLinkOption(el.link)
               if (linkOption) options.hyperlink = linkOption
@@ -600,6 +602,26 @@ export default () => {
             if (el.text.defaultFontName) options.fontFace = el.text.defaultFontName
 
             pptxSlide.addText(textProps, options)
+          }
+          if (el.pattern) {
+            const options: pptxgen.ImageProps = {
+              x: el.left / ratioPx2Inch.value,
+              y: el.top / ratioPx2Inch.value,
+              w: el.width / ratioPx2Inch.value,
+              h: el.height / ratioPx2Inch.value,
+            }
+            if (isBase64Image(el.pattern)) options.data = el.pattern
+            else options.path = el.pattern
+  
+            if (el.flipH) options.flipH = el.flipH
+            if (el.flipV) options.flipV = el.flipV
+            if (el.rotate) options.rotate = el.rotate
+            if (el.link) {
+              const linkOption = getLinkOption(el.link)
+              if (linkOption) options.hyperlink = linkOption
+            }
+
+            pptxSlide.addImage(options)
           }
         }
 
