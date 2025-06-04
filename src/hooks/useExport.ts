@@ -383,6 +383,13 @@ export default () => {
     return url.match(regex) !== null
   }
 
+  // 判断是否为SVG图片地址
+  const isSVGImage = (url: string) => {
+    const isSVGBase64 = /^data:image\/svg\+xml;base64,/.test(url)
+    const isSVGUrl = /\.svg$/.test(url)
+    return isSVGBase64 || isSVGUrl
+  }
+
   // 导出PPTX文件
   const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
     exporting.value = true
@@ -414,8 +421,21 @@ export default () => {
       if (slide.background) {
         const background = slide.background
         if (background.type === 'image' && background.image) {
-          if (isBase64Image(background.image.src)) pptxSlide.background = { data: background.image.src }
-          else pptxSlide.background = { path: background.image.src }
+          if (isSVGImage(background.image.src)) {
+            pptxSlide.addImage({
+              data: background.image.src,
+              x: 0,
+              y: 0,
+              w: viewportSize.value / ratioPx2Inch.value,
+              h: viewportSize.value * viewportRatio.value / ratioPx2Inch.value,
+            })
+          }
+          else if (isBase64Image(background.image.src)) {
+            pptxSlide.background = { data: background.image.src }
+          }
+          else {
+            pptxSlide.background = { path: background.image.src }
+          }
         }
         else if (background.type === 'solid' && background.color) {
           const c = formatColor(background.color)
@@ -561,6 +581,7 @@ export default () => {
               const color = tinycolor.mix(color1, color2).toHexString()
               fillColor = formatColor(color)
             }
+            if (el.pattern) fillColor = formatColor('#00000000')
             const opacity = el.opacity === undefined ? 1 : el.opacity
   
             const options: pptxgen.ShapeProps = {
