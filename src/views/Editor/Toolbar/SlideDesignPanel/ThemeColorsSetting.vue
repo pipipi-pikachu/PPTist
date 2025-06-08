@@ -40,7 +40,7 @@ const { theme } = storeToRefs(slidesStore)
 const themeColors = ref<string[]>([])
 
 onMounted(() => {
-  let colors = theme.value.themeColors
+  let colors = [...theme.value.themeColors]
 
   while (colors.length < 6) {
     colors.push('#00000000')
@@ -50,7 +50,10 @@ onMounted(() => {
 })
 
 const setThemeColors = () => {
-  slidesStore.setTheme({ themeColors: themeColors.value })
+  let colors = themeColors.value.filter(item => item !== '#00000000')
+  if (!colors.length) colors = ['#00000000']
+
+  slidesStore.setTheme({ themeColors: colors })
   emit('close')
 }
 </script>
