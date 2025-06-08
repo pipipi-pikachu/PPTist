@@ -16,8 +16,6 @@ import { useScreenStore, useMainStore, useSnapshotStore, useSlidesStore } from '
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 import { deleteDiscardedDB } from '@/utils/database'
 import { isPC } from '@/utils/common'
-import type { Slide } from '@/types/slides'
-import message from './utils/message'
 import api from '@/services'
 
 import Editor from './views/Editor/index.vue'

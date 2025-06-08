@@ -133,7 +133,7 @@ export default () => {
     digitPadding?: boolean
   }): PPTTextElement | PPTShapeElement => {
     const padding = 10
-    const width = el.width - padding * 2 - 10
+    const width = el.width - padding * 2 - 2
   
     let content = el.type === 'text' ? el.content : el.text!.content
   
@@ -270,33 +270,17 @@ export default () => {
       }
       else if (template.type === 'contents') {
         const items = template.data.items
-        if (items.length === 7) {
-          const items1 = items.slice(0, 5)
-          const items2 = items.slice(5)
-          AISlides.push({ ...template, data: { ...template.data, items: items1 } })
-          AISlides.push({ ...template, data: { ...template.data, items: items2 }, offset: 5 })
-        }
-        else if (items.length > 7 && items.length <= 12) {
+        if (items.length === 11) {
           const items1 = items.slice(0, 6)
           const items2 = items.slice(6)
           AISlides.push({ ...template, data: { ...template.data, items: items1 } })
           AISlides.push({ ...template, data: { ...template.data, items: items2 }, offset: 6 })
         }
-        else if (items.length === 13) {
-          const items1 = items.slice(0, 6)
-          const items2 = items.slice(6, 11)
-          const items3 = items.slice(11)
+        else if (items.length > 11) {
+          const items1 = items.slice(0, 10)
+          const items2 = items.slice(10)
           AISlides.push({ ...template, data: { ...template.data, items: items1 } })
-          AISlides.push({ ...template, data: { ...template.data, items: items2 }, offset: 6 })
-          AISlides.push({ ...template, data: { ...template.data, items: items3 }, offset: 11 })
-        }
-        else if (items.length > 13) {
-          const items1 = items.slice(0, 6)
-          const items2 = items.slice(6, 12)
-          const items3 = items.slice(12)
-          AISlides.push({ ...template, data: { ...template.data, items: items1 } })
-          AISlides.push({ ...template, data: { ...template.data, items: items2 }, offset: 6 })
-          AISlides.push({ ...template, data: { ...template.data, items: items3 }, offset: 12 })
+          AISlides.push({ ...template, data: { ...template.data, items: items2 }, offset: 10 })
         }
         else {
           AISlides.push(template)
@@ -342,13 +326,51 @@ export default () => {
         const _contentsTemplates = getUseableTemplates(contentsTemplates, item.data.items.length, 'item')
         const contentsTemplate = _contentsTemplates[Math.floor(Math.random() * _contentsTemplates.length)]
 
-        const sortedItemIds = contentsTemplate.elements.filter(el => checkTextType(el, 'item')).sort((a, b) => {
+        const sortedNumberItems = contentsTemplate.elements.filter(el => checkTextType(el, 'itemNumber'))
+        const sortedNumberItemIds = sortedNumberItems.sort((a, b) => {
+          if (sortedNumberItems.length > 6) {
+            let aContent = ''
+            let bContent = ''
+            if (a.type === 'text') aContent = a.content
+            if (a.type === 'shape') aContent = a.text!.content
+            if (b.type === 'text') bContent = b.content
+            if (b.type === 'shape') bContent = b.text!.content
+
+            if (aContent && bContent) {
+              const aIndex = parseInt(aContent)
+              const bIndex = parseInt(bContent)
+
+              return aIndex - bIndex
+            }
+          }
           const aIndex = a.left + a.top * 2
           const bIndex = b.left + b.top * 2
           return aIndex - bIndex
         }).map(el => el.id)
 
-        const sortedNumberItemIds = contentsTemplate.elements.filter(el => checkTextType(el, 'itemNumber')).sort((a, b) => {
+        const sortedItems = contentsTemplate.elements.filter(el => checkTextType(el, 'item'))
+        const sortedItemIds = sortedItems.sort((a, b) => {
+          if (sortedItems.length > 6) {
+            const aItemNumber = sortedNumberItems.find(item => item.groupId === a.groupId)
+            const bItemNumber = sortedNumberItems.find(item => item.groupId === b.groupId)
+
+            if (aItemNumber && bItemNumber) {
+              let aContent = ''
+              let bContent = ''
+              if (aItemNumber.type === 'text') aContent = aItemNumber.content
+              if (aItemNumber.type === 'shape') aContent = aItemNumber.text!.content
+              if (bItemNumber.type === 'text') bContent = bItemNumber.content
+              if (bItemNumber.type === 'shape') bContent = bItemNumber.text!.content
+  
+              if (aContent && bContent) {
+                const aIndex = parseInt(aContent)
+                const bIndex = parseInt(bContent)
+  
+                return aIndex - bIndex
+              }
+            }
+          }
+
           const aIndex = a.left + a.top * 2
           const bIndex = b.left + b.top * 2
           return aIndex - bIndex
@@ -356,6 +378,8 @@ export default () => {
 
         const longestText = item.data.items.reduce((longest, current) => current.length > longest.length ? current : longest, '')
 
+        const unusedElIds: string[] = []
+        const unusedGroupIds: string[] = []
         const elements = contentsTemplate.elements.map(el => {
           if (el.type === 'image' && el.imageType && imgPool.value.length) return getNewImgElement(el)
           if (el.type !== 'text' && el.type !== 'shape') return el
@@ -363,6 +387,9 @@ export default () => {
             const index = sortedItemIds.findIndex(id => id === el.id)
             const itemTitle = item.data.items[index]
             if (itemTitle) return getNewTextElement({ el, text: itemTitle, maxLine: 1, longestText })
+
+            unusedElIds.push(el.id)
+            if (el.groupId) unusedGroupIds.push(el.groupId)
           }
           if (checkTextType(el, 'itemNumber')) {
             const index = sortedNumberItemIds.findIndex(id => id === el.id)
@@ -370,7 +397,7 @@ export default () => {
             return getNewTextElement({ el, text: index + offset + 1 + '', maxLine: 1, digitPadding: true })
           }
           return el
-        })
+        }).filter(el => !unusedElIds.includes(el.id) && !(el.groupId && unusedGroupIds.includes(el.groupId)))
         slides.push({
           ...contentsTemplate,
           id: nanoid(10),
