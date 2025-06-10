@@ -88,7 +88,7 @@ export const MIN_SIZE = {
         class="element-content" 
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
-        @touchstart="$event => handleSelectElement($event)"
+        @touchstart.passive="$event => handleSelectElement($event)"
       >
         <iframe 
           :src="elementInfo.url"
@@ -106,7 +106,7 @@ export const MIN_SIZE = {
         <div class="mask" 
           v-if="handleElementId !== elementInfo.id"
           @mousedown="$event => handleSelectElement($event, false)"
-          @touchstart="$event => handleSelectElement($event, false)"
+          @touchstart.passive="$event => handleSelectElement($event)"
         ></div>
       </div>
     </div>

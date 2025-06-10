@@ -11,7 +11,7 @@
       class="element-content" 
       :style="{ filter: shadowStyle ? `drop-shadow(${shadowStyle})` : '' }"
       @mousedown="$event => handleSelectElement($event)"
-      @touchstart="$event => handleSelectElement($event)"
+      @touchstart.passive="$event => handleSelectElement($event)"
     >
       <svg
         overflow="visible" 

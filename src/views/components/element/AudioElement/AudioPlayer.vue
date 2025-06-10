@@ -35,7 +35,7 @@
           <div
             class="volume-bar-wrap"
             @mousedown="handleMousedownVolumeBar()"
-            @touchstart="handleMousedownVolumeBar()"
+            @touchstart.passive="handleMousedownVolumeBar()"
             @click="$event => handleClickVolumeBar($event)"
           >
             <div class="volume-bar" ref="volumeBarRef">
@@ -55,7 +55,7 @@
         class="bar-wrap"
         ref="playBarWrap"
         @mousedown="handleMousedownPlayBar()"
-        @touchstart="handleMousedownPlayBar()"
+        @touchstart.passive="handleMousedownPlayBar()"
         @mousemove="$event => handleMousemovePlayBar($event)"
         @mouseenter="playBarTimeVisible = true"
         @mouseleave="playBarTimeVisible = false"

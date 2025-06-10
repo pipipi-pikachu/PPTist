@@ -28,7 +28,7 @@
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
         @mouseup="execFormatPainter()"
-        @touchstart="$event => handleSelectElement($event)"
+        @touchstart.passive="$event => handleSelectElement($event)"
         @dblclick="startEdit()"
       >
         <svg 

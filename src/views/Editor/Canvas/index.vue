@@ -2,7 +2,7 @@
   <div 
     class="canvas" 
     ref="canvasRef"
-    @wheel="$event => handleMousewheelCanvas($event)"
+    @wheel.passive="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
     @dblclick="$event => handleDblClick($event)"
     v-contextmenu="contextmenus"
