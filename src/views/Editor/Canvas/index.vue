@@ -2,7 +2,6 @@
   <div 
     class="canvas" 
     ref="canvasRef"
-    @wheel.passive="$event => handleMousewheelCanvas($event)"
     @mousedown="$event => handleClickBlankArea($event)"
     @dblclick="$event => handleDblClick($event)"
     v-contextmenu="contextmenus"
@@ -196,6 +195,10 @@ const { createTextElement, createShapeElement } = useCreateElement()
 // 组件渲染时，如果存在元素焦点，需要清除
 // 这种情况存在于：有焦点元素的情况下进入了放映模式，再退出时，需要清除原先的焦点（因为可能已经切换了页面）
 onMounted(() => {
+  if (canvasRef.value) {
+    canvasRef.value.addEventListener('wheel', handleMousewheelCanvas, { passive: false })
+  }
+    
   if (activeElementIdList.value.length) {
     nextTick(() => mainStore.setActiveElementIdList([]))
   }
@@ -232,6 +235,7 @@ const handleDblClick = (e: MouseEvent) => {
 
 // 画布注销时清空格式刷状态
 onUnmounted(() => {
+  if (canvasRef.value) canvasRef.value.removeEventListener('wheel', handleMousewheelCanvas)
   if (textFormatPainter.value) mainStore.setTextFormatPainter(null)
 })
 
