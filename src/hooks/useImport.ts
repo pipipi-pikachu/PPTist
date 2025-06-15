@@ -447,6 +447,11 @@ export default () => {
                     else element.path = pathFormula.formula(el.width, el.height)
                   }
                 }
+                else if (el.path && el.path.indexOf('NaN') === -1) {
+                  const { maxX, maxY } = getSvgPathRange(el.path)
+                  element.path = el.path
+                  element.viewBox = [maxX || originWidth, maxY || originHeight]
+                }
                 if (el.shapType === 'custom') {
                   if (el.path!.indexOf('NaN') !== -1) element.path = ''
                   else {
