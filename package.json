@@ -12,6 +12,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "prepare": "husky install"
   },
+	"author": "pipipi_pikachu@163.com",
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
     "animate.css": "^4.1.1",
