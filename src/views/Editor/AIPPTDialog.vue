@@ -17,23 +17,65 @@
       >
         <template #suffix>
           <span class="count">{{ keyword.length }} / 50</span>
-          <span class="language" v-tooltip="'切换语言'" @click="language = language === 'zh' ? 'en' : 'zh'">{{ language === 'zh' ? '中' : '英' }}</span>
           <div class="submit" type="primary" @click="createOutline()"><IconSend class="icon" /> AI 生成</div>
         </template>
       </Input>
       <div class="recommends">
         <div class="recommend" v-for="(item, index) in recommends" :key="index" @click="setKeyword(item)">{{ item }}</div>
       </div>
-      <div class="model-selector">
-        <div class="label">选择AI模型：</div>
-        <Select 
-          style="width: 160px;"
-          v-model:value="model"
-          :options="[
-            { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
-            { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
-          ]"
-        />
+      <div class="configs">
+        <div class="config-item">
+          <div class="label">语言：</div>
+          <Select 
+            style="width: 80px;"
+            v-model:value="language"
+            :options="[
+              { label: '中文', value: '中文' },
+              { label: '英文', value: 'English' },
+              { label: '日文', value: '日本語' },
+            ]"
+          />
+        </div>
+        <div class="config-item">
+          <div class="label">风格：</div>
+          <Select 
+            style="width: 80px;"
+            v-model:value="style"
+            :options="[
+              { label: '通用', value: '通用' },
+              { label: '学术风', value: '学术风' },
+              { label: '职场风', value: '职场风' },
+              { label: '教育风', value: '教育风' },
+              { label: '营销风', value: '营销风' },
+            ]"
+          />
+        </div>
+        <div class="config-item">
+          <div class="label">模型：</div>
+          <Select 
+            style="width: 190px;"
+            v-model:value="model"
+            :options="[
+              { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
+              { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
+              { label: 'doubao-1.5-lite-32k', value: 'ark-doubao-1.5-lite-32k' },
+              { label: 'doubao-seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
+            ]"
+          />
+        </div>
+        <div class="config-item">
+          <div class="label">配图：</div>
+          <Select 
+            style="width: 100px;"
+            v-model:value="img"
+            :options="[
+              { label: '无', value: '' },
+              { label: '模拟测试', value: 'test' },
+              { label: 'AI搜图', value: 'ai-search', disabled: true },
+              { label: 'AI生图', value: 'ai-create', disabled: true },
+            ]"
+          />
+        </div>
       </div>
     </template>
     <div class="preview" v-if="step === 'outline'">
@@ -85,9 +127,11 @@ import OutlineEditor from '@/components/OutlineEditor.vue'
 const mainStore = useMainStore()
 const slideStore = useSlidesStore()
 const { templates } = storeToRefs(slideStore)
-const { AIPPT, getMdContent } = useAIPPT()
+const { AIPPT, presetImgPool, getMdContent } = useAIPPT()
 
-const language = ref<'zh' | 'en'>('zh')
+const language = ref('中文')
+const style = ref('通用')
+const img = ref('')
 const keyword = ref('')
 const outline = ref('')
 const selectedTemplate = ref('template_1')
@@ -99,12 +143,13 @@ const step = ref<'setup' | 'outline' | 'template'>('setup')
 const model = ref('GLM-4-Flash')
 
 const recommends = ref([
-  '大学生职业生涯规划',
   '公司年会策划方案',
   '大数据如何改变世界',
   '餐饮市场调查与研究',
   'AIGC在教育领域的应用',
   '5G技术如何改变我们的生活',
+  '大学生职业生涯规划',
+  '2025科技前沿动态',
   '社交媒体与品牌营销',
   '年度工作总结与展望',
   '区块链技术及其应用',
@@ -127,7 +172,11 @@ const createOutline = async () => {
   loading.value = true
   outlineCreating.value = true
   
-  const stream = await api.AIPPT_Outline(keyword.value, language.value, model.value)
+  const stream = await api.AIPPT_Outline({
+    content: keyword.value,
+    language: language.value,
+    model: model.value,
+  })
 
   loading.value = false
   step.value = 'outline'
@@ -160,7 +209,18 @@ const createOutline = async () => {
 const createPPT = async () => {
   loading.value = true
 
-  const stream = await api.AIPPT(outline.value, language.value, model.value)
+  const stream = await api.AIPPT({
+    content: outline.value,
+    language: language.value,
+    style: style.value,
+    model: model.value,
+  })
+
+  if (img.value === 'test') {
+    const imgs = await api.getMockData('imgs')
+    presetImgPool(imgs)
+  }
+
   const templateData = await api.getFileData(selectedTemplate.value)
   const templateSlides: Slide[] = templateData.slides
   const templateTheme: SlideTheme = templateData.theme
@@ -252,8 +312,8 @@ const createPPT = async () => {
     .template {
       border: 2px solid $borderColor;
       border-radius: $borderRadius;
-      width: 304px;
-      height: 172.75px;
+      width: 324px;
+      height: 184px;
       margin-bottom: 12px;
 
       &:not(:nth-child(2n)) {
@@ -280,18 +340,6 @@ const createPPT = async () => {
     }
   }
 }
-.configs {
-  margin-top: 5px;
-  display: flex;
-  justify-content: space-between;
-
-  .items {
-    display: flex;
-  }
-  .item {
-    margin-right: 5px;
-  }
-}
 .recommends {
   display: flex;
   flex-wrap: wrap;
@@ -311,22 +359,21 @@ const createPPT = async () => {
     }
   }
 }
-.model-selector {
-  margin-top: 10px;
-  font-size: 13px;
+.configs {
+  margin-top: 15px;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+
+  .config-item {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+  }
 }
 .count {
   font-size: 12px;
   color: #999;
   margin-right: 10px;
-}
-.language {
-  font-size: 12px;
-  margin-right: 10px;
-  color: $themeColor;
-  cursor: pointer;
 }
 .submit {
   height: 20px;
@@ -335,7 +382,7 @@ const createPPT = async () => {
   color: #fff;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  padding: 0 8px 0 6px;
   border-radius: $borderRadius;
   cursor: pointer;
 

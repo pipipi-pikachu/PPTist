@@ -4,6 +4,19 @@ import axios from './config'
 export const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'https://server.pptist.cn'
 export const ASSET_URL = 'https://asset.pptist.cn'
 
+interface AIPPTOutlinePayload {
+  content: string
+  language: string
+  model: string
+}
+
+interface AIPPTPayload {
+  content: string
+  language: string
+  style: string
+  model: string
+}
+
 export default {
   getMockData(filename: string): Promise<any> {
     return axios.get(`./mocks/${filename}.json`)
@@ -13,11 +26,11 @@ export default {
     return axios.get(`${ASSET_URL}/data/${filename}.json`)
   },
 
-  AIPPT_Outline(
-    content: string,
-    language: string,
-    model: string,
-  ): Promise<any> {
+  AIPPT_Outline({
+    content,
+    language,
+    model,
+  }: AIPPTOutlinePayload): Promise<any> {
     return fetch(`${SERVER_URL}/tools/aippt_outline`, {
       method: 'POST',
       headers: {
@@ -32,11 +45,12 @@ export default {
     })
   },
 
-  AIPPT(
-    content: string,
-    language: string,
-    model: string,
-  ): Promise<any> {
+  AIPPT({
+    content,
+    language,
+    style,
+    model,
+  }: AIPPTPayload): Promise<any> {
     return fetch(`${SERVER_URL}/tools/aippt`, {
       method: 'POST',
       headers: {
@@ -46,6 +60,7 @@ export default {
         content,
         language,
         model,
+        style,
         stream: true,
       }),
     })
