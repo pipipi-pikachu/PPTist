@@ -225,8 +225,9 @@ onUnmounted(() => {
   display: flex;
   background-color: #fff;
   padding: 6px 4px;
+  border: 1px solid $borderColor;
+  box-shadow: $boxShadow;
   border-radius: $borderRadius;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
 
   button {
     outline: 0;
