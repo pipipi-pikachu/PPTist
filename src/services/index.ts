@@ -17,6 +17,11 @@ interface AIPPTPayload {
   model: string
 }
 
+interface AIWritingPayload {
+  content: string
+  command: string
+}
+
 export default {
   getMockData(filename: string): Promise<any> {
     return axios.get(`./mocks/${filename}.json`)
@@ -61,6 +66,23 @@ export default {
         language,
         model,
         style,
+        stream: true,
+      }),
+    })
+  },
+
+  AI_Writing({
+    content,
+    command,
+  }: AIWritingPayload): Promise<any> {
+    return fetch(`${SERVER_URL}/tools/ai_writing`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+        command,
         stream: true,
       }),
     })

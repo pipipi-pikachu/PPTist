@@ -21,6 +21,7 @@ import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
+import { replaceText } from '@/utils/prosemirror/commands/replaceText'
 import type { TextFormatPainterKeys } from '@/types/edit'
 import message from '@/utils/message'
 import { KEYS } from '@/configs/hotkey'
@@ -257,6 +258,9 @@ const execCommand = ({ target, action }: RichTextCommand) => {
     }
     else if (item.command === 'insert' && item.value) {
       editorView.dispatch(editorView.state.tr.insertText(item.value))
+    }
+    else if (item.command === 'replace' && item.value) {
+      replaceText(editorView, item.value)
     }
   }
 

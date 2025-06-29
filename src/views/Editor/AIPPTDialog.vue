@@ -58,8 +58,9 @@
             :options="[
               { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
               { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
-              { label: 'doubao-1.5-lite-32k', value: 'ark-doubao-1.5-lite-32k' },
-              { label: 'doubao-seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
+              { label: 'Douao-1.5-lite-32k', value: 'ark-doubao-1.5-lite-32k' },
+              { label: 'Doubao-seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
+              { label: 'DeepSeek-v3（限）', value: 'openrouter-deepseek-v3' },
             ]"
           />
         </div>
@@ -239,8 +240,11 @@ const createPPT = async () => {
   
       const chunk = decoder.decode(value, { stream: true })
       try {
-        const slide: AIPPTSlide = JSON.parse(chunk)
-        AIPPT(templateSlides, [slide])
+        const text = chunk.replace('```json', '').replace('```', '').trim()
+        if (text) {
+          const slide: AIPPTSlide = JSON.parse(chunk)
+          AIPPT(templateSlides, [slide])
+        }
       }
       catch (err) {
         // eslint-disable-next-line
