@@ -132,7 +132,7 @@
           first
           style="width: 100%;"
           v-tooltip="'AI辅助'"
-        >AI</CheckboxButton>
+        ><span :class="{ 'ai-loading': isAIWriting }">{{ isAIWriting ? '' : 'AI' }}</span></CheckboxButton>
       </Popover>
       <CheckboxButton
         style="flex: 1;"
@@ -358,7 +358,10 @@ const execAI = async (command: string) => {
   const readStream = () => {
     reader.read().then(({ done, value }) => {
       if (!isAIWriting.value) return
-      if (done) return
+      if (done) {
+        isAIWriting.value = false
+        return
+      }
 
       const chunk = decoder.decode(value, { stream: true })
       resultText += chunk
@@ -374,6 +377,17 @@ const execAI = async (command: string) => {
 <style lang="scss" scoped>
 .rich-text-base {
   user-select: none;
+
+  ::v-deep(.ai-loading) {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-top: 8px;
+    border: 1px solid $themeColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spinner .8s linear infinite;
+  }
 }
 .row {
   width: 100%;
@@ -442,5 +456,14 @@ const execAI = async (command: string) => {
 }
 .popover-btn {
   padding: 0 3px;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
