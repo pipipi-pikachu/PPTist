@@ -10,7 +10,7 @@
       @mousedown="$event => handleMousedown($event)"
       @mousemove="$event => handleMousemove($event)"
       @mouseup="handleMouseup()"
-      @touchstart="$event => handleMousedown($event)"
+      @touchstart.passive="$event => handleMousedown($event)"
       @touchmove="$event => handleMousemove($event)"
       @touchend="handleMouseup(); mouseInCanvas = false"
       @mouseleave="handleMouseup(); mouseInCanvas = false"

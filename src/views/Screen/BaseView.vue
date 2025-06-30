@@ -7,7 +7,7 @@
       :turnSlideToId="turnSlideToId"
       :manualExitFullscreen="manualExitFullscreen"
       @wheel="$event => mousewheelListener($event)"
-      @touchstart="$event => touchStartListener($event)"
+      @touchstart.passive="$event => touchStartListener($event)"
       @touchend="$event => touchEndListener($event)"
       v-contextmenu="contextmenus"
     />
