@@ -1,9 +1,13 @@
+import type { PPTElementOutline, PPTElementShadow } from '@/types/slides'
+
 export interface PresetTheme {
   background: string
   fontColor: string
-  borderColor: string
   fontname: string
   colors: string[]
+  borderColor?: string
+  outline?: PPTElementOutline
+  shadow?: PPTElementShadow
 }
 
 export const PRESET_THEMES: PresetTheme[] = [
