@@ -34,7 +34,7 @@
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)" 
-        @touchstart="$event => handleSelectElement($event)" 
+        @touchstart.passive="$event => handleSelectElement($event)" 
       >
         <ImageOutline :elementInfo="elementInfo" />
 
