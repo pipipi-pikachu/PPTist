@@ -8,7 +8,13 @@
             importPPTXFile(files)
             mainMenuVisible = false
           }">
-            <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
+            <PopoverMenuItem>导入 PPTX 文件（测试）</PopoverMenuItem>
+          </FileInput>
+          <FileInput accept=".json"  @change="files => {
+            importJSON(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 JSON 文件（测试）</PopoverMenuItem>
           </FileInput>
           <FileInput accept=".pptist"  @change="files => {
             importSpecificFile(files)
@@ -101,7 +107,7 @@ const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const { title } = storeToRefs(slidesStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
-const { importSpecificFile, importPPTXFile, exporting } = useImport()
+const { importSpecificFile, importPPTXFile, importJSON, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
 
 const mainMenuVisible = ref(false)

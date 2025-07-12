@@ -41,6 +41,32 @@ export default () => {
 
   const exporting = ref(false)
 
+  // 导入JSON文件
+  const importJSON = (files: FileList, cover = false) => {
+    const file = files[0]
+
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      try {
+        const { slides } = JSON.parse(reader.result as string)
+        if (cover) {
+          slidesStore.updateSlideIndex(0)
+          slidesStore.setSlides(slides)
+          addHistorySnapshot()
+        }
+        else if (isEmptySlide.value) {
+          slidesStore.setSlides(slides)
+          addHistorySnapshot()
+        }
+        else addSlidesFromData(slides)
+      }
+      catch {
+        message.error('无法正确读取 / 解析该文件')
+      }
+    })
+    reader.readAsText(file)
+  }
+
   // 导入pptist文件
   const importSpecificFile = (files: FileList, cover = false) => {
     const file = files[0]
@@ -48,7 +74,7 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const slides = JSON.parse(decrypt(reader.result as string))
+        const { slides } = JSON.parse(decrypt(reader.result as string))
         if (cover) {
           slidesStore.updateSlideIndex(0)
           slidesStore.setSlides(slides)
@@ -737,6 +763,7 @@ export default () => {
 
   return {
     importSpecificFile,
+    importJSON,
     importPPTXFile,
     exporting,
   }

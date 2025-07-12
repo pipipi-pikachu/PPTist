@@ -122,7 +122,7 @@ const expPDF = () => {
 }
 .configs {
   width: 300px;
-  height: calc(100% - 100px);
+  height: calc(100% - 80px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -151,7 +151,7 @@ const expPDF = () => {
 }
 .btns {
   width: 300px;
-  height: 100px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
