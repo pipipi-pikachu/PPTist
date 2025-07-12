@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, useTemplateRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const slidesStore = useSlidesStore()
 const { currentSlide } = storeToRefs(slidesStore)
 
-const editorRef = ref<InstanceType<typeof Editor>>()
+const editorRef = useTemplateRef<InstanceType<typeof Editor>>('editorRef')
 watch(() => currentSlide.value.id, () => {
   nextTick(() => {
     editorRef.value!.updateTextContent()

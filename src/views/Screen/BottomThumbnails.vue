@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, useTemplateRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
@@ -28,7 +28,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 const { slides, slideIndex, viewportRatio } = storeToRefs(useSlidesStore())
 
-const thumbnailsRef = ref<HTMLElement>()
+const thumbnailsRef = useTemplateRef<HTMLElement>('thumbnailsRef')
 
 const { turnSlideToIndex } = useExecPlay()
 const { slidesLoadLimit } = useLoadSlides()

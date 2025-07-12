@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { db } from '@/utils/database'
@@ -136,7 +136,7 @@ const emit = defineEmits<{
 
 const { currentSlide } = storeToRefs(useSlidesStore())
 
-const writingBoardRef = ref<InstanceType<typeof WritingBoard>>()
+const writingBoardRef = useTemplateRef<InstanceType<typeof WritingBoard>>('writingBoardRef')
 const writingBoardColor = ref('#e2534d')
 const writingBoardModel = ref<WritingBoardModel>('pen')
 const blackboard = ref(false)

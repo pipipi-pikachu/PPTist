@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, useTemplateRef } from 'vue'
 import NP from 'number-precision'
 
 const getBoundingClientRectViewLeft = (element: HTMLElement) => {
@@ -41,7 +41,7 @@ const emit = defineEmits<{
   (event: 'update:value', payload: number | [number, number]): void
 }>()
 
-const sliderRef = ref<HTMLElement>()
+const sliderRef = useTemplateRef<HTMLElement>('sliderRef')
 const percentage = ref(0)
 const start = ref(0)
 const end = ref(0)

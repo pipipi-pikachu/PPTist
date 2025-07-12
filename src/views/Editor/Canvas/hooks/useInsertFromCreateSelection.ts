@@ -1,10 +1,10 @@
-import type { Ref } from 'vue'
+import type { ShallowRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import type { CreateElementSelectionData } from '@/types/edit'
 import useCreateElement from '@/hooks/useCreateElement'
 
-export default (viewportRef: Ref<HTMLElement | undefined>) => {
+export default (viewportRef: ShallowRef<HTMLElement | null>) => {
   const mainStore = useMainStore()
   const { canvasScale, creatingElement } = storeToRefs(mainStore)
 

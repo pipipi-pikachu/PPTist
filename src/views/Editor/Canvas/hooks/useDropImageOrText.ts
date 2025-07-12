@@ -1,11 +1,11 @@
-import { onMounted, onUnmounted, type Ref } from 'vue'
+import { onMounted, onUnmounted, type ShallowRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { getImageDataURL } from '@/utils/image'
 import { parseText2Paragraphs } from '@/utils/textParser'
 import useCreateElement from '@/hooks/useCreateElement'
 
-export default (elementRef: Ref<HTMLElement | undefined>) => {
+export default (elementRef: ShallowRef<HTMLElement | null>) => {
   const { disableHotkeys } = storeToRefs(useMainStore())
 
   const { createImageElement, createTextElement } = useCreateElement()

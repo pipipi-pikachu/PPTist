@@ -1,10 +1,10 @@
-import { type Ref, ref } from 'vue'
+import { type Ref, type ShallowRef, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
-export default (elementList: Ref<PPTElement[]>, viewportRef: Ref<HTMLElement | undefined>) => {
+export default (elementList: Ref<PPTElement[]>, viewportRef: ShallowRef<HTMLElement | null>) => {
   const mainStore = useMainStore()
   const { canvasScale, hiddenElementIdList } = storeToRefs(mainStore)
 

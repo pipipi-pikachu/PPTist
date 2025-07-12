@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -101,8 +101,8 @@ const props = defineProps<{
 
 const { slides, slideIndex, viewportRatio, currentSlide } = storeToRefs(useSlidesStore())
 
-const slideListWrapRef = ref<HTMLElement>()
-const thumbnailsRef = ref<HTMLElement>()
+const slideListWrapRef = useTemplateRef<HTMLElement>('slideListWrapRef')
+const thumbnailsRef = useTemplateRef<HTMLElement>('thumbnailsRef')
 const writingBoardToolVisible = ref(false)
 const timerlVisible = ref(false)
 const laserPen = ref(false)

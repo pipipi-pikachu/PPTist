@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
@@ -34,7 +34,7 @@ defineProps<{
 const { slides } = storeToRefs(useSlidesStore())
 const { slidesLoadLimit } = useLoadSlides()
 
-const mobileRef = ref<HTMLElement>()
+const mobileRef = useTemplateRef<HTMLElement>('mobileRef')
 const screenWidth = ref(0)
 
 onMounted(() => {

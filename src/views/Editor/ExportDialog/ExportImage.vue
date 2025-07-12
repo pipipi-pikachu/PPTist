@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useExport from '@/hooks/useExport'
@@ -93,7 +93,7 @@ const emit = defineEmits<{
 
 const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
-const imageThumbnailsRef = ref<HTMLElement>()
+const imageThumbnailsRef = useTemplateRef<HTMLElement>('imageThumbnailsRef')
 const rangeType = ref<'all' | 'current' | 'custom'>('all')
 const range = ref<[number, number]>([1, slides.value.length])
 const format = ref<'jpeg' | 'png'>('jpeg')

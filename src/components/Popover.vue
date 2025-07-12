@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type CSSProperties, onMounted, onUnmounted, ref, watch, computed } from 'vue'
+import { type CSSProperties, onMounted, onUnmounted, ref, watch, computed, useTemplateRef } from 'vue'
 import tippy, { type Instance, type Placement } from 'tippy.js'
 
 import 'tippy.js/animations/scale.css'
@@ -36,9 +36,9 @@ const emit = defineEmits<{
 }>()
 
 const instance = ref<Instance>()
-const triggerRef = ref<HTMLElement>()
-const contentRef = ref<HTMLElement>()
 const contentVisible = ref(false)
+const triggerRef = useTemplateRef<HTMLElement>('triggerRef')
+const contentRef = useTemplateRef<HTMLElement>('contentRef')
 
 const contentStyle = computed(() => {
   return props.contentStyle || {}

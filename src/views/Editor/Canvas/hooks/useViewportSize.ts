@@ -1,8 +1,8 @@
-import { ref, computed, onMounted, onUnmounted, watch, type Ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, type ShallowRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 
-export default (canvasRef: Ref<HTMLElement | undefined>) => {
+export default (canvasRef: ShallowRef<HTMLElement | null>) => {
   const viewportLeft = ref(0)
   const viewportTop = ref(0)
 

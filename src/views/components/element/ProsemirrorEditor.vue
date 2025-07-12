@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore } from '@/store'
@@ -49,7 +49,7 @@ const mainStore = useMainStore()
 const { handleElementId, textFormatPainter, richTextAttrs, activeElementIdList } = storeToRefs(mainStore)
 const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
-const editorViewRef = ref<HTMLElement>()
+const editorViewRef = useTemplateRef<HTMLElement>('editorViewRef')
 let editorView: EditorView
 
 // 富文本的各种交互事件监听：

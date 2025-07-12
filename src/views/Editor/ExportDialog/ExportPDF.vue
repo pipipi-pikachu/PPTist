@@ -62,7 +62,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { print } from '@/utils/print'
@@ -80,7 +80,7 @@ const emit = defineEmits<{
 
 const { slides, currentSlide, viewportRatio } = storeToRefs(useSlidesStore())
 
-const pdfThumbnailsRef = ref<HTMLElement>()
+const pdfThumbnailsRef = useTemplateRef<HTMLElement>('pdfThumbnailsRef')
 const rangeType = ref<'all' | 'current'>('all')
 const count = ref(1)
 const padding = ref(true)

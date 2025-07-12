@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { debounce } from 'lodash'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -84,7 +84,7 @@ const { handleElementId, isScaling } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
-const elementRef = ref<HTMLElement>()
+const elementRef = useTemplateRef<HTMLElement>('elementRef')
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)

@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import type { Slide } from '@/types/slides'
@@ -55,8 +55,9 @@ const emit = defineEmits<{
 
 const slidesStore = useSlidesStore()
 const { templates } = storeToRefs(slidesStore)
+
 const slides = ref<Slide[]>([])
-const listRef = ref<HTMLElement>()
+const listRef = useTemplateRef<HTMLElement>('listRef')
 const types = ref<{
   label: string
   value: string

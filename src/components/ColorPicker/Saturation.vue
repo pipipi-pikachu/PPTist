@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, useTemplateRef } from 'vue'
 import tinycolor, { type ColorFormats } from 'tinycolor2'
 import { throttle, clamp } from 'lodash'
 
@@ -46,7 +46,7 @@ const emitChangeEvent = throttle(function(param: ColorFormats.HSVA) {
   emit('colorChange', param)
 }, 20, { leading: true, trailing: false })
 
-const saturationRef = ref<HTMLElement>()
+const saturationRef = useTemplateRef<HTMLElement>('saturationRef')
 const handleChange = (e: MouseEvent) => {
   e.preventDefault()
   if (!saturationRef.value) return

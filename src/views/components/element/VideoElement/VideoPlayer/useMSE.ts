@@ -1,8 +1,8 @@
-import { onMounted, type Ref } from 'vue'
+import { onMounted, type ShallowRef } from 'vue'
 
 export default (
   src: string,
-  videoRef: Ref<HTMLVideoElement | undefined>,
+  videoRef: ShallowRef<HTMLVideoElement | null>,
 ) => {
   onMounted(() => {
     if (!videoRef.value) return

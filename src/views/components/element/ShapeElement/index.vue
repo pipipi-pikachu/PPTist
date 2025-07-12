@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTShapeElement, ShapeText } from '@/types/slides'
@@ -188,7 +188,7 @@ const checkEmptyText = () => {
   }
 }
 
-const prosemirrorEditorRef = ref<InstanceType<typeof ProsemirrorEditor>>()
+const prosemirrorEditorRef = useTemplateRef<InstanceType<typeof ProsemirrorEditor>>('prosemirrorEditorRef')
 const startEdit = () => {
   editable.value = true
   nextTick(() => prosemirrorEditorRef.value && prosemirrorEditorRef.value.focus())

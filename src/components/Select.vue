@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch, nextTick, onBeforeUnmount } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, nextTick, onBeforeUnmount, useTemplateRef } from 'vue'
 import Popover from './Popover.vue'
 import Input from './Input.vue'
 import Divider from './Divider.vue'
@@ -77,10 +77,10 @@ const emit = defineEmits<{
 }>()
 
 const popoverVisible = ref(false)
-const selectRef = ref<HTMLElement>()
-const searchInputRef = ref<InstanceType<typeof Input>>()
 const width = ref(0)
 const searchKey = ref('')
+const selectRef = useTemplateRef<HTMLElement>('selectRef')
+const searchInputRef = useTemplateRef<InstanceType<typeof Input>>('searchInputRef')
 
 const showLabel = computed(() => {
   return props.options.find(item => item.value === props.value)?.label || props.value

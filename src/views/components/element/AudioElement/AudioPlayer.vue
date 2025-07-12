@@ -53,7 +53,7 @@
 
       <div 
         class="bar-wrap"
-        ref="playBarWrap"
+        ref="playBarWrapRef"
         @mousedown="handleMousedownPlayBar()"
         @touchstart="handleMousedownPlayBar()"
         @mousemove="$event => handleMousemovePlayBar($event)"
@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import message from '@/utils/message'
 
 const props = withDefaults(defineProps<{
@@ -100,9 +100,9 @@ const getBoundingClientRectViewLeft = (element: HTMLElement) => {
   return element.getBoundingClientRect().left
 }
 
-const audioRef = ref<HTMLAudioElement>()
-const playBarWrap = ref<HTMLElement>()
-const volumeBarRef = ref<HTMLElement>()
+const audioRef = useTemplateRef<HTMLAudioElement>('audioRef')
+const playBarWrapRef = useTemplateRef<HTMLElement>('playBarWrapRef')
+const volumeBarRef = useTemplateRef<HTMLElement>('volumeBarRef')
 
 const volume = ref(0.5)
 const paused = ref(true)
@@ -187,9 +187,9 @@ const handleProgress = () => {
 const handleError = () => message.error('视频加载失败')
 
 const thumbMove = (e: MouseEvent | TouchEvent) => {
-  if (!audioRef.value || !playBarWrap.value) return
+  if (!audioRef.value || !playBarWrapRef.value) return
   const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
-  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
+  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrapRef.value)) / playBarWrapRef.value.clientWidth
   percentage = Math.max(percentage, 0)
   percentage = Math.min(percentage, 1)
   const time = percentage * duration.value
@@ -199,10 +199,10 @@ const thumbMove = (e: MouseEvent | TouchEvent) => {
 }
 
 const thumbUp = (e: MouseEvent | TouchEvent) => {
-  if (!audioRef.value || !playBarWrap.value) return
+  if (!audioRef.value || !playBarWrapRef.value) return
 
   const clientX = 'clientX' in e ? e.clientX : e.changedTouches[0].clientX
-  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrap.value)) / playBarWrap.value.clientWidth
+  let percentage = (clientX - getBoundingClientRectViewLeft(playBarWrapRef.value)) / playBarWrapRef.value.clientWidth
   percentage = Math.max(percentage, 0)
   percentage = Math.min(percentage, 1)
   const time = percentage * duration.value
@@ -251,12 +251,12 @@ const handleClickVolumeBar = (e: MouseEvent) => {
 }
 
 const handleMousemovePlayBar = (e: MouseEvent) => {
-  if (duration.value && playBarWrap.value) {
-    const px = playBarWrap.value.getBoundingClientRect().left
+  if (duration.value && playBarWrapRef.value) {
+    const px = playBarWrapRef.value.getBoundingClientRect().left
     const tx = e.clientX - px
-    if (tx < 0 || tx > playBarWrap.value.offsetWidth) return
+    if (tx < 0 || tx > playBarWrapRef.value.offsetWidth) return
 
-    const time = duration.value * (tx / playBarWrap.value.offsetWidth)
+    const time = duration.value * (tx / playBarWrapRef.value.offsetWidth)
     playBarTimeLeft.value = `${tx - (time >= 3600 ? 25 : 20)}px`
     playBarTime.value = secondToTime(time)
     playBarTimeVisible.value = true

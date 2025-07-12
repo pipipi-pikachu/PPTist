@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watchEffect, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
@@ -68,8 +68,8 @@ const mainStore = useMainStore()
 const { slideIndex, currentSlide, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 const { activeElementIdList, handleElement } = storeToRefs(mainStore)
 
-const contentRef = ref<HTMLElement>()
-const viewportRef = ref<HTMLElement>()
+const contentRef = useTemplateRef<HTMLElement>('contentRef')
+const viewportRef = useTemplateRef<HTMLElement>('viewportRef')
 
 const alignmentLines = ref<AlignmentLineProps[]>([])
 

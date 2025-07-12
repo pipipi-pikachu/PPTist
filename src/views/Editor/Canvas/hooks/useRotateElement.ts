@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import type { Ref, ShallowRef } from 'vue'
 import { useSlidesStore } from '@/store'
 import type { PPTElement, PPTLineElement, PPTVideoElement, PPTAudioElement, PPTChartElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -16,7 +16,7 @@ const getAngleFromCoordinate = (x: number, y: number) => {
 
 export default (
   elementList: Ref<PPTElement[]>,
-  viewportRef: Ref<HTMLElement | undefined>,
+  viewportRef: ShallowRef<HTMLElement | null>,
   canvasScale: Ref<number>,
 ) => {
   const slidesStore = useSlidesStore()

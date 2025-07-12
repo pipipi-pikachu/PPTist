@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, ref, watch, useTemplateRef } from 'vue'
 import { pasteCustomClipboardString, pasteExcelClipboardString, pasteHTMLTableClipboardString } from '@/utils/clipboard'
 
 const props = withDefaults(defineProps<{
@@ -25,7 +25,7 @@ const emit = defineEmits<{
   (event: 'insertExcelData', payload: string[][]): void
 }>()
 
-const textareaRef = ref<HTMLElement>()
+const textareaRef = useTemplateRef<HTMLElement>('textareaRef')
 const text = ref('')
 const isFocus = ref(false)
 

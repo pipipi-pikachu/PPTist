@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref, watch } from 'vue'
+import { computed, onUnmounted, ref, watch, useTemplateRef } from 'vue'
 import tinycolor, { type ColorFormats } from 'tinycolor2'
 
 const props = defineProps<{
@@ -50,7 +50,7 @@ watch(() => props.value, () => {
   oldHue.value = h
 })
 
-const hueRef = ref<HTMLElement>()
+const hueRef = useTemplateRef<HTMLElement>('hueRef')
 const handleChange = (e: MouseEvent) => {
   e.preventDefault()
   if (!hueRef.value) return

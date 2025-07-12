@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
@@ -107,8 +107,8 @@ const { resetSlides } = useSlideHandler()
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
 const editingTitle = ref(false)
-const titleInputRef = ref<InstanceType<typeof Input>>()
 const titleValue = ref('')
+const titleInputRef = useTemplateRef<InstanceType<typeof Input>>('titleInputRef')
 
 const startEditTitle = () => {
   titleValue.value = title.value

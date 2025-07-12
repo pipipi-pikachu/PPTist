@@ -111,7 +111,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import api from '@/services'
 import useAIPPT from '@/hooks/useAIPPT'
@@ -138,10 +138,10 @@ const outline = ref('')
 const selectedTemplate = ref('template_1')
 const loading = ref(false)
 const outlineCreating = ref(false)
-const outlineRef = ref<HTMLElement>()
-const inputRef = ref<InstanceType<typeof Input>>()
 const step = ref<'setup' | 'outline' | 'template'>('setup')
 const model = ref('GLM-4-Flash')
+const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
+const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
 const recommends = ref([
   '公司年会策划方案',
