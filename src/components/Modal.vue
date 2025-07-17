@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, watch, type CSSProperties } from 'vue'
+import { computed, nextTick, ref, watch, useTemplateRef, type CSSProperties } from 'vue'
 import { icons } from '@/plugins/icon'
 
 const { IconClose } = icons
@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<{
   closeOnEsc: true,
 })
 
-const modalRef = ref<HTMLDivElement>()
+const modalRef = useTemplateRef<HTMLDivElement>('modalRef')
 
 const emit = defineEmits<{
   (event: 'update:visible', payload: boolean): void

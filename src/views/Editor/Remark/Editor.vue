@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { debounce } from 'lodash'
 import { useMainStore } from '@/store'
 import type { EditorView } from 'prosemirror-view'
@@ -53,13 +53,13 @@ const emit = defineEmits<{
 
 const mainStore = useMainStore()
 
-const editorViewRef = ref<HTMLElement>()
+const editorViewRef = useTemplateRef<HTMLElement>('editorViewRef')
 let editorView: EditorView
 
 const attr = ref<TextAttrs>()
 
 const menuInstance = ref<Instance>()
-const menuRef = ref<HTMLElement>()
+const menuRef = useTemplateRef<HTMLElement>('menuRef')
 
 const hideMenuInstance = () => {
   if (menuInstance.value) menuInstance.value.hide()
@@ -225,8 +225,9 @@ onUnmounted(() => {
   display: flex;
   background-color: #fff;
   padding: 6px 4px;
+  border: 1px solid $borderColor;
+  box-shadow: $boxShadow;
   border-radius: $borderRadius;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, .15);
 
   button {
     outline: 0;

@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 
 const props = withDefaults(defineProps<{
   width: number
@@ -63,7 +63,7 @@ const x = ref(0)
 const y = ref(0)
 const w = ref(0)
 const h = ref(0)
-const moveablePanelRef = ref<HTMLElement>()
+const moveablePanelRef = useTemplateRef<HTMLElement>('moveablePanelRef')
 const realHeight = computed(() => {
   if (!h.value) {
     return moveablePanelRef.value?.clientHeight || 0

@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch, useTemplateRef } from 'vue'
 import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
 import MoveablePanel from '@/components/MoveablePanel.vue'
@@ -77,7 +77,7 @@ const close = () => {
   mainStore.setSearchPanelState(false)
 }
 
-const searchInpRef = ref<InstanceType<typeof Input>>()
+const searchInpRef = useTemplateRef<InstanceType<typeof Input>>('searchInpRef')
 onMounted(() => {
   searchInpRef.value!.focus()
 })

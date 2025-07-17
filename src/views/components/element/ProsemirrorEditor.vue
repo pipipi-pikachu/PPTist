@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore } from '@/store'
@@ -21,6 +21,7 @@ import { alignmentCommand } from '@/utils/prosemirror/commands/setTextAlign'
 import { indentCommand, textIndentCommand } from '@/utils/prosemirror/commands/setTextIndent'
 import { toggleList } from '@/utils/prosemirror/commands/toggleList'
 import { setListStyle } from '@/utils/prosemirror/commands/setListStyle'
+import { replaceText } from '@/utils/prosemirror/commands/replaceText'
 import type { TextFormatPainterKeys } from '@/types/edit'
 import message from '@/utils/message'
 import { KEYS } from '@/configs/hotkey'
@@ -48,7 +49,7 @@ const mainStore = useMainStore()
 const { handleElementId, textFormatPainter, richTextAttrs, activeElementIdList } = storeToRefs(mainStore)
 const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
-const editorViewRef = ref<HTMLElement>()
+const editorViewRef = useTemplateRef<HTMLElement>('editorViewRef')
 let editorView: EditorView
 
 // 富文本的各种交互事件监听：
@@ -257,6 +258,9 @@ const execCommand = ({ target, action }: RichTextCommand) => {
     }
     else if (item.command === 'insert' && item.value) {
       editorView.dispatch(editorView.state.tr.insertText(item.value))
+    }
+    else if (item.command === 'replace' && item.value) {
+      replaceText(editorView, item.value)
     }
   }
 

@@ -23,9 +23,7 @@ import type {
   PPTTextElement,
   ChartOptions,
   Gradient,
-  PPTElement,
 } from '@/types/slides'
-import { getElementListRange } from '@/utils/element'
 
 const convertFontSizePtToPx = (html: string, ratio: number) => {
   return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
@@ -43,14 +41,14 @@ export default () => {
 
   const exporting = ref(false)
 
-  // 导入pptist文件
-  const importSpecificFile = (files: FileList, cover = false) => {
+  // 导入JSON文件
+  const importJSON = (files: FileList, cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const slides = JSON.parse(decrypt(reader.result as string))
+        const { slides } = JSON.parse(reader.result as string)
         if (cover) {
           slidesStore.updateSlideIndex(0)
           slidesStore.setSlides(slides)
@@ -67,6 +65,81 @@ export default () => {
       }
     })
     reader.readAsText(file)
+  }
+
+  // 导入pptist文件
+  const importSpecificFile = (files: FileList, cover = false) => {
+    const file = files[0]
+
+    const reader = new FileReader()
+    reader.addEventListener('load', () => {
+      try {
+        const { slides } = JSON.parse(decrypt(reader.result as string))
+        if (cover) {
+          slidesStore.updateSlideIndex(0)
+          slidesStore.setSlides(slides)
+          addHistorySnapshot()
+        }
+        else if (isEmptySlide.value) {
+          slidesStore.setSlides(slides)
+          addHistorySnapshot()
+        }
+        else addSlidesFromData(slides)
+      }
+      catch {
+        message.error('无法正确读取 / 解析该文件')
+      }
+    })
+    reader.readAsText(file)
+  }
+
+  const rotateLine = (line: PPTLineElement, angleDeg: number) => {
+    const { start, end } = line
+      
+    const angleRad = angleDeg * Math.PI / 180
+    
+    const midX = (start[0] + end[0]) / 2
+    const midY = (start[1] + end[1]) / 2
+    
+    const startTransX = start[0] - midX
+    const startTransY = start[1] - midY
+    const endTransX = end[0] - midX
+    const endTransY = end[1] - midY
+    
+    const cosA = Math.cos(angleRad)
+    const sinA = Math.sin(angleRad)
+    
+    const startRotX = startTransX * cosA - startTransY * sinA
+    const startRotY = startTransX * sinA + startTransY * cosA
+    
+    const endRotX = endTransX * cosA - endTransY * sinA
+    const endRotY = endTransX * sinA + endTransY * cosA
+    
+    const startNewX = startRotX + midX
+    const startNewY = startRotY + midY
+    const endNewX = endRotX + midX
+    const endNewY = endRotY + midY
+    
+    const beforeMinX = Math.min(start[0], end[0])
+    const beforeMinY = Math.min(start[1], end[1])
+    
+    const afterMinX = Math.min(startNewX, endNewX)
+    const afterMinY = Math.min(startNewY, endNewY)
+    
+    const startAdjustedX = startNewX - afterMinX
+    const startAdjustedY = startNewY - afterMinY
+    const endAdjustedX = endNewX - afterMinX
+    const endAdjustedY = endNewY - afterMinY
+    
+    const startAdjusted: [number, number] = [startAdjustedX, startAdjustedY]
+    const endAdjusted: [number, number] = [endAdjustedX, endAdjustedY]
+    const offset = [afterMinX - beforeMinX, afterMinY - beforeMinY]
+    
+    return {
+      start: startAdjusted,
+      end: endAdjusted,
+      offset,
+    }
   }
 
   const parseLineElement = (el: Shape, ratio: number) => {
@@ -102,11 +175,26 @@ export default () => {
       color: el.borderColor,
       points: ['', /straightConnector/.test(el.shapType) ? 'arrow' : '']
     }
+    if (el.rotate) {
+      const { start, end, offset } = rotateLine(data, el.rotate)
+
+      data.start = start
+      data.end = end
+      data.left = data.left + offset[0]
+      data.top = data.top + offset[1]
+    }
     if (/bentConnector/.test(el.shapType)) {
       data.broken2 = [
-        Math.abs(start[0] - end[0]) / 2,
-        Math.abs(start[1] - end[1]) / 2,
+        Math.abs(data.start[0] - data.end[0]) / 2,
+        Math.abs(data.start[1] - data.end[1]) / 2,
       ]
+    }
+    if (/curvedConnector/.test(el.shapType)) {
+      const cubic: [number, number] = [
+        Math.abs(data.start[0] - data.end[0]) / 2,
+        Math.abs(data.start[1] - data.end[1]) / 2,
+      ]
+      data.cubic = [cubic, cubic]
     }
 
     return data
@@ -447,6 +535,11 @@ export default () => {
                     else element.path = pathFormula.formula(el.width, el.height)
                   }
                 }
+                else if (el.path && el.path.indexOf('NaN') === -1) {
+                  const { maxX, maxY } = getSvgPathRange(el.path)
+                  element.path = el.path
+                  element.viewBox = [maxX || originWidth, maxY || originHeight]
+                }
                 if (el.shapType === 'custom') {
                   if (el.path!.indexOf('NaN') !== -1) element.path = ''
                   else {
@@ -670,6 +763,7 @@ export default () => {
 
   return {
     importSpecificFile,
+    importJSON,
     importPPTXFile,
     exporting,
   }

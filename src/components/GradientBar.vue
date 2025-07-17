@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, computed, watchEffect, useTemplateRef } from 'vue'
 import type { GradientColor } from '@/types/slides'
-import { ref, computed, watchEffect } from 'vue'
 
 const props = defineProps<{
   value: GradientColor[]
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
 const points = ref<GradientColor[]>([])
 
-const barRef = ref<HTMLElement>()
+const barRef = useTemplateRef<HTMLElement>('barRef')
 
 watchEffect(() => {
   points.value = props.value

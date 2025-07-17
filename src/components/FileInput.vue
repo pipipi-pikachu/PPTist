@@ -8,12 +8,13 @@
       ref="inputRef" 
       :accept="accept" 
       @change="$event => handleChange($event)"
+      @click.stop
     >
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { useTemplateRef } from 'vue'
 
 withDefaults(defineProps<{
   accept?: string
@@ -25,7 +26,7 @@ const emit = defineEmits<{
   (event: 'change', payload: FileList): void
 }>()
 
-const inputRef = ref<HTMLInputElement>()
+const inputRef = useTemplateRef<HTMLInputElement>('inputRef')
 
 const handleClick = () => {
   if (!inputRef.value) return

@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore, useSlidesStore } from '@/store'
 import type { CreateCustomShapeData } from '@/types/edit'
@@ -32,7 +32,7 @@ const mainStore = useMainStore()
 const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 const { theme } = storeToRefs(useSlidesStore())
 
-const shapeCanvasRef = ref<HTMLElement>()
+const shapeCanvasRef = useTemplateRef<HTMLElement>('shapeCanvasRef')
 const isMouseDown = ref(false)
 const offset = ref({
   x: 0,

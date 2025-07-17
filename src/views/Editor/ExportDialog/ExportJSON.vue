@@ -48,7 +48,7 @@ const json = computed(() => {
 }
 .preview {
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 80px);
   background-color: #f9f9f9;
   color: #0451a5;
   overflow: auto;
@@ -58,7 +58,7 @@ pre {
 }
 .btns {
   width: 300px;
-  height: 100px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,8 +1,8 @@
-import { onMounted, onUnmounted, ref, type Ref } from 'vue'
+import { onMounted, onUnmounted, ref, type ShallowRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
-export default (wrapRef?: Ref<HTMLElement | undefined>) => {
+export default (wrapRef?: ShallowRef<HTMLElement | null>) => {
   const slidesStore = useSlidesStore()
   const { viewportRatio } = storeToRefs(slidesStore)
 

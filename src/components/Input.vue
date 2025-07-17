@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { useTemplateRef, ref } from 'vue'
 
 withDefaults(defineProps<{
   value: string
@@ -69,7 +69,7 @@ const handleFocus = (e: Event) => {
   emit('focus', e)
 }
 
-const inputRef = ref<HTMLInputElement>()
+const inputRef = useTemplateRef<HTMLInputElement>('inputRef')
 const focus = () => {
   if (inputRef.value) inputRef.value.focus()
 }

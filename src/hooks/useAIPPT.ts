@@ -227,6 +227,10 @@ export default () => {
     return content.replace('```json', '').replace('```', '')
   }
 
+  const presetImgPool = (imgs: ImgPoolItem[]) => {
+    imgPool.value = imgs
+  }
+
   const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: ImgPoolItem[]) => {
     slidesStore.updateSlideIndex(slidesStore.slides.length - 1)
 
@@ -517,6 +521,7 @@ export default () => {
   }
 
   return {
+    presetImgPool,
     AIPPT,
     getMdContent,
     getJSONContent,

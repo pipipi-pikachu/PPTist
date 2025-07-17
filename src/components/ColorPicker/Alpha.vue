@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, onUnmounted, useTemplateRef } from 'vue'
 
 import Checkboard from './Checkboard.vue'
 import type { ColorFormats } from 'tinycolor2'
@@ -37,7 +37,7 @@ const gradientColor = computed(() => {
   return `linear-gradient(to right, rgba(${rgbaStr}, 0) 0%, rgba(${rgbaStr}, 1) 100%)`
 })
 
-const alphaRef = ref<HTMLElement>()
+const alphaRef = useTemplateRef<HTMLElement>('alphaRef')
 const handleChange = (e: MouseEvent) => {
   e.preventDefault()
   if (!alphaRef.value) return

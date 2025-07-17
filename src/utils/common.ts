@@ -22,3 +22,11 @@ export const isPC = () => {
 export const isValidURL = (url: string) => {
   return /^(https?:\/\/)([\w-]+\.)+[\w-]{2,}(\/[\w-./?%&=]*)?$/i.test(url)
 }
+
+/**
+ * HTML转纯文本
+ */
+export const htmlToText = (html: string) => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return doc.body.textContent || ''
+}

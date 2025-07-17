@@ -8,6 +8,7 @@
     <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black"><img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist?color=%232DCE89&logo=github" alt="license" /></a>
     <a href="https://www.typescriptlang.org" target="_black"><img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language"></a>
     <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black"><img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue"></a>
+    <a href="https://gitee.com/pptist/PPTist" target="_black"><img src="https://gitee.com/pptist/PPTist/badge/star.svg?version=latest" alt="gitee"></a>
 </p>
 
 [简体中文](README_zh.md) | English
@@ -36,6 +37,8 @@ npm install
 npm run dev
 ```
 Browser access: http://127.0.0.1:5173/
+
+> Note: If you deploy this project on your own server and find that it fails to initialize, it's because the initialization data is stored in the author's private object storage and is not publicly accessible. You'll need to transfer the data to your own server, object storage service, database, or front-end local storage.
 
 
 # 📚 Features
@@ -97,6 +100,7 @@ Browser access: http://127.0.0.1:5173/
 - Shadow
 - Transparency
 - Vertical text
+- AI Rewrite/Expand/Abbreviate
 #### Images
 - Crop (custom, shape, aspect ratio)
 - Rounding
@@ -195,25 +199,28 @@ If you wish to use this project for commercial gain, I hope you will respect ope
 
 
 # 🧮 商业用途
-- 本项目禁止闭源商用，如果你希望将PPTist用于商业项目盈利，请尊重开源，**严格遵循 [AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)**，回馈开源社区；
+- 本项目禁止闭源商用，如果你希望将PPTist用于商业项目盈利，请尊重开源，**严格遵循 [AGPL-3.0 协议](https://www.gnu.org/licenses/agpl-3.0.html)**，回馈开源社区（这是作者倡导的）；
 - 如果你因为任何原因，必须要闭源商用，无法执行 AGPL-3.0 协议，可以选择：
     1. 使用早期的 Apache 2.0 协议版本 [（该版本最后更新时间为2022年5月，目前已停止维护，点击此处可下载代码）](https://github.com/pipipi-pikachu/PPTist/archive/f1a35bb8e045124e37dcafd6acbf40b4531b69aa.zip)；
     2. 成为项目的重要贡献者（先违反协议后再成为贡献者不在此项范围），包括：
         - 你的代码被本项目作为依赖引用，包括：npm安装、script/style等文件引用、代码片段引用（引用处会注明）；
-        - 你给本项目提交过重要的 PR 并且被合并（由作者主观判断）；
+        - 你给本项目提交过重要的 PR 或 Issue（由作者主观判断，符合的 PR 或 Issue 会打上`important contribution`标签）；
         - 你长期参与到本项目的维护/推进工作中，如为本项目：提供了有效的周边工具、制作了大量模板等（由作者主观判断）；
     3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权。独立授权价格：
         - 一年1999元
         - 三年2999元
         - 永久5499元
-- 建议优先考虑执行AGPL-3.0 协议，如希望付费获取独立的商业授权，还请注意：
+        - 违反协议后被作者找到的，不适用于以上价格
+- 建议优先考虑执行AGPL-3.0协议，如希望付费获取独立的商业授权，还请注意：
     - 独立商业授权的意思是：单独授权您将代码用于商业行为且不必执行 AGPL-3.0 协议；
     - 仅授权（而不是出售软件或服务），不存在其他“高级版本/付费版本”、不提供任何在线服务、不提供技术支持或技术咨询、不提供定制开发、不提供更多模板、更不提供可直接交付的产品；
     - 该软件无法开箱即用，至少也需自行接入后端数据读取/存储相关能力。因此，使用本项目需要有最基本的web开发经验（能理解什么是前端&后端、数据从哪来&怎么存、什么是接口、什么是跨域等）；
     - 授权后，仍禁止将源代码二次售卖、授权、开源或恶意传播；
     - 授权后，如有需要可提供AIPPT相关后台逻辑和当前模板数据以供参考（但都非常简单，无任何核心逻辑，更建议自己实现）；
     - 请务必提前做好调研，判断PPTist是否符合需求，无论是功能（是否能满足业务需求）还是开发（是否接受当前技术栈/实现方案）；
-    - 作者是异步沟通践行者，**不加微信/QQ/手机号等**，有任何授权相关疑问请邮件联系，提需求/报bug/询问技术方案等请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行，谢谢理解。
+    - 作者没法“提供法律文件来证明我的Github帐号属于我”，如介意这一点，请考虑其他途径；
+    - 不接受[黑名单](/doc/Blacklist.md)对象通过付费获取独立的商业授权或贡献代码；
+    - 作者倡导异步沟通，**不加微信/QQ/手机号等**，有任何授权相关疑问请邮件联系，提需求/报bug/询问技术方案等请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行，谢谢理解。
 
 ---
 # 🔔 其他说明

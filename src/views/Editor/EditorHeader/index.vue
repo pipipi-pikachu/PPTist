@@ -8,7 +8,13 @@
             importPPTXFile(files)
             mainMenuVisible = false
           }">
-            <PopoverMenuItem>导入 pptx 文件（测试版）</PopoverMenuItem>
+            <PopoverMenuItem>导入 PPTX 文件（测试）</PopoverMenuItem>
+          </FileInput>
+          <FileInput accept=".json"  @change="files => {
+            importJSON(files)
+            mainMenuVisible = false
+          }">
+            <PopoverMenuItem>导入 JSON 文件（测试）</PopoverMenuItem>
           </FileInput>
           <FileInput accept=".pptist"  @change="files => {
             importSpecificFile(files)
@@ -81,7 +87,7 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import useScreening from '@/hooks/useScreening'
@@ -101,14 +107,14 @@ const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const { title } = storeToRefs(slidesStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
-const { importSpecificFile, importPPTXFile, exporting } = useImport()
+const { importSpecificFile, importPPTXFile, importJSON, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
 
 const mainMenuVisible = ref(false)
 const hotkeyDrawerVisible = ref(false)
 const editingTitle = ref(false)
-const titleInputRef = ref<InstanceType<typeof Input>>()
 const titleValue = ref('')
+const titleInputRef = useTemplateRef<InstanceType<typeof Input>>('titleInputRef')
 
 const startEditTitle = () => {
   titleValue.value = title.value
