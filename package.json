@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "author": "pipipi_pikachu@163.com",
+  "homepage": "https://github.com/pipipi-pikachu/PPTist",
   "dependencies": {
     "@icon-park/vue-next": "^1.4.2",
     "animate.css": "^4.1.1",
@@ -23,7 +24,7 @@
     "echarts": "^5.5.1",
     "file-saver": "^2.0.5",
     "hfmath": "^0.0.2",
-    "html-to-image": "^1.11.11",
+    "html-to-image": "^1.11.13",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "nanoid": "^5.0.7",

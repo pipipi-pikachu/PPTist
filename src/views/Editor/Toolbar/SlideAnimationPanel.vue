@@ -8,7 +8,7 @@
         :key="item.label"
         @click="updateTurningMode(item.value)"
       >
-        <div :class="['animation-block', item.value]"></div>
+        <div :class="['animation-block', item.value]">P</div>
         <div class="animation-text">{{item.label}}</div>
       </div>
     </div>
@@ -93,6 +93,10 @@ const applyAllSlide = () => {
   background: #666;
   position: relative;
   overflow: hidden;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @mixin elAnimation($animationType) {
     content: 'PPTist';
@@ -101,7 +105,7 @@ const applyAllSlide = () => {
     position: absolute;
     left: 0;
     top: 0;
-    background-color: rgba($color: $themeColor, $alpha: .75);
+    background-color: $themeColor;
     color: #fff;
     display: flex;
     justify-content: center;

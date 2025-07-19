@@ -209,7 +209,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
     3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权。独立授权价格：
         - 一年1999元
         - 三年2999元
-        - 永久5499元
+        - 永久5499元（不含税）
         - 违反协议后被作者找到的，不适用于以上价格
 - 建议优先考虑执行AGPL-3.0协议，如希望付费获取独立的商业授权，还请注意：
     - 独立商业授权的意思是：单独授权您将代码用于商业行为且不必执行 AGPL-3.0 协议；

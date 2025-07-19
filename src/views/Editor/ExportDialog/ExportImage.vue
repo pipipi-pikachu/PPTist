@@ -98,7 +98,7 @@ const rangeType = ref<'all' | 'current' | 'custom'>('all')
 const range = ref<[number, number]>([1, slides.value.length])
 const format = ref<'jpeg' | 'png'>('jpeg')
 const quality = ref(1)
-const ignoreWebfont = ref(true)
+const ignoreWebfont = ref(false)
 
 const renderSlides = computed(() => {
   if (rangeType.value === 'all') return slides.value
