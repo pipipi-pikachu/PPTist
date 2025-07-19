@@ -2,7 +2,7 @@
   <div class="mobile-editor">
     <Header :changeMode="changeMode" />
     
-    <div class="content" ref="contentRef" @touchstart="handleClickBlankArea()">
+    <div class="content" ref="contentRef" @touchstart.passive="handleClickBlankArea()">
       <div class="viewport-wrapper" :style="viewportStyles">
         <div class="background" :style="backgroundStyle"></div>
         <AlignmentLine 

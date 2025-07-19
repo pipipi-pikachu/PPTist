@@ -36,7 +36,7 @@
           v-if="!editable || elementInfo.lock"
           @dblclick="startEdit()"
           @mousedown="$event => handleSelectElement($event)"
-          @touchstart="$event => handleSelectElement($event)"
+          @touchstart.passive="$event => handleSelectElement($event)"
         >
           <div class="mask-tip" v-if="handleElementId === elementInfo.id" :style="{ transform: `scale(${ 1 / canvasScale })` }">双击编辑</div>
         </div>

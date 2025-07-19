@@ -9,7 +9,7 @@
     <div 
       class="screen-slide-list" 
       @click="toolVisible = !toolVisible"
-      @touchstart="$event => touchStartListener($event)"
+      @touchstart.passive="$event => touchStartListener($event)"
       @touchend="$event => touchEndListener($event)"
     >
       <div 
