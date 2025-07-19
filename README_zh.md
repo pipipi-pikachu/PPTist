@@ -1,5 +1,5 @@
 <p align="center">
-    <img src='/public/icons/android-chrome-192x192.png' />
+    <img src='/public/logo.png' />
 </p>
 
 <p align="center">
