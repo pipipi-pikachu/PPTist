@@ -16,6 +16,7 @@
 ├── hooks                         // 供多个组件（模块）使用的 hooks 方法
 ├── mocks                         // mocks 数据
 ├── plugins                       // 自定义的 Vue 插件
+├── services                      // API方法
 ├── types                         // 类型定义文件
 ├── store                         // Pinia store，参考：https://pinia.vuejs.org/
 ├── utils                         // 通用的工具方法
@@ -28,10 +29,15 @@
 
 
 ### 数据
-幻灯片的数据主要由 `slides` 和 `theme` 两部分组成。
-> 换句话说，在实际的生产环境中，一般只需要存储这两项数据即可。
+幻灯片的数据主要存放在 `src/store/slides.ts` 中。
+> 换句话说，在实际的生产环境中，一般需要将该文件内state中的数据（部分）保存到数据库。
 
-- `slides` 表示幻灯片页面数据，包括每一页的ID、元素内容、备注、背景、动画、切页方式等信息
-- `theme` 表示幻灯片主题数据，包括背景色、主题色、字体颜色、字体等信息
+包括：
+- `title` 幻灯片标题/文件名
+- `slides` 幻灯片页面数据，包括每一页的ID、元素内容、备注、背景、动画、切页方式等信息
+- `theme` 幻灯片主题数据，包括背景色、主题色、字体颜色、字体等信息
+- `viewportSize` 幻灯片可视区域宽度基数（默认1000，即1000×562.5的画布）
+- `viewportRatio` 幻灯片可视区域比例（宽:高），默认16:9
+- `templates` 幻灯片模板
 
-具体类型的定义可见：[https://github.com/pipipi-pikachu/PPTist/blob/master/src/types/slides.ts](https://github.com/pipipi-pikachu/PPTist/blob/master/src/types/slides.ts)
+具体类型的定义可见：[完整数据类型定义](https://github.com/pipipi-pikachu/PPTist/blob/master/src/types/slides.ts)
