@@ -27,6 +27,7 @@
         <div class="config-item">
           <div class="label">语言：</div>
           <Select 
+            class="config-content"
             style="width: 80px;"
             v-model:value="language"
             :options="[
@@ -39,6 +40,7 @@
         <div class="config-item">
           <div class="label">风格：</div>
           <Select 
+            class="config-content"
             style="width: 80px;"
             v-model:value="style"
             :options="[
@@ -53,6 +55,7 @@
         <div class="config-item">
           <div class="label">模型：</div>
           <Select 
+            class="config-content"
             style="width: 190px;"
             v-model:value="model"
             :options="[
@@ -67,6 +70,7 @@
         <div class="config-item">
           <div class="label">配图：</div>
           <Select 
+            class="config-content"
             style="width: 100px;"
             v-model:value="img"
             :options="[
@@ -397,6 +401,44 @@ const createPPT = async () => {
   .icon {
     font-size: 15px;
     margin-right: 3px;
+  }
+}
+
+@media screen and (width <= 800px) {
+  .configs {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+
+    .config-item {
+      margin-top: 8px;
+
+      .label {
+        flex-shrink: 0;
+      }
+
+      .config-content {
+        width: 100% !important;
+      }
+    }
+  }
+  .select-template {
+    .templates {
+      max-height: 450px;
+      display: block;
+      overflow: auto;
+    
+      .template {
+        width: 100%;
+        height: unset;
+        margin-bottom: 0 !important;
+        margin-right: 0 !important;
+
+        & + .template {
+          margin-top: 20px;
+        }
+      }
+    }
   }
 }
 </style>
