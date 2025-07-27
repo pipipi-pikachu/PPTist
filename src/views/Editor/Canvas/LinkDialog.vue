@@ -8,9 +8,11 @@
 
     <Input 
       class="input"
+      ref="inputRef"
       v-if="type === 'web'" 
       v-model:value="address" 
       placeholder="请输入网页链接地址"
+      @enter="save()"
     />
 
     <Select 
@@ -33,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { ElementLinkType, PPTElementLink } from '@/types/slides'
@@ -44,6 +46,7 @@ import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
+import { onUnmounted } from 'vue'
 
 interface TabItem {
   key: ElementLinkType
@@ -54,12 +57,14 @@ const emit = defineEmits<{
   (event: 'close'): void
 }>()
 
-const { handleElement } = storeToRefs(useMainStore())
+const mainStore = useMainStore()
+const { handleElement } = storeToRefs(mainStore)
 const { slides, currentSlide } = storeToRefs(useSlidesStore())
 
 const type = ref<ElementLinkType>('web')
 const address = ref('')
 const slideId = ref('')
+const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
 const slideOptions = computed(() => {
   return slides.value.map((item, index) => ({
@@ -85,12 +90,23 @@ const tabs: TabItem[] = [
 const { setLink } = useLink()
 
 onMounted(() => {
+  mainStore.setDisableHotkeysState(true)
+
   if (handleElement.value?.link) {
     if (handleElement.value.link.type === 'web') address.value = handleElement.value.link.target
     else if (handleElement.value.link.type === 'slide') slideId.value = handleElement.value.link.target
 
     type.value = handleElement.value.link.type
   }
+  if (type.value === 'web') {
+    nextTick(() => {
+      inputRef.value!.focus()
+    })
+  }
+})
+
+onUnmounted(() => {
+  mainStore.setDisableHotkeysState(false)
 })
 
 const save = () => {
