@@ -1,28 +1,26 @@
 <template>
-  <div class="mobile-thumbnails">
-    <Draggable 
-      class="thumbnail-list"
-      :modelValue="slides"
-      :animation="200"
-      :scroll="true"
-      :scrollSensitivity="50"
-      :delayOnTouchOnly="true"
-      :delay="800"
-      itemKey="id"
-      @end="handleDragEnd"
-    >
-      <template #item="{ element, index }">
-        <div
-          class="thumbnail-item"
-          :class="{ 'active': slideIndex === index }"
-          @click="changeSlideIndex(index)"
-        >
-          <div class="label">{{ index + 1 }}</div>
-          <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
-        </div>
-      </template>
-    </Draggable>
-  </div>
+  <Draggable 
+    class="mobile-thumbnails"
+    :modelValue="slides"
+    :animation="200"
+    :scroll="true"
+    :scrollSensitivity="50"
+    :delayOnTouchOnly="true"
+    :delay="800"
+    itemKey="id"
+    @end="handleDragEnd"
+  >
+    <template #item="{ element, index }">
+      <div
+        class="thumbnail-item"
+        :class="{ 'active': slideIndex === index }"
+        @click="changeSlideIndex(index)"
+      >
+        <div class="label">{{ index + 1 }}</div>
+        <ThumbnailSlide class="thumbnail" :slide="element" :size="120" :visible="index < slidesLoadLimit" />
+      </div>
+    </template>
+  </Draggable>
 </template>
 
 <script lang="ts" setup>
