@@ -60,6 +60,7 @@
             v-model:value="model"
             :options="[
               { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
+              { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
               { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
               { label: 'Douao-1.5-lite-32k', value: 'ark-doubao-1.5-lite-32k' },
               { label: 'Doubao-seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
