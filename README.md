@@ -219,7 +219,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
     - 授权后，如有需要可提供AIPPT相关后台逻辑和当前模板数据以供参考（但都非常简单，无任何核心逻辑，更建议自己实现）；
     - 请务必提前做好调研，判断PPTist是否符合需求，无论是功能（是否能满足业务需求）还是开发（是否接受当前技术栈/实现方案）；
     - 作者没法“提供法律文件来证明我的Github帐号属于我”，如介意这一点，请考虑其他途径；
-    - 不接受[黑名单](/doc/Blacklist.md)对象通过付费获取独立的商业授权或贡献代码；
+    - 不接受[黑名单/耻辱柱](/doc/Blacklist.md)对象通过付费获取独立的商业授权或贡献代码；
     - 作者倡导异步沟通，**不加微信/QQ/手机号等**，有任何授权相关疑问请邮件联系，提需求/报bug/询问技术方案等请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行，谢谢理解。
 
 ---
