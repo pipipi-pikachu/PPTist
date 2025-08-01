@@ -441,7 +441,9 @@ export interface ChartData {
  * 
  * themeColors: 主题色
  * 
- * textColor?: 文字颜色
+ * textColor?: 坐标和文字颜色
+ * 
+ * lineColor?: 网格颜色
  */
 export interface PPTChartElement extends PPTBaseElement {
   type: 'chart'
@@ -452,6 +454,7 @@ export interface PPTChartElement extends PPTBaseElement {
   outline?: PPTElementOutline
   themeColors: string[]
   textColor?: string
+  lineColor?: string
 }
 
 

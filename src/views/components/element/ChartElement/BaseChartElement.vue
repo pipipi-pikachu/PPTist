@@ -30,6 +30,7 @@
           :data="elementInfo.data"
           :themeColors="elementInfo.themeColors"
           :textColor="elementInfo.textColor"
+          :lineColor="elementInfo.lineColor"
           :options="elementInfo.options"
         />
       </div>

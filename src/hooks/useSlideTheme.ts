@@ -149,9 +149,16 @@ export default () => {
         }
         else if (el.type === 'chart') {
           if (el.fill) {
-            themeColorValues.push({ area: area * 0.5, value: el.fill })
+            themeColorValues.push({ area: area * 0.6, value: el.fill })
           }
-          themeColorValues.push({ area: area * 0.5, value: el.themeColors[0] })
+          if (el.themeColors[0]) {
+            themeColorValues.push({ area: area * 0.3, value: el.themeColors[0] })
+          }
+          for (const color of el.themeColors) {
+            if (tinycolor(color).getAlpha() !== 0) {
+              themeColorValues.push({ area: area / el.themeColors.length * 0.1, value: color })
+            }
+          }
         }
         else if (el.type === 'line') {
           themeColorValues.push({ area, value: el.color })
@@ -230,8 +237,14 @@ export default () => {
       if (el.type === 'table' && el.theme && tinycolor(el.theme.color).getAlpha() !== 0) {
         record(el.theme.color, area)
       }
-      if (el.type === 'chart' && el.themeColors[0] && tinycolor(el.themeColors[0]).getAlpha() !== 0) {
-        record(el.themeColors[0], area)
+      if (el.type === 'chart') {
+        for (const color of el.themeColors) {
+          if (tinycolor(color).getAlpha() !== 0) {
+            record(color, area / el.themeColors.length * 0.1)
+          }
+        }
+        if (el.themeColors[0] && tinycolor(el.themeColors[0]).getAlpha() !== 0) record(el.themeColors[0], area * 0.3)
+        if (el.fill && tinycolor(el.fill).getAlpha() !== 0) record(el.fill, area * 0.6)
       }
       if (el.type === 'line' && tinycolor(el.color).getAlpha() !== 0) {
         record(el.color, area)
@@ -285,14 +298,14 @@ export default () => {
         if (el.text) {
           el.text.defaultColor = theme.fontColor
           el.text.defaultFontName = theme.fontname
-          if(el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+          if (el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
         }
       }
       if (el.type === 'text') {
         if (el.fill) el.fill = getColor(el.fill)
         el.defaultColor = theme.fontColor
         el.defaultFontName = theme.fontname
-        if(el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+        if (el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
       }
       if (el.type === 'image' && el.colorMask) {
         el.colorMask = getColor(el.colorMask)
@@ -309,7 +322,7 @@ export default () => {
         }
       }
       if (el.type === 'chart') {
-        el.themeColors = getColor(el.themeColors[0]) ? [getColor(el.themeColors[0])] : el.themeColors
+        el.themeColors = [...theme.colors]
         el.textColor = theme.fontColor
       }
       if (el.type === 'line') el.color = getColor(el.color)

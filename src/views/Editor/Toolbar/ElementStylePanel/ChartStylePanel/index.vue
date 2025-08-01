@@ -30,22 +30,34 @@
         <template #content>
           <ColorPicker
             :modelValue="fill"
-            @update:modelValue="value => updateFill(value)"
+            @update:modelValue="value => updateElement({ fill: value })"
           />
         </template>
         <ColorButton :color="fill" />
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">文字颜色：</div>
+      <div style="width: 40%;">坐标与文字：</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
             :modelValue="textColor"
-            @update:modelValue="value => updateTextColor(value)"
+            @update:modelValue="value => updateElement({ textColor: value })"
           />
         </template>
         <ColorButton :color="textColor" />
+      </Popover>
+    </div>
+    <div class="row">
+      <div style="width: 40%;">网格颜色：</div>
+      <Popover trigger="click" style="width: 60%;">
+        <template #content>
+          <ColorPicker
+            :modelValue="lineColor"
+            @update:modelValue="value => updateElement({ lineColor: value })"
+          />
+        </template>
+        <ColorButton :color="lineColor" />
       </Popover>
     </div>
 
@@ -148,6 +160,7 @@ const fill = ref<string>('#000')
 
 const themeColors = ref<string[]>([])
 const textColor = ref('')
+const lineColor = ref('')
 const lineSmooth = ref(false)
 const stack = ref(false)
 
@@ -170,6 +183,7 @@ watch(handleElement, () => {
 
   themeColors.value = handleElement.value.themeColors
   textColor.value = handleElement.value.textColor || '#333'
+  lineColor.value = handleElement.value.lineColor || '#e8ecf4'
 }, { deep: true, immediate: true })
 
 const updateElement = (props: Partial<PPTChartElement>) => {
@@ -186,11 +200,6 @@ const updateData = (payload: {
   updateElement({ data: payload.data, chartType: payload.type })
 }
 
-// 设置填充色
-const updateFill = (value: string) => {
-  updateElement({ fill: value })
-}
-
 // 设置扩展选项
 const updateOptions = (optionProps: ChartOptions) => {
   const _handleElement = handleElement.value as PPTChartElement
@@ -204,11 +213,6 @@ const setThemeColors = (colors: string[]) => {
   updateElement({ themeColors: colors })
   themesVisible.value = false
   themeColorsSettingVisible.value = false
-}
-
-// 设置文字颜色
-const updateTextColor = (textColor: string) => {
-  updateElement({ textColor })
 }
 
 const openDataEditor = () => chartDataEditorVisible.value = true

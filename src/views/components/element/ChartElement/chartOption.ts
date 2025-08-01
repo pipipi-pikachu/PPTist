@@ -15,6 +15,7 @@ export interface ChartOptionPayload {
   data: ChartData
   themeColors: string[]
   textColor?: string
+  lineColor?: string
   lineSmooth?: boolean
   stack?: boolean
 }
@@ -24,27 +25,51 @@ export const getChartOption = ({
   data,
   themeColors,
   textColor,
+  lineColor,
   lineSmooth,
   stack,
 }: ChartOptionPayload): EChartOption | null => {
+  const textStyle = textColor ? {
+    color: textColor
+  } : {}
+
+  const axisLine = textColor ? {
+    lineStyle: {
+      color: textColor,
+    }
+  } : undefined
+
+  const axisLabel = textColor ? {
+    color: textColor,
+  } : undefined
+
+  const splitLine = lineColor ? {
+    lineStyle: {
+      color: lineColor,
+    }
+  } : {}
+
+  const legend = data.series.length > 1 ? {
+    top: 'bottom',
+    textStyle,
+  } : undefined
+
   if (type === 'bar') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      legend: data.series.length > 1 ? {
-        top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
-      } : undefined,
+      textStyle,
+      legend,
       xAxis: {
         type: 'category',
         data: data.labels,
+        axisLine,
+        axisLabel,
       },
       yAxis: {
         type: 'value',
+        axisLine,
+        axisLabel,
+        splitLine,
       },
       series: data.series.map((item, index) => {
         const seriesItem: BarSeriesOption = {
@@ -53,6 +78,9 @@ export const getChartOption = ({
           type: 'bar',
           label: {
             show: true,
+          },
+          itemStyle: {
+            borderRadius: [2, 2, 0, 0],
           },
         }
         if (stack) seriesItem.stack = 'A'
@@ -63,21 +91,19 @@ export const getChartOption = ({
   if (type === 'column') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      legend: data.series.length > 1 ? {
-        top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
-      } : undefined,
+      textStyle,
+      legend,
       yAxis: {
         type: 'category',
         data: data.labels,
+        axisLine,
+        axisLabel,
       },
       xAxis: {
         type: 'value',
+        axisLine,
+        axisLabel,
+        splitLine,
       },
       series: data.series.map((item, index) => {
         const seriesItem: BarSeriesOption = {
@@ -86,6 +112,9 @@ export const getChartOption = ({
           type: 'bar',
           label: {
             show: true,
+          },
+          itemStyle: {
+            borderRadius: [0, 2, 2, 0],
           },
         }
         if (stack) seriesItem.stack = 'A'
@@ -96,21 +125,19 @@ export const getChartOption = ({
   if (type === 'line') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      legend: data.series.length > 1 ? {
-        top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
-      } : undefined,
+      textStyle,
+      legend,
       xAxis: {
         type: 'category',
         data: data.labels,
+        axisLine,
+        axisLabel,
       },
       yAxis: {
         type: 'value',
+        axisLine,
+        axisLabel,
+        splitLine,
       },
       series: data.series.map((item, index) => {
         const seriesItem: LineSeriesOption = {
@@ -130,14 +157,10 @@ export const getChartOption = ({
   if (type === 'pie') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
+      textStyle,
       legend: {
         top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
+        textStyle,
       },
       series: [
         {
@@ -166,14 +189,10 @@ export const getChartOption = ({
   if (type === 'ring') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
+      textStyle,
       legend: {
         top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
+        textStyle,
       },
       series: [
         {
@@ -202,22 +221,20 @@ export const getChartOption = ({
   if (type === 'area') {
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      legend: data.series.length > 1 ? {
-        top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
-      } : undefined,
+      textStyle,
+      legend,
       xAxis: {
         type: 'category',
         boundaryGap: false,
         data: data.labels,
+        axisLine,
+        axisLabel,
       },
       yAxis: {
         type: 'value',
+        axisLine,
+        axisLabel,
+        splitLine,
       },
       series: data.series.map((item, index) => {
         const seriesItem: LineSeriesOption = {
@@ -244,17 +261,16 @@ export const getChartOption = ({
 
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      legend: data.series.length > 1 ? {
-        top: 'bottom',
-        textStyle: textColor ? {
-          color: textColor,
-        } : {},
-      } : undefined,
+      textStyle,
+      legend,
       radar: {
         indicator: data.labels.map(item => ({ name: item })),
+        splitLine,
+        axisLine: lineColor ? {
+          lineStyle: {
+            color: lineColor,
+          }
+        } : undefined,
       },
       series: [
         {
@@ -274,11 +290,17 @@ export const getChartOption = ({
 
     return {
       color: themeColors,
-      textStyle: textColor ? {
-        color: textColor,
-      } : {},
-      xAxis: {},
-      yAxis: {},
+      textStyle,
+      xAxis: {
+        axisLine,
+        axisLabel,
+        splitLine,
+      },
+      yAxis: {
+        axisLine,
+        axisLabel,
+        splitLine,
+      },
       series: [
         {
           symbolSize: 12,
