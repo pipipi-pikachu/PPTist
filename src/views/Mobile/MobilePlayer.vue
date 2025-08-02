@@ -116,14 +116,19 @@ const touchStartListener = (e: TouchEvent) => {
 const touchEndListener = (e: TouchEvent) => {
   if (!touchInfo.value) return
 
-  const offsetY = Math.abs(touchInfo.value.y - e.changedTouches[0].pageY)
   const offsetX = e.changedTouches[0].pageX - touchInfo.value.x
+  const offsetY = e.changedTouches[0].pageY - touchInfo.value.y
+  const offsetAbsX = Math.abs(offsetX)
+  const offsetAbsY = Math.abs(offsetY)
 
-  if ( Math.abs(offsetX) > offsetY && Math.abs(offsetX) > 50 ) {
-    touchInfo.value = null
-
+  if ( offsetAbsX > offsetAbsY && offsetAbsX > 50 ) {
     if (offsetX < 0 && slideIndex.value > 0) slidesStore.updateSlideIndex(slideIndex.value - 1)
     if (offsetX > 0 && slideIndex.value < slides.value.length - 1) slidesStore.updateSlideIndex(slideIndex.value + 1)
+  }
+
+  if ( offsetAbsY > offsetAbsX && offsetAbsY > 50 ) {
+    if (offsetY > 0 && slideIndex.value > 0) slidesStore.updateSlideIndex(slideIndex.value - 1)
+    if (offsetY < 0 && slideIndex.value < slides.value.length - 1) slidesStore.updateSlideIndex(slideIndex.value + 1)
   }
 }
 </script>
