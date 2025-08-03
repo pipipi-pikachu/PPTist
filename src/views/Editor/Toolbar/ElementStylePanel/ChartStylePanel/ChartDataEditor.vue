@@ -490,6 +490,7 @@ table {
     .change {
       color: #ccc;
       margin-left: 5px;
+      user-select: none;
       cursor: pointer;
 
       &:hover {
