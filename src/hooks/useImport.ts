@@ -541,14 +541,17 @@ export default () => {
                   element.viewBox = [maxX || originWidth, maxY || originHeight]
                 }
                 if (el.shapType === 'custom') {
-                  if (el.path!.indexOf('NaN') !== -1) element.path = ''
+                  if (el.path!.indexOf('NaN') !== -1) {
+                    if (element.width === 0) element.width = 0.1
+                    if (element.height === 0) element.height = 0.1
+                    element.path = el.path!.replace(/NaN/g, '0')
+                  }
                   else {
                     element.special = true
                     element.path = el.path!
-  
-                    const { maxX, maxY } = getSvgPathRange(element.path)
-                    element.viewBox = [maxX || originWidth, maxY || originHeight]
                   }
+                  const { maxX, maxY } = getSvgPathRange(element.path)
+                  element.viewBox = [maxX || originWidth, maxY || originHeight]
                 }
     
                 if (element.path) slide.elements.push(element)
