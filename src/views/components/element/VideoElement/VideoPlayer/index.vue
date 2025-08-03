@@ -13,6 +13,7 @@
     <div class="video-wrap" @click="toggle()">
       <div class="load-error" v-if="loadError">视频加载失败</div>
 
+      <canvas ref="bgCanvasRef" class="bg-canvas"></canvas>
       <video
         class="video"
         ref="videoRef"
@@ -116,7 +117,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, onMounted } from 'vue'
 import useMSE from './useMSE'
 
 const props = withDefaults(defineProps<{
@@ -353,6 +354,19 @@ const autoHideController = () => {
   }, 3000)
 }
 
+const bgCanvasRef = useTemplateRef<HTMLCanvasElement>('bgCanvasRef')
+onMounted(() => {
+  if (!bgCanvasRef.value || !videoRef.value) return
+  const ctx = bgCanvasRef.value.getContext('2d')
+  if (!ctx) return
+
+  videoRef.value.addEventListener('loadedmetadata', () => {
+    videoRef.value!.requestVideoFrameCallback(() => {
+      ctx.drawImage(videoRef.value!, 0, 0, bgCanvasRef.value!.width, bgCanvasRef.value!.height)
+    })
+  }, { once: true })
+})
+
 useMSE(props.src, videoRef)
 </script>
 
@@ -379,15 +393,41 @@ useMSE(props.src, videoRef)
 }
 
 .video-wrap {
+  width: 100%;
+  height: 100%;
   position: relative;
   background: #000;
   font-size: 0;
-  width: 100%;
-  height: 100%;
 
+  .bg-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transform: scale(1.1);
+    filter: blur(25px) brightness(0.7);
+  }
   .video {
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+  .load-error {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 3;
+    font-size: 15px;
+    color: #fff;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -397,6 +437,7 @@ useMSE(props.src, videoRef)
   width: 100%;
   position: absolute;
   bottom: 0;
+  z-index: 1000;
   transition: all 0.3s ease;
 }
 .controller {
@@ -404,6 +445,7 @@ useMSE(props.src, videoRef)
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
   height: 41px;
   padding: 0 20px;
   user-select: none;
@@ -642,6 +684,7 @@ useMSE(props.src, videoRef)
   font-size: 22px;
   color: #fff;
   pointer-events: none;
+  z-index: 3;
 
   .bezel-icon {
     position: absolute;
@@ -675,19 +718,5 @@ useMSE(props.src, videoRef)
       }
     }
   }
-}
-
-.load-error {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  font-size: 15px;
-  color: #fff;
-  pointer-events: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>
