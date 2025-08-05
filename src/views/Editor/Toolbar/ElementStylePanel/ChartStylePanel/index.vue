@@ -20,7 +20,19 @@
           style="flex: 3;"
         >使用平滑曲线</Checkbox>
       </div>
-  
+
+      <div class="row">
+        <div style="width: 40%;">
+          柱条宽度
+        </div>
+        <NumberInput
+            v-if="handleChartElement.chartType === 'bar'"
+            v-tooltip="'柱条宽度为0或者不设置时，柱子宽度为默认宽度'"
+            style="width: 60%;"
+            :value="barWidth"
+            @update:value="value => updateOptions({ barWidth: value })"
+        />
+      </div>
       <Divider />
     </template>
 
@@ -142,6 +154,7 @@ import Divider from '@/components/Divider.vue'
 import Checkbox from '@/components/Checkbox.vue'
 import Button from '@/components/Button.vue'
 import Popover from '@/components/Popover.vue'
+import NumberInput from '@/components/NumberInput.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -163,6 +176,7 @@ const textColor = ref('')
 const lineColor = ref('')
 const lineSmooth = ref(false)
 const stack = ref(false)
+const barWidth = ref()
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'chart') return
@@ -175,10 +189,12 @@ watch(handleElement, () => {
     const {
       lineSmooth: _lineSmooth,
       stack: _stack,
+      barWidth: _barWidth,
     } = handleElement.value.options
 
     if (_lineSmooth !== undefined) lineSmooth.value = _lineSmooth
     if (_stack !== undefined) stack.value = _stack
+    if (_barWidth !== undefined) barWidth.value = _barWidth
   }
 
   themeColors.value = handleElement.value.themeColors
