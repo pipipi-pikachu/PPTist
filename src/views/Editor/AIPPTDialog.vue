@@ -59,12 +59,10 @@
             style="width: 190px;"
             v-model:value="model"
             :options="[
-              { label: 'GLM-4-Flash', value: 'GLM-4-Flash' },
-              { label: 'GLM-4-FlashX', value: 'GLM-4-FlashX' },
+              { label: 'GLM-4.5-Air', value: 'GLM-4.5-Air' },
               { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
-              { label: 'Douao-1.5-lite-32k', value: 'ark-doubao-1.5-lite-32k' },
-              { label: 'Doubao-seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
-              { label: 'Doubao-seed-1.6', value: 'ark-doubao-seed-1.6' },
+              { label: 'Doubao-Seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
+              { label: 'Doubao-Seed-1.6', value: 'ark-doubao-seed-1.6' },
             ]"
           />
         </div>
@@ -144,7 +142,7 @@ const selectedTemplate = ref('template_1')
 const loading = ref(false)
 const outlineCreating = ref(false)
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const model = ref('GLM-4.5-Flash')
+const model = ref('GLM-4.5-Air')
 const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
 const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
