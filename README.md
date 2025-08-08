@@ -209,10 +209,10 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 你长期参与到本项目的维护/推进工作中，如为本项目：提供了有效的周边工具、制作了大量模板等（由作者主观判断）；
         - 先违反协议后再成为贡献者不适用此项；
     3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权。独立授权价格：
-        - 一年1999元
-        - 三年2999元
-        - 永久5499元（不含税）
-        - 违反协议后被作者找到的，不适用于以上价格
+        - 一年1999元；
+        - 三年2999元；
+        - 永久5499元（不含税）；
+        - 违反协议后被作者找到的，不适用于以上价格；
 - 建议优先考虑执行AGPL-3.0协议，如需付费获取独立的商业授权，还请注意：
     - 独立商业授权表示：单独授权您将代码用于商业行为，且不必执行 AGPL-3.0 协议；
     - 仅授权（而非出售软件或服务），不存在其他“高级版本/付费版本/完整版本”、不提供任何在线服务/技术支持/技术咨询/定制开发、也不提供可直接交付的产品；
@@ -223,7 +223,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
     - 作者没法提供法律文件来证明“我的Github帐号属于我”，如介意这一点，请考虑其他途径；
     - 不接受[黑名单/耻辱柱](/doc/Blacklist.md)对象通过付费获取独立的商业授权或贡献代码；
     - 作者倡导异步沟通，**不加微信/QQ/手机号等**，有任何授权相关疑问请邮件联系，谢谢理解；
-    - 提需求/报bug/询问技术方案等非授权相关咨询，请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行。
+    - 单纯的提需求/报bug/询问技术方案等非授权相关咨询，请在 [Issues](https://github.com/pipipi-pikachu/PPTist/issues) 中进行。作者不接受邮件提需求/报bug/询问技术方案。
 
 ---
 # 🔔 其他说明
