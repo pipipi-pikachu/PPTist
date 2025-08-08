@@ -35,6 +35,7 @@
             :data-section-id="element?.sectionTag?.id || ''"
             v-if="element.sectionTag || (hasSection && index === 0)" 
             v-contextmenu="contextmenusSection"
+            @dblclick="() => editSection(element?.sectionTag?.id || '')"
           >
             <input 
               :id="`section-title-input-${element?.sectionTag?.id || 'default'}`" 

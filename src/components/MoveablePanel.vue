@@ -12,7 +12,7 @@
     <template v-if="title">
       <div class="header" @mousedown="$event => startMove($event)">
         <div class="title">{{title}}</div>
-        <div class="close-btn" @click="emit('close')"><IconClose /></div>
+        <div class="close-btn" @mousedown.stop @click="emit('close')"><IconClose /></div>
       </div>
 
       <div class="content">

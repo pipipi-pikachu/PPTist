@@ -48,7 +48,8 @@ const json = computed(() => {
 }
 .preview {
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 90px);
+  margin-bottom: 10px;
   background-color: #f9f9f9;
   color: #0451a5;
   overflow: auto;
