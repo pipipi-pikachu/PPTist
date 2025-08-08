@@ -93,6 +93,26 @@ export const ENTER_ANIMATIONS = [
       { name: '从左飞入', value: 'lightSpeedInLeft' },
     ],
   },
+  {
+    type: 'erase',
+    name: '擦除',
+    children: [
+      { name: '从左侧擦除', value: 'eraseInLeft' },
+      { name: '从右侧擦除', value: 'eraseInRight' },
+      { name: '从顶部擦除', value: 'eraseInTop' },
+      { name: '从底部擦除', value: 'eraseInBottom' }
+    ]
+  },
+  {
+    type: 'split',
+    name: '裂开',
+    children: [
+      { name: '上下向中央收缩', value: 'splitInToCenter' },
+      { name: '中央向上下展开', value: 'splitInFromCenter' },
+      { name: '左右向中央收缩', value: 'splitInToBetween' },
+      { name: '中央向左右展开', value: 'splitInFromBetween' }
+    ]
+  },
 ]
 
 export const EXIT_ANIMATIONS = [
@@ -183,6 +203,26 @@ export const EXIT_ANIMATIONS = [
       { name: '从右飞出', value: 'lightSpeedOutRight' },
       { name: '从左飞出', value: 'lightSpeedOutLeft' },
     ],
+  },
+  {
+    type: 'erase',
+    name: '擦除',
+    children: [
+      { name: '向左擦除', value: 'eraseOutLeft' },
+      { name: '向右擦除', value: 'eraseOutRight' },
+      { name: '向上擦除', value: 'eraseOutTop' },
+      { name: '向下擦除', value: 'eraseOutBottom' }
+    ]
+  },
+  {
+    type: 'split',
+    name: '裂开',
+    children: [
+      { name: '中央向上下收缩', value: 'splitOutToCenter' },
+      { name: '上下向中央收缩', value: 'splitOutFromCenter' },
+      { name: '中央向左右收缩', value: 'splitOutToBetween' },
+      { name: '左右向中央收缩', value: 'splitOutFromBetween' }
+    ]
   },
 ]
 
