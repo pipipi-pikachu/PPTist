@@ -16,7 +16,7 @@
         class="element-content" 
         v-contextmenu="contextmenus" 
         @mousedown="$event => handleSelectElement($event, false)"
-        @touchstart="$event => handleSelectElement($event, false)"
+        @touchstart.passive="$event => handleSelectElement($event, false)"
       >
         <VideoPlayer
           :width="elementInfo.width"
@@ -30,7 +30,7 @@
           v-for="item in ['t', 'b', 'l', 'r']" 
           :key="item"
           @mousedown="$event => handleSelectElement($event)"
-          @touchstart="$event => handleSelectElement($event)"
+          @touchstart.passive="$event => handleSelectElement($event)"
         ></div>
       </div>
     </div>
