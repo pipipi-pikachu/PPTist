@@ -1,12 +1,13 @@
 import { type Ref, type ShallowRef, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
+import { useKeyboardStore, useMainStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import { getElementRange } from '@/utils/element'
 
 export default (elementList: Ref<PPTElement[]>, viewportRef: ShallowRef<HTMLElement | null>) => {
   const mainStore = useMainStore()
   const { canvasScale, hiddenElementIdList } = storeToRefs(mainStore)
+  const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   const mouseSelectionVisible = ref(false)
   const mouseSelectionQuadrant = ref(1)
@@ -92,29 +93,57 @@ export default (elementList: Ref<PPTElement[]>, viewportRef: ShallowRef<HTMLElem
 
         // 计算元素是否处在框选范围内时，四个框选方向的计算方式有差异
         let isInclude = false
-        if (mouseSelectionQuadrant.value === 4) {
-          isInclude = minX > mouseSelectionLeft && 
-                      maxX < mouseSelectionLeft + mouseSelectionWidth && 
-                      minY > mouseSelectionTop && 
-                      maxY < mouseSelectionTop + mouseSelectionHeight
+        if (ctrlOrShiftKeyActive.value) {
+          if (mouseSelectionQuadrant.value === 4) {
+            isInclude = maxX > mouseSelectionLeft && 
+                        minX < mouseSelectionLeft + mouseSelectionWidth && 
+                        maxY > mouseSelectionTop && 
+                        minY < mouseSelectionTop + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 2) {
+            isInclude = maxX > (mouseSelectionLeft - mouseSelectionWidth) && 
+                        minX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
+                        maxY > (mouseSelectionTop - mouseSelectionHeight) && 
+                        minY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 1) {
+            isInclude = maxX > mouseSelectionLeft && 
+                        minX < mouseSelectionLeft + mouseSelectionWidth && 
+                        maxY > (mouseSelectionTop - mouseSelectionHeight) && 
+                        minY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 3) {
+            isInclude = maxX > (mouseSelectionLeft - mouseSelectionWidth) && 
+                        minX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
+                        maxY > mouseSelectionTop && 
+                        minY < mouseSelectionTop + mouseSelectionHeight
+          }
         }
-        else if (mouseSelectionQuadrant.value === 2) {
-          isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
-                      maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
-                      minY > (mouseSelectionTop - mouseSelectionHeight) && 
-                      maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
-        }
-        else if (mouseSelectionQuadrant.value === 1) {
-          isInclude = minX > mouseSelectionLeft && 
-                      maxX < mouseSelectionLeft + mouseSelectionWidth && 
-                      minY > (mouseSelectionTop - mouseSelectionHeight) && 
-                      maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
-        }
-        else if (mouseSelectionQuadrant.value === 3) {
-          isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
-                      maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
-                      minY > mouseSelectionTop && 
-                      maxY < mouseSelectionTop + mouseSelectionHeight
+        else {
+          if (mouseSelectionQuadrant.value === 4) {
+            isInclude = minX > mouseSelectionLeft && 
+                        maxX < mouseSelectionLeft + mouseSelectionWidth && 
+                        minY > mouseSelectionTop && 
+                        maxY < mouseSelectionTop + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 2) {
+            isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
+                        maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
+                        minY > (mouseSelectionTop - mouseSelectionHeight) && 
+                        maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 1) {
+            isInclude = minX > mouseSelectionLeft && 
+                        maxX < mouseSelectionLeft + mouseSelectionWidth && 
+                        minY > (mouseSelectionTop - mouseSelectionHeight) && 
+                        maxY < (mouseSelectionTop - mouseSelectionHeight) + mouseSelectionHeight
+          }
+          else if (mouseSelectionQuadrant.value === 3) {
+            isInclude = minX > (mouseSelectionLeft - mouseSelectionWidth) && 
+                        maxX < (mouseSelectionLeft - mouseSelectionWidth) + mouseSelectionWidth && 
+                        minY > mouseSelectionTop && 
+                        maxY < mouseSelectionTop + mouseSelectionHeight
+          }
         }
 
         // 被锁定或被隐藏的元素即使在范围内，也不需要设置为选中状态
