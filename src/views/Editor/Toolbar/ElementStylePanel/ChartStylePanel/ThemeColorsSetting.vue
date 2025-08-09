@@ -23,7 +23,7 @@
         :disabled="themeColors.length >= 10"
         @click="addThemeColor()"
       >
-        <IconPlus class="btn-icon" /> 添加主题色
+        <IconPlus /> 添加主题色
       </Button>
     </div>
 

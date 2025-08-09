@@ -43,7 +43,7 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <IconEffects style="margin-right: 5px;" /> 添加动画
+          <IconEffects /> 添加动画
         </Button>
       </Popover>
     </div>
@@ -101,7 +101,7 @@
               />
             </div>
             <div class="config-item">
-              <Button style="width: 100%;" @click="openAnimationPool(element.id)">更换动画</Button>
+              <Button style="width: 100%;" @click="openAnimationPool(element.id)"><IconSwitch /> 更换动画</Button>
             </div>
           </div>
         </div>

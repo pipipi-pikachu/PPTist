@@ -69,7 +69,7 @@
         />
         <div class="footer">
           <IconDelete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
-          <Button type="primary" class="btn" style="flex: 12" @click="createNote()">添加批注</Button>
+          <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><IconPlus /> 添加批注</Button>
         </div>
       </div>
     </div>
@@ -331,12 +331,11 @@ const close = () => {
     margin-top: 10px;
     display: flex;
 
-    .btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      
+    .btn {      
       &.icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-size: 18px;
         color: #666;
         cursor: pointer;

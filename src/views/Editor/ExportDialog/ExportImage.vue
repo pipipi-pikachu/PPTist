@@ -65,7 +65,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expImage()">导出图片</Button>
+      <Button class="btn export" type="primary" @click="expImage()"><IconDownload /> 导出图片</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
 

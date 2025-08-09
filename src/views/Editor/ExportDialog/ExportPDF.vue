@@ -55,7 +55,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()">打印 / 导出 PDF</Button>
+      <Button class="btn export" type="primary" @click="expPDF()"><IconDownload /> 打印 / 导出 PDF</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>

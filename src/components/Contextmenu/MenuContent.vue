@@ -56,7 +56,7 @@ $subMenuWidth: 120px;
 }
 .menu-item {
   padding: 0 20px;
-  color: #555;
+  color: #333;
   font-size: 12px;
   transition: all $transitionDelayFast;
   white-space: nowrap;
@@ -74,7 +74,7 @@ $subMenuWidth: 120px;
   }
 
   &:hover:not(.disable) {
-    background-color: rgba($color: $themeColor, $alpha: .2);
+    background-color: rgba($color: $themeColor, $alpha: .15);
   }
 
   &.divider {
@@ -120,10 +120,11 @@ $subMenuWidth: 120px;
     right: 18px;
     top: 3px;
     transform: scale(0);
-    transition: transform $transitionDelay;
+    transition: transform $transitionDelayFast;
   }
 
   .sub-text {
+    color: #666;
     opacity: 0.6;
   }
   .sub-menu {

@@ -11,7 +11,7 @@
       </FileInput>
     </div>
     <div class="row">
-      <Button style="flex: 1;" @click="updateVideo({ poster: '' })">重置封面</Button>
+      <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><IconUndo /> 重置封面</Button>
     </div>
 
     <div class="row switch-row">

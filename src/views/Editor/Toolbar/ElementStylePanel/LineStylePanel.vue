@@ -126,12 +126,6 @@ const updateLine = (props: Partial<PPTLineElement>) => {
 .line-wrapper {
   overflow: visible;
 }
-.line-btn-icon {
-  width: 30px;
-  font-size: 12px;
-  margin-top: 2px;
-  color: #bfbfbf;
-}
 .preset-point-style {
   padding: 0 10px;
 

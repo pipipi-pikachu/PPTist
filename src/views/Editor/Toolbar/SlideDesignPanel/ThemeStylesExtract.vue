@@ -13,7 +13,7 @@
           <div class="value-wrap" v-for="(item, index) in themeStyles.fontNames" :key="item">
             <div class="value" :style="{ fontFamily: item }">{{ fontMap[item] || item }}</div>
             <div class="handler">
-              <div class="state" :class="{ 'active': selectedIndex.fontName === index }">√</div>
+              <div class="state" :class="{ 'active': selectedIndex.fontName === index }"><IconCheck /></div>
               <div class="config-btn" @click="selectedIndex.fontName = index">选择</div>
               <div class="config-btn" @click="updateTheme({ fontName: item }); selectedIndex.fontName = index">应用到主题</div>
             </div>
@@ -26,7 +26,7 @@
           <div class="value-wrap" v-for="(item, index) in themeStyles.fontColors" :key="item">
             <div class="value" :style="{ backgroundColor: item, color: getMostReadableColor(item) }">{{ getHexColor(item) }}</div>
             <div class="handler">
-              <div class="state" :class="{ 'active': selectedIndex.fontColor === index }">√</div>
+              <div class="state" :class="{ 'active': selectedIndex.fontColor === index }"><IconCheck /></div>
               <div class="config-btn" @click="selectedIndex.fontColor = index">选择</div>
               <div class="config-btn" @click="updateTheme({ fontColor: item }); selectedIndex.fontColor = index">应用到主题</div>
             </div>
@@ -39,7 +39,7 @@
           <div class="value-wrap" v-for="(item, index) in themeStyles.backgroundColors" :key="item">
             <div class="value" :style="{ backgroundColor: item, color: getMostReadableColor(item) }">{{ getHexColor(item) }}</div>
             <div class="handler">
-              <div class="state" :class="{ 'active': selectedIndex.backgroundColor === index }">√</div>
+              <div class="state" :class="{ 'active': selectedIndex.backgroundColor === index }"><IconCheck /></div>
               <div class="config-btn" @click="selectedIndex.backgroundColor = index">选择</div>
               <div class="config-btn" @click="updateTheme({ backgroundColor: item }); selectedIndex.backgroundColor = index">应用到主题</div>
             </div>
@@ -57,7 +57,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn" type="primary" @click="updateAllThemes()">将选中配置保存为主题</Button>
+      <Button class="btn" type="primary" @click="updateAllThemes()"><IconCheck /> 将选中配置保存为主题</Button>
     </div>
   </div>
 </template>
@@ -263,6 +263,7 @@ const getHexColor = (color: string) => {
 
     .state {
       opacity: 0;
+      font-size: 15px;
 
       &.active {
         opacity: 1;

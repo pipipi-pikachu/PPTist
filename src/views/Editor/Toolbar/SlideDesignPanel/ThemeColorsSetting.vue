@@ -28,21 +28,6 @@
       </template>
     </Draggable>
 
-    <!-- <div class="list">
-      <div class="row" v-for="(item, index) in themeColors" :key="index">
-        <div class="label" style="width: 40%;">幻灯片主题色{{ index + 1 }}：</div>
-        <Popover trigger="click" style="width: 60%;">
-          <template #content>
-            <ColorPicker
-              :modelValue="item"
-              @update:modelValue="(value: string) => themeColors[index] = value"
-            />
-          </template>
-          <ColorButton :color="item" />
-        </Popover>
-      </div>
-    </div> -->
-
     <Button class="btn" type="primary" @click="setThemeColors()">确认</Button>
   </div>
 </template>
@@ -67,7 +52,7 @@ const { theme } = storeToRefs(slidesStore)
 const themeColors = ref<string[]>([])
 
 onMounted(() => {
-  let colors = [...theme.value.themeColors]
+  const colors = [...theme.value.themeColors]
 
   while (colors.length < 6) {
     colors.push('#00000000')

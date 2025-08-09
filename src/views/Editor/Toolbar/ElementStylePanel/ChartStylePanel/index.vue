@@ -1,7 +1,7 @@
 <template>
   <div class="chart-style-panel">
     <Button class="full-width-btn" @click="chartDataEditorVisible = true">
-      <IconEdit class="btn-icon" /> 编辑图表
+      <IconEdit /> 编辑图表
     </Button>
 
     <Divider />
@@ -235,9 +235,6 @@ onUnmounted(() => {
 }
 .full-width-btn {
   width: 100%;
-}
-.btn-icon {
-  margin-right: 3px;
 }
 .label {
   font-size: 12px;
