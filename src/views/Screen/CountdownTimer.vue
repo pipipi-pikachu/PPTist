@@ -200,5 +200,9 @@ const changeTime = (e: FocusEvent | KeyboardEvent, type: 'minute' | 'second') =>
   padding: 10px;
   line-height: 1;
   cursor: pointer;
+
+  &:hover {
+    color: $themeColor;
+  }
 }
 </style>

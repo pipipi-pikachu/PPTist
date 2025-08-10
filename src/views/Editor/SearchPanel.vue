@@ -147,5 +147,9 @@ watch(type, () => {
   color: #666;
   font-size: 13px;
   cursor: pointer;
+
+  &:hover {
+    color: $themeColor;
+  }
 }
 </style>

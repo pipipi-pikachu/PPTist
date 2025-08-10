@@ -22,6 +22,7 @@
         :poster="poster"
         webkit-playsinline
         playsinline
+        crossOrigin="anonymous"
         @durationchange="handleDurationchange()"
         @timeupdate="handleTimeupdate()"
         @ended="handleEnded()"
