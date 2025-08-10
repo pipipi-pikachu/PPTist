@@ -81,6 +81,7 @@
         </template>
         <IconVideoTwo class="handler-item" v-tooltip="'插入音视频'" />
       </Popover>
+      <IconSymbol class="handler-item" :class="{ 'active': showSymbolPanel }" v-tooltip="'插入符号'" @click="toggleSymbolPanel()" />
     </div>
 
     <div class="right-handler">
@@ -137,7 +138,7 @@ import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const mainStore = useMainStore()
-const { creatingElement, creatingCustomShape, showSelectPanel, showSearchPanel, showNotesPanel } = storeToRefs(mainStore)
+const { creatingElement, creatingCustomShape, showSelectPanel, showSearchPanel, showNotesPanel, showSymbolPanel } = storeToRefs(mainStore)
 const { canUndo, canRedo } = storeToRefs(useSnapshotStore())
 
 const { redo, undo } = useHistorySnapshot()
@@ -226,6 +227,11 @@ const toggleSraechPanel = () => {
 // 打开批注面板
 const toggleNotesPanel = () => {
   mainStore.setNotesPanelState(!showNotesPanel.value)
+}
+
+// 打开符号面板
+const toggleSymbolPanel = () => {
+  mainStore.setSymbolPanelState(!showSymbolPanel.value)
 }
 </script>
 
@@ -351,6 +357,12 @@ const toggleNotesPanel = () => {
   }
   .more-icon {
     display: block;
+  }
+  .add-element-handler {
+    .handler-item {
+      width: 30px;
+      margin: 0 1px;
+    }
   }
 }
 @media screen and (width <= 1000px) {

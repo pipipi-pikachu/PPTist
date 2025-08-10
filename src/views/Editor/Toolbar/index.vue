@@ -25,32 +25,16 @@ import SlideDesignPanel from './SlideDesignPanel/index.vue'
 import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 import MultiStylePanel from './MultiStylePanel.vue'
-import SymbolPanel from './SymbolPanel.vue'
 import Tabs from '@/components/Tabs.vue'
 
-interface ElementTabs {
-  label: string
-  key: ToolbarStates
-}
-
 const mainStore = useMainStore()
-const { activeElementIdList, activeElementList, activeGroupElementId, handleElement, toolbarState } = storeToRefs(mainStore)
+const { activeElementIdList, activeElementList, activeGroupElementId, toolbarState } = storeToRefs(mainStore)
 
-const elementTabs = computed<ElementTabs[]>(() => {
-  if (handleElement.value?.type === 'text') {
-    return [
-      { label: '样式', key: ToolbarStates.EL_STYLE },
-      { label: '符号', key: ToolbarStates.SYMBOL },
-      { label: '位置', key: ToolbarStates.EL_POSITION },
-      { label: '动画', key: ToolbarStates.EL_ANIMATION },
-    ]
-  }
-  return [
-    { label: '样式', key: ToolbarStates.EL_STYLE },
-    { label: '位置', key: ToolbarStates.EL_POSITION },
-    { label: '动画', key: ToolbarStates.EL_ANIMATION },
-  ]
-})
+const elementTabs = [
+  { label: '样式', key: ToolbarStates.EL_STYLE },
+  { label: '位置', key: ToolbarStates.EL_POSITION },
+  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+]
 const slideTabs = [
   { label: '设计', key: ToolbarStates.SLIDE_DESIGN },
   { label: '切换', key: ToolbarStates.SLIDE_ANIMATION },
@@ -71,10 +55,10 @@ const currentTabs = computed(() => {
     if (!activeGroupElementId.value) return multiSelectTabs
 
     const activeGroupElement = activeElementList.value.find(item => item.id === activeGroupElementId.value)
-    if (activeGroupElement) return elementTabs.value
+    if (activeGroupElement) return elementTabs
     return multiSelectTabs
   }
-  return elementTabs.value
+  return elementTabs
 })
 
 watch(currentTabs, () => {
@@ -93,7 +77,6 @@ const currentPanelComponent = computed(() => {
     [ToolbarStates.SLIDE_ANIMATION]: SlideAnimationPanel,
     [ToolbarStates.MULTI_STYLE]: MultiStylePanel,
     [ToolbarStates.MULTI_POSITION]: MultiPositionPanel,
-    [ToolbarStates.SYMBOL]: SymbolPanel,
   }
   return panelMap[toolbarState.value] || null
 })

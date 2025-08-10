@@ -12,7 +12,7 @@
         <div class="animation-text">{{item.label}}</div>
       </div>
     </div>
-    <Button style="width: 100%;" @click="applyAllSlide()">应用到全部</Button>
+    <Button style="width: 100%;" @click="applyAllSlide()"><IconCheck /> 应用到全部</Button>
   </div>
 </template>
 
@@ -77,6 +77,7 @@ const applyAllSlide = () => {
 
   &.active {
     border-color: $themeColor;
+    background-color: rgba($color: $themeColor, $alpha: .05);
     z-index: 1;
   }
 

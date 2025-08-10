@@ -15,12 +15,17 @@
         <div class="close-btn" @mousedown.stop @click="emit('close')"><IconClose /></div>
       </div>
 
-      <div class="content">
+      <div class="content" :style="contentStyle || {}">
         <slot></slot>
       </div>
     </template>
 
-    <div v-else class="content" @mousedown="$event => startMove($event)">
+    <div
+      class="content" 
+      :style="contentStyle || {}" 
+      @mousedown="$event => startMove($event)"
+      v-else
+    >
       <slot></slot>
     </div>
 
@@ -29,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, type CSSProperties } from 'vue'
 
 const props = withDefaults(defineProps<{
   width: number
@@ -43,6 +48,7 @@ const props = withDefaults(defineProps<{
   title?: string
   moveable?: boolean
   resizeable?: boolean
+  contentStyle?: CSSProperties
 }>(), {
   minWidth: 20,
   minHeight: 20,
