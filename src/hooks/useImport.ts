@@ -538,7 +538,12 @@ export default () => {
                 else if (el.path && el.path.indexOf('NaN') === -1) {
                   const { maxX, maxY } = getSvgPathRange(el.path)
                   element.path = el.path
-                  element.viewBox = [maxX || originWidth, maxY || originHeight]
+                  if ((maxX / maxY) > (originWidth / originHeight)) {
+                    element.viewBox = [maxX, maxX * originHeight / originWidth]
+                  }
+                  else {
+                    element.viewBox = [maxY * originWidth / originHeight, maxY]
+                  }
                 }
                 if (el.shapType === 'custom') {
                   if (el.path!.indexOf('NaN') !== -1) {
@@ -551,7 +556,12 @@ export default () => {
                     element.path = el.path!
                   }
                   const { maxX, maxY } = getSvgPathRange(element.path)
-                  element.viewBox = [maxX || originWidth, maxY || originHeight]
+                  if ((maxX / maxY) > (originWidth / originHeight)) {
+                    element.viewBox = [maxX, maxX * originHeight / originWidth]
+                  }
+                  else {
+                    element.viewBox = [maxY * originWidth / originHeight, maxY]
+                  }
                 }
     
                 if (element.path) slide.elements.push(element)
