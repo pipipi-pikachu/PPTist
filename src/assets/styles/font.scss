@@ -4,6 +4,6 @@ $fonts: 'SourceHanSans', 'SourceHanSerif', 'FangZhengHeiTi', 'FangZhengKaiTi', '
   @font-face {
     font-display: swap;
     font-family: $font;
-    src: url('https://asset.pptist.cn/font/#{$font}.woff2') format('woff2');
+    src: url('../fonts/#{$font}.woff2') format('woff2');
   }
 }

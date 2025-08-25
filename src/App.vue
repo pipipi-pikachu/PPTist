@@ -37,7 +37,7 @@ if (import.meta.env.MODE !== 'development') {
 }
 
 onMounted(async () => {
-  const slides = await api.getFileData('slides')
+  const slides = await api.getMockData('slides')
   slidesStore.setSlides(slides)
 
   await deleteDiscardedDB()

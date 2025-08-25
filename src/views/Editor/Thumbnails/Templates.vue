@@ -83,7 +83,7 @@ const insertTemplates = (slides: Slide[]) => {
 
 const changeCatalog = (id: string) => {
   activeCatalog.value = id
-  api.getFileData(activeCatalog.value).then(ret => {
+  api.getMockData(activeCatalog.value).then(ret => {
     slides.value = ret.slides
 
     if (listRef.value) listRef.value.scrollTo(0, 0) 

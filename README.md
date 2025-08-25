@@ -38,8 +38,6 @@ npm run dev
 ```
 Browser access: http://127.0.0.1:5173/
 
-> Note: If you deploy this project on your own server and find that it fails to initialize, it's because the initialization data is stored in the author's private object storage and is not publicly accessible. You'll need to transfer the data to your own server, object storage service, database, or front-end local storage.
-
 
 # 📚 Features
 ### Basic Features

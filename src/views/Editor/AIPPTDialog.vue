@@ -225,7 +225,7 @@ const createPPT = async () => {
     presetImgPool(imgs)
   }
 
-  const templateData = await api.getFileData(selectedTemplate.value)
+  const templateData = await api.getMockData(selectedTemplate.value)
   const templateSlides: Slide[] = templateData.slides
   const templateTheme: SlideTheme = templateData.theme
 

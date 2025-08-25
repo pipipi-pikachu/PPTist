@@ -45,8 +45,8 @@ const emit = defineEmits<{
 
 const type = ref<TypeKey>('video')
 
-const videoSrc = ref('https://asset.pptist.cn/video/example.webm')
-const audioSrc = ref('https://asset.pptist.cn/audio/example.mp3')
+const videoSrc = ref('https://mazwai.com/videvo_files/video/free/2019-01/small_watermarked/181004_04_Dolphins-Whale_06_preview.webm')
+const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
 const tabs: TabItem[] = [
   { key: 'video', label: '视频' },
