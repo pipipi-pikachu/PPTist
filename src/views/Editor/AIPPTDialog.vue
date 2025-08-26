@@ -2,7 +2,7 @@
   <div class="aippt-dialog">
     <div class="header">
       <span class="title">AIPPT</span>
-      <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板，开始生成PPT</span>
+      <span class="subtite" v-if="step === 'template'">从下方挑选合适的模板生成PPT，或<span class="local" v-tooltip="'上传.pptist格式模板文件'" @click="uploadLocalTemplate()">使用本地模板生成</span></span>
       <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板</span>
       <span class="subtite" v-else>在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等</span>
     </div>
@@ -121,6 +121,7 @@ import useAIPPT from '@/hooks/useAIPPT'
 import type { AIPPTSlide } from '@/types/AIPPT'
 import type { Slide, SlideTheme } from '@/types/slides'
 import message from '@/utils/message'
+import { decrypt } from '@/utils/crypto'
 import { useMainStore, useSlidesStore } from '@/store'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
@@ -141,7 +142,7 @@ const outline = ref('')
 const selectedTemplate = ref('template_1')
 const loading = ref(false)
 const outlineCreating = ref(false)
-const step = ref<'setup' | 'outline' | 'template'>('setup')
+const step = ref<'setup' | 'outline' | 'template'>('template')
 const model = ref('GLM-4.5-Air')
 const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
 const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
@@ -210,7 +211,7 @@ const createOutline = async () => {
   readStream()
 }
 
-const createPPT = async () => {
+const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   loading.value = true
 
   const stream = await api.AIPPT({
@@ -225,9 +226,10 @@ const createPPT = async () => {
     presetImgPool(imgs)
   }
 
-  const templateData = await api.getMockData(selectedTemplate.value)
-  const templateSlides: Slide[] = templateData.slides
-  const templateTheme: SlideTheme = templateData.theme
+  let templateData = template
+  if (!templateData) templateData = await api.getMockData(selectedTemplate.value)
+  const templateSlides: Slide[] = templateData!.slides
+  const templateTheme: SlideTheme = templateData!.theme
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
@@ -259,6 +261,29 @@ const createPPT = async () => {
   }
   readStream()
 }
+
+const uploadLocalTemplate = () => {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.pptist'
+  input.click()
+  input.addEventListener('change', e => {
+    const file = (e.target as HTMLInputElement).files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.addEventListener('load', () => {
+        try {
+          const { slides, theme } = JSON.parse(decrypt(reader.result as string))
+          createPPT({ slides, theme })
+        }
+        catch {
+          message.error('上传的模板文件数据异常，请重新上传或使用预置模板')
+        }
+      })
+      reader.readAsText(file)
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -282,6 +307,12 @@ const createPPT = async () => {
   .subtite {
     color: #888;
     font-size: 12px;
+
+    .local {
+      color: $themeColor;
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 }
 .preview {
