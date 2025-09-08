@@ -157,6 +157,11 @@ export default () => {
         firstTextNode.textContent = '0' + text
       }
       else firstTextNode.textContent = text
+      // 删除后续所有文本节点，防止生成替换的时候还有模板的文本内容
+      let node
+      while ((node = treeWalker.nextNode())) {
+        node.parentNode?.removeChild(node)
+      }
     }
   
     if (doc.body.innerHTML.indexOf('font-size') === -1) {
