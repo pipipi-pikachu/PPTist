@@ -73,12 +73,14 @@ export default () => {
     fontSize,
     fontFamily,
     width,
+    height,
     maxLine,
   }: {
     text: string
     fontSize: number
     fontFamily: string
     width: number
+    height: number
     maxLine: number
   }) => {
     const canvas = document.createElement('canvas')
@@ -91,9 +93,15 @@ export default () => {
       context.font = `${newFontSize}px ${fontFamily}`
       const textWidth = context.measureText(text).width
       const line = Math.ceil(textWidth / width)
-  
-      if (line <= maxLine) return newFontSize
-  
+      if (height && height > 0) {
+        const lineHeightPx = newFontSize * 1.2
+        // 这里计算的时候+1或者2，因为需要考虑到最后一行的内容
+        const totalHeight = (line + 2) * lineHeightPx
+        if (totalHeight <= height) return newFontSize
+      }
+      if (line <= maxLine) {
+        return newFontSize
+      }
       const step = newFontSize <= 22 ? 1 : 2
       newFontSize = newFontSize - step
     }
@@ -134,7 +142,7 @@ export default () => {
   }): PPTTextElement | PPTShapeElement => {
     const padding = 10
     const width = el.width - padding * 2 - 2
-  
+    const height = el.height - padding * 2 - 2
     let content = el.type === 'text' ? el.content : el.text!.content
   
     const fontInfo = getFontInfo(content)
@@ -143,6 +151,7 @@ export default () => {
       fontSize: fontInfo.fontSize,
       fontFamily: fontInfo.fontFamily,
       width,
+      height,
       maxLine,
     })
   
@@ -157,6 +166,11 @@ export default () => {
         firstTextNode.textContent = '0' + text
       }
       else firstTextNode.textContent = text
+      // 删除后续所有文本节点
+      let node
+      while ((node = treeWalker.nextNode())) {
+        node.parentNode?.removeChild(node)
+      }
     }
   
     if (doc.body.innerHTML.indexOf('font-size') === -1) {
