@@ -10,9 +10,11 @@
         </div>
       </FileInput>
     </div>
-    <div class="row">
+    <div class="row" v-if="handleVideoElement.poster">
       <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><IconUndo /> 重置封面</Button>
     </div>
+
+    <Divider />
 
     <div class="row switch-row">
       <div style="width: 40%;">自动播放：</div>
@@ -37,6 +39,7 @@ import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import FileInput from '@/components/FileInput.vue'
 import Button from '@/components/Button.vue'
 import Switch from '@/components/Switch.vue'
+import Divider from '@/components/Divider.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement } = storeToRefs(useMainStore())

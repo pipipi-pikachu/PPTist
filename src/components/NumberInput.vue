@@ -142,6 +142,7 @@ const handleFocus = (e: Event) => {
     opacity: 0;
     user-select: none;
     transition: opacity .25s;
+    background-color: #fff;
 
     .handler {
       width: 100%;
@@ -162,7 +163,7 @@ const handleFocus = (e: Event) => {
     }
   }
   input {
-    width: 100%;
+    width: calc(100% - 5px);
     min-width: 0;
     padding: 0;
     height: 30px;
