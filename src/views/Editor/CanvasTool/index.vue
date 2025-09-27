@@ -75,8 +75,8 @@
         <template #content>
           <MediaInput 
             @close="mediaInputVisible = false"
-            @insertVideo="src => { createVideoElement(src); mediaInputVisible = false }"
-            @insertAudio="src => { createAudioElement(src); mediaInputVisible = false }"
+            @insertVideo="({ src, ext }) => { createVideoElement(src, ext); mediaInputVisible = false }"
+            @insertAudio="({ src, ext }) => { createAudioElement(src, ext); mediaInputVisible = false }"
           />
         </template>
         <IconVideoTwo class="handler-item" v-tooltip="'插入音视频'" />
