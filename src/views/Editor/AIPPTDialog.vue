@@ -59,8 +59,8 @@
             style="width: 190px;"
             v-model:value="model"
             :options="[
-              { label: 'GLM-4.5-Air', value: 'GLM-4.5-Air' },
               { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
+              { label: 'GLM-4.5-Air', value: 'GLM-4.5-Air' },
               { label: 'Doubao-Seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
               { label: 'Doubao-Seed-1.6', value: 'ark-doubao-seed-1.6' },
             ]"
@@ -79,6 +79,11 @@
               { label: 'AI生图', value: 'ai-create', disabled: true },
             ]"
           />
+        </div>
+      </div>
+      <div class="configs" v-if="!isEmptySlide">
+        <div class="config-item">
+          <Checkbox v-model:value="overwrite">覆盖已有幻灯片</Checkbox>
         </div>
       </div>
     </template>
@@ -118,6 +123,7 @@ import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import api from '@/services'
 import useAIPPT from '@/hooks/useAIPPT'
+import useSlideHandler from '@/hooks/useSlideHandler'
 import type { AIPPTSlide } from '@/types/AIPPT'
 import type { Slide, SlideTheme } from '@/types/slides'
 import message from '@/utils/message'
@@ -128,10 +134,13 @@ import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import OutlineEditor from '@/components/OutlineEditor.vue'
+import Checkbox from '@/components/Checkbox.vue'
 
 const mainStore = useMainStore()
 const slideStore = useSlidesStore()
 const { templates } = storeToRefs(slideStore)
+
+const { resetSlides, isEmptySlide } = useSlideHandler()
 const { AIPPT, presetImgPool, getMdContent } = useAIPPT()
 
 const language = ref('中文')
@@ -142,8 +151,9 @@ const outline = ref('')
 const selectedTemplate = ref('template_1')
 const loading = ref(false)
 const outlineCreating = ref(false)
+const overwrite = ref(true)
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const model = ref('GLM-4.5-Air')
+const model = ref('GLM-4.5-Flash')
 const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
 const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
@@ -182,6 +192,11 @@ const createOutline = async () => {
     language: language.value,
     model: model.value,
   })
+  if (stream.status === 500) {
+    message.error('AI服务异常，请更换其他模型重试')
+    loading.value = false
+    return
+  }
 
   loading.value = false
   step.value = 'outline'
@@ -213,6 +228,8 @@ const createOutline = async () => {
 
 const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   loading.value = true
+
+  if (overwrite.value) resetSlides()
 
   const stream = await api.AIPPT({
     content: outline.value,
