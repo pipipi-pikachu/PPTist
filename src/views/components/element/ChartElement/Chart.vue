@@ -58,6 +58,7 @@ const updateOption = () => {
     lineColor: props.lineColor,
     lineSmooth: props.options?.lineSmooth || false,
     stack: props.options?.stack || false,
+    barWidth: props.options?.barWidth
   })
   if (option) chart!.setOption(option, true)
 }
