@@ -27,6 +27,7 @@
             :class="{
               'active': activeElementIdList.includes(groupItem.id),
               'group-active': activeGroupElementId.includes(groupItem.id),
+              'lock': groupItem.lock,
             }"
             v-for="groupItem in item.elements" 
             :key="groupItem.id" 
@@ -44,14 +45,19 @@
             >
             <div v-else class="name">{{groupItem.name || ELEMENT_TYPE_ZH[groupItem.type]}}</div>
             <div class="icons">
-              <IconPreviewClose style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-if="hiddenElementIdList.includes(groupItem.id)" />
-              <IconPreviewOpen style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-else />
+              <IconLock class="icon" style="font-size: 14px;" @click="unlockElement(groupItem)" v-if="groupItem.lock" />
+              <div class="icon" style="width: 14px;" v-else />
+              <IconPreviewClose class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-if="hiddenElementIdList.includes(groupItem.id)" />
+              <IconPreviewOpen class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-else />
             </div>
           </div>
         </div>
         <div 
           class="item" 
-          :class="{ 'active': activeElementIdList.includes(item.id) }"
+          :class="{
+            'active': activeElementIdList.includes(item.id),
+            'lock': item.lock,
+          }"
           v-else 
           @click="selectElement(item.id)"
           @dblclick="enterEdit(item.id)"
@@ -67,8 +73,10 @@
           >
           <div v-else class="name">{{item.name || ELEMENT_TYPE_ZH[item.type]}}</div>
           <div class="icons">
-            <IconPreviewClose style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-if="hiddenElementIdList.includes(item.id)" />
-            <IconPreviewOpen style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-else />
+            <IconLock class="icon" style="font-size: 14px;" @click="unlockElement(item)" v-if="item.lock" />
+            <div class="icon" style="width: 14px;" v-else />
+            <IconPreviewClose class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-if="hiddenElementIdList.includes(item.id)" />
+            <IconPreviewOpen class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-else />
           </div>
         </div>
       </template>
@@ -85,6 +93,7 @@ import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useOrderElement from '@/hooks/useOrderElement'
 import useHideElement from '@/hooks/useHideElement'
 import useSelectElement from '@/hooks/useSelectElement'
+import useLockElement from '@/hooks/useLockElement'
 import { ElementOrderCommands } from '@/types/edit'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
@@ -98,6 +107,7 @@ const { handleElement, handleElementId, activeElementIdList, activeGroupElementI
 const { orderElement } = useOrderElement()
 const { selectElement } = useSelectElement()
 const { toggleHideElement, showAllElements, hideAllElements } = useHideElement()
+const { unlockElement } = useLockElement()
 
 interface GroupElements {
   type: 'group'
@@ -208,8 +218,12 @@ const close = () => {
   &.group-active {
     background-color: rgba($color: $themeColor, $alpha: .2);
   }
-  &:hover {
+  &.lock {
+    cursor: default;
+  }
+  &:not(.lock):hover {
     background-color: rgba($color: $themeColor, $alpha: .25);
+    transition: background-color $transitionDelay;
   }
 
   .name {
@@ -219,11 +233,19 @@ const close = () => {
     @include ellipsis-oneline();
   }
   .icons {
-    width: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: 5px;
+    justify-content: flex-end;
+    margin-left: 10px;
+
+    .icon {
+      margin-left: 6px;
+      cursor: pointer;
+
+      &:hover {
+        color: $themeColor;
+      }
+    }
   }
 }
 .group-els {

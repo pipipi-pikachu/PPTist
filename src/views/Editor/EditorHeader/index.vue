@@ -221,7 +221,7 @@ const openAIPPTDialog = () => {
 
   .icon {
     font-size: 18px;
-    margin-right: 12px;
+    margin-right: 10px;
   }
 }
 .statement {
