@@ -138,10 +138,13 @@ const selectGroupEl = (item: GroupElements, id: string) => {
   if (handleElementId.value === id) return
   if (hiddenElementIdList.value.includes(id)) return
 
-  const idList = item.elements.map(el => el.id)
-  mainStore.setActiveElementIdList(idList)
-  mainStore.setHandleElementId(id)
-  nextTick(() => mainStore.setActiveGroupElementId(id))
+  const idList = item.elements.filter(item => !item.lock).map(el => el.id)
+
+  if (idList.length) {
+    mainStore.setActiveElementIdList(idList)
+    mainStore.setHandleElementId(id)
+    nextTick(() => mainStore.setActiveGroupElementId(id))
+  }
 }
 
 const editingElId = ref('')
