@@ -1,0 +1,47 @@
+.directive-loading-overlay {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 99;
+
+  &::before {
+    content: '';
+    width: 24px;
+    height: 24px;
+    border: 2px solid $themeColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: directive-loading .8s linear infinite;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
+    z-index: 1;
+  }
+  &.has-text::before {
+    margin-top: -30px;
+  }
+
+  &::after {
+    content: var(--directive-loading-text, '');
+    position: absolute;
+    inset: 0;
+    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    background-color: rgba($color: #fff, $alpha: .75);
+    color: $themeColor;
+  }
+}
+
+@keyframes directive-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
