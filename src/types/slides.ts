@@ -544,7 +544,7 @@ export interface TableTheme {
  * 
  * theme?: 主题
  * 
- * colWidths: 列宽数组，如[30, 50, 20]表示三列宽度分别为30%, 50%, 20%
+ * colWidths: 列宽数组，如[0.3, 0.5, 0.2]表示三列宽度分别占总宽度的30%, 50%, 20%
  * 
  * cellMinHeight: 单元格最小高度
  * 

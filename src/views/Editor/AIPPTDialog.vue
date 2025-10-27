@@ -60,7 +60,6 @@
             v-model:value="model"
             :options="[
               { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
-              { label: 'Doubao-Seed-1.6-lite', value: 'ark-doubao-seed-1.6-lite' },
               { label: 'Doubao-Seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
             ]"
           />
@@ -377,6 +376,7 @@ const uploadLocalTemplate = () => {
   
       img {
         width: 100%;
+        min-height: 180px;
       }
     }
   }

@@ -78,6 +78,7 @@ export default {
       body: JSON.stringify({
         content,
         command,
+        model: 'ark-doubao-seed-1.6-flash',
         stream: true,
       }),
     })
