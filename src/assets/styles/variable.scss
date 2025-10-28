@@ -1,5 +1,5 @@
 $themeColor: #d14424;
-$themeHoverColor: #de6949;
+$themeHoverColor: lighten($themeColor, 8%);
 $textColor: #41464b;
 $borderColor: #e5e7eb;
 $lightGray: #f9f9f9;
