@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { nanoid } from 'nanoid'
 import type { ImageClipDataRange, PPTElement, PPTImageElement, PPTShapeElement, PPTTextElement, Slide, TextType } from '@/types/slides'
 import type { AIPPTSlide } from '@/types/AIPPT'
-import { useSlidesStore } from '@/store'
+import { useSlidesStore, useMainStore } from '@/store'
 import useAddSlidesOrElements from './useAddSlidesOrElements'
 import useSlideHandler from './useSlideHandler'
 
@@ -15,6 +15,7 @@ interface ImgPoolItem {
 
 export default () => {
   const slidesStore = useSlidesStore()
+  const mainStore = useMainStore()
   const { addSlidesFromData } = useAddSlidesOrElements()
   const { isEmptySlide } = useSlideHandler()
 
@@ -248,7 +249,56 @@ export default () => {
     imgPool.value = imgs
   }
 
-  const AIPPT = (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: ImgPoolItem[]) => {
+  /**
+   * 渐进式添加幻灯片，模拟流式生成效果
+   * @param slides
+   * @param delayPerElement
+   */
+  const progressiveAddSlides = async (slides: Slide[], delayPerElement = 200) => {
+    for (let i = 0; i < slides.length; i++) {
+      const slide = slides[i]
+      const elements = slide.elements
+      // 先添加一个空的幻灯片（无元素）
+      const emptySlide: Slide = {
+        ...slide,
+        elements: []
+      }
+      // 判断是否应该覆盖还是追加
+      const shouldSetSlides = i === 0 && isEmptySlide.value
+      if (shouldSetSlides) {
+        slidesStore.setSlides([emptySlide])
+      }
+      else {
+        // 临时切换到最后一个幻灯片，确保在正确位置添加
+        const lastSlideIndex = slidesStore.slides.length - 1
+        slidesStore.updateSlideIndex(lastSlideIndex)
+        // 现在在最后添加空幻灯片
+        addSlidesFromData([emptySlide])
+      }
+
+      // 确定目标幻灯片索引（总是在最后一张）
+      const targetSlideIndex = slidesStore.slides.length - 1
+
+      // 逐个添加元素
+      for (const element of elements) {
+        // 直接操作目标幻灯片，不依赖当前选中的幻灯片
+        const targetSlide = slidesStore.slides[targetSlideIndex]
+        targetSlide.elements.push(element)
+        // 选中当前添加的元素，产生选中效果
+        mainStore.setActiveElementIdList([element.id])
+        // 等待一段时间，让用户看到选中效果
+        await new Promise(resolve => setTimeout(resolve, delayPerElement))
+      }
+      // 清除选中状态
+      mainStore.setActiveElementIdList([])
+      // 幻灯片之间稍微长一点的延迟
+      if (i < slides.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, delayPerElement * 2))
+      }
+    }
+  }
+
+  const AIPPT = async (templateSlides: Slide[], _AISlides: AIPPTSlide[], imgs?: ImgPoolItem[]) => {
     slidesStore.updateSlideIndex(slidesStore.slides.length - 1)
 
     if (imgs) imgPool.value = imgs
@@ -533,8 +583,7 @@ export default () => {
         })
       }
     }
-    if (isEmptySlide.value) slidesStore.setSlides(slides)
-    else addSlidesFromData(slides)
+    await progressiveAddSlides(slides)
   }
 
   return {

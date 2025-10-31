@@ -16,6 +16,7 @@
           <IconCheckOne theme="filled" size="18" fill="#52c41a" v-if="type === 'success'" />
           <IconCloseOne theme="filled" size="18" fill="#ff4d4f" v-if="type === 'error'" />
           <IconInfo theme="filled" size="18" fill="#1677ff" v-if="type === 'info'" />
+          <IconRefresh theme="filled" size="18" fill="#1677ff" v-if="type === 'loading'" class="loading-icon" />
         </div>
         <div class="content">
           <div class="title" v-if="title">{{ title }}</div>
@@ -44,6 +45,7 @@ const {
   IconCloseOne,
   IconInfo,
   IconCloseSmall,
+  IconRefresh,
 } = icons
 
 const props = withDefaults(defineProps<{
@@ -178,5 +180,18 @@ defineExpose({
     opacity: 0;
     margin-top: -45px;
   }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-icon {
+  animation: spin 1s linear infinite;
 }
 </style>
