@@ -111,8 +111,6 @@
         <Button class="btn" @click="step = 'outline'">返回大纲</Button>
       </div>
     </div>
-
-    <FullscreenSpin :loading="loading" tip="AI生成中，请耐心等待 ..." />
   </div>
 </template>
 
@@ -147,7 +145,6 @@ const img = ref('')
 const keyword = ref('')
 const outline = ref('')
 const selectedTemplate = ref('template_1')
-const loading = ref(false)
 const outlineCreating = ref(false)
 const overwrite = ref(true)
 const step = ref<'setup' | 'outline' | 'template'>('setup')
@@ -182,7 +179,6 @@ const setKeyword = (value: string) => {
 const createOutline = async () => {
   if (!keyword.value) return message.error('请先输入PPT主题')
 
-  loading.value = true
   outlineCreating.value = true
   
   const stream = await api.AIPPT_Outline({
@@ -192,11 +188,10 @@ const createOutline = async () => {
   })
   if (stream.status === 500) {
     message.error('AI服务异常，请更换其他模型重试')
-    loading.value = false
+    outlineCreating.value = false
     return
   }
 
-  loading.value = false
   step.value = 'outline'
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
@@ -225,7 +220,8 @@ const createOutline = async () => {
 }
 
 const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
-  loading.value = true
+  mainStore.setGlobalLoading(true) // Show global loading mask
+  mainStore.setAIPPTDialogState(false) // Close dialog immediately when createPPT is called
 
   if (overwrite.value) resetSlides()
 
@@ -252,8 +248,7 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   const readStream = () => {
     reader.read().then(({ done, value }) => {
       if (done) {
-        loading.value = false
-        mainStore.setAIPPTDialogState(false)
+        mainStore.setGlobalLoading(false) // Hide global loading mask
         slidesStore.setTheme(templateTheme)
         return
       }
