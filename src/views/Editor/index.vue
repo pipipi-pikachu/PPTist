@@ -40,6 +40,12 @@
   >
     <AIPPTDialog />
   </Modal>
+
+  <FullscreenSpin 
+    :loading="showGlobalLoading" 
+    tip="AI生成中，请耐心等待 ..." 
+    mask
+  />
 </template>
 
 <script lang="ts" setup>
@@ -63,9 +69,10 @@ import SymbolPanel from './SymbolPanel.vue'
 import MarkupPanel from './MarkupPanel.vue'
 import AIPPTDialog from './AIPPTDialog.vue'
 import Modal from '@/components/Modal.vue'
+import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const mainStore = useMainStore()
-const { dialogForExport, showSelectPanel, showSearchPanel, showNotesPanel, showSymbolPanel, showMarkupPanel, showAIPPTDialog } = storeToRefs(mainStore)
+const { dialogForExport, showSelectPanel, showSearchPanel, showNotesPanel, showSymbolPanel, showMarkupPanel, showAIPPTDialog, showGlobalLoading } = storeToRefs(mainStore)
 
 const closeExportDialog = () => mainStore.setDialogForExport('')
 const closeAIPPTDialog = () => mainStore.setAIPPTDialogState(false)
