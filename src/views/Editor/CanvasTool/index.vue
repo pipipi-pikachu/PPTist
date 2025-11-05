@@ -25,8 +25,8 @@
         
         <Popover trigger="click" v-model:value="textTypeSelectVisible" style="height: 100%;" :offset="10">
           <template #content>
-            <PopoverMenuItem center @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone /> 横向文本框</PopoverMenuItem>
-            <PopoverMenuItem center @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown /> 竖向文本框</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawText(); textTypeSelectVisible = false }"><IconTextRotationNone class="icon" /> 横向文本框</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawText(true); textTypeSelectVisible = false }"><IconTextRotationDown class="icon" /> 竖向文本框</PopoverMenuItem>
           </template>
           <IconDown class="arrow" />
         </Popover>
@@ -256,6 +256,10 @@ const toggleSymbolPanel = () => {
 .popover-menu-item {
   display: flex;
   padding: 8px 10px;
+
+  &.center {
+    justify-content: center;
+  }
 
   .icon {
     font-size: 18px;
