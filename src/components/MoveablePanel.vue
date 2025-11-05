@@ -7,6 +7,7 @@
       height: h ? h + 'px' : 'auto',
       left: x + 'px',
       top: y + 'px',
+      zIndex: zIndex,
     }"
   >
     <template v-if="title">
@@ -15,7 +16,7 @@
         <div class="close-btn" @mousedown.stop @click="emit('close')"><IconClose /></div>
       </div>
 
-      <div class="content" :style="contentStyle || {}">
+      <div class="content" :style="contentStyle || {}" @mousedown="$event => bringToFrontPanel($event)">
         <slot></slot>
       </div>
     </template>
@@ -34,7 +35,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, useTemplateRef, type CSSProperties } from 'vue'
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, type CSSProperties } from 'vue'
+
+const Z_INDEX_KEY = '__moveable_panel_z_index__'
+const Z_INDEX_BASE = 900
+const Z_INDEX_MAX = 999
+const ACTIVE_PANELS_KEY = '__moveable_panel_active_count__'
 
 const props = withDefaults(defineProps<{
   width: number
@@ -70,12 +76,57 @@ const y = ref(0)
 const w = ref(0)
 const h = ref(0)
 const moveablePanelRef = useTemplateRef<HTMLElement>('moveablePanelRef')
+const zIndex = ref(900)
+
 const realHeight = computed(() => {
   if (!h.value) {
     return moveablePanelRef.value?.clientHeight || 0
   }
   return h.value
 })
+
+const initGlobalZIndex = () => {
+  if (!(window as any)[Z_INDEX_KEY]) (window as any)[Z_INDEX_KEY] = Z_INDEX_BASE
+  if (!(window as any)[ACTIVE_PANELS_KEY]) (window as any)[ACTIVE_PANELS_KEY] = 0
+
+  ;(window as any)[ACTIVE_PANELS_KEY]++
+
+  const current = (window as any)[Z_INDEX_KEY]
+  if (current >= Z_INDEX_MAX) (window as any)[Z_INDEX_KEY] = Z_INDEX_BASE
+  else (window as any)[Z_INDEX_KEY] = current + 1
+
+  return (window as any)[Z_INDEX_KEY]
+}
+
+const bringToFront = () => {
+  if (!(window as any)[Z_INDEX_KEY]) (window as any)[Z_INDEX_KEY] = Z_INDEX_BASE
+
+  const current = (window as any)[Z_INDEX_KEY]
+
+  if (zIndex.value === current) return current
+
+  if (current >= Z_INDEX_MAX) (window as any)[Z_INDEX_KEY] = Z_INDEX_BASE + 1
+  else (window as any)[Z_INDEX_KEY] = current + 1
+
+  return (window as any)[Z_INDEX_KEY]
+}
+
+const onPanelClose = () => {
+  if (!(window as any)[Z_INDEX_KEY] || !(window as any)[ACTIVE_PANELS_KEY]) return
+
+  const current = (window as any)[Z_INDEX_KEY]
+
+  ;(window as any)[ACTIVE_PANELS_KEY]--
+
+  if (zIndex.value === current && current > Z_INDEX_BASE) {
+    (window as any)[Z_INDEX_KEY] = current - 1
+  }
+
+  if ((window as any)[ACTIVE_PANELS_KEY] <= 0) {
+    (window as any)[Z_INDEX_KEY] = Z_INDEX_BASE
+    ;(window as any)[ACTIVE_PANELS_KEY] = 0
+  }
+}
 
 onMounted(() => {
   if (props.left >= 0) x.value = props.left
@@ -86,10 +137,25 @@ onMounted(() => {
 
   w.value = props.width
   h.value = props.height
+
+  zIndex.value = initGlobalZIndex()
 })
+
+onUnmounted(() => {
+  onPanelClose()
+})
+
+const bringToFrontPanel = (e: MouseEvent) => {
+  if (!props.moveable) return
+
+  e.stopPropagation()
+  zIndex.value = bringToFront()
+}
 
 const startMove = (e: MouseEvent) => {
   if (!props.moveable) return
+
+  zIndex.value = bringToFront()
 
   let isMouseDown = true
 
@@ -173,7 +239,6 @@ const startResize = (e: MouseEvent) => {
   border-radius: $borderRadius;
   display: flex;
   flex-direction: column;
-  z-index: 999;
 }
 .resizer {
   width: 10px;
