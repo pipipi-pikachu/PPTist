@@ -248,10 +248,18 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
 
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
-  
+
+  // 添加缓冲区来处理包粘连
+  let buffer = ''
   const readStream = () => {
     reader.read().then(({ done, value }) => {
       if (done) {
+        // 处理最后可能剩余的数据
+        if (buffer.trim()) {
+          processChunk(buffer)
+          buffer = ''
+        }
+
         loading.value = false
         mainStore.setAIPPTDialogState(false)
         slidesStore.setTheme(templateTheme)
@@ -259,20 +267,43 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
       }
   
       const chunk = decoder.decode(value, { stream: true })
-      try {
-        const text = chunk.replace('```json', '').replace('```', '').trim()
-        if (text) {
-          const slide: AIPPTSlide = JSON.parse(chunk)
-          AIPPT(templateSlides, [slide])
-        }
-      }
-      catch (err) {
-        // eslint-disable-next-line
-        console.error(err)
-      }
+      buffer += chunk
+
+      // 按行分割处理完整的数据包
+      const lines = buffer.split('\n')
+
+      // 保留最后一行（可能是不完整的）
+      buffer = lines.pop() || ''
+
+      // 处理完整的行
+      lines.forEach(line => {
+        processChunk(line)
+      })
 
       readStream()
     })
+  }
+  const processChunk = (chunk: string) => {
+    try {
+      if (!chunk.trim()) return
+
+      const text = chunk.replace(/^data:/, '').replace(/```json|```/g, '').trim()
+
+      if (!text) return
+
+      try {
+        const slide: AIPPTSlide = JSON.parse(text)
+        AIPPT(templateSlides, [slide])
+      }
+      catch (err) {
+        // eslint-disable-next-line
+        console.warn('解析JSON失败，跳过该行:', text)
+      }
+    }
+    catch (err) {
+      // eslint-disable-next-line
+      console.error('处理数据块失败:', err)
+    }
   }
   readStream()
 }
