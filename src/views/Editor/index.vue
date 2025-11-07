@@ -21,6 +21,7 @@
   <NotesPanel v-if="showNotesPanel" />
   <MarkupPanel v-if="showMarkupPanel" />
   <SymbolPanel v-if="showSymbolPanel" />
+  <ImageLibPanel v-if="showImageLibPanel" />
 
   <Modal
     :visible="!!dialogForExport" 
@@ -61,11 +62,21 @@ import SearchPanel from './SearchPanel.vue'
 import NotesPanel from './NotesPanel.vue'
 import SymbolPanel from './SymbolPanel.vue'
 import MarkupPanel from './MarkupPanel.vue'
+import ImageLibPanel from './ImageLibPanel.vue'
 import AIPPTDialog from './AIPPTDialog.vue'
 import Modal from '@/components/Modal.vue'
 
 const mainStore = useMainStore()
-const { dialogForExport, showSelectPanel, showSearchPanel, showNotesPanel, showSymbolPanel, showMarkupPanel, showAIPPTDialog } = storeToRefs(mainStore)
+const {
+  dialogForExport,
+  showSelectPanel,
+  showSearchPanel,
+  showNotesPanel,
+  showSymbolPanel,
+  showMarkupPanel,
+  showImageLibPanel,
+  showAIPPTDialog,
+} = storeToRefs(mainStore)
 
 const closeExportDialog = () => mainStore.setDialogForExport('')
 const closeAIPPTDialog = () => mainStore.setAIPPTDialogState(false)

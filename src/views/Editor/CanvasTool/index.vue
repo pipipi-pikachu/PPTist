@@ -41,14 +41,27 @@
         
         <Popover trigger="click" v-model:value="shapeMenuVisible" style="height: 100%;" :offset="10">
           <template #content>
-            <PopoverMenuItem center @click="() => { drawCustomShape(); shapeMenuVisible = false }">自由绘制</PopoverMenuItem>
+            <PopoverMenuItem center @click="shapeMenuVisible = false; shapePoolVisible = true"><IconGraphicDesign class="icon" />预设形状</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawCustomShape(); shapeMenuVisible = false }"><IconWritingFluently class="icon" />自由绘制</PopoverMenuItem>
           </template>
           <IconDown class="arrow" />
         </Popover>
       </div>
-      <FileInput @change="files => insertImageElement(files)">
-        <IconPicture class="handler-item" v-tooltip="'插入图片'" />
-      </FileInput>
+      <div class="handler-item group-btn" v-tooltip="'插入图片'">
+        <FileInput style="height: 100%;" @change="files => insertImageElement(files)">
+          <IconPicture class="icon" />
+        </FileInput>
+        
+        <Popover trigger="click" v-model:value="imageMenuVisible" style="height: 100%;" :offset="10">
+          <template #content>
+            <FileInput @change="files => { insertImageElement(files); imageMenuVisible = false }">
+              <PopoverMenuItem center><IconUpload class="icon" /> 上传图片</PopoverMenuItem>
+            </FileInput>
+            <PopoverMenuItem center @click="openImageLibPanel(); imageMenuVisible = false"><IconPicture class="icon" /> 在线图库</PopoverMenuItem>
+          </template>
+          <IconDown class="arrow" />
+        </Popover>
+      </div>
       <Popover trigger="click" v-model:value="linePoolVisible" :offset="10">
         <template #content>
           <LinePool @select="line => drawLine(line)" />
@@ -181,6 +194,7 @@ const mediaInputVisible = ref(false)
 const latexEditorVisible = ref(false)
 const textTypeSelectVisible = ref(false)
 const shapeMenuVisible = ref(false)
+const imageMenuVisible = ref(false)
 const moreVisible = ref(false)
 
 // 绘制文字范围
@@ -232,6 +246,11 @@ const toggleNotesPanel = () => {
 // 打开符号面板
 const toggleSymbolPanel = () => {
   mainStore.setSymbolPanelState(!showSymbolPanel.value)
+}
+
+// 打开图库面板
+const openImageLibPanel = () => {
+  mainStore.setImageLibPanelState(true)
 }
 </script>
 

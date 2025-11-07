@@ -266,6 +266,7 @@ const startResize = (e: MouseEvent) => {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #f0f0f0;
+  user-select: none;
   cursor: move;
 }
 .title {
