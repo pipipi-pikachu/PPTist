@@ -23,13 +23,13 @@
         :type="point.direction"
         :rotate="elementInfo.rotate"
         :style="point.style"
-        @touchstart.stop="$event => scaleElement($event, elementInfo, point.direction)"
+        @touchstart.stop="($event: TouchEvent) => scaleElement($event, elementInfo, point.direction)"
       />
       <RotateHandler
         class="operate-rotate-handler" 
         :style="{ left: scaleWidth / 2 + 'px' }"
         v-if="!cannotRotate"
-        @touchstart.stop="$event => rotateElement($event, elementInfo as CanRotatePPTElement)"
+        @touchstart.stop="($event: TouchEvent) => rotateElement($event, elementInfo as CanRotatePPTElement)"
       />
     </template>
   </div>
@@ -51,8 +51,8 @@ const props = defineProps<{
   elementInfo: Exclude<PPTElement, PPTLineElement>
   isSelected: boolean
   canvasScale: number
-  scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
-  rotateElement: (e: MouseEvent, element: CanRotatePPTElement) => void
+  scaleElement: (e: TouchEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
+  rotateElement: (e: TouchEvent, element: CanRotatePPTElement) => void
 }>()
 
 const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)

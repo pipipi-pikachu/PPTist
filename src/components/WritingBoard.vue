@@ -343,7 +343,7 @@ const handleMove = (x: number, y: number) => {
     draw(x, y, props.markSize)
     lastPos = { x, y }
   }
-  else if (props.model ==='eraser') {
+  else if (props.model === 'eraser') {
     erase(x, y)
     lastPos = { x, y }
   }
