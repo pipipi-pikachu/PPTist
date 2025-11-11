@@ -91,7 +91,7 @@ import EditableInput from './EditableInput.vue'
 const props = withDefaults(defineProps<{
   modelValue?: string
 }>(), {
-  modelValue: '#e86b99',
+  modelValue: '#ffffff',
 })
 
 const emit = defineEmits<{

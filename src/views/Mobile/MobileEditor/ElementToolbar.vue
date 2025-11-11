@@ -12,56 +12,54 @@
 
     <div class="content">
       <div class="style" v-if="activeTab === 'style'">
-        <ButtonGroup class="row">
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.bold"
-            @click="emitRichTextCommand('bold')"
-          ><IconTextBold /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.em"
-            @click="emitRichTextCommand('em')"
-          ><IconTextItalic /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.underline"
-            @click="emitRichTextCommand('underline')"
-          ><IconTextUnderline /></CheckboxButton>
-          <CheckboxButton 
-            style="flex: 1;"
-            :checked="richTextAttrs.strikethrough"
-            @click="emitRichTextCommand('strikethrough')"
-          ><IconStrikethrough /></CheckboxButton>
-        </ButtonGroup>
+        <template v-if="textPropsEnable">
+          <ButtonGroup class="row">
+            <CheckboxButton 
+              style="flex: 1;"
+              :checked="richTextAttrs.bold"
+              @click="emitRichTextCommand('bold')"
+            ><IconTextBold /></CheckboxButton>
+            <CheckboxButton 
+              style="flex: 1;"
+              :checked="richTextAttrs.em"
+              @click="emitRichTextCommand('em')"
+            ><IconTextItalic /></CheckboxButton>
+            <CheckboxButton 
+              style="flex: 1;"
+              :checked="richTextAttrs.underline"
+              @click="emitRichTextCommand('underline')"
+            ><IconTextUnderline /></CheckboxButton>
+            <CheckboxButton 
+              style="flex: 1;"
+              :checked="richTextAttrs.strikethrough"
+              @click="emitRichTextCommand('strikethrough')"
+            ><IconStrikethrough /></CheckboxButton>
+          </ButtonGroup>
 
-        <ButtonGroup class="row">
-          <Button 
-            style="flex: 1;"
-            @click="emitRichTextCommand('fontsize-add')"
-          ><IconFontSize />+</Button>
-          <Button 
-            style="flex: 1;"
-            @click="emitRichTextCommand('fontsize-reduce')"
-          ><IconFontSize />-</Button>
-        </ButtonGroup>
-        
-        <Divider :margin="20" />
+          <ButtonGroup class="row">
+            <Button 
+              style="flex: 1;"
+              @click="emitRichTextCommand('fontsize-add')"
+            ><IconFontSize />+</Button>
+            <Button 
+              style="flex: 1;"
+              @click="emitRichTextCommand('fontsize-reduce')"
+            ><IconFontSize />-</Button>
+          </ButtonGroup>
 
-        <RadioGroup 
-          class="row" 
-          button-style="solid" 
-          :value="richTextAttrs.align"
-          @update:value="value => emitRichTextCommand('align', value)"
-        >
-          <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-          <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-          <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
-        </RadioGroup>
-        
-        <Divider :margin="20" />
+          <RadioGroup 
+            class="row" 
+            button-style="solid" 
+            :value="richTextAttrs.align"
+            @update:value="value => emitRichTextCommand('align', value)"
+          >
+            <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
+            <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
+            <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+          </RadioGroup>
+        </template>
 
-        <div class="row-block">
+        <div class="row-block" v-if="textColorPropsEnable">
           <div class="label">文字颜色：</div>
           <div class="colors">
             <div class="color" 
@@ -71,9 +69,17 @@
             >
               <div class="color-block" :style="{ backgroundColor: color }"></div>
             </div>
+            <div class="color custom">
+              <Popover trigger="click">
+                <template #content>
+                  <ColorPicker @update:modelValue="value => updateFontColor(value)" />
+                </template>
+                <div class="color-block"></div>
+              </Popover>
+            </div>
           </div>
         </div>
-        <div class="row-block">
+        <div class="row-block" v-if="fillPropsEnable">
           <div class="label">填充色：</div>
           <div class="colors">
             <div class="color" 
@@ -83,8 +89,18 @@
             >
               <div class="color-block" :style="{ backgroundColor: color }"></div>
             </div>
+            <div class="color custom">
+              <Popover trigger="click">
+                <template #content>
+                  <ColorPicker @update:modelValue="value => updateFill(value)" />
+                </template>
+                <div class="color-block"></div>
+              </Popover>
+            </div>
           </div>
         </div>
+
+        <div class="tip" v-if="!textPropsEnable && !textColorPropsEnable && !fillPropsEnable">暂无可用属性</div>
       </div>
 
       <div class="common" v-if="activeTab === 'common'">
@@ -120,7 +136,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement, TableCell } from '@/types/slides'
@@ -139,13 +155,15 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
+import ColorPicker from '@/components/ColorPicker/index.vue'
+import Popover from '@/components/Popover.vue'
 
 interface TabItem {
   key: 'style' | 'common'
   label: string
 }
 
-const colors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57']
+const colors = ['#000000', '#ffffff', '#eeece1', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#c21401', '#ff1e02', '#ffc12a', '#ffff3a', '#90cf5b', '#00af57']
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -163,6 +181,41 @@ const tabs: TabItem[] = [
   { key: 'common', label: '布局' },
 ]
 const activeTab = ref('common')
+
+const textPropsEnable = computed(() => {
+  if (!handleElement.value) return false
+  if (handleElement.value.type === 'text') return true
+  if (handleElement.value.type === 'shape' && handleElement.value.text?.content) return true
+
+  return false
+})
+
+const textColorPropsEnable = computed(() => {
+  if (!handleElement.value) return false
+  if (
+    handleElement.value.type === 'text' ||
+    handleElement.value.type === 'table' ||
+    handleElement.value.type === 'latex'
+  ) return true
+
+  if (handleElement.value.type === 'shape' && handleElement.value.text?.content) return true
+
+  return false
+})
+
+const fillPropsEnable = computed(() => {
+  if (!handleElement.value) return false
+  if (
+    handleElement.value.type === 'text' ||
+    handleElement.value.type === 'shape' ||
+    handleElement.value.type === 'chart' ||
+    handleElement.value.type === 'table' ||
+    handleElement.value.type === 'line' ||
+    handleElement.value.type === 'audio'
+  ) return true
+
+  return false
+})
 
 const { orderElement } = useOrderElement()
 const { alignElementToCanvas } = useAlignElementToCanvas()
@@ -217,7 +270,9 @@ const updateFill = (color: string) => {
     updateElement(handleElementId.value, { data })
   }
 
-  if (handleElement.value.type === 'audio') updateElement(handleElementId.value, { color })
+  if (handleElement.value.type === 'audio' || handleElement.value.type === 'line') {
+    updateElement(handleElementId.value, { color })
+  }
 }
 </script>
 
@@ -287,5 +342,18 @@ const updateFill = (color: string) => {
     height: 30px;
     border-radius: 50%;
   }
+
+  &.custom .color-block {
+    background: conic-gradient(from 0deg, #ff1e02, #ffc12a, #90cf5b, #00af57, #47acc5, #4e81bb, #8165a0, #e2534d, #ff1e02);
+  }
+}
+
+.tip {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: #999;
 }
 </style>
