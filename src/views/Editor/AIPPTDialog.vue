@@ -225,7 +225,9 @@ const createOutline = async () => {
 }
 
 const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
+  mainStore.setAIPPTDialogState(false)
   loading.value = true
+  const loadingMessage = message.loading('PPT生成中，请耐心等待 ...')
 
   if (overwrite.value) resetSlides()
 
@@ -249,30 +251,30 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   const reader: ReadableStreamDefaultReader = stream.body.getReader()
   const decoder = new TextDecoder('utf-8')
   
-  const readStream = () => {
-    reader.read().then(({ done, value }) => {
-      if (done) {
-        loading.value = false
-        mainStore.setAIPPTDialogState(false)
-        slidesStore.setTheme(templateTheme)
-        return
-      }
-  
-      const chunk = decoder.decode(value, { stream: true })
-      try {
-        const text = chunk.replace('```json', '').replace('```', '').trim()
-        if (text) {
-          const slide: AIPPTSlide = JSON.parse(chunk)
-          AIPPT(templateSlides, [slide])
-        }
-      }
-      catch (err) {
-        // eslint-disable-next-line
-        console.error(err)
-      }
+  const readStream = async () => {
+    const { done, value } = await reader.read()
+    if (done) {
+      loading.value = false
+      loadingMessage.close()
+      message.success('PPT生成完成！')
+      slidesStore.setTheme(templateTheme)
+      return
+    }
 
-      readStream()
-    })
+    const chunk = decoder.decode(value, { stream: true })
+    try {
+      const text = chunk.replace('```json', '').replace('```', '').trim()
+      if (text) {
+        const slide: AIPPTSlide = JSON.parse(chunk)
+        await AIPPT(templateSlides, [slide])
+      }
+    }
+    catch (err) {
+      // eslint-disable-next-line
+      console.error(err)
+      loadingMessage.close()
+    }
+    readStream()
   }
   readStream()
 }
