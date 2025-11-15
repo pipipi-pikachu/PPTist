@@ -139,6 +139,7 @@ import {
   Symbol,
   WritingFluently,
   Upload,
+  ScreenshotOne,
 } from '@icon-park/vue-next'
 
 export interface Icons {
@@ -283,6 +284,7 @@ export const icons: Icons = {
   IconSymbol: Symbol,
   IconWritingFluently: WritingFluently,
   IconUpload: Upload,
+  IconScreenshotOne: ScreenshotOne,
 }
 
 export default {
