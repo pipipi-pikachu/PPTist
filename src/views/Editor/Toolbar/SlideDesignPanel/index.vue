@@ -254,6 +254,10 @@
     </div>
 
     <div class="row">
+      <Button style="flex: 1;" @click="applyFontToAllSlides(theme.fontName)"><IconCheck /> 全局统一字体</Button>
+    </div>
+
+    <div class="row">
       <Button style="flex: 1;" @click="themeStylesExtractVisible = true"><IconPlatte /> 从幻灯片提取主题</Button>
     </div>
 
@@ -362,6 +366,7 @@ const { addHistorySnapshot } = useHistorySnapshot()
 const {
   applyPresetTheme,
   applyThemeToAllSlides,
+  applyFontToAllSlides,
 } = useSlideTheme()
 
 watch(slideIndex, () => {

@@ -384,9 +384,41 @@ export default () => {
     addHistorySnapshot()
   }
 
+  // 统一字体
+  const applyFontToAllSlides = (fontname: string) => {
+    const newSlides: Slide[] = JSON.parse(JSON.stringify(slides.value))
+
+    for (const slide of newSlides) {
+      for (const el of slide.elements) {
+        if (el.type === 'shape') {
+          if (el.text) {
+            el.text.defaultFontName = fontname
+            if (el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+          }
+        }
+        if (el.type === 'text') {
+          el.defaultFontName = fontname
+          if (el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+        }
+        if (el.type === 'table') {
+          for (const rowCells of el.data) {
+            for (const cell of rowCells) {
+              if (cell.style) {
+                cell.style.fontname = fontname
+              }
+            }
+          }
+        }
+      }
+    }
+    slidesStore.setSlides(newSlides)
+    addHistorySnapshot()
+  }
+
   return {
     getSlidesThemeStyles,
     applyPresetTheme,
     applyThemeToAllSlides,
+    applyFontToAllSlides,
   }
 }
