@@ -57,6 +57,7 @@
         :value="richTextAttrs.fontname"
         search
         searchLabel="搜索字体"
+        autofocus
         @update:value="value => updateFontStyle('fontname', value as string)"
         :options="FONTS"
       >
@@ -69,6 +70,7 @@
         :value="richTextAttrs.fontsize"
         search
         searchLabel="搜索字号"
+        autofocus
         @update:value="value => updateFontStyle('fontsize', value as string)"
         :options="fontSizeOptions.map(item => ({
           label: item, value: item

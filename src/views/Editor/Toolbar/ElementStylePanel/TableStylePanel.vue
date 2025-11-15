@@ -6,6 +6,7 @@
         :value="textAttrs.fontname"
         search
         searchLabel="搜索字体"
+        autofocus
         @update:value="value => updateTextAttrs({ fontname: value as string })"
         :options="FONTS"
       >
@@ -18,6 +19,7 @@
         :value="textAttrs.fontsize"
         search
         searchLabel="搜索字号"
+        autofocus
         @update:value="value => updateTextAttrs({ fontsize: value as string })"
         :options="fontSizeOptions.map(item => ({
           label: item, value: item

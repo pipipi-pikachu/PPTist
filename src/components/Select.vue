@@ -25,7 +25,7 @@
         <Input ref="searchInputRef" simple :placeholder="searchLabel" v-model:value="searchKey" :style="{ width: width + 2 + 'px' }" />
         <Divider :margin="0" />
       </template>
-      <div class="options" :style="{ width: width + 2 + 'px' }">
+      <div class="options" ref="optionsRef" :style="{ width: width + 2 + 'px' }">
         <div class="option" 
           :class="{
             'disabled': option.disabled,
@@ -64,10 +64,12 @@ const props = withDefaults(defineProps<{
   value: string | number
   options: SelectOption[]
   disabled?: boolean
+  autofocus?: boolean
   search?: boolean
   searchLabel?: string
 }>(), {
   disabled: false,
+  autofocus: false,
   search: false,
   searchLabel: '搜索',
 })
@@ -80,6 +82,7 @@ const popoverVisible = ref(false)
 const width = ref(0)
 const searchKey = ref('')
 const selectRef = useTemplateRef<HTMLElement>('selectRef')
+const optionsRef = useTemplateRef<HTMLElement>('optionsRef')
 const searchInputRef = useTemplateRef<InstanceType<typeof Input>>('searchInputRef')
 
 const showLabel = computed(() => {
@@ -99,6 +102,9 @@ watch(popoverVisible, () => {
   if (popoverVisible.value) {
     nextTick(() => {
       if (searchInputRef.value) searchInputRef.value.focus()
+      if (props.autofocus && optionsRef.value) {
+        optionsRef.value.querySelector('.option.selected')?.scrollIntoView({ block: 'center' })
+      }
     })
   }
   else searchKey.value = ''

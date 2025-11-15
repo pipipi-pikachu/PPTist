@@ -134,6 +134,7 @@
         :value="theme.fontName"
         search
         searchLabel="搜索字体"
+        autofocus
         @update:value="value => updateTheme({ fontName: value as string })"
         :options="FONTS"
       />
