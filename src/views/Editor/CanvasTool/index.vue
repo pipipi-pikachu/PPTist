@@ -312,7 +312,7 @@ const openImageLibPanel = () => {
     height: 30px;
     font-size: 14px;
     margin: 0 2px;
-    padding: 0 8px;
+    padding: 0 10px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -411,8 +411,6 @@ const openImageLibPanel = () => {
 @media screen and (width <= 1600px) {
   .add-element-handler {
     .insert-handler-item {
-      padding: 0 10px;
-
       .icon {
         margin-right: 0;
       }
