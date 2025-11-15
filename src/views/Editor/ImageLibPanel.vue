@@ -180,13 +180,12 @@ const setOrientation = (value: Orientation) => {
   }
 
   .mask {
-    position: absolute;
-    inset: 0;
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, .25);
+    @include absolute-0();
   }
 }
 </style>

@@ -229,17 +229,13 @@ const startEdit = () => {
   }
 }
 .shape-text {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   display: flex;
   flex-direction: column;
   padding: 10px;
   line-height: 1.2;
   word-break: break-word;
   pointer-events: none;
+  @include absolute-0();
 
   &.editable {
     pointer-events: all;

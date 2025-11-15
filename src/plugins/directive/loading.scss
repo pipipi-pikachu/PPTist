@@ -1,8 +1,7 @@
 .directive-loading-overlay {
-  position: absolute;
-  inset: 0;
   overflow: hidden;
   z-index: 99;
+  @include absolute-0();
 
   &::before {
     content: '';
@@ -25,8 +24,6 @@
 
   &::after {
     content: var(--directive-loading-text, '');
-    position: absolute;
-    inset: 0;
     padding-top: 24px;
     display: flex;
     justify-content: center;
@@ -34,6 +31,7 @@
     font-size: 12px;
     background-color: rgba($color: #fff, $alpha: .75);
     color: $themeColor;
+    @include absolute-0();
   }
 }
 

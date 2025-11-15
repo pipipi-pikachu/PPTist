@@ -15,12 +15,8 @@ withDefaults(defineProps<{
 
 <style lang="scss" scoped>
 .border-line {
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 0;
-  top: 0;
   border: 0 dashed $themeColor;
+  @include absolute-0();
 
   &.top {
     border-top-width: 1px;
