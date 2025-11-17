@@ -20,6 +20,8 @@
             <Popover class="more-icon" trigger="click" v-model:value="orientationVisible">
               <template #content>
                 <PopoverMenuItem
+                  class="popover-menu-item"
+                  :class="{ 'active': item.key === orientation }"
                   center
                   v-for="item in orientationOptions"
                   :key="item.key"
@@ -148,6 +150,11 @@ const setOrientation = (value: Orientation) => {
 .tools {
   flex-shrink: 0;
   margin-bottom: 10px;
+}
+.popover-menu-item {
+  &.active {
+    color: $themeColor;
+  }
 }
 .search-orientation {
   color: #999;

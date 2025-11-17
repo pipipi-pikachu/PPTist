@@ -216,7 +216,7 @@ const contextmenus = (): ContextmenuItem[] => {
   z-index: 10;
 
   .tool-btn {
-    opacity: .3;
+    opacity: .1;
     cursor: pointer;
     transition: opacity $transitionDelay;
 
