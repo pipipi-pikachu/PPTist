@@ -60,6 +60,46 @@ export default () => {
       })
     }, 200)
   }
+
+  // 导出图片版PPTX
+  const exportImagePPTX = (domRefs: NodeListOf<Element>) => {
+    exporting.value = true
+    
+    setTimeout(() => {
+      const pptx = new pptxgen()
+
+      const config: ExportImageConfig = {
+        quality: 1,
+        width: 1600,
+      }
+
+      const promiseArr = []
+      for (const domRef of domRefs) {
+        const foreignObjectSpans = domRef.querySelectorAll('foreignObject [xmlns]')
+        foreignObjectSpans.forEach(spanRef => spanRef.removeAttribute('xmlns'))
+
+        const promiseFunc = () => toJpeg((domRef as HTMLElement), config)
+        promiseArr.push(promiseFunc)
+      }
+
+      Promise.all(promiseArr.map(func => func())).then(imgs => {
+        for (const data of imgs) {
+          const pptxSlide = pptx.addSlide()
+          pptxSlide.addImage({
+            data,
+            x: 0,
+            y: 0,
+            w: viewportSize.value / ratioPx2Inch.value,
+            h: viewportSize.value * viewportRatio.value / ratioPx2Inch.value,
+          })
+        }
+        pptx.writeFile({ fileName: `${title.value}.pptx` }).then(() => exporting.value = false)
+      }).catch(() => {
+        exporting.value = false
+        message.error('导出失败')
+      })
+    }, 200)
+  }
   
   // 导出pptist文件（特有 .pptist 后缀文件）
   const exportSpecificFile = (_slides: Slide[]) => {
@@ -917,6 +957,7 @@ export default () => {
   return {
     exporting,
     exportImage,
+    exportImagePPTX,
     exportJSON,
     exportSpecificFile,
     exportPPTX,
