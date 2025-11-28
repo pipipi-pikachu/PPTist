@@ -1,22 +1,27 @@
 <template>
-  <div 
-    class="image-waterfall-viewer" 
-    ref="waterfallRef"
-    :style="{ height: outerHeight + 'px' }"
+  <div class="image-waterfall-viewer"
+    ref="waterfallWrapRef"
+    @scroll="handleScroll()"
   >
-    <div
-			:class="['waterfall-item', `item-${item.id}`]"
-      v-for="item in localList"
-      :key="item.id"
-      :style="{
-				position: item.style.position,
-				visibility: item.style.visibility,
-				width: Math.round(columnWidthInUse) + 'px',
-				top: item.style.top,
-				left: item.style.left,
-			}"
+    <div 
+      class="image-waterfall-content" 
+      ref="waterfallRef"
+      :style="{ height: outerHeight + 'px' }"
     >
-      <slot v-bind="item.data"></slot>
+      <div
+        :class="['waterfall-item', `item-${item.id}`]"
+        v-for="item in localList"
+        :key="item.id"
+        :style="{
+          position: item.style.position,
+          visibility: item.style.visibility,
+          width: Math.round(columnWidthInUse) + 'px',
+          top: item.style.top,
+          left: item.style.left,
+        }"
+      >
+        <slot v-bind="item.data"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -24,6 +29,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, onUnmounted, ref, watch, useTemplateRef, type CSSProperties } from 'vue'
 import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
 import findIndex from 'lodash/findIndex'
 
 interface WaterfallItemData {
@@ -49,12 +55,17 @@ const props = withDefaults(defineProps<{
   columnSpacing: 10,
 })
 
+const emit = defineEmits<{
+  (event: 'scrollToBottom'): void
+}>()
+
 const outerWidth = ref(-1)
 const outerHeight = ref(200)
 const columnWidthInUse = ref(0)
 const columnCount = ref(0)
 const localList = ref<WaterfallItem[]>([])
 const lastRowBottomPosition = ref<number[]>([])
+const waterfallWrapRef = useTemplateRef<HTMLDivElement>('waterfallWrapRef')
 const waterfallRef = useTemplateRef<HTMLDivElement>('waterfallRef')
 const resizeObserver = ref<ResizeObserver>()
 
@@ -187,6 +198,21 @@ const setItemPosition = (itemNode: Element, item: WaterfallItem) => {
   outerHeight.value = Math.max(...lastRowBottomPosition.value) + props.columnSpacing
 }
 
+const handleScroll = debounce(function() {
+  if (!waterfallWrapRef.value) return
+
+  const scrollTop = waterfallWrapRef.value.scrollTop
+  const scrollHeight = waterfallWrapRef.value.scrollHeight
+  const clientHeight = waterfallWrapRef.value.clientHeight
+
+  if (scrollHeight - (clientHeight + scrollTop) < Math.abs(5)) {
+    const allDataLoaded = localList.value.length && localList.value.length === props.list.length
+    const allImagesCompleted = allDataLoaded && localList.value.every(item => item.prepared)
+
+    if (allImagesCompleted) emit('scrollToBottom')
+  }
+}, 500, { trailing: true })
+
 onMounted(() => {
   lastRowBottomPosition.value = []
   initLayout()
@@ -206,6 +232,11 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .image-waterfall-viewer {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.image-waterfall-content {
   width: 100%;
   position: relative;
 }

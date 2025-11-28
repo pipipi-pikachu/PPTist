@@ -37,22 +37,22 @@
         </Input>
       </div>
 
-      <div class="imgs-wrap">
-        <ImageWaterfallViewer 
-          :list="imgs"
-          :columnSpacing="5"
-          :columnWidth="160"
-        >
-          <template v-slot:default="props">
-            <div class="img-item">
-              <img :src="props.src">
-              <div class="mask">
-                <Button type="primary" size="small" @click="createImageElement(props.src)">插入</Button>
-              </div>
+      <ImageWaterfallViewer 
+        class="imgs-wrap"
+        :list="imgs"
+        :columnSpacing="5"
+        :columnWidth="160"
+        @scrollToBottom="loadMore()"
+      >
+        <template v-slot:default="props">
+          <div class="img-item">
+            <img :src="props.src">
+            <div class="mask">
+              <Button type="primary" size="small" @click="createImageElement(props.src)">插入</Button>
             </div>
-          </template>
-        </ImageWaterfallViewer>
-      </div>
+          </div>
+        </template>
+      </ImageWaterfallViewer>
     </div>
   </MoveablePanel>
 </template>
@@ -87,6 +87,10 @@ const imgs = ref<ImageItem[]>([])
 const loading = ref(false)
 const orientationVisible = ref(false)
 const searchWord = ref('')
+const page = ref(1)
+const perPage = ref(50)
+const total = ref(0)
+const max = ref(500)
 const orientation = ref<Orientation>('all')
 const orientationOptions: {
   key: Orientation
@@ -115,14 +119,19 @@ onMounted(() => {
 const search = (q?: string) => {  
   const query = q || searchWord.value
   if (!query) return message.error('请输入搜索关键词')
+
   loading.value = true
+  page.value = 1
 
   api.searchImage({
     query,
-    per_page: 50,
+    per_page: perPage.value,
+    page: page.value,
     orientation: orientation.value,
   }).then(ret => {
     imgs.value = ret.data
+    total.value = ret.total
+
     loading.value = false
   }).catch(() => {
     loading.value = false
@@ -132,6 +141,28 @@ const search = (q?: string) => {
 const setOrientation = (value: Orientation) => {
   orientation.value = value
   if (searchWord.value) search()
+}
+
+const loadMore = () => {
+  if (loading.value) return
+  
+  const count = page.value * perPage.value
+  if (count >= Math.min(max.value, total.value)) return
+  
+  loading.value = true
+  page.value += 1
+
+  api.searchImage({
+    query: searchWord.value || '风景',
+    per_page: perPage.value,
+    page: page.value,
+    orientation: orientation.value,
+  }).then(ret => {
+    imgs.value = [...imgs.value, ...ret.data]
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
 }
 </script>
 
@@ -174,8 +205,6 @@ const setOrientation = (value: Orientation) => {
 }
 .imgs-wrap {
   flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 .img-item {
   border-radius: $borderRadius;
