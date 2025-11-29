@@ -182,6 +182,7 @@ const insertSymbol = (latex: string) => {
   margin-top: 20px;
   border: 1px solid $borderColor;
   user-select: none;
+  border-radius: $borderRadius;
 }
 .placeholder {
   color: #888;
@@ -204,6 +205,8 @@ const insertSymbol = (latex: string) => {
   display: flex;
   flex-direction: column;
   user-select: none;
+  border-radius: $borderRadius;
+  overflow: hidden;
 }
 .content {
   height: calc(100% - 40px);
@@ -229,6 +232,7 @@ const insertSymbol = (latex: string) => {
     display: flex;
     align-items: center;
     background-color: $lightGray;
+    border-radius: $borderRadius;
     cursor: pointer;
   }
 }
@@ -249,6 +253,7 @@ const insertSymbol = (latex: string) => {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: $borderRadius;
 
   &:hover {
     background-color: $lightGray;

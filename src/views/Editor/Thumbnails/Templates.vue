@@ -212,6 +212,7 @@ onMounted(() => {
     background-color: rgba($color: #000, $alpha: .25);
     opacity: 0;
     transition: opacity $transitionDelay;
+    border-radius: $borderRadius;
   }
 
   .thumbnail {
