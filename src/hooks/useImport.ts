@@ -42,7 +42,7 @@ export default () => {
   const exporting = ref(false)
 
   // 导入JSON文件
-  const importJSON = (files: FileList, cover = false) => {
+  const importJSON = (files: FileList | File[], cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()
@@ -68,7 +68,7 @@ export default () => {
   }
 
   // 导入pptist文件
-  const importSpecificFile = (files: FileList, cover = false) => {
+  const importSpecificFile = (files: FileList | File[], cover = false) => {
     const file = files[0]
 
     const reader = new FileReader()
@@ -246,7 +246,7 @@ export default () => {
   }
 
   // 导入PPTX文件
-  const importPPTXFile = (files: FileList, options?: { cover?: boolean; fixedViewport?: boolean }) => {
+  const importPPTXFile = (files: FileList | File[], options?: { cover?: boolean; fixedViewport?: boolean }) => {
     const defaultOptions = {
       cover: false,
       fixedViewport: false, 

@@ -37,37 +37,11 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import message from '@/utils/message'
+import { MIME_MAP } from '@/configs/mime'
 import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import FileInput from '@/components/FileInput.vue'
-
-const MIME_MAP: { [key: string]: string } = {
-
-  // 音频类型
-  'audio/aac': 'aac',
-  'audio/mpeg': 'mp3',
-  'audio/ogg': 'oga',
-  'audio/wav': 'wav',
-  'audio/webm': 'weba',
-  'audio/flac': 'flac',
-  'audio/mp4': 'm4a',
-  'audio/x-aiff': 'aif',
-  'audio/x-ms-wma': 'wma',
-  'audio/midi': 'mid',
-
-  // 视频类型
-  'video/mp4': 'mp4',
-  'video/mpeg': 'mpeg',
-  'video/ogg': 'ogv',
-  'video/webm': 'webm',
-  'video/x-msvideo': 'avi',
-  'video/quicktime': 'mov',
-  'video/x-ms-wmv': 'wmv',
-  'video/x-flv': 'flv',
-  'video/3gpp': '3gp',
-  'video/3gpp2': '3g2'
-}
 
 type TypeKey = 'video' | 'audio'
 interface TabItem {

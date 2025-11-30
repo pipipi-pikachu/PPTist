@@ -1,20 +1,14 @@
 import { onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
-import { getImageDataURL } from '@/utils/image'
 import usePasteTextClipboardData from './usePasteTextClipboardData'
-import useCreateElement from './useCreateElement'
+import usePasteDataTransfer from './usePasteDataTransfer'
 
 export default () => {
   const { editorAreaFocus, thumbnailsFocus, disableHotkeys } = storeToRefs(useMainStore())
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
-  const { createImageElement } = useCreateElement()
-
-  // 粘贴图片到幻灯片元素
-  const pasteImageFile = (imageFile: File) => {
-    getImageDataURL(imageFile).then(dataURL => createImageElement(dataURL))
-  }
+  const { pasteDataTransfer } = usePasteDataTransfer()
 
   /**
    * 粘贴事件监听
@@ -26,26 +20,12 @@ export default () => {
 
     if (!e.clipboardData) return
 
-    const clipboardDataItems = e.clipboardData.items
-    const clipboardDataFirstItem = clipboardDataItems[0]
-
-    if (!clipboardDataFirstItem) return
-
-    // 如果剪贴板内有图片，优先尝试读取图片
-    let isImage = false
-    for (const item of clipboardDataItems) {
-      if (item.kind === 'file' && item.type.indexOf('image') !== -1) {
-        const imageFile = item.getAsFile()
-        if (imageFile) pasteImageFile(imageFile)
-        isImage = true
-      }
-    }
-
-    if (isImage) return
+    const { isFile, dataTransferFirstItem } = pasteDataTransfer(e.clipboardData)
+    if (isFile) return
     
-    // 如果剪贴板内没有图片，但有文字内容，尝试解析文字内容
-    if (clipboardDataFirstItem.kind === 'string' && clipboardDataFirstItem.type === 'text/plain') {
-      clipboardDataFirstItem.getAsString(text => pasteTextClipboardData(text))
+    // 如果剪贴板内不存在有效文件，但有文字内容，尝试解析文字内容
+    if (dataTransferFirstItem && dataTransferFirstItem.kind === 'string' && dataTransferFirstItem.type === 'text/plain') {
+      dataTransferFirstItem.getAsString(text => pasteTextClipboardData(text))
     }
   }
 
