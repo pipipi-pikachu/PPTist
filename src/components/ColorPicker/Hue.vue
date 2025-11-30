@@ -4,6 +4,7 @@
       class="hue-container"
       ref="hueRef"
       @mousedown="$event => handleMouseDown($event)"
+      @touchstart="$event => handleMouseDown($event)"
     >
       <div 
         class="hue-pointer"
@@ -51,13 +52,18 @@ watch(() => props.value, () => {
 })
 
 const hueRef = useTemplateRef<HTMLElement>('hueRef')
-const handleChange = (e: MouseEvent) => {
+const handleChange = (e: MouseEvent | TouchEvent) => {
   e.preventDefault()
   if (!hueRef.value) return
 
+  const isTouchEvent = !(e instanceof MouseEvent)
+  if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
+
+  const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
+
   const containerWidth = hueRef.value.clientWidth
   const xOffset = hueRef.value.getBoundingClientRect().left + window.pageXOffset
-  const left = e.pageX - xOffset
+  const left = startPageX - xOffset
   let h, percent
   
   if (left < 0) h = 0
@@ -78,12 +84,16 @@ const handleChange = (e: MouseEvent) => {
 
 const unbindEventListeners = () => {
   window.removeEventListener('mousemove', handleChange)
+  window.removeEventListener('touchmove', handleChange)
   window.removeEventListener('mouseup', unbindEventListeners)
+  window.removeEventListener('touchend', unbindEventListeners)
 }
-const handleMouseDown = (e: MouseEvent) => {
+const handleMouseDown = (e: MouseEvent | TouchEvent) => {
   handleChange(e)
   window.addEventListener('mousemove', handleChange)
+  window.addEventListener('touchmove', handleChange)
   window.addEventListener('mouseup', unbindEventListeners)
+  window.addEventListener('touchend', unbindEventListeners)
 }
 onUnmounted(unbindEventListeners)
 </script>

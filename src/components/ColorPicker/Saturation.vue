@@ -4,6 +4,7 @@
     ref="saturationRef"
     :style="{ background: bgColor }"
     @mousedown="$event => handleMouseDown($event)"
+    @touchstart="$event => handleMouseDown($event)"
   >
     <div class="saturation-white"></div>
     <div class="saturation-black"></div>
@@ -47,16 +48,22 @@ const emitChangeEvent = throttle(function(param: ColorFormats.HSVA) {
 }, 20, { leading: true, trailing: false })
 
 const saturationRef = useTemplateRef<HTMLElement>('saturationRef')
-const handleChange = (e: MouseEvent) => {
+const handleChange = (e: MouseEvent | TouchEvent) => {
   e.preventDefault()
   if (!saturationRef.value) return
+  
+  const isTouchEvent = !(e instanceof MouseEvent)
+  if (isTouchEvent && (!e.changedTouches || !e.changedTouches[0])) return
+
+  const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
+  const startPageY = isTouchEvent ? e.changedTouches[0].pageY : e.pageY
   
   const containerWidth = saturationRef.value.clientWidth
   const containerHeight = saturationRef.value.clientHeight
   const xOffset = saturationRef.value.getBoundingClientRect().left + window.pageXOffset
   const yOffset = saturationRef.value.getBoundingClientRect().top + window.pageYOffset
-  const left = clamp(e.pageX - xOffset, 0, containerWidth)
-  const top = clamp(e.pageY - yOffset, 0, containerHeight)
+  const left = clamp(startPageX - xOffset, 0, containerWidth)
+  const top = clamp(startPageY - yOffset, 0, containerHeight)
   const saturation = left / containerWidth
   const bright = clamp(-(top / containerHeight) + 1, 0, 1)
 
@@ -70,12 +77,16 @@ const handleChange = (e: MouseEvent) => {
 
 const unbindEventListeners = () => {
   window.removeEventListener('mousemove', handleChange)
+  window.removeEventListener('touchmove', handleChange)
   window.removeEventListener('mouseup', unbindEventListeners)
+  window.removeEventListener('touchend', unbindEventListeners)
 }
-const handleMouseDown = (e: MouseEvent) => {
+const handleMouseDown = (e: MouseEvent | TouchEvent) => {
   handleChange(e)
   window.addEventListener('mousemove', handleChange)
+  window.addEventListener('touchmove', handleChange)
   window.addEventListener('mouseup', unbindEventListeners)
+  window.addEventListener('touchend', unbindEventListeners)
 }
 onUnmounted(unbindEventListeners)
 </script>

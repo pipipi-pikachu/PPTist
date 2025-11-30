@@ -72,7 +72,7 @@
             <div class="color custom">
               <Popover trigger="click">
                 <template #content>
-                  <ColorPicker @update:modelValue="value => updateFontColor(value)" />
+                  <ColorPicker :modelValue="fontColor" @update:modelValue="value => updateFontColor(value)" />
                 </template>
                 <div class="color-block"></div>
               </Popover>
@@ -92,7 +92,7 @@
             <div class="color custom">
               <Popover trigger="click">
                 <template #content>
-                  <ColorPicker @update:modelValue="value => updateFill(value)" />
+                  <ColorPicker :modelValue="fill" @update:modelValue="value => updateFill(value)" />
                 </template>
                 <div class="color-block"></div>
               </Popover>
@@ -231,6 +231,21 @@ const emitRichTextCommand = (command: string, value?: string) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
 }
 
+const fontColor = computed(() => {
+  if (!handleElement.value) return '#fff'
+  if (handleElement.value.type === 'text' || (handleElement.value.type === 'shape' && handleElement.value.text?.content)) {
+    return richTextAttrs.value.color
+  }
+  if (handleElement.value.type === 'table') {
+    const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+    return data[0][0].style?.color
+  }
+  if (handleElement.value.type === 'latex') {
+    return handleElement.value.color
+  }
+  return '#fff'
+})
+
 const updateFontColor = (color: string) => {
   if (!handleElement.value) return
   if (handleElement.value.type === 'text' || (handleElement.value.type === 'shape' && handleElement.value.text?.content)) {
@@ -250,6 +265,26 @@ const updateFontColor = (color: string) => {
     updateElement(handleElementId.value, { color })
   }
 }
+
+const fill = computed(() => {
+  if (!handleElement.value) return '#fff'
+
+  if (
+    handleElement.value.type === 'text' ||
+    handleElement.value.type === 'shape' ||
+    handleElement.value.type === 'chart'
+  ) return handleElement.value.fill
+
+  if (handleElement.value.type === 'table') {
+    const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
+    return data[0][0].style?.backcolor
+  }
+
+  if (handleElement.value.type === 'audio' || handleElement.value.type === 'line') {
+    return handleElement.value.color
+  }
+  return '#fff'
+})
 
 const updateFill = (color: string) => {
   if (!handleElement.value) return
