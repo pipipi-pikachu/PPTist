@@ -171,7 +171,7 @@ export default () => {
         if (styleAttr && styleAttr.value) {
           const styleArr = styleAttr.value.split(';')
           for (const styleItem of styleArr) {
-            const [_key, _value] = styleItem.split(': ')
+            const [_key, _value] = styleItem.split(':')
             const [key, value] = [trim(_key), trim(_value)]
             if (key && value) styleObj[key] = value
           }
