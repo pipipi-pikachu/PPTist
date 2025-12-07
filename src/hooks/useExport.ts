@@ -1,6 +1,5 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { trim } from 'lodash'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
@@ -173,7 +172,7 @@ export default () => {
           for (const styleItem of styleArr) {
             const match = styleItem.match(/([^:]+):\s*(.+)/)
             if (match) {
-              const [key, value] = [trim(match[1]), trim(match[2])]
+              const [key, value] = [match[1].trim(), match[2].trim()]
               if (key && value) styleObj[key] = value
             }
           }
