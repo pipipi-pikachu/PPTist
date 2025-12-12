@@ -190,10 +190,9 @@ const createOutline = async () => {
     language: language.value,
     model: model.value,
   })
-  if (stream.status === 500) {
-    message.error('AI服务异常，请更换其他模型重试')
+  if (typeof stream === 'object' && stream.state === -1) {
     loading.value = false
-    return
+    return message.error('该模型API的并发数过高，请更换其他模型重试')
   }
 
   loading.value = false
@@ -235,6 +234,10 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
     style: style.value,
     model: model.value,
   })
+  if (typeof stream === 'object' && stream.state === -1) {
+    loading.value = false
+    return message.error('该模型API的并发数过高，请更换其他模型重试')
+  }
 
   if (img.value === 'test') {
     const imgs = await api.getMockData('imgs')

@@ -41,12 +41,12 @@ export default {
     return axios.post(`${SERVER_URL}/tools/img_search`, body)
   },
 
-  AIPPT_Outline({
+  async AIPPT_Outline({
     content,
     language,
     model,
   }: AIPPTOutlinePayload): Promise<any> {
-    return fetch(`${SERVER_URL}/tools/aippt_outline`, {
+    const response = await fetch(`${SERVER_URL}/tools/aippt_outline`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,15 +58,27 @@ export default {
         stream: true,
       }),
     })
+
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
+      try {
+        const JSONResponse = await response.json()
+        return JSONResponse
+      }
+      catch (err) {
+        throw new Error('服务器返回了非流响应')
+      }
+    }
+    return response
   },
 
-  AIPPT({
+  async AIPPT({
     content,
     language,
     style,
     model,
   }: AIPPTPayload): Promise<any> {
-    return fetch(`${SERVER_URL}/tools/aippt`, {
+    const response = await fetch(`${SERVER_URL}/tools/aippt`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,13 +91,25 @@ export default {
         stream: true,
       }),
     })
+
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
+      try {
+        const JSONResponse = await response.json()
+        return JSONResponse
+      }
+      catch (err) {
+        throw new Error('服务器返回了非流响应')
+      }
+    }
+    return response
   },
 
-  AI_Writing({
+  async AI_Writing({
     content,
     command,
   }: AIWritingPayload): Promise<any> {
-    return fetch(`${SERVER_URL}/tools/ai_writing`, {
+    const response = await fetch(`${SERVER_URL}/tools/ai_writing`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -93,9 +117,21 @@ export default {
       body: JSON.stringify({
         content,
         command,
-        model: 'ark-doubao-seed-1.6-flash',
+        model: 'GLM-4.5-Flash',
         stream: true,
       }),
     })
+
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
+      try {
+        const JSONResponse = await response.json()
+        return JSONResponse
+      }
+      catch (err) {
+        throw new Error('服务器返回了非流响应')
+      }
+    }
+    return response
   },
 }
