@@ -1,4 +1,5 @@
-import axios from './config'
+import axios from './axios'
+import fetchRequest from './fetch'
 
 // export const SERVER_URL = 'http://localhost:5000'
 export const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'https://server.pptist.cn'
@@ -41,16 +42,13 @@ export default {
     return axios.post(`${SERVER_URL}/tools/img_search`, body)
   },
 
-  async AIPPT_Outline({
+  AIPPT_Outline({
     content,
     language,
     model,
   }: AIPPTOutlinePayload): Promise<any> {
-    const response = await fetch(`${SERVER_URL}/tools/aippt_outline`, {
+    return fetchRequest(`${SERVER_URL}/tools/aippt_outline`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         content,
         language,
@@ -58,31 +56,16 @@ export default {
         stream: true,
       }),
     })
-
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
-      try {
-        const JSONResponse = await response.json()
-        return JSONResponse
-      }
-      catch (err) {
-        throw new Error('服务器返回了非流响应')
-      }
-    }
-    return response
   },
 
-  async AIPPT({
+  AIPPT({
     content,
     language,
     style,
     model,
   }: AIPPTPayload): Promise<any> {
-    const response = await fetch(`${SERVER_URL}/tools/aippt`, {
+    return fetchRequest(`${SERVER_URL}/tools/aippt`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         content,
         language,
@@ -91,29 +74,14 @@ export default {
         stream: true,
       }),
     })
-
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
-      try {
-        const JSONResponse = await response.json()
-        return JSONResponse
-      }
-      catch (err) {
-        throw new Error('服务器返回了非流响应')
-      }
-    }
-    return response
   },
 
-  async AI_Writing({
+  AI_Writing({
     content,
     command,
   }: AIWritingPayload): Promise<any> {
-    const response = await fetch(`${SERVER_URL}/tools/ai_writing`, {
+    return fetchRequest(`${SERVER_URL}/tools/ai_writing`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({
         content,
         command,
@@ -121,17 +89,5 @@ export default {
         stream: true,
       }),
     })
-
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('text/event-stream') && !contentType.includes('application/octet-stream')) {
-      try {
-        const JSONResponse = await response.json()
-        return JSONResponse
-      }
-      catch (err) {
-        throw new Error('服务器返回了非流响应')
-      }
-    }
-    return response
   },
 }
