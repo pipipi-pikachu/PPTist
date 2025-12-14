@@ -309,6 +309,12 @@ export default () => {
             },
           }
         }
+        else if (type === 'pattern') {
+          background = {
+            type: 'solid',
+            color: '#fff',
+          }
+        }
         else {
           background = {
             type: 'solid',
