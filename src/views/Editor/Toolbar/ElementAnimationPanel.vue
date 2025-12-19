@@ -63,13 +63,13 @@
       @end="handleDragEnd"
     >
       <template #item="{ element }">
-        <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]">
+        <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]" @click="selectElement(element.elId)">
           <div class="sequence-content">
             <div class="index">{{element.index}}</div>
             <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
             <div class="handler">
-              <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click="runAnimation(element.elId, element.effect, element.duration)" />
-              <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click="deleteAnimation(element.id)" />
+              <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
+              <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click.stop="deleteAnimation(element.id)" />
             </div>
           </div>
 
@@ -111,7 +111,7 @@
     <template v-if="animationSequence.length >= 2">
       <Divider />
       <Button @click="runAllAnimation()">
-        {{ animateIn ? '停止预览' : '预览全部'}}
+        <IconPause v-if="animateIn" /><IconPlayOne v-else /> {{ animateIn ? '停止预览' : '预览全部'}}
       </Button>
     </template>
   </div>
@@ -133,6 +133,7 @@ import {
 } from '@/configs/animation'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useSelectElement from '@/hooks/useSelectElement'
 
 import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
@@ -186,6 +187,7 @@ const hoverPreviewAnimation = ref('')
 const animationPoolVisible = ref(false)
 
 const { addHistorySnapshot } = useHistorySnapshot()
+const { selectElement } = useSelectElement()
 
 // 当前页面的动画列表
 const animationSequence = computed(() => {

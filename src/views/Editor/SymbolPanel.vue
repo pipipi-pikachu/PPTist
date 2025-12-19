@@ -27,7 +27,7 @@
       >{{item}}</div>
     </div>
 
-    <div class="pool">
+    <div class="pool" ref="poolRef">
       <div class="symbol-group" v-for="(group, groupIndex) in symbolPool" :key="groupIndex">
         <div class="symbol-item" v-for="(item, index) in group" :key="index" @click="selectSymbol(item)">
           <div class="symbol">{{item}}</div>
@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store/main'
 import { SYMBOL_LIST } from '@/configs/symbol'
@@ -52,6 +52,7 @@ const { handleElement } = storeToRefs(mainStore)
 
 const { createTextElement } = useCreateElement()
 
+const poolRef = useTemplateRef<HTMLElement>('poolRef')
 const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
 const emojiTypeList = ref(['表情', '动作', '动植物', '食物', '旅行', '活动', '物品', '符号'])
 const selectedEmojiTypeIndex = ref(0)
@@ -71,6 +72,10 @@ const tabs = SYMBOL_LIST.map(item => ({
   key: item.key,
   label: item.label,
 }))
+
+watch([selectedEmojiTypeIndex, selectedSymbolKey], () => {
+  if (poolRef.value) poolRef.value.scrollTo(0, 0)
+})
 
 const selectSymbol = (value: string) => {
   if (handleElement.value?.type === 'text') {
