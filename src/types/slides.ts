@@ -302,6 +302,12 @@ export type ShapeTextAlign = 'top' | 'middle' | 'bottom'
  * 
  * align: 文本对齐方向（垂直方向）
  * 
+ * lineHeight?: 行高（倍），默认1.5
+ * 
+ * wordSpace?: 字间距，默认0
+ * 
+ * paragraphSpace?: 段间距，默认 5px
+ * 
  * type: 文本类型
  */
 export interface ShapeText {
@@ -309,6 +315,9 @@ export interface ShapeText {
   defaultFontName: string
   defaultColor: string
   align: ShapeTextAlign
+  lineHeight?: number
+  wordSpace?: number
+  paragraphSpace?: number
   type?: TextType
 }
 

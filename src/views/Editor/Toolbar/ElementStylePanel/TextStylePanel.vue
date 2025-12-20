@@ -18,7 +18,7 @@
       <div style="width: 40%;">行间距：</div>
       <Select style="width: 60%;"
         :value="lineHeight || 1"
-        @update:value="value => updateLineHeight(value as number)"
+        @update:value="value => updateText({ lineHeight: value as number })"
         :options="lineHeightOptions.map(item => ({
           label: item + '倍', value: item
         }))"
@@ -32,7 +32,7 @@
       <div style="width: 40%;">段间距：</div>
       <Select style="width: 60%;"
         :value="paragraphSpace || 0"
-        @update:value="value => updateParagraphSpace(value as number)"
+        @update:value="value => updateText({ paragraphSpace: value as number })"
         :options="paragraphSpaceOptions.map(item => ({
           label: item + 'px', value: item
         }))"
@@ -46,7 +46,7 @@
       <div style="width: 40%;">字间距：</div>
       <Select style="width: 60%;"
         :value="wordSpace || 0"
-        @update:value="value => updateWordSpace(value as number)"
+        @update:value="value => updateText({ wordSpace: value as number })"
         :options="wordSpaceOptions.map(item => ({
           label: item + 'px', value: item
         }))"
@@ -62,7 +62,7 @@
         <template #content>
           <ColorPicker
             :modelValue="fill"
-            @update:modelValue="value => updateFill(value)"
+            @update:modelValue="value => updateText({ fill: value })"
           />
         </template>
         <ColorButton :color="fill" />
@@ -177,7 +177,7 @@ const { handleElement, handleElementId } = storeToRefs(mainStore)
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
-const updateElement = (props: Partial<PPTTextElement>) => {
+const updateText = (props: Partial<PPTTextElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
 }
@@ -200,26 +200,6 @@ watch(handleElement, () => {
 const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
 const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
 const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
-
-// 设置行高
-const updateLineHeight = (value: number) => {
-  updateElement({ lineHeight: value })
-}
-
-// 设置段间距
-const updateParagraphSpace = (value: number) => {
-  updateElement({ paragraphSpace: value })
-}
-
-// 设置字间距
-const updateWordSpace = (value: number) => {
-  updateElement({ wordSpace: value })
-}
-
-// 设置文本框填充
-const updateFill = (value: string) => {
-  updateElement({ fill: value })
-}
 
 // 发送富文本设置命令（批量）
 const emitBatchRichTextCommand = (action: RichTextAction[]) => {

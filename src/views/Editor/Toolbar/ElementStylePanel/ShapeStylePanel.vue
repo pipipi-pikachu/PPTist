@@ -105,11 +105,56 @@
       <RichTextBase />
       <Divider />
 
+      <div class="row">
+        <div style="width: 40%;">行间距：</div>
+        <Select style="width: 60%;"
+          :value="lineHeight || 1"
+          @update:value="value => updateTextProps({ lineHeight: value as number })"
+          :options="lineHeightOptions.map(item => ({
+            label: item + '倍', value: item
+          }))"
+        >
+          <template #icon>
+            <IconRowHeight />
+          </template>
+        </Select>
+      </div>
+      <div class="row">
+        <div style="width: 40%;">段间距：</div>
+        <Select style="width: 60%;"
+          :value="paragraphSpace || 0"
+          @update:value="value => updateTextProps({ paragraphSpace: value as number })"
+          :options="paragraphSpaceOptions.map(item => ({
+            label: item + 'px', value: item
+          }))"
+        >
+          <template #icon>
+            <IconVerticalSpacingBetweenItems />
+          </template>
+        </Select>
+      </div>
+      <div class="row">
+        <div style="width: 40%;">字间距：</div>
+        <Select style="width: 60%;"
+          :value="wordSpace || 0"
+          @update:value="value => updateTextProps({ wordSpace: value as number })"
+          :options="wordSpaceOptions.map(item => ({
+            label: item + 'px', value: item
+          }))"
+        >
+          <template #icon>
+            <IconFullwidth />
+          </template>
+        </Select>
+      </div>
+
+      <Divider />
+
       <RadioGroup 
         class="row" 
         button-style="solid" 
         :value="textAlign"
-        @update:value="value => updateTextAlign(value as 'top' | 'middle' | 'bottom')"
+        @update:value="value => updateTextProps({ align: value as 'top' | 'middle' | 'bottom' })"
       >
         <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
         <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
@@ -185,7 +230,13 @@ const gradient = ref<Gradient>({
 })
 const fillType = ref('fill')
 const textAlign = ref('middle')
+const lineHeight = ref<number>()
+const wordSpace = ref<number>()
+const paragraphSpace = ref<number>()
 const currentGradientIndex = ref(0)
+const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
+const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
+const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'shape') return
@@ -199,6 +250,9 @@ watch(handleElement, () => {
   pattern.value = handleElement.value.pattern || ''
   fillType.value = (handleElement.value.pattern !== undefined) ? 'pattern' : (handleElement.value.gradient ? 'gradient' : 'fill')
   textAlign.value = handleElement.value?.text?.align || 'middle'
+  lineHeight.value = handleElement.value?.text?.lineHeight || 1.5
+  wordSpace.value = handleElement.value?.text?.wordSpace || 0
+  paragraphSpace.value = handleElement.value?.text?.paragraphSpace === undefined ? 5 : handleElement.value?.text?.paragraphSpace
 
   if (handleElement.value.text?.content) {
     emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
@@ -289,9 +343,8 @@ const changeShape = (shape: ShapePoolItem) => {
   updateElement(props)
 }
 
-const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
+const updateTextProps = (props: Partial<ShapeText>) => {
   const _handleElement = handleElement.value as PPTShapeElement
-  
   const defaultText: ShapeText = {
     content: '',
     defaultFontName: '',
@@ -299,7 +352,7 @@ const updateTextAlign = (align: 'top' | 'middle' | 'bottom') => {
     align: 'middle',
   }
   const _text = _handleElement.text || defaultText
-  updateElement({ text: { ..._text, align } })
+  updateElement({ text: { ..._text, ...props } })
 }
 </script>
 

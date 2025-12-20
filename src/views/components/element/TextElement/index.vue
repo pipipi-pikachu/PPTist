@@ -27,6 +27,7 @@
           color: elementInfo.defaultColor,
           fontFamily: elementInfo.defaultFontName,
           writingMode: elementInfo.vertical ? 'vertical-rl' : 'horizontal-tb',
+          '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
         }"
         v-contextmenu="contextmenus"
         @mousedown="$event => handleSelectElement($event)"
@@ -44,9 +45,6 @@
           :defaultFontName="elementInfo.defaultFontName"
           :editable="!elementInfo.lock"
           :value="elementInfo.content"
-          :style="{
-            '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
-          }"
           @update="({ value, ignore }) => updateContent(value, ignore)"
           @mousedown="$event => handleSelectElement($event, false)"
         />
