@@ -393,12 +393,12 @@ export default () => {
         if (el.type === 'shape') {
           if (el.text) {
             el.text.defaultFontName = fontname
-            if (el.text.content) el.text.content = el.text.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+            if (el.text.content) el.text.content = el.text.content.replace(/font-family: .+?;/g, '')
           }
         }
         if (el.type === 'text') {
           el.defaultFontName = fontname
-          if (el.content) el.content = el.content.replace(/color: .+?;/g, '').replace(/font-family: .+?;/g, '')
+          if (el.content) el.content = el.content.replace(/font-family: .+?;/g, '')
         }
         if (el.type === 'table') {
           for (const rowCells of el.data) {
