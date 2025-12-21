@@ -57,7 +57,7 @@ const handleInput = (e: Event) => {
 }
 .input-content {
   width: 100%;
-  padding: 3px;
+  padding: 4px;
   border: 0;
   border-bottom: 1px solid #ddd;
   outline: none;

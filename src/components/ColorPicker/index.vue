@@ -360,11 +360,11 @@ const customEyeDropper = () => {
 .picker-field {
   display: flex;
   margin-bottom: 8px;
+  margin-top: 4px;
 
   .transparent {
     width: 24px;
     height: 24px;
-    margin-top: 4px;
     margin-left: 8px;
     position: relative;
     cursor: pointer;
@@ -388,7 +388,6 @@ const customEyeDropper = () => {
   .straw {
     width: 24px;
     height: 24px;
-    margin-top: 4px;
     margin-left: 8px;
     display: flex;
     justify-content: center;
