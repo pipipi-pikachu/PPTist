@@ -11,7 +11,7 @@
         <template #content>
           <Templates 
             @select="slide => { createSlideByTemplate(slide); presetLayoutPopoverVisible = false }"
-            @selectAll="slides => { insertAllTemplates(slides); presetLayoutPopoverVisible = false }"
+            @selectAll="({ slides, theme }) => { insertAllTemplates({ slides, theme }); presetLayoutPopoverVisible = false }"
           />
         </template>
         <div class="select-btn"><IconDown /></div>
@@ -77,6 +77,7 @@
 import { computed, nextTick, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
+import type { Slide, SlideTheme } from '@/types/slides'
 import { fillDigit } from '@/utils/common'
 import { isElementInViewport } from '@/utils/element'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -85,7 +86,6 @@ import useSectionHandler from '@/hooks/useSectionHandler'
 import useScreening from '@/hooks/useScreening'
 import useLoadSlides from '@/hooks/useLoadSlides'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
-import type { Slide } from '@/types/slides'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
@@ -252,8 +252,8 @@ const saveSection = (e: FocusEvent | KeyboardEvent) => {
   mainStore.setDisableHotkeysState(false)
 }
 
-const insertAllTemplates = (slides: Slide[]) => {
-  if (isEmptySlide.value) slidesStore.setSlides(slides)
+const insertAllTemplates = ({ slides, theme }: { slides: Slide[], theme: Partial<SlideTheme> }) => {
+  if (isEmptySlide.value) slidesStore.setSlides(slides, theme)
   else addSlidesFromData(slides)
 }
 

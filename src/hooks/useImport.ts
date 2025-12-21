@@ -54,14 +54,14 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const { slides } = JSON.parse(reader.result as string)
+        const { slides, theme } = JSON.parse(reader.result as string)
         if (cover) {
           slidesStore.updateSlideIndex(0)
-          slidesStore.setSlides(slides)
+          slidesStore.setSlides(slides, (theme || {}))
           addHistorySnapshot()
         }
         else if (isEmptySlide.value) {
-          slidesStore.setSlides(slides)
+          slidesStore.setSlides(slides, (theme || {}))
           addHistorySnapshot()
         }
         else addSlidesFromData(slides)
@@ -80,14 +80,14 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const { slides } = JSON.parse(decrypt(reader.result as string))
+        const { slides, theme } = JSON.parse(decrypt(reader.result as string))
         if (cover) {
           slidesStore.updateSlideIndex(0)
-          slidesStore.setSlides(slides)
+          slidesStore.setSlides(slides, (theme || {}))
           addHistorySnapshot()
         }
         else if (isEmptySlide.value) {
-          slidesStore.setSlides(slides)
+          slidesStore.setSlides(slides, (theme || {}))
           addHistorySnapshot()
         }
         else addSlidesFromData(slides)

@@ -129,8 +129,9 @@ export const useSlidesStore = defineStore('slides', {
       this.viewportRatio = viewportRatio
     },
   
-    setSlides(slides: Slide[]) {
+    setSlides(slides: Slide[], themeProps?: Partial<SlideTheme>) {
       this.slides = slides
+      if (themeProps) this.setTheme(themeProps)
     },
   
     setTemplates(templates: SlideTemplate[]) {

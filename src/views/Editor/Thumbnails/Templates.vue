@@ -18,7 +18,7 @@
             @click="activeType = item.value"
           >{{ item.label }}</div>
         </div>
-        <div class="insert-all" @click="insertTemplates(slides)">插入全部</div>
+        <div class="insert-all" @click="insertTemplates({ slides, theme })">插入全部</div>
       </div>
       <div class="list" ref="listRef">
         <template v-for="slide in slides" :key="slide.id">
@@ -42,7 +42,7 @@
 import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import type { Slide } from '@/types/slides'
+import type { Slide, SlideTheme } from '@/types/slides'
 import api from '@/services'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
@@ -50,13 +50,14 @@ import Button from '@/components/Button.vue'
 
 const emit = defineEmits<{
   (event: 'select', payload: Slide): void
-  (event: 'selectAll', payload: Slide[]): void
+  (event: 'selectAll', payload: { slides: Slide[], theme: Partial<SlideTheme> }): void
 }>()
 
 const slidesStore = useSlidesStore()
 const { templates } = storeToRefs(slidesStore)
 
 const slides = ref<Slide[]>([])
+const theme = ref<Partial<SlideTheme>>({})
 const listRef = useTemplateRef<HTMLElement>('listRef')
 const types = ref<{
   label: string
@@ -78,8 +79,8 @@ const insertTemplate = (slide: Slide) => {
   emit('select', slide)
 }
 
-const insertTemplates = (slides: Slide[]) => {
-  emit('selectAll', slides)
+const insertTemplates = ({ slides, theme }: { slides: Slide[], theme: Partial<SlideTheme> }) => {
+  emit('selectAll', { slides, theme })
 }
 
 const changeCatalog = (id: string) => {
@@ -87,6 +88,8 @@ const changeCatalog = (id: string) => {
   activeCatalog.value = id
   api.getMockData(activeCatalog.value).then(ret => {
     slides.value = ret.slides
+    if (ret.theme) theme.value = ret.theme
+
     loading.value = false
 
     if (listRef.value) listRef.value.scrollTo(0, 0) 
