@@ -425,6 +425,7 @@ export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'r
 export interface ChartOptions {
   lineSmooth?: boolean
   stack?: boolean
+  barWidth?: number
 }
 
 export interface ChartData {
