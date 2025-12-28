@@ -9,14 +9,14 @@
   >
     <div 
       class="tab" 
-      :class="{ 'active': tab.key === value }"
+      :class="{ 'active': tab.key === value, 'disabled': tab.disabled }"
       v-for="tab in tabs" 
       :key="tab.key"
       :style="{
         ...(tabStyle || {}),
         '--color': tab.color,
       }"
-      @click="emit('update:value', tab.key)"
+      @click="!tab.disabled && emit('update:value', tab.key)"
     >{{tab.label}}</div>
   </div>
 </template>
@@ -28,6 +28,7 @@ interface TabItem {
   key: string
   label: string
   color?: string
+  disabled?: boolean
 }
 
 withDefaults(defineProps<{
@@ -76,6 +77,10 @@ const emit = defineEmits<{
 
       &.active {
         border-bottom: 2px solid var(--color, $themeColor);
+      }
+      &.disabled {
+        opacity: 0.35;
+        cursor: default;
       }
     }
   }

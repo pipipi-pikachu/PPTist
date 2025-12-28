@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, useTemplateRef, nextTick } from 'vue'
+import { computed, onMounted, ref, useTemplateRef, nextTick, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { ElementLinkType, PPTElementLink } from '@/types/slides'
@@ -46,7 +46,6 @@ import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
-import { onUnmounted } from 'vue'
 
 interface TabItem {
   key: ElementLinkType
@@ -82,10 +81,10 @@ const selectedSlide = computed(() => {
   return slides.value.find(item => item.id === slideId.value) || null
 })
 
-const tabs: TabItem[] = [
+const tabs = computed<TabItem[]>(() => [
   { key: 'web', label: '网页链接' },
-  { key: 'slide', label: '幻灯片页面' },
-]
+  { key: 'slide', label: '幻灯片页面', disabled: slides.value.length <= 1 },
+])
 
 const { setLink } = useLink()
 
