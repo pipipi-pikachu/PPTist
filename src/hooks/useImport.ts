@@ -37,6 +37,115 @@ const convertFontSizePtToPx = (html: string, ratio: number) => {
   })
 }
 
+const getMaxFontSize = (html: string, defaultFontSize: number = 18): number => {
+  // 直接匹配所有 pt 单位的 font-size
+  const fontSizeRegex = /font-size\s*:\s*(\d+(?:\.\d+)?)\s*pt/gi
+  const fontSizes = [defaultFontSize]
+
+  let match
+  while ((match = fontSizeRegex.exec(html)) !== null) {
+    const size = parseFloat(match[1])
+    if (size > 0) fontSizes.push(size)
+  }
+
+  return Math.max(...fontSizes)
+}
+
+const getParagraphMetrics = (html: string, ratio: number) => {
+  const tagRegex = /<(div|p|li)(?![a-z0-9])[^>]*>/gi
+
+  const lineHeights = []
+  const margins = []
+  let paragraphCount = 0
+
+  let match
+  let paragraphIndex = 0
+  while ((match = tagRegex.exec(html)) !== null) {
+    const fullTag = match[0]
+    paragraphCount++
+
+    const styleRegex = /\bstyle\s*=\s*(['"])(.*?)\1/i
+    const styleMatch = fullTag.match(styleRegex)
+
+    let styleContent = ''
+    if (styleMatch && styleMatch[2]) {
+      styleContent = styleMatch[2]
+    }
+
+    const getProp = (propName: string) => {
+      if (!styleContent) return null
+      const propRegex = new RegExp(`${propName}\\s*:\\s*([^;]+)`, 'i')
+      const propMatch = styleContent.match(propRegex)
+      return propMatch ? propMatch[1].trim() : null
+    }
+
+    const marginTop = getProp('margin-top')
+    const marginBottom = getProp('margin-bottom')
+    const lineHeight = getProp('line-height')
+
+    const tagStartIndex = match.index
+    const tagName = match[1]
+    let tagEndIndex = html.indexOf('</' + tagName + '>', tagStartIndex)
+    if (tagEndIndex === -1) tagEndIndex = tagStartIndex + fullTag.length
+
+    const paragraphHtml = html.substring(tagStartIndex, tagEndIndex)
+    const maxFontSize = getMaxFontSize(paragraphHtml, 18)
+
+    let lineHeightValue = 1
+    if (lineHeight) {
+      if (lineHeight.indexOf('pt') !== -1) {
+        lineHeightValue = parseFloat(lineHeight.replace('pt', '')) / maxFontSize
+      }
+      else {
+        lineHeightValue = parseFloat(lineHeight)
+      }
+    }
+    lineHeights.push(lineHeightValue)
+
+    const isFirstParagraph = paragraphIndex === 0
+    const isLastParagraph = match.index + fullTag.length >= html.lastIndexOf('</' + tagName + '>')
+
+    if (marginTop && !isFirstParagraph) {
+      let marginTopValue = 0
+      if (marginTop.indexOf('pt') !== -1) {
+        marginTopValue = parseFloat(marginTop.replace('pt', ''))
+      }
+      else if (marginTop.indexOf('em') !== -1) {
+        marginTopValue = parseFloat(marginTop.replace('em', '')) * maxFontSize
+      }
+      if (marginTopValue > 0) margins.push(marginTopValue)
+    }
+
+    if (marginBottom && !isLastParagraph) {
+      let marginBottomValue = 0
+      if (marginBottom.indexOf('pt') !== -1) {
+        marginBottomValue = parseFloat(marginBottom.replace('pt', ''))
+      }
+      else if (marginBottom.indexOf('em') !== -1) {
+        marginBottomValue = parseFloat(marginBottom.replace('em', '')) * maxFontSize
+      }
+      if (marginBottomValue > 0) margins.push(marginBottomValue)
+    }
+
+    paragraphIndex++
+  }
+
+  let lineHeight = 1
+  if (lineHeights.length) {
+    lineHeight = +(lineHeights.reduce((sum, height) => sum + height, 0) / paragraphCount).toFixed(2)
+  }
+
+  let margin = 0
+  if (margins.length && paragraphCount > 1) {
+    margin = margins.reduce((sum, margin) => sum + margin, 0) / (paragraphCount - 1)
+  }
+
+  return {
+    lineHeight,
+    margin: margin ? +(margin * ratio).toFixed(1) : null,
+  }
+}
+
 export default () => {
   const slidesStore = useSlidesStore()
   const { theme } = storeToRefs(useSlidesStore())
@@ -352,6 +461,7 @@ export default () => {
             if (el.type === 'text') {
               if (el.autoFit && el.autoFit.type === 'text') {
                 const fontScale = ratio * (el.autoFit.fontScale || 100) / 100
+                const metrics = getParagraphMetrics(el.content, fontScale)
                 const shapeEl: PPTShapeElement = {
                   type: 'shape',
                   id: nanoid(10),
@@ -377,9 +487,12 @@ export default () => {
                     lineHeight: 1,
                   },
                 }
+                if (metrics.lineHeight) shapeEl.text!.lineHeight = metrics.lineHeight
+                if (metrics.margin) shapeEl.text!.paragraphSpace = metrics.margin
                 slide.elements.push(shapeEl)
               }
               else {
+                const metrics = getParagraphMetrics(el.content, ratio)
                 const textEl: PPTTextElement = {
                   type: 'text',
                   id: nanoid(10),
@@ -409,6 +522,8 @@ export default () => {
                   }
                 }
                 slide.elements.push(textEl)
+                if (metrics.lineHeight) textEl.lineHeight = metrics.lineHeight
+                if (metrics.margin) textEl.paragraphSpace = metrics.margin
               }
             }
             else if (el.type === 'image') {
@@ -518,6 +633,8 @@ export default () => {
                 const pattern: string | undefined = el.fill?.type === 'image' ? el.fill.value.picBase64 : undefined
 
                 const fill = el.fill?.type === 'color' ? el.fill.value : ''
+
+                const metrics = getParagraphMetrics(el.content, ratio)
                 
                 const element: PPTShapeElement = {
                   type: 'shape',
@@ -547,6 +664,9 @@ export default () => {
                   flipH: el.isFlipH,
                   flipV: el.isFlipV,
                 }
+                if (metrics.lineHeight) element.text!.lineHeight = metrics.lineHeight
+                if (metrics.margin) element.text!.paragraphSpace = metrics.margin
+
                 if (el.shadow) {
                   element.shadow = {
                     h: el.shadow.h * ratio,
