@@ -38,7 +38,6 @@ const convertFontSizePtToPx = (html: string, ratio: number) => {
 }
 
 const getMaxFontSize = (html: string, defaultFontSize: number = 18): number => {
-  // 直接匹配所有 pt 单位的 font-size
   const fontSizeRegex = /font-size\s*:\s*(\d+(?:\.\d+)?)\s*pt/gi
   const fontSizes = [defaultFontSize]
 
@@ -335,29 +334,51 @@ export default () => {
   }
 
   const calculateRotatedPosition = (
-    x: number,
-    y: number,
-    w: number,
-    h: number,
-    ox: number,
-    oy: number,
-    k: number,
+    ax: number, // A 的 x
+    ay: number, // A 的 y
+    aw: number, // A 的宽
+    ah: number, // A 的高
+    bx: number, // B 相对 A 的 x (ox)
+    by: number, // B 相对 A 的 y (oy)
+    bw: number, // B 的宽
+    bh: number, // B 的高
+    ak: number, // A 的旋转角度（度，正顺时针）
+    bk: number, // B 的旋转角度（度，正顺时针）
   ) => {
-    const radians = k * (Math.PI / 180)
+    const aRadians = ak * (Math.PI / 180)
+    const aCos = Math.cos(aRadians)
+    const aSin = Math.sin(aRadians)
 
-    const containerCenterX = x + w / 2
-    const containerCenterY = y + h / 2
+    const aCenterX = ax + aw / 2
+    const aCenterY = ay + ah / 2
 
-    const relativeX = ox - w / 2
-    const relativeY = oy - h / 2
+    const corners = [
+      { ox: bx, oy: by },
+      { ox: bx + bw, oy: by },
+      { ox: bx + bw, oy: by + bh },
+      { ox: bx, oy: by + bh },
+    ]
 
-    const rotatedX = relativeX * Math.cos(radians) + relativeY * Math.sin(radians)
-    const rotatedY = -relativeX * Math.sin(radians) + relativeY * Math.cos(radians)
+    let minX = Infinity
+    let minY = Infinity
 
-    const graphicX = containerCenterX + rotatedX
-    const graphicY = containerCenterY + rotatedY
+    for (const corner of corners) {
+      const relativeX = corner.ox - aw / 2
+      const relativeY = corner.oy - ah / 2
 
-    return { x: graphicX, y: graphicY }
+      const rotatedX = relativeX * aCos + relativeY * aSin
+      const rotatedY = -relativeX * aSin + relativeY * aCos
+
+      const graphicX = aCenterX + rotatedX
+      const graphicY = aCenterY + rotatedY
+
+      minX = Math.min(minX, graphicX)
+      minY = Math.min(minY, graphicY)
+    }
+
+    const globalRotation = (bk + ak) % 360
+
+    return { x: minX, y: minY, globalRotation }
   }
 
   // 导入PPTX文件
@@ -881,10 +902,25 @@ export default () => {
                 let left = _el.left + originLeft
                 let top = _el.top + originTop
 
+                let rotate = 0
+                if ('rotate' in _el) rotate = _el.rotate
+
                 if (el.rotate) {
-                  const { x, y } = calculateRotatedPosition(originLeft, originTop, originWidth, originHeight, _el.left, _el.top, el.rotate)
+                  const { x, y, globalRotation } = calculateRotatedPosition(
+                    originLeft,
+                    originTop,
+                    originWidth,
+                    originHeight,
+                    _el.left,
+                    _el.top,
+                    _el.width,
+                    _el.height,
+                    el.rotate,
+                    rotate
+                  )
                   left = x
                   top = y
+                  rotate = globalRotation
                 }
 
                 const element = {
@@ -894,6 +930,7 @@ export default () => {
                 }
                 if (el.isFlipH && 'isFlipH' in element) element.isFlipH = true
                 if (el.isFlipV && 'isFlipV' in element) element.isFlipV = true
+                if ('rotate' in element && el.rotate) element.rotate = rotate
 
                 return element
               })

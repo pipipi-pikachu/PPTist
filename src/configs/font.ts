@@ -19,4 +19,13 @@ export const FONTS = [
   { label: '素材集市酷方体', value: 'SucaiJishiCoolSquare' },
   { label: '途牛类圆体', value: 'TuniuRounded' },
   { label: '锐字真言体', value: 'RuiziZhenyan' },
+  { label: 'Source Serif 4', value: 'SourceSerif4' },
+  { label: 'JetBrains Mono', value: 'JetBrainsMono' },
+  { label: 'Literata', value: 'Literata' },
+  { label: 'Inter', value: 'Inter' },
+  { label: 'Roboto', value: 'Roboto' },
+  { label: 'Open Sans', value: 'OpenSans' },
+  { label: 'Montserrat', value: 'Montserrat' },
+  { label: 'Source Sans Pro', value: 'SourceSansPro' },
+  { label: 'Merriweather', value: 'Merriweather' },
 ]

@@ -1,4 +1,4 @@
-$fonts: 'SourceHanSans', 'SourceHanSerif', 'WenDingPLSongTi', 'AlibabaPuHuiTi', 'ZhuQueFangSong', 'LXGWWenKai', 'WenDingPLKaiTi', 'DeYiHei', 'MiSans', 'CangerXiaowanzi', 'YousheTitleBlack', 'FengguangMingrui', 'ShetuModernSquare', 'ZcoolHappy', 'ZizhiQuXiMai', 'SucaiJishiKangkang', 'SucaiJishiCoolSquare', 'TuniuRounded', 'RuiziZhenyan';
+$fonts: 'SourceHanSans', 'SourceHanSerif', 'WenDingPLSongTi', 'AlibabaPuHuiTi', 'ZhuQueFangSong', 'LXGWWenKai', 'WenDingPLKaiTi', 'DeYiHei', 'MiSans', 'CangerXiaowanzi', 'YousheTitleBlack', 'FengguangMingrui', 'ShetuModernSquare', 'ZcoolHappy', 'ZizhiQuXiMai', 'SucaiJishiKangkang', 'SucaiJishiCoolSquare', 'TuniuRounded', 'RuiziZhenyan', 'SourceSerif4', 'Inter', 'JetBrainsMono', 'Literata', 'Roboto', 'OpenSans', 'Montserrat', 'SourceSansPro', 'Merriweather';
 
 @each $font in $fonts {
   @font-face {
