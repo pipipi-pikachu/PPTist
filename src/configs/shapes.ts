@@ -46,7 +46,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.CUT_RECT_DIAGONAL]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.9]],
+    range: [[0, 0.95]],
     relative: ['right'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -57,7 +57,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.CUT_RECT_SINGLE]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.9]],
+    range: [[0, 0.95]],
     relative: ['right'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -147,7 +147,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.L]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.1, 0.9]],
+    range: [[0.05, 0.95]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -158,7 +158,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.RING_RECT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.1, 0.45]],
+    range: [[0.05, 0.45]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -169,7 +169,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.PLUS]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.1, 0.9]],
+    range: [[0.05, 0.95]],
     relative: ['center'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -191,7 +191,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.PARALLELOGRAM_LEFT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0, 0.9]],
+    range: [[0, 0.95]],
     relative: ['left'],
     getBaseSize: [width => width],
     formula: (width, height, values) => {
@@ -202,7 +202,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.PARALLELOGRAM_RIGHT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0, 0.9]],
+    range: [[0, 0.95]],
     relative: ['right'],
     getBaseSize: [width => width],
     formula: (width, height, values) => {
@@ -235,7 +235,7 @@ export const SHAPE_PATH_FORMULAS: {
   [ShapePathFormulasKeys.INDICATOR]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.9]],
+    range: [[0, 0.95]],
     relative: ['right'],
     getBaseSize: [width => width],
     formula: (width, height, values) => {
