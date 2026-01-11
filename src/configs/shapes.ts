@@ -29,9 +29,7 @@ export interface ShapePathFormula {
   formula: (width: number, height: number, values?: number[]) => string
 }
 
-export const SHAPE_PATH_FORMULAS: {
-  [key: string]: ShapePathFormula
-} = {
+export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.ROUND_RECT]: {
     editable: true,
     defaultValue: [0.125],

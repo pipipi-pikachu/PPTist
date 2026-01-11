@@ -2,11 +2,7 @@ export const childlessTags = ['style', 'script', 'template']
 
 export const closingTags = ['html', 'head', 'body', 'p', 'dt', 'dd', 'li', 'option', 'thead', 'th', 'tbody', 'tr', 'td', 'tfoot', 'colgroup']
 
-interface ClosingTagAncestorBreakers {
-  [key: string]: string[]
-}
-
-export const closingTagAncestorBreakers: ClosingTagAncestorBreakers = {
+export const closingTagAncestorBreakers: Record<string, string[]> = {
   li: ['ul', 'ol', 'menu'],
   dt: ['dl'],
   dd: ['dl'],

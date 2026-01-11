@@ -154,7 +154,7 @@ export default () => {
     let indent = 0
 
     const slices: pptxgen.TextProps[] = []
-    const parse = (obj: AST[], baseStyleObj: { [key: string]: string } = {}) => {
+    const parse = (obj: AST[], baseStyleObj: Record<string, string> = {}) => {
 
       for (const item of obj) {
         const isBlockTag = 'tagName' in item && ['div', 'li', 'p'].includes(item.tagName)

@@ -93,9 +93,9 @@ const tabs: TabItem[] = [
 ]
 const activeTab = ref<'single' | 'all'>('single')
 
-const fontMap = ref<{ [key: string]: string }>({})
+const fontMap = ref<Record<string, string>>({})
 onMounted(() => {
-  const map: { [key: string]: string } = {}
+  const map: Record<string, string> = {}
   for (const item of FONTS) {
     map[item.value] = item.label
   }

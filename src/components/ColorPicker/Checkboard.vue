@@ -15,10 +15,7 @@ const props = withDefaults(defineProps<{
   grey: '#e6e6e6',
 })
 
-interface CheckboardCache {
-  [key: string]: string | null
-}
-const checkboardCache: CheckboardCache = {}
+const checkboardCache: Record<string, string | null> = {}
 
 const renderCheckboard = (white: string, grey: string, size: number) => {
   const canvas = document.createElement('canvas')

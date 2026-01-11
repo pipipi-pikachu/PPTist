@@ -25,7 +25,7 @@ import type {
   Gradient,
 } from '@/types/slides'
 
-const shapeVAlignMap: { [key: string]: ShapeTextAlign } = {
+const shapeVAlignMap: Record<string, ShapeTextAlign> = {
   'mid': 'middle',
   'down': 'bottom',
   'up': 'top',
@@ -568,10 +568,14 @@ export default () => {
                   style: el.borderType,
                 }
               }
-              const clipShapeTypes = ['roundRect', 'ellipse', 'triangle', 'rhombus', 'pentagon', 'hexagon', 'heptagon', 'octagon', 'parallelogram', 'trapezoid']
+              const clipShapeTypes = ['rect', 'roundRect', 'ellipse', 'triangle', 'rhombus', 'pentagon', 'hexagon', 'heptagon', 'octagon', 'parallelogram', 'trapezoid']
+              let geom = el.geom || 'rect'
+              if (geom.indexOf('custom:') !== -1) geom = geom.replace('custom:', '')
+              if (!clipShapeTypes.includes(geom)) geom = 'rect'
+
               if (el.rect) {
                 element.clip = {
-                  shape: (el.geom && clipShapeTypes.includes(el.geom)) ? el.geom : 'rect',
+                  shape: geom,
                   range: [
                     [
                       el.rect.l || 0,
@@ -584,9 +588,9 @@ export default () => {
                   ]
                 }
               }
-              else if (el.geom && clipShapeTypes.includes(el.geom)) {
+              else if (el.geom) {
                 element.clip = {
-                  shape: el.geom,
+                  shape: geom,
                   range: [[0, 0], [100, 100]]
                 }
               }

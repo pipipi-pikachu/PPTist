@@ -3,9 +3,7 @@ import type { Node, NodeType } from 'prosemirror-model'
 import type { Transaction, EditorState } from 'prosemirror-state'
 import { findParentNode, isList } from '../utils'
 
-interface Attr {
-  [key: string]: number | string
-}
+type Attr = Record<string, number | string>
 
 interface TextStyleAttr {
   color?: string

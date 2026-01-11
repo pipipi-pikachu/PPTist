@@ -101,7 +101,7 @@ const orientationOptions: {
   { key: 'portrait', label: '纵向' },
   { key: 'square', label: '方形' },
 ]
-const orientationMap: { [key: string]: string } = {
+const orientationMap: Record<string, string> = {
   'all': '全部',
   'landscape': '横向',
   'portrait': '纵向',

@@ -1,6 +1,6 @@
 import type { ChartData } from '@/types/slides'
 
-export const CHART_TYPE_MAP: { [key: string]: string } = {
+export const CHART_TYPE_MAP: Record<string, string> = {
   'bar': '柱状图',
   'column': '条形图',
   'line': '折线图',
@@ -11,7 +11,7 @@ export const CHART_TYPE_MAP: { [key: string]: string } = {
   'radar': '雷达图',
 }
 
-export const CHART_DEFAULT_DATA: { [key: string]: ChartData } = {
+export const CHART_DEFAULT_DATA: Record<string, ChartData> = {
   'bar': {
     labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
     legends: ['系列1', '系列2'],

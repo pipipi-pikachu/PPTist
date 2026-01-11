@@ -15,12 +15,8 @@ import {
   splitBlockKeepMarks,
 } from 'prosemirror-commands'
 
-interface Keys {
-  [key: string]: Command
-}
-
 export const buildKeymap = (schema: Schema) => {
-  const keys: Keys = {}
+  const keys: Record<string, Command> = {}
   const bind = (key: string, cmd: Command) => keys[key] = cmd
 
   bind('Alt-ArrowUp', joinUp)

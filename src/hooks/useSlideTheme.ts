@@ -172,7 +172,7 @@ export default () => {
       }
     }
     
-    const backgroundColors: { [key: string]: number } = {}
+    const backgroundColors: Record<string, number> = {}
     for (const item of backgroundColorValues) {
       const color = tinycolor(item.value).toRgbString()
       if (color === 'rgba(0, 0, 0, 0)') continue
@@ -180,7 +180,7 @@ export default () => {
       else backgroundColors[color] += item.area
     }
 
-    const themeColors: { [key: string]: number } = {}
+    const themeColors: Record<string, number> = {}
     for (const item of themeColorValues) {
       const color = tinycolor(item.value).toRgbString()
       if (color === 'rgba(0, 0, 0, 0)') continue
@@ -188,7 +188,7 @@ export default () => {
       else themeColors[color] += item.area
     }
 
-    const fontColors: { [key: string]: number } = {}
+    const fontColors: Record<string, number> = {}
     for (const item of fontColorValues) {
       const color = tinycolor(item.value).toRgbString()
       if (color === 'rgba(0, 0, 0, 0)') continue
@@ -196,7 +196,7 @@ export default () => {
       else fontColors[color] += item.area
     }
   
-    const fontNames: { [key: string]: number } = {}
+    const fontNames: Record<string, number> = {}
     for (const item of fontNameValues) {
       if (!fontNames[item.value]) fontNames[item.value] = item.area
       else fontNames[item.value] += item.area
@@ -212,7 +212,7 @@ export default () => {
 
   // 获取指定幻灯片内的主要颜色（忽略透明度），并按颜色面积排序
   const getSlideAllColors = (slide: Slide) => {
-    const colorMap: { [key: string]: number } = {}
+    const colorMap: Record<string, number> = {}
 
     const record = (color: string, area: number) => {
       const _color = tinycolor(color).setAlpha(1).toRgbString()
@@ -258,10 +258,10 @@ export default () => {
   }
   
   // 创建原颜色与新颜色的对应关系表
-  const createSlideThemeColorMap = (slide: Slide, _newColors: string[]): { [key: string]: string } => {
+  const createSlideThemeColorMap = (slide: Slide, _newColors: string[]): Record<string, string> => {
     const newColors = [..._newColors]
     const oldColors = getSlideAllColors(slide)
-    const themeColorMap: { [key: string]: string } = {}
+    const themeColorMap: Record<string, string> = {}
   
     if (oldColors.length > newColors.length) {
       const analogous = tinycolor(newColors[0]).analogous(oldColors.length - newColors.length + 10)

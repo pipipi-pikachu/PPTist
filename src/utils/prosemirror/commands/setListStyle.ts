@@ -1,9 +1,7 @@
 import type { EditorView } from 'prosemirror-view'
 import { isList } from '../utils'
 
-interface Style {
-  [key: string]: string
-}
+type Style = Record<string, string>
 
 export const setListStyle = (view: EditorView, style: Style | Style[]) => {
   const { state } = view

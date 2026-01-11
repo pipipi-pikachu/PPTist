@@ -1,4 +1,4 @@
-export const MIME_MAP: { [key: string]: string } = {
+export const MIME_MAP: Record<string, string> = {
 
   // 音频类型
   'audio/aac': 'aac',

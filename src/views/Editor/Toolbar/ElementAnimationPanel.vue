@@ -143,7 +143,7 @@ import NumberInput from '@/components/NumberInput.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 
-const animationEffects: { [key: string]: string } = {}
+const animationEffects: Record<string, string> = {}
 for (const effect of ENTER_ANIMATIONS) {
   for (const animation of effect.children) {
     animationEffects[animation.value] = animation.name

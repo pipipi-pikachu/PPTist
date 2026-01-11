@@ -2,9 +2,7 @@ import { nodes } from 'prosemirror-schema-basic'
 import type { Node, NodeSpec } from 'prosemirror-model'
 import { listItem as _listItem } from 'prosemirror-schema-list'
 
-interface Attr {
-  [key: string]: number | string
-}
+type Attr = Record<string, number | string>
 
 const orderedList: NodeSpec = {
   attrs: {

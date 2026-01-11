@@ -34,7 +34,7 @@ const pathMap = {
   dot: 'm0 5a5 5 0 1 0 10 0a5 5 0 1 0 -10 0z',
   arrow: 'M0,0 L10,5 0,10 Z',
 }
-const rotateMap: { [key: string]: number } = {
+const rotateMap: Record<string, number> = {
   'arrow-start': 180,
   'arrow-end': 0,
 }

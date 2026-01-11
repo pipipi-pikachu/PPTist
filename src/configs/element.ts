@@ -1,4 +1,4 @@
-export const ELEMENT_TYPE_ZH: { [key: string]: string } = {
+export const ELEMENT_TYPE_ZH: Record<string, string> = {
   text: '文本',
   image: '图片',
   shape: '形状',
@@ -10,7 +10,7 @@ export const ELEMENT_TYPE_ZH: { [key: string]: string } = {
   latex: '公式',
 }
 
-export const MIN_SIZE: { [key: string]: number } = {
+export const MIN_SIZE: Record<string, number> = {
   text: 40,
   image: 20,
   shape: 20,
