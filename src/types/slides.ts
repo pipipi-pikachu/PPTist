@@ -18,6 +18,7 @@ export const enum ShapePathFormulasKeys {
   TRAPEZOID = 'trapezoid',
   BULLET = 'bullet',
   INDICATOR = 'indicator',
+  DONUT = 'donut',
 }
 
 export const enum ElementTypes {

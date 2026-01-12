@@ -711,8 +711,25 @@ export default () => {
     
                     const pathFormula = SHAPE_PATH_FORMULAS[shape.pathFormula]
                     if ('editable' in pathFormula && pathFormula.editable) {
-                      element.path = pathFormula.formula(el.width, el.height, pathFormula.defaultValue)
-                      element.keypoints = pathFormula.defaultValue
+                      let keypointValues = pathFormula.defaultValue
+                      if (el.keypoints && Object.keys(el.keypoints).length) {
+                        if (el.shapType === 'roundRect') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'snip1Rect') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'snip2SameRect') keypointValues = [el.keypoints.adj1 * 0.5]
+                        if (el.shapType === 'snip2DiagRect') keypointValues = [el.keypoints.adj2 * 0.5]
+                        if (el.shapType === 'snipRoundRect') keypointValues = [(el.keypoints.adj1 + el.keypoints.adj2) / 2 * 0.5]
+                        if (el.shapType === 'round1Rect') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'round2SameRect') keypointValues = [el.keypoints.adj1 * 0.5]
+                        if (el.shapType === 'round2DiagRect') keypointValues = [el.keypoints.adj1 * 0.5]
+                        if (el.shapType === 'triangle') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'trapezoid') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'frame') keypointValues = [el.keypoints.adj1 * 0.5]
+                        if (el.shapType === 'corner') keypointValues = [(el.keypoints.adj1 + el.keypoints.adj2) / 2 * 0.5]
+                        if (el.shapType === 'donut') keypointValues = [el.keypoints.adj * 0.5]
+                        if (el.shapType === 'plus') keypointValues = [1 - el.keypoints.adj]
+                      }
+                      element.path = pathFormula.formula(el.width, el.height, keypointValues)
+                      element.keypoints = keypointValues
                     }
                     else element.path = pathFormula.formula(el.width, el.height)
                   }

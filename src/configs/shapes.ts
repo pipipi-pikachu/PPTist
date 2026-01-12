@@ -164,9 +164,27 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
       return `M 0 0 ${width} 0 ${width} ${height} L 0 ${height} L 0 0 Z M ${lineWidth} ${lineWidth} L ${lineWidth} ${height - lineWidth} L ${width - lineWidth} ${height - lineWidth} L ${width - lineWidth} ${lineWidth} Z`
     }
   },
-  [ShapePathFormulasKeys.PLUS]: {
+  [ShapePathFormulasKeys.DONUT]: {
     editable: true,
     defaultValue: [0.25],
+    range: [[0.05, 0.45]],
+    relative: ['left'],
+    getBaseSize: [(width, height) => Math.min(width, height)],
+    formula: (width, height, values) => {
+      const lineWidth = Math.min(width, height) * values![0]
+      const cx = width / 2
+      const cy = height / 2
+      const rxOuter = width / 2
+      const ryOuter = height / 2
+      const rxInner = rxOuter - lineWidth
+      const ryInner = ryOuter - lineWidth
+
+      return `M ${cx - rxOuter} ${cy} A ${rxOuter} ${ryOuter} 0 1 1 ${cx - rxOuter} ${cy + 1} Z M ${cx + rxInner} ${cy} A ${rxInner} ${ryInner} 0 1 0 ${cx + rxInner} ${cy + 1} Z`
+    }
+  },
+  [ShapePathFormulasKeys.PLUS]: {
+    editable: true,
+    defaultValue: [0.6],
     range: [[0.05, 0.95]],
     relative: ['center'],
     getBaseSize: [(width, height) => Math.min(width, height)],
@@ -458,6 +476,8 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 50 0 L 150 0 L 150 50 L 200 50 L 200 150 L 150 150 L 150 200 L 50 200 L 50 150 L 0 150 L 0 50 L 50 50 L 50 0 Z',
+        pathFormula: ShapePathFormulasKeys.PLUS,
+        pptxShapeType: 'plus',
       },
       {
         viewBox: [200, 200],
@@ -474,12 +494,12 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M0 100 A100 100 0 1 1 0 101 Z M150 100 A50 50 0 1 0 150 101 Z',
+        pathFormula: ShapePathFormulasKeys.DONUT,
         pptxShapeType: 'donut',
       },
       {
         viewBox: [200, 200],
         path: 'M 70 0 L 70 70 L 0 70 L 0 130 L 70 130 L 70 200 L 130 200 L 130 130 L 200 130 L 200 70 L 130 70 L 130 0 L 70 0 Z',
-        pathFormula: ShapePathFormulasKeys.PLUS,
         pptxShapeType: 'mathPlus',
       },
       {
