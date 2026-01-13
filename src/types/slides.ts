@@ -19,6 +19,7 @@ export const enum ShapePathFormulasKeys {
   BULLET = 'bullet',
   INDICATOR = 'indicator',
   DONUT = 'donut',
+  DIAGSTRIPE = 'diagStripe',
 }
 
 export const enum ElementTypes {
