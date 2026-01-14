@@ -31,10 +31,10 @@ const shapeVAlignMap: Record<string, ShapeTextAlign> = {
   'up': 'top',
 }
 
-const convertFontSizePtToPx = (html: string, ratio: number) => {
+const convertTextContent = (html: string, ratio: number) => {
   return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
-    return `font-size: ${(parseFloat(p1) * ratio).toFixed(1)}px`
-  })
+    return `font-size: ${Math.floor(parseFloat(p1) * ratio)}px`
+  }).replace(/&nbsp;/g, ' ')
 }
 
 const getMaxFontSize = (html: string, defaultFontSize: number = 18): number => {
@@ -501,7 +501,7 @@ export default () => {
                     style: el.borderType,
                   },
                   text: {
-                    content: convertFontSizePtToPx(el.content, fontScale),
+                    content: convertTextContent(el.content, fontScale),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: shapeVAlignMap[el.vAlign] || 'middle',
@@ -524,7 +524,7 @@ export default () => {
                   rotate: el.rotate,
                   defaultFontName: theme.value.fontName,
                   defaultColor: theme.value.fontColor,
-                  content: convertFontSizePtToPx(el.content, ratio),
+                  content: convertTextContent(el.content, ratio),
                   lineHeight: 1,
                   outline: {
                     color: el.borderColor,
@@ -681,7 +681,7 @@ export default () => {
                     style: el.borderType,
                   },
                   text: {
-                    content: convertFontSizePtToPx(el.content, ratio),
+                    content: convertTextContent(el.content, ratio),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: shapeVAlignMap[el.vAlign] || 'middle',
