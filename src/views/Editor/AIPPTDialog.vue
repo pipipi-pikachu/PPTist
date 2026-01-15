@@ -379,7 +379,7 @@ const uploadLocalTemplate = () => {
   
       img {
         width: 100%;
-        min-height: 180px;
+        min-height: 175px;
       }
     }
   }
@@ -471,6 +471,28 @@ const uploadLocalTemplate = () => {
   .select-template {
     .templates {
       padding-right: 0;
+  
+      .template {
+        img {
+          min-height: 60px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (width <= 380px) {
+  .preview {
+    pre {
+      max-height: 400px;
+    }
+    .outline-view {
+      max-height: 400px;
+    }
+  }
+  .select-template {
+    .templates {
+      max-height: 400px;
     }
   }
 }
