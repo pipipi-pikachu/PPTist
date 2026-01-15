@@ -639,7 +639,7 @@ export default () => {
               })
             }
             else if (el.type === 'shape') {
-              if (el.shapType === 'line' || /Connector/.test(el.shapType)) {
+              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType)) {
                 const lineElement = parseLineElement(el, ratio)
                 slide.elements.push(lineElement)
               }
@@ -713,68 +713,72 @@ export default () => {
                     if ('editable' in pathFormula && pathFormula.editable) {
                       let keypointValues = pathFormula.defaultValue
                       if (el.keypoints) {
+                        let keypoint = 0
                         if (el.shapType === 'roundRect') {
                           const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'snip1Rect') {
                           const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'snip2SameRect') {
                           const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'snip2DiagRect') {
                           const val = el.keypoints.adj2 === undefined ? 0.334 : el.keypoints.adj2
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'snipRoundRect') {
                           const val1 = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
                           const val2 = el.keypoints.adj2 === undefined ? 0.334 : el.keypoints.adj2
-                          keypointValues = [((val1 + val2) / 2) * 0.5]
+                          keypoint = ((val1 + val2) / 2) * 0.5
                         }
                         if (el.shapType === 'round1Rect') {
                           const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'round2SameRect') {
                           const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'round2DiagRect') {
                           const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'triangle') {
                           const val = el.keypoints.adj === undefined ? 1 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'trapezoid') {
                           const val = el.keypoints.adj === undefined ? 0.5 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'frame') {
                           const val = el.keypoints.adj1 === undefined ? 0.25 : el.keypoints.adj1
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'corner') {
                           const val1 = el.keypoints.adj1 === undefined ? 1 : el.keypoints.adj1
                           const val2 = el.keypoints.adj2 === undefined ? 1 : el.keypoints.adj2
-                          keypointValues = [((val1 + val2) / 2) * 0.5]
+                          keypoint = ((val1 + val2) / 2) * 0.5
                         }
                         if (el.shapType === 'diagStripe') {
                           const val = el.keypoints.adj === undefined ? 1 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'donut') {
                           const val = el.keypoints.adj === undefined ? 0.5 : el.keypoints.adj
-                          keypointValues = [val * 0.5]
+                          keypoint = val * 0.5
                         }
                         if (el.shapType === 'plus') {
                           const val = el.keypoints.adj === undefined ? 0.5 : el.keypoints.adj
-                          keypointValues = [1 - val]
+                          keypoint = 1 - val
                         }
+                        if (pathFormula.range && keypoint < pathFormula.range[0][0]) keypoint = pathFormula.range[0][0]
+                        if (pathFormula.range && keypoint > pathFormula.range[0][1]) keypoint = pathFormula.range[0][1]
+                        keypointValues = [keypoint]
                       }
                       element.path = pathFormula.formula(el.width, el.height, keypointValues)
                       element.keypoints = keypointValues
@@ -811,7 +815,7 @@ export default () => {
                   }
                 }
     
-                if (element.path) slide.elements.push(element)
+                if (element.path && element.viewBox[0] && element.viewBox[1]) slide.elements.push(element)
               }
             }
             else if (el.type === 'table') {

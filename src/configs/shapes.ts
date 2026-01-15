@@ -55,7 +55,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.CUT_RECT_SINGLE]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.95]],
+    range: [[0, 1]],
     relative: ['right'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -145,7 +145,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.L]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.05, 0.95]],
+    range: [[0.05, 1]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -156,7 +156,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.RING_RECT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.05, 0.45]],
+    range: [[0.05, 0.5]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -167,7 +167,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.DONUT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.05, 0.45]],
+    range: [[0.05, 0.5]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
@@ -185,7 +185,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.DIAGSTRIPE]: {
     editable: true,
     defaultValue: [0.5],
-    range: [[0.05, 0.95]],
+    range: [[0, 0.95]],
     relative: ['left'],
     getBaseSize: [width => width],
     formula: (width, height, values) => {
@@ -201,7 +201,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.PLUS]: {
     editable: true,
     defaultValue: [0.6],
-    range: [[0.05, 0.95]],
+    range: [[0.05, 1]],
     relative: ['center'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
