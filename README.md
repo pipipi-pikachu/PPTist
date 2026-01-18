@@ -35,7 +35,7 @@
 
 
 # 🧩 Project Positioning
-> This project is strictly positioned as a Web Slide Editing/Presentation Application. It is not intended to be an ~~AI PPT generator, low-code platform, or image editor~~. Below are the recommended use cases:
+> This project is strictly positioned as a Web Slide Editing/Presentation Application. It is not intended to be an ~~AI PPT generator, low-code platform, or image editor~~. The following are the recommendation levels for common use cases:
 
 - **Low-code Platforms / H5 Editors / Image Editors / Whiteboards** (Recommendation: Not Recommended): We suggest choosing open-source projects specifically designed for those purposes.
 - **PPT File Preview Tool** (Recommendation: ⭐): The ability to import .pptx files is limited (roughly 60% fidelity). Unless your requirements for preview accuracy are low and you only need basic content display, this is not recommended.
