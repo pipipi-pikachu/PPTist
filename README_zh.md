@@ -9,6 +9,7 @@
     <a href="https://www.typescriptlang.org" target="_black"><img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language"></a>
     <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black"><img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue"></a>
     <a href="https://gitee.com/pptist/PPTist" target="_black"><img src="https://gitee.com/pptist/PPTist/badge/star.svg?version=latest" alt="gitee"></a>
+    <a href="https://gitcode.com/pipipi-pikachu/PPTist" target="_black"><img src="https://gitcode.com/pipipi-pikachu/PPTist/star/badge.svg" alt="gitcode"></a>
 </p>
 
 简体中文 | [English](README.md)
