@@ -192,6 +192,7 @@ watch(isHandleElement, () => {
   padding: 10px;
   line-height: 1.5;
   word-break: break-word;
+  font-family: $textElementFont;
   cursor: move;
 
   .text {

@@ -130,6 +130,7 @@ const text = computed<ShapeText>(() => {
   width: 100%;
   height: 100%;
   position: relative;
+  font-family: $textElementFont;
 
   svg {
     transform-origin: 0 0;

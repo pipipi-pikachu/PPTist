@@ -72,6 +72,7 @@ const { shadowStyle } = useElementShadow(shadow)
   padding: 10px;
   line-height: 1.5;
   word-break: break-word;
+  font-family: $textElementFont;
 
   .text {
     position: relative;
