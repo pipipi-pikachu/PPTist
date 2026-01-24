@@ -59,8 +59,10 @@
             style="width: 190px;"
             v-model:value="model"
             :options="[
-              { label: 'GLM-4.5-Flash', value: 'GLM-4.5-Flash' },
-              { label: 'Doubao-Seed-1.6-flash', value: 'ark-doubao-seed-1.6-flash' },
+              { label: 'GLM-4.7-Flash', value: 'glm-4.7-flash' },
+              { label: 'Doubao-Seed-1.6-Flash', value: 'doubao-seed-1.6-flash' },
+              { label: 'GPT-oss-20b', value: 'gpt-oss-20b' },
+              { label: 'Gemini-2.5-Flash-Lite', value: 'gemini-2.5-flash-lite' },
             ]"
           />
         </div>
@@ -151,7 +153,7 @@ const loading = ref(false)
 const outlineCreating = ref(false)
 const overwrite = ref(true)
 const step = ref<'setup' | 'outline' | 'template'>('setup')
-const model = ref('GLM-4.5-Flash')
+const model = ref('glm-4.7-flash')
 const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
 const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
