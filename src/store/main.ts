@@ -38,7 +38,7 @@ export interface MainState {
   showSymbolPanel: boolean
   showMarkupPanel: boolean
   showImageLibPanel: boolean
-  showAIPPTDialog: boolean
+  showAIPPTDialog: boolean | 'running'
 }
 
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
@@ -215,7 +215,7 @@ export const useMainStore = defineStore('main', {
       this.showImageLibPanel = show
     },
 
-    setAIPPTDialogState(show: boolean) {
+    setAIPPTDialogState(show: boolean | 'running') {
       this.showAIPPTDialog = show
     },
   },

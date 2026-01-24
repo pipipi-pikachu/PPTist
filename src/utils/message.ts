@@ -2,7 +2,7 @@ import { createVNode, render, type AppContext } from 'vue'
 import MessageComponent from '@/components/Message.vue'
 
 export interface MessageOptions {
-  type?: 'info' | 'success' | 'warning' | 'error'
+  type?: 'info' | 'success' | 'warning' | 'error' | 'loading'
   title?: string
   message?: string
   duration?: number
@@ -24,6 +24,7 @@ export interface Message {
   success: MessageFn
   error: MessageFn
   warning: MessageFn
+  loading: MessageFn
   closeAll: () => void
   _context?: AppContext | null
 }
@@ -93,6 +94,7 @@ message.success = (msg: string, options?: MessageTypeOptions) => message({ ...op
 message.info = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'info', message: msg })
 message.warning = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'warning', message: msg })
 message.error = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'error', message: msg })
+message.loading = (msg: string, options?: MessageTypeOptions) => message({ ...options, type: 'loading', message: msg })
 
 message.closeAll = function() {
   for (let i = instances.length - 1; i >= 0; i--) {

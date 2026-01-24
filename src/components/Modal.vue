@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <Transition name="modal-fade">
-      <div class="modal" ref="modalRef" v-show="visible" tabindex="-1" @keyup.esc="onEsc()">
+      <div class="modal" ref="modalRef" v-show="visible" :style="wrapStyle || {}" tabindex="-1" @keyup.esc="onEsc()">
         <div class="mask" @click="onClickMask()"></div>
         <Transition name="modal-zoom"
           @afterLeave="contentVisible = false"
@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<{
   closeOnClickMask?: boolean
   closeOnEsc?: boolean
   contentStyle?: CSSProperties
+  wrapStyle?: CSSProperties
 }>(), {
   width: 480,
   closeButton: false,

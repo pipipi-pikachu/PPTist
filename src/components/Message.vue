@@ -16,6 +16,7 @@
           <IconCheckOne theme="filled" size="18" fill="#52c41a" v-if="type === 'success'" />
           <IconCloseOne theme="filled" size="18" fill="#ff4d4f" v-if="type === 'error'" />
           <IconInfo theme="filled" size="18" fill="#1677ff" v-if="type === 'info'" />
+          <IconLoadingFour class="loading-icon" theme="filled" size="18" fill="#d14424" v-if="type === 'loading'" />
         </div>
         <div class="content">
           <div class="title" v-if="title">{{ title }}</div>
@@ -43,6 +44,7 @@ const {
   IconCheckOne,
   IconCloseOne,
   IconInfo,
+  IconLoadingFour,
   IconCloseSmall,
 } = icons
 
@@ -115,6 +117,10 @@ defineExpose({
     display: flex;
     align-items: center;
     margin-right: 10px;
+
+    .loading-icon {
+      animation: loading-icon-spin 1s linear infinite;
+    }
   }
   .title {
     font-size: 14px;
@@ -177,6 +183,15 @@ defineExpose({
   100% {
     opacity: 0;
     margin-top: -45px;
+  }
+}
+
+@keyframes loading-icon-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

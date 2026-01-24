@@ -61,8 +61,6 @@
             :options="[
               { label: 'GLM-4.7-Flash', value: 'glm-4.7-flash' },
               { label: 'Doubao-Seed-1.6-Flash', value: 'doubao-seed-1.6-flash' },
-              { label: 'GPT-oss-20b', value: 'gpt-oss-20b' },
-              { label: 'Gemini-2.5-Flash-Lite', value: 'gemini-2.5-flash-lite' },
             ]"
           />
         </div>
@@ -228,6 +226,8 @@ const createOutline = async () => {
 
 const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   loading.value = true
+  mainStore.setAIPPTDialogState('running')
+  message.loading('演示文稿生成中，请稍等 ...', { duration: 0 })
 
   if (overwrite.value) resetSlides()
 
@@ -239,6 +239,8 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   })
   if (typeof stream === 'object' && stream.state === -1) {
     loading.value = false
+    message.closeAll()
+    mainStore.setAIPPTDialogState(true)
     return message.error('该模型API的并发数过高，请更换其他模型重试')
   }
 
@@ -259,26 +261,35 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
     reader.read().then(({ done, value }) => {
       if (done) {
         loading.value = false
+        message.closeAll()
         mainStore.setAIPPTDialogState(false)
         slidesStore.setTheme(templateTheme)
         return
       }
   
       const chunk = decoder.decode(value, { stream: true })
-      try {
-        const text = chunk.replace('```json', '').replace('```jsonl', '').replace('```', '').trim()
-        if (text) {
-          const slide: AIPPTSlide = JSON.parse(jsonrepair(chunk))
-          AIPPT(templateSlides, [slide])
-        }
-      }
-      catch (err) {
-        // eslint-disable-next-line
-        console.error(err)
+      const lines = chunk.split(/\n+/)
+
+      for (const line of lines) {
+        if (line) processChunk(line)
       }
 
       readStream()
     })
+  }
+
+  const processChunk = (chunk: string) => {
+    try {
+      const text = chunk.replace('```jsonl', '').replace('```json', '').replace('```', '').trim()
+      if (text) {
+        const slide: AIPPTSlide = JSON.parse(jsonrepair(text))
+        AIPPT(templateSlides, [slide])
+      }
+    }
+    catch (err) {
+      // eslint-disable-next-line
+      console.error(err)
+    }
   }
   readStream()
 }

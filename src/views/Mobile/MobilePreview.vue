@@ -19,11 +19,12 @@
   </div>
 
   <Modal
-    :visible="showAIPPTDialog" 
+    :visible="!!showAIPPTDialog" 
     :closeOnClickMask="false"
     :closeOnEsc="false"
     :width="width"
     closeButton
+    :wrapStyle="{ opacity: showAIPPTDialog === 'running' ? 0 : 1 }"
     @closed="closeAIPPTDialog()"
   >
     <AIPPTDialog />

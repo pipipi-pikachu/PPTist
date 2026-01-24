@@ -7,8 +7,6 @@
   <FullscreenSpin tip="数据初始化中，请稍等 ..." v-else  loading :mask="false" />
 </template>
 
-
-
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
