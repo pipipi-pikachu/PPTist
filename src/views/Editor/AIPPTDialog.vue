@@ -121,6 +121,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
+import { jsonrepair } from 'jsonrepair'
 import api from '@/services'
 import useAIPPT from '@/hooks/useAIPPT'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -207,7 +208,7 @@ const createOutline = async () => {
     reader.read().then(({ done, value }) => {
       if (done) {
         outline.value = getMdContent(outline.value)
-        outline.value = outline.value.replace(/<!--[\s\S]*?-->/g, '').replace(/<think>[\s\S]*?<\/think>/g, '')
+        outline.value = outline.value.replace(/<!--[\s\S]*?-->/g, '')
         outlineCreating.value = false
         return
       }
@@ -265,9 +266,9 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   
       const chunk = decoder.decode(value, { stream: true })
       try {
-        const text = chunk.replace('```json', '').replace('```', '').trim()
+        const text = chunk.replace('```json', '').replace('```jsonl', '').replace('```', '').trim()
         if (text) {
-          const slide: AIPPTSlide = JSON.parse(chunk)
+          const slide: AIPPTSlide = JSON.parse(jsonrepair(chunk))
           AIPPT(templateSlides, [slide])
         }
       }
