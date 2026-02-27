@@ -803,7 +803,6 @@ export default () => {
                     element.path = el.path!.replace(/NaN/g, '0')
                   }
                   else {
-                    element.special = true
                     element.path = el.path!
                   }
                   const { maxX, maxY } = getSvgPathRange(element.path)

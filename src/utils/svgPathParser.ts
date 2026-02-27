@@ -1,33 +1,4 @@
-import { SVGPathData } from 'svg-pathdata'
-import arcToBezier from 'svg-arc-to-cubic-bezier'
-
-const typeMap = {
-  1: 'Z',
-  2: 'M',
-  4: 'H',
-  8: 'V',
-  16: 'L',
-  32: 'C',
-  64: 'S',
-  128: 'Q',
-  256: 'T',
-  512: 'A',
-}
-
-/**
- * 简单解析SVG路径
- * @param d SVG path d属性
- */
-export const parseSvgPath = (d: string) => {
-  const pathData = new SVGPathData(d)
-
-  const ret = pathData.commands.map(item => {
-    return { ...item, type: typeMap[item.type] }
-  })
-  return ret
-}
-
-export type SvgPath = ReturnType<typeof parseSvgPath>
+import { SVGPathData, SVGPathDataTransformer } from 'svg-pathdata'
 
 /**
  * 解析SVG路径，并将圆弧（A）类型的路径转为三次贝塞尔（C）类型的路径
@@ -35,23 +6,37 @@ export type SvgPath = ReturnType<typeof parseSvgPath>
  */
 export const toPoints = (d: string) => {
   const pathData = new SVGPathData(d)
-  
-  const points = []
-  for (const item of pathData.commands) {
-    const type = typeMap[item.type]
+    .transform(SVGPathDataTransformer.TO_ABS())
+    .transform(SVGPathDataTransformer.NORMALIZE_HVZ())
+    .transform(SVGPathDataTransformer.NORMALIZE_ST())
+    .transform(SVGPathDataTransformer.QT_TO_C())
+    .transform(SVGPathDataTransformer.A_TO_C())
 
-    if (item.type === 2 || item.type === 16) {
+  const points = []
+
+  for (const item of pathData.commands) {
+    if (item.type === SVGPathData.MOVE_TO) {
       points.push({
         x: item.x,
         y: item.y,
-        relative: item.relative,
-        type,
+        type: 'M',
+        relative: false,
       })
     }
-    if (item.type === 32) {
+    else if (item.type === SVGPathData.LINE_TO) {
       points.push({
-        x: item.x, 
+        x: item.x,
         y: item.y,
+        type: 'L',
+        relative: false,
+      })
+    }
+    else if (item.type === SVGPathData.CURVE_TO) {
+      points.push({
+        x: item.x,
+        y: item.y,
+        type: 'C',
+        relative: false,
         curve: {
           type: 'cubic',
           x1: item.x1,
@@ -59,72 +44,33 @@ export const toPoints = (d: string) => {
           x2: item.x2,
           y2: item.y2,
         },
-        relative: item.relative,
-        type,
       })
     }
-    else if (item.type === 128) {
+    else if (item.type === SVGPathData.CLOSE_PATH) {
       points.push({
-        x: item.x, 
-        y: item.y,
-        curve: {
-          type: 'quadratic',
-          x1: item.x1,
-          y1: item.y1,
-        },
-        relative: item.relative,
-        type,
+        close: true,
+        type: 'Z',
       })
     }
-    else if (item.type === 512) {
-      const lastPoint = points[points.length - 1]
-      if (!['M', 'L', 'Q', 'C'].includes(lastPoint.type)) continue
-
-      const cubicBezierPoints = arcToBezier({
-        px: lastPoint.x as number,
-        py: lastPoint.y as number,
-        cx: item.x,
-        cy: item.y,
-        rx: item.rX,
-        ry: item.rY,
-        xAxisRotation: item.xRot,
-        largeArcFlag: item.lArcFlag,
-        sweepFlag: item.sweepFlag,
-      })
-      for (const cbPoint of cubicBezierPoints) {
-        points.push({
-          x: cbPoint.x, 
-          y: cbPoint.y,
-          curve: {
-            type: 'cubic',
-            x1: cbPoint.x1,
-            y1: cbPoint.y1,
-            x2: cbPoint.x2,
-            y2: cbPoint.y2,
-          },
-          relative: false,
-          type: 'C',
-        })
-      }
-    }
-    else if (item.type === 1) {
-      points.push({ close: true, type })
-    }
-    else continue
   }
+
   return points
 }
 
 export const getSvgPathRange = (path: string) => {
   try {
     const pathData = new SVGPathData(path)
-    const xList = []
-    const yList = []
+      .transform(SVGPathDataTransformer.TO_ABS())
+      .transform(SVGPathDataTransformer.NORMALIZE_HVZ())
+      .transform(SVGPathDataTransformer.NORMALIZE_ST())
+      .transform(SVGPathDataTransformer.QT_TO_C())
+      .transform(SVGPathDataTransformer.A_TO_C())
+
+    const xList: number[] = []
+    const yList: number[] = []
     for (const item of pathData.commands) {
-      const x = ('x' in item) ? item.x : 0
-      const y = ('y' in item) ? item.y : 0
-      xList.push(x)
-      yList.push(y)
+      if ('x' in item) xList.push(item.x)
+      if ('y' in item) yList.push(item.y)
     }
     return {
       minX: Math.min(...xList),
