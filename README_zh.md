@@ -45,6 +45,8 @@
 
 
 # 🚀 项目运行
+> node version >= 20
+
 ```
 npm install
 

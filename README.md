@@ -46,6 +46,8 @@
 
 
 # 🚀 Installation
+> node.js version >= 20
+
 ```
 npm install
 
