@@ -4,7 +4,7 @@
       <div class="selector">{{ value }}</div>
       <div class="icon">
         <slot name="icon">
-          <IconDown :size="14" />
+          <i-icon-park-outline:down />
         </slot>
       </div>
     </div>
@@ -41,7 +41,7 @@
       <div class="selector">{{ showLabel }}</div>
       <div class="icon">
         <slot name="icon">
-          <IconDown :size="14" />
+          <i-icon-park-outline:down />
         </slot>
       </div>
     </div>

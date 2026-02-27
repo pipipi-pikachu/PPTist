@@ -12,7 +12,7 @@
       :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
       <div class="element-content">
-        <IconVolumeNotice 
+        <i-icon-park-outline:volume-notice 
           class="audio-icon" 
           :style="{
             fontSize: audioIconSize,

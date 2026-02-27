@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div class="close-btn" @click="emit('close')"><IconClose class="icon" /></div>
+    <div class="close-btn" @click="emit('close')"><i-icon-park-outline:close class="icon" /></div>
   </MoveablePanel>
 </template>
 

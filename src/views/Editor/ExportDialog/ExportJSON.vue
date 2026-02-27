@@ -5,7 +5,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportJSON()"><IconDownload /> 导出 JSON</Button>
+      <Button class="btn export" type="primary" @click="exportJSON()"><i-icon-park-outline:download /> 导出 JSON</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>

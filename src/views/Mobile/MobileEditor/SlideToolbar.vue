@@ -9,19 +9,19 @@
     </div>
     <div class="toolbar">
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="createSlide()"><IconPlus class="icon" /> 新幻灯片</Button>
-        <Button style="flex: 1;" @click="copyAndPasteSlide()"><IconCopy class="icon" /> 复制</Button>
-        <Button style="flex: 1;" @click="deleteSlide()"><IconDelete class="icon" /> 删除</Button>
+        <Button style="flex: 1;" @click="createSlide()"><i-icon-park-outline:plus class="icon" /> 新幻灯片</Button>
+        <Button style="flex: 1;" @click="copyAndPasteSlide()"><i-icon-park-outline:copy class="icon" /> 复制</Button>
+        <Button style="flex: 1;" @click="deleteSlide()"><i-icon-park-outline:delete class="icon" /> 删除</Button>
       </ButtonGroup>
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="insertTextElement()"><IconFontSize class="icon" /> 文字</Button>
+        <Button style="flex: 1;" @click="insertTextElement()"><i-icon-park-outline:font-size class="icon" /> 文字</Button>
         <Button style="flex: 1;">
           <FileInput @change="files => insertImageElement(files)">
-            <IconPicture class="icon" />图片
+            <i-icon-park-outline:picture class="icon" /> 图片
           </FileInput>
         </Button>
-        <Button style="flex: 1;" @click="insertShapeElement('square')"><IconSquare class="icon" /> 矩形</Button>
-        <Button style="flex: 1;" @click="insertShapeElement('round')"><IconRound class="icon" /> 圆形</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('square')"><i-icon-park-outline:square class="icon" /> 矩形</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('round')"><i-icon-park-outline:round class="icon" /> 圆形</Button>
       </ButtonGroup>
     </div>
 

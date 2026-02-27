@@ -18,33 +18,33 @@
               style="flex: 1;"
               :checked="richTextAttrs.bold"
               @click="emitRichTextCommand('bold')"
-            ><IconTextBold /></CheckboxButton>
+            ><i-icon-park-outline:text-bold /></CheckboxButton>
             <CheckboxButton 
               style="flex: 1;"
               :checked="richTextAttrs.em"
               @click="emitRichTextCommand('em')"
-            ><IconTextItalic /></CheckboxButton>
+            ><i-icon-park-outline:text-italic /></CheckboxButton>
             <CheckboxButton 
               style="flex: 1;"
               :checked="richTextAttrs.underline"
               @click="emitRichTextCommand('underline')"
-            ><IconTextUnderline /></CheckboxButton>
+            ><i-icon-park-outline:text-underline /></CheckboxButton>
             <CheckboxButton 
               style="flex: 1;"
               :checked="richTextAttrs.strikethrough"
               @click="emitRichTextCommand('strikethrough')"
-            ><IconStrikethrough /></CheckboxButton>
+            ><i-icon-park-outline:strikethrough /></CheckboxButton>
           </ButtonGroup>
 
           <ButtonGroup class="row">
             <Button 
               style="flex: 1;"
               @click="emitRichTextCommand('fontsize-add')"
-            ><IconFontSize />+</Button>
+            ><i-icon-park-outline:font-size />+</Button>
             <Button 
               style="flex: 1;"
               @click="emitRichTextCommand('fontsize-reduce')"
-            ><IconFontSize />-</Button>
+            ><i-icon-park-outline:font-size />-</Button>
           </ButtonGroup>
 
           <RadioGroup 
@@ -53,9 +53,9 @@
             :value="richTextAttrs.align"
             @update:value="value => emitRichTextCommand('align', value)"
           >
-            <RadioButton value="left" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-            <RadioButton value="center" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-            <RadioButton value="right" style="flex: 1;"><IconAlignTextRight /></RadioButton>
+            <RadioButton value="left" style="flex: 1;"><i-icon-park-outline:align-text-left /></RadioButton>
+            <RadioButton value="center" style="flex: 1;"><i-icon-park-outline:align-text-center /></RadioButton>
+            <RadioButton value="right" style="flex: 1;"><i-icon-park-outline:align-text-right /></RadioButton>
           </RadioGroup>
         </template>
 
@@ -105,30 +105,30 @@
 
       <div class="common" v-if="activeTab === 'common'">
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="copyElement()"><IconCopy class="icon" /> 复制</Button>
-          <Button style="flex: 1;" @click="deleteElement()"><IconDelete class="icon" /> 删除</Button>
+          <Button style="flex: 1;" @click="copyElement()"><i-icon-park-outline:copy class="icon" /> 复制</Button>
+          <Button style="flex: 1;" @click="deleteElement()"><i-icon-park-outline:delete class="icon" /> 删除</Button>
         </ButtonGroup>
         
         <Divider :margin="20" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><IconSendToBack class="icon" /> 置顶</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><IconBringToFrontOne class="icon" /> 置底</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><IconBringToFront class="icon" /> 上移</Button>
-          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><IconSentToBack class="icon" /> 下移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><i-icon-park-outline:send-to-back class="icon" /> 置顶</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><i-icon-park-outline:bring-to-front-one class="icon" /> 置底</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:bring-to-front class="icon" /> 上移</Button>
+          <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><i-icon-park-outline:sent-to-back class="icon" /> 下移</Button>
         </ButtonGroup>
         
         <Divider :margin="20" />
 
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><IconAlignLeft class="icon" /> 左对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><IconAlignVertically class="icon" /> 水平居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><IconAlignRight class="icon" /> 右对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left class="icon" /> 左对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-vertically class="icon" /> 水平居中</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><i-icon-park-outline:align-right class="icon" /> 右对齐</Button>
         </ButtonGroup>
         <ButtonGroup class="row">
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><IconAlignTop class="icon" /> 上对齐</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><IconAlignHorizontally class="icon" /> 垂直居中</Button>
-          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><IconAlignBottom class="icon" /> 下对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><i-icon-park-outline:align-top class="icon" /> 上对齐</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><i-icon-park-outline:align-horizontally class="icon" /> 垂直居中</Button>
+          <Button style="flex: 1;" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom class="icon" /> 下对齐</Button>
         </ButtonGroup>
       </div>
     </div>

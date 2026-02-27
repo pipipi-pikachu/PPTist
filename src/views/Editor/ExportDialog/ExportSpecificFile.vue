@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)"><IconDownload /> 导出 PPTIST 文件</Button>
+      <Button class="btn export" type="primary" @click="exportSpecificFile(selectedSlides)"><i-icon-park-outline:download /> 导出 PPTIST 文件</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>

@@ -6,25 +6,25 @@
     ></div>
   
     <div class="menu" ref="menuRef">
-      <button :class="{ 'active': attr?.bold }" @click="execCommand('bold')"><IconTextBold /></button>
-      <button :class="{ 'active': attr?.em }" @click="execCommand('em')"><IconTextItalic /></button>
-      <button :class="{ 'active': attr?.underline }" @click="execCommand('underline')"><IconTextUnderline /></button>
-      <button :class="{ 'active': attr?.strikethrough }" @click="execCommand('strikethrough')"><IconStrikethrough /></button>
+      <button :class="{ 'active': attr?.bold }" @click="execCommand('bold')"><i-icon-park-outline:text-bold /></button>
+      <button :class="{ 'active': attr?.em }" @click="execCommand('em')"><i-icon-park-outline:text-italic /></button>
+      <button :class="{ 'active': attr?.underline }" @click="execCommand('underline')"><i-icon-park-outline:text-underline /></button>
+      <button :class="{ 'active': attr?.strikethrough }" @click="execCommand('strikethrough')"><i-icon-park-outline:strikethrough /></button>
       <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker :modelValue="attr?.color" @update:modelValue="value => execCommand('color', value)" />
         </template>
-        <button><IconText /></button>
+        <button><i-icon-park-outline:text /></button>
       </Popover>
       <Popover trigger="click" style="width: 30%;">
         <template #content>
           <ColorPicker :modelValue="attr?.backcolor" @update:modelValue="value => execCommand('backcolor', value)" />
         </template>
-        <button><IconHighLight /></button>
+        <button><i-icon-park-outline:high-light /></button>
       </Popover>
-      <button :class="{ 'active': attr?.bulletList }" @click="execCommand('bulletList')"><IconList /></button>
-      <button :class="{ 'active': attr?.orderedList }" @click="execCommand('orderedList')"><IconOrderedList /></button>
-      <button @click="execCommand('clear')"><IconFormat /></button>
+      <button :class="{ 'active': attr?.bulletList }" @click="execCommand('bulletList')"><i-icon-park-outline:list /></button>
+      <button :class="{ 'active': attr?.orderedList }" @click="execCommand('orderedList')"><i-icon-park-outline:ordered-list /></button>
+      <button @click="execCommand('clear')"><i-icon-park-outline:format /></button>
     </div>
   </div>
 </template>

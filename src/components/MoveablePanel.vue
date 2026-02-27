@@ -13,7 +13,7 @@
     <template v-if="title">
       <div class="header" @mousedown="$event => startMove($event)">
         <div class="title">{{title}}</div>
-        <div class="close-btn" @mousedown.stop @click="emit('close')"><IconClose /></div>
+        <div class="close-btn" @mousedown.stop @click="emit('close')"><i-icon-park-outline:close /></div>
       </div>
 
       <div class="content" :style="contentStyle || {}" @mousedown="$event => bringToFrontPanel($event)">

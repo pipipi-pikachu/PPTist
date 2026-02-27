@@ -5,7 +5,7 @@
         <div class="content" :style="{ backgroundColor: color }"></div>
       </div>
     </div>
-    <IconPlatte class="color-btn-icon" />
+    <i-icon-park-outline:platte class="color-btn-icon" />
   </Button>
 </template>
 

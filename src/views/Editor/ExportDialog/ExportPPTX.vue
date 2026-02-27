@@ -49,7 +49,7 @@
         <div class="row">
           <div class="title">忽略音频/视频：</div>
           <div class="config-item">
-            <Switch v-model:value="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭【忽略音视频】选项，但要注意这将会大幅增加导出用时。'" />
+            <Switch v-model:value="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭「忽略音视频」选项，但要注意这将会大幅增加导出用时。'" />
           </div>
         </div>
         <div class="row">
@@ -65,7 +65,7 @@
       </template>
     </div>
     <div class="btns">
-      <Button class="btn export" type="primary" @click="execExport()"><IconDownload /> 导出 PPTX</Button>
+      <Button class="btn export" type="primary" @click="execExport()"><i-icon-park-outline:download /> 导出 PPTX</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
 

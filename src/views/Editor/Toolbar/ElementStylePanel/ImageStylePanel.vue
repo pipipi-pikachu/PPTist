@@ -8,7 +8,7 @@
     <ElementFlip />
 
     <ButtonGroup class="row" passive>
-      <Button first style="width: calc(100% / 6 * 5);" @click="clipImage()"><IconTailoring /> 裁剪图片</Button>
+      <Button first style="width: calc(100% / 6 * 5);" @click="clipImage()"><i-icon-park-outline:tailoring /> 裁剪图片</Button>
       <Popover trigger="click" v-model:value="clipPanelVisible" style="width: calc(100% / 6);">
         <template #content>
           <div class="clip">
@@ -37,7 +37,7 @@
             </template>
           </div>
         </template>
-        <Button last class="popover-btn" style="width: 100%;"><IconDown /></Button>
+        <Button last class="popover-btn" style="width: 100%;"><i-icon-park-outline:down /></Button>
       </Popover>
     </ButtonGroup>
     
@@ -61,10 +61,10 @@
     <Divider />
     
     <FileInput @change="files => replaceImage(files)">
-      <Button class="full-width-btn"><IconTransform /> 替换图片</Button>
+      <Button class="full-width-btn"><i-icon-park-outline:transform /> 替换图片</Button>
     </FileInput>
-    <Button class="full-width-btn" @click="resetImage()"><IconUndo /> 重置样式</Button>
-    <Button class="full-width-btn" @click="setBackgroundImage()"><IconTheme /> 设为背景</Button>
+    <Button class="full-width-btn" @click="resetImage()"><i-icon-park-outline:undo /> 重置样式</Button>
+    <Button class="full-width-btn" @click="setBackgroundImage()"><i-icon-park-outline:theme /> 设为背景</Button>
   </div>
 </template>
 
@@ -318,7 +318,7 @@ const setBackgroundImage = () => {
 }
 
 .clip {
-  width: 260px;
+  width: 250px;
   font-size: 12px;
 
   .title {

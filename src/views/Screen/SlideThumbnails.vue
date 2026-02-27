@@ -1,7 +1,7 @@
 <template>
   <div class="slide-thumbnails">
     <div class="return-button">
-      <IconArrowCircleLeft class="icon" @click="emit('close')" />
+      <i-icon-park-outline:arrow-circle-left class="icon" @click="emit('close')" />
     </div>
     <div class="slide-thumbnails-content">
       <div 

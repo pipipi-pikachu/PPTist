@@ -2,7 +2,7 @@
   <div class="shape-style-panel">
     <div class="title">
       <span>点击替换形状</span>
-      <IconDown />
+      <i-icon-park-outline:down />
     </div>
     <div class="shape-pool">
       <div class="category" v-for="item in SHAPE_LIST" :key="item.type">
@@ -90,7 +90,7 @@
         <FileInput @change="files => uploadPattern(files)">
           <div class="pattern-image">
             <div class="content" :style="{ backgroundImage: `url(${pattern})` }">
-              <IconPlus />
+              <i-icon-park-outline:plus />
             </div>
           </div>
         </FileInput>
@@ -115,7 +115,7 @@
           }))"
         >
           <template #icon>
-            <IconRowHeight />
+            <i-icon-park-outline:row-height />
           </template>
         </Select>
       </div>
@@ -129,7 +129,7 @@
           }))"
         >
           <template #icon>
-            <IconVerticalSpacingBetweenItems />
+            <i-icon-park-outline:vertical-spacing-between-items />
           </template>
         </Select>
       </div>
@@ -143,7 +143,7 @@
           }))"
         >
           <template #icon>
-            <IconFullwidth />
+            <i-icon-park-outline:fullwidth />
           </template>
         </Select>
       </div>
@@ -156,9 +156,9 @@
         :value="textAlign"
         @update:value="value => updateTextProps({ align: value as 'top' | 'middle' | 'bottom' })"
       >
-        <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><IconAlignTextTopOne /></RadioButton>
-        <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextMiddleOne /></RadioButton>
-        <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><IconAlignTextBottomOne /></RadioButton>
+        <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
+        <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
+        <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
       </RadioGroup>
 
       <Divider />
@@ -178,7 +178,7 @@
         :checked="!!shapeFormatPainter"
         @click="toggleShapeFormatPainter()"
         @dblclick="toggleShapeFormatPainter(true)"
-      ><IconFormatBrush /> 形状格式刷</CheckboxButton>
+      ><i-icon-park-outline:format-brush /> 形状格式刷</CheckboxButton>
     </div>
   </div>
 </template>

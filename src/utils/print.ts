@@ -44,7 +44,7 @@ const writeContent = (doc: Document, printNode: HTMLElement, size: PageSize) => 
         }
         @media print {
           @page {
-            size: ${width + 2 * margin}px ${height + 2 * margin}px;
+            size: ${width + 2 * margin}px ${(height + 2 * margin) * 1.005}px;
             margin: ${margin}px;
           }
         }

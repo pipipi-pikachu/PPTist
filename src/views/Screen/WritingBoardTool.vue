@@ -37,16 +37,16 @@
               </div>
             </template>
             <div class="btn" :class="{ 'active': writingBoardModel === 'pen' }" v-tooltip="'画笔'" @click="changeModel('pen')">
-              <IconWrite class="icon" />
+              <i-icon-park-outline:write class="icon" />
             </div>
           </Popover>
           <Popover placement="top" trigger="manual" :value="sizePopoverType === 'shape'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting shape">
                 <div class="shapes">
-                  <IconSquare class="icon" :class="{ 'active': shapeType === 'rect' }" @click="shapeType = 'rect'" />
-                  <IconRound class="icon" :class="{ 'active': shapeType === 'circle' }" @click="shapeType = 'circle'" />
-                  <IconArrowRight class="icon" :class="{ 'active': shapeType === 'arrow' }" @click="shapeType = 'arrow'" />
+                  <i-icon-park-outline:square class="icon" :class="{ 'active': shapeType === 'rect' }" @click="shapeType = 'rect'" />
+                  <i-icon-park-outline:round class="icon" :class="{ 'active': shapeType === 'circle' }" @click="shapeType = 'circle'" />
+                  <i-icon-park-outline:arrow-right class="icon" :class="{ 'active': shapeType === 'arrow' }" @click="shapeType = 'arrow'" />
                 </div>
                 <Divider type="vertical" />
                 <div class="label">墨迹粗细：</div>
@@ -54,7 +54,7 @@
               </div>
             </template>
             <div class="btn" :class="{ 'active': writingBoardModel === 'shape' }" v-tooltip="'形状'" @click="changeModel('shape')">
-              <IconGraphicDesign class="icon" />
+              <i-icon-park-outline:graphic-design class="icon" />
             </div>
           </Popover>
           <Popover placement="top" trigger="manual" :value="sizePopoverType === 'mark'" @hide="sizePopoverType = ''">
@@ -65,7 +65,7 @@
               </div>
             </template>
             <div class="btn" :class="{ 'active': writingBoardModel === 'mark' }" v-tooltip="'荧光笔'" @click="changeModel('mark')">
-              <IconHighLight class="icon" />
+              <i-icon-park-outline:high-light class="icon" />
             </div>
           </Popover>
           <Popover placement="top" trigger="manual" :value="sizePopoverType === 'eraser'" @hide="sizePopoverType = ''">
@@ -76,14 +76,14 @@
               </div>
             </template>
             <div class="btn" :class="{ 'active': writingBoardModel === 'eraser' }" v-tooltip="'橡皮擦'" @click="changeModel('eraser')">
-              <IconErase class="icon" />
+              <i-icon-park-outline:erase class="icon" />
             </div>
           </Popover>
           <div class="btn" v-tooltip="'清除墨迹'" @click="clearCanvas()">
-            <IconClear class="icon" />
+            <i-icon-park-outline:clear class="icon" />
           </div>
           <div class="btn" :class="{ 'active': blackboard }" v-tooltip="'黑板'" @click="blackboard = !blackboard">
-            <IconFill class="icon" />
+            <i-icon-park-outline:fill class="icon" />
           </div>
           <div class="colors">
             <div 
@@ -97,7 +97,7 @@
           </div>
         </div>
         <div class="btn close" v-tooltip="'关闭画笔'" @click="closeWritingBoard()">
-          <IconClose class="icon" />
+          <i-icon-park-outline:close class="icon" />
         </div>
       </div>
     </MoveablePanel>

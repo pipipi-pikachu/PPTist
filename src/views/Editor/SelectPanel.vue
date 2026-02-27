@@ -14,8 +14,8 @@
         <Button size="small" @click="hideAllElements()">全部隐藏</Button>
       </div>
       <div class="icon-btns" v-if="handleElement">
-        <IconDown class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.UP)" />
-        <IconUp class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)" />
+        <span class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:down /></span>
+        <span class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><i-icon-park-outline:up /></span>
       </div>
     </div>
     <div class="element-list" v-if="elements.length">
@@ -45,10 +45,10 @@
             >
             <div v-else class="name">{{groupItem.name || ELEMENT_TYPE_ZH[groupItem.type]}}</div>
             <div class="icons">
-              <IconLock class="icon" style="font-size: 14px;" @click="unlockElement(groupItem)" v-if="groupItem.lock" />
+              <i-icon-park-outline:lock class="icon" style="font-size: 14px;" @click="unlockElement(groupItem)" v-if="groupItem.lock" />
               <div class="icon" style="width: 14px;" v-else />
-              <IconPreviewClose class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-if="hiddenElementIdList.includes(groupItem.id)" />
-              <IconPreviewOpen class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-else />
+              <i-icon-park-outline:preview-close class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-if="hiddenElementIdList.includes(groupItem.id)" />
+              <i-icon-park-outline:preview-open class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(groupItem.id)" v-else />
             </div>
           </div>
         </div>
@@ -73,10 +73,10 @@
           >
           <div v-else class="name">{{item.name || ELEMENT_TYPE_ZH[item.type]}}</div>
           <div class="icons">
-            <IconLock class="icon" style="font-size: 14px;" @click="unlockElement(item)" v-if="item.lock" />
+            <i-icon-park-outline:lock class="icon" style="font-size: 14px;" @click="unlockElement(item)" v-if="item.lock" />
             <div class="icon" style="width: 14px;" v-else />
-            <IconPreviewClose class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-if="hiddenElementIdList.includes(item.id)" />
-            <IconPreviewOpen class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-else />
+            <i-icon-park-outline:preview-close class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-if="hiddenElementIdList.includes(item.id)" />
+            <i-icon-park-outline:preview-open class="icon" style="font-size: 17px;" @click.stop="toggleHideElement(item.id)" v-else />
           </div>
         </div>
       </template>

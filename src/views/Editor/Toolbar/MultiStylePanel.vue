@@ -62,7 +62,7 @@
         :options="FONTS"
       >
         <template #icon>
-          <IconFontSize />
+          <i-icon-park-outline:font-size />
         </template>
       </Select>
       <Select
@@ -77,7 +77,7 @@
         }))"
       >
         <template #icon>
-          <IconAddText />
+          <i-icon-park-outline:add-text />
         </template>
       </Select>
     </SelectGroup>
@@ -90,7 +90,7 @@
           />
         </template>
         <TextColorButton first :color="richTextAttrs.color" v-tooltip="'文字颜色'">
-          <IconText />
+          <i-icon-park-outline:text />
         </TextColorButton>
       </Popover>
       <Popover trigger="click" style="width: 30%;">
@@ -101,7 +101,7 @@
           />
         </template>
         <TextColorButton :color="richTextAttrs.backcolor" v-tooltip="'文字高亮'">
-          <IconHighLight />
+          <i-icon-park-outline:high-light />
         </TextColorButton>
       </Popover>
       <Button 
@@ -109,14 +109,14 @@
         style="width: 20%;"
         v-tooltip="'增大字号'"
         @click="updateFontStyle('fontsize-add', '2')"
-      ><IconFontSize />+</Button>
+      ><i-icon-park-outline:font-size />+</Button>
       <Button
         last
         class="font-size-btn"
         style="width: 20%;"
         v-tooltip="'减小字号'"
         @click="updateFontStyle('fontsize-reduce', '2')"
-      ><IconFontSize />-</Button>
+      ><i-icon-park-outline:font-size />-</Button>
     </ButtonGroup>
     <RadioGroup 
       class="row" 
@@ -124,10 +124,10 @@
       :value="richTextAttrs.align"
       @update:value="value => updateFontStyle('align', value)"
     >
-      <RadioButton value="left" style="flex: 1;" v-tooltip="'左对齐'"><IconAlignTextLeft /></RadioButton>
-      <RadioButton value="center" style="flex: 1;" v-tooltip="'居中'"><IconAlignTextCenter /></RadioButton>
-      <RadioButton value="right" style="flex: 1;" v-tooltip="'右对齐'"><IconAlignTextRight /></RadioButton>
-      <RadioButton value="justify" style="flex: 1;" v-tooltip="'两端对齐'"><IconAlignTextBoth /></RadioButton>
+      <RadioButton value="left" style="flex: 1;" v-tooltip="'左对齐'"><i-icon-park-outline:align-text-left /></RadioButton>
+      <RadioButton value="center" style="flex: 1;" v-tooltip="'居中'"><i-icon-park-outline:align-text-center /></RadioButton>
+      <RadioButton value="right" style="flex: 1;" v-tooltip="'右对齐'"><i-icon-park-outline:align-text-right /></RadioButton>
+      <RadioButton value="justify" style="flex: 1;" v-tooltip="'两端对齐'"><i-icon-park-outline:align-text-both /></RadioButton>
     </RadioGroup>
   </div>
 </template>

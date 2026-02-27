@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { createVNode, render, computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
@@ -12,6 +12,9 @@ import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
 import message from '@/utils/message'
+
+import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
+import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
 
 interface ExportImageConfig {
   quality: number
@@ -595,9 +598,14 @@ export default () => {
 
         else if (el.type === 'shape') {
           if (el.special) {
-            const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
-            if (svgRef.clientWidth < 1 || svgRef.clientHeight < 1) continue // 临时处理（导入PPTX文件带来的异常数据）
-            const base64SVG = svg2Base64(svgRef)
+            const container = document.createElement('div')
+            const vm = createVNode(BaseShapeElement, { elementInfo: el }, null)
+            render(vm, container)
+            const svgRef = container.querySelector('svg')
+            const base64SVG = svgRef ? svg2Base64(svgRef) : ''
+            render(null, container)
+
+            if (!base64SVG) continue
 
             const options: pptxgen.ImageProps = {
               data: base64SVG,
@@ -905,8 +913,14 @@ export default () => {
         }
         
         else if (el.type === 'latex') {
-          const svgRef = document.querySelector(`.thumbnail-list .base-element-${el.id} svg`) as HTMLElement
-          const base64SVG = svg2Base64(svgRef)
+          const container = document.createElement('div')
+          const vm = createVNode(BaseLatexElement, { elementInfo: el }, null)
+          render(vm, container)
+          const svgRef = container.querySelector('svg')
+          const base64SVG = svgRef ? svg2Base64(svgRef) : ''
+          render(null, container)
+
+          if (!base64SVG) continue
 
           const options: pptxgen.ImageProps = {
             data: base64SVG,

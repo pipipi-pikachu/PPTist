@@ -5,16 +5,16 @@
       <FileInput @change="files => setVideoPoster(files)">
         <div class="background-image">
           <div class="content" :style="{ backgroundImage: handleVideoElement.poster ? `url(${handleVideoElement.poster})` : '' }">
-            <IconPlus />
+            <i-icon-park-outline:plus />
           </div>
         </div>
       </FileInput>
     </div>
     <div class="row">
-      <Button style="flex: 1;" @click="setVideoPosterFromFirstFrame()"><IconScreenshotOne /> 设置首帧为封面</Button>
+      <Button style="flex: 1;" @click="setVideoPosterFromFirstFrame()"><i-icon-park-outline:screenshot-one /> 设置首帧为封面</Button>
     </div>
     <div class="row" v-if="handleVideoElement.poster">
-      <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><IconUndo /> 重置封面</Button>
+      <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><i-icon-park-outline:undo /> 重置封面</Button>
     </div>
 
     <Divider />

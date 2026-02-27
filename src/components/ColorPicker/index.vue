@@ -20,7 +20,7 @@
 
     <div class="picker-field">
       <EditableInput class="input" :value="color" @colorChange="value => changeColor(value)" />
-      <div class="straw" @click="openEyeDropper()"><IconNeedle /></div>
+      <div class="straw" @click="openEyeDropper()"><i-icon-park-outline:needle /></div>
       <div class="transparent" @click="selectPresetColor('#00000000')">
         <Checkboard />
       </div>

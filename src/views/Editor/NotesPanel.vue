@@ -18,7 +18,7 @@
         <div class="note" :class="{ 'active': activeNoteId === note.id }" v-for="note in notes" :key="note.id" @click="handleClickNote(note)">
           <div class="header note-header">
             <div class="user">
-              <div class="avatar"><IconUser /></div>
+              <div class="avatar"><i-icon-park-outline:user /></div>
               <div class="user-info">
                 <div class="username">{{ note.user }}</div>
                 <div class="time">{{ new Date(note.time).toLocaleString() }}</div>
@@ -34,7 +34,7 @@
             <div class="reply-item" v-for="reply in note.replies" :key="reply.id">
               <div class="header reply-header">
                 <div class="user">
-                  <div class="avatar"><IconUser /></div>
+                  <div class="avatar"><i-icon-park-outline:user /></div>
                   <div class="user-info">
                     <div class="username">{{ reply.user }}</div>
                     <div class="time">{{ new Date(reply.time).toLocaleString() }}</div>
@@ -68,8 +68,8 @@
           @enter.prevent="createNote()"
         />
         <div class="footer">
-          <IconDelete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
-          <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><IconPlus /> 添加批注</Button>
+          <i-icon-park-outline:delete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
+          <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><i-icon-park-outline:plus /> 添加批注</Button>
         </div>
       </div>
     </div>
@@ -330,12 +330,10 @@ const close = () => {
   .footer {
     margin-top: 10px;
     display: flex;
+    align-items: center;
 
-    .btn {      
+    .btn {
       &.icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-size: 18px;
         color: #666;
         cursor: pointer;

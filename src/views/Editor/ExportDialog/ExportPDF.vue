@@ -50,12 +50,12 @@
         </div>
       </div>
       <div class="tip">
-        提示：若打印预览与实际样式不一致，请在弹出的打印窗口中勾选【背景图形】选项。
+        建议：请在弹出的打印窗口中勾选「背景图形」选项，边距选择「默认」。
       </div>
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()"><IconDownload /> 打印 / 导出 PDF</Button>
+      <Button class="btn export" type="primary" @click="expPDF()"><i-icon-park-outline:download /> 打印 / 导出 PDF</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>

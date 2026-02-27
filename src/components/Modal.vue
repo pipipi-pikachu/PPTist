@@ -1,14 +1,14 @@
 <template>
   <Teleport to="body">
     <Transition name="modal-fade">
-      <div class="modal" ref="modalRef" v-show="visible" tabindex="-1" @keyup.esc="onEsc()">
+      <div class="modal" ref="modalRef" v-show="visible" :style="wrapStyle || {}" tabindex="-1" @keyup.esc="onEsc()">
         <div class="mask" @click="onClickMask()"></div>
         <Transition name="modal-zoom"
           @afterLeave="contentVisible = false"
           @before-enter="contentVisible = true"
         >
           <div class="modal-content" v-show="visible" :style="contentStyle">
-            <span class="close-btn" v-if="closeButton" @click="close()"><IconClose /></span>
+            <span class="close-btn" v-if="closeButton" @click="close()"><i-icon-park-outline:close /></span>
             <slot v-if="contentVisible"></slot>
           </div>
         </Transition>
@@ -19,9 +19,6 @@
 
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch, useTemplateRef, type CSSProperties } from 'vue'
-import { icons } from '@/plugins/icon'
-
-const { IconClose } = icons
 
 const props = withDefaults(defineProps<{
   visible: boolean
@@ -30,6 +27,7 @@ const props = withDefaults(defineProps<{
   closeOnClickMask?: boolean
   closeOnEsc?: boolean
   contentStyle?: CSSProperties
+  wrapStyle?: CSSProperties
 }>(), {
   width: 480,
   closeButton: false,

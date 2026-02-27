@@ -10,7 +10,7 @@
       <Input v-model:value="videoSrc" placeholder="请输入视频地址，e.g. https://xxx.mp4"></Input>
       <div class="btns">
         <FileInput accept="video/*" @change="files => uploadVideo(files)">
-          <Button><IconUpload /> 上传本地视频</Button>
+          <Button><i-icon-park-outline:upload /> 上传本地视频</Button>
         </FileInput>
         <div class="group">
           <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
@@ -23,7 +23,7 @@
       <Input v-model:value="audioSrc" placeholder="请输入音频地址，e.g. https://xxx.mp3"></Input>
       <div class="btns">
         <FileInput accept="audio/*" @change="files => uploadAudio(files)">
-          <Button><IconUpload /> 上传本地音频</Button>
+          <Button><i-icon-park-outline:upload /> 上传本地音频</Button>
         </FileInput>
         <div class="group">
           <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>

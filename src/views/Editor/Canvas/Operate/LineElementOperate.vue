@@ -6,7 +6,7 @@
         v-for="point in resizeHandlers"
         :key="point.handler"
         :style="point.style"
-        @mousedown.stop="$event => dragLineElement($event, elementInfo, point.handler)"
+        @mousedown.stop="($event: MouseEvent) => dragLineElement($event, elementInfo, point.handler)"
       />
 
       <svg 

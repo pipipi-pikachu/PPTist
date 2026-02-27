@@ -2,14 +2,14 @@
   <ul class="chart-pool">
     <li class="chart-item" v-for="(chart, index) in chartList" :key="index">
       <div class="chart-content" @click="selectChart(chart)">
-        <IconChartLine size="24" v-if="chart === 'line'" />
-        <IconChartHistogram size="24" v-else-if="chart === 'bar'" />
-        <IconChartPie size="24" v-else-if="chart === 'pie'" />
-        <IconChartHistogramOne size="24" v-else-if="chart === 'column'" />
-        <IconChartLineArea size="24" v-else-if="chart === 'area'" />
-        <IconChartRing size="24" v-else-if="chart === 'ring'" />
-        <IconChartScatter size="24" v-else-if="chart === 'scatter'" />
-        <IconRadarChart size="23" v-else-if="chart === 'radar'" />
+        <i-icon-park-outline:chart-line style="font-size: 24px" v-if="chart === 'line'" />
+        <i-icon-park-outline:chart-histogram style="font-size: 24px" v-else-if="chart === 'bar'" />
+        <i-icon-park-outline:chart-pie style="font-size: 24px" v-else-if="chart === 'pie'" />
+        <i-icon-park-outline:chart-histogram-one style="font-size: 24px" v-else-if="chart === 'column'" />
+        <i-icon-park-outline:chart-line-area style="font-size: 24px" v-else-if="chart === 'area'" />
+        <i-icon-park-outline:chart-ring style="font-size: 24px" v-else-if="chart === 'ring'" />
+        <i-icon-park-outline:chart-scatter style="font-size: 24px" v-else-if="chart === 'scatter'" />
+        <i-icon-park-outline:radar-chart style="font-size: 23px" v-else-if="chart === 'radar'" />
 
         <div class="name">{{ CHART_TYPE_MAP[chart] }}</div>
       </div>

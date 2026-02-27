@@ -18,7 +18,7 @@
         @mousedown="$event => handleSelectElement($event)"
         @touchstart="$event => handleSelectElement($event)"
       >
-        <IconVolumeNotice 
+        <i-icon-park-outline:volume-notice 
           class="audio-icon" 
           :style="{
             fontSize: audioIconSize,

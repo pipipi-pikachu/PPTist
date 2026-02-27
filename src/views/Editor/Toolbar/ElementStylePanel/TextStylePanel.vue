@@ -24,7 +24,7 @@
         }))"
       >
         <template #icon>
-          <IconRowHeight />
+          <i-icon-park-outline:row-height />
         </template>
       </Select>
     </div>
@@ -38,7 +38,7 @@
         }))"
       >
         <template #icon>
-          <IconVerticalSpacingBetweenItems />
+          <i-icon-park-outline:vertical-spacing-between-items />
         </template>
       </Select>
     </div>
@@ -52,7 +52,7 @@
         }))"
       >
         <template #icon>
-          <IconFullwidth />
+          <i-icon-park-outline:fullwidth />
         </template>
       </Select>
     </div>

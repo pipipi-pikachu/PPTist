@@ -14,7 +14,7 @@
           </template>
           <div class="color-btn-wrap" style="width: 100%;">
             <ColorButton :color="item" />
-            <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><IconCloseSmall /></div>
+            <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><i-icon-park-outline:close-small /></div>
           </div>
         </Popover>
       </div>
@@ -23,7 +23,7 @@
         :disabled="themeColors.length >= 10"
         @click="addThemeColor()"
       >
-        <IconPlus /> 添加主题色
+        <i-icon-park-outline:plus /> 添加主题色
       </Button>
     </div>
 

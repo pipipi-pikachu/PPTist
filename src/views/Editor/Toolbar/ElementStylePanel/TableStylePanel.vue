@@ -11,7 +11,7 @@
         :options="FONTS"
       >
         <template #icon>
-          <IconFontSize />
+          <i-icon-park-outline:font-size />
         </template>
       </Select>
       <Select
@@ -26,7 +26,7 @@
         }))"
       >
         <template #icon>
-          <IconAddText />
+          <i-icon-park-outline:add-text />
         </template>
       </Select>
     </SelectGroup>
@@ -40,7 +40,7 @@
           />
         </template>
         <TextColorButton first v-tooltip="'文字颜色'" :color="textAttrs.color">
-          <IconText />
+          <i-icon-park-outline:text />
         </TextColorButton>
       </Popover>
       <Popover trigger="click" style="width: 50%;">
@@ -51,7 +51,7 @@
           />
         </template>
         <TextColorButton last v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
-          <IconFill />
+          <i-icon-park-outline:fill />
         </TextColorButton>
       </Popover>
     </ButtonGroup>
@@ -62,25 +62,25 @@
         :checked="textAttrs.bold"
         v-tooltip="'加粗'"
         @click="updateTextAttrs({ bold: !textAttrs.bold })"
-      ><IconTextBold /></CheckboxButton>
+      ><i-icon-park-outline:text-bold /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.em"
         v-tooltip="'斜体'"
         @click="updateTextAttrs({ em: !textAttrs.em })"
-      ><IconTextItalic /></CheckboxButton>
+      ><i-icon-park-outline:text-italic /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.underline"
         v-tooltip="'下划线'"
         @click="updateTextAttrs({ underline: !textAttrs.underline })"
-      ><IconTextUnderline /></CheckboxButton>
+      ><i-icon-park-outline:text-underline /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.strikethrough"
         v-tooltip="'删除线'"
         @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
-      ><IconStrikethrough /></CheckboxButton>
+      ><i-icon-park-outline:strikethrough /></CheckboxButton>
     </ButtonGroup>
 
     <RadioGroup 
@@ -89,10 +89,10 @@
       :value="textAttrs.align"
       @update:value="value => updateTextAttrs({ align: value as TextAlign })"
     >
-      <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><IconAlignTextLeft /></RadioButton>
-      <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><IconAlignTextCenter /></RadioButton>
-      <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><IconAlignTextRight /></RadioButton>
-      <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><IconAlignTextBoth /></RadioButton>
+      <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><i-icon-park-outline:align-text-left /></RadioButton>
+      <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-center /></RadioButton>
+      <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><i-icon-park-outline:align-text-right /></RadioButton>
+      <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><i-icon-park-outline:align-text-both /></RadioButton>
     </RadioGroup>
 
     <Divider />
@@ -104,17 +104,17 @@
     <div class="row">
       <div style="width: 40%;">行数：</div>
       <div class="set-count" style="width: 60%;">
-        <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><IconMinus /></Button>
+        <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><i-icon-park-outline:minus /></Button>
         <div class="count-text">{{rowCount}}</div>
-        <Button class="btn" :disabled="rowCount >= 30" @click="setTableRow(rowCount + 1)"><IconPlus /></Button>
+        <Button class="btn" :disabled="rowCount >= 30" @click="setTableRow(rowCount + 1)"><i-icon-park-outline:plus /></Button>
       </div>
     </div>
     <div class="row">
       <div style="width: 40%;">列数：</div>
       <div class="set-count" style="width: 60%;">
-        <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><IconMinus /></Button>
+        <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><i-icon-park-outline:minus /></Button>
         <div class="count-text">{{colCount}}</div>
-        <Button class="btn" :disabled="colCount >= 30" @click="setTableCol(colCount + 1)"><IconPlus /></Button>
+        <Button class="btn" :disabled="colCount >= 30" @click="setTableCol(colCount + 1)"><i-icon-park-outline:plus /></Button>
       </div>
     </div>
 

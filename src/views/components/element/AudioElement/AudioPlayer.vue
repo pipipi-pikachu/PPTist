@@ -20,16 +20,16 @@
       <div class="icons">
         <div class="icon play-icon" @click="toggle()">
           <span class="icon-content">
-            <IconPlayOne v-if="paused" />
-            <IconPause v-else />
+            <i-icon-park-outline:play-one v-if="paused" />
+            <i-icon-park-outline:pause v-else />
           </span>
         </div>
         <div class="volume">
           <div class="icon volume-icon" @click="toggleVolume()">
             <span class="icon-content">
-              <IconVolumeMute v-if="volume === 0" />
-              <IconVolumeNotice v-else-if="volume === 1" />
-              <IconVolumeSmall v-else />
+              <i-icon-park-outline:volume-mute v-if="volume === 0" />
+              <i-icon-park-outline:volume-notice v-else-if="volume === 1" />
+              <i-icon-park-outline:volume-small v-else />
             </span>
           </div>
           <div

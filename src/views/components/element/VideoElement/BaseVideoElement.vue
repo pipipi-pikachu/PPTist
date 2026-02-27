@@ -12,7 +12,7 @@
       :style="{ transform: `rotate(${elementInfo.rotate}deg)` }"
     >
       <div class="element-content" :style="{ backgroundImage: elementInfo.poster ? `url(${elementInfo.poster})` : '' }">
-        <IconPlayOne class="icon" />
+        <i-icon-park-outline:play-one class="icon" />
       </div>
     </div>
   </div>

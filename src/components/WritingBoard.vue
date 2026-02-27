@@ -37,7 +37,7 @@
         }"
         v-if="model === 'pen'"
       >
-        <IconWrite class="icon" :size="penSize * 6" />
+        <i-icon-park-outline:write class="icon" :style="{ fontSize: penSize * 6 + 'px' }" />
       </div>
       <div 
         class="pen"
@@ -48,7 +48,7 @@
         }"
         v-if="model === 'mark'"
       >
-        <IconHighLight class="icon" :size="markSize * 1.5" />
+        <i-icon-park-outline:high-light class="icon" :style="{ fontSize: markSize * 1.5 + 'px' }" />
       </div>
       <div 
         class="pen"
@@ -59,7 +59,7 @@
         }"
         v-if="model === 'shape'"
       >
-        <IconPlus class="icon" :size="40" />
+        <i-icon-park-outline:plus class="icon" :style="{ fontSize: 40 + 'px' }" />
       </div>
     </template>
   </div>

@@ -43,12 +43,12 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <IconEffects /> 添加动画
+          <i-icon-park-outline:effects /> 添加动画
         </Button>
       </Popover>
     </div>
 
-    <div class="tip" v-else><IconClick style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
+    <div class="tip" v-else><i-icon-park-outline:click style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
     
     <Divider />
 
@@ -66,10 +66,10 @@
         <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]" @click="selectElement(element.elId)">
           <div class="sequence-content">
             <div class="index">{{element.index}}</div>
-            <div class="text">【{{element.elType}}】{{element.animationEffect}}</div>
+            <div class="text">「{{element.elType}}」{{element.animationEffect}}</div>
             <div class="handler">
-              <IconPlayOne class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
-              <IconCloseSmall class="handler-btn" v-tooltip="'删除'" @click.stop="deleteAnimation(element.id)" />
+              <i-icon-park-outline:play-one class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
+              <i-icon-park-outline:close-small class="handler-btn" v-tooltip="'删除'" @click.stop="deleteAnimation(element.id)" />
             </div>
           </div>
 
@@ -101,7 +101,7 @@
               />
             </div>
             <div class="config-item">
-              <Button style="width: 100%;" @click="openAnimationPool(element.id)"><IconSwitch /> 更换动画</Button>
+              <Button style="width: 100%;" @click="openAnimationPool(element.id)"><i-icon-park-outline:switch /> 更换动画</Button>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
     <template v-if="animationSequence.length >= 2">
       <Divider />
       <Button @click="runAllAnimation()">
-        <IconPause v-if="animateIn" /><IconPlayOne v-else /> {{ animateIn ? '停止预览' : '预览全部'}}
+        <i-icon-park-outline:pause v-if="animateIn" /><i-icon-park-outline:play-one v-else /> {{ animateIn ? '停止预览' : '预览全部'}}
       </Button>
     </template>
   </div>

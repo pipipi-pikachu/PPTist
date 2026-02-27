@@ -7,7 +7,7 @@
       <div :class="['drawer', placement]" v-show="visible" :style="{ width: props.width + 'px' }">
         <div class="header">
           <slot name="title"></slot>
-          <span class="close-btn" @click="emit('update:visible', false)"><IconClose /></span>
+          <span class="close-btn" @click="emit('update:visible', false)"><i-icon-park-outline:close /></span>
         </div>
         <div class="content" v-if="contentVisible" :style="contentStyle">
           <slot></slot>

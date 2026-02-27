@@ -10,20 +10,21 @@
       </div>
     </div>
     <div class="menu">
-      <div class="menu-item" @click="changeMode('editor')"><IconEdit class="icon" /> 编辑</div>
+      <div class="menu-item" @click="changeMode('editor')"><i-icon-park-outline:edit class="icon" /> 编辑</div>
       <Divider type="vertical" style="height: 30px;" />
-      <div class="menu-item" @click="changeMode('player')"><IconFullScreenPlay class="icon" /> 播放</div>
+      <div class="menu-item" @click="changeMode('player')"><i-icon-park-outline:full-screen-play class="icon" /> 播放</div>
       <Divider type="vertical" style="height: 30px;" />
       <div class="menu-item ai" @click="openAIPPTDialog()">AIPPT</div>
     </div>
   </div>
 
   <Modal
-    :visible="showAIPPTDialog" 
+    :visible="!!showAIPPTDialog" 
     :closeOnClickMask="false"
     :closeOnEsc="false"
     :width="width"
     closeButton
+    :wrapStyle="{ opacity: showAIPPTDialog === 'running' ? 0 : 1 }"
     @closed="closeAIPPTDialog()"
   >
     <AIPPTDialog />

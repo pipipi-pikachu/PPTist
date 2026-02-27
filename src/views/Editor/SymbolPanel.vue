@@ -11,7 +11,7 @@
       flexDirection: 'column',
     }"
   >
-    <div class="close-btn" @click="close()" @mousedown.stop><IconClose /></div>
+    <div class="close-btn" @click="close()" @mousedown.stop><i-icon-park-outline:close /></div>
     <Tabs 
       :tabs="tabs" 
       v-model:value="selectedSymbolKey" 

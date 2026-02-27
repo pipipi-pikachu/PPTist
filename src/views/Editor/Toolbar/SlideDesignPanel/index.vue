@@ -52,7 +52,7 @@
       <FileInput @change="files => uploadBackgroundImage(files)">
         <div class="background-image">
           <div class="content" :style="{ backgroundImage: `url(${background.image?.src})` }">
-            <IconPlus />
+            <i-icon-park-outline:plus />
           </div>
         </div>
       </FileInput>
@@ -93,7 +93,7 @@
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyBackgroundAllSlide()"><IconCheck /> 应用背景到全部</Button>
+      <Button style="flex: 1;" @click="applyBackgroundAllSlide()"><i-icon-park-outline:check /> 应用背景到全部</Button>
     </div>
 
     <Divider />
@@ -123,8 +123,8 @@
       <span>全局主题</span>
       <span class="more" @click="moreThemeConfigsVisible = !moreThemeConfigsVisible">
         <span class="text">更多</span>
-        <IconDown v-if="moreThemeConfigsVisible" />
-        <IconRight v-else />
+        <i-icon-park-outline:down v-if="moreThemeConfigsVisible" />
+        <i-icon-park-outline:right v-else />
       </span>
     </div>
     <div class="row">
@@ -250,15 +250,15 @@
     </template>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)"><IconCheck /> 应用主题到全部</Button>
+      <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)"><i-icon-park-outline:check /> 应用主题到全部</Button>
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyFontToAllSlides(theme.fontName)"><IconCheck /> 全局统一字体</Button>
+      <Button style="flex: 1;" @click="applyFontToAllSlides(theme.fontName)"><i-icon-park-outline:check /> 全局统一字体</Button>
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="themeStylesExtractVisible = true"><IconPlatte /> 从幻灯片提取主题</Button>
+      <Button style="flex: 1;" @click="themeStylesExtractVisible = true"><i-icon-park-outline:platte /> 从幻灯片提取主题</Button>
     </div>
 
     <Divider />
