@@ -493,7 +493,7 @@ export default () => {
                   rotate: el.rotate,
                   viewBox: [200, 200],
                   path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
-                  fill: el.fill.type === 'color' ? el.fill.value : '',
+                  fill: el.fill?.type === 'color' ? el.fill.value : '',
                   fixedRatio: false,
                   outline: {
                     color: el.borderColor,
@@ -508,6 +508,7 @@ export default () => {
                     lineHeight: 1,
                   },
                 }
+                if (el.link) shapeEl.link = { type: 'web', target: el.link }
                 if (metrics.lineHeight) shapeEl.text!.lineHeight = metrics.lineHeight
                 if (metrics.margin) shapeEl.text!.paragraphSpace = metrics.margin
                 slide.elements.push(shapeEl)
@@ -531,7 +532,7 @@ export default () => {
                     width: +(el.borderWidth * ratio).toFixed(2),
                     style: el.borderType,
                   },
-                  fill: el.fill.type === 'color' ? el.fill.value : '',
+                  fill: el.fill?.type === 'color' ? el.fill.value : '',
                   vertical: el.isVertical,
                 }
                 if (el.shadow) {
@@ -542,9 +543,10 @@ export default () => {
                     color: el.shadow.color,
                   }
                 }
-                slide.elements.push(textEl)
+                if (el.link) textEl.link = { type: 'web', target: el.link }
                 if (metrics.lineHeight) textEl.lineHeight = metrics.lineHeight
                 if (metrics.margin) textEl.paragraphSpace = metrics.margin
+                slide.elements.push(textEl)
               }
             }
             else if (el.type === 'image') {
@@ -594,6 +596,8 @@ export default () => {
                   range: [[0, 0], [100, 100]]
                 }
               }
+
+              if (el.link) element.link = { type: 'web', target: el.link }
               slide.elements.push(element)
             }
             else if (el.type === 'math') {
@@ -689,6 +693,7 @@ export default () => {
                   flipH: el.isFlipH,
                   flipV: el.isFlipV,
                 }
+                if (el.link) element.link = { type: 'web', target: el.link }
                 if (metrics.lineHeight) element.text!.lineHeight = metrics.lineHeight
                 if (metrics.margin) element.text!.paragraphSpace = metrics.margin
 
