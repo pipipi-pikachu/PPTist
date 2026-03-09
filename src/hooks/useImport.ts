@@ -441,7 +441,7 @@ export default () => {
                 ...item,
                 pos: parseInt(item.pos),
               })),
-              rotate: value.rot + 90,
+              rotate: value.rot,
             },
           }
         }

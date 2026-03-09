@@ -41,7 +41,7 @@ export default (background: Ref<SlideBackground | undefined>) => {
       const list = colors.map(item => `${item.color} ${item.pos}%`)
 
       if (type === 'radial') return { backgroundImage: `radial-gradient(${list.join(',')}` }
-      return { backgroundImage: `linear-gradient(${rotate}deg, ${list.join(',')}` }
+      return { backgroundImage: `linear-gradient(${rotate + 90}deg, ${list.join(',')}` }
     }
 
     return { backgroundColor: '#fff' }
