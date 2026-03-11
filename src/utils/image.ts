@@ -14,21 +14,25 @@ export const getImageSize = (src: string): Promise<ImageSize> => {
     img.style.opacity = '0'
     document.body.appendChild(img)
 
+    const cleanup = () => {
+      img.onload = null
+      img.onerror = null
+      if (img.parentNode) {
+        img.parentNode.removeChild(img)
+      }
+    }
+
     img.onload = () => {
       const imgWidth = img.clientWidth
       const imgHeight = img.clientHeight
-    
-      img.onload = null
-      img.onerror = null
 
-      document.body.removeChild(img)
-
+      cleanup()
       resolve({ width: imgWidth, height: imgHeight })
     }
 
     img.onerror = () => {
-      img.onload = null
-      img.onerror = null
+      cleanup()
+      resolve({ width: 0, height: 0 })
     }
   })
 }
