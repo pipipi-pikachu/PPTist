@@ -1,14 +1,49 @@
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ANIMATION_CLASS_PREFIX } from '@/configs/animation'
 import message from '@/utils/message'
+import type { Slide } from '@/types/slides'
+
+const AUDIENCE_SYNC_CHANNEL = 'pptist-audience-sync'
+
+type SyncMessage =
+  | { type: 'EXEC_NEXT' }
+  | { type: 'EXEC_PREV' }
+  | { type: 'TURN_TO_INDEX'; index: number }
+  | { type: 'TURN_TO_ID'; id: string }
+  | { type: 'REQUEST_STATE' }
+  | { type: 'INIT_STATE'; slideIndex: number; animationIndex: number; slides: Slide[] }
+  | { type: 'REQUEST_WRITING_BOARD' }
+  | { type: 'WRITING_BOARD_UPDATE'; dataURL: string; blackboard: boolean }
+  | { type: 'WRITING_BOARD_CLOSE' }
+  | { type: 'LASER_PEN_MOVE'; x: number; y: number }
+  | { type: 'LASER_PEN_OFF' }
+  | { type: 'EXIT' }
 
 export default () => {
   const slidesStore = useSlidesStore()
   const { slides, slideIndex, formatedAnimations } = storeToRefs(slidesStore)
+
+  const isAudienceMode = new URLSearchParams(window.location.search).get('mode') === 'audience'
+
+  // 非观众模式：创建广播频道，向观众视图发送指令并响应状态请求
+  let syncChannel: BroadcastChannel | null = null
+  if (!isAudienceMode) {
+    syncChannel = new BroadcastChannel(AUDIENCE_SYNC_CHANNEL)
+    syncChannel.onmessage = ({ data }: MessageEvent<SyncMessage>) => {
+      if (data.type === 'REQUEST_STATE') {
+        syncChannel!.postMessage({
+          type: 'INIT_STATE',
+          slideIndex: slideIndex.value,
+          animationIndex: animationIndex.value,
+          slides: JSON.parse(JSON.stringify(slides.value)),
+        } as SyncMessage)
+      }
+    }
+  }
 
   // 当前页的元素动画执行到的位置
   const animationIndex = ref(0)
@@ -78,6 +113,23 @@ export default () => {
     }
   })
 
+  // 恢复已执行过的退场动画的 DOM 终态（用于观众视图初始化同步）
+  // 入场动画的可见性由 animationIndex + needWaitAnimation 计算属性控制，无须额外处理
+  // 强调动画无持久效果，也无须处理
+  const restoreAnimationState = (targetIndex: number) => {
+    for (let i = 0; i < targetIndex && i < formatedAnimations.value.length; i++) {
+      const { animations } = formatedAnimations.value[i]
+      for (const animation of animations) {
+        if (animation.type !== 'out') continue
+        const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
+        if (!elRef) continue
+        const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
+        elRef.style.setProperty('--animate-duration', '0ms')
+        elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+      }
+    }
+  }
+
   // 撤销元素动画，除了将索引前移外，还需要清除动画状态
   const revokeAnimation = () => {
     animationIndex.value -= 1
@@ -94,7 +146,7 @@ export default () => {
     }
 
     // 如果撤销时该位置有且仅有强调动画，则继续执行一次撤销
-    if (animations.every(item => item.type === 'attention')) execPrev()
+    if (animations.every(item => item.type === 'attention')) execPrev(false)
   }
 
   // 关闭自动播放
@@ -121,7 +173,8 @@ export default () => {
   // 遇到元素动画时，优先执行动画播放，无动画则执行翻页
   // 向上播放遇到动画时，仅撤销到动画执行前的状态，不需要反向播放动画
   // 撤回到上一页时，若该页从未播放过（意味着不存在动画状态），需要将动画索引置为最小值（初始状态），否则置为最大值（最终状态）
-  const execPrev = () => {
+  const execPrev = (broadcast = true) => {
+    if (broadcast) syncChannel?.postMessage({ type: 'EXEC_PREV' } as SyncMessage)
     if (formatedAnimations.value.length && animationIndex.value > 0) {
       revokeAnimation()
     }
@@ -140,6 +193,7 @@ export default () => {
     inAnimation.value = false
   }
   const execNext = () => {
+    syncChannel?.postMessage({ type: 'EXEC_NEXT' } as SyncMessage)
     if (formatedAnimations.value.length && animationIndex.value < formatedAnimations.value.length) {
       runAnimation()
     }
@@ -215,8 +269,13 @@ export default () => {
     ) execNext()
   }
 
-  onMounted(() => document.addEventListener('keydown', keydownListener))
-  onUnmounted(() => document.removeEventListener('keydown', keydownListener))
+  onMounted(() => {
+    if (!isAudienceMode) document.addEventListener('keydown', keydownListener)
+  })
+  onUnmounted(() => {
+    if (!isAudienceMode) document.removeEventListener('keydown', keydownListener)
+    syncChannel?.close()
+  })
 
   // 切换到上一张/上一张幻灯片（无视元素的入场动画）
   const turnPrevSlide = () => {
@@ -230,15 +289,46 @@ export default () => {
 
   // 切换幻灯片到指定的页面
   const turnSlideToIndex = (index: number) => {
+    syncChannel?.postMessage({ type: 'TURN_TO_INDEX', index } as SyncMessage)
     slidesStore.updateSlideIndex(index)
     animationIndex.value = 0
   }
   const turnSlideToId = (id: string) => {
     const index = slides.value.findIndex(slide => slide.id === id)
     if (index !== -1) {
+      syncChannel?.postMessage({ type: 'TURN_TO_ID', id } as SyncMessage)
       slidesStore.updateSlideIndex(index)
       animationIndex.value = 0
     }
+  }
+
+  // 激光笔状态与位置广播
+  const laserPen = ref(false)
+
+  const handleLaserMove = (e: MouseEvent) => {
+    const slideEl = document.querySelector('.screen-slide-list .slide-item.current .slide-content') as HTMLElement | null
+    if (!slideEl) return
+    const rect = slideEl.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width
+    const y = (e.clientY - rect.top) / rect.height
+    syncChannel?.postMessage({ type: 'LASER_PEN_MOVE', x, y } as SyncMessage)
+  }
+
+  // 节流版本的 handleLaserMove
+  const throttledHandleLaserMove = throttle(handleLaserMove, 30, { leading: true, trailing: true })
+
+  watch(laserPen, active => {
+    if (active) {
+      document.addEventListener('mousemove', throttledHandleLaserMove)
+    }
+    else {
+      document.removeEventListener('mousemove', throttledHandleLaserMove)
+      syncChannel?.postMessage({ type: 'LASER_PEN_OFF' } as SyncMessage)
+    }
+  })
+
+  const broadcastExit = () => {
+    syncChannel?.postMessage({ type: 'EXIT' } as SyncMessage)
   }
 
   return {
@@ -259,5 +349,8 @@ export default () => {
     execPrev,
     execNext,
     animationIndex,
+    restoreAnimationState,
+    laserPen,
+    broadcastExit,
   }
 }

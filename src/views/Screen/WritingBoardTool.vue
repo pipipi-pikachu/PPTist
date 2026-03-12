@@ -16,7 +16,7 @@
         :rubberSize="rubberSize"
         :shapeSize="shapeSize"
         :shapeType="shapeType"
-        @end="hanldeWritingEnd()"
+        @end="handleWritingEnd()"
       />
     </div>
 
@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, useTemplateRef } from 'vue'
+import { onUnmounted, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { db } from '@/utils/database'
@@ -115,6 +115,8 @@ import MoveablePanel from '@/components/MoveablePanel.vue'
 import Slider from '@/components/Slider.vue'
 import Popover from '@/components/Popover.vue'
 import Divider from '@/components//Divider.vue'
+
+const AUDIENCE_SYNC_CHANNEL = 'pptist-audience-sync'
 
 const writingBoardColors = ['#000000', '#ffffff', '#1e497b', '#4e81bb', '#e2534d', '#9aba60', '#8165a0', '#47acc5', '#f9974c', '#ffff3a']
 
@@ -156,6 +158,7 @@ const changeModel = (model: WritingBoardModel) => {
 // 清除画布上的墨迹
 const clearCanvas = () => {
   writingBoardRef.value!.clearCanvas()
+  broadcastWritingBoard('')
 }
 
 // 修改画笔颜色，如果当前处于橡皮状态则先切换到画笔状态
@@ -164,8 +167,28 @@ const changeColor = (color: string) => {
   writingBoardColor.value = color
 }
 
+// 观众视图同步频道
+const syncChannel = new BroadcastChannel(AUDIENCE_SYNC_CHANNEL)
+
+const broadcastWritingBoard = (dataURL: string) => {
+  syncChannel.postMessage({ type: 'WRITING_BOARD_UPDATE', dataURL, blackboard: blackboard.value })
+}
+
+syncChannel.onmessage = ({ data }) => {
+  if (data.type === 'REQUEST_WRITING_BOARD') {
+    const dataURL = writingBoardRef.value?.getImageDataURL() || ''
+    broadcastWritingBoard(dataURL)
+  }
+}
+
+onUnmounted(() => {
+  syncChannel.postMessage({ type: 'WRITING_BOARD_CLOSE' })
+  syncChannel.close()
+})
+
 // 关闭写字板
 const closeWritingBoard = () => {
+  syncChannel.postMessage({ type: 'WRITING_BOARD_CLOSE' })
   emit('close')
 }
 
@@ -173,14 +196,24 @@ const closeWritingBoard = () => {
 watch(currentSlide, () => {
   db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
     const currentImg = ret[0]
-    writingBoardRef.value!.setImageDataURL(currentImg?.dataURL || '')
+    const dataURL = currentImg?.dataURL || ''
+    writingBoardRef.value!.setImageDataURL(dataURL)
+    broadcastWritingBoard(dataURL)
   })
 }, { immediate: true })
 
+// 黑板模式切换时同步
+watch(blackboard, () => {
+  const dataURL = writingBoardRef.value?.getImageDataURL() || ''
+  broadcastWritingBoard(dataURL)
+})
+
 // 每次绘制完成后将绘制完的图片更新到数据库
-const hanldeWritingEnd = () => {
+const handleWritingEnd = () => {
   const dataURL = writingBoardRef.value!.getImageDataURL()
   if (!dataURL) return
+
+  broadcastWritingBoard(dataURL)
 
   db.writingBoardImgs.where('id').equals(currentSlide.value.id).toArray().then(ret => {
     const currentImg = ret[0]

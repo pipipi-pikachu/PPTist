@@ -10,6 +10,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
+import { nanoid } from 'nanoid'
 import { useScreenStore, useMainStore, useSnapshotStore, useSlidesStore } from '@/store'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 import { deleteDiscardedDB } from '@/utils/database'
@@ -26,20 +27,32 @@ const _isPC = isPC()
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const snapshotStore = useSnapshotStore()
+const screenStore = useScreenStore()
 const { databaseId } = storeToRefs(mainStore)
 const { slides } = storeToRefs(slidesStore)
-const { screening } = storeToRefs(useScreenStore())
+const { screening } = storeToRefs(screenStore)
+
+const isAudienceMode = new URLSearchParams(window.location.search).get('mode') === 'audience'
 
 if (import.meta.env.MODE !== 'development') {
   window.onbeforeunload = () => false
 }
 
 onMounted(async () => {
-  const slides = await api.getMockData('slides')
-  slidesStore.setSlides(slides)
+  if (isAudienceMode) {
+    slidesStore.setSlides([{
+      id: nanoid(10),
+      elements: [],
+    }])
+    screenStore.setScreening(true)
+  }
+  else {
+    const slides = await api.getMockData('slides')
+    slidesStore.setSlides(slides)
 
-  await deleteDiscardedDB()
-  snapshotStore.initSnapshotDatabase()
+    await deleteDiscardedDB()
+    snapshotStore.initSnapshotDatabase()
+  }
 })
 
 // 应用注销时向 localStorage 中记录下本次 indexedDB 的数据库ID，用于之后清除数据库

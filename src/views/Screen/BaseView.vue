@@ -46,6 +46,7 @@
         <i-icon-park-outline:magic class="tool-btn" v-tooltip="'激光笔'" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
         <i-icon-park-outline:stopwatch-start class="tool-btn" v-tooltip="'计时器'" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
         <i-icon-park-outline:list-view class="tool-btn" v-tooltip="'演讲者视图'" @click="changeViewMode('presenter')" />
+        <i-icon-park-outline:peoples-two class="tool-btn" v-tooltip="'观众视图'" @click="openAudienceView()" />
         <i-icon-park-outline:off-screen-one class="tool-btn" v-tooltip="'退出全屏'" v-if="fullscreenState" @click="manualExitFullscreen()" />
         <i-icon-park-outline:full-screen-one class="tool-btn" v-tooltip="'进入全屏'" v-else @click="enterFullscreen()" />
         <i-icon-park-outline:power class="tool-btn" v-tooltip="'结束放映'" @click="exitScreening()" />
@@ -97,10 +98,12 @@ const {
   execPrev,
   execNext,
   animationIndex,
+  laserPen,
+  broadcastExit,
 } = useExecPlay()
 
 const { slideWidth, slideHeight } = useSlideSize()
-const { exitScreening } = useScreening()
+const { exitScreening: _exitScreening } = useScreening()
 const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
 const rightToolsVisible = ref(false)
@@ -108,7 +111,16 @@ const writingBoardToolVisible = ref(false)
 const timerlVisible = ref(false)
 const slideThumbnailModelVisible = ref(false)
 const bottomThumbnailsVisible = ref(false)
-const laserPen = ref(false)
+
+const openAudienceView = () => {
+  manualExitFullscreen()
+  window.open(`${location.origin}${location.pathname}?mode=audience`, 'pptist-audience', 'popup')
+}
+
+const exitScreening = () => {
+  broadcastExit()
+  _exitScreening()
+}
 
 const contextmenus = (): ContextmenuItem[] => {
   return [

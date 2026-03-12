@@ -178,6 +178,7 @@ Browser access: http://127.0.0.1:5173/
 - Laser pointer
 - Auto play
 - Speaker view
+- Audience view
 ### Mobile
 - Basic editing
   - Add/delete/copy/note/undo redo pages

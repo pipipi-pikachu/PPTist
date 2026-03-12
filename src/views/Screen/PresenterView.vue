@@ -2,6 +2,7 @@
   <div class="presenter-view">
     <div class="toolbar">
       <div class="tool-btn" @click="changeViewMode('base')"><i-icon-park-outline:list-view class="tool-icon" /><span>普通视图</span></div>
+      <div class="tool-btn" @click="openAudienceView()"><i-icon-park-outline:peoples-two class="tool-icon" /><span>观众视图</span></div>
       <div class="tool-btn" :class="{ 'active': writingBoardToolVisible }" @click="writingBoardToolVisible = !writingBoardToolVisible"><i-icon-park-outline:write class="tool-icon" /><span>画笔</span></div>
       <div class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen"><i-icon-park-outline:magic class="tool-icon" /><span>激光笔</span></div>
       <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><i-icon-park-outline:stopwatch-start class="tool-icon" /><span>计时器</span></div>
@@ -105,7 +106,6 @@ const slideListWrapRef = useTemplateRef<HTMLElement>('slideListWrapRef')
 const thumbnailsRef = useTemplateRef<HTMLElement>('thumbnailsRef')
 const writingBoardToolVisible = ref(false)
 const timerlVisible = ref(false)
-const laserPen = ref(false)
 
 const {
   mousewheelListener,
@@ -116,10 +116,12 @@ const {
   turnSlideToIndex,
   turnSlideToId,
   animationIndex,
+  laserPen,
+  broadcastExit,
 } = useExecPlay()
 
 const { slideWidth, slideHeight } = useSlideSize(slideListWrapRef)
-const { exitScreening } = useScreening()
+const { exitScreening: _exitScreening } = useScreening()
 const { slidesLoadLimit } = useLoadSlides()
 const { fullscreenState, manualExitFullscreen } = useFullscreen()
 
@@ -128,6 +130,16 @@ const currentSlideRemark = computed(() => {
   if (!currentSlide.value.remark) return ''
   return parseText2Paragraphs(currentSlide.value.remark)
 })
+
+const openAudienceView = () => {
+  manualExitFullscreen()
+  window.open(`${location.origin}${location.pathname}?mode=audience`, 'pptist-audience', 'popup')
+}
+
+const exitScreening = () => {
+  broadcastExit()
+  _exitScreening()
+}
 
 const handleMousewheelThumbnails = (e: WheelEvent) => {
   if (!thumbnailsRef.value) return

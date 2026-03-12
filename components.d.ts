@@ -98,6 +98,7 @@ declare module 'vue' {
     'IIconParkOutline:offScreenOne': typeof import('~icons/icon-park-outline/off-screen-one')['default']
     'IIconParkOutline:orderedList': typeof import('~icons/icon-park-outline/ordered-list')['default']
     'IIconParkOutline:pause': typeof import('~icons/icon-park-outline/pause')['default']
+    'IIconParkOutline:peoplesTwo': typeof import('~icons/icon-park-outline/peoples-two')['default']
     'IIconParkOutline:picture': typeof import('~icons/icon-park-outline/picture')['default']
     'IIconParkOutline:platte': typeof import('~icons/icon-park-outline/platte')['default']
     'IIconParkOutline:playOne': typeof import('~icons/icon-park-outline/play-one')['default']
