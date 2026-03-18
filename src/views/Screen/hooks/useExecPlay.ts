@@ -256,7 +256,7 @@ export default () => {
   }
 
   // 快捷键翻页
-  const keydownListener = (e: KeyboardEvent) => {
+  const keydownListener = throttle(function(e: KeyboardEvent) {
     const key = e.key.toUpperCase()
 
     if (key === KEYS.UP || key === KEYS.LEFT || key === KEYS.PAGEUP) execPrev()
@@ -267,7 +267,7 @@ export default () => {
       key === KEYS.ENTER ||
       key === KEYS.PAGEDOWN
     ) execNext()
-  }
+  }, 500, { leading: true, trailing: false })
 
   onMounted(() => {
     if (!isAudienceMode) document.addEventListener('keydown', keydownListener)
