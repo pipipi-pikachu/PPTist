@@ -4,6 +4,7 @@ import { parse, type Shape, type Element, type ChartItem, type BaseElement } fro
 import { nanoid } from 'nanoid'
 import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
+import { isFloatEqual } from '@/utils/common'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -29,6 +30,17 @@ const shapeVAlignMap: Record<string, ShapeTextAlign> = {
   'mid': 'middle',
   'down': 'bottom',
   'up': 'top',
+}
+
+const getAspectRatio = (width: number, height: number) => {
+  if (!width || !height) return 0.5625
+
+  let aspectRatio = height / width
+  if (isFloatEqual(aspectRatio, 0.625)) aspectRatio = 0.625
+  else if (isFloatEqual(aspectRatio, 0.75)) aspectRatio = 0.75
+  else if (isFloatEqual(aspectRatio, 0.5625)) aspectRatio = 0.5625
+
+  return aspectRatio
 }
 
 const convertTextContent = (html: string, ratio: number) => {
@@ -147,7 +159,7 @@ const getParagraphMetrics = (html: string, ratio: number) => {
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { theme } = storeToRefs(useSlidesStore())
+  const { theme, viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
   const { addSlidesFromData } = useAddSlidesOrElements()
@@ -162,14 +174,20 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const { slides, theme } = JSON.parse(reader.result as string)
+        const { slides, theme, width, height } = JSON.parse(reader.result as string)
+        const aspectRatio = getAspectRatio(width, height)
+
         if (cover) {
           slidesStore.updateSlideIndex(0)
           slidesStore.setSlides(slides, (theme || {}))
+          if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
+          if (width && width !== viewportSize) slidesStore.setViewportSize(width)
           addHistorySnapshot()
         }
         else if (isEmptySlide.value) {
           slidesStore.setSlides(slides, (theme || {}))
+          if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
+          if (width && width !== viewportSize) slidesStore.setViewportSize(width)
           addHistorySnapshot()
         }
         else addSlidesFromData(slides)
@@ -188,14 +206,20 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const { slides, theme } = JSON.parse(decrypt(reader.result as string))
+        const { slides, theme, width, height } = JSON.parse(decrypt(reader.result as string))
+        const aspectRatio = getAspectRatio(width, height)
+
         if (cover) {
           slidesStore.updateSlideIndex(0)
           slidesStore.setSlides(slides, (theme || {}))
+          if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
+          if (width && width !== viewportSize) slidesStore.setViewportSize(width)
           addHistorySnapshot()
         }
         else if (isEmptySlide.value) {
           slidesStore.setSlides(slides, (theme || {}))
+          if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
+          if (width && width !== viewportSize) slidesStore.setViewportSize(width)
           addHistorySnapshot()
         }
         else addSlidesFromData(slides)
@@ -413,6 +437,9 @@ export default () => {
 
       let ratio = 96 / 72
       const width = json.size.width
+      const height = json.size.height
+
+      const aspectRatio = getAspectRatio(width, height)
       
       if (fixedViewport) ratio = 1000 / width
       else slidesStore.setViewportSize(width * ratio)
@@ -1032,10 +1059,12 @@ export default () => {
       if (cover) {
         slidesStore.updateSlideIndex(0)
         slidesStore.setSlides(slides)
+        if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
         addHistorySnapshot()
       }
       else if (isEmptySlide.value) {
         slidesStore.setSlides(slides)
+        if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
         addHistorySnapshot()
       }
       else addSlidesFromData(slides)

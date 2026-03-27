@@ -30,3 +30,10 @@ export const htmlToText = (html: string) => {
   const doc = new DOMParser().parseFromString(html, 'text/html')
   return doc.body.textContent || ''
 }
+
+/**
+ * 浮点数比较
+ */
+export const isFloatEqual = (a: number, b: number, epsilon = 1e-10) => {
+  return Math.abs(a - b) < epsilon
+}
