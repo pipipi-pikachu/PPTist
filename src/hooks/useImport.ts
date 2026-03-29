@@ -427,7 +427,11 @@ export default () => {
     reader.onload = async e => {
       let json = null
       try {
-        json = await parse(e.target!.result as ArrayBuffer)
+        json = await parse(e.target!.result as ArrayBuffer, {
+          imageMode: 'base64',
+          videoMode: 'blob',
+          audioMode: 'blob',
+        })
       }
       catch {
         exporting.value = false
@@ -454,7 +458,7 @@ export default () => {
           background = {
             type: 'image',
             image: {
-              src: value.picBase64,
+              src: value.base64,
               size: 'cover',
             },
           }
@@ -580,7 +584,7 @@ export default () => {
               const element: PPTImageElement = {
                 type: 'image',
                 id: nanoid(10),
-                src: el.src,
+                src: el.base64,
                 width: el.width,
                 height: el.height,
                 left: el.left,
@@ -640,7 +644,7 @@ export default () => {
                 rotate: 0,
               })
             }
-            else if (el.type === 'audio') {
+            else if (el.type === 'audio' && el.blob) {
               slide.elements.push({
                 type: 'audio',
                 id: nanoid(10),
@@ -656,11 +660,11 @@ export default () => {
                 autoplay: false,
               })
             }
-            else if (el.type === 'video') {
+            else if (el.type === 'video' && el.blob) {
               slide.elements.push({
                 type: 'video',
                 id: nanoid(10),
-                src: (el.blob || el.src)!,
+                src: el.blob,
                 width: el.width,
                 height: el.height,
                 left: el.left,
@@ -686,7 +690,7 @@ export default () => {
                   rotate: el.fill.value.rot,
                 } : undefined
 
-                const pattern: string | undefined = el.fill?.type === 'image' ? el.fill.value.picBase64 : undefined
+                const pattern: string | undefined = el.fill?.type === 'image' ? el.fill.value.base64 : undefined
 
                 const fill = el.fill?.type === 'color' ? el.fill.value : ''
 
