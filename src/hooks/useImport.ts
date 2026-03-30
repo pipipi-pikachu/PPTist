@@ -68,7 +68,6 @@ const convertTextContent = (html: string, ratio: number) => {
     let newStyle = styleStr
       .replace(/background:\s*linear-gradient\([^)]+\)\s*;?/g, '')
       .replace(/background-clip:\s*text\s*;?/g, '')
-      .replace(/-webkit-background-clip:\s*text\s*;?/g, '')
       .replace(/color:\s*transparent\s*;?/g, '')
     newStyle = `color: ${hexColor}; ${newStyle}`.replace(/;\s*;/g, ';').replace(/;\s*$/, ';')
     return `style="${newStyle}"`
