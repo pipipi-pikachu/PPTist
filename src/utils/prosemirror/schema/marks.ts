@@ -95,6 +95,34 @@ const backcolor: MarkSpec = {
   },
 }
 
+const textgradient: MarkSpec = {
+  attrs: {
+    gradient: {},
+  },
+  inline: true,
+  group: 'inline',
+  excludes: '',
+  parseDOM: [
+    {
+      style: 'background',
+      getAttrs: value => {
+        if (value && typeof value === 'string' && value.includes('linear-gradient')) {
+          return { gradient: value }
+        }
+        return false
+      }
+    },
+  ],
+  toDOM: mark => {
+    const { gradient } = mark.attrs
+    let style = ''
+    if (gradient) {
+      style += `background: ${gradient}; background-clip: text; -webkit-background-clip: text; color: transparent;`
+    }
+    return ['span', { style }, 0]
+  },
+}
+
 const fontsize: MarkSpec = {
   attrs: {
     fontsize: {},
@@ -181,6 +209,7 @@ export default {
   fontsize,
   fontname,
   code,
+  textgradient,
   forecolor,
   backcolor,
   subscript,

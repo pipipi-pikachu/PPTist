@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { parse, type Shape, type Element, type ChartItem, type BaseElement } from 'pptxtojson'
 import { nanoid } from 'nanoid'
+import tinycolor from 'tinycolor2'
 import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { isFloatEqual } from '@/utils/common'
@@ -46,7 +47,32 @@ const getAspectRatio = (width: number, height: number) => {
 const convertTextContent = (html: string, ratio: number) => {
   return html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
     return `font-size: ${Math.floor(parseFloat(p1) * ratio)}px`
-  }).replace(/&nbsp;/g, ' ')
+  }).replace(/&nbsp;/g, ' ').replace(/style="([^"]*)"/g, (match, styleStr: string) => {
+    const gradientMatch = styleStr.match(/background:\s*(linear-gradient\([^)]+\))/)
+    if (!gradientMatch) return match
+
+    const colorMatches = gradientMatch[1].match(/#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}|rgba?\([^)]+\)/g)
+    if (!colorMatches || !colorMatches.length) return match
+
+    const colors = colorMatches.map(c => tinycolor(c))
+    const avgColor = colors.reduce((acc, c) => {
+      const rgb = c.toRgb()
+      return {
+        r: acc.r + rgb.r / colors.length,
+        g: acc.g + rgb.g / colors.length,
+        b: acc.b + rgb.b / colors.length,
+      }
+    }, { r: 0, g: 0, b: 0 })
+    const hexColor = tinycolor(avgColor).toHexString()
+
+    let newStyle = styleStr
+      .replace(/background:\s*linear-gradient\([^)]+\)\s*;?/g, '')
+      .replace(/background-clip:\s*text\s*;?/g, '')
+      .replace(/-webkit-background-clip:\s*text\s*;?/g, '')
+      .replace(/color:\s*transparent\s*;?/g, '')
+    newStyle = `color: ${hexColor}; ${newStyle}`.replace(/;\s*;/g, ';').replace(/;\s*$/, ';')
+    return `style="${newStyle}"`
+  })
 }
 
 const getMaxFontSize = (html: string, defaultFontSize: number = 18): number => {

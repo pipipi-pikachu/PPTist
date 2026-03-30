@@ -171,12 +171,34 @@ export default () => {
         const styleObj = { ...baseStyleObj }
         const styleAttr = 'attributes' in item ? item.attributes.find(attr => attr.key === 'style') : null
         if (styleAttr && styleAttr.value) {
+          let hasGradient = false
           const styleArr = styleAttr.value.split(';')
           for (const styleItem of styleArr) {
             const match = styleItem.match(/([^:]+):\s*(.+)/)
             if (match) {
               const [key, value] = [match[1].trim(), match[2].trim()]
-              if (key && value) styleObj[key] = value
+              if (key && value) {
+                if (key === 'background' && value.includes('linear-gradient')) {
+                  hasGradient = true
+                  const colorMatches = value.match(/#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}|rgba?\([^)]+\)/g)
+                  if (colorMatches && colorMatches.length > 0) {
+                    const colors = colorMatches.map(c => tinycolor(c))
+                    const avgColor = colors.reduce((acc, c) => {
+                      const rgb = c.toRgb()
+                      return {
+                        r: acc.r + rgb.r / colors.length,
+                        g: acc.g + rgb.g / colors.length,
+                        b: acc.b + rgb.b / colors.length,
+                      }
+                    }, { r: 0, g: 0, b: 0 })
+                    styleObj['color'] = tinycolor(avgColor).toHexString()
+                  }
+                }
+                else if (hasGradient && (key === 'background-clip' || key === '-webkit-background-clip' || (key === 'color' && value === 'transparent'))) {
+                  continue
+                }
+                else styleObj[key] = value
+              }
             }
           }
         }
