@@ -38,6 +38,7 @@
           v-if="activeElementIdList.length > 1"
           :elementList="elementList"
           :scaleMultiElement="scaleMultiElement"
+          :rotateGroupElement="rotateGroupElement"
         />
         <Operate
           v-for="element in elementList" 
@@ -112,6 +113,7 @@ import useViewportSize from './hooks/useViewportSize'
 import useMouseSelection from './hooks/useMouseSelection'
 import useDrop from './hooks/useDrop'
 import useRotateElement from './hooks/useRotateElement'
+import useRotateGroupElement from './hooks/useRotateGroupElement'
 import useScaleElement from './hooks/useScaleElement'
 import useSelectAndMoveElement from './hooks/useSelectElement'
 import useDragElement from './hooks/useDragElement'
@@ -184,6 +186,7 @@ const { dragLineElement } = useDragLineElement(elementList)
 const { selectElement } = useSelectAndMoveElement(elementList, dragElement)
 const { scaleElement, scaleMultiElement } = useScaleElement(elementList, alignmentLines, canvasScale)
 const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)
+const { rotateGroupElement } = useRotateGroupElement(elementList, viewportRef, canvasScale)
 const { moveShapeKeypoint } = useMoveShapeKeypoint(elementList, canvasScale)
 
 const { selectAllElements } = useSelectElement()

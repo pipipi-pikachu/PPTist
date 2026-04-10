@@ -17,6 +17,11 @@
         @mousedown.stop="scaleMultiElement($event, range, point.direction)"
       />
     </template>
+    <RotateHandler
+      v-if="showRotateHandler"
+      :style="{ left: width / 2 + 'px' }"
+      @mousedown.stop="rotateGroupElement($event, localActiveElementList)"
+    />
   </div>
 </template>
 
@@ -25,19 +30,21 @@ import { computed, ref, watchEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
-import { getElementListRange } from '@/utils/element'
+import { getElementListRange, canRotateGroupElements } from '@/utils/element'
 import type { OperateResizeHandlers, MultiSelectRange } from '@/types/edit'
 import useCommonOperate from '../hooks/useCommonOperate'
 
 import ResizeHandler from './ResizeHandler.vue'
 import BorderLine from './BorderLine.vue'
+import RotateHandler from './RotateHandler.vue'
 
 const props = defineProps<{
   elementList: PPTElement[]
   scaleMultiElement: (e: MouseEvent, range: MultiSelectRange, command: OperateResizeHandlers) => void
+  rotateGroupElement: (e: MouseEvent, elements: PPTElement[]) => void
 }>()
 
-const { activeElementIdList, canvasScale } = storeToRefs(useMainStore())
+const { activeElementIdList, activeGroupElementId, canvasScale } = storeToRefs(useMainStore())
 
 const localActiveElementList = computed(() => props.elementList.filter(el => activeElementIdList.value.includes(el.id)))
 
@@ -69,6 +76,10 @@ const disableResize = computed(() => {
     ) return false
     return true
   })
+})
+
+const showRotateHandler = computed(() => {
+  return !activeGroupElementId.value && canRotateGroupElements(localActiveElementList.value)
 })
 </script>
 

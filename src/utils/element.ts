@@ -10,6 +10,20 @@ interface RotatedElementData {
   rotate: number
 }
 
+interface Point {
+  x: number
+  y: number
+}
+
+interface AbsoluteLinePoints {
+  start: Point
+  end: Point
+  broken?: Point
+  broken2?: Point
+  curve?: Point
+  cubic?: [Point, Point]
+}
+
 interface IdMap {
   [id: string]: string
 }
@@ -130,10 +144,264 @@ export const getElementListRange = (elementList: PPTElement[]) => {
   return { minX, maxX, minY, maxY }
 }
 
+const ROTATABLE_GROUP_ELEMENT_TYPES = ['text', 'image', 'shape', 'line']
+
 /**
- * 计算线条元素的长度
+ * 判断当前选中的元素是否为同一个组合的完整成员
+ * @param elements 选中的元素列表
+ */
+export const isSingleGroupSelection = (elements: PPTElement[]) => {
+  if (elements.length < 2) return false
+
+  const groupId = elements[0].groupId
+  if (!groupId) return false
+
+  return elements.every(element => element.groupId === groupId)
+}
+
+/**
+ * 判断当前组合是否允许执行统一旋转
+ * @param elements 组合成员列表
+ */
+export const canRotateGroupElements = (elements: PPTElement[]) => {
+  if (!isSingleGroupSelection(elements)) return false
+
+  return elements.every(element => {
+    if (!ROTATABLE_GROUP_ELEMENT_TYPES.includes(element.type)) return false
+    if (element.type === 'line' && (element.broken || element.broken2 || element.curve || element.cubic)) return false
+    return true
+  })
+}
+
+/**
+ * 计算一组元素整体范围的中心点
+ * @param elements 元素列表
+ * @param rotate 组合整体的旋转参照角度，会先按该角度对齐后再计算中心点
+ */
+export const getGroupElementCenter = (elements: PPTElement[], rotate = 0) => {
+  const { minX, maxX, minY, maxY } = getElementListRangeByRotate(elements, rotate)
+  const alignedCenter = {
+    x: (minX + maxX) / 2,
+    y: (minY + maxY) / 2,
+  }
+
+  if (!rotate) return alignedCenter
+
+  return rotatePoint(alignedCenter, { x: 0, y: 0 }, rotate)
+}
+
+/**
+ * 计算矩形类元素四个顶点在画布中的绝对坐标
+ * @param element 矩形类元素
+ */
+const getRectElementPoints = (element: Exclude<PPTElement, PPTLineElement>) => {
+  const center = {
+    x: element.left + element.width / 2,
+    y: element.top + element.height / 2,
+  }
+  const points = [
+    { x: center.x - element.width / 2, y: center.y - element.height / 2 },
+    { x: center.x + element.width / 2, y: center.y - element.height / 2 },
+    { x: center.x + element.width / 2, y: center.y + element.height / 2 },
+    { x: center.x - element.width / 2, y: center.y + element.height / 2 },
+  ]
+
+  if (!element.rotate) return points
+
+  return points.map(point => rotatePoint(point, center, element.rotate))
+}
+
+/**
+ * 计算线条元素用于范围计算的绝对坐标列表
  * @param element 线条元素
  */
+const getAbsoluteLinePointList = (element: PPTLineElement) => {
+  const points = getAbsoluteLinePoints(element)
+  return [points.start, points.end]
+}
+
+/**
+ * 按指定整体旋转参照角度对齐后，计算元素列表的范围
+ * @param elements 元素列表
+ * @param rotate 组合整体的旋转参照角度
+ */
+const getElementListRangeByRotate = (elements: PPTElement[], rotate: number) => {
+  const xValues: number[] = []
+  const yValues: number[] = []
+
+  elements.forEach(element => {
+    const points = element.type === 'line' ? getAbsoluteLinePointList(element) : getRectElementPoints(element)
+    const rotatedPoints = rotate ? points.map(point => rotatePoint(point, { x: 0, y: 0 }, -rotate)) : points
+    xValues.push(...rotatedPoints.map(point => point.x))
+    yValues.push(...rotatedPoints.map(point => point.y))
+  })
+
+  return {
+    minX: Math.min(...xValues),
+    maxX: Math.max(...xValues),
+    minY: Math.min(...yValues),
+    maxY: Math.max(...yValues),
+  }
+}
+
+/**
+ * 将角度规范到 [-180, 180] 区间内
+ * @param angle 原始角度
+ */
+export const normalizeAngle = (angle: number) => {
+  let result = angle
+  while (result > 180) result -= 360
+  while (result < -180) result += 360
+  return result
+}
+
+/**
+ * 计算一个点绕指定中心点旋转后的坐标
+ * @param point 目标点
+ * @param center 旋转中心点
+ * @param angle 旋转角度
+ */
+export const rotatePoint = (point: Point, center: Point, angle: number): Point => {
+  const radian = angle * Math.PI / 180
+  const deltaX = point.x - center.x
+  const deltaY = point.y - center.y
+
+  return {
+    x: center.x + deltaX * Math.cos(radian) - deltaY * Math.sin(radian),
+    y: center.y + deltaX * Math.sin(radian) + deltaY * Math.cos(radian),
+  }
+}
+
+/**
+ * 旋转矩形类元素：通过旋转元素中心点并叠加自身旋转角度实现
+ * @param element 元素
+ * @param center 组合旋转中心点
+ * @param angle 旋转角度
+ */
+export const rotateRectLikeElement = (element: Exclude<PPTElement, PPTLineElement>, center: Point, angle: number) => {
+  const elementCenter = {
+    x: element.left + element.width / 2,
+    y: element.top + element.height / 2,
+  }
+  const nextCenter = rotatePoint(elementCenter, center, angle)
+
+  return {
+    ...element,
+    left: nextCenter.x - element.width / 2,
+    top: nextCenter.y - element.height / 2,
+    rotate: normalizeAngle(element.rotate + angle),
+  }
+}
+
+/**
+ * 将线条元素的点位转换为画布中的绝对坐标
+ * @param element 线条元素
+ */
+const getAbsoluteLinePoints = (element: PPTLineElement): AbsoluteLinePoints => {
+  const toAbsolutePoint = (point: [number, number]) => ({
+    x: element.left + point[0],
+    y: element.top + point[1],
+  })
+
+  const points: AbsoluteLinePoints = {
+    start: toAbsolutePoint(element.start),
+    end: toAbsolutePoint(element.end),
+  }
+
+  if (element.broken) points.broken = toAbsolutePoint(element.broken)
+  if (element.broken2) points.broken2 = toAbsolutePoint(element.broken2)
+  if (element.curve) points.curve = toAbsolutePoint(element.curve)
+  if (element.cubic) {
+    points.cubic = [
+      toAbsolutePoint(element.cubic[0]),
+      toAbsolutePoint(element.cubic[1]),
+    ]
+  }
+
+  return points
+}
+
+/**
+ * 将线条元素的全部绝对点位绕指定中心点旋转
+ * @param points 线条绝对点位
+ * @param center 组合旋转中心点
+ * @param angle 旋转角度
+ */
+const rotateAbsoluteLinePoints = (points: AbsoluteLinePoints, center: Point, angle: number): AbsoluteLinePoints => {
+  const rotated: AbsoluteLinePoints = {
+    start: rotatePoint(points.start, center, angle),
+    end: rotatePoint(points.end, center, angle),
+  }
+
+  if (points.broken) rotated.broken = rotatePoint(points.broken, center, angle)
+  if (points.broken2) rotated.broken2 = rotatePoint(points.broken2, center, angle)
+  if (points.curve) rotated.curve = rotatePoint(points.curve, center, angle)
+  if (points.cubic) {
+    rotated.cubic = [
+      rotatePoint(points.cubic[0], center, angle),
+      rotatePoint(points.cubic[1], center, angle),
+    ]
+  }
+
+  return rotated
+}
+
+/**
+ * 根据旋转后的绝对点位重建线条元素
+ * @param element 原线条元素
+ * @param points 旋转后的绝对点位
+ */
+const rebuildLineElement = (element: PPTLineElement, points: AbsoluteLinePoints): PPTLineElement => {
+  const allPoints = [points.start, points.end]
+  if (points.broken) allPoints.push(points.broken)
+  if (points.broken2) allPoints.push(points.broken2)
+  if (points.curve) allPoints.push(points.curve)
+  if (points.cubic) allPoints.push(...points.cubic)
+
+  const left = Math.min(...allPoints.map(point => point.x))
+  const top = Math.min(...allPoints.map(point => point.y))
+  const toRelativePoint = (point: Point): [number, number] => [point.x - left, point.y - top]
+
+  const nextElement: PPTLineElement = {
+    ...element,
+    left,
+    top,
+    start: toRelativePoint(points.start),
+    end: toRelativePoint(points.end),
+  }
+
+  if (points.broken) nextElement.broken = toRelativePoint(points.broken)
+  else delete nextElement.broken
+
+  if (points.broken2) nextElement.broken2 = toRelativePoint(points.broken2)
+  else delete nextElement.broken2
+
+  if (points.curve) nextElement.curve = toRelativePoint(points.curve)
+  else delete nextElement.curve
+
+  if (points.cubic) {
+    nextElement.cubic = [
+      toRelativePoint(points.cubic[0]),
+      toRelativePoint(points.cubic[1]),
+    ]
+  }
+  else delete nextElement.cubic
+
+  return nextElement
+}
+
+/**
+ * 旋转线条元素：将全部控制点旋转后重建线条数据
+ * @param element 线条元素
+ * @param center 组合旋转中心点
+ * @param angle 旋转角度
+ */
+export const rotateLineElement = (element: PPTLineElement, center: Point, angle: number) => {
+  const absolutePoints = getAbsoluteLinePoints(element)
+  const rotatedPoints = rotateAbsoluteLinePoints(absolutePoints, center, angle)
+  return rebuildLineElement(element, rotatedPoints)
+}
+
 export const getLineElementLength = (element: PPTLineElement) => {
   const deltaX = element.end[0] - element.start[0]
   const deltaY = element.end[1] - element.start[1]
