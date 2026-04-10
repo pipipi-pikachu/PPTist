@@ -99,6 +99,7 @@ export const HOTKEY_DOC: HotkeyItem[] = [
       { label: '置顶层', value: 'Alt + F' },
       { label: '置底层', value: 'Alt + B' },
       { label: '锁定宽高比例', value: '按住 Ctrl 或 Shift' },
+      { label: '快速复制', value: '按住 Ctrl + 拖拽' },
       { label: '创建水平 / 垂直线条', value: '按住 Ctrl 或 Shift' },
       { label: '切换焦点元素', value: 'Tab' },
       { label: '确认图片裁剪', value: 'Enter' },

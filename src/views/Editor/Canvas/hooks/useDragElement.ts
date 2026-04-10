@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import type { AlignmentLineProps } from '@/types/edit'
-import { getRectRotatedRange, uniqAlignLines, type AlignLine } from '@/utils/element'
+import { createElementIdMap, getRectRotatedRange, uniqAlignLines, type AlignLine } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default (
@@ -11,9 +11,10 @@ export default (
   alignmentLines: Ref<AlignmentLineProps[]>,
   canvasScale: Ref<number>,
 ) => {
+  const mainStore = useMainStore()
   const slidesStore = useSlidesStore()
-  const { activeElementIdList, activeGroupElementId } = storeToRefs(useMainStore())
-  const { shiftKeyState } = storeToRefs(useKeyboardStore())
+  const { activeElementIdList, activeGroupElementId } = storeToRefs(mainStore)
+  const { ctrlKeyState, shiftKeyState } = storeToRefs(useKeyboardStore())
   const { viewportRatio, viewportSize } = storeToRefs(slidesStore)
 
   const { addHistorySnapshot } = useHistorySnapshot()
@@ -31,20 +32,26 @@ export default (
     const sorptionRange = 5
 
     const originElementList: PPTElement[] = JSON.parse(JSON.stringify(elementList.value))
-    const originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.id))
-  
-    const elOriginLeft = element.left
-    const elOriginTop = element.top
-    const elOriginWidth = element.width
-    const elOriginHeight = ('height' in element && element.height) ? element.height : 0
-    const elOriginRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
+    let originActiveElementList = originElementList.filter(el => activeElementIdList.value.includes(el.id))
+
+    // 拖拽目标元素和初始属性声明，Ctrl+拖拽复制时会替换为副本元素及其属性
+    let dragTargetElement = element
+    let elOriginLeft = element.left
+    let elOriginTop = element.top
+    let elOriginWidth = element.width
+    let elOriginHeight = ('height' in element && element.height) ? element.height : 0
+    let elOriginRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
   
     const startPageX = isTouchEvent ? e.changedTouches[0].pageX : e.pageX
     const startPageY = isTouchEvent ? e.changedTouches[0].pageY : e.pageY
 
     let isMisoperation: boolean | null = null
+    let duplicateTriggered = false // 标记是否已触发 Ctrl+拖拽复制
 
     const isActiveGroupElement = element.id === activeGroupElementId.value
+
+    // 单元素拖拽：仅选中一个元素，或正在操作组合中的激活成员
+    const dragSingleElement = activeElementIdList.value.length === 1 || isActiveGroupElement
 
     // 收集对齐对齐吸附线
     // 包括页面内除目标元素外的其他元素在画布中的各个可吸附对齐位置：上下左右四边，水平中心、垂直中心
@@ -109,6 +116,47 @@ export default (
     horizontalLines = uniqAlignLines(horizontalLines)
     verticalLines = uniqAlignLines(verticalLines)
 
+    // Ctrl+拖拽复制：拷贝选中元素并将副本插入画布，
+    // 然后将拖拽目标切换为副本元素，后续移动操作作用于副本上
+    const duplicateElement = () => {
+      // 拷贝源元素，单选时仅复制目标元素，多选时复制所有选中元素
+      const sourceElements = JSON.parse(JSON.stringify(dragSingleElement ? [dragTargetElement] : originActiveElementList)) as PPTElement[]
+
+      const { groupIdMap, elIdMap } = createElementIdMap(sourceElements)
+
+      const duplicatedElements = sourceElements.map(item => {
+        item.id = elIdMap[item.id]
+        if (isActiveGroupElement && item.groupId) delete item.groupId
+        else if (item.groupId) item.groupId = groupIdMap[item.groupId]
+        return item
+      })
+
+      elementList.value = [...elementList.value, ...duplicatedElements]
+      slidesStore.updateSlide({ elements: elementList.value })
+
+      // 将选中状态切换到副本元素
+      const duplicatedActiveElementIdList = duplicatedElements.map(item => item.id)
+      const duplicatedHandleElementId = elIdMap[dragTargetElement.id]
+      const duplicatedHandleElement = duplicatedElements.find(item => item.id === duplicatedHandleElementId)
+      if (!duplicatedHandleElement) return
+
+      mainStore.setActiveElementIdList(duplicatedActiveElementIdList)
+      mainStore.setHandleElementId(duplicatedHandleElementId)
+      mainStore.setActiveGroupElementId('')
+
+      // 将拖拽目标和初始属性替换为副本
+      dragTargetElement = duplicatedHandleElement
+      originActiveElementList = duplicatedElements
+
+      elOriginLeft = duplicatedHandleElement.left
+      elOriginTop = duplicatedHandleElement.top
+      elOriginWidth = duplicatedHandleElement.width
+      elOriginHeight = ('height' in duplicatedHandleElement && duplicatedHandleElement.height) ? duplicatedHandleElement.height : 0
+      elOriginRotate = ('rotate' in duplicatedHandleElement && duplicatedHandleElement.rotate) ? duplicatedHandleElement.rotate : 0
+
+      duplicateTriggered = true
+    }
+
     const handleMousemove = (e: MouseEvent | TouchEvent) => {
       const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
       const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
@@ -122,6 +170,9 @@ export default (
                          Math.abs(startPageY - currentPageY) < sorptionRange
       }
       if (!isMouseDown || isMisoperation) return
+
+      // 拖拽过程中按住Ctrl键且尚未复制过，则触发复制
+      if (!duplicateTriggered && ctrlKeyState.value) duplicateElement()
       
       let moveX = (currentPageX - startPageX) / canvasScale.value
       let moveY = (currentPageY - startPageY) / canvasScale.value
@@ -139,7 +190,7 @@ export default (
       // 需要区分单选和多选两种情况，其中多选状态下需要计算多选元素的整体范围；单选状态下需要继续区分线条、普通元素、旋转后的普通元素三种情况
       let targetMinX: number, targetMaxX: number, targetMinY: number, targetMaxY: number
 
-      if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
+      if (dragSingleElement) {
         if (elOriginRotate) {
           const { xRange, yRange } = getRectRotatedRange({
             left: targetLeft,
@@ -153,11 +204,11 @@ export default (
           targetMinY = yRange[0]
           targetMaxY = yRange[1]
         }
-        else if (element.type === 'line') {
+        else if (dragTargetElement.type === 'line') {
           targetMinX = targetLeft
-          targetMaxX = targetLeft + Math.max(element.start[0], element.end[0])
+          targetMaxX = targetLeft + Math.max(dragTargetElement.start[0], dragTargetElement.end[0])
           targetMinY = targetTop
-          targetMaxY = targetTop + Math.max(element.start[1], element.end[1])
+          targetMaxY = targetTop + Math.max(dragTargetElement.start[1], dragTargetElement.end[1])
         }
         else {
           targetMinX = targetLeft
@@ -260,21 +311,21 @@ export default (
       alignmentLines.value = _alignmentLines
       
       // 单选状态下，或者当前选中的多个元素中存在正在操作的元素时，仅修改正在操作的元素的位置
-      if (activeElementIdList.value.length === 1 || isActiveGroupElement) {
+      if (dragSingleElement) {
         elementList.value = elementList.value.map(el => {
-          return el.id === element.id ? { ...el, left: targetLeft, top: targetTop } : el
+          return el.id === dragTargetElement.id ? { ...el, left: targetLeft, top: targetTop } : el
         })
       }
 
       // 多选状态下，除了修改正在操作的元素的位置，其他被选中的元素也需要修改位置信息
       // 其他被选中的元素的位置信息通过正在操作的元素的移动偏移量来进行计算
       else {
-        const handleElement = elementList.value.find(el => el.id === element.id)
+        const handleElement = elementList.value.find(el => el.id === dragTargetElement.id)
         if (!handleElement) return
 
         elementList.value = elementList.value.map(el => {
           if (activeElementIdList.value.includes(el.id)) {
-            if (el.id === element.id) {
+            if (el.id === dragTargetElement.id) {
               return {
                 ...el,
                 left: targetLeft,

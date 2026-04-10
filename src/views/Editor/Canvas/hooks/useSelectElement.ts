@@ -10,7 +10,7 @@ export default (
 ) => {
   const mainStore = useMainStore()
   const { activeElementIdList, activeGroupElementId, handleElementId, editorAreaFocus } = storeToRefs(mainStore)
-  const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
+  const { ctrlKeyState, ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
   // 选中元素
   // startMove 表示是否需要再选中操作后进入到开始移动的状态
@@ -38,6 +38,41 @@ export default (
 
       mainStore.setActiveElementIdList(uniq(newActiveIdList))
       mainStore.setHandleElementId(element.id)
+    }
+
+    // 已选中元素上按下 Ctrl 且允许拖拽时，先不立刻取消选中
+    // 因为 Ctrl+点击 和 Ctrl+拖拽复制 共用同一 mousedown
+    // 所以需要先记录按下位置，等 mouseup 时再判断这次操作到底是”点击”还是”拖拽”
+    // 点击时在 mouseup 再取消选中，拖拽时交给拖拽逻辑处理
+    else if (ctrlKeyState.value && startMove) {
+      const startPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
+      const startPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
+      const target = e.target as HTMLElement
+
+      target.onmouseup = (e: MouseEvent) => {
+        const currentPageX = e.pageX
+        const currentPageY = e.pageY
+
+        if (startPageX === currentPageX && startPageY === currentPageY) {
+          let newActiveIdList: string[] = []
+
+          if (element.groupId) {
+            const groupMembersId: string[] = []
+            elementList.value.forEach((el: PPTElement) => {
+              if (el.groupId === element.groupId) groupMembersId.push(el.id)
+            })
+            newActiveIdList = activeElementIdList.value.filter(id => !groupMembersId.includes(id))
+          }
+          else {
+            newActiveIdList = activeElementIdList.value.filter(id => id !== element.id)
+          }
+
+          if (newActiveIdList.length > 0) {
+            mainStore.setActiveElementIdList(newActiveIdList)
+          }
+        }
+        target.onmouseup = null
+      }
     }
 
     // 如果目标元素已被选中，且按下了Ctrl键或Shift键，则取消其被选中状态
