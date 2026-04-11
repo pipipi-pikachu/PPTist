@@ -13,6 +13,7 @@ interface AdsorptionPoint {
 export default (elementList: Ref<PPTElement[]>) => {
   const slidesStore = useSlidesStore()
   const { canvasScale } = storeToRefs(useMainStore())
+  const { viewportSize, viewportRatio } = storeToRefs(slidesStore)
   const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
   const { addHistorySnapshot } = useHistorySnapshot()
 
@@ -26,6 +27,19 @@ export default (elementList: Ref<PPTElement[]>) => {
     const startPageY = e.pageY
 
     const adsorptionPoints: AdsorptionPoint[] = []
+    const canvasWidth = viewportSize.value
+    const canvasHeight = viewportSize.value * viewportRatio.value
+
+    adsorptionPoints.push(
+      { x: 0, y: 0 },
+      { x: canvasWidth / 2, y: 0 },
+      { x: canvasWidth, y: 0 },
+      { x: 0, y: canvasHeight / 2 },
+      { x: canvasWidth, y: canvasHeight / 2 },
+      { x: 0, y: canvasHeight },
+      { x: canvasWidth / 2, y: canvasHeight },
+      { x: canvasWidth, y: canvasHeight },
+    )
 
     // 获取所有线条以外的未旋转的元素的8个缩放点作为吸附位置
     for (let i = 0; i < elementList.value.length; i++) {
