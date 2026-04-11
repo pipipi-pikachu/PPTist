@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import { nanoid } from 'nanoid'
-import type { PPTElement, PPTLineElement, Slide } from '@/types/slides'
+import type { LinePoint, PPTElement, PPTLineElement, Slide } from '@/types/slides'
 
 interface RotatedElementData {
   left: number
@@ -509,6 +509,126 @@ export const getLineElementPath = (element: PPTLineElement) => {
     return `M${start} C${p1} ${p2} ${end}`
   }
   return `M${start} L${end}`
+}
+
+/**
+ * 根据线条端点类型和线宽，计算渲染时线身需要向内收缩的距离
+ * @param point 线条端点类型
+ * @param width 线条宽度
+ */
+const getLinePointRetractionOffset = (point: LinePoint, width: number) => {
+  const size = width < 2 ? 2 : width
+  if (point === 'arrow') return size
+  if (point === 'dot') return size / 2
+  return 0
+}
+
+/**
+ * 计算两个线条点位之间的距离
+ * @param p1 第一个点
+ * @param p2 第二个点
+ */
+const getLinePointDistance = (p1: [number, number], p2: [number, number]) => {
+  const deltaX = p2[0] - p1[0]
+  const deltaY = p2[1] - p1[1]
+  return Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+}
+
+/**
+ * 按指定偏移距离，将线条点位沿目标点方向平移
+ * @param point 当前点
+ * @param target 目标点
+ * @param offset 偏移距离
+ */
+const getLinePointByOffset = (
+  point: [number, number],
+  target: [number, number],
+  offset: number,
+) => {
+  const distance = getLinePointDistance(point, target)
+  if (!distance) return point
+
+  const ratio = offset / distance
+  return [
+    point[0] + (target[0] - point[0]) * ratio,
+    point[1] + (target[1] - point[1]) * ratio,
+  ] as [number, number]
+}
+
+/**
+ * 获取线条在路径起点和终点处对应的相邻控制点，用于计算端点内缩方向
+ * @param element 线条元素
+ */
+const getLinePathTurningPoints = (element: PPTLineElement) => {
+  if (element.broken) return [element.broken]
+
+  if (element.broken2) {
+    const { minX, maxX, minY, maxY } = getElementRange(element)
+    if (maxX - minX >= maxY - minY) {
+      return [
+        [element.broken2[0], element.start[1]],
+        [element.broken2[0], element.end[1]],
+      ] as [number, number][]
+    }
+    return [
+      [element.start[0], element.broken2[1]],
+      [element.end[0], element.broken2[1]],
+    ] as [number, number][]
+  }
+
+  if (element.curve) return [element.curve]
+  if (element.cubic) return [element.cubic[0], element.cubic[1]]
+  return []
+}
+
+/**
+ * 获取线条元素用于实际渲染的路径字符串：
+ * 保持端点 marker 仍对齐原始 start/end，仅将可见线身在两端按需向内收缩
+ * @param element 线条元素
+ */
+export const getLineElementRenderPath = (element: PPTLineElement) => {
+  const turningPoints = getLinePathTurningPoints(element)
+
+  let start = element.start
+  let end = element.end
+
+  const startOffset = getLinePointRetractionOffset(element.points[0], element.width)
+  const endOffset = getLinePointRetractionOffset(element.points[1], element.width)
+
+  if (startOffset) {
+    const nextPoint = turningPoints[0] || element.end
+    const offset = Math.min(startOffset, getLinePointDistance(element.start, nextPoint) / 2)
+    start = getLinePointByOffset(element.start, nextPoint, offset)
+  }
+
+  if (endOffset) {
+    const prevPoint = turningPoints[turningPoints.length - 1] || element.start
+    const offset = Math.min(endOffset, getLinePointDistance(prevPoint, element.end) / 2)
+    end = getLinePointByOffset(element.end, prevPoint, offset)
+  }
+
+  const startPoint = start.join(',')
+  const endPoint = end.join(',')
+  if (element.broken) {
+    const mid = element.broken.join(',')
+    return `M${startPoint} L${mid} L${endPoint}`
+  }
+  else if (element.broken2) {
+    const { minX, maxX, minY, maxY } = getElementRange(element)
+    if (maxX - minX >= maxY - minY) return `M${startPoint} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${endPoint}`
+    return `M${startPoint} L${element.start[0]},${element.broken2[1]} L${element.end[0]},${element.broken2[1]} ${endPoint}`
+  }
+  else if (element.curve) {
+    const mid = element.curve.join(',')
+    return `M${startPoint} Q${mid} ${endPoint}`
+  }
+  else if (element.cubic) {
+    const [c1, c2] = element.cubic
+    const p1 = c1.join(',')
+    const p2 = c2.join(',')
+    return `M${startPoint} C${p1} ${p2} ${endPoint}`
+  }
+  return `M${startPoint} L${endPoint}`
 }
 
 /**

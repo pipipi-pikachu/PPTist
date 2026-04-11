@@ -42,13 +42,20 @@
           :stroke="elementInfo.color" 
           :stroke-width="elementInfo.width" 
           :stroke-dasharray="lineDashArray"
+          fill="none"
+        ></path>
+				<path
+          class="line-marker"
+          :d="hitPath"
+          stroke="transparent"
+          :stroke-width="elementInfo.width"
           fill="none" 
           :marker-start="elementInfo.points[0] ? `url(#${elementInfo.id}-${elementInfo.points[0]}-start)` : ''"
           :marker-end="elementInfo.points[1] ? `url(#${elementInfo.id}-${elementInfo.points[1]}-end)` : ''"
         ></path>
 				<path
           class="line-path"
-          :d="path" 
+          :d="hitPath" 
           stroke="transparent" 
           stroke-width="20" 
           fill="none" 
@@ -62,7 +69,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { PPTLineElement } from '@/types/slides'
-import { getLineElementPath } from '@/utils/element'
+import { getLineElementPath, getLineElementRenderPath } from '@/utils/element'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
@@ -101,6 +108,10 @@ const lineDashArray = computed(() => {
 })
 
 const path = computed(() => {
+  return getLineElementRenderPath(props.elementInfo)
+})
+
+const hitPath = computed(() => {
   return getLineElementPath(props.elementInfo)
 })
 </script>
@@ -130,5 +141,8 @@ const path = computed(() => {
 .line-path, .line-point {
   pointer-events: all;
   cursor: move;
+}
+.line-marker {
+  pointer-events: none;
 }
 </style>

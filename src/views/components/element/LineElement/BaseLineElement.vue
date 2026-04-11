@@ -38,6 +38,12 @@
           :stroke="elementInfo.color" 
           :stroke-width="elementInfo.width" 
           :stroke-dasharray="lineDashArray"
+          fill="none"
+        ></path>
+				<path
+          :d="markerPath"
+          stroke="transparent"
+          :stroke-width="elementInfo.width"
           fill="none" 
           :marker-start="elementInfo.points[0] ? `url(#${elementInfo.id}-${elementInfo.points[0]}-start)` : ''"
           :marker-end="elementInfo.points[1] ? `url(#${elementInfo.id}-${elementInfo.points[1]}-end)` : ''"
@@ -50,7 +56,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { PPTLineElement } from '@/types/slides'
-import { getLineElementPath } from '@/utils/element'
+import { getLineElementPath, getLineElementRenderPath } from '@/utils/element'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 
 import LinePointMarker from './LinePointMarker.vue'
@@ -79,6 +85,10 @@ const lineDashArray = computed(() => {
 })
 
 const path = computed(() => {
+  return getLineElementRenderPath(props.elementInfo)
+})
+
+const markerPath = computed(() => {
   return getLineElementPath(props.elementInfo)
 })
 </script>
