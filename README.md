@@ -224,7 +224,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
         - 你给本项目提交过重要的 PR 或 Issue（由作者主观判断，符合的 PR 或 Issue 会打上`important contribution`标签）；
     3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权（违反协议后被作者找到的不适用此项）。独立授权价格：
         - 一年：2999元；
-        - 永久：5499元（不含税）；
+        - 永久：5699元（不含税）；
 - 建议优先考虑执行AGPL-3.0协议，如需付费获取独立的商业授权，请务必在联系作者前阅读以下内容：
     - **独立商业授权表示**：
         - 作者单独出具商业授权协议文件（邮件联系作者获取），双方按流程签署协议；
