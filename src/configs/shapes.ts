@@ -408,7 +408,6 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 A 100 100 102 1 0 200 100 L 100 100 L 100 0 Z',
-        pptxShapeType: 'pie',
       },
       {
         viewBox: [200, 200],
