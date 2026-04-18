@@ -85,7 +85,7 @@ export default {
       body: JSON.stringify({
         content,
         command,
-        model: 'GLM-4.5-Flash',
+        model: 'glm-4.7-flash',
         stream: true,
       }),
     })
