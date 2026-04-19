@@ -626,7 +626,25 @@ export default () => {
                   style: el.borderType,
                 }
               }
-              const clipShapeTypes = ['rect', 'roundRect', 'ellipse', 'triangle', 'rhombus', 'pentagon', 'hexagon', 'heptagon', 'octagon', 'parallelogram', 'trapezoid']
+              const clipShapeTypes = [
+                'rect',
+                'snip1Rect',
+                'snip2DiagRect',
+                'roundRect',
+                'ellipse',
+                'triangle',
+                'rtTriangle',
+                'diamond',
+                'pentagon',
+                'hexagon',
+                'heptagon',
+                'octagon',
+                'chevron',
+                'homePlate',
+                'rightArrow',
+                'parallelogram',
+                'trapezoid'
+              ]
               let geom = el.geom || 'rect'
               if (geom.indexOf('custom:') !== -1) geom = geom.replace('custom:', '')
               if (!clipShapeTypes.includes(geom)) geom = 'rect'

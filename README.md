@@ -2,15 +2,12 @@
     <img src='/public/logo.png' />
 </p>
 
-<p align="center">
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/stargazers" target="_black"><img src="https://img.shields.io/github/stars/pipipi-pikachu/PPTist?logo=github" alt="stars" /></a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/network/members" target="_black"><img src="https://img.shields.io/github/forks/pipipi-pikachu/PPTist?logo=github" alt="forks" /></a>
-    <a href="https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE" target="_black"><img src="https://img.shields.io/github/license/pipipi-pikachu/PPTist" alt="license" /></a>
-    <a href="https://www.typescriptlang.org" target="_black"><img src="https://img.shields.io/badge/language-TypeScript-blue.svg" alt="language"></a>
-    <a href="https://github.com/pipipi-pikachu/PPTist/issues" target="_black"><img src="https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist.svg" alt="issue"></a>
-    <a href="https://gitee.com/pptist/PPTist" target="_black"><img src="https://gitee.com/pptist/PPTist/badge/star.svg?theme=gvp" alt="gitee"></a>
-    <a href="https://gitcode.com/pipipi-pikachu/PPTist" target="_black"><img src="https://gitcode.com/pipipi-pikachu/PPTist/star/badge.svg" alt="gitcode"></a>
-</p>
+[![GitHub stars](https://img.shields.io/github/stars/pipipi-pikachu/PPTist)](https://www.github.com/pipipi-pikachu/PPTist/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/pipipi-pikachu/PPTist)](https://www.github.com/pipipi-pikachu/PPTist/network/members)
+[![GitHub issues](https://img.shields.io/github/issues-closed/pipipi-pikachu/PPTist)](https://github.com/pipipi-pikachu/PPTist/issues)
+[![license](https://img.shields.io/github/license/pipipi-pikachu/PPTist)](https://www.github.com/pipipi-pikachu/PPTist/blob/master/LICENSE)
+[![Gitee stars](https://gitee.com/pptist/PPTist/badge/star.svg?theme=gvp)](https://gitee.com/pptist/PPTist)
+[![Gitcode stars](https://gitcode.com/pipipi-pikachu/PPTist/star/badge.svg)](https://gitcode.com/pipipi-pikachu/PPTist)
 
 [简体中文](README_zh.md) | English
 
