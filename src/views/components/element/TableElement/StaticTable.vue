@@ -20,19 +20,14 @@
         <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
           <td 
             class="cell"
-            :style="{
-              borderStyle: outline.style,
-              borderColor: outline.color,
-              borderWidth: outline.width + 'px',
-              ...getTextStyle(cell.style),
-            }"
+            :style="getCellStyle(outline, cell.style)"
             v-for="(cell, colIndex) in rowCells"
             :key="cell.id"
             :rowspan="cell.rowspan"
             :colspan="cell.colspan"
             v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
           >
-            <div class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }" v-html="formatText(cell.text)" />
+            <div class="cell-text" :style="getTextStyle(cellMinHeight, cell.style)" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -43,7 +38,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
-import { getTextStyle, formatText } from './utils'
+import { getCellStyle, getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -138,6 +133,9 @@ table {
   .cell-text {
     padding: 5px;
     line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>

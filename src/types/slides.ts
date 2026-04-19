@@ -103,6 +103,10 @@ export interface PPTElementLink {
   target: string
 }
 
+export type TextAlign = 'left' | 'center' | 'right' | 'justify'
+
+export type TextAlignVertical = 'top' | 'middle' | 'bottom' 
+
 
 /**
  * 元素通用属性
@@ -291,8 +295,6 @@ export interface PPTImageElement extends PPTBaseElement {
   imageType?: ImageType
 }
 
-export type ShapeTextAlign = 'top' | 'middle' | 'bottom' 
-
 /**
  * 形状内文本
  * 
@@ -316,7 +318,7 @@ export interface ShapeText {
   content: string
   defaultFontName: string
   defaultColor: string
-  align: ShapeTextAlign
+  align: TextAlignVertical
   lineHeight?: number
   wordSpace?: number
   paragraphSpace?: number
@@ -469,7 +471,6 @@ export interface PPTChartElement extends PPTBaseElement {
 }
 
 
-export type TextAlign = 'left' | 'center' | 'right' | 'justify'
 /**
  * 表格单元格样式
  * 
@@ -501,6 +502,7 @@ export interface TableCellStyle {
   fontsize?: string
   fontname?: string
   align?: TextAlign
+  vAlign?: TextAlignVertical
 }
 
 

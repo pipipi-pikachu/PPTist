@@ -95,6 +95,17 @@
       <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><i-icon-park-outline:align-text-both /></RadioButton>
     </RadioGroup>
 
+    <RadioGroup 
+      class="row" 
+      button-style="solid" 
+      :value="textAttrs.vAlign"
+      @update:value="value => updateTextAttrs({ vAlign: value as TextAlignVertical })"
+    >
+      <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
+      <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
+      <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
+    </RadioGroup>
+
     <Divider />
 
     <ElementOutline :fixed="true" />
@@ -176,7 +187,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign } from '@/types/slides'
+import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign, TextAlignVertical } from '@/types/slides'
 import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -214,6 +225,7 @@ const textAttrs = ref({
   fontsize: '12px',
   fontname: '',
   align: 'left',
+  vAlign: 'top',
 })
 
 const theme = ref<TableTheme>()
@@ -262,6 +274,7 @@ const updateTextAttrState = () => {
       fontsize: '12px',
       fontname: '',
       align: 'left',
+      vAlign: 'top',
     }
   }
   else {
@@ -275,12 +288,13 @@ const updateTextAttrState = () => {
       fontsize: style.fontsize || '12px',
       fontname: style.fontname || '',
       align: style.align || 'left',
+      vAlign: style.vAlign || 'top',
     }
   }
 }
 
 onMounted(() => {
-  if (selectedCells.value.length) updateTextAttrState()
+  updateTextAttrState()
 })
 
 watch(selectedCells, updateTextAttrState)

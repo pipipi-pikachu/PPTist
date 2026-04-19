@@ -33,12 +33,7 @@
               'selected': selectedCells.includes(`${rowIndex}_${colIndex}`) && selectedCells.length > 1,
               'active': activedCell === `${rowIndex}_${colIndex}`,
             }"
-            :style="{
-              borderStyle: outline.style,
-              borderColor: outline.color,
-              borderWidth: outline.width + 'px',
-              ...getTextStyle(cell.style),
-            }"
+            :style="getCellStyle(outline, cell.style)"
             v-for="(cell, colIndex) in rowCells"
             :key="cell.id"
             :rowspan="cell.rowspan"
@@ -53,12 +48,12 @@
               v-if="activedCell === `${rowIndex}_${colIndex}`"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
-              :style="{ minHeight: (cellMinHeight - 4) + 'px' }"
+              :style="getTextStyle(cellMinHeight, cell.style)"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
               @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
             />
-            <div v-else class="cell-text" :style="{ minHeight: (cellMinHeight - 4) + 'px' }" v-html="formatText(cell.text)" />
+            <div v-else class="cell-text" :style="getTextStyle(cellMinHeight, cell.style)" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -75,7 +70,7 @@ import { useMainStore } from '@/store'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
-import { getTextStyle, formatText } from './utils'
+import { getCellStyle, getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -818,6 +813,9 @@ table {
     padding: 5px;
     line-height: 1.5;
     user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     cursor: text;
 
     &.active {

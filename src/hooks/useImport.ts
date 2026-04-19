@@ -21,13 +21,13 @@ import type {
   PPTShapeElement,
   PPTLineElement,
   PPTImageElement,
-  ShapeTextAlign,
+  TextAlignVertical,
   PPTTextElement,
   ChartOptions,
   Gradient,
 } from '@/types/slides'
 
-const shapeVAlignMap: Record<string, ShapeTextAlign> = {
+const vAlignMap: Record<string, TextAlignVertical> = {
   'mid': 'middle',
   'down': 'bottom',
   'up': 'top',
@@ -560,7 +560,7 @@ export default () => {
                     content: convertTextContent(el.content, fontScale),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
-                    align: shapeVAlignMap[el.vAlign] || 'middle',
+                    align: vAlignMap[el.vAlign] || 'middle',
                     lineHeight: 1,
                   },
                 }
@@ -762,7 +762,7 @@ export default () => {
                     content: convertTextContent(el.content, ratio),
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
-                    align: shapeVAlignMap[el.vAlign] || 'middle',
+                    align: vAlignMap[el.vAlign] || 'middle',
                   },
                   flipH: el.isFlipH,
                   flipV: el.isFlipV,
@@ -927,6 +927,7 @@ export default () => {
                     text: textDiv.innerText,
                     style: {
                       ...style,
+                      vAlign: vAlignMap[cellData.vAlign] || 'middle',
                       align: ['left', 'right', 'center'].includes(align) ? (align as 'left' | 'right' | 'center') : 'left',
                       fontsize,
                       fontname,
