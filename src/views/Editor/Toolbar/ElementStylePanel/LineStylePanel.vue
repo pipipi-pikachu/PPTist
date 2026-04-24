@@ -1,7 +1,7 @@
 <template>
   <div class="line-style-panel">
     <div class="title">
-      <span>点击替换线条类型</span>
+      <span>{{ $t('Commons.text.text_hhnfmx', {}) }}</span>
       <i-icon-park-outline:down />
     </div>
     <div class="line-pool-wrapper">
@@ -47,7 +47,7 @@
     </div>
 
     <div class="row">
-      <div style="width: 40%;">线条样式：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_bu1m74', {}) }}</div>
       <SelectCustom style="width: 60%;">
         <template #options>
           <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateLine({ style: item })">

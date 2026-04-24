@@ -1,6 +1,6 @@
 <template>
   <div class="theme-colors-setting">
-    <div class="title">编辑主题色</div>
+    <div class="title">{{ $t('Commons.text.text_i4sy0q', {}) }}</div>
 
     <Draggable 
       class="list"

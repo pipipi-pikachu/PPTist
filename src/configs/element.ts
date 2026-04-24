@@ -1,5 +1,7 @@
+import { t } from '@/i18n';
+
 export const ELEMENT_TYPE_ZH: Record<string, string> = {
-  text: '文本',
+  text: t('Commons.text.text_hu2t'),
   image: '图片',
   shape: '形状',
   line: '线条',

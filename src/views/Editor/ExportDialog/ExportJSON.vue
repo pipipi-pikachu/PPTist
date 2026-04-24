@@ -6,7 +6,7 @@
 
     <div class="btns">
       <Button class="btn export" type="primary" @click="exportJSON()"><i-icon-park-outline:download /> {{ $t('Commons.button.json', {}) }}</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn close" @click="emit('close')">{{ $t('Commons.button.text_eod6', {}) }}</Button>
     </div>
   </div>
 </template>

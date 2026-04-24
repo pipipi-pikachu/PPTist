@@ -46,7 +46,7 @@
 
     <template v-if="toolVisible">
       <div class="header">
-        <div class="back" @click="changeMode('preview')"><i-icon-park-outline:logout /> 退出播放</div>
+        <div class="back" @click="changeMode('preview')"><i-icon-park-outline:logout /> {{ $t('Commons.text.text_iiciaz', {}) }}</div>
       </div>
       <MobileThumbnails class="thumbnails" />
     </template>

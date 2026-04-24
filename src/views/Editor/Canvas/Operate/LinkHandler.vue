@@ -3,9 +3,9 @@
     <a class="link" v-if="link.type === 'web'" :href="link.target" target="_blank">{{link.target}}</a>
     <a class="link" v-else @click="turnTarget(link.target)">幻灯片页面 {{link.target}}</a>
     <div class="btns">
-      <div class="btn" @click="openLinkDialog()">更换</div>
+      <div class="btn" @click="openLinkDialog()">{{ $t('Commons.text.text_i226', {}) }}</div>
       <Divider type="vertical" />
-      <div class="btn" @click="removeLink(elementInfo)">移除</div>
+      <div class="btn" @click="removeLink(elementInfo)">{{ $t('Commons.button.text_lknd', {}) }}</div>
     </div>
   </div>
 </template>

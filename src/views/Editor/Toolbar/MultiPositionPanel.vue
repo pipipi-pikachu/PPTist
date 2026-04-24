@@ -11,15 +11,15 @@
       <Button style="flex: 1;" v-tooltip="'下对齐'" @click="alignElement(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom /></Button>
     </ButtonGroup>
     <ButtonGroup class="row" v-if="displayItemCount > 2">
-      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">水平均匀分布</Button>
-      <Button style="flex: 1;" @click="uniformVerticalDisplay()">垂直均匀分布</Button>
+      <Button style="flex: 1;" @click="uniformHorizontalDisplay()">{{ $t('Commons.button.text_4tw5', {}) }}</Button>
+      <Button style="flex: 1;" @click="uniformVerticalDisplay()">{{ $t('Commons.button.text_2eeea0', {}) }}</Button>
     </ButtonGroup>
 
     <Divider />
 
     <ButtonGroup class="row">
-      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><i-icon-park-outline:group style="margin-right: 3px;" />组合</Button>
-      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><i-icon-park-outline:ungroup style="margin-right: 3px;" />取消组合</Button>
+      <Button :disabled="!canCombine" @click="combineElements()" style="flex: 1;"><i-icon-park-outline:group style="margin-right: 3px;" />{{ $t('Commons.button.text_m0uc', {}) }}</Button>
+      <Button :disabled="canCombine" @click="uncombineElements()" style="flex: 1;"><i-icon-park-outline:ungroup style="margin-right: 3px;" />{{ $t('Commons.button.text_b1blbq', {}) }}</Button>
     </ButtonGroup>
   </div>
 </template>

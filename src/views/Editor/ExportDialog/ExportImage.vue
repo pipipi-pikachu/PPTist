@@ -13,7 +13,7 @@
     </div>
     <div class="configs">
       <div class="row">
-        <div class="title">导出格式：</div>
+        <div class="title">{{ $t('Commons.text.text_fa28dl', {}) }}</div>
         <RadioGroup
           class="config-item"
           v-model:value="format"
@@ -23,18 +23,18 @@
         </RadioGroup>
       </div>
       <div class="row">
-        <div class="title">导出范围：</div>
+        <div class="title">{{ $t('Commons.text.text_fdy1t7', {}) }}</div>
         <RadioGroup
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 33.33%;" value="all">全部</RadioButton>
-          <RadioButton style="width: 33.33%;" value="current">当前页</RadioButton>
-          <RadioButton style="width: 33.33%;" value="custom">自定义</RadioButton>
+          <RadioButton style="width: 33.33%;" value="all">{{ $t('Commons.button.text_en40', {}) }}</RadioButton>
+          <RadioButton style="width: 33.33%;" value="current">{{ $t('Commons.button.text_edh7f', {}) }}</RadioButton>
+          <RadioButton style="width: 33.33%;" value="custom">{{ $t('Commons.button.text_jh1ll', {}) }}</RadioButton>
         </RadioGroup>
       </div>
       <div class="row" v-if="rangeType === 'custom'">
-        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">自定义范围：</div>
+        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">{{ $t('Commons.text.text_8n6s5s', {}) }}</div>
         <Slider
           class="config-item"
           range
@@ -46,7 +46,7 @@
       </div>
 
       <div class="row">
-        <div class="title">图片质量：</div>
+        <div class="title">{{ $t('Commons.text.text_bjva', {}) }}</div>
         <Slider
           class="config-item"
           :min="0"
@@ -57,7 +57,7 @@
       </div>
 
       <div class="row">
-        <div class="title">忽略在线字体：</div>
+        <div class="title">{{ $t('Commons.text.text_50eb3z', {}) }}</div>
         <div class="config-item">
           <Switch v-model:value="ignoreWebfont" v-tooltip="'导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭「忽略在线字体」选项，但要注意这将会增加导出用时。'" />
         </div>
@@ -65,8 +65,8 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expImage()"><i-icon-park-outline:download /> 导出图片</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn export" type="primary" @click="expImage()"><i-icon-park-outline:download /> {{ $t('Commons.button.text_by3nrb', {}) }}</Button>
+      <Button class="btn close" @click="emit('close')">{{ $t('Commons.button.text_eod6', {}) }}</Button>
     </div>
 
     <FullscreenSpin :loading="exporting" tip="正在导出..." />

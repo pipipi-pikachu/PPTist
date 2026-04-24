@@ -1,6 +1,6 @@
 <template>
   <div class="theme-colors-setting">
-    <div class="title">图表主题配色</div>
+    <div class="title">{{ $t('Commons.text.text_7ak57w', {}) }}</div>
 
     <div class="list">
       <div class="row" v-for="(item, index) in themeColors" :key="index">

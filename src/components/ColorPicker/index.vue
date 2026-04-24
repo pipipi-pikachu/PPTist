@@ -62,7 +62,7 @@
       ></div>
     </div>
 
-    <div class="recent-colors-title" v-if="recentColors.length">最近使用：</div>
+    <div class="recent-colors-title" v-if="recentColors.length">{{ $t('Commons.text.text_4z87nk', {}) }}</div>
     <div class="picker-presets">
       <div
         class="picker-presets-color alpha"

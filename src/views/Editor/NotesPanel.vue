@@ -25,8 +25,8 @@
               </div>
             </div>
             <div class="btns">
-              <div class="btn reply" @click="replyNoteId = note.id">回复</div>
-              <div class="btn delete" @click.stop="deleteNote(note.id)">删除</div>
+              <div class="btn reply" @click="replyNoteId = note.id">{{ $t('Commons.button.text_f9in', {}) }}</div>
+              <div class="btn delete" @click.stop="deleteNote(note.id)">{{ $t('Commons.button.text_eslg', {}) }}</div>
             </div>
           </div>
           <div class="content">{{ note.content }}</div>
@@ -41,21 +41,21 @@
                   </div>
                 </div>
                 <div class="btns">
-                  <div class="btn delete" @click.stop="deleteReply(note.id, reply.id)">删除</div>
+                  <div class="btn delete" @click.stop="deleteReply(note.id, reply.id)">{{ $t('Commons.button.text_eslg', {}) }}</div>
                 </div>
               </div>
               <div class="content">{{ reply.content }}</div>
             </div>
           </div>
           <div class="note-reply" v-if="replyNoteId === note.id">
-            <TextArea :padding="6" v-model:value="replyContent" placeholder="输入回复内容" :rows="1" @enter.prevent="createNoteReply()" />
+            <TextArea :padding="6" v-model:value="replyContent" :placeholder="$t('Commons.placeholder.text_pm6bwr')" :rows="1" @enter.prevent="createNoteReply()" />
             <div class="reply-btns">
-              <Button class="btn" size="small" @click="replyNoteId = ''">取消</Button>
-              <Button class="btn" size="small" type="primary" @click="createNoteReply()">回复</Button>
+              <Button class="btn" size="small" @click="replyNoteId = ''">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+              <Button class="btn" size="small" type="primary" @click="createNoteReply()">{{ $t('Commons.button.text_f9in', {}) }}</Button>
             </div>
           </div>
         </div>
-        <div class="empty" v-if="!notes.length">本页暂无批注</div>
+        <div class="empty" v-if="!notes.length">{{ $t('Commons.text.text_pv7c3u', {}) }}</div>
       </div>
       <div class="send">
         <TextArea 
@@ -69,7 +69,7 @@
         />
         <div class="footer">
           <i-icon-park-outline:delete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
-          <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><i-icon-park-outline:plus /> 添加批注</Button>
+          <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><i-icon-park-outline:plus /> {{ $t('Commons.button.text_e7yono', {}) }}</Button>
         </div>
       </div>
     </div>

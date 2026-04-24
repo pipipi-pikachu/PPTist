@@ -73,6 +73,7 @@ import SlideThumbnails from './SlideThumbnails.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
 import BottomThumbnails from './BottomThumbnails.vue'
+import { t } from '@/i18n';
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
@@ -125,24 +126,24 @@ const exitScreening = () => {
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '上一页',
+      text: t('Commons.label.text_btlof'),
       subText: '↑ ←',
       disable: slideIndex.value <= 0,
       handler: () => turnPrevSlide(),
     },
     {
-      text: '下一页',
+      text: t('Commons.label.text_btmf4'),
       subText: '↓ →',
       disable: slideIndex.value >= slides.value.length - 1,
       handler: () => turnNextSlide(),
     },
     {
-      text: '第一页',
+      text: t('Commons.text.text_ifl41'),
       disable: slideIndex.value === 0,
       handler: () => turnSlideToIndex(0),
     },
     {
-      text: '最后一页',
+      text: t('Commons.text.text_dcdxqb'),
       disable: slideIndex.value === slides.value.length - 1,
       handler: () => turnSlideToIndex(slides.value.length - 1),
     },
@@ -152,57 +153,57 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
       children: [
         {
-          text: '2.5秒',
+          text: t('Views.Screen.text.2_5'),
           subText: autoPlayInterval.value === 2500 ? '√' : '',
           handler: () => setAutoPlayInterval(2500),
         },
         {
-          text: '5秒',
+          text: t('Commons.text.5_3'),
           subText: autoPlayInterval.value === 5000 ? '√' : '',
           handler: () => setAutoPlayInterval(5000),
         },
         {
-          text: '7.5秒',
+          text: t('Views.Screen.text.7_5'),
           subText: autoPlayInterval.value === 7500 ? '√' : '',
           handler: () => setAutoPlayInterval(7500),
         },
         {
-          text: '10秒',
+          text: t('Commons.text.10'),
           subText: autoPlayInterval.value === 10000 ? '√' : '',
           handler: () => setAutoPlayInterval(10000),
         },
       ],
     },
     {
-      text: '循环放映',
+      text: t('Commons.text.text_cjt8rr'),
       subText: loopPlay.value ? '√' : '',
       handler: () => setLoopPlay(!loopPlay.value),
     },
     { divider: true },
     {
-      text: '显示工具栏',
+      text: t('Commons.text.text_aqjv33'),
       handler: () => rightToolsVisible.value = true,
     },
     {
-      text: '查看所有幻灯片',
+      text: t('Commons.text.text_m6kav0'),
       handler: () => slideThumbnailModelVisible.value = true,
     },
     {
-      text: '触底显示缩略图',
+      text: t('Commons.text.text_12bqjt'),
       subText: bottomThumbnailsVisible.value ? '√' : '',
       handler: () => bottomThumbnailsVisible.value = !bottomThumbnailsVisible.value,
     },
     {
-      text: '画笔工具',
+      text: t('Commons.text.text_fas5yj'),
       handler: () => writingBoardToolVisible.value = true,
     },
     {
-      text: '演讲者视图',
+      text: t('Commons.text.text_qab4db'),
       handler: () => props.changeViewMode('presenter'),
     },
     { divider: true },
     {
-      text: '结束放映',
+      text: t('Commons.text.text_gfhtvy'),
       subText: 'ESC',
       handler: exitScreening,
     },

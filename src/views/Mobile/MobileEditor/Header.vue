@@ -1,10 +1,10 @@
 <template>
   <div class="mobile-editor-header">
     <div class="history">
-      <div class="history-item" :class="{ 'disable': !canUndo }" @click.stop="undo()"><i-icon-park-outline:back /> 撤销</div>
-      <div class="history-item" :class="{ 'disable': !canRedo }" @click.stop="redo()"><i-icon-park-outline:next /> 重做</div>
+      <div class="history-item" :class="{ 'disable': !canUndo }" @click.stop="undo()"><i-icon-park-outline:back /> {{ $t('Commons.label.text_hxp8', {}) }}</div>
+      <div class="history-item" :class="{ 'disable': !canRedo }" @click.stop="redo()"><i-icon-park-outline:next /> {{ $t('Commons.text.text_p8od', {}) }}</div>
     </div>
-    <div class="back" @click="changeMode('preview')"><i-icon-park-outline:logout /> 退出编辑</div>
+    <div class="back" @click="changeMode('preview')"><i-icon-park-outline:logout /> {{ $t('Commons.text.text_iih8dx', {}) }}</div>
   </div>
 </template>
 

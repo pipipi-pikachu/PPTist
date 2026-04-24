@@ -42,6 +42,7 @@ import tippy, { type Instance } from 'tippy.js'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Popover from '@/components/Popover.vue'
 import { toggleMark } from 'prosemirror-commands'
+import { t } from '@/i18n';
 
 const props = defineProps<{
   value: string
@@ -177,7 +178,7 @@ onMounted(() => {
       input: handleInput,
     },
   }, {
-    placeholder: '点击输入演讲者备注',
+    placeholder: t('Commons.placeholder.text_uhrbis'),
   })
 
   menuInstance.value = tippy(editorViewRef.value!, {

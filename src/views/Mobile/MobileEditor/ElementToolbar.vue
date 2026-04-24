@@ -157,6 +157,7 @@ import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Popover from '@/components/Popover.vue'
+import { t } from '@/i18n';
 
 interface TabItem {
   key: 'style' | 'common'
@@ -177,8 +178,8 @@ const updateElement = (id: string, props: Partial<PPTElement>) => {
 }
 
 const tabs: TabItem[] = [
-  { key: 'style', label: '样式' },
-  { key: 'common', label: '布局' },
+  { key: 'style', label: t('Commons.text.text_i8xk') },
+  { key: 'common', label: t('Commons.text.text_ghwd') },
 ]
 const activeTab = ref('common')
 

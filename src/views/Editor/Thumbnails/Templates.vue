@@ -18,7 +18,7 @@
             @click="activeType = item.value"
           >{{ item.label }}</div>
         </div>
-        <div class="insert-all" @click="insertTemplates({ slides, theme })">插入全部</div>
+        <div class="insert-all" @click="insertTemplates({ slides, theme })">{{ $t('Commons.text.text_cxkosz', {}) }}</div>
       </div>
       <div class="list" ref="listRef">
         <template v-for="slide in slides" :key="slide.id">
@@ -29,7 +29,7 @@
             <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
     
             <div class="btns">
-              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">插入模板</Button>
+              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">{{ $t('Commons.button.text_cxoo0h', {}) }}</Button>
             </div>
           </div>
         </template>
@@ -47,6 +47,7 @@ import api from '@/services'
 
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Button from '@/components/Button.vue'
+import { t } from '@/i18n';
 
 const emit = defineEmits<{
   (event: 'select', payload: Slide): void
@@ -63,12 +64,12 @@ const types = ref<{
   label: string
   value: string
 }[]>([
-  { label: '全部', value: 'all' },
-  { label: '封面', value: 'cover' },
-  { label: '目录', value: 'contents' },
-  { label: '过渡', value: 'transition' },
-  { label: '内容', value: 'content' },
-  { label: '结束', value: 'end' },
+  { label: t('Commons.button.text_en40'), value: 'all' },
+  { label: t('Commons.text.text_gha9'), value: 'cover' },
+  { label: t('Commons.text.text_kr3b'), value: 'contents' },
+  { label: t('Commons.text.text_p262'), value: 'transition' },
+  { label: t('Commons.text.text_edas'), value: 'content' },
+  { label: t('Commons.text.text_m50s'), value: 'end' },
 ])
 const activeType = ref('all')
 

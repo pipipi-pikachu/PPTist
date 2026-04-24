@@ -11,7 +11,7 @@
       ref="inputRef"
       v-if="type === 'web'" 
       v-model:value="address" 
-      placeholder="请输入网页链接地址"
+      :placeholder="$t('Commons.placeholder.text_jus23o')"
       @enter="save()"
     />
 
@@ -23,13 +23,13 @@
     />
 
     <div class="preview" v-if="type === 'slide' && selectedSlide">
-      <div>预览：</div>
+      <div>{{ $t('Commons.text.text_n11p2', {}) }}</div>
       <ThumbnailSlide class="thumbnail" :slide="selectedSlide" :size="500" />
     </div>
 
     <div class="btns">
-      <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-      <Button type="primary" @click="save()">确认</Button>
+      <Button @click="emit('close')" style="margin-right: 10px;">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+      <Button type="primary" @click="save()">{{ $t('Commons.button.text_l912', {}) }}</Button>
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@ import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import Select from '@/components/Select.vue'
+import { t } from '@/i18n';
 
 interface TabItem {
   key: ElementLinkType
@@ -82,8 +83,8 @@ const selectedSlide = computed(() => {
 })
 
 const tabs = computed<TabItem[]>(() => [
-  { key: 'web', label: '网页链接' },
-  { key: 'slide', label: '幻灯片页面', disabled: slides.value.length <= 1 },
+  { key: 'web', label: t('Commons.text.text_gp57zf') },
+  { key: 'slide', label: t('Commons.text.text_sxfhog'), disabled: slides.value.length <= 1 },
 ])
 
 const { setLink } = useLink()

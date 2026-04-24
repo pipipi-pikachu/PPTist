@@ -8,13 +8,13 @@
               <div class="icon"><i-custom:click /></div>
               <div class="aippt-content">
                 <div class="aippt"><span>AIPPT</span></div>
-                <div class="aippt-subtitle">输入一句话，智能生成演示文稿</div>
+                <div class="aippt-subtitle">{{ $t('Commons.text.text_ulr4y0', {}) }}</div>
               </div>
             </div>
           </div>
           <Divider :margin="10" />
           <div class="import-section">
-            <div class="import-label">导入文件</div>
+            <div class="import-label">{{ $t('Commons.text.text_by2vaw', {}) }}</div>
             <div class="import-grid">
               <FileInput class="import-block" accept="application/vnd.openxmlformats-officedocument.presentationml.presentation" @change="files => {
                 importPPTXFile(files)
@@ -22,7 +22,7 @@
               }">
                 <span class="icon"><i-custom:file-ppt /></span>
                 <span class="label">PPTX</span>
-                <span class="sub-label">（仅供测试）</span>
+                <span class="sub-label">{{ $t('Commons.text.text_my5mfz', {}) }}</span>
               </FileInput>
               <FileInput class="import-block" accept=".json" @change="files => {
                 importJSON(files)
@@ -30,7 +30,7 @@
               }">
                 <span class="icon"><i-custom:file-jpg /></span>
                 <span class="label">JSON</span>
-                <span class="sub-label">（仅供测试）</span>
+                <span class="sub-label">{{ $t('Commons.text.text_my5mfz', {}) }}</span>
               </FileInput>
               <FileInput class="import-block" accept=".pptist" @change="files => {
                 importSpecificFile(files)
@@ -38,20 +38,20 @@
               }">
                 <span class="icon"><i-custom:file-pptist /></span>
                 <span class="label">PPTIST</span>
-                <span class="sub-label">（专属格式）</span>
+                <span class="sub-label">{{ $t('Commons.text.text_o318cd', {}) }}</span>
               </FileInput>
             </div>
           </div>
           <Divider :margin="10" />
-          <PopoverMenuItem class="popover-menu-item" @click="setDialogForExport('pptx')"><i-icon-park-outline:download class="icon" /> 导出文件</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="setDialogForExport('pptx')"><i-icon-park-outline:download class="icon" /> {{ $t('Commons.text.text_by5xsd', {}) }}</PopoverMenuItem>
           <Divider :margin="10" />
-          <PopoverMenuItem class="popover-menu-item" @click="resetSlides(); mainMenuVisible = false"><i-icon-park-outline:refresh class="icon" /> 重置幻灯片</PopoverMenuItem>
-          <PopoverMenuItem class="popover-menu-item" @click="openMarkupPanel(); mainMenuVisible = false"><i-icon-park-outline:mark class="icon" /> 幻灯片类型标注</PopoverMenuItem>
-          <PopoverMenuItem class="popover-menu-item" @click="mainMenuVisible = false; hotkeyDrawerVisible = true"><i-icon-park-outline:command class="icon" /> 快捷操作</PopoverMenuItem>
-          <PopoverMenuItem class="popover-menu-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')"><i-icon-park-outline:comment class="icon" /> 意见反馈</PopoverMenuItem>
-          <PopoverMenuItem class="popover-menu-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')"><i-icon-park-outline:helpcenter class="icon" /> 常见问题</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="resetSlides(); mainMenuVisible = false"><i-icon-park-outline:refresh class="icon" /> {{ $t('Commons.text.text_iaw7ma', {}) }}</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="openMarkupPanel(); mainMenuVisible = false"><i-icon-park-outline:mark class="icon" /> {{ $t('Commons.text.text_njm144', {}) }}</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="mainMenuVisible = false; hotkeyDrawerVisible = true"><i-icon-park-outline:command class="icon" /> {{ $t('Commons.text.text_cil0yj', {}) }}</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/issues')"><i-icon-park-outline:comment class="icon" /> {{ $t('Commons.text.text_ctavzh', {}) }}</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" @click="goLink('https://github.com/pipipi-pikachu/PPTist/blob/master/doc/Q&A.md')"><i-icon-park-outline:helpcenter class="icon" /> {{ $t('Commons.text.text_cgpx9v', {}) }}</PopoverMenuItem>
           <Divider :margin="10" />
-          <div class="statement">注：本站仅作测试/演示，不提供任何形式的服务</div>
+          <div class="statement">{{ $t('Views.Editor.EditorHeader.Index.text.text_2sos0g', {}) }}</div>
         </template>
         <div class="menu-item"><i-icon-park-outline:hamburger-button class="icon" /></div>
       </Popover>

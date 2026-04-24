@@ -15,7 +15,7 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">行间距：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_htjmkl', {}) }}</div>
       <Select style="width: 60%;"
         :value="lineHeight || 1"
         @update:value="value => updateText({ lineHeight: value as number })"
@@ -95,12 +95,13 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
+import { t } from '@/i18n';
 
 // 注意，存在一个未知原因的BUG，如果文本加粗后文本框高度增加，画布的可视区域定位会出现错误
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
 const presetStyles = [
   {
-    label: '大标题',
+    label: t('Commons.text.text_dkmoo'),
     style: {
       fontSize: '26px',
       fontWeight: 700,
@@ -113,7 +114,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '小标题',
+    label: t('Commons.text.text_dzydc'),
     style: {
       fontSize: '22px',
       fontWeight: 700,
@@ -126,7 +127,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文',
+    label: t('Commons.text.text_itms'),
     style: {
       fontSize: '20px',
     },
@@ -146,7 +147,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 1',
+    label: t('Commons.text.1_5'),
     style: {
       fontSize: '16px',
       fontStyle: 'italic',
@@ -158,7 +159,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 2',
+    label: t('Commons.text.2_6'),
     style: {
       fontSize: '16px',
       textDecoration: 'underline',

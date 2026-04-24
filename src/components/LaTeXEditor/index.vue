@@ -6,7 +6,7 @@
           <TextArea v-model:value="latex" :placeholder="$t('Components.LaTeXEditor.Index.placeholder.latex')" ref="textAreaRef" />
         </div>
         <div class="preview">
-          <div class="placeholder" v-if="!latex">公式预览</div>
+          <div class="placeholder" v-if="!latex">{{ $t('Commons.text.text_aodcfb', {}) }}</div>
           <div class="preview-content" v-else>
             <FormulaContent
               :width="518"
@@ -52,8 +52,8 @@
       </div>
     </div>
     <div class="footer">
-      <Button class="btn" @click="emit('close')">取消</Button>
-      <Button class="btn" type="primary" @click="update()">确定</Button>
+      <Button class="btn" @click="emit('close')">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+      <Button class="btn" type="primary" @click="update()">{{ $t('Commons.button.text_kzjg', {}) }}</Button>
     </div>
   </div>
 </template>
@@ -69,6 +69,7 @@ import SymbolContent from './SymbolContent.vue'
 import Button from '../Button.vue'
 import TextArea from '../TextArea.vue'
 import Tabs from '../Tabs.vue'
+import { t } from '@/i18n';
 
 interface TabItem {
   key: 'symbol' | 'formula'
@@ -76,8 +77,8 @@ interface TabItem {
 }
 
 const tabs: TabItem[] = [
-  { label: '常用符号', key: 'symbol' },
-  { label: '预置公式', key: 'formula' },
+  { label: t('Commons.text.text_cdkdq9'), key: 'symbol' },
+  { label: t('Commons.text.text_jrkutp'), key: 'formula' },
 ]
 
 interface LatexResult {

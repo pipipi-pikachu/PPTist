@@ -1,7 +1,7 @@
 <template>
   <div class="shape-style-panel">
     <div class="title">
-      <span>点击替换形状</span>
+      <span>{{ $t('Commons.text.text_3w8395', {}) }}</span>
       <i-icon-park-outline:down />
     </div>
     <div class="shape-pool">

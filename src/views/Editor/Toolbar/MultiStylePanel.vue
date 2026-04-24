@@ -1,7 +1,7 @@
 <template>
   <div class="multi-style-panel">
     <div class="row">
-      <div style="width: 40%;">填充颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_1g3ll6', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker

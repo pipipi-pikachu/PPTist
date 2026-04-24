@@ -1,6 +1,6 @@
 <template>
   <div class="video-style-panel">
-    <div class="title">视频预览封面</div>
+    <div class="title">{{ $t('Commons.text.text_fs18kw', {}) }}</div>
     <div class="background-image-wrapper">
       <FileInput @change="files => setVideoPoster(files)">
         <div class="background-image">
@@ -11,16 +11,16 @@
       </FileInput>
     </div>
     <div class="row">
-      <Button style="flex: 1;" @click="setVideoPosterFromFirstFrame()"><i-icon-park-outline:screenshot-one /> 设置首帧为封面</Button>
+      <Button style="flex: 1;" @click="setVideoPosterFromFirstFrame()"><i-icon-park-outline:screenshot-one /> {{ $t('Commons.button.text_ok5tju', {}) }}</Button>
     </div>
     <div class="row" v-if="handleVideoElement.poster">
-      <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><i-icon-park-outline:undo /> 重置封面</Button>
+      <Button style="flex: 1;" @click="updateVideo({ poster: '' })"><i-icon-park-outline:undo /> {{ $t('Commons.button.text_ix5caq', {}) }}</Button>
     </div>
 
     <Divider />
 
     <div class="row switch-row">
-      <div style="width: 40%;">自动播放：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_llds23', {}) }}</div>
       <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="handleVideoElement.autoplay" 

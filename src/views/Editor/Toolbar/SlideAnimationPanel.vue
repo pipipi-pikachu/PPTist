@@ -12,7 +12,7 @@
         <div class="animation-text">{{item.label}}</div>
       </div>
     </div>
-    <Button style="width: 100%;" @click="applyAllSlide()"><i-icon-park-outline:check /> 应用到全部</Button>
+    <Button style="width: 100%;" @click="applyAllSlide()"><i-icon-park-outline:check /> {{ $t('Commons.button.text_trkzrw', {}) }}</Button>
   </div>
 </template>
 

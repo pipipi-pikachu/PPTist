@@ -75,6 +75,7 @@ import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
 import CustomTextarea from './CustomTextarea.vue'
+import { t } from '@/i18n';
 
 const props = withDefaults(defineProps<{
   data: TableCell[][]
@@ -687,51 +688,51 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '插入列',
+      text: t('Commons.text.text_f0n8k'),
       children: [
-        { text: '到左侧', handler: () => insertCol(colIndex) },
-        { text: '到右侧', handler: () => insertCol(colIndex + 1) },
+        { text: t('Commons.text.text_chs4x'), handler: () => insertCol(colIndex) },
+        { text: t('Commons.text.text_cg37o'), handler: () => insertCol(colIndex + 1) },
       ],
     },
     {
-      text: '插入行',
+      text: t('Commons.text.text_f0xy1'),
       children: [
-        { text: '到上方', handler: () => insertRow(rowIndex) },
-        { text: '到下方', handler: () => insertRow(rowIndex + 1) },
+        { text: t('Commons.text.text_cf7dr'), handler: () => insertRow(rowIndex) },
+        { text: t('Commons.text.text_cf7em'), handler: () => insertRow(rowIndex + 1) },
       ],
     },
     {
-      text: '删除列',
+      text: t('Commons.text.text_cr2oj'),
       disable: !canDeleteCol,
       handler: () => deleteCol(colIndex),
     },
     {
-      text: '删除行',
+      text: t('Commons.text.text_crde0'),
       disable: !canDeleteRow,
       handler: () => deleteRow(rowIndex),
     },
     { divider: true },
     {
-      text: '合并单元格',
+      text: t('Commons.text.text_ebvjr4'),
       disable: !canMerge,
       handler: mergeCells,
     },
     {
-      text: '取消合并单元格',
+      text: t('Commons.text.text_uffvua'),
       disable: !canSplit,
       handler: () => splitCells(rowIndex, colIndex),
     },
     { divider: true },
     {
-      text: '选中当前列',
+      text: t('Commons.text.text_56p73t'),
       handler: () => selectCol(colIndex),
     },
     {
-      text: '选中当前行',
+      text: t('Commons.text.text_56phta'),
       handler: () => selectRow(rowIndex),
     },
     {
-      text: '选中全部单元格',
+      text: t('Commons.text.text_ythj2u'),
       handler: selectAll,
     },
   ]

@@ -26,7 +26,7 @@
 
     <div class="custom" v-else>
       <div class="row">
-        <div class="label" style="width: 25%;">行数：</div>
+        <div class="label" style="width: 25%;">{{ $t('Commons.text.text_khcdy', {}) }}</div>
         <NumberInput
           :min="1"
           :max="20"
@@ -35,7 +35,7 @@
         />
       </div>
       <div class="row">
-        <div class="label" style="width: 25%;">列数：</div>
+        <div class="label" style="width: 25%;">{{ $t('Commons.text.text_cjif5', {}) }}</div>
         <NumberInput
           :min="1"
           :max="20"
@@ -44,8 +44,8 @@
         />
       </div>
       <div class="btns">
-        <Button class="btn" @click="close()">取消</Button>
-        <Button class="btn" type="primary" @click="insertCustomTable()">确认</Button>
+        <Button class="btn" @click="close()">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+        <Button class="btn" type="primary" @click="insertCustomTable()">{{ $t('Commons.button.text_l912', {}) }}</Button>
       </div>
     </div>
   </div>

@@ -32,7 +32,7 @@
           <Popover placement="top" trigger="manual" :value="sizePopoverType === 'pen'" @hide="sizePopoverType = ''">
             <template #content>
               <div class="setting">
-                <div class="label">墨迹粗细：</div>
+                <div class="label">{{ $t('Commons.text.text_a689ve', {}) }}</div>
                 <Slider class="size-slider" :min="4" :max="10" :step="2" v-model:value="penSize" />
               </div>
             </template>

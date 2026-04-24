@@ -1,18 +1,18 @@
 <template>
   <div class="element-positopn-panel">
-    <div class="title">层级：</div>
+    <div class="title">{{ $t('Commons.text.text_e5ez9', {}) }}</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><i-icon-park-outline:send-to-back /> 置顶</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><i-icon-park-outline:bring-to-front-one /> 置底</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.TOP)"><i-icon-park-outline:send-to-back /> {{ $t('Commons.button.text_mifc', {}) }}</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.BOTTOM)"><i-icon-park-outline:bring-to-front-one /> {{ $t('Commons.button.text_m6zr', {}) }}</Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:BringToFront /> 上移</Button>
-      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><i-icon-park-outline:SentToBack /> 下移</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:BringToFront /> {{ $t('Commons.button.text_dxyp', {}) }}</Button>
+      <Button style="flex: 1;" @click="orderElement(handleElement!, ElementOrderCommands.DOWN)"><i-icon-park-outline:SentToBack /> {{ $t('Commons.button.text_dxzk', {}) }}</Button>
     </ButtonGroup>
 
     <Divider />
     
-    <div class="title">对齐：</div>
+    <div class="title">{{ $t('Commons.text.text_e9gub', {}) }}</div>
     <ButtonGroup class="row">
       <Button style="flex: 1;" v-tooltip="'左对齐'" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left /></Button>
       <Button style="flex: 1;" v-tooltip="'水平居中'" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-vertically /></Button>

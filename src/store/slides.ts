@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { omit } from 'lodash'
 import type { Slide, SlideTheme, PPTElement, PPTAnimation, SlideTemplate } from '@/types/slides'
+import { t } from '@/i18n';
 
 interface RemovePropData {
   id: string
@@ -30,7 +31,7 @@ export interface SlidesState {
 
 export const useSlidesStore = defineStore('slides', {
   state: (): SlidesState => ({
-    title: '未命名演示文稿', // 幻灯片标题
+    title: t('Commons.heading.text_mej254'), // 幻灯片标题
     theme: {
       themeColors: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#4472c4', '#70ad47'],
       fontColor: '#333',

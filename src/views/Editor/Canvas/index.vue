@@ -140,6 +140,7 @@ import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
 import Modal from '@/components/Modal.vue'
+import { t } from '@/i18n';
 
 const mainStore = useMainStore()
 const {
@@ -293,22 +294,22 @@ const insertCustomShape = (data: CreateCustomShapeData) => {
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: t('Commons.label.text_lyu4'),
       subText: 'Ctrl + V',
       handler: pasteElement,
     },
     {
-      text: '全选',
+      text: t('Commons.label.text_emxt'),
       subText: 'Ctrl + A',
       handler: selectAllElements,
     },
     {
-      text: '标尺',
+      text: t('Commons.text.text_i783'),
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
     },
     {
-      text: '网格线',
+      text: t('Commons.text.text_j5rf8'),
       handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
       children: [
         {
@@ -334,12 +335,12 @@ const contextmenus = (): ContextmenuItem[] => {
       ],
     },
     {
-      text: '重置当前页',
+      text: t('Commons.text.text_iavqt6'),
       handler: deleteAllElements,
     },
     { divider: true },
     {
-      text: '幻灯片放映',
+      text: t('Commons.text.text_sx6ic5'),
       subText: 'F5',
       handler: enterScreeningFromStart,
     },

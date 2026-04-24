@@ -1,7 +1,7 @@
 <template>
   <div class="element-opacity">
     <div class="row">
-      <div style="width: 40%;">不透明度：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_vdndwg', {}) }}</div>
       <Slider
         :min="0"
         :max="1"

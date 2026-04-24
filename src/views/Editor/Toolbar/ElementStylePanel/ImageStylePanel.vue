@@ -8,11 +8,11 @@
     <ElementFlip />
 
     <ButtonGroup class="row" passive>
-      <Button first style="width: calc(100% / 6 * 5);" @click="clipImage()"><i-icon-park-outline:tailoring /> 裁剪图片</Button>
+      <Button first style="width: calc(100% / 6 * 5);" @click="clipImage()"><i-icon-park-outline:tailoring /> {{ $t('Commons.button.text_hlg3gy', {}) }}</Button>
       <Popover trigger="click" v-model:value="clipPanelVisible" style="width: calc(100% / 6);">
         <template #content>
           <div class="clip">
-            <div class="title">按形状：</div>
+            <div class="title">{{ $t('Commons.text.text_cw8di5', {}) }}</div>
             <div class="shape-clip">
               <div 
                 class="shape-clip-item" 
@@ -88,17 +88,18 @@ import Button from '@/components/Button.vue'
 import ButtonGroup from '@/components/ButtonGroup.vue'
 import Popover from '@/components/Popover.vue'
 import NumberInput from '@/components/NumberInput.vue'
+import { t } from '@/i18n';
 
 const shapeClipPathOptions = CLIPPATHS
 const ratioClipOptions = [
   {
-    label: '纵横比（正方形）',
+    label: t('Commons.text.text_y3iaje'),
     children: [
       { key: '1:1', ratio: 1 / 1 },
     ],
   },
   {
-    label: '纵横比（纵向）',
+    label: t('Commons.text.text_jlk5t0'),
     children: [
       { key: '2:3', ratio: 3 / 2 },
       { key: '3:4', ratio: 4 / 3 },
@@ -107,7 +108,7 @@ const ratioClipOptions = [
     ],
   },
   {
-    label: '纵横比（横向）',
+    label: t('Commons.text.text_jiju6x'),
     children: [
       { key: '3:2', ratio: 2 / 3 },
       { key: '4:3', ratio: 3 / 4 },

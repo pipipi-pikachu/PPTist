@@ -1,18 +1,18 @@
 <template>
   <div class="presenter-view">
     <div class="toolbar">
-      <div class="tool-btn" @click="changeViewMode('base')"><i-icon-park-outline:list-view class="tool-icon" /><span>普通视图</span></div>
-      <div class="tool-btn" @click="openAudienceView()"><i-icon-park-outline:peoples-two class="tool-icon" /><span>观众视图</span></div>
-      <div class="tool-btn" :class="{ 'active': writingBoardToolVisible }" @click="writingBoardToolVisible = !writingBoardToolVisible"><i-icon-park-outline:write class="tool-icon" /><span>画笔</span></div>
-      <div class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen"><i-icon-park-outline:magic class="tool-icon" /><span>激光笔</span></div>
-      <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><i-icon-park-outline:stopwatch-start class="tool-icon" /><span>计时器</span></div>
+      <div class="tool-btn" @click="changeViewMode('base')"><i-icon-park-outline:list-view class="tool-icon" /><span>{{ $t('Commons.text.text_div59g', {}) }}</span></div>
+      <div class="tool-btn" @click="openAudienceView()"><i-icon-park-outline:peoples-two class="tool-icon" /><span>{{ $t('Commons.text.text_hpr5n1', {}) }}</span></div>
+      <div class="tool-btn" :class="{ 'active': writingBoardToolVisible }" @click="writingBoardToolVisible = !writingBoardToolVisible"><i-icon-park-outline:write class="tool-icon" /><span>{{ $t('Commons.text.text_km61', {}) }}</span></div>
+      <div class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen"><i-icon-park-outline:magic class="tool-icon" /><span>{{ $t('Commons.text.text_grr8r', {}) }}</span></div>
+      <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><i-icon-park-outline:stopwatch-start class="tool-icon" /><span>{{ $t('Commons.text.text_ky2s3', {}) }}</span></div>
       <div class="tool-btn" @click="() => fullscreenState ? manualExitFullscreen() : enterFullscreen()">
         <i-icon-park-outline:off-screen-one class="tool-icon" v-if="fullscreenState" />
         <i-icon-park-outline:full-screen-one class="tool-icon" v-else />
-        <span>{{ fullscreenState ? '退出全屏' : '全屏' }}</span>
+        <span>{{ fullscreenState ? $t('Commons.text.text_ii96jl') : '全屏' }}</span>
       </div>
       <Divider class="divider" />
-      <div class="tool-btn" @click="exitScreening()"><i-icon-park-outline:power class="tool-icon" /><span>结束放映</span></div>
+      <div class="tool-btn" @click="exitScreening()"><i-icon-park-outline:power class="tool-icon" /><span>{{ $t('Commons.text.text_gfhtvy', {}) }}</span></div>
     </div>
 
     <div class="content">
@@ -65,7 +65,7 @@
 
     <div class="remark">
       <div class="header">
-        <span>演讲者备注</span>
+        <span>{{ $t('Commons.text.text_qa2y7c', {}) }}</span>
         <span>P {{slideIndex + 1}} / {{slides.length}}</span>
       </div>
       <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || '无备注'"></div>
@@ -95,6 +95,7 @@ import ScreenSlideList from './ScreenSlideList.vue'
 import WritingBoardTool from './WritingBoardTool.vue'
 import CountdownTimer from './CountdownTimer.vue'
 import Divider from '@/components/Divider.vue'
+import { t } from '@/i18n';
 
 const props = defineProps<{
   changeViewMode: (mode: 'base' | 'presenter') => void
@@ -167,39 +168,39 @@ watch(slideIndex, () => {
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '上一页',
+      text: t('Commons.label.text_btlof'),
       subText: '↑ ←',
       disable: slideIndex.value <= 0,
       handler: () => turnPrevSlide(),
     },
     {
-      text: '下一页',
+      text: t('Commons.label.text_btmf4'),
       subText: '↓ →',
       disable: slideIndex.value >= slides.value.length - 1,
       handler: () => turnNextSlide(),
     },
     {
-      text: '第一页',
+      text: t('Commons.text.text_ifl41'),
       disable: slideIndex.value === 0,
       handler: () => turnSlideToIndex(0),
     },
     {
-      text: '最后一页',
+      text: t('Commons.text.text_dcdxqb'),
       disable: slideIndex.value === slides.value.length - 1,
       handler: () => turnSlideToIndex(slides.value.length - 1),
     },
     { divider: true },
     {
-      text: '画笔工具',
+      text: t('Commons.text.text_fas5yj'),
       handler: () => writingBoardToolVisible.value = true,
     },
     {
-      text: '普通视图',
+      text: t('Commons.text.text_div59g'),
       handler: () => props.changeViewMode('base'),
     },
     { divider: true },
     {
-      text: '结束放映',
+      text: t('Commons.text.text_gfhtvy'),
       subText: 'ESC',
       handler: exitScreening,
     },

@@ -28,6 +28,7 @@ import { ref, nextTick, onMounted, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import Input from './Input.vue'
+import { t } from '@/i18n';
 
 interface OutlineItem {
   id: string
@@ -196,7 +197,7 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   if (lv === 1) {
     return [
       {
-        text: '添加子级大纲（章）',
+        text: t('Commons.text.text_ed8ll6'),
         handler: () => addItem(id, 'next', '新的一章'),
       },
     ]
@@ -204,15 +205,15 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   else if (lv === 2) {
     return [
       {
-        text: '上方添加同级大纲（章）',
+        text: t('Commons.text.text_9oj4zt'),
         handler: () => addItem(id, 'prev', '新的一章'),
       },
       {
-        text: '添加子级大纲（节）',
+        text: t('Commons.text.text_ed9wbs'),
         handler: () => addItem(id, 'next', '新的一节'),
       },
       {
-        text: '删除此章',
+        text: t('Commons.text.text_azgabk'),
         handler: () => deleteItem(id, true),
       },
     ]
@@ -220,30 +221,30 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   else if (lv === 3) {
     return [
       {
-        text: '上方添加同级大纲（节）',
+        text: t('Commons.text.text_9ohu97'),
         handler: () => addItem(id, 'prev', '新的一节'),
       },
       {
-        text: '添加子级大纲（项）',
+        text: t('Commons.text.text_eddmtt'),
         handler: () => addItem(id, 'next', '新的一项'),
       },
       {
-        text: '删除此节',
+        text: t('Commons.text.text_azgbtu'),
         handler: () => deleteItem(id, true),
       },
     ]
   }
   return [
     {
-      text: '上方添加同级大纲（项）',
+      text: t('Commons.text.text_9oe3r6'),
       handler: () => addItem(id, 'prev', '新的一项'),
     },
     {
-      text: '下方添加同级大纲（项）',
+      text: t('Commons.text.text_vmv1of'),
       handler: () => addItem(id, 'next', '新的一项'),
     },
     {
-      text: '删除此项',
+      text: t('Commons.text.text_azgg61'),
       handler: () => deleteItem(id),
     },
   ]

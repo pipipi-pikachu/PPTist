@@ -8,8 +8,8 @@
   >
     <div class="header">
       <span class="text-btn" @click="toggle()">{{ inTiming ? '暂停' : '开始'}}</span>
-      <span class="text-btn" @click="reset()">重置</span>
-      <span class="text-btn" @click="toggleCountdown()" :class="{ 'active': isCountdown }">倒计时</span>
+      <span class="text-btn" @click="reset()">{{ $t('Commons.text.text_phz5', {}) }}</span>
+      <span class="text-btn" @click="toggleCountdown()" :class="{ 'active': isCountdown }">{{ $t('Commons.text.text_ceio7', {}) }}</span>
     </div>
     <div class="content">
       <div class="timer">

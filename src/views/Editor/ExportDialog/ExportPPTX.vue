@@ -13,28 +13,28 @@
     </div>
     <div class="configs">
       <div class="row">
-        <div class="title">导出范围：</div>
+        <div class="title">{{ $t('Commons.text.text_fdy1t7', {}) }}</div>
         <RadioGroup
           class="config-item"
           v-model:value="rangeType"
         >
-          <RadioButton style="width: 33.33%;" value="all">全部</RadioButton>
-          <RadioButton style="width: 33.33%;" value="current">当前页</RadioButton>
-          <RadioButton style="width: 33.33%;" value="custom">自定义</RadioButton>
+          <RadioButton style="width: 33.33%;" value="all">{{ $t('Commons.button.text_en40', {}) }}</RadioButton>
+          <RadioButton style="width: 33.33%;" value="current">{{ $t('Commons.button.text_edh7f', {}) }}</RadioButton>
+          <RadioButton style="width: 33.33%;" value="custom">{{ $t('Commons.button.text_jh1ll', {}) }}</RadioButton>
         </RadioGroup>
       </div>
       <div class="row">
-        <div class="title">导出模式：</div>
+        <div class="title">{{ $t('Commons.text.text_fac80e', {}) }}</div>
         <RadioGroup
           class="config-item"
           v-model:value="exportMode"
         >
-          <RadioButton style="width: 50%;" value="standard">标准版</RadioButton>
-          <RadioButton style="width: 50%;" value="image">纯图版</RadioButton>
+          <RadioButton style="width: 50%;" value="standard">{{ $t('Commons.button.text_fn2ix', {}) }}</RadioButton>
+          <RadioButton style="width: 50%;" value="image">{{ $t('Commons.button.text_izf95', {}) }}</RadioButton>
         </RadioGroup>
       </div>
       <div class="row" v-if="rangeType === 'custom'">
-        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">自定义范围：</div>
+        <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">{{ $t('Commons.text.text_8n6s5s', {}) }}</div>
         <Slider
           class="config-item"
           range
@@ -47,13 +47,13 @@
       
       <template v-if="exportMode === 'standard'">
         <div class="row">
-          <div class="title">忽略音频/视频：</div>
+          <div class="title">{{ $t('Views.Editor.ExportDialog.text.text_10i3c6', {}) }}</div>
           <div class="config-item">
             <Switch v-model:value="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭「忽略音视频」选项，但要注意这将会大幅增加导出用时。'" />
           </div>
         </div>
         <div class="row">
-          <div class="title">覆盖默认母版：</div>
+          <div class="title">{{ $t('Commons.text.text_mjhtz1', {}) }}</div>
           <div class="config-item">
             <Switch v-model:value="masterOverwrite" />
           </div>

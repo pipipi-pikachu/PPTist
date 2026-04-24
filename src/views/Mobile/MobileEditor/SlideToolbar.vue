@@ -3,25 +3,25 @@
     <div class="remark">
       <textarea
         :value="remark"
-        placeholder="点击输入演讲者备注"
+        :placeholder="$t('Commons.placeholder.text_uhrbis')"
         @input="$event => handleInputMark($event)"
       ></textarea>
     </div>
     <div class="toolbar">
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="createSlide()"><i-icon-park-outline:plus class="icon" /> 新幻灯片</Button>
-        <Button style="flex: 1;" @click="copyAndPasteSlide()"><i-icon-park-outline:copy class="icon" /> 复制</Button>
-        <Button style="flex: 1;" @click="deleteSlide()"><i-icon-park-outline:delete class="icon" /> 删除</Button>
+        <Button style="flex: 1;" @click="createSlide()"><i-icon-park-outline:plus class="icon" /> {{ $t('Commons.button.text_d840jn', {}) }}</Button>
+        <Button style="flex: 1;" @click="copyAndPasteSlide()"><i-icon-park-outline:copy class="icon" /> {{ $t('Commons.button.text_fljd', {}) }}</Button>
+        <Button style="flex: 1;" @click="deleteSlide()"><i-icon-park-outline:delete class="icon" /> {{ $t('Commons.button.text_eslg', {}) }}</Button>
       </ButtonGroup>
       <ButtonGroup class="row">
-        <Button style="flex: 1;" @click="insertTextElement()"><i-icon-park-outline:font-size class="icon" /> 文字</Button>
+        <Button style="flex: 1;" @click="insertTextElement()"><i-icon-park-outline:font-size class="icon" /> {{ $t('Commons.button.text_hrqo', {}) }}</Button>
         <Button style="flex: 1;">
           <FileInput @change="files => insertImageElement(files)">
-            <i-icon-park-outline:picture class="icon" /> 图片
+            <i-icon-park-outline:picture class="icon" /> {{ $t('Commons.text.text_ff9l', {}) }}
           </FileInput>
         </Button>
-        <Button style="flex: 1;" @click="insertShapeElement('square')"><i-icon-park-outline:square class="icon" /> 矩形</Button>
-        <Button style="flex: 1;" @click="insertShapeElement('round')"><i-icon-park-outline:round class="icon" /> 圆形</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('square')"><i-icon-park-outline:square class="icon" /> {{ $t('Commons.button.text_kx3t', {}) }}</Button>
+        <Button style="flex: 1;" @click="insertShapeElement('round')"><i-icon-park-outline:round class="icon" /> {{ $t('Commons.button.text_fbq4', {}) }}</Button>
       </ButtonGroup>
     </div>
 

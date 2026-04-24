@@ -5,7 +5,7 @@
     v-click-outside="() => setThumbnailsFocus(false)"
   >
     <div class="add-slide">
-      <div class="btn" @click="createSlide()"><i-icon-park-outline:plus class="icon" />添加幻灯片</div>
+      <div class="btn" @click="createSlide()"><i-icon-park-outline:plus class="icon" />{{ $t('Commons.text.text_enn2vi', {}) }}</div>
       <Popover trigger="click" placement="bottom-start" v-model:value="presetLayoutPopoverVisible" center>
         <template #content>
           <Templates 
@@ -91,6 +91,7 @@ import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
 import Popover from '@/components/Popover.vue'
 import Draggable from 'vuedraggable'
+import { t } from '@/i18n';
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -262,22 +263,22 @@ const contextmenusSection = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '删除节',
+      text: t('Commons.text.text_crc8u'),
       handler: () => removeSection(sectionId),
     },
     {
-      text: '删除节和幻灯片',
+      text: t('Commons.text.text_ndz8kl'),
       handler: () => {
         mainStore.setActiveElementIdList([])
         removeSectionSlides(sectionId)
       },
     },
     {
-      text: '删除所有节',
+      text: t('Commons.text.text_eny8rv'),
       handler: removeAllSection,
     },
     {
-      text: '重命名节',
+      text: t('Commons.text.text_iqtg11'),
       handler: () => editSection(sectionId),
     },
   ]
@@ -288,22 +289,22 @@ const { enterScreening, enterScreeningFromStart } = useScreening()
 const contextmenusThumbnails = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: t('Commons.label.text_lyu4'),
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: t('Commons.label.text_emxt'),
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     {
-      text: '新建页面',
+      text: t('Commons.text.text_d8dn4n'),
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '幻灯片放映',
+      text: t('Commons.text.text_sx6ic5'),
       subText: 'F5',
       handler: enterScreeningFromStart,
     },
@@ -313,49 +314,49 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
 const contextmenusThumbnailItem = (): ContextmenuItem[] => {
   return [
     {
-      text: '剪切',
+      text: t('Commons.label.text_egv1'),
       subText: 'Ctrl + X',
       handler: cutSlide,
     },
     {
-      text: '复制',
+      text: t('Commons.button.text_fljd'),
       subText: 'Ctrl + C',
       handler: copySlide,
     },
     {
-      text: '粘贴',
+      text: t('Commons.label.text_lyu4'),
       subText: 'Ctrl + V',
       handler: pasteSlide,
     },
     {
-      text: '全选',
+      text: t('Commons.label.text_emxt'),
       subText: 'Ctrl + A',
       handler: selectAllSlide,
     },
     { divider: true },
     {
-      text: '新建页面',
+      text: t('Commons.text.text_d8dn4n'),
       subText: 'Enter',
       handler: createSlide,
     },
     {
-      text: '复制页面',
+      text: t('Commons.text.text_bl4pau'),
       subText: 'Ctrl + D',
       handler: copyAndPasteSlide,
     },
     {
-      text: '删除页面',
+      text: t('Commons.text.text_azo3wx'),
       subText: 'Delete',
       handler: () => deleteSlide(),
     },
     {
-      text: '增加节',
+      text: t('Commons.text.text_de1og'),
       handler: createSection,
       disable: !!currentSlide.value.sectionTag,
     },
     { divider: true },
     {
-      text: '从当前放映',
+      text: t('Commons.text.text_ynp7ee'),
       subText: 'Shift + F5',
       handler: enterScreening,
     },

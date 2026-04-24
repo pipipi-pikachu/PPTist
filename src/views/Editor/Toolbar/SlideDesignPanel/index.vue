@@ -1,6 +1,6 @@
 <template>
   <div class="slide-design-panel">
-    <div class="title">背景填充</div>
+    <div class="title">{{ $t('Commons.text.text_go91nh', {}) }}</div>
     <div class="row">
       <Select 
         style="flex: 1;" 

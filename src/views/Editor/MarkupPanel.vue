@@ -3,14 +3,14 @@
     class="notes-panel" 
     :width="300" 
     :height="130" 
-    title="幻灯片类型标注" 
+    :title="$t('Commons.title.text_njm144')" 
     :left="-270" 
     :top="90"
     @close="close()"
   >
     <div class="container">
       <div class="row">
-        <div style="width: 40%;">当前页面类型：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_li5mhp', {}) }}</div>
         <Select
           style="width: 60%;"
           :value="slideType"
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="row" v-if="handleElement && (handleElement.type === 'text' || (handleElement.type === 'shape' && handleElement.text))">
-        <div style="width: 40%;">当前文本类型：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_dmjoyd', {}) }}</div>
         <Select
           style="width: 60%;"
           :value="textType"
@@ -28,7 +28,7 @@
         />
       </div>
       <div class="row" v-else-if="handleElement && handleElement.type === 'image'">
-        <div style="width: 40%;">当前图片类型：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_1z18tj', {}) }}</div>
         <Select
           style="width: 60%;"
           :value="imageType"
@@ -36,7 +36,7 @@
           :options="imageTypeOptions"
         />
       </div>
-      <div class="placeholder" v-else>选中图片、文字、带文字的形状，标记类型</div>
+      <div class="placeholder" v-else>{{ $t('Commons.text.text_qauteu', {}) }}</div>
     </div>
   </MoveablePanel>
 </template>
@@ -49,6 +49,7 @@ import type { ImageType, SlideType, TextType } from '@/types/slides'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import Select from '@/components/Select.vue'
+import { t } from '@/i18n';
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
@@ -56,33 +57,33 @@ const { currentSlide } = storeToRefs(slidesStore)
 const { handleElement, handleElementId } = storeToRefs(mainStore)
 
 const slideTypeOptions = ref<{ label: string; value: SlideType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '封面页', value: 'cover' },
-  { label: '目录页', value: 'contents' },
-  { label: '过渡页', value: 'transition' },
-  { label: '内容页', value: 'content' },
-  { label: '结束页', value: 'end' },
+  { label: t('Commons.text.text_93z5el'), value: '' },
+  { label: t('Commons.text.text_e7pxw'), value: 'cover' },
+  { label: t('Commons.text.text_hw5ym'), value: 'contents' },
+  { label: t('Commons.text.text_llpbv'), value: 'transition' },
+  { label: t('Commons.text.text_ceae9'), value: 'content' },
+  { label: t('Commons.text.text_j35s9'), value: 'end' },
 ])
 
 const textTypeOptions = ref<{ label: string; value: TextType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '标题', value: 'title' },
-  { label: '副标题', value: 'subtitle' },
-  { label: '正文', value: 'content' },
-  { label: '列表项目', value: 'item' },
-  { label: '列表项标题', value: 'itemTitle' },
-  { label: '注释', value: 'notes' },
-  { label: '页眉', value: 'header' },
-  { label: '页脚', value: 'footer' },
-  { label: '节编号', value: 'partNumber' },
-  { label: '项目编号', value: 'itemNumber' },
+  { label: t('Commons.text.text_93z5el'), value: '' },
+  { label: t('Commons.text.text_ij5d'), value: 'title' },
+  { label: t('Commons.text.text_cl7a8'), value: 'subtitle' },
+  { label: t('Commons.text.text_itms'), value: 'content' },
+  { label: t('Commons.text.text_axgg3q'), value: 'item' },
+  { label: t('Commons.text.text_gcg3s7'), value: 'itemTitle' },
+  { label: t('Commons.text.text_jboi'), value: 'notes' },
+  { label: t('Commons.text.text_ql2s'), value: 'header' },
+  { label: t('Commons.text.text_qn2d'), value: 'footer' },
+  { label: t('Commons.text.text_jq8pv'), value: 'partNumber' },
+  { label: t('Commons.text.text_jqcpva'), value: 'itemNumber' },
 ])
 
 const imageTypeOptions = ref<{ label: string; value: ImageType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '页面插图', value: 'pageFigure' },
-  { label: '项目插图', value: 'itemFigure' },
-  { label: '背景图', value: 'background' },
+  { label: t('Commons.text.text_93z5el'), value: '' },
+  { label: t('Commons.text.text_juwo1l'), value: 'pageFigure' },
+  { label: t('Commons.text.text_jq83i9'), value: 'itemFigure' },
+  { label: t('Commons.text.text_jd1kr'), value: 'background' },
 ])
 
 const slideType = computed(() => currentSlide.value?.type || '')

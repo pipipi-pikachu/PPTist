@@ -142,6 +142,7 @@ import Draggable from 'vuedraggable'
 import NumberInput from '@/components/NumberInput.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
+import { t } from '@/i18n';
 
 const animationEffects: Record<string, string> = {}
 for (const effect of ENTER_ANIMATIONS) {
@@ -173,9 +174,9 @@ const { handleElement, handleElementId } = storeToRefs(useMainStore())
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
 
 const tabs: TabItem[] = [
-  { key: 'in', label: '入场', color: '#68a490' },
-  { key: 'out', label: '退场', color: '#d86344' },
-  { key: 'attention', label: '强调', color: '#e8b76a' },
+  { key: 'in', label: t('Commons.text.text_ebn9'), color: '#68a490' },
+  { key: 'out', label: t('Commons.text.text_oz0a'), color: '#d86344' },
+  { key: 'attention', label: t('Commons.text.text_gyrt'), color: '#e8b76a' },
 ]
 const activeTab = ref('in')
 const animateIn = ref(false)

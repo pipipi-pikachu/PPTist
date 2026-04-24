@@ -2,8 +2,8 @@
   <div class="aippt-dialog">
     <div class="header">
       <span class="title">AIPPT</span>
-      <span class="subtite" v-if="step === 'template'">{{ $t('Commons.text.ppt', {}) }}<span class="local" v-tooltip="'上传.pptist格式模板文件'" @click="uploadLocalTemplate()">使用本地模板生成</span></span>
-      <span class="subtite" v-else-if="step === 'outline'">确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板</span>
+      <span class="subtite" v-if="step === 'template'">{{ $t('Commons.text.ppt', {}) }}<span class="local" v-tooltip="'上传.pptist格式模板文件'" @click="uploadLocalTemplate()">{{ $t('Commons.text.text_v9rhlw', {}) }}</span></span>
+      <span class="subtite" v-else-if="step === 'outline'">{{ $t('Views.Editor.text.text_6bca8z', {}) }}</span>
       <span class="subtite" v-else>{{ $t('Views.Editor.text.ppt', {}) }}</span>
     </div>
     

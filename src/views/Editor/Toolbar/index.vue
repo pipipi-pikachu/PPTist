@@ -26,23 +26,24 @@ import SlideAnimationPanel from './SlideAnimationPanel.vue'
 import MultiPositionPanel from './MultiPositionPanel.vue'
 import MultiStylePanel from './MultiStylePanel.vue'
 import Tabs from '@/components/Tabs.vue'
+import { t } from '@/i18n';
 
 const mainStore = useMainStore()
 const { activeElementIdList, activeElementList, activeGroupElementId, toolbarState } = storeToRefs(mainStore)
 
 const elementTabs = [
-  { label: '样式', key: ToolbarStates.EL_STYLE },
-  { label: '位置', key: ToolbarStates.EL_POSITION },
-  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+  { label: t('Commons.text.text_i8xk'), key: ToolbarStates.EL_STYLE },
+  { label: t('Commons.text.text_e6rl'), key: ToolbarStates.EL_POSITION },
+  { label: t('Commons.text.text_epar'), key: ToolbarStates.EL_ANIMATION },
 ]
 const slideTabs = [
-  { label: '设计', key: ToolbarStates.SLIDE_DESIGN },
-  { label: '切换', key: ToolbarStates.SLIDE_ANIMATION },
-  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+  { label: t('Commons.text.text_ojab'), key: ToolbarStates.SLIDE_DESIGN },
+  { label: t('Commons.text.text_ehx7'), key: ToolbarStates.SLIDE_ANIMATION },
+  { label: t('Commons.text.text_epar'), key: ToolbarStates.EL_ANIMATION },
 ]
 const multiSelectTabs = [
-  { label: '样式（多选）', key: ToolbarStates.MULTI_STYLE },
-  { label: '位置（多选）', key: ToolbarStates.MULTI_POSITION },
+  { label: t('Commons.text.text_xni0t2'), key: ToolbarStates.MULTI_STYLE },
+  { label: t('Commons.text.text_emq9e5'), key: ToolbarStates.MULTI_POSITION },
 ]
 
 const setToolbarState = (value: ToolbarStates) => {

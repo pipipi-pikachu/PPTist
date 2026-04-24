@@ -15,7 +15,7 @@
   >
     <div class="container" v-loading="{ state: loading, text: '加载中...' }">
       <div class="tools">
-        <Input class="input" v-model:value="searchWord" placeholder="搜索图片" @enter="search()">
+        <Input class="input" v-model:value="searchWord" :placeholder="$t('Commons.placeholder.text_d5bcpb')" @enter="search()">
           <template #prefix>
             <Popover class="more-icon" trigger="click" v-model:value="orientationVisible">
               <template #content>
@@ -69,6 +69,7 @@ import ImageWaterfallViewer from '@/components/ImageWaterfallViewer.vue'
 import Input from '@/components/Input.vue'
 import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
+import { t } from '@/i18n';
 
 interface ImageItem {
   id: number
@@ -96,10 +97,10 @@ const orientationOptions: {
   key: Orientation
   label: string
 }[] = [
-  { key: 'all', label: '全部' },
-  { key: 'landscape', label: '横向' },
-  { key: 'portrait', label: '纵向' },
-  { key: 'square', label: '方形' },
+  { key: 'all', label: t('Commons.button.text_en40') },
+  { key: 'landscape', label: t('Commons.text.text_iip3') },
+  { key: 'portrait', label: t('Commons.text.text_m0ho') },
+  { key: 'square', label: t('Commons.text.text_htqh') },
 ]
 const orientationMap: Record<string, string> = {
   'all': '全部',

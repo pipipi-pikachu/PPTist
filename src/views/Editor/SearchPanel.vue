@@ -13,7 +13,7 @@
     />
 
     <div class="content" :class="type" @mousedown.stop>
-      <Input class="input" v-model:value="searchWord" placeholder="输入查找内容" @enter="searchNext()" ref="searchInpRef">
+      <Input class="input" v-model:value="searchWord" :placeholder="$t('Commons.placeholder.text_nfh7up')" @enter="searchNext()" ref="searchInpRef">
         <template #suffix>
           <span class="count">{{searchIndex + 1}}/{{searchResults.length}}</span>
           <Divider type="vertical" />
@@ -45,6 +45,7 @@ import Tabs from '@/components/Tabs.vue'
 import Divider from '@/components/Divider.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
+import { t } from '@/i18n';
 
 type TypeKey = 'search' | 'replace'
 interface TabItem {
@@ -69,8 +70,8 @@ const {
 
 const type = ref<TypeKey>('search')
 const tabs: TabItem[] = [
-  { key: 'search', label: '查找' },
-  { key: 'replace', label: '替换' },
+  { key: 'search', label: t('Commons.text.text_i7nd') },
+  { key: 'replace', label: t('Commons.button.text_i2bn') },
 ]
 
 const close = () => {

@@ -1,7 +1,7 @@
 <template>
   <div class="element-outline">
     <div class="row" v-if="!fixed">
-      <div style="width: 40%;">启用边框：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_amekbw', {}) }}</div>
       <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="hasOutline" 
@@ -11,7 +11,7 @@
     </div>
     <template v-if="hasOutline && outline">
       <div class="row">
-        <div style="width: 40%;">边框样式：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_7almz9', {}) }}</div>
         <SelectCustom style="width: 60%;">
           <template #options>
             <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateOutline({ style: item })">

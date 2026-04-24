@@ -7,7 +7,7 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_n0akk', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker

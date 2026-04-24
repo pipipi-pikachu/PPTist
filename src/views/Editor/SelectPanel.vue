@@ -10,8 +10,8 @@
   >
     <div class="handler" v-if="elements.length">
       <div class="btns">
-        <Button size="small" style="margin-right: 5px;" @click="showAllElements()">全部显示</Button>
-        <Button size="small" @click="hideAllElements()">全部隐藏</Button>
+        <Button size="small" style="margin-right: 5px;" @click="showAllElements()">{{ $t('Commons.button.text_avczss', {}) }}</Button>
+        <Button size="small" @click="hideAllElements()">{{ $t('Commons.button.text_avla67', {}) }}</Button>
       </div>
       <div class="icon-btns" v-if="handleElement">
         <span class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:down /></span>
@@ -21,7 +21,7 @@
     <div class="element-list" v-if="elements.length">
       <template v-for="item in elements" :key="item.id">
         <div class="group-els" v-if="item.type === 'group'">
-          <div class="group-title">组合</div>
+          <div class="group-title">{{ $t('Commons.button.text_m0uc', {}) }}</div>
           <div 
             class="item" 
             :class="{

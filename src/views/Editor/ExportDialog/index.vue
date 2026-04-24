@@ -40,7 +40,7 @@ const setDialogForExport = mainStore.setDialogForExport
 const tabs: TabItem[] = [
   { key: 'pptist', label: t('Views.Editor.ExportDialog.Index.text.pptist') },
   { key: 'pptx', label: t('Commons.button.pptx') },
-  { key: 'image', label: '导出图片' },
+  { key: 'image', label: t('Commons.button.text_by3nrb') },
   { key: 'json', label: t('Commons.button.json') },
   { key: 'pdf', label: t('Views.Editor.ExportDialog.Index.text.pdf') },
 ]

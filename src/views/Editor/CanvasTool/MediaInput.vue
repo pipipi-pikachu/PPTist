@@ -10,11 +10,11 @@
       <Input v-model:value="videoSrc" :placeholder="$t('Views.Editor.CanvasTool.placeholder.e_g_https_xxx')"></Input>
       <div class="btns">
         <FileInput accept="video/*" @change="files => uploadVideo(files)">
-          <Button><i-icon-park-outline:upload /> 上传本地视频</Button>
+          <Button><i-icon-park-outline:upload /> {{ $t('Commons.button.text_kfwqe3', {}) }}</Button>
         </FileInput>
         <div class="group">
-          <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-          <Button type="primary" @click="insertVideo()">确认</Button>
+          <Button @click="emit('close')" style="margin-right: 10px;">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+          <Button type="primary" @click="insertVideo()">{{ $t('Commons.button.text_l912', {}) }}</Button>
         </div>
       </div>
     </template>
@@ -42,6 +42,7 @@ import Tabs from '@/components/Tabs.vue'
 import Input from '@/components/Input.vue'
 import Button from '@/components/Button.vue'
 import FileInput from '@/components/FileInput.vue'
+import { t } from '@/i18n';
 
 type TypeKey = 'video' | 'audio'
 interface TabItem {
@@ -61,8 +62,8 @@ const videoSrc = ref('https://videos.pexels.com/video-files/29261597/12623866_64
 const audioSrc = ref('https://freesound.org/data/previews/614/614107_11861866-lq.mp3')
 
 const tabs: TabItem[] = [
-  { key: 'video', label: '视频' },
-  { key: 'audio', label: '音频' },
+  { key: 'video', label: t('Commons.text.text_o9sb') },
+  { key: 'audio', label: t('Commons.text.text_qola') },
 ]
 
 const insertVideo = () => {

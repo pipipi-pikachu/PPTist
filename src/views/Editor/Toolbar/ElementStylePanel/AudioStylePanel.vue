@@ -1,7 +1,7 @@
 <template>
   <div class="audio-style-panel">
     <div class="row">
-      <div style="width: 40%;">图标颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_1999et', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker

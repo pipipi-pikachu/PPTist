@@ -1,7 +1,7 @@
 <template>
   <div class="language-switcher">
     <select v-model="locale" :aria-label="$t('LanguageSwitcher.aria_label.change_language')">
-      <option value="zh">中文</option>
+      <option value="zh">{{ $t('Commons.text.text_dure', {}) }}</option>
       <option value="en">English</option>
       <option value="fr">Français</option>
     </select>
