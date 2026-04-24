@@ -6,7 +6,7 @@ export interface KeyboardState {
   spaceKeyState: boolean
 }
 
-export const useKeyboardStore = defineStore('keyboard', {
+export const useKeyboardStore = defineStore('pptist-keyboard', {
   state: (): KeyboardState => ({
     ctrlKeyState: false, // ctrl键按下状态
     shiftKeyState: false, // shift键按下状态

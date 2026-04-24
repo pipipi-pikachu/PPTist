@@ -44,7 +44,7 @@ export interface MainState {
 const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
 export const databaseId = nanoid(10)
 
-export const useMainStore = defineStore('main', {
+export const useMainStore = defineStore('pptist-main', {
   state: (): MainState => ({
     activeElementIdList: [], // 被选中的元素ID集合，包含 handleElementId
     handleElementId: '', // 正在操作的元素ID

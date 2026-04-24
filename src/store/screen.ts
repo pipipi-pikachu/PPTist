@@ -4,7 +4,7 @@ export interface ScreenState {
   screening: boolean
 }
 
-export const useScreenStore = defineStore('screen', {
+export const useScreenStore = defineStore('pptist-screen', {
   state: (): ScreenState => ({
     screening: false, // 是否进入放映状态
   }),

@@ -5,8 +5,9 @@ import fr from '../locales/fr.json'
 
 export const i18n = createI18n({
   legacy: false,
-  locale: 'zh',
-  fallbackLocale: 'zh',
+  locale: 'en',
+  fallbackLocale: 'en',
+  globalInjection: true,
   messages: { zh, en, fr },
 })
 

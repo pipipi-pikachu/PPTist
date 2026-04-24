@@ -29,7 +29,7 @@ export interface SlidesState {
   templates: SlideTemplate[]
 }
 
-export const useSlidesStore = defineStore('slides', {
+export const useSlidesStore = defineStore('pptist-slides', {
   state: (): SlidesState => ({
     title: t('Commons.heading.text_mej254'), // 幻灯片标题
     theme: {
@@ -54,14 +54,14 @@ export const useSlidesStore = defineStore('slides', {
     viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
     templates: [
-      { name: t('Commons.text.text_c45x0k'), id: 'template_1', cover: './imgs/template_1.webp', origin: t('Commons.text.text_bz6x8n') },
-      { name: t('Commons.text.text_ior6ln'), id: 'template_2', cover: './imgs/template_2.webp', origin: t('Commons.text.text_bz6x8n') },
-      { name: t('Commons.text.text_dbxj4q'), id: 'template_3', cover: './imgs/template_3.webp', origin: t('Commons.text.text_bz6x8n') },
-      { name: t('Commons.text.text_9f4wxc'), id: 'template_4', cover: './imgs/template_4.webp', origin: t('Commons.text.text_bz6x8n') },
-      { name: t('Commons.text.text_g3xjfa'), id: 'template_5', cover: './imgs/template_5.webp', origin: t('Commons.text.text_huilpu') },
-      { name: t('Commons.text.text_dhcdg3'), id: 'template_6', cover: './imgs/template_6.webp', origin: t('Commons.text.text_huilpu') },
-      { name: t('Commons.text.text_egwet8'), id: 'template_7', cover: './imgs/template_7.webp', origin: t('Commons.text.text_huilpu') },
-      { name: t('Commons.text.text_i7bc6a'), id: 'template_8', cover: './imgs/template_8.webp', origin: t('Commons.text.text_huilpu') },
+      { name: t('Commons.text.text_c45x0k'), id: 'template_1', cover: '/imgs/template_1.webp', origin: t('Commons.text.text_bz6x8n') },
+      { name: t('Commons.text.text_ior6ln'), id: 'template_2', cover: '/imgs/template_2.webp', origin: t('Commons.text.text_bz6x8n') },
+      { name: t('Commons.text.text_dbxj4q'), id: 'template_3', cover: '/imgs/template_3.webp', origin: t('Commons.text.text_bz6x8n') },
+      { name: t('Commons.text.text_9f4wxc'), id: 'template_4', cover: '/imgs/template_4.webp', origin: t('Commons.text.text_bz6x8n') },
+      { name: t('Commons.text.text_g3xjfa'), id: 'template_5', cover: '/imgs/template_5.webp', origin: t('Commons.text.text_huilpu') },
+      { name: t('Commons.text.text_dhcdg3'), id: 'template_6', cover: '/imgs/template_6.webp', origin: t('Commons.text.text_huilpu') },
+      { name: t('Commons.text.text_egwet8'), id: 'template_7', cover: '/imgs/template_7.webp', origin: t('Commons.text.text_huilpu') },
+      { name: t('Commons.text.text_i7bc6a'), id: 'template_8', cover: '/imgs/template_8.webp', origin: t('Commons.text.text_huilpu') },
     ], // 模板
   }),
 

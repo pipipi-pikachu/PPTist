@@ -35,7 +35,7 @@ interface AIWritingPayload {
 
 export default {
   getMockData(filename: string): Promise<any> {
-    return axios.get(`./mocks/${filename}.json`)
+    return axios.get(`/mocks/${filename}.json`)
   },
 
   searchImage(body: ImageSearchPayload): Promise<any> {
