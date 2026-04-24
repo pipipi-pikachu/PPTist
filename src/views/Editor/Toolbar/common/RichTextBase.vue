@@ -102,13 +102,13 @@
         :checked="richTextAttrs.superscript"
         v-tooltip="'上标'"
         @click="emitRichTextCommand('superscript')"
-      >A²</CheckboxButton>
+      >{{$t('Commons.button.a2')}}</CheckboxButton>
       <CheckboxButton
         style="flex: 1;"
         :checked="richTextAttrs.subscript"
         v-tooltip="'下标'"
         @click="emitRichTextCommand('subscript')"
-      >A₂</CheckboxButton>
+      >{{$t('Commons.button.a2_2')}}</CheckboxButton>
       <CheckboxButton
         style="flex: 1;"
         :checked="richTextAttrs.code"

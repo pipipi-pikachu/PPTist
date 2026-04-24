@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 interface PageSize {
   width: number
   height: number
@@ -19,7 +20,7 @@ const createIframe = () => {
 }
 
 const writeContent = (doc: Document, printNode: HTMLElement, size: PageSize) => {
-  const docType = '<!DOCTYPE html>'
+  const docType = t('Utils.Print.text.doctype_html')
 
   let style = ''
   const styleSheets = document.styleSheets

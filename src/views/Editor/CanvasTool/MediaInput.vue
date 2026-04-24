@@ -7,7 +7,7 @@
     />
 
     <template v-if="type === 'video'">
-      <Input v-model:value="videoSrc" placeholder="请输入视频地址，e.g. https://xxx.mp4"></Input>
+      <Input v-model:value="videoSrc" :placeholder="$t('Views.Editor.CanvasTool.placeholder.e_g_https_xxx')"></Input>
       <div class="btns">
         <FileInput accept="video/*" @change="files => uploadVideo(files)">
           <Button><i-icon-park-outline:upload /> 上传本地视频</Button>

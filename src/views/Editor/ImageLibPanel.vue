@@ -10,7 +10,7 @@
       display: 'flex',
       flexDirection: 'column',
     }"
-    title="图片库（来自 pexels.com）" 
+    :title="$t('Views.Editor.title.pexels_com')" 
     @close="close()"
   >
     <div class="container" v-loading="{ state: loading, text: '加载中...' }">

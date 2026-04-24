@@ -28,3 +28,5 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+.i18n-cache/
+.i18n-queue/

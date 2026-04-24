@@ -55,7 +55,7 @@
     </div>
 
     <div class="btns">
-      <Button class="btn export" type="primary" @click="expPDF()"><i-icon-park-outline:download /> 打印 / 导出 PDF</Button>
+      <Button class="btn export" type="primary" @click="expPDF()"><i-icon-park-outline:download /> {{$t('Views.Editor.ExportDialog.button.pdf')}}</Button>
       <Button class="btn close" @click="emit('close')">关闭</Button>
     </div>
   </div>

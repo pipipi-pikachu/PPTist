@@ -10,7 +10,15 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "i18n:extract": "npx -y @ai-localizer/cli extract --project .",
+    "i18n:replace": "npx -y @ai-localizer/cli replace --project .",
+    "i18n:sync": "npx -y @ai-localizer/cli sync --project .",
+    "i18n:cleanup": "npx -y @ai-localizer/cli cleanup --project .",
+    "i18n:status": "npx -y @ai-localizer/cli status --project .",
+    "i18n:plan": "npx -y @ai-localizer/cli translate plan --project .",
+    "i18n:apply": "npx -y @ai-localizer/cli translate apply --project .",
+    "i18n:run": "npx -y @ai-localizer/cli run --project ."
   },
   "author": "pipipi_pikachu@163.com",
   "homepage": "https://github.com/pipipi-pikachu/PPTist",
@@ -47,6 +55,7 @@
     "tinycolor2": "^1.6.0",
     "tippy.js": "^6.3.7",
     "vue": "^3.5.17",
+    "vue-i18n": "^9.14.5",
     "vuedraggable": "^4.1.0"
   },
   "devDependencies": {
@@ -74,5 +83,17 @@
     "unplugin-vue-components": "^30.0.0",
     "vite": "^5.3.5",
     "vue-tsc": "^2.0.29"
+  },
+  "aiI18n": {
+    "sourceLocale": "zh",
+    "defaultLocale": "zh",
+    "locales": [
+      "zh",
+      "en",
+      "fr"
+    ],
+    "srcRoot": "src",
+    "localesDir": "src/locales",
+    "localeLayout": "single"
   }
 }

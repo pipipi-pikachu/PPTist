@@ -1,7 +1,7 @@
 <template>
   <div class="latex-style-panel">
     <div class="row">
-      <Button style="flex: 1;" @click="latexEditorVisible = true"><i-icon-park-outline:edit /> 编辑 LaTeX</Button>
+      <Button style="flex: 1;" @click="latexEditorVisible = true"><i-icon-park-outline:edit /> {{ $t('Commons.button.latex', {}) }}</Button>
     </div>
 
     <Divider />

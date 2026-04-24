@@ -1,3 +1,5 @@
+import { t } from '@/i18n';
+
 import type { TurningMode } from '@/types/slides'
 
 export const ANIMATION_DEFAULT_DURATION = 1000
@@ -223,8 +225,8 @@ export const SLIDE_ANIMATIONS: SlideAnimation[] = [
   { label: '随机', value: 'random' },
   { label: '左右推移', value: 'slideX' },
   { label: '上下推移', value: 'slideY' },
-  { label: '左右推移（3D）', value: 'slideX3D' },
-  { label: '上下推移（3D）', value: 'slideY3D' },
+  { label: t('Commons.label.3d'), value: 'slideX3D' },
+  { label: t('Commons.label.3d_2'), value: 'slideY3D' },
   { label: '淡入淡出', value: 'fade' },
   { label: '旋转', value: 'rotate' },
   { label: '上下展开', value: 'scaleY' },
