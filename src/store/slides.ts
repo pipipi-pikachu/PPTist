@@ -114,7 +114,7 @@ export const useSlidesStore = defineStore('slides', {
 
   actions: {
     setTitle(title: string) {
-      if (!title) this.title = {t('Commons.heading.text_mej254')}
+      if (!title) this.title = t('Commons.heading.text_mej254')
       else this.title = title
     },
 
