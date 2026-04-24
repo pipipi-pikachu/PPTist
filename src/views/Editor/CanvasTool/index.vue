@@ -1,10 +1,10 @@
 <template>
   <div class="canvas-tool">
     <div class="left-handler">
-      <span class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="'撤销（Ctrl + Z）'" @click="undo()">
+      <span class="handler-item" :class="{ 'disable': !canUndo }" v-tooltip="$t('Commons.text.text_qx4ytp')" @click="undo()">
         <i-icon-park-outline:back />
       </span>
-      <span class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="'重做（Ctrl + Y）'" @click="redo()">
+      <span class="handler-item" :class="{ 'disable': !canRedo }" v-tooltip="$t('Commons.text.text_wj0u69')" @click="redo()">
         <i-icon-park-outline:next />
       </span>
       <div class="more">
@@ -25,7 +25,7 @@
         <span class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="$t('Commons.text.text_il3af9')" @click="toggleSelectPanel()">
           <i-icon-park-outline:move-one />
         </span>
-        <span class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'查找/替换（Ctrl + F）'" @click="toggleSraechPanel()">
+        <span class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="$t('Commons.text.text_p47926')" @click="toggleSraechPanel()">
           <i-icon-park-outline:search />
         </span>
       </div>
@@ -122,7 +122,7 @@
     </div>
 
     <div class="right-handler">
-      <span class="handler-item viewport-size" v-tooltip="'画布缩小（Ctrl + -）'" @click="scaleCanvas('-')">
+      <span class="handler-item viewport-size" v-tooltip="$t('Commons.text.text_w7q0yc')" @click="scaleCanvas('-')">
         <i-icon-park-outline:minus />
       </span>
       <Popover trigger="click" v-model:value="canvasScaleVisible">
@@ -140,7 +140,7 @@
       <span class="handler-item viewport-size" v-tooltip="$t('Views.Editor.CanvasTool.Index.text.ctrl')" @click="scaleCanvas('+')">
         <i-icon-park-outline:plus />
       </span>
-      <span class="handler-item viewport-size-adaptation" v-tooltip="'适应屏幕（Ctrl + 0）'" @click="resetCanvas()">
+      <span class="handler-item viewport-size-adaptation" v-tooltip="$t('Commons.text.text_6uk6fn')" @click="resetCanvas()">
         <i-icon-park-outline:full-screen />
       </span>
     </div>

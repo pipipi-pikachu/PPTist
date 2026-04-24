@@ -41,7 +41,7 @@
       @mouseenter="rightToolsVisible = true"
     >
       <div class="content">
-        <div class="tool-btn page-number" @click="slideThumbnailModelVisible = true">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+        <div class="tool-btn page-number" @click="slideThumbnailModelVisible = true">{{ $t('Commons.text.text_edy0j') }} {{slideIndex + 1}} / {{slides.length}}</div>
         <i-icon-park-outline:write class="tool-btn" v-tooltip="$t('Commons.text.text_fas5yj')" @click="writingBoardToolVisible = true" />
         <i-icon-park-outline:magic class="tool-btn" v-tooltip="$t('Commons.text.text_grr8r')" :class="{ 'active': laserPen }" @click="laserPen = !laserPen" />
         <i-icon-park-outline:stopwatch-start class="tool-btn" v-tooltip="$t('Commons.text.text_ky2s3')" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible" />
@@ -149,7 +149,7 @@ const contextmenus = (): ContextmenuItem[] => {
     },
     { divider: true },
     {
-      text: autoPlayTimer.value ? '取消自动放映' : '自动放映',
+      text: autoPlayTimer.value ? t('Commons.text.text_53383a92') : t('Commons.text.text_3c512f20'),
       handler: autoPlayTimer.value ? closeAutoPlay : autoPlay,
       children: [
         {

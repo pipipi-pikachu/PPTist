@@ -75,8 +75,8 @@ export const HOTKEY_DOC: HotkeyItem[] = [
     type: t('Commons.text.text_sxb4ry'),
     children: [
       { label: t('Commons.label.text_g7l4bb'), value: 'Enter' },
-      { label: t('Commons.label.text_fqji7p'), value: 'Space + 鼠标拖拽' },
-      { label: t('Commons.label.text_ggs6xp'), value: 'Ctrl + 鼠标滚轮' },
+      { label: t('Commons.label.text_fqji7p'), value: 'Space + Mouse Drag' },
+      { label: t('Commons.label.text_ggs6xp'), value: 'Ctrl + Mouse Wheel' },
       { label: t('Commons.label.text_d5btzl'), value: 'Ctrl + =' },
       { label: t('Commons.label.text_gffrn2'), value: 'Ctrl + -' },
       { label: t('Commons.label.text_dykekn'), value: 'Ctrl + 0' },

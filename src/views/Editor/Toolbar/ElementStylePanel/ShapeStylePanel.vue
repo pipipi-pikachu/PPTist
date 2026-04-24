@@ -24,9 +24,9 @@
         :value="fillType" 
         @update:value="value => updateFillType(value as 'fill' | 'gradient' | 'pattern')"
         :options="[
-          { label: '纯色填充', value: 'fill' },
-          { label: '渐变填充', value: 'gradient' },
-          { label: '图片填充', value: 'pattern' },
+          { label: $t('Commons.text.text_girb4t'), value: 'fill' },
+          { label: $t('Commons.text.text_e8gnpe'), value: 'gradient' },
+          { label: $t('Commons.text.text_bg60ar'), value: 'pattern' },
         ]"
       />
       <div style="width: 10px;" v-if="fillType !== 'pattern'"></div>
@@ -45,8 +45,8 @@
         @update:value="value => updateGradient({ type: value as GradientType })"
         v-else-if="fillType === 'gradient'"
         :options="[
-          { label: '线性渐变', value: 'linear' },
-          { label: '径向渐变', value: 'radial' },
+          { label: $t('Commons.text.text_ge4e8g'), value: 'linear' },
+          { label: $t('Commons.text.text_cejnv9'), value: 'radial' },
         ]"
       />
     </div>
@@ -111,7 +111,7 @@
           :value="lineHeight || 1"
           @update:value="value => updateTextProps({ lineHeight: value as number })"
           :options="lineHeightOptions.map(item => ({
-            label: item + '倍', value: item
+            label: item + 'x', value: item
           }))"
         >
           <template #icon>

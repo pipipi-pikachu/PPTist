@@ -982,7 +982,8 @@ export default () => {
               let series: number[][]
   
               if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
-                labels = el.data[0].map((item, index) => `坐标${index + 1}`)
+                const coordKeys = ['1_3', '2_3', '3_2', '4_2', '5_2']
+                labels = el.data[0].map((item, index) => index < coordKeys.length ? t(`Commons.text.${coordKeys[index]}`) : `Coordinate ${index + 1}`)
                 legends = ['X', 'Y']
                 series = el.data
               }

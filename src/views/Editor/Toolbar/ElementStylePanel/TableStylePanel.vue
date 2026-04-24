@@ -5,7 +5,7 @@
         style="width: 50%;"
         :value="textAttrs.fontname"
         search
-        searchLabel="搜索字体"
+        :searchLabel="$t('Commons.text.text_d5bwf6')"
         autofocus
         @update:value="value => updateTextAttrs({ fontname: value as string })"
         :options="FONTS"
@@ -18,7 +18,7 @@
         style="width: 50%;"
         :value="textAttrs.fontsize"
         search
-        searchLabel="搜索字号"
+        :searchLabel="$t('Commons.text.text_d5bxc6')"
         autofocus
         @update:value="value => updateTextAttrs({ fontsize: value as string })"
         :options="fontSizeOptions.map(item => ({
@@ -147,24 +147,24 @@
           @update:value="value => updateTheme({ rowHeader: value })" 
           :value="theme.rowHeader" 
           style="flex: 1;"
-        >标题行</Checkbox>
+        >{{ $t('Commons.text.text_19984fb') }}</Checkbox>
         <Checkbox 
           @update:value="value => updateTheme({ rowFooter: value })" 
           :value="theme.rowFooter" 
           style="flex: 1;"
-        >汇总行</Checkbox>
+        >{{ $t('Commons.text.text_1a2a5f8') }}</Checkbox>
       </div>
       <div class="row">
         <Checkbox 
           @update:value="value => updateTheme({ colHeader: value })" 
           :value="theme.colHeader" 
           style="flex: 1;"
-        >第一列</Checkbox>
+        >{{ $t('Commons.text.text_1d82443') }}</Checkbox>
         <Checkbox 
           @update:value="value => updateTheme({ colFooter: value })" 
           :value="theme.colFooter" 
           style="flex: 1;"
-        >最后一列</Checkbox>
+        >{{ $t('Commons.text.text_301785a5') }}</Checkbox>
       </div>
       <div class="row">
         <div style="width: 40%;">{{ $t('Commons.text.text_te10ex', {}) }}</div>

@@ -68,7 +68,7 @@
 
     <div class="btns">
       <div class="left">
-        图表类型：{{ CHART_TYPE_MAP[chartType] }}
+        {{ $t('Commons.text.text_299ad91a') }}: {{ CHART_TYPE_MAP[chartType] }}
         <Popover trigger="click" placement="top" v-model:value="chartTypeSelectVisible">
           <template #content>
             <PopoverMenuItem
@@ -92,6 +92,7 @@
 
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { t } from '@/i18n'
 import type { ChartData, ChartType } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import { CHART_TYPE_MAP } from '@/configs/chart'
@@ -206,13 +207,13 @@ const getTableData = () => {
 
   // 第一行为系列名，第一列为项目名，实际数据从第二行第二列开始
   for (let rowIndex = 1; rowIndex < row; rowIndex++) {
-    let labelsItem = `类别${rowIndex}`
+    let labelsItem = t('Commons.text.text_f6510', { n: rowIndex })
     const labelInputRef = document.querySelector(`#cell-${rowIndex}-0`) as HTMLInputElement
     if (labelInputRef && labelInputRef.value) labelsItem = labelInputRef.value
     labels.push(labelsItem)
   }
   for (let colIndex = 1; colIndex < col; colIndex++) {
-    let legendsItem = `系列${colIndex}`
+    let legendsItem = t('Commons.text.text_f747c', { n: colIndex })
     const labelInputRef = document.querySelector(`#cell-0-${colIndex}`) as HTMLInputElement
     if (labelInputRef && labelInputRef.value) legendsItem = labelInputRef.value
     legends.push(legendsItem)

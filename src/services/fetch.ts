@@ -1,3 +1,5 @@
+import { t } from '@/i18n'
+
 const request = async (url: string, options: RequestInit): Promise<Response> => {
   const response = await fetch(url, {
     headers: {
@@ -19,7 +21,7 @@ const request = async (url: string, options: RequestInit): Promise<Response> => 
       return jsonResponse
     } 
     catch (err) {
-      throw new Error('服务器返回了非流响应')
+      throw new Error(t('Commons.text.text_ewqxxu'))
     }
   }
 

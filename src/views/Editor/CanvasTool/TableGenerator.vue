@@ -1,8 +1,8 @@
 <template>
   <div class="table-generator">
     <div class="title">
-      <div class="lef">表格 {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
-      <div class="right" @click="isCustom = !isCustom">{{ isCustom ? '返回' : '自定义'}}</div>
+      <div class="lef">{{ $t('Commons.text.text_nrv8') }} {{endCell.length ? `${endCell[0]} x ${endCell[1]}` : ''}}</div>
+      <div class="right" @click="isCustom = !isCustom">{{ isCustom ? $t('Commons.text.text_oxvu') : $t('Commons.button.text_jh1ll') }}</div>
     </div>
     <table 
       @mouseleave="endCell = []" 
@@ -53,6 +53,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { t } from '@/i18n'
 import message from '@/utils/message'
 import Button from '@/components/Button.vue'
 import NumberInput from '@/components/NumberInput.vue'
@@ -79,8 +80,8 @@ const handleClickTable = () => {
 }
 
 const insertCustomTable = () => {
-  if (customRow.value < 1 || customRow.value > 20) return message.warning('行数/列数必须在0~20之间！')
-  if (customCol.value < 1 || customCol.value > 20) return message.warning('行数/列数必须在0~20之间！')
+  if (customRow.value < 1 || customRow.value > 20) return message.warning(t('Commons.text.text_3f0gci'))
+  if (customCol.value < 1 || customCol.value > 20) return message.warning(t('Commons.text.text_3f0gci'))
   emit('insert', { row: customRow.value, col: customCol.value })
   isCustom.value = false
 }

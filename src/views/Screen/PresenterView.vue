@@ -9,7 +9,7 @@
       <div class="tool-btn" @click="() => fullscreenState ? manualExitFullscreen() : enterFullscreen()">
         <i-icon-park-outline:off-screen-one class="tool-icon" v-if="fullscreenState" />
         <i-icon-park-outline:full-screen-one class="tool-icon" v-else />
-        <span>{{ fullscreenState ? $t('Commons.text.text_ii96jl') : '全屏' }}</span>
+        <span>{{ fullscreenState ? $t('Commons.text.text_ii96jl') : $t('Commons.text.text_a37e7') }}</span>
       </div>
       <Divider class="divider" />
       <div class="tool-btn" @click="exitScreening()"><i-icon-park-outline:power class="tool-icon" /><span>{{ $t('Commons.text.text_gfhtvy', {}) }}</span></div>
@@ -68,7 +68,7 @@
         <span>{{ $t('Commons.text.text_qa2y7c', {}) }}</span>
         <span>P {{slideIndex + 1}} / {{slides.length}}</span>
       </div>
-      <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || '无备注'"></div>
+      <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || $t('Commons.text.text_189a2a1')"></div>
       <div class="remark-scale">
         <div :class="['scale-btn', { 'disable': remarkFontSize === 12 }]" @click="setRemarkFontSize(remarkFontSize - 2)"><i-icon-park-outline:minus class="icon" /></div>
         <div :class="['scale-btn', { 'disable': remarkFontSize === 40 }]" @click="setRemarkFontSize(remarkFontSize + 2)"><i-icon-park-outline:plus class="icon" /></div>

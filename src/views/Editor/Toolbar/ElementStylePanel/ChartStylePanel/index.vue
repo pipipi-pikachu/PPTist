@@ -12,13 +12,13 @@
           @update:value="value => updateOptions({ stack: value })" 
           :value="stack"
           style="flex: 2;"
-        >堆叠样式</Checkbox>
+        >{{ $t('Commons.text.text_294b3bd2') }}</Checkbox>
         <Checkbox 
           v-if="handleChartElement.chartType === 'line'"
           @update:value="value => updateOptions({ lineSmooth: value })" 
           :value="lineSmooth"
           style="flex: 3;"
-        >使用平滑曲线</Checkbox>
+        >{{ $t('Commons.text.text_471e4654') }}</Checkbox>
       </div>
   
       <Divider />

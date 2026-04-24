@@ -20,7 +20,7 @@
         :value="lineHeight || 1"
         @update:value="value => updateText({ lineHeight: value as number })"
         :options="lineHeightOptions.map(item => ({
-          label: item + '倍', value: item
+          label: item + 'x', value: item
         }))"
       >
         <template #icon>
@@ -137,7 +137,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文[小]',
+    label: t('Commons.text.text_177956c5'),
     style: {
       fontSize: '18px',
     },

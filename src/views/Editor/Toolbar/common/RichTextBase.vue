@@ -5,7 +5,7 @@
         style="width: 60%;"
         :value="richTextAttrs.fontname"
         search
-        searchLabel="搜索字体"
+        :searchLabel="$t('Commons.text.text_d5bwf6')"
         autofocus
         @update:value="value => emitRichTextCommand('fontname', value as string)"
         :options="FONTS"
@@ -18,7 +18,7 @@
         style="width: 40%;"
         :value="richTextAttrs.fontsize"
         search
-        searchLabel="搜索字号"
+        :searchLabel="$t('Commons.text.text_d5bxc6')"
         autofocus
         @update:value="value => emitRichTextCommand('fontsize', value as string)"
         :options="fontSizeOptions.map(item => ({

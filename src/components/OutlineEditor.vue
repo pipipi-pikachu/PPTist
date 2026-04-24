@@ -198,7 +198,7 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     return [
       {
         text: t('Commons.text.text_ed8ll6'),
-        handler: () => addItem(id, 'next', '新的一章'),
+        handler: () => addItem(id, 'next', t('Commons.text.text_dbgxx0')),
       },
     ]
   }
@@ -206,11 +206,11 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     return [
       {
         text: t('Commons.text.text_9oj4zt'),
-        handler: () => addItem(id, 'prev', '新的一章'),
+        handler: () => addItem(id, 'prev', t('Commons.text.text_dbgxx0')),
       },
       {
         text: t('Commons.text.text_ed9wbs'),
-        handler: () => addItem(id, 'next', '新的一节'),
+        handler: () => addItem(id, 'next', t('Commons.text.text_dbgzfa')),
       },
       {
         text: t('Commons.text.text_azgabk'),
@@ -222,11 +222,11 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     return [
       {
         text: t('Commons.text.text_9ohu97'),
-        handler: () => addItem(id, 'prev', '新的一节'),
+        handler: () => addItem(id, 'prev', t('Commons.text.text_dbgzfa')),
       },
       {
         text: t('Commons.text.text_eddmtt'),
-        handler: () => addItem(id, 'next', '新的一项'),
+        handler: () => addItem(id, 'next', t('Commons.text.text_dbh3rh')),
       },
       {
         text: t('Commons.text.text_azgbtu'),
@@ -237,11 +237,11 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
   return [
     {
       text: t('Commons.text.text_9oe3r6'),
-      handler: () => addItem(id, 'prev', '新的一项'),
+      handler: () => addItem(id, 'prev', t('Commons.text.text_dbh3rh')),
     },
     {
       text: t('Commons.text.text_vmv1of'),
-      handler: () => addItem(id, 'next', '新的一项'),
+      handler: () => addItem(id, 'next', t('Commons.text.text_dbh3rh')),
     },
     {
       text: t('Commons.text.text_azgg61'),
@@ -336,13 +336,13 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
     }
   }
   .item.lv-1 .flag::after {
-    content: '主题';
+    content: 'Topic';
   }
   .item.lv-2 .flag::after {
-    content: '章';
+    content: 'Ch';
   }
   .item.lv-3 .flag::after {
-    content: '节';
+    content: 'Sec';
   }
   .item.lv-4 .flag::after {
     opacity: 0;

@@ -77,7 +77,7 @@
       <div class="icons icons-right">
         <div class="speed">
           <div class="icon speed-icon">
-            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">{{playbackRate === 1 ? '倍速' : (playbackRate + 'x')}}</span>
+            <span class="icon-content" @click="speedMenuVisible = !speedMenuVisible">{{playbackRate === 1 ? $t('Commons.text.text_eenm') : (playbackRate + 'x')}}</span>
             <div class="speed-menu" v-if="speedMenuVisible" @mouseleave="speedMenuVisible = false">
               <div 
                 class="speed-menu-item" 
@@ -91,7 +91,7 @@
         </div>
         <div class="loop" @click="toggleLoop()">
           <div class="icon loop-icon" :class="{ 'active': loop }">
-            <span class="icon-content">循环{{loop ? '开' : '关'}}</span>
+            <span class="icon-content">{{ $t('Commons.text.text_gwn9') }}{{ loop ? $t('Commons.text.text_irk') : $t('Commons.text.text_g37') }}</span>
           </div>
         </div>
       </div>

@@ -47,7 +47,7 @@
               v-if="editingSectionId === element?.sectionTag?.id || (index === 0 && editingSectionId === 'default')"
             >
             <span class="text" v-else>
-              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || $t('Commons.text.text_dajxap')) : '默认节' }}</div>
+              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || $t('Commons.text.text_dajxap')) : $t('Commons.text.text_265b436') }}</div>
             </span>
           </div>
           <div
@@ -69,7 +69,7 @@
       </template>
     </Draggable>
 
-    <div class="page-number">幻灯片 {{slideIndex + 1}} / {{slides.length}}</div>
+    <div class="page-number">{{ $t('Commons.text.text_edy0j') }} {{slideIndex + 1}} / {{slides.length}}</div>
   </div>
 </template>
 

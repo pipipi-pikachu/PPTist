@@ -7,9 +7,9 @@
         :value="background.type" 
         @update:value="value => updateBackgroundType(value as 'gradient' | 'image' | 'solid')"
         :options="[
-          { label: '纯色填充', value: 'solid' },
-          { label: '图片填充', value: 'image' },
-          { label: '渐变填充', value: 'gradient' },
+          { label: $t('Commons.text.text_girb4t'), value: 'solid' },
+          { label: $t('Commons.text.text_bg60ar'), value: 'image' },
+          { label: $t('Commons.text.text_e8gnpe'), value: 'gradient' },
         ]"
       />
       <div style="width: 10px;"></div>
@@ -31,8 +31,8 @@
         v-else-if="background.type === 'image'"
         :options="[
           { label: $t('Commons.text.text_m6np'), value: 'contain' },
-          { label: '拼贴', value: 'repeat' },
-          { label: '缩放铺满', value: 'cover' },
+          { label: $t('Commons.text.text_hm0o'), value: 'repeat' },
+          { label: $t('Commons.text.text_ggxonw'), value: 'cover' },
         ]"
       />
 
@@ -42,8 +42,8 @@
         @update:value="value => updateGradientBackground({ type: value as GradientType })"
         v-else
         :options="[
-          { label: '线性渐变', value: 'linear' },
-          { label: '径向渐变', value: 'radial' },
+          { label: $t('Commons.text.text_ge4e8g'), value: 'linear' },
+          { label: $t('Commons.text.text_cejnv9'), value: 'radial' },
         ]"
       />
     </div>
@@ -104,17 +104,17 @@
         :value="viewportRatio" 
         @update:value="value => updateViewportRatio(value as number)"
         :options="[
-          { label: '宽屏 16 : 9', value: 0.5625 },
-          { label: '宽屏 16 : 10', value: 0.625 },
-          { label: '标准 4 : 3', value: 0.75 },
-          { label: '纸张 A3 / A4', value: 0.70710678 },
-          { label: '竖向 A3 / A4', value: 1.41421356 },
+          { label: $t('Commons.text.text_jyyzne'), value: 0.5625 },
+          { label: $t('Commons.text.text_k5vshe'), value: 0.625 },
+          { label: $t('Commons.text.text_lkg2zk'), value: 0.75 },
+          { label: $t('Commons.text.text_tvoda2'), value: 0.70710678 },
+          { label: $t('Commons.text.text_jcp6ml'), value: 1.41421356 },
         ]"
       />
     </div>
 
     <div class="row">
-      <div class="canvas-size">画布尺寸：{{  viewportSize  }} × {{ toFixed(viewportSize * viewportRatio) }}</div>
+      <div class="canvas-size">{{ $t('Commons.text.text_qlo4ek') }}{{ viewportSize }} × {{ toFixed(viewportSize * viewportRatio) }}</div>
     </div>
 
     <Divider />
@@ -133,7 +133,7 @@
         style="width: 60%;"
         :value="theme.fontName"
         search
-        searchLabel="搜索字体"
+        :searchLabel="$t('Commons.text.text_d5bwf6')"
         autofocus
         @update:value="value => updateTheme({ fontName: value as string })"
         :options="FONTS"

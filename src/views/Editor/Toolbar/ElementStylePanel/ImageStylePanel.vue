@@ -25,7 +25,7 @@
             </div>
 
             <template v-for="typeItem in ratioClipOptions" :key="typeItem.label">
-              <div class="title" v-if="typeItem.label">按{{typeItem.label}}：</div>
+              <div class="title" v-if="typeItem.label">{{typeItem.label}}:</div>
               <ButtonGroup class="row">
                 <Button 
                   style="flex: 1;"

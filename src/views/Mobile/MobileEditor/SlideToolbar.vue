@@ -31,6 +31,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { t } from '@/i18n'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import useSlideHandler from '@/hooks/useSlideHandler'
@@ -58,7 +59,7 @@ const insertTextElement = () => {
     top: (viewportSize.value * viewportRatio.value - height) / 2,
     width,
     height,
-  }, { content: '<p>新添加文本</p>' })
+  }, { content: `<p>${t('Commons.text.text_33c88906')}</p>` })
 }
 
 const insertImageElement = (files: FileList) => {

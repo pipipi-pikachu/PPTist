@@ -94,9 +94,9 @@
                 @update:value="value => updateElementAnimationTrigger(element.id, value as AnimationTrigger)"
                 style="width: 65%;"
                 :options="[
-                  { label: '主动触发', value: 'click' },
-                  { label: '与上一动画同时', value: 'meantime' },
-                  { label: '上一动画之后', value: 'auto' },
+                  { label: $t('Commons.text.text_a7zho8'), value: 'click' },
+                  { label: $t('Commons.text.text_ocy8lb'), value: 'meantime' },
+                  { label: $t('Commons.text.text_rbb36c'), value: 'auto' },
                 ]"
               />
             </div>
@@ -111,7 +111,7 @@
     <template v-if="animationSequence.length >= 2">
       <Divider />
       <Button @click="runAllAnimation()">
-        <i-icon-park-outline:pause v-if="animateIn" /><i-icon-park-outline:play-one v-else /> {{ animateIn ? $t('Commons.button.text_alcngq') : '预览全部'}}
+        <i-icon-park-outline:pause v-if="animateIn" /><i-icon-park-outline:play-one v-else /> {{ animateIn ? $t('Commons.button.text_alcngq') : $t('Commons.text.text_47640d44')}}
       </Button>
     </template>
   </div>

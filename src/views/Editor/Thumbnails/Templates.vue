@@ -8,7 +8,7 @@
         @click="changeCatalog(item.id)"
       >{{ item.name }}</div>
     </div>
-    <div class="content" v-loading="{ state: loading, text: '加载中...' }">
+    <div class="content" v-loading="{ state: loading, text: $t('Commons.text.text_27k1ha') }">
       <div class="header">
         <div class="types">
           <div class="type" 

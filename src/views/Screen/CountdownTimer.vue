@@ -7,7 +7,7 @@
     :top="top"
   >
     <div class="header">
-      <span class="text-btn" @click="toggle()">{{ inTiming ? '暂停' : '开始'}}</span>
+      <span class="text-btn" @click="toggle()">{{ inTiming ? $t('Commons.text.text_cba1a') : $t('Commons.text.text_bdacb')}}</span>
       <span class="text-btn" @click="reset()">{{ $t('Commons.text.text_phz5', {}) }}</span>
       <span class="text-btn" @click="toggleCountdown()" :class="{ 'active': isCountdown }">{{ $t('Commons.text.text_ceio7', {}) }}</span>
     </div>

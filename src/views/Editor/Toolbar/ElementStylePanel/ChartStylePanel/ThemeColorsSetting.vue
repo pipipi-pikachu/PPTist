@@ -4,7 +4,7 @@
 
     <div class="list">
       <div class="row" v-for="(item, index) in themeColors" :key="index">
-        <div class="label" style="width: 40%;">主题配色{{ index + 1 }}：</div>
+        <div class="label" style="width: 40%;">{{ $t('Commons.text.text_25deb142', { n: index + 1 }) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker

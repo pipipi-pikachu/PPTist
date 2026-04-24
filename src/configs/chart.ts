@@ -1,54 +1,55 @@
+import { t } from '@/i18n'
 import type { ChartData } from '@/types/slides'
 
 export const CHART_TYPE_MAP: Record<string, string> = {
-  'bar': '柱状图',
-  'column': '条形图',
-  'line': '折线图',
-  'area': '面积图',
-  'scatter': '散点图',
-  'pie': '饼图',
-  'ring': '环形图',
-  'radar': '雷达图',
+  'bar': t('Commons.text.text_fs2ih'),
+  'column': t('Commons.text.text_fltdp'),
+  'line': t('Commons.text.text_f1x2v'),
+  'area': t('Commons.text.text_mrgep'),
+  'scatter': t('Commons.text.text_fe9e0'),
+  'pie': t('Commons.text.text_ql1e'),
+  'ring': t('Commons.text.text_hep57'),
+  'radar': t('Commons.text.text_msylz'),
 }
 
 export const CHART_DEFAULT_DATA: Record<string, ChartData> = {
   'bar': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['系列1', '系列2'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.1_2'), t('Commons.text.2_2')],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
   'column': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['系列1', '系列2'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.1_2'), t('Commons.text.2_2')],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
   'line': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['系列1', '系列2'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.1_2'), t('Commons.text.2_2')],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
   'pie': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['值'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.text_fuk')],
     series: [[12, 19, 5, 2, 18]],
   },
   'ring': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['值'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.text_fuk')],
     series: [[12, 19, 5, 2, 18]],
   },
   'area': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['系列1', '系列2'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.1_2'), t('Commons.text.2_2')],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
   'radar': {
-    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
-    legends: ['系列1', '系列2'],
+    labels: [t('Commons.text.1'), t('Commons.text.2'), t('Commons.text.3'), t('Commons.text.4'), t('Commons.text.5')],
+    legends: [t('Commons.text.1_2'), t('Commons.text.2_2')],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },
   'scatter': {
-    labels: ['坐标1', '坐标2', '坐标3', '坐标4', '坐标5'],
+    labels: [t('Commons.text.1_3'), t('Commons.text.2_3'), t('Commons.text.3_2'), t('Commons.text.4_2'), t('Commons.text.5_2')],
     legends: ['X', 'Y'],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
   },

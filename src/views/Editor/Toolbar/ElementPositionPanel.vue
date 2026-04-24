@@ -68,7 +68,7 @@
           </template>
         </NumberInput>
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
-          <span style="width: 10%;" class="icon-btn" :class="{ 'active': fixedRatio }" v-tooltip="fixedRatio ? '解除宽高比锁定' : '宽高比锁定'" @click="updateFixedRatio(!fixedRatio)">
+          <span style="width: 10%;" class="icon-btn" :class="{ 'active': fixedRatio }" v-tooltip="fixedRatio ? $t('Commons.text.text_5m2ilt') : $t('Commons.text.text_nj1gj6')" @click="updateFixedRatio(!fixedRatio)">
             <i-icon-park-outline:lock v-if="fixedRatio" />
             <i-icon-park-outline:unlock v-else />
           </span>

@@ -143,7 +143,7 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: props.openLinkDialog,
     },
     {
-      text: props.elementInfo.groupId ? '取消组合' : '组合',
+      text: props.elementInfo.groupId ? t('Commons.button.text_b1blbq') : t('Commons.button.text_m0uc'),
       subText: 'Ctrl + G',
       handler: props.elementInfo.groupId ? uncombineElements : combineElements,
       hide: !props.isMultiSelect,

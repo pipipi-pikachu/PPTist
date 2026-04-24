@@ -13,7 +13,7 @@
     :title="$t('Views.Editor.title.pexels_com')" 
     @close="close()"
   >
-    <div class="container" v-loading="{ state: loading, text: '加载中...' }">
+    <div class="container" v-loading="{ state: loading, text: $t('Commons.text.text_27k1ha') }">
       <div class="tools">
         <Input class="input" v-model:value="searchWord" :placeholder="$t('Commons.placeholder.text_d5bcpb')" @enter="search()">
           <template #prefix>
@@ -103,10 +103,10 @@ const orientationOptions: {
   { key: 'square', label: t('Commons.text.text_htqh') },
 ]
 const orientationMap: Record<string, string> = {
-  'all': '全部',
-  'landscape': '横向',
-  'portrait': '纵向',
-  'square': '方形',
+  'all': t('Commons.button.text_en40'),
+  'landscape': t('Commons.text.text_iip3'),
+  'portrait': t('Commons.text.text_m0ho'),
+  'square': t('Commons.text.text_htqh'),
 }
 
 const close = () => {
@@ -114,7 +114,7 @@ const close = () => {
 }
 
 onMounted(() => {
-  search('风景')
+  search(t('Commons.text.text_qjxd'))
 })
 
 const search = (q?: string) => {  
@@ -154,7 +154,7 @@ const loadMore = () => {
   page.value += 1
 
   api.searchImage({
-    query: searchWord.value || '风景',
+    query: searchWord.value || t('Commons.text.text_qjxd'),
     per_page: perPage.value,
     page: page.value,
     orientation: orientation.value,

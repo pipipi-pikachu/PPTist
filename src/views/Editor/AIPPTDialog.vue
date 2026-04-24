@@ -32,8 +32,8 @@
             v-model:value="language"
             :options="[
               { label: $t('Commons.text.text_dure'), value: $t('Commons.text.text_dure') },
-              { label: '英文', value: 'English' },
-              { label: '日文', value: '日本語' },
+              { label: $t('Commons.text.text_mtva'), value: 'English' },
+              { label: $t('Commons.text.text_hw02'), value: '日本語' },
             ]"
           />
         </div>
@@ -45,10 +45,10 @@
             v-model:value="style"
             :options="[
               { label: $t('Commons.text.text_p5ji'), value: $t('Commons.text.text_p5ji') },
-              { label: '学术风', value: '学术风' },
-              { label: '职场风', value: '职场风' },
-              { label: '教育风', value: '教育风' },
-              { label: '营销风', value: '营销风' },
+              { label: $t('Commons.text.text_dwbxh'), value: '学术风' },
+              { label: $t('Commons.text.text_j86jk'), value: '职场风' },
+              { label: $t('Commons.text.text_fh4s5'), value: '教育风' },
+              { label: $t('Commons.text.text_k2z77'), value: '营销风' },
             ]"
           />
         </div>
@@ -72,9 +72,9 @@
             v-model:value="img"
             :options="[
               { label: $t('Commons.label.text_k4g'), value: '' },
-              { label: '模拟测试', value: 'test' },
-              { label: 'AI搜图', value: 'ai-search', disabled: true },
-              { label: 'AI生图', value: 'ai-create', disabled: true },
+              { label: $t('Commons.text.text_dswrwo'), value: 'test' },
+              { label: $t('Commons.text.text_1oih6'), value: 'ai-search', disabled: true },
+              { label: $t('Commons.text.text_1renb'), value: 'ai-create', disabled: true },
             ]"
           />
         </div>
@@ -158,16 +158,16 @@ const outlineRef = useTemplateRef<HTMLElement>('outlineRef')
 const inputRef = useTemplateRef<InstanceType<typeof Input>>('inputRef')
 
 const recommends = ref([
-  '2025科技前沿动态',
-  '大数据如何改变世界',
-  '餐饮市场调查与研究',
-  'AIGC在教育领域的应用',
-  '社交媒体与品牌营销',
-  '5G技术如何改变我们的生活',
-  '年度工作总结与展望',
-  '区块链技术及其应用',
-  '大学生职业生涯规划',
-  '公司年会策划方案',
+  t('Commons.text.text_e4udtn'),
+  t('Commons.text.text_juu9xv'),
+  t('Commons.text.text_57o0uw'),
+  t('Commons.text.text_87broi'),
+  t('Commons.text.text_nsulnx'),
+  t('Commons.text.text_e7c3de'),
+  t('Commons.text.text_ifzhw3'),
+  t('Commons.text.text_7yghio'),
+  t('Commons.text.text_8a4z2s'),
+  t('Commons.text.text_jzvp9f'),
 ]) 
 
 onMounted(() => {
