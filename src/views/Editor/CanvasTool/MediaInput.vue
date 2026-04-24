@@ -20,14 +20,14 @@
     </template>
 
     <template v-if="type === 'audio'">
-      <Input v-model:value="audioSrc" placeholder="请输入音频地址，e.g. https://xxx.mp3"></Input>
+      <Input v-model:value="audioSrc" :placeholder="$t('Views.Editor.CanvasTool.placeholder.e_g_https_xxx_2')"></Input>
       <div class="btns">
         <FileInput accept="audio/*" @change="files => uploadAudio(files)">
-          <Button><i-icon-park-outline:upload /> 上传本地音频</Button>
+          <Button><i-icon-park-outline:upload /> {{ $t('Commons.button.text_kfubl4', {}) }}</Button>
         </FileInput>
         <div class="group">
-          <Button @click="emit('close')" style="margin-right: 10px;">取消</Button>
-          <Button type="primary" @click="insertAudio()">确认</Button>
+          <Button @click="emit('close')" style="margin-right: 10px;">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+          <Button type="primary" @click="insertAudio()">{{ $t('Commons.button.text_l912', {}) }}</Button>
         </div>
       </div>
     </template>
@@ -67,12 +67,12 @@ const tabs: TabItem[] = [
 ]
 
 const insertVideo = () => {
-  if (!videoSrc.value) return message.error('请先输入正确的视频地址')
+  if (!videoSrc.value) return message.error(t('Commons.text.text_oalsup'))
   emit('insertVideo', { src: videoSrc.value })
 }
 
 const insertAudio = () => {
-  if (!audioSrc.value) return message.error('请先输入正确的音频地址')
+  if (!audioSrc.value) return message.error(t('Commons.text.text_q2z090'))
   emit('insertAudio', { src: audioSrc.value })
 }
 

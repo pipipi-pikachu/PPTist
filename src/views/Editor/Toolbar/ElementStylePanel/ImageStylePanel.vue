@@ -42,7 +42,7 @@
     </ButtonGroup>
     
     <div class="row">
-      <div style="width: 40%;">圆角半径：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_2u9i38', {}) }}</div>
       <NumberInput 
         :value="handleImageElement.radius || 0" 
         @update:value="value => updateImage({ radius: value })" 
@@ -61,10 +61,10 @@
     <Divider />
     
     <FileInput @change="files => replaceImage(files)">
-      <Button class="full-width-btn"><i-icon-park-outline:transform /> 替换图片</Button>
+      <Button class="full-width-btn"><i-icon-park-outline:transform /> {{ $t('Commons.button.text_denfyk', {}) }}</Button>
     </FileInput>
-    <Button class="full-width-btn" @click="resetImage()"><i-icon-park-outline:undo /> 重置样式</Button>
-    <Button class="full-width-btn" @click="setBackgroundImage()"><i-icon-park-outline:theme /> 设为背景</Button>
+    <Button class="full-width-btn" @click="resetImage()"><i-icon-park-outline:undo /> {{ $t('Commons.button.text_ix73y1', {}) }}</Button>
+    <Button class="full-width-btn" @click="setBackgroundImage()"><i-icon-park-outline:theme /> {{ $t('Commons.button.text_hylj6n', {}) }}</Button>
   </div>
 </template>
 

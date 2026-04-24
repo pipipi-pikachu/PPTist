@@ -29,7 +29,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">段间距：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_e7q9ks', {}) }}</div>
       <Select style="width: 60%;"
         :value="paragraphSpace || 0"
         @update:value="value => updateText({ paragraphSpace: value as number })"
@@ -43,7 +43,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">字间距：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_c5euje', {}) }}</div>
       <Select style="width: 60%;"
         :value="wordSpace || 0"
         @update:value="value => updateText({ wordSpace: value as number })"
@@ -57,7 +57,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">文本框填充：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_8g5gdb', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker

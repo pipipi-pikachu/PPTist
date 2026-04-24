@@ -41,13 +41,13 @@
               :id="`section-title-input-${element?.sectionTag?.id || 'default'}`" 
               type="text"
               :value="element?.sectionTag?.title || ''"
-              placeholder="输入节名称"
+              :placeholder="$t('Commons.placeholder.text_3xlno3')"
               @blur="$event => saveSection($event)"
               @keydown.enter.stop="$event => saveSection($event)"
               v-if="editingSectionId === element?.sectionTag?.id || (index === 0 && editingSectionId === 'default')"
             >
             <span class="text" v-else>
-              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || '无标题节') : '默认节' }}</div>
+              <div class="text-content">{{ element?.sectionTag ? (element?.sectionTag?.title || $t('Commons.text.text_dajxap')) : '默认节' }}</div>
             </span>
           </div>
           <div

@@ -75,24 +75,24 @@
 
     <div class="right">
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'幻灯片放映（F5）'" @click="enterScreening()">
+        <div class="menu-item" v-tooltip="$t('Commons.text.f5')" @click="enterScreening()">
           <i-icon-park-outline:ppt class="icon" />
         </div>
         <Popover trigger="click" center>
           <template #content>
-            <PopoverMenuItem class="popover-menu-item" @click="enterScreeningFromStart()"><i-icon-park-outline:slide-two class="icon" /> 从头开始</PopoverMenuItem>
-            <PopoverMenuItem class="popover-menu-item" @click="enterScreening()"><i-icon-park-outline:ppt class="icon" /> 从当前页开始</PopoverMenuItem>
+            <PopoverMenuItem class="popover-menu-item" @click="enterScreeningFromStart()"><i-icon-park-outline:slide-two class="icon" /> {{ $t('Commons.text.text_abcm0h', {}) }}</PopoverMenuItem>
+            <PopoverMenuItem class="popover-menu-item" @click="enterScreening()"><i-icon-park-outline:ppt class="icon" /> {{ $t('Commons.text.text_8qj7oo', {}) }}</PopoverMenuItem>
           </template>
           <div class="arrow-btn"><i-icon-park-outline:down class="arrow" /></div>
         </Popover>
       </div>
-      <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+      <div class="menu-item" v-tooltip="$t('Commons.text.aippt')" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
       </div>
-      <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
+      <div class="menu-item" v-tooltip="$t('Commons.text.text_g3ge')" @click="setDialogForExport('pptx')">
         <i-icon-park-outline:download class="icon" />
       </div>
-      <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
+      <a class="github-link" v-tooltip="$t('Views.Editor.EditorHeader.Index.text.copyright_2020_present_pipipi')" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
         <div class="menu-item"><i-icon-park-outline:github class="icon" /></div>
       </a>
     </div>
@@ -103,10 +103,10 @@
       placement="right"
     >
       <HotkeyDoc />
-      <template v-slot:title>快捷操作</template>
+      <template v-slot:title>{{ $t('Commons.text.text_cil0yj', {}) }}</template>
     </Drawer>
 
-    <FullscreenSpin :loading="exporting" tip="正在导入..." />
+    <FullscreenSpin :loading="exporting" :tip="$t('Views.Editor.EditorHeader.Index.text.text_qxuuqo')" />
   </div>
 </template>
 

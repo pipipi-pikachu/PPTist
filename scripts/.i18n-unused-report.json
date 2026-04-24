@@ -1,0 +1,2131 @@
+{
+  "generatedAt": "2026-04-24T06:31:19.843Z",
+  "baseLocale": "zh",
+  "autoDir": "src/locales",
+  "unused": [
+    {
+      "keyPath": "Commons.button.text_5dzt5y",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_ac4kza",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_alcngq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_avd03n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_bw0ld",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_bw1c2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_defp4x",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_denfyk",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_e7w1g8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_edznpv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_elgbao",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_frr1x1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_hfbn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_hylj6n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_ii8dpx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_il0hha",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_ix73y1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_jt3pl0",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_kfubl4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_kgk1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_mg6za1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_mmwqu6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_ogvk",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_qvibb5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_wp14j4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_y1p066",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.button.text_yj1ns8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.placeholder.text_3xlno3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.placeholder.text_7cyb19",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.placeholder.text_njfdrr",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2025",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.1_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.1_3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.1_4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2_3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2_4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.2_5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.3_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.3_3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.3d",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.3d_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.4_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.5_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.5g",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.aigc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.all",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.api",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.arial",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.back",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.backcolor",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.background",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.background_clip",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.background_color",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.backspace",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.backspace_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.backspace_3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.caret",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.clear",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.close",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.closed",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.copy",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.created",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.delete",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.delete_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.directive_loading_text",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.editable",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.editor",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.emoji",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.enter",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.escape",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.filters",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.inter",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.jetbrains_mono",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.json",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.literata",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.load",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.loadedmetadata",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.loading",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.lxgwwenkai",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.merriweather",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.microsoft_yahei",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.montserrat",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.next",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.no_repeat",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.none",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.none_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.normal",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.notes",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.open_sans",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.other",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.paragraph_block",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.paste",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.pl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.pl_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.player",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.ppt_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.pptist",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.pptx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.roboto",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.save",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.search",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.start",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.tab",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1d5wti",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1dbk0n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1dppev",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1dvcm0",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1mu426",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1mu46b",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1ndwnj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1ndwro",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_1v2ugg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_20rom",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_2d3cjk",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_2u9i38",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_2w4dl8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_34hwbr",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_34psxh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_35pm0c",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_3mn4t4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_3zymxg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4i2gq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4n9vgz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4nfhs9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4nto2c",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4nzadm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_4t0c97",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_53jkcl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_57o0uw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_5q14vm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_5wex6i",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_74kmkt",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7dqgwu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7dx8qp",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7dx8uu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7ek64j",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7huu9j",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7tpdju",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_7yghio",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_84v5hs",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_89wn61",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8a4z2s",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8g5gdb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8qj7oo",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8w5hns",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8wb4ux",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_8zripj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_98oxg4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9f4wxc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9mae46",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9maeuv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9maf46",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9mafuv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_9orwvh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a029cz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a1bh5t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a686rw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a69kv1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a69kyc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a6d3a7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_a894s7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aanjvd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aanjzi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aaupd8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aauphd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_abcm0h",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ac40i4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ac40m9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_acb5zz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_acb644",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_acuohx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_afnx3b",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aj48g2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_albjeq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_alwcdw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_anjfdh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_arsl64",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_avgppf",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_avgqg4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_avgqpf",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_avgrg4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aw9as8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axltt1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axltx6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axlujq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axlunv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axo8sw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axo8x1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axo9jl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axo9nq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axohal",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axoheq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axoi1a",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_axoi5f",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aygzpq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_aygztv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ayjepl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ayjetq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_azxgch",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_azxggm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_azzvcc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_azzvgh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_b1blbq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bgh13m",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bi14f6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_biqejw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bj7l4q",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bjwox1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bs7ran",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_btlof",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_btmf4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bu69k",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bvakb2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_by3nrb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_by46j6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bz6lh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_bz6x8n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c0x82f",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c1athe",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c3fyx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c3if3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c3j5s",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c45x0k",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c4bnw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c5euje",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c69gb9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c6f2mj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c73qoo",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c754rt",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c754v4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c7b6l",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c8jdx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_c8roc8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cdfts4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ceezdg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ceqkrh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cl1w8r",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cldc6t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cma9g",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cmbqu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cmc9w",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cmjpyg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_co6uwd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cp2ijh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_cr6i2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d5ao7x",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d5btzl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d5f45t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d5gaj7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d6nass",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_d8qbgg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dajxap",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dbgxx0",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dbgzfa",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dbh3rh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dbxj4q",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dcdjtx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_df25k",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dfwhij",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dfwiij",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dhcdg3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dn0qqj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dx8dt",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dxemn9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dxweyw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_dykekn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e07bl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e1la4n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e25vbq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e5qg57",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e7ddy5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e7n4t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e7q9ks",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_e97vf2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_eae8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ecpz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ed78s9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_edb2pl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_edcz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_edgm8p",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ee5pj9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_eenm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_egv1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_egwet8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ehf95",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ehtg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ekc8nk",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_emxt",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_en40",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_eslg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ewqxxu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_f07iad",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_f1x2v",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_f2dqm6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_f9in",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fb098e",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fbq4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fdh0h",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fe9e0",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fjmy",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fljd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fltdp",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fmjp5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fqji7p",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fs2ih",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fz8jf",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_fzwls",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_g2mj47",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_g3xjfa",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_g5sou",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_g7l4bb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gc0mz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gc260",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gfelzj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gffrn2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gfk96o",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ggs6xp",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gn64",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gna9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gngr",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gqho9s",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gubcw",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_guqc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gvo0th",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gwactn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gwbk9g",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gwenag",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gwh5n5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gz4q",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gzbej4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_gzpi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_h6q8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hep57",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hici",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hj7bp3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hjnx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hn9b0v",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hpqe",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_huilpu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_huit",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hvkq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_hxp8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i012",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i23r",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i2bn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i2gp47",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i2lb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i3nl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_i7bc6a",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ibv7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_if77n",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ifzhw3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ihzkvg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_iicly4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ik6rso",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ior6ln",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ivx7v",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j0cimf",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j171",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j25z",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j2a4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j4j0b",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j5x7km",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_j8xu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jano",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jart",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jedfe",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jh1ll",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jo1frx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jputzi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jqdp3o",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jrkmnb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jtg9fy",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_juu9xv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jxbs",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jy901u",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jydnp6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jyemd4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_jzvp9f",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_k564gf",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_k80vht",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ki6kea",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_kjnr6z",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_kkz8bm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_km5960",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_kn3dzn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_kx3t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_l6p53",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_leoh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lixz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lkdn4r",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lkdnvg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lknd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lks2so",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lqd49",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lqho43",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lw8y",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_lyu4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_m0uc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_m4jm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_m5hk",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_m6np",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mafgg0",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mej254",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mhwm",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mk0h",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mmyrh7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mp078z",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mrgep",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_msylz",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mwv58",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mxhvi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_mys1",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_n39a4y",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_n5zik",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_n8cxtg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_n8il0l",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_nbn7fq",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_nqe5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_nrv8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_nsulnx",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ny1py",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_oalsup",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ofxe6m",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_ohno3d",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_opkc51",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_oqqttj",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_oqqtxo",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_oxvu",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_p27zbc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_p5ji",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_pjg1i4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_po3q1x",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_puih",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_q2z090",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_q49j",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qg5j",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qg9o",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qjxd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qlv6dn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qmp6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qw4gwv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_qwya1i",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_rtw5pi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_shg7wb",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_sju1rn",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_sxb4ry",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_sxkl8x",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_te10ex",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_tf3js8",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_uecxnd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_uhrbis",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_upf4ot",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_utztpy",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_vpbhu3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_vpts2m",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_wfjx2t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_wj3dva",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_wset0p",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_wsy7m2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_x0509h",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_xac2xv",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_xeuxyi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_xv4lol",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_xwkjhg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_y11tgr",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yurfpd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yurfti",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yurgg2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yurgk7",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yx69to",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yx69xt",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yx6akd",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_yx6aoi",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.text_zhqtc9",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update_height",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update_index",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update_modelvalue",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update_value",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.update_visible",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.value",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.x",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.x_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.y",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Commons.text.y_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Components.ColorPicker.Index.text.esc",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Font.text.source_sans_pro",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_3",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_4",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_5",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_6",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.ctrl_shift",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.enter_space",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.markdown",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.pexels",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.pgdown",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.pgdown_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.pgup",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.pgup_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.space",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.svg",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.t",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.text_2j3m81",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.text_60jfmh",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.text_d1004e",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.text_fb740d",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Configs.Hotkey.text.text_nji20m",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Directive.Loading.text.directive_loading_overlay",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Directive.Loading.text.directive_loading_overlay_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Directive.Loading.text.loading_scss",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Hooks.UseImport.text.text_y62y8h",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Services.Axios.text.text_2jwcao",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Utils.Common.text.digit_len",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.height_height_value",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.top_height_value",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.width_width_value",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Canvas.text.esc_enter",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.CanvasTool.placeholder.e_g_https_xxx_2",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.ExportDialog.text.text_ok82ly",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.height_height",
+      "baseFileRel": "zh.json"
+    },
+    {
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.width_width",
+      "baseFileRel": "zh.json"
+    }
+  ]
+}

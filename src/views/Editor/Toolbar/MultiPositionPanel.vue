@@ -1,14 +1,14 @@
 <template>
   <div class="multi-position-panel">
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'左对齐'" @click="alignElement(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left /></Button>
-      <Button style="flex: 1;" v-tooltip="'水平居中'" @click="alignElement(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-horizontally /></Button>
-      <Button style="flex: 1;" v-tooltip="'右对齐'" @click="alignElement(ElementAlignCommands.RIGHT)"><i-icon-park-outline:align-right /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_e7n4t')" @click="alignElement(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_e1la4n')" @click="alignElement(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-horizontally /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_cr6i2')" @click="alignElement(ElementAlignCommands.RIGHT)"><i-icon-park-outline:align-right /></Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'上对齐'" @click="alignElement(ElementAlignCommands.TOP)"><i-icon-park-outline:align-top /></Button>
-      <Button style="flex: 1;" v-tooltip="'垂直居中'" @click="alignElement(ElementAlignCommands.VERTICAL)"><i-icon-park-outline:align-vertically /></Button>
-      <Button style="flex: 1;" v-tooltip="'下对齐'" @click="alignElement(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bw0ld')" @click="alignElement(ElementAlignCommands.TOP)"><i-icon-park-outline:align-top /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bj7l4q')" @click="alignElement(ElementAlignCommands.VERTICAL)"><i-icon-park-outline:align-vertically /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bw1c2')" @click="alignElement(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom /></Button>
     </ButtonGroup>
     <ButtonGroup class="row" v-if="displayItemCount > 2">
       <Button style="flex: 1;" @click="uniformHorizontalDisplay()">{{ $t('Commons.button.text_4tw5', {}) }}</Button>

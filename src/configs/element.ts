@@ -2,14 +2,14 @@ import { t } from '@/i18n';
 
 export const ELEMENT_TYPE_ZH: Record<string, string> = {
   text: t('Commons.text.text_hu2t'),
-  image: '图片',
-  shape: '形状',
-  line: '线条',
-  chart: '图表',
-  table: '表格',
-  video: '视频',
-  audio: '音频',
-  latex: '公式',
+  image: t('Commons.text.text_ff9l'),
+  shape: t('Commons.text.text_guqc'),
+  line: t('Commons.text.text_m4jm'),
+  chart: t('Commons.text.text_fjmy'),
+  table: t('Commons.text.text_nrv8'),
+  video: t('Commons.text.text_o9sb'),
+  audio: t('Commons.text.text_qola'),
+  latex: t('Commons.text.text_edcz'),
 }
 
 export const MIN_SIZE: Record<string, number> = {

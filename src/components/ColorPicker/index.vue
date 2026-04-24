@@ -89,6 +89,7 @@ import Checkboard from './Checkboard.vue'
 import Hue from './Hue.vue'
 import Saturation from './Saturation.vue'
 import EditableInput from './EditableInput.vue'
+import { t } from '@/i18n';
 
 const props = withDefaults(defineProps<{
   modelValue?: string
@@ -217,7 +218,7 @@ const openEyeDropper = () => {
 
 // 原生取色吸管
 const browserEyeDropper = () => {
-  message.success('按 ESC 键关闭取色吸管', { duration: 0 })
+  message.success(t('Components.ColorPicker.Index.text.esc'), { duration: 0 })
 
   // eslint-disable-next-line
   const eyeDropper = new (window as any).EyeDropper()
@@ -302,7 +303,7 @@ const customEyeDropper = () => {
     canvasRef.addEventListener('mouseleave', handleMouseleave)
     window.addEventListener('mousedown', handleMousedown)
   }).catch(() => {
-    message.error('取色吸管初始化失败')
+    message.error(t('Commons.text.text_zhqtc9'))
     document.body.removeChild(maskRef)
   })
 }

@@ -49,7 +49,7 @@
         <div class="row">
           <div class="title">{{ $t('Views.Editor.ExportDialog.text.text_10i3c6', {}) }}</div>
           <div class="config-item">
-            <Switch v-model:value="ignoreMedia" v-tooltip="'导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭「忽略音视频」选项，但要注意这将会大幅增加导出用时。'" />
+            <Switch v-model:value="ignoreMedia" v-tooltip="$t('Views.Editor.ExportDialog.text.pptx')" />
           </div>
         </div>
         <div class="row">
@@ -60,16 +60,16 @@
         </div>
 
         <div class="tip" v-if="!ignoreMedia">
-          提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。
+          {{ $t('Views.Editor.ExportDialog.text.1_avimp4movwmvmp3wav_2', {}) }}
         </div>
       </template>
     </div>
     <div class="btns">
       <Button class="btn export" type="primary" @click="execExport()"><i-icon-park-outline:download /> {{$t('Commons.button.pptx')}}</Button>
-      <Button class="btn close" @click="emit('close')">关闭</Button>
+      <Button class="btn close" @click="emit('close')">{{ $t('Commons.button.text_eod6', {}) }}</Button>
     </div>
 
-    <FullscreenSpin :loading="exporting" tip="正在导出..." />
+    <FullscreenSpin :loading="exporting" :tip="$t('Views.Editor.ExportDialog.text.text_qv7pp1')" />
   </div>
 </template>
 

@@ -59,7 +59,7 @@
       <div class="row">
         <div class="title">{{ $t('Commons.text.text_50eb3z', {}) }}</div>
         <div class="config-item">
-          <Switch v-model:value="ignoreWebfont" v-tooltip="'导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭「忽略在线字体」选项，但要注意这将会增加导出用时。'" />
+          <Switch v-model:value="ignoreWebfont" v-tooltip="$t('Views.Editor.ExportDialog.text.text_t6gc54')" />
         </div>
       </div>
     </div>
@@ -69,7 +69,7 @@
       <Button class="btn close" @click="emit('close')">{{ $t('Commons.button.text_eod6', {}) }}</Button>
     </div>
 
-    <FullscreenSpin :loading="exporting" tip="正在导出..." />
+    <FullscreenSpin :loading="exporting" :tip="$t('Views.Editor.ExportDialog.text.text_qv7pp1')" />
   </div>
 </template>
 

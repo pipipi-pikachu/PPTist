@@ -19,7 +19,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">粗细：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_ivx7v', {}) }}</div>
       <NumberInput 
         :min="1"
         :max="3"

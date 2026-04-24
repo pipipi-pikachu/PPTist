@@ -48,7 +48,7 @@
           <div class="img-item">
             <img :src="props.src">
             <div class="mask">
-              <Button type="primary" size="small" @click="createImageElement(props.src)">插入</Button>
+              <Button type="primary" size="small" @click="createImageElement(props.src)">{{ $t('Commons.button.text_hfbn', {}) }}</Button>
             </div>
           </div>
         </template>
@@ -119,7 +119,7 @@ onMounted(() => {
 
 const search = (q?: string) => {  
   const query = q || searchWord.value
-  if (!query) return message.error('请输入搜索关键词')
+  if (!query) return message.error(t('Commons.text.text_7ek64j'))
 
   loading.value = true
   page.value = 1

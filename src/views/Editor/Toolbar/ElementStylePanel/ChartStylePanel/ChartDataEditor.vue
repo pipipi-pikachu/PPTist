@@ -78,13 +78,13 @@
               @click="chartType = item; chartTypeSelectVisible = false"
             >{{CHART_TYPE_MAP[item]}}</PopoverMenuItem>
           </template>
-          <span class="change">点击更换</span>
+          <span class="change">{{ $t('Commons.text.text_ekc8nk', {}) }}</span>
         </Popover>
       </div>
       <div class="right">
-        <Button class="btn" @click="closeEditor()">取消</Button>
-        <Button class="btn" @click="clear()">清空数据</Button>
-        <Button type="primary" class="btn" @click="getTableData()">确认</Button>
+        <Button class="btn" @click="closeEditor()">{{ $t('Commons.button.text_ev02', {}) }}</Button>
+        <Button class="btn" @click="clear()">{{ $t('Commons.button.text_edznpv', {}) }}</Button>
+        <Button type="primary" class="btn" @click="getTableData()">{{ $t('Commons.button.text_l912', {}) }}</Button>
       </div>
     </div>
   </div>

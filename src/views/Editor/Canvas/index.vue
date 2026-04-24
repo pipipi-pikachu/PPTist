@@ -313,22 +313,22 @@ const contextmenus = (): ContextmenuItem[] => {
       handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
       children: [
         {
-          text: '无',
+          text: t('Commons.label.text_k4g'),
           subText: gridLineSize.value === 0 ? '√' : '',
           handler: () => mainStore.setGridLineSize(0),
         },
         {
-          text: '小',
+          text: t('Commons.text.text_i6n'),
           subText: gridLineSize.value === 25 ? '√' : '',
           handler: () => mainStore.setGridLineSize(25),
         },
         {
-          text: '中',
+          text: t('Commons.text.text_ffx'),
           subText: gridLineSize.value === 50 ? '√' : '',
           handler: () => mainStore.setGridLineSize(50),
         },
         {
-          text: '大',
+          text: t('Commons.text.text_hlz'),
           subText: gridLineSize.value === 100 ? '√' : '',
           handler: () => mainStore.setGridLineSize(100),
         },

@@ -12,6 +12,7 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange } from '@/utils/svgPathParser'
+import { t } from '@/i18n';
 import type {
   Slide,
   TableCellStyle,
@@ -218,7 +219,7 @@ export default () => {
         else addSlidesFromData(slides)
       }
       catch {
-        message.error('无法正确读取 / 解析该文件')
+        message.error(t('Hooks.UseImport.text.text_y62y8h'))
       }
     })
     reader.readAsText(file)
@@ -250,7 +251,7 @@ export default () => {
         else addSlidesFromData(slides)
       }
       catch {
-        message.error('无法正确读取 / 解析该文件')
+        message.error(t('Hooks.UseImport.text.text_y62y8h'))
       }
     })
     reader.readAsText(file)
@@ -460,7 +461,7 @@ export default () => {
       }
       catch {
         exporting.value = false
-        message.error('无法正确读取 / 解析该文件')
+        message.error(t('Hooks.UseImport.text.text_y62y8h'))
         return
       }
 

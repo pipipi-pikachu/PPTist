@@ -1,0 +1,813 @@
+{
+  "issueType": "untranslated",
+  "generatedAt": "2026-04-24T10:30:47.459Z",
+  "files": [
+    {
+      "locale": "en",
+      "localeFile": "en.json",
+      "issues": [
+        {
+          "keyPath": "Commons.label.emoji",
+          "english": "Emoji",
+          "current": "Emoji"
+        },
+        {
+          "keyPath": "Commons.label.inter",
+          "english": "Inter",
+          "current": "Inter"
+        },
+        {
+          "keyPath": "Commons.label.jetbrains_mono",
+          "english": "JetBrains Mono",
+          "current": "JetBrains Mono"
+        },
+        {
+          "keyPath": "Commons.label.literata",
+          "english": "Literata",
+          "current": "Literata"
+        },
+        {
+          "keyPath": "Commons.label.merriweather",
+          "english": "Merriweather",
+          "current": "Merriweather"
+        },
+        {
+          "keyPath": "Commons.label.montserrat",
+          "english": "Montserrat",
+          "current": "Montserrat"
+        },
+        {
+          "keyPath": "Commons.label.open_sans",
+          "english": "Open Sans",
+          "current": "Open Sans"
+        },
+        {
+          "keyPath": "Commons.label.roboto",
+          "english": "Roboto",
+          "current": "Roboto"
+        },
+        {
+          "keyPath": "Commons.text.aippt",
+          "english": "AI生成PPT",
+          "current": "AI生成PPT"
+        },
+        {
+          "keyPath": "Commons.text.all",
+          "english": "all",
+          "current": "all"
+        },
+        {
+          "keyPath": "Commons.text.arial",
+          "english": "Arial",
+          "current": "Arial"
+        },
+        {
+          "keyPath": "Commons.text.back",
+          "english": "back",
+          "current": "back"
+        },
+        {
+          "keyPath": "Commons.text.backcolor",
+          "english": "backcolor",
+          "current": "backcolor"
+        },
+        {
+          "keyPath": "Commons.text.background",
+          "english": "background",
+          "current": "background"
+        },
+        {
+          "keyPath": "Commons.text.backspace",
+          "english": "backspace",
+          "current": "backspace"
+        },
+        {
+          "keyPath": "Commons.text.backspace_2",
+          "english": "BACKSPACE",
+          "current": "BACKSPACE"
+        },
+        {
+          "keyPath": "Commons.text.backspace_3",
+          "english": "Backspace",
+          "current": "Backspace"
+        },
+        {
+          "keyPath": "Commons.text.caret",
+          "english": "Caret",
+          "current": "Caret"
+        },
+        {
+          "keyPath": "Commons.text.clear",
+          "english": "clear",
+          "current": "clear"
+        },
+        {
+          "keyPath": "Commons.text.close",
+          "english": "close",
+          "current": "close"
+        },
+        {
+          "keyPath": "Commons.text.closed",
+          "english": "closed",
+          "current": "closed"
+        },
+        {
+          "keyPath": "Commons.text.copy",
+          "english": "copy",
+          "current": "copy"
+        },
+        {
+          "keyPath": "Commons.text.created",
+          "english": "created",
+          "current": "created"
+        },
+        {
+          "keyPath": "Commons.text.delete",
+          "english": "DELETE",
+          "current": "DELETE"
+        },
+        {
+          "keyPath": "Commons.text.delete_2",
+          "english": "Delete",
+          "current": "Delete"
+        },
+        {
+          "keyPath": "Commons.text.editable",
+          "english": "editable",
+          "current": "editable"
+        },
+        {
+          "keyPath": "Commons.text.editor",
+          "english": "editor",
+          "current": "editor"
+        },
+        {
+          "keyPath": "Commons.text.emoji",
+          "english": "Emoji",
+          "current": "Emoji"
+        },
+        {
+          "keyPath": "Commons.text.english",
+          "english": "English",
+          "current": "English"
+        },
+        {
+          "keyPath": "Commons.text.enter",
+          "english": "Enter",
+          "current": "Enter"
+        },
+        {
+          "keyPath": "Commons.text.escape",
+          "english": "Escape",
+          "current": "Escape"
+        },
+        {
+          "keyPath": "Commons.text.filters",
+          "english": "filters",
+          "current": "filters"
+        },
+        {
+          "keyPath": "Commons.text.francais",
+          "english": "Français",
+          "current": "Français"
+        },
+        {
+          "keyPath": "Commons.text.inter",
+          "english": "Inter",
+          "current": "Inter"
+        },
+        {
+          "keyPath": "Commons.text.jetbrains_mono",
+          "english": "JetBrains Mono",
+          "current": "JetBrains Mono"
+        },
+        {
+          "keyPath": "Commons.text.literata",
+          "english": "Literata",
+          "current": "Literata"
+        },
+        {
+          "keyPath": "Commons.text.load",
+          "english": "load",
+          "current": "load"
+        },
+        {
+          "keyPath": "Commons.text.loadedmetadata",
+          "english": "loadedmetadata",
+          "current": "loadedmetadata"
+        },
+        {
+          "keyPath": "Commons.text.loading",
+          "english": "loading",
+          "current": "loading"
+        },
+        {
+          "keyPath": "Commons.text.lxgwwenkai",
+          "english": "LXGWWenKai",
+          "current": "LXGWWenKai"
+        },
+        {
+          "keyPath": "Commons.text.merriweather",
+          "english": "Merriweather",
+          "current": "Merriweather"
+        },
+        {
+          "keyPath": "Commons.text.microsoft_yahei",
+          "english": "Microsoft Yahei",
+          "current": "Microsoft Yahei"
+        },
+        {
+          "keyPath": "Commons.text.montserrat",
+          "english": "Montserrat",
+          "current": "Montserrat"
+        },
+        {
+          "keyPath": "Commons.text.next",
+          "english": "next",
+          "current": "next"
+        },
+        {
+          "keyPath": "Commons.text.none",
+          "english": "none",
+          "current": "none"
+        },
+        {
+          "keyPath": "Commons.text.none_2",
+          "english": "None",
+          "current": "None"
+        },
+        {
+          "keyPath": "Commons.text.normal",
+          "english": "normal",
+          "current": "normal"
+        },
+        {
+          "keyPath": "Commons.text.notes",
+          "english": "notes",
+          "current": "notes"
+        },
+        {
+          "keyPath": "Commons.text.open_sans",
+          "english": "Open Sans",
+          "current": "Open Sans"
+        },
+        {
+          "keyPath": "Commons.text.other",
+          "english": "other",
+          "current": "other"
+        },
+        {
+          "keyPath": "Commons.text.paragraph_block",
+          "english": "paragraph block*",
+          "current": "paragraph block*"
+        },
+        {
+          "keyPath": "Commons.text.paste",
+          "english": "paste",
+          "current": "paste"
+        },
+        {
+          "keyPath": "Commons.text.player",
+          "english": "player",
+          "current": "player"
+        },
+        {
+          "keyPath": "Commons.text.roboto",
+          "english": "Roboto",
+          "current": "Roboto"
+        },
+        {
+          "keyPath": "Commons.text.save",
+          "english": "save",
+          "current": "save"
+        },
+        {
+          "keyPath": "Commons.text.start",
+          "english": "start",
+          "current": "start"
+        },
+        {
+          "keyPath": "Commons.text.tab",
+          "english": "Tab",
+          "current": "Tab"
+        },
+        {
+          "keyPath": "Commons.text.update",
+          "english": "update",
+          "current": "update"
+        },
+        {
+          "keyPath": "Commons.text.value",
+          "english": ", value:",
+          "current": ", value:"
+        },
+        {
+          "keyPath": "Configs.Font.label.source_sans_pro",
+          "english": "Source Sans Pro",
+          "current": "Source Sans Pro"
+        },
+        {
+          "keyPath": "Configs.Font.text.source_sans_pro",
+          "english": "Source Sans Pro",
+          "current": "Source Sans Pro"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_3",
+          "english": "Ctrl + ↑",
+          "current": "Ctrl + ↑"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_4",
+          "english": "Ctrl + ↓",
+          "current": "Ctrl + ↓"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_5",
+          "english": "Ctrl + ←",
+          "current": "Ctrl + ←"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_6",
+          "english": "Ctrl + →",
+          "current": "Ctrl + →"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.enter_space",
+          "english": "Enter / Space",
+          "current": "Enter / Space"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.pgdown",
+          "english": "↓ / → / PgDown",
+          "current": "↓ / → / PgDown"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.pgup",
+          "english": "↑ / ← / PgUp",
+          "current": "↑ / ← / PgUp"
+        },
+        {
+          "keyPath": "Directive.Loading.text.loading_scss",
+          "english": "./loading.scss",
+          "current": "./loading.scss"
+        },
+        {
+          "keyPath": "Utils.Common.text.digit_len",
+          "english": "+ digit, len,",
+          "current": "+ digit, len,"
+        },
+        {
+          "keyPath": "Utils.Print.text.doctype_html",
+          "english": "<!DOCTYPE html>",
+          "current": "<!DOCTYPE html>"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.height_height_value",
+          "english": ", height: height.value +",
+          "current": ", height: height.value +"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.top_height_value",
+          "english": ", top: height.value +",
+          "current": ", top: height.value +"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.width_width_value",
+          "english": ", width: width.value +",
+          "current": ", width: width.value +"
+        },
+        {
+          "keyPath": "Views.Editor.CanvasTool.Index.text.ctrl",
+          "english": "画布放大（Ctrl + =）",
+          "current": "画布放大（Ctrl + =）"
+        },
+        {
+          "keyPath": "Views.Editor.EditorHeader.Index.text.copyright_2020_present_pipipi",
+          "english": "Copyright © 2020-PRESENT pipipi-pikachu",
+          "current": "Copyright © 2020-PRESENT pipipi-pikachu"
+        },
+        {
+          "keyPath": "Views.Editor.ExportDialog.text.1_avimp4movwmvmp3wav_2",
+          "english": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+          "current": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。"
+        },
+        {
+          "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.height_height",
+          "english": ", height: height +",
+          "current": ", height: height +"
+        },
+        {
+          "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.width_width",
+          "english": ", width: width +",
+          "current": ", width: width +"
+        },
+        {
+          "keyPath": "Views.Editor.text.pptist",
+          "english": "上传.pptist格式模板文件",
+          "current": "上传.pptist格式模板文件"
+        }
+      ]
+    },
+    {
+      "locale": "fr",
+      "localeFile": "fr.json",
+      "issues": [
+        {
+          "keyPath": "Commons.label.emoji",
+          "english": "Emoji",
+          "current": "Emoji"
+        },
+        {
+          "keyPath": "Commons.label.inter",
+          "english": "Inter",
+          "current": "Inter"
+        },
+        {
+          "keyPath": "Commons.label.jetbrains_mono",
+          "english": "JetBrains Mono",
+          "current": "JetBrains Mono"
+        },
+        {
+          "keyPath": "Commons.label.literata",
+          "english": "Literata",
+          "current": "Literata"
+        },
+        {
+          "keyPath": "Commons.label.merriweather",
+          "english": "Merriweather",
+          "current": "Merriweather"
+        },
+        {
+          "keyPath": "Commons.label.montserrat",
+          "english": "Montserrat",
+          "current": "Montserrat"
+        },
+        {
+          "keyPath": "Commons.label.open_sans",
+          "english": "Open Sans",
+          "current": "Open Sans"
+        },
+        {
+          "keyPath": "Commons.label.roboto",
+          "english": "Roboto",
+          "current": "Roboto"
+        },
+        {
+          "keyPath": "Commons.text.aippt",
+          "english": "AI生成PPT",
+          "current": "AI生成PPT"
+        },
+        {
+          "keyPath": "Commons.text.all",
+          "english": "all",
+          "current": "all"
+        },
+        {
+          "keyPath": "Commons.text.arial",
+          "english": "Arial",
+          "current": "Arial"
+        },
+        {
+          "keyPath": "Commons.text.back",
+          "english": "back",
+          "current": "back"
+        },
+        {
+          "keyPath": "Commons.text.backcolor",
+          "english": "backcolor",
+          "current": "backcolor"
+        },
+        {
+          "keyPath": "Commons.text.background",
+          "english": "background",
+          "current": "background"
+        },
+        {
+          "keyPath": "Commons.text.backspace",
+          "english": "backspace",
+          "current": "backspace"
+        },
+        {
+          "keyPath": "Commons.text.backspace_2",
+          "english": "BACKSPACE",
+          "current": "BACKSPACE"
+        },
+        {
+          "keyPath": "Commons.text.backspace_3",
+          "english": "Backspace",
+          "current": "Backspace"
+        },
+        {
+          "keyPath": "Commons.text.caret",
+          "english": "Caret",
+          "current": "Caret"
+        },
+        {
+          "keyPath": "Commons.text.clear",
+          "english": "clear",
+          "current": "clear"
+        },
+        {
+          "keyPath": "Commons.text.close",
+          "english": "close",
+          "current": "close"
+        },
+        {
+          "keyPath": "Commons.text.closed",
+          "english": "closed",
+          "current": "closed"
+        },
+        {
+          "keyPath": "Commons.text.copy",
+          "english": "copy",
+          "current": "copy"
+        },
+        {
+          "keyPath": "Commons.text.created",
+          "english": "created",
+          "current": "created"
+        },
+        {
+          "keyPath": "Commons.text.delete",
+          "english": "DELETE",
+          "current": "DELETE"
+        },
+        {
+          "keyPath": "Commons.text.delete_2",
+          "english": "Delete",
+          "current": "Delete"
+        },
+        {
+          "keyPath": "Commons.text.editable",
+          "english": "editable",
+          "current": "editable"
+        },
+        {
+          "keyPath": "Commons.text.editor",
+          "english": "editor",
+          "current": "editor"
+        },
+        {
+          "keyPath": "Commons.text.emoji",
+          "english": "Emoji",
+          "current": "Emoji"
+        },
+        {
+          "keyPath": "Commons.text.english",
+          "english": "English",
+          "current": "English"
+        },
+        {
+          "keyPath": "Commons.text.enter",
+          "english": "Enter",
+          "current": "Enter"
+        },
+        {
+          "keyPath": "Commons.text.escape",
+          "english": "Escape",
+          "current": "Escape"
+        },
+        {
+          "keyPath": "Commons.text.filters",
+          "english": "filters",
+          "current": "filters"
+        },
+        {
+          "keyPath": "Commons.text.francais",
+          "english": "Français",
+          "current": "Français"
+        },
+        {
+          "keyPath": "Commons.text.inter",
+          "english": "Inter",
+          "current": "Inter"
+        },
+        {
+          "keyPath": "Commons.text.jetbrains_mono",
+          "english": "JetBrains Mono",
+          "current": "JetBrains Mono"
+        },
+        {
+          "keyPath": "Commons.text.literata",
+          "english": "Literata",
+          "current": "Literata"
+        },
+        {
+          "keyPath": "Commons.text.load",
+          "english": "load",
+          "current": "load"
+        },
+        {
+          "keyPath": "Commons.text.loadedmetadata",
+          "english": "loadedmetadata",
+          "current": "loadedmetadata"
+        },
+        {
+          "keyPath": "Commons.text.loading",
+          "english": "loading",
+          "current": "loading"
+        },
+        {
+          "keyPath": "Commons.text.lxgwwenkai",
+          "english": "LXGWWenKai",
+          "current": "LXGWWenKai"
+        },
+        {
+          "keyPath": "Commons.text.merriweather",
+          "english": "Merriweather",
+          "current": "Merriweather"
+        },
+        {
+          "keyPath": "Commons.text.microsoft_yahei",
+          "english": "Microsoft Yahei",
+          "current": "Microsoft Yahei"
+        },
+        {
+          "keyPath": "Commons.text.montserrat",
+          "english": "Montserrat",
+          "current": "Montserrat"
+        },
+        {
+          "keyPath": "Commons.text.next",
+          "english": "next",
+          "current": "next"
+        },
+        {
+          "keyPath": "Commons.text.none",
+          "english": "none",
+          "current": "none"
+        },
+        {
+          "keyPath": "Commons.text.none_2",
+          "english": "None",
+          "current": "None"
+        },
+        {
+          "keyPath": "Commons.text.normal",
+          "english": "normal",
+          "current": "normal"
+        },
+        {
+          "keyPath": "Commons.text.notes",
+          "english": "notes",
+          "current": "notes"
+        },
+        {
+          "keyPath": "Commons.text.open_sans",
+          "english": "Open Sans",
+          "current": "Open Sans"
+        },
+        {
+          "keyPath": "Commons.text.other",
+          "english": "other",
+          "current": "other"
+        },
+        {
+          "keyPath": "Commons.text.paragraph_block",
+          "english": "paragraph block*",
+          "current": "paragraph block*"
+        },
+        {
+          "keyPath": "Commons.text.paste",
+          "english": "paste",
+          "current": "paste"
+        },
+        {
+          "keyPath": "Commons.text.player",
+          "english": "player",
+          "current": "player"
+        },
+        {
+          "keyPath": "Commons.text.roboto",
+          "english": "Roboto",
+          "current": "Roboto"
+        },
+        {
+          "keyPath": "Commons.text.save",
+          "english": "save",
+          "current": "save"
+        },
+        {
+          "keyPath": "Commons.text.start",
+          "english": "start",
+          "current": "start"
+        },
+        {
+          "keyPath": "Commons.text.tab",
+          "english": "Tab",
+          "current": "Tab"
+        },
+        {
+          "keyPath": "Commons.text.update",
+          "english": "update",
+          "current": "update"
+        },
+        {
+          "keyPath": "Commons.text.value",
+          "english": ", value:",
+          "current": ", value:"
+        },
+        {
+          "keyPath": "Configs.Font.label.source_sans_pro",
+          "english": "Source Sans Pro",
+          "current": "Source Sans Pro"
+        },
+        {
+          "keyPath": "Configs.Font.text.source_sans_pro",
+          "english": "Source Sans Pro",
+          "current": "Source Sans Pro"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_3",
+          "english": "Ctrl + ↑",
+          "current": "Ctrl + ↑"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_4",
+          "english": "Ctrl + ↓",
+          "current": "Ctrl + ↓"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_5",
+          "english": "Ctrl + ←",
+          "current": "Ctrl + ←"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.ctrl_6",
+          "english": "Ctrl + →",
+          "current": "Ctrl + →"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.pgdown",
+          "english": "↓ / → / PgDown",
+          "current": "↓ / → / PgDown"
+        },
+        {
+          "keyPath": "Configs.Hotkey.text.pgup",
+          "english": "↑ / ← / PgUp",
+          "current": "↑ / ← / PgUp"
+        },
+        {
+          "keyPath": "Directive.Loading.text.loading_scss",
+          "english": "./loading.scss",
+          "current": "./loading.scss"
+        },
+        {
+          "keyPath": "Utils.Common.text.digit_len",
+          "english": "+ digit, len,",
+          "current": "+ digit, len,"
+        },
+        {
+          "keyPath": "Utils.Print.text.doctype_html",
+          "english": "<!DOCTYPE html>",
+          "current": "<!DOCTYPE html>"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.height_height_value",
+          "english": ", height: height.value +",
+          "current": ", height: height.value +"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.top_height_value",
+          "english": ", top: height.value +",
+          "current": ", top: height.value +"
+        },
+        {
+          "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.width_width_value",
+          "english": ", width: width.value +",
+          "current": ", width: width.value +"
+        },
+        {
+          "keyPath": "Views.Editor.CanvasTool.Index.text.ctrl",
+          "english": "画布放大（Ctrl + =）",
+          "current": "画布放大（Ctrl + =）"
+        },
+        {
+          "keyPath": "Views.Editor.EditorHeader.Index.text.copyright_2020_present_pipipi",
+          "english": "Copyright © 2020-PRESENT pipipi-pikachu",
+          "current": "Copyright © 2020-PRESENT pipipi-pikachu"
+        },
+        {
+          "keyPath": "Views.Editor.ExportDialog.text.1_avimp4movwmvmp3wav_2",
+          "english": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+          "current": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。"
+        },
+        {
+          "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.height_height",
+          "english": ", height: height +",
+          "current": ", height: height +"
+        },
+        {
+          "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.width_width",
+          "english": ", width: width +",
+          "current": ", width: width +"
+        },
+        {
+          "keyPath": "Views.Editor.text.pptist",
+          "english": "上传.pptist格式模板文件",
+          "current": "上传.pptist格式模板文件"
+        }
+      ]
+    }
+  ]
+}

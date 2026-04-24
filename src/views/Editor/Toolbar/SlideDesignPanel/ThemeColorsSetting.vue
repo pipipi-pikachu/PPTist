@@ -28,7 +28,7 @@
       </template>
     </Draggable>
 
-    <Button class="btn" type="primary" @click="setThemeColors()">确认</Button>
+    <Button class="btn" type="primary" @click="setThemeColors()">{{ $t('Commons.button.text_l912', {}) }}</Button>
   </div>
 </template>
 

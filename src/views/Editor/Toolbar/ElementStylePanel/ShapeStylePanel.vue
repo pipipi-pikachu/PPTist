@@ -61,7 +61,7 @@
         />
       </div>
       <div class="row">
-        <div style="width: 40%;">当前色块：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_shg7wb', {}) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -73,7 +73,7 @@
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
-        <div style="width: 40%;">渐变角度：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_fb098e', {}) }}</div>
         <Slider
           style="width: 60%;"
           :min="0"
@@ -106,7 +106,7 @@
       <Divider />
 
       <div class="row">
-        <div style="width: 40%;">行间距：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_htjmkl', {}) }}</div>
         <Select style="width: 60%;"
           :value="lineHeight || 1"
           @update:value="value => updateTextProps({ lineHeight: value as number })"
@@ -120,7 +120,7 @@
         </Select>
       </div>
       <div class="row">
-        <div style="width: 40%;">段间距：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_e7q9ks', {}) }}</div>
         <Select style="width: 60%;"
           :value="paragraphSpace || 0"
           @update:value="value => updateTextProps({ paragraphSpace: value as number })"
@@ -134,7 +134,7 @@
         </Select>
       </div>
       <div class="row">
-        <div style="width: 40%;">字间距：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_c5euje', {}) }}</div>
         <Select style="width: 60%;"
           :value="wordSpace || 0"
           @update:value="value => updateTextProps({ wordSpace: value as number })"
@@ -156,9 +156,9 @@
         :value="textAlign"
         @update:value="value => updateTextProps({ align: value as 'top' | 'middle' | 'bottom' })"
       >
-        <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
-        <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
-        <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
+        <RadioButton value="top" v-tooltip="$t('Commons.text.text_msfvx')" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
+        <RadioButton value="middle" v-tooltip="$t('Commons.text.text_g4g8')" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
+        <RadioButton value="bottom" v-tooltip="$t('Commons.text.text_eb8wc')" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
       </RadioGroup>
 
       <Divider />
@@ -173,12 +173,12 @@
 
     <div class="row">
       <CheckboxButton
-        v-tooltip="'双击连续使用'"
+        v-tooltip="$t('Commons.text.text_ged6bd')"
         style="flex: 1;"
         :checked="!!shapeFormatPainter"
         @click="toggleShapeFormatPainter()"
         @dblclick="toggleShapeFormatPainter(true)"
-      ><i-icon-park-outline:format-brush /> 形状格式刷</CheckboxButton>
+      ><i-icon-park-outline:format-brush /> {{ $t('Commons.button.text_wp14j4', {}) }}</CheckboxButton>
     </div>
   </div>
 </template>

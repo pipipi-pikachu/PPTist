@@ -22,7 +22,7 @@
         :elementIndex="index + 1"
       />
     </div>
-    <div class="placeholder" v-else>加载中 ...</div>
+    <div class="placeholder" v-else>{{ $t('Views.Components.ThumbnailSlide.Index.text.text_2j3pvm', {}) }}</div>
   </div>
 </template>
 

@@ -124,7 +124,7 @@ onMounted(() => {
 })
 
 const update = () => {
-  if (!latex.value) return message.error('公式不能为空')
+  if (!latex.value) return message.error(t('Commons.text.text_mp078z'))
 
   const eq = new hfmath(latex.value)
   const pathd = eq.pathd({})

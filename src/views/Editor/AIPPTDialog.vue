@@ -2,7 +2,7 @@
   <div class="aippt-dialog">
     <div class="header">
       <span class="title">AIPPT</span>
-      <span class="subtite" v-if="step === 'template'">{{ $t('Commons.text.ppt', {}) }}<span class="local" v-tooltip="'上传.pptist格式模板文件'" @click="uploadLocalTemplate()">{{ $t('Commons.text.text_v9rhlw', {}) }}</span></span>
+      <span class="subtite" v-if="step === 'template'">{{ $t('Commons.text.ppt', {}) }}<span class="local" v-tooltip="$t('Views.Editor.text.pptist')" @click="uploadLocalTemplate()">{{ $t('Commons.text.text_v9rhlw', {}) }}</span></span>
       <span class="subtite" v-else-if="step === 'outline'">{{ $t('Views.Editor.text.text_6bca8z', {}) }}</span>
       <span class="subtite" v-else>{{ $t('Views.Editor.text.ppt', {}) }}</span>
     </div>
@@ -25,26 +25,26 @@
       </div>
       <div class="configs">
         <div class="config-item">
-          <div class="label">语言：</div>
+          <div class="label">{{ $t('Commons.text.text_l6p53', {}) }}</div>
           <Select 
             class="config-content"
             style="width: 80px;"
             v-model:value="language"
             :options="[
-              { label: '中文', value: '中文' },
+              { label: $t('Commons.text.text_dure'), value: $t('Commons.text.text_dure') },
               { label: '英文', value: 'English' },
               { label: '日文', value: '日本語' },
             ]"
           />
         </div>
         <div class="config-item">
-          <div class="label">风格：</div>
+          <div class="label">{{ $t('Commons.text.text_mwv58', {}) }}</div>
           <Select 
             class="config-content"
             style="width: 80px;"
             v-model:value="style"
             :options="[
-              { label: '通用', value: '通用' },
+              { label: $t('Commons.text.text_p5ji'), value: $t('Commons.text.text_p5ji') },
               { label: '学术风', value: '学术风' },
               { label: '职场风', value: '职场风' },
               { label: '教育风', value: '教育风' },
@@ -53,7 +53,7 @@
           />
         </div>
         <div class="config-item">
-          <div class="label">模型：</div>
+          <div class="label">{{ $t('Commons.text.text_fzwls', {}) }}</div>
           <Select 
             class="config-content"
             style="width: 190px;"
@@ -65,13 +65,13 @@
           />
         </div>
         <div class="config-item">
-          <div class="label">配图：</div>
+          <div class="label">{{ $t('Commons.text.text_lqd49', {}) }}</div>
           <Select 
             class="config-content"
             style="width: 100px;"
             v-model:value="img"
             :options="[
-              { label: '无', value: '' },
+              { label: $t('Commons.label.text_k4g'), value: '' },
               { label: '模拟测试', value: 'test' },
               { label: 'AI搜图', value: 'ai-search', disabled: true },
               { label: 'AI生图', value: 'ai-create', disabled: true },
@@ -81,7 +81,7 @@
       </div>
       <div class="configs" v-if="!isEmptySlide">
         <div class="config-item">
-          <Checkbox v-model:value="overwrite">覆盖已有幻灯片</Checkbox>
+          <Checkbox v-model:value="overwrite">{{ $t('Commons.text.text_35pm0c', {}) }}</Checkbox>
         </div>
       </div>
     </template>
@@ -91,8 +91,8 @@
          <OutlineEditor v-model:value="outline" />
        </div>
       <div class="btns" v-if="!outlineCreating">
-        <Button class="btn" type="primary" @click="step = 'template'">选择模板</Button>
-        <Button class="btn" @click="outline = ''; step = 'setup'">返回重新生成</Button>
+        <Button class="btn" type="primary" @click="step = 'template'">{{ $t('Commons.button.text_il0hha', {}) }}</Button>
+        <Button class="btn" @click="outline = ''; step = 'setup'">{{ $t('Commons.button.text_y1p066', {}) }}</Button>
       </div>
     </div>
     <div class="select-template" v-if="step === 'template'">
@@ -107,12 +107,12 @@
         </div>
       </div>
       <div class="btns">
-        <Button class="btn" type="primary" @click="createPPT()">生成</Button>
-        <Button class="btn" @click="step = 'outline'">返回大纲</Button>
+        <Button class="btn" type="primary" @click="createPPT()">{{ $t('Commons.button.text_kgk1', {}) }}</Button>
+        <Button class="btn" @click="step = 'outline'">{{ $t('Commons.button.text_ii8dpx', {}) }}</Button>
       </div>
     </div>
 
-    <FullscreenSpin :loading="loading" tip="AI生成中，请耐心等待 ..." />
+    <FullscreenSpin :loading="loading" :tip="$t('Views.Editor.text.ai')" />
   </div>
 </template>
 
@@ -134,6 +134,7 @@ import Select from '@/components/Select.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import OutlineEditor from '@/components/OutlineEditor.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import { t } from '@/i18n';
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -142,8 +143,8 @@ const { templates } = storeToRefs(slidesStore)
 const { resetSlides, isEmptySlide } = useSlideHandler()
 const { AIPPT, presetImgPool, getMdContent } = useAIPPT()
 
-const language = ref('中文')
-const style = ref('通用')
+const language = ref(t('Commons.text.text_dure'))
+const style = ref(t('Commons.text.text_p5ji'))
 const img = ref('')
 const keyword = ref('')
 const outline = ref('')
@@ -181,7 +182,7 @@ const setKeyword = (value: string) => {
 }
 
 const createOutline = async () => {
-  if (!keyword.value) return message.error('请先输入PPT主题')
+  if (!keyword.value) return message.error(t('Commons.text.ppt_2'))
 
   loading.value = true
   outlineCreating.value = true
@@ -193,7 +194,7 @@ const createOutline = async () => {
   })
   if (typeof stream === 'object' && stream.state === -1) {
     loading.value = false
-    return message.error('该模型API的并发数过高，请更换其他模型重试')
+    return message.error(t('Commons.text.api'))
   }
 
   loading.value = false
@@ -227,7 +228,7 @@ const createOutline = async () => {
 const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
   loading.value = true
   mainStore.setAIPPTDialogState('running')
-  message.loading('演示文稿生成中，请稍等 ...', { duration: 0 })
+  message.loading(t('Views.Editor.text.text_lhg40j'), { duration: 0 })
 
   if (overwrite.value) resetSlides()
 
@@ -241,7 +242,7 @@ const createPPT = async (template?: { slides: Slide[], theme: SlideTheme }) => {
     loading.value = false
     message.closeAll()
     mainStore.setAIPPTDialogState(true)
-    return message.error('该模型API的并发数过高，请更换其他模型重试')
+    return message.error(t('Commons.text.api'))
   }
 
   if (img.value === 'test') {
@@ -309,7 +310,7 @@ const uploadLocalTemplate = () => {
           createPPT({ slides, theme })
         }
         catch {
-          message.error('上传的模板文件数据异常，请重新上传或使用预置模板')
+          message.error(t('Commons.text.text_2w4dl8'))
         }
       })
       reader.readAsText(file)

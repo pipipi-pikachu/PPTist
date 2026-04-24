@@ -53,6 +53,7 @@ import { computed, onMounted, onUnmounted, ref, watch, nextTick, onBeforeUnmount
 import Popover from './Popover.vue'
 import Input from './Input.vue'
 import Divider from './Divider.vue'
+import { t } from '@/i18n';
 
 interface SelectOption {
   label: string
@@ -71,7 +72,7 @@ const props = withDefaults(defineProps<{
   disabled: false,
   autofocus: false,
   search: false,
-  searchLabel: '搜索',
+  searchLabel: t('Commons.text.text_hpqe'),
 })
 
 const emit = defineEmits<{

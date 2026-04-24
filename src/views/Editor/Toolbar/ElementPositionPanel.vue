@@ -14,14 +14,14 @@
     
     <div class="title">{{ $t('Commons.text.text_e9gub', {}) }}</div>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'左对齐'" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left /></Button>
-      <Button style="flex: 1;" v-tooltip="'水平居中'" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-vertically /></Button>
-      <Button style="flex: 1;" v-tooltip="'右对齐'" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><i-icon-park-outline:align-right /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_e7n4t')" @click="alignElementToCanvas(ElementAlignCommands.LEFT)"><i-icon-park-outline:align-left /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_e1la4n')" @click="alignElementToCanvas(ElementAlignCommands.HORIZONTAL)"><i-icon-park-outline:align-vertically /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_cr6i2')" @click="alignElementToCanvas(ElementAlignCommands.RIGHT)"><i-icon-park-outline:align-right /></Button>
     </ButtonGroup>
     <ButtonGroup class="row">
-      <Button style="flex: 1;" v-tooltip="'上对齐'" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><i-icon-park-outline:align-top /></Button>
-      <Button style="flex: 1;" v-tooltip="'垂直居中'" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><i-icon-park-outline:align-horizontally /></Button>
-      <Button style="flex: 1;" v-tooltip="'下对齐'" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bw0ld')" @click="alignElementToCanvas(ElementAlignCommands.TOP)"><i-icon-park-outline:align-top /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bj7l4q')" @click="alignElementToCanvas(ElementAlignCommands.VERTICAL)"><i-icon-park-outline:align-horizontally /></Button>
+      <Button style="flex: 1;" v-tooltip="$t('Commons.button.text_bw1c2')" @click="alignElementToCanvas(ElementAlignCommands.BOTTOM)"><i-icon-park-outline:align-bottom /></Button>
     </ButtonGroup>
 
     <Divider />
@@ -35,7 +35,7 @@
         style="width: 45%;"
       >
         <template #prefix>
-          水平：
+          {{ $t('Commons.text.text_gc0mz', {}) }}
         </template>
       </NumberInput>
       <div style="width: 10%;"></div>
@@ -47,7 +47,7 @@
         style="width: 45%;"
       >
         <template #prefix>
-          垂直：
+          {{ $t('Commons.text.text_df25k', {}) }}
         </template>
       </NumberInput>
     </div>
@@ -64,7 +64,7 @@
           style="width: 45%;"
         >
           <template #prefix>
-            宽度：
+            {{ $t('Commons.text.text_dx8dt', {}) }}
           </template>
         </NumberInput>
         <template v-if="['image', 'shape', 'audio'].includes(handleElement!.type)">
@@ -84,7 +84,7 @@
           style="width: 45%;"
         >
           <template #prefix>
-            高度：
+            {{ $t('Commons.text.text_n5zik', {}) }}
           </template>
         </NumberInput>
       </div>
@@ -103,7 +103,7 @@
           style="width: 45%;" 
         >
           <template #prefix>
-            旋转：
+            {{ $t('Commons.text.text_fmjp5', {}) }}
           </template>
         </NumberInput>
         <div style="width: 7%;"></div>

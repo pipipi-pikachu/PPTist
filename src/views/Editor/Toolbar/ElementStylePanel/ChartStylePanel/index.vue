@@ -25,7 +25,7 @@
     </template>
 
     <div class="row">
-      <div style="width: 40%;">背景填充：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_jo1frx', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -37,7 +37,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">坐标与文字：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_9orwvh', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -49,7 +49,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">网格颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_edgm8p', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -62,11 +62,11 @@
     </div>
 
     <div class="row">
-      <div style="width: 40%;">主题配色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_tf3js8', {}) }}</div>
       <Popover trigger="click" v-model:value="themesVisible" style="width: 60%;">
         <template #content>
           <div class="themes">
-            <div class="label">预置图表主题：</div>
+            <div class="label">{{ $t('Commons.text.text_wset0p', {}) }}</div>
             <div class="preset-themes">
               <div class="preset-theme" v-for="(item, index) in CHART_PRESET_THEMES" :key="index" @click="setThemeColors(item)">
                 <div 
@@ -77,7 +77,7 @@
                 ></div>
               </div>
             </div>
-            <div class="label">幻灯片主题：</div>
+            <div class="label">{{ $t('Commons.text.text_qwya1i', {}) }}</div>
             <div class="preset-themes" :style="{ marginBottom: '-10px' }">
               <div class="preset-theme" @click="setThemeColors(theme.themeColors)">
                 <div 
@@ -89,7 +89,7 @@
               </div>
             </div>
             <Divider :margin="10" />
-            <Button class="full-width-btn" @click="themesVisible = false; themeColorsSettingVisible = true">自定义配色</Button>
+            <Button class="full-width-btn" @click="themesVisible = false; themeColorsSettingVisible = true">{{ $t('Commons.button.text_mmwqu6', {}) }}</Button>
           </div>
         </template>
         <ColorListButton :colors="themeColors" />

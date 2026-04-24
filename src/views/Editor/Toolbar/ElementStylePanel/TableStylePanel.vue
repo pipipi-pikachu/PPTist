@@ -39,7 +39,7 @@
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <TextColorButton first v-tooltip="'文字颜色'" :color="textAttrs.color">
+        <TextColorButton first v-tooltip="$t('Commons.text.text_d74746')" :color="textAttrs.color">
           <i-icon-park-outline:text />
         </TextColorButton>
       </Popover>
@@ -50,7 +50,7 @@
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <TextColorButton last v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
+        <TextColorButton last v-tooltip="$t('Commons.text.text_in4ziw')" :color="textAttrs.backcolor">
           <i-icon-park-outline:fill />
         </TextColorButton>
       </Popover>
@@ -60,25 +60,25 @@
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.bold"
-        v-tooltip="'加粗'"
+        v-tooltip="$t('Commons.label.text_eqk7')"
         @click="updateTextAttrs({ bold: !textAttrs.bold })"
       ><i-icon-park-outline:text-bold /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.em"
-        v-tooltip="'斜体'"
+        v-tooltip="$t('Commons.label.text_hpvb')"
         @click="updateTextAttrs({ em: !textAttrs.em })"
       ><i-icon-park-outline:text-italic /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.underline"
-        v-tooltip="'下划线'"
+        v-tooltip="$t('Commons.label.text_bu69k')"
         @click="updateTextAttrs({ underline: !textAttrs.underline })"
       ><i-icon-park-outline:text-underline /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
         :checked="textAttrs.strikethrough"
-        v-tooltip="'删除线'"
+        v-tooltip="$t('Commons.text.text_crbi3')"
         @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
       ><i-icon-park-outline:strikethrough /></CheckboxButton>
     </ButtonGroup>
@@ -89,10 +89,10 @@
       :value="textAttrs.align"
       @update:value="value => updateTextAttrs({ align: value as TextAlign })"
     >
-      <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><i-icon-park-outline:align-text-left /></RadioButton>
-      <RadioButton value="center" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-center /></RadioButton>
-      <RadioButton value="right" v-tooltip="'右对齐'" style="flex: 1;"><i-icon-park-outline:align-text-right /></RadioButton>
-      <RadioButton value="justify" v-tooltip="'两端对齐'" style="flex: 1;"><i-icon-park-outline:align-text-both /></RadioButton>
+      <RadioButton value="left" v-tooltip="$t('Commons.button.text_e7n4t')" style="flex: 1;"><i-icon-park-outline:align-text-left /></RadioButton>
+      <RadioButton value="center" v-tooltip="$t('Commons.text.text_g4g8')" style="flex: 1;"><i-icon-park-outline:align-text-center /></RadioButton>
+      <RadioButton value="right" v-tooltip="$t('Commons.button.text_cr6i2')" style="flex: 1;"><i-icon-park-outline:align-text-right /></RadioButton>
+      <RadioButton value="justify" v-tooltip="$t('Commons.text.text_ad9sea')" style="flex: 1;"><i-icon-park-outline:align-text-both /></RadioButton>
     </RadioGroup>
 
     <RadioGroup 
@@ -101,9 +101,9 @@
       :value="textAttrs.vAlign"
       @update:value="value => updateTextAttrs({ vAlign: value as TextAlignVertical })"
     >
-      <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
-      <RadioButton value="middle" v-tooltip="'居中'" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
-      <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
+      <RadioButton value="top" v-tooltip="$t('Commons.text.text_msfvx')" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
+      <RadioButton value="middle" v-tooltip="$t('Commons.text.text_g4g8')" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
+      <RadioButton value="bottom" v-tooltip="$t('Commons.text.text_eb8wc')" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
     </RadioGroup>
 
     <Divider />
@@ -113,7 +113,7 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">行数：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_khcdy', {}) }}</div>
       <div class="set-count" style="width: 60%;">
         <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><i-icon-park-outline:minus /></Button>
         <div class="count-text">{{rowCount}}</div>
@@ -121,7 +121,7 @@
       </div>
     </div>
     <div class="row">
-      <div style="width: 40%;">列数：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_cjif5', {}) }}</div>
       <div class="set-count" style="width: 60%;">
         <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><i-icon-park-outline:minus /></Button>
         <div class="count-text">{{colCount}}</div>
@@ -132,7 +132,7 @@
     <Divider />
 
     <div class="row theme-switch">
-      <div style="width: 40%;">启用主题表格：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_gzbej4', {}) }}</div>
       <div class="switch-wrapper" style="width: 60%;">
         <Switch 
           :value="hasTheme" 
@@ -167,7 +167,7 @@
         >最后一列</Checkbox>
       </div>
       <div class="row">
-        <div style="width: 40%;">主题颜色：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_te10ex', {}) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker

@@ -1,4 +1,9 @@
 {
+  "Common": {
+    "text": {
+      "text_d9r8y0": "Initialisation des données, veuillez patienter..."
+    }
+  },
   "Commons": {
     "button": {
       "a2": "A²",
@@ -173,6 +178,7 @@
       "text_jedfe": "Premier plan",
       "text_jputzi": "LXGW WenKai",
       "text_jydnp6": "Formule de Gauss",
+      "text_k4g": "Aucun",
       "text_kkz8bm": "FengGuang MingRui",
       "text_km5960": "Police par défaut",
       "text_l79p": "Déplacer",
@@ -243,7 +249,9 @@
       "5g": "Comment la 5G change nos vies",
       "aa": "Texte Aa",
       "ai": "Génération IA",
+      "ai_2": "Assistant IA",
       "aigc": "L'IA générative dans l'éducation",
+      "aippt": "Générer PPT par IA",
       "all": "all",
       "api": "Concurrence API trop élevée ; essayez un autre modèle",
       "arial": "Arial",
@@ -267,9 +275,12 @@
       "editable": "editable",
       "editor": "editor",
       "emoji": "Emoji",
+      "english": "English",
       "enter": "Enter",
       "escape": "Escape",
+      "f5": "Diaporama (F5)",
       "filters": "filters",
+      "francais": "Français",
       "inter": "Inter",
       "jetbrains_mono": "JetBrains Mono",
       "json": "Exporter JSON",
@@ -367,6 +378,7 @@
       "text_98oxg4": "Développement binomial",
       "text_9f4wxc": "Morandi doux",
       "text_9f97mm": "Ombre horizontale :",
+      "text_9fk06e": "Diminuer le retrait",
       "text_9mae46": "Entrer par haut-droite",
       "text_9maeuv": "Entrer par bas-droite",
       "text_9maf46": "Sortir vers haut-droite",
@@ -395,6 +407,7 @@
       "text_aclf03": "Avancer d'un niveau",
       "text_acm1zm": "Reculer d'un niveau",
       "text_acuohx": "Surface quadrique",
+      "text_ad9sea": "Justifier",
       "text_afnx3b": "Triangle inversé",
       "text_afzure": "Opacité",
       "text_ai7xwl": "Couleur de thème :",
@@ -405,6 +418,7 @@
       "text_amekbw": "Activer la bordure :",
       "text_anjfdh": "Thème global",
       "text_aodcfb": "Aperçu de formule",
+      "text_ape1eo": "Diminuer la taille de police",
       "text_aqjv33": "Afficher la barre d'outils",
       "text_ar00nr": "Activer les filtres :",
       "text_arsl64": "Opérations sur l'élément",
@@ -413,6 +427,7 @@
       "text_avgqpf": "Sortir vers haut-gauche",
       "text_avgrg4": "Sortir vers bas-gauche",
       "text_aw9as8": "Fermer la boîte de dialogue",
+      "text_awd1n7": "Fermer le stylo",
       "text_ax4bai": "Double-cliquer pour modifier",
       "text_axgg3q": "Éléments de liste",
       "text_axltt1": "Rebond haut (entrée)",
@@ -445,9 +460,12 @@
       "text_biqejw": "Galerie en ligne",
       "text_bj7l4q": "Centrer verticalement",
       "text_bjva": "Qualité d'image :",
+      "text_bjvnux": "Augmenter la taille de police",
       "text_bjwox1": "Rectangle arrondi",
       "text_bl4pau": "Dupliquer la page",
       "text_bs7ran": "Largeur de ligne :",
+      "text_bt704": "Précédent",
+      "text_bt7qt": "Suivant",
       "text_btlof": "Page précédente",
       "text_btmf4": "Page suivante",
       "text_bu1m74": "Style de ligne :",
@@ -501,18 +519,29 @@
       "text_cp2ijh": "Copie rapide",
       "text_cr2oj": "Supprimer la colonne",
       "text_cr6i2": "Aligner à droite",
+      "text_crbi3": "Barré",
       "text_crc8u": "Supprimer la section",
       "text_crde0": "Supprimer la ligne",
       "text_ctavzh": "Commentaires",
       "text_cvt54c": "Panneau de commentaires",
       "text_cw8di5": "Par forme :",
+      "text_cxkf1y": "Insérer une formule",
       "text_cxkosz": "Tout insérer",
+      "text_cxlgyk": "Insérer une image",
+      "text_cxllbx": "Insérer un graphique",
+      "text_cxmwfb": "Insérer une forme",
+      "text_cxntfn": "Insérer du texte",
+      "text_cxrgdg": "Insérer un symbole",
+      "text_cxs68l": "Insérer une ligne",
+      "text_cxttk7": "Insérer un tableau",
       "text_cycq3o": "(Cliquer sur une couleur pour l'exclure)",
       "text_d5ao7x": "Zoom avec glissement (entrée)",
       "text_d5btzl": "Agrandir le canevas",
       "text_d5f45t": "Style de fin :",
       "text_d5gaj7": "Zoom (entrée)",
       "text_d6nass": "Dérivée directionnelle",
+      "text_d74746": "Couleur du texte",
+      "text_d74akm": "Surlignage du texte",
       "text_d7i1vq": "Extraire depuis la page actuelle",
       "text_d8dn4n": "Nouvelle page",
       "text_d8qbgg": "Édition de texte",
@@ -534,6 +563,8 @@
       "text_dmjoyd": "Type de texte actuel :",
       "text_dn0qqj": "Zhuque Fangsong",
       "text_dsiwu": "Police :",
+      "text_duf1": "Exposant",
+      "text_dufw": "Indice",
       "text_dure": "Chinois",
       "text_dwhk": "Luminosité",
       "text_dx8dt": "Largeur :",
@@ -555,6 +586,7 @@
       "text_e97vf2": "URL web invalide",
       "text_e9gub": "Alignement :",
       "text_eae8": "Autre",
+      "text_eb8wc": "Aligner en bas",
       "text_ebn9": "Entrée",
       "text_ebvjr4": "Fusionner les cellules",
       "text_ecpz": "Plein écran",
@@ -573,6 +605,8 @@
       "text_ehf95": "DingTalk JinBuTi",
       "text_ehtg": "Action",
       "text_ehx7": "Transition",
+      "text_ei0x3k": "Effacer l'encre",
+      "text_ei3atu": "Effacer la mise en forme",
       "text_ekc8nk": "Cliquer pour changer",
       "text_emq9e5": "Position (multi-sélection)",
       "text_emxt": "Tout sélectionner",
@@ -580,6 +614,7 @@
       "text_enn2vi": "Ajouter une diapositive",
       "text_eny8rv": "Supprimer toutes les sections",
       "text_epar": "Animation",
+      "text_eqk7": "Gras",
       "text_eslg": "Supprimer",
       "text_ewqxxu": "Le serveur a renvoyé une réponse non-stream",
       "text_f07iad": "Par page :",
@@ -599,6 +634,7 @@
       "text_fdy1t7": "Plage d'export :",
       "text_fe9e0": "Nuage de points",
       "text_ff9l": "Image",
+      "text_ffx": "Moyen",
       "text_fjmy": "Graphique",
       "text_fljd": "Copier",
       "text_fltdp": "Diagramme à barres",
@@ -607,15 +643,21 @@
       "text_fqji7p": "Déplacer le canevas",
       "text_fs18kw": "Couverture d'aperçu vidéo",
       "text_fs2ih": "Diagramme en colonnes",
+      "text_fuk": "Valeur",
       "text_fz8jf": "Ligne d'en-tête",
       "text_fzwls": "Modèle :",
       "text_g2mj47": "Copier-coller rapide",
+      "text_g37": "Désactivé",
+      "text_g3ge": "Exporter",
       "text_g3xjfa": "Vert épuré",
+      "text_g4g8": "Centrer",
+      "text_g5o9l": "Gomme",
       "text_g5sou": "Élastique",
       "text_g7l4bb": "Nouvelle diapositive",
       "text_gc0mz": "Horizontal :",
       "text_gc260": "Ligne de total",
       "text_gcg3s7": "Titre d'élément de liste",
+      "text_ged6bd": "Double-clic pour usage continu",
       "text_gekral": "Envoyer en arrière-plan",
       "text_geulpo": "Mettre au premier plan",
       "text_gfelzj": "Glissement réduit (sortie)",
@@ -632,6 +674,7 @@
       "text_gp57zf": "Lien web",
       "text_gqho9s": "Lecture auto",
       "text_grr8r": "Pointeur laser",
+      "text_gtdf": "Citation",
       "text_gubcw": "Style de début :",
       "text_guqc": "Forme",
       "text_gvo0th": "Dessin libre",
@@ -650,10 +693,12 @@
       "text_hici": "Swing",
       "text_hj7bp3": "Code en ligne",
       "text_hjnx": "Secouer la tête",
+      "text_hlz": "Grand",
       "text_hn9b0v": "Édition de tableau",
       "text_hohd": "Lecture",
       "text_hpqe": "Rechercher",
       "text_hpr5n1": "Vue public",
+      "text_hpvb": "Italique",
       "text_hsgw": "Lumineux",
       "text_htjmkl": "Interligne :",
       "text_htqh": "Carré",
@@ -674,6 +719,7 @@
       "text_i4sy0q": "Modifier la couleur de thème",
       "text_i5wedz": "Définir le lien",
       "text_i5y4": "Chaud",
+      "text_i6n": "Petit",
       "text_i783": "Règle",
       "text_i7bc6a": "Bleu clair frais",
       "text_i7nd": "Rechercher",
@@ -684,6 +730,7 @@
       "text_if77n": "Première colonne",
       "text_ifl41": "Première page",
       "text_ifzhw3": "Bilan annuel & perspectives",
+      "text_ihihjl": "Plein écran",
       "text_ihzkvg": "Sélectionner le paragraphe",
       "text_ii96jl": "Quitter le plein écran",
       "text_iiciaz": "Quitter la lecture",
@@ -693,9 +740,11 @@
       "text_ij5d": "Titre",
       "text_ik6rso": "Adapter à l'écran",
       "text_il3af9": "Volet sélection",
+      "text_in4ziw": "Remplissage de cellule",
       "text_ior6ln": "Bleu urbain",
       "text_iqix": "Flou",
       "text_iqtg11": "Renommer la section",
+      "text_irk": "Activé",
       "text_itms": "Corps",
       "text_ivx7v": "Épaisseur :",
       "text_j0cimf": "Terminer le dessin",
@@ -716,10 +765,12 @@
       "text_jiju6x": "Ratio (paysage)",
       "text_jlk5t0": "Ratio (portrait)",
       "text_jn7a": "Niveaux de gris",
+      "text_jndsi": "Surligneur",
       "text_jo1frx": "Remplissage d'arrière-plan :",
       "text_jputzi": "LXGW WenKai",
       "text_jq83i9": "Illustration de projet",
       "text_jq8pv": "Numéro de section",
+      "text_jqc1ra": "Puces",
       "text_jqcpva": "Numéro d'élément",
       "text_jqdp3o": "Utiliser une courbe lisse",
       "text_jrkmnb": "Thèmes prédéfinis",
@@ -734,6 +785,7 @@
       "text_jydnp6": "Formule de Gauss",
       "text_jyemd4": "Zoom droite (entrée)",
       "text_jzvp9f": "Plan d'événement annuel",
+      "text_k4g": "Aucun",
       "text_k564gf": "Veuillez d'abord choisir une cible de lien",
       "text_k80vht": "Déjà à la dernière page",
       "text_khcdy": "Lignes :",
@@ -745,9 +797,11 @@
       "text_kn3dzn": "Erreur serveur inconnue !",
       "text_kr3b": "Sommaire",
       "text_kx3t": "Rectangle",
+      "text_kxfv": "Ligne droite",
       "text_ky2s3": "Minuteur",
       "text_l6p53": "Langue :",
       "text_leoh": "Symboles",
+      "text_lg4a4": "Lien hypertexte",
       "text_li5mhp": "Type de page actuel :",
       "text_lixz": "Flèche",
       "text_lkdn4r": "Page suivante",
@@ -762,11 +816,14 @@
       "text_lyu4": "Coller",
       "text_m0ho": "Portrait",
       "text_m0uc": "Grouper",
+      "text_m2sh": "Numérotation",
+      "text_m348": "Linéaire",
       "text_m4jm": "Ligne",
       "text_m50s": "Fin",
       "text_m5hk": "Embellir",
       "text_m6kav0": "Voir toutes les diapositives",
       "text_m6np": "Zoom",
+      "text_m9l": "Point",
       "text_mafgg0": "Aucune propriété disponible",
       "text_mej254": "Présentation sans titre",
       "text_mekb": "Modifier",
@@ -776,6 +833,7 @@
       "text_mmyrh7": "Durée :",
       "text_mp078z": "La formule ne peut pas être vide",
       "text_mrgep": "Graphique en aires",
+      "text_msfvx": "Aligner en haut",
       "text_msylz": "Graphique radar",
       "text_mu9y": "Teinte",
       "text_mvzrf": "Saturation",
@@ -786,6 +844,8 @@
       "text_n0akk": "Couleur :",
       "text_n11p2": "Aperçu :",
       "text_n39a4y": "Annuler la lecture auto",
+      "text_n3y34j": "Effacer les commentaires de la page",
+      "text_n4npvn": "Augmenter le retrait",
       "text_n5zik": "Hauteur :",
       "text_n8cxtg": "Glissement réduit vers la droite (sortie)",
       "text_n8il0l": "Réduire vers la droite (sortie)",
@@ -810,6 +870,7 @@
       "text_oqqtxo": "Flottement long vers la droite (sortie)",
       "text_oxvu": "Retour",
       "text_oz0a": "Sortie",
+      "text_ozjdh1": "Insérer audio/vidéo",
       "text_p1j4": "Sélectionner",
       "text_p262": "Transition",
       "text_p27zbc": "Confirmer le recadrage",
@@ -829,14 +890,17 @@
       "text_qg5j": "Vol entrée",
       "text_qg9o": "Vol sortie",
       "text_qjxd": "Paysage",
+      "text_ql1e": "Graphique circulaire",
       "text_ql2s": "En-tête",
       "text_qlv6dn": "Ruizi ZhenYan",
       "text_qmp6": "Nourriture",
       "text_qn2d": "Pied de page",
       "text_qola": "Audio",
+      "text_qp50": "Aperçu",
       "text_qw4gwv": "Équation non homogène",
       "text_qwya1i": "Thème de diapositive :",
       "text_rcrb": "Vif",
+      "text_rky6": "Tableau noir",
       "text_rnws": "Noir & blanc",
       "text_rtw5pi": "YouShe Title Black",
       "text_shg7wb": "Couleur actuelle :",
@@ -865,6 +929,7 @@
       "text_wset0p": "Thèmes de graphique prédéfinis :",
       "text_wsy7m2": "Battement (rapide)",
       "text_x0509h": "Insérer ligne en-dessous",
+      "text_x7ozvm": "Reproduire la mise en forme (double-clic pour usage continu)",
       "text_xac2xv": "Quitter le mode dessin",
       "text_xeuxyi": "Coller en texte brut",
       "text_xni0t2": "Style (multi-sélection)",
@@ -883,6 +948,7 @@
       "text_yx69xt": "Flottement sortie haut-droite",
       "text_yx6akd": "Flottement entrée bas-droite",
       "text_yx6aoi": "Flottement sortie bas-droite",
+      "text_zc7v0p": "Insensible à la casse",
       "text_zhqtc9": "Échec de l'initialisation de la pipette",
       "update": "update",
       "update_height": "update:height",
@@ -998,6 +1064,15 @@
     }
   },
   "Views": {
+    "Components": {
+      "ThumbnailSlide": {
+        "Index": {
+          "text": {
+            "text_2j3pvm": "Chargement..."
+          }
+        }
+      }
+    },
     "Editor": {
       "Canvas": {
         "Hooks": {
@@ -1014,6 +1089,11 @@
         }
       },
       "CanvasTool": {
+        "Index": {
+          "text": {
+            "ctrl": "Zoom avant (Ctrl + =)"
+          }
+        },
         "placeholder": {
           "e_g_https_xxx": "Saisir l'URL vidéo, ex. https://xxx.mp4",
           "e_g_https_xxx_2": "Saisir l'URL audio, ex. https://xxx.mp3"
@@ -1022,7 +1102,9 @@
       "EditorHeader": {
         "Index": {
           "text": {
-            "text_2sos0g": "Note : ce site sert uniquement de démo, aucun service n'est fourni"
+            "copyright_2020_present_pipipi": "Copyright © 2020-PRESENT pipipi-pikachu",
+            "text_2sos0g": "Note : ce site sert uniquement de démo, aucun service n'est fourni",
+            "text_qxuuqo": "Importation..."
           }
         }
       },
@@ -1038,9 +1120,13 @@
           "pptist": "Exporter fichier PPTIST"
         },
         "text": {
+          "1_avimp4movwmvmp3wav_2": "Remarque : 1. Formats d'export pris en charge : avi, mp4, mov, wmv, mp3, wav ; 2. Les ressources cross-origin ne peuvent pas être exportées.",
           "pptist": "Astuce : .pptist est le format propriétaire de l'application ; il peut être réimporté.",
+          "pptx": "Par défaut, l'audio/vidéo est ignoré lors de l'export. Si vos diapositives contiennent des éléments audio/vidéo et que vous souhaitez les inclure dans le fichier PPTX, désactivez l'option 'Ignorer Audio/Vidéo' — notez que cela augmentera considérablement le temps d'export.",
           "text_10i3c6": "Ignorer audio/vidéo :",
-          "text_ok82ly": "Astuce : dans la boîte d'impression, cochez « Graphiques d'arrière-plan » et choisissez les marges « Par défaut »."
+          "text_ok82ly": "Astuce : dans la boîte d'impression, cochez « Graphiques d'arrière-plan » et choisissez les marges « Par défaut ».",
+          "text_qv7pp1": "Exportation...",
+          "text_t6gc54": "Par défaut, les polices web sont ignorées lors de l'export. Si vous avez utilisé des polices web dans vos diapositives et souhaitez conserver les styles après l'export, désactivez l'option 'Ignorer les polices web' — notez que cela augmentera le temps d'export."
         }
       },
       "Toolbar": {
@@ -1054,8 +1140,11 @@
         }
       },
       "text": {
+        "ai": "Génération IA, veuillez patienter...",
         "ppt": "Saisissez votre sujet PPT ci-dessous et ajoutez des détails comme secteur, poste, matière ou usage",
-        "text_6bca8z": "Confirmez le plan ci-dessous (cliquez pour modifier, clic droit pour ajouter/supprimer), puis choisissez un modèle"
+        "pptist": "Télécharger un fichier de modèle au format .pptist",
+        "text_6bca8z": "Confirmez le plan ci-dessous (cliquez pour modifier, clic droit pour ajouter/supprimer), puis choisissez un modèle",
+        "text_lhg40j": "Génération de la présentation, veuillez patienter..."
       },
       "title": {
         "pexels_com": "Galerie d'images (depuis pexels.com)"

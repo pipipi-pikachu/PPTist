@@ -81,7 +81,7 @@
         </div>
       </template>
     </div>
-    <div class="empty" v-if="!elements.length">本页无内容</div>
+    <div class="empty" v-if="!elements.length">{{ $t('Commons.text.text_34psxh', {}) }}</div>
   </MoveablePanel>
 </template>
 

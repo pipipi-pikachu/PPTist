@@ -60,7 +60,7 @@
       </SelectCustom>
     </div>
     <div class="row">
-      <div style="width: 40%;">线条颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_c1athe', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -72,7 +72,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">线条宽度：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_bs7ran', {}) }}</div>
       <NumberInput 
         :value="handleLineElement.width" 
         @update:value="value => updateLine({ width: value })" 
@@ -81,7 +81,7 @@
     </div>
     
     <div class="row">
-      <div style="width: 40%;">起点样式：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_gubcw', {}) }}</div>
       <SelectCustom style="width: 60%;">
         <template #options>
           <div class="option" v-for="item in lineMarkerOptions" :key="item" @click="updateLine({ points: [item, handleLineElement.points[1]] })">
@@ -94,7 +94,7 @@
       </SelectCustom>
     </div>
     <div class="row">
-      <div style="width: 40%;">终点样式：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_d5f45t', {}) }}</div>
       <SelectCustom style="width: 60%;">
         <template #options>
           <div class="option" v-for="item in lineMarkerOptions" :key="item" @click="updateLine({ points: [handleLineElement.points[0], item] })">
@@ -110,7 +110,7 @@
     <Divider />
 
     <div class="row">
-      <Button style="flex: 1;" @click="updateLine({ start: handleLineElement.end, end: handleLineElement.start })"><i-icon-park-outline:switch /> 交换方向</Button>
+      <Button style="flex: 1;" @click="updateLine({ start: handleLineElement.end, end: handleLineElement.start })"><i-icon-park-outline:switch /> {{ $t('Commons.button.text_ac4kza', {}) }}</Button>
     </div>
 
     <Divider />

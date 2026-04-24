@@ -25,6 +25,7 @@ import { SLIDE_ANIMATIONS } from '@/configs/animation'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import message from '@/utils/message'
 import Button from '@/components/Button.vue'
+import { t } from '@/i18n';
 
 const slidesStore = useSlidesStore()
 const { slides, currentSlide } = storeToRefs(slidesStore)
@@ -51,7 +52,7 @@ const applyAllSlide = () => {
     }
   })
   slidesStore.setSlides(newSlides)
-  message.success('已应用到全部')
+  message.success(t('Commons.text.text_j5x7km'))
   addHistorySnapshot()
 }
 </script>

@@ -15,6 +15,7 @@ import message from '@/utils/message'
 
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
+import { t } from '@/i18n';
 
 interface ExportImageConfig {
   quality: number
@@ -58,7 +59,7 @@ export default () => {
         saveAs(dataUrl, `${title.value}.${format}`)
       }).catch(() => {
         exporting.value = false
-        message.error('导出图片失败')
+        message.error(t('Commons.text.text_po3q1x'))
       })
     }, 200)
   }
@@ -98,7 +99,7 @@ export default () => {
         pptx.writeFile({ fileName: `${title.value}.pptx` }).then(() => exporting.value = false)
       }).catch(() => {
         exporting.value = false
-        message.error('导出失败')
+        message.error(t('Commons.text.text_by46j6'))
       })
     }, 200)
   }
@@ -986,7 +987,7 @@ export default () => {
     setTimeout(() => {
       pptx.writeFile({ fileName: `${title.value}.pptx` }).then(() => exporting.value = false).catch(() => {
         exporting.value = false
-        message.error('导出失败')
+        message.error(t('Commons.text.text_by46j6'))
       })
     }, 200)
   }

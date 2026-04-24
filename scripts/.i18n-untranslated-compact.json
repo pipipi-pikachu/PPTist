@@ -1,0 +1,58 @@
+{
+  "issueType": "untranslated",
+  "generatedAt": "2026-04-24T10:30:47.459Z",
+  "files": [
+    {
+      "locale": "en",
+      "localeFile": "en.json",
+      "issues": [
+        {
+          "file": "src\\configs\\symbol.ts",
+          "lineStart": 62,
+          "lineEnd": 62
+        },
+        {
+          "file": "src\\configs\\font.ts",
+          "lineStart": 25,
+          "lineEnd": 32
+        },
+        {
+          "file": "src\\utils\\prosemirror\\schema\\nodes.ts",
+          "lineStart": 98,
+          "lineEnd": 98
+        },
+        {
+          "file": "src\\utils\\print.ts",
+          "lineStart": 23,
+          "lineEnd": 23
+        }
+      ]
+    },
+    {
+      "locale": "fr",
+      "localeFile": "fr.json",
+      "issues": [
+        {
+          "file": "src\\configs\\symbol.ts",
+          "lineStart": 62,
+          "lineEnd": 62
+        },
+        {
+          "file": "src\\configs\\font.ts",
+          "lineStart": 25,
+          "lineEnd": 32
+        },
+        {
+          "file": "src\\utils\\prosemirror\\schema\\nodes.ts",
+          "lineStart": 98,
+          "lineEnd": 98
+        },
+        {
+          "file": "src\\utils\\print.ts",
+          "lineStart": 23,
+          "lineEnd": 23
+        }
+      ]
+    }
+  ]
+}

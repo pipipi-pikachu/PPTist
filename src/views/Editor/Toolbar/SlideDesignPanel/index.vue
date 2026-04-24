@@ -30,7 +30,7 @@
         @update:value="value => updateImageBackground({ size: value as SlideBackgroundImageSize })"
         v-else-if="background.type === 'image'"
         :options="[
-          { label: '缩放', value: 'contain' },
+          { label: $t('Commons.text.text_m6np'), value: 'contain' },
           { label: '拼贴', value: 'repeat' },
           { label: '缩放铺满', value: 'cover' },
         ]"
@@ -68,7 +68,7 @@
         />
       </div>
       <div class="row">
-        <div style="width: 40%;">当前色块：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_shg7wb', {}) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -80,7 +80,7 @@
         </Popover>
       </div>
       <div class="row" v-if="background.gradient?.type === 'linear'">
-        <div style="width: 40%;">渐变角度：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_fb098e', {}) }}</div>
         <Slider
           :min="0"
           :max="360"
@@ -93,7 +93,7 @@
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyBackgroundAllSlide()"><i-icon-park-outline:check /> 应用背景到全部</Button>
+      <Button style="flex: 1;" @click="applyBackgroundAllSlide()"><i-icon-park-outline:check /> {{ $t('Commons.button.text_mg6za1', {}) }}</Button>
     </div>
 
     <Divider />
@@ -120,15 +120,15 @@
     <Divider />
 
     <div class="title">
-      <span>全局主题</span>
+      <span>{{ $t('Commons.text.text_anjfdh', {}) }}</span>
       <span class="more" @click="moreThemeConfigsVisible = !moreThemeConfigsVisible">
-        <span class="text">更多</span>
+        <span class="text">{{ $t('Commons.text.text_i012', {}) }}</span>
         <i-icon-park-outline:down v-if="moreThemeConfigsVisible" />
         <i-icon-park-outline:right v-else />
       </span>
     </div>
     <div class="row">
-      <div style="width: 40%;">字体：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_dsiwu', {}) }}</div>
       <Select
         style="width: 60%;"
         :value="theme.fontName"
@@ -140,7 +140,7 @@
       />
     </div>
     <div class="row">
-      <div style="width: 40%;">字体颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_cmjpyg', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -152,7 +152,7 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">背景颜色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_jxoa69', {}) }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -164,13 +164,13 @@
       </Popover>
     </div>
     <div class="row">
-      <div style="width: 40%;">主题色：</div>
+      <div style="width: 40%;">{{ $t('Commons.text.text_ai7xwl', {}) }}</div>
       <ColorListButton style="width: 60%;" :colors="theme.themeColors" @click="themeColorsSettingVisible = true" />
     </div>
     
     <template v-if="moreThemeConfigsVisible">
       <div class="row">
-        <div style="width: 40%;">边框样式：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_7almz9', {}) }}</div>
         <SelectCustom style="width: 60%;">
           <template #options>
             <div class="option" v-for="item in lineStyleOptions" :key="item" @click="updateTheme({ outline: { ...theme.outline, style: item } })">
@@ -183,7 +183,7 @@
         </SelectCustom>
       </div>
       <div class="row">
-        <div style="width: 40%;">边框颜色：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_7huu9j', {}) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -195,7 +195,7 @@
         </Popover>
       </div>
       <div class="row">
-        <div style="width: 40%;">边框粗细：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_7dqgwu', {}) }}</div>
         <NumberInput 
           :value="theme.outline.width || 0" 
           @update:value="value => updateTheme({ outline: { ...theme.outline, width: value } })" 
@@ -203,7 +203,7 @@
         />
       </div>
       <div class="row" style="height: 30px;">
-        <div style="width: 40%;">水平阴影：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_9f97mm', {}) }}</div>
         <Slider 
           style="width: 60%;"
           :min="-10" 
@@ -214,7 +214,7 @@
         />
       </div>
       <div class="row" style="height: 30px;">
-        <div style="width: 40%;">垂直阴影：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_2mkqob', {}) }}</div>
         <Slider
           style="width: 60%;"
           :min="-10"
@@ -225,7 +225,7 @@
         />
       </div>
       <div class="row" style="height: 30px;">
-        <div style="width: 40%;">模糊距离：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_53ydir', {}) }}</div>
         <Slider
           style="width: 60%;"
           :min="1"
@@ -236,7 +236,7 @@
         />
       </div>
       <div class="row">
-        <div style="width: 40%;">阴影颜色：</div>
+        <div style="width: 40%;">{{ $t('Commons.text.text_vpxtbb', {}) }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -250,20 +250,20 @@
     </template>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)"><i-icon-park-outline:check /> 应用主题到全部</Button>
+      <Button style="flex: 1;" @click="applyThemeToAllSlides(moreThemeConfigsVisible)"><i-icon-park-outline:check /> {{ $t('Commons.button.text_qvibb5', {}) }}</Button>
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="applyFontToAllSlides(theme.fontName)"><i-icon-park-outline:check /> 全局统一字体</Button>
+      <Button style="flex: 1;" @click="applyFontToAllSlides(theme.fontName)"><i-icon-park-outline:check /> {{ $t('Commons.button.text_frr1x1', {}) }}</Button>
     </div>
 
     <div class="row">
-      <Button style="flex: 1;" @click="themeStylesExtractVisible = true"><i-icon-park-outline:platte /> 从幻灯片提取主题</Button>
+      <Button style="flex: 1;" @click="themeStylesExtractVisible = true"><i-icon-park-outline:platte /> {{ $t('Commons.button.text_yj1ns8', {}) }}</Button>
     </div>
 
     <Divider />
 
-    <div class="title">预置主题</div>
+    <div class="title">{{ $t('Commons.text.text_jrkmnb', {}) }}</div>
     <div class="theme-list">
       <div 
         class="theme-item" 
@@ -281,8 +281,8 @@
           </div>
 
           <div class="btns">
-            <Button type="primary" size="small" @click="applyPresetTheme(item)">设置</Button>
-            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetTheme(item, true)">设置并应用</Button>
+            <Button type="primary" size="small" @click="applyPresetTheme(item)">{{ $t('Commons.button.text_ogvk', {}) }}</Button>
+            <Button type="primary" size="small" style="margin-top: 3px;" @click="applyPresetTheme(item, true)">{{ $t('Commons.button.text_5dzt5y', {}) }}</Button>
           </div>
         </div>
       </div>

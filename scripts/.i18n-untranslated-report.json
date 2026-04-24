@@ -1,0 +1,1277 @@
+{
+  "generatedAt": "2026-04-24T10:30:47.459Z",
+  "issues": [
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.emoji",
+      "english": "Emoji",
+      "current": "Emoji",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.inter",
+      "english": "Inter",
+      "current": "Inter",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.jetbrains_mono",
+      "english": "JetBrains Mono",
+      "current": "JetBrains Mono",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.literata",
+      "english": "Literata",
+      "current": "Literata",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.merriweather",
+      "english": "Merriweather",
+      "current": "Merriweather",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.montserrat",
+      "english": "Montserrat",
+      "current": "Montserrat",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.open_sans",
+      "english": "Open Sans",
+      "current": "Open Sans",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.label.roboto",
+      "english": "Roboto",
+      "current": "Roboto",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.aippt",
+      "english": "AI生成PPT",
+      "current": "AI生成PPT",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.all",
+      "english": "all",
+      "current": "all",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.arial",
+      "english": "Arial",
+      "current": "Arial",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.back",
+      "english": "back",
+      "current": "back",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.backcolor",
+      "english": "backcolor",
+      "current": "backcolor",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.background",
+      "english": "background",
+      "current": "background",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.backspace",
+      "english": "backspace",
+      "current": "backspace",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.backspace_2",
+      "english": "BACKSPACE",
+      "current": "BACKSPACE",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.backspace_3",
+      "english": "Backspace",
+      "current": "Backspace",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.caret",
+      "english": "Caret",
+      "current": "Caret",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.clear",
+      "english": "clear",
+      "current": "clear",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.close",
+      "english": "close",
+      "current": "close",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.closed",
+      "english": "closed",
+      "current": "closed",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.copy",
+      "english": "copy",
+      "current": "copy",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.created",
+      "english": "created",
+      "current": "created",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.delete",
+      "english": "DELETE",
+      "current": "DELETE",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.delete_2",
+      "english": "Delete",
+      "current": "Delete",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.editable",
+      "english": "editable",
+      "current": "editable",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.editor",
+      "english": "editor",
+      "current": "editor",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.emoji",
+      "english": "Emoji",
+      "current": "Emoji",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.english",
+      "english": "English",
+      "current": "English",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.enter",
+      "english": "Enter",
+      "current": "Enter",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.escape",
+      "english": "Escape",
+      "current": "Escape",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.filters",
+      "english": "filters",
+      "current": "filters",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.francais",
+      "english": "Français",
+      "current": "Français",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.inter",
+      "english": "Inter",
+      "current": "Inter",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.jetbrains_mono",
+      "english": "JetBrains Mono",
+      "current": "JetBrains Mono",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.literata",
+      "english": "Literata",
+      "current": "Literata",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.load",
+      "english": "load",
+      "current": "load",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.loadedmetadata",
+      "english": "loadedmetadata",
+      "current": "loadedmetadata",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.loading",
+      "english": "loading",
+      "current": "loading",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.lxgwwenkai",
+      "english": "LXGWWenKai",
+      "current": "LXGWWenKai",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.merriweather",
+      "english": "Merriweather",
+      "current": "Merriweather",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.microsoft_yahei",
+      "english": "Microsoft Yahei",
+      "current": "Microsoft Yahei",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.montserrat",
+      "english": "Montserrat",
+      "current": "Montserrat",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.next",
+      "english": "next",
+      "current": "next",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.none",
+      "english": "none",
+      "current": "none",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.none_2",
+      "english": "None",
+      "current": "None",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.normal",
+      "english": "normal",
+      "current": "normal",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.notes",
+      "english": "notes",
+      "current": "notes",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.open_sans",
+      "english": "Open Sans",
+      "current": "Open Sans",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.other",
+      "english": "other",
+      "current": "other",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.paragraph_block",
+      "english": "paragraph block*",
+      "current": "paragraph block*",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.paste",
+      "english": "paste",
+      "current": "paste",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.player",
+      "english": "player",
+      "current": "player",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.roboto",
+      "english": "Roboto",
+      "current": "Roboto",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.save",
+      "english": "save",
+      "current": "save",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.start",
+      "english": "start",
+      "current": "start",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.tab",
+      "english": "Tab",
+      "current": "Tab",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.update",
+      "english": "update",
+      "current": "update",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Commons.text.value",
+      "english": ", value:",
+      "current": ", value:",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Font.label.source_sans_pro",
+      "english": "Source Sans Pro",
+      "current": "Source Sans Pro",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Font.text.source_sans_pro",
+      "english": "Source Sans Pro",
+      "current": "Source Sans Pro",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.ctrl_3",
+      "english": "Ctrl + ↑",
+      "current": "Ctrl + ↑",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.ctrl_4",
+      "english": "Ctrl + ↓",
+      "current": "Ctrl + ↓",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.ctrl_5",
+      "english": "Ctrl + ←",
+      "current": "Ctrl + ←",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.ctrl_6",
+      "english": "Ctrl + →",
+      "current": "Ctrl + →",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.enter_space",
+      "english": "Enter / Space",
+      "current": "Enter / Space",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.pgdown",
+      "english": "↓ / → / PgDown",
+      "current": "↓ / → / PgDown",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Configs.Hotkey.text.pgup",
+      "english": "↑ / ← / PgUp",
+      "current": "↑ / ← / PgUp",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Directive.Loading.text.loading_scss",
+      "english": "./loading.scss",
+      "current": "./loading.scss",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Utils.Common.text.digit_len",
+      "english": "+ digit, len,",
+      "current": "+ digit, len,",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Utils.Print.text.doctype_html",
+      "english": "<!DOCTYPE html>",
+      "current": "<!DOCTYPE html>",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.height_height_value",
+      "english": ", height: height.value +",
+      "current": ", height: height.value +",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.top_height_value",
+      "english": ", top: height.value +",
+      "current": ", top: height.value +",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.width_width_value",
+      "english": ", width: width.value +",
+      "current": ", width: width.value +",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.CanvasTool.Index.text.ctrl",
+      "english": "画布放大（Ctrl + =）",
+      "current": "画布放大（Ctrl + =）",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.EditorHeader.Index.text.copyright_2020_present_pipipi",
+      "english": "Copyright © 2020-PRESENT pipipi-pikachu",
+      "current": "Copyright © 2020-PRESENT pipipi-pikachu",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.ExportDialog.text.1_avimp4movwmvmp3wav_2",
+      "english": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+      "current": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.height_height",
+      "english": ", height: height +",
+      "current": ", height: height +",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.width_width",
+      "english": ", width: width +",
+      "current": ", width: width +",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "en",
+      "keyPath": "Views.Editor.text.pptist",
+      "english": "上传.pptist格式模板文件",
+      "current": "上传.pptist格式模板文件",
+      "issueType": "untranslated",
+      "localeFile": "en.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.emoji",
+      "english": "Emoji",
+      "current": "Emoji",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.inter",
+      "english": "Inter",
+      "current": "Inter",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.jetbrains_mono",
+      "english": "JetBrains Mono",
+      "current": "JetBrains Mono",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.literata",
+      "english": "Literata",
+      "current": "Literata",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.merriweather",
+      "english": "Merriweather",
+      "current": "Merriweather",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.montserrat",
+      "english": "Montserrat",
+      "current": "Montserrat",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.open_sans",
+      "english": "Open Sans",
+      "current": "Open Sans",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.label.roboto",
+      "english": "Roboto",
+      "current": "Roboto",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.aippt",
+      "english": "AI生成PPT",
+      "current": "AI生成PPT",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.all",
+      "english": "all",
+      "current": "all",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.arial",
+      "english": "Arial",
+      "current": "Arial",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.back",
+      "english": "back",
+      "current": "back",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.backcolor",
+      "english": "backcolor",
+      "current": "backcolor",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.background",
+      "english": "background",
+      "current": "background",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.backspace",
+      "english": "backspace",
+      "current": "backspace",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.backspace_2",
+      "english": "BACKSPACE",
+      "current": "BACKSPACE",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.backspace_3",
+      "english": "Backspace",
+      "current": "Backspace",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.caret",
+      "english": "Caret",
+      "current": "Caret",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.clear",
+      "english": "clear",
+      "current": "clear",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.close",
+      "english": "close",
+      "current": "close",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.closed",
+      "english": "closed",
+      "current": "closed",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.copy",
+      "english": "copy",
+      "current": "copy",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.created",
+      "english": "created",
+      "current": "created",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.delete",
+      "english": "DELETE",
+      "current": "DELETE",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.delete_2",
+      "english": "Delete",
+      "current": "Delete",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.editable",
+      "english": "editable",
+      "current": "editable",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.editor",
+      "english": "editor",
+      "current": "editor",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.emoji",
+      "english": "Emoji",
+      "current": "Emoji",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.english",
+      "english": "English",
+      "current": "English",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.enter",
+      "english": "Enter",
+      "current": "Enter",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.escape",
+      "english": "Escape",
+      "current": "Escape",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.filters",
+      "english": "filters",
+      "current": "filters",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.francais",
+      "english": "Français",
+      "current": "Français",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.inter",
+      "english": "Inter",
+      "current": "Inter",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.jetbrains_mono",
+      "english": "JetBrains Mono",
+      "current": "JetBrains Mono",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.literata",
+      "english": "Literata",
+      "current": "Literata",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.load",
+      "english": "load",
+      "current": "load",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.loadedmetadata",
+      "english": "loadedmetadata",
+      "current": "loadedmetadata",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.loading",
+      "english": "loading",
+      "current": "loading",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.lxgwwenkai",
+      "english": "LXGWWenKai",
+      "current": "LXGWWenKai",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.merriweather",
+      "english": "Merriweather",
+      "current": "Merriweather",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.microsoft_yahei",
+      "english": "Microsoft Yahei",
+      "current": "Microsoft Yahei",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.montserrat",
+      "english": "Montserrat",
+      "current": "Montserrat",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.next",
+      "english": "next",
+      "current": "next",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.none",
+      "english": "none",
+      "current": "none",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.none_2",
+      "english": "None",
+      "current": "None",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.normal",
+      "english": "normal",
+      "current": "normal",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.notes",
+      "english": "notes",
+      "current": "notes",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.open_sans",
+      "english": "Open Sans",
+      "current": "Open Sans",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.other",
+      "english": "other",
+      "current": "other",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.paragraph_block",
+      "english": "paragraph block*",
+      "current": "paragraph block*",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.paste",
+      "english": "paste",
+      "current": "paste",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.player",
+      "english": "player",
+      "current": "player",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.roboto",
+      "english": "Roboto",
+      "current": "Roboto",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.save",
+      "english": "save",
+      "current": "save",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.start",
+      "english": "start",
+      "current": "start",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.tab",
+      "english": "Tab",
+      "current": "Tab",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.update",
+      "english": "update",
+      "current": "update",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Commons.text.value",
+      "english": ", value:",
+      "current": ", value:",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Font.label.source_sans_pro",
+      "english": "Source Sans Pro",
+      "current": "Source Sans Pro",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Font.text.source_sans_pro",
+      "english": "Source Sans Pro",
+      "current": "Source Sans Pro",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.ctrl_3",
+      "english": "Ctrl + ↑",
+      "current": "Ctrl + ↑",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.ctrl_4",
+      "english": "Ctrl + ↓",
+      "current": "Ctrl + ↓",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.ctrl_5",
+      "english": "Ctrl + ←",
+      "current": "Ctrl + ←",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.ctrl_6",
+      "english": "Ctrl + →",
+      "current": "Ctrl + →",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.pgdown",
+      "english": "↓ / → / PgDown",
+      "current": "↓ / → / PgDown",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Configs.Hotkey.text.pgup",
+      "english": "↑ / ← / PgUp",
+      "current": "↑ / ← / PgUp",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Directive.Loading.text.loading_scss",
+      "english": "./loading.scss",
+      "current": "./loading.scss",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Utils.Common.text.digit_len",
+      "english": "+ digit, len,",
+      "current": "+ digit, len,",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Utils.Print.text.doctype_html",
+      "english": "<!DOCTYPE html>",
+      "current": "<!DOCTYPE html>",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.height_height_value",
+      "english": ", height: height.value +",
+      "current": ", height: height.value +",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.top_height_value",
+      "english": ", top: height.value +",
+      "current": ", top: height.value +",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.Canvas.Hooks.UseCommonOperate.text.width_width_value",
+      "english": ", width: width.value +",
+      "current": ", width: width.value +",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.CanvasTool.Index.text.ctrl",
+      "english": "画布放大（Ctrl + =）",
+      "current": "画布放大（Ctrl + =）",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.EditorHeader.Index.text.copyright_2020_present_pipipi",
+      "english": "Copyright © 2020-PRESENT pipipi-pikachu",
+      "current": "Copyright © 2020-PRESENT pipipi-pikachu",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.ExportDialog.text.1_avimp4movwmvmp3wav_2",
+      "english": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+      "current": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.height_height",
+      "english": ", height: height +",
+      "current": ", height: height +",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.Toolbar.ElementStylePanel.ChartStylePanel.text.width_width",
+      "english": ", width: width +",
+      "current": ", width: width +",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    },
+    {
+      "locale": "fr",
+      "keyPath": "Views.Editor.text.pptist",
+      "english": "上传.pptist格式模板文件",
+      "current": "上传.pptist格式模板文件",
+      "issueType": "untranslated",
+      "localeFile": "fr.json"
+    }
+  ]
+}

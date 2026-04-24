@@ -14,7 +14,7 @@
           </template>
           <div class="color-btn-wrap" style="width: 100%;">
             <ColorButton :color="item" />
-            <div class="delete-color-btn" v-tooltip="'删除'" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><i-icon-park-outline:close-small /></div>
+            <div class="delete-color-btn" v-tooltip="$t('Commons.button.text_eslg')" @click.stop="deleteThemeColor(index)" v-if="index !== 0"><i-icon-park-outline:close-small /></div>
           </div>
         </Popover>
       </div>
@@ -23,11 +23,11 @@
         :disabled="themeColors.length >= 10"
         @click="addThemeColor()"
       >
-        <i-icon-park-outline:plus /> 添加主题色
+        <i-icon-park-outline:plus /> {{ $t('Commons.button.text_elgbao', {}) }}
       </Button>
     </div>
 
-    <Button class="btn" type="primary" @click="setThemeColors()">确认</Button>
+    <Button class="btn" type="primary" @click="setThemeColors()">{{ $t('Commons.button.text_l912', {}) }}</Button>
   </div>
 </template>
 

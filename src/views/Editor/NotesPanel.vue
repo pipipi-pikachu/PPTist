@@ -68,7 +68,7 @@
           @enter.prevent="createNote()"
         />
         <div class="footer">
-          <i-icon-park-outline:delete class="btn icon" v-tooltip="'清空本页批注'" style="flex: 1" @click="clear()" />
+          <i-icon-park-outline:delete class="btn icon" v-tooltip="$t('Commons.text.text_n3y34j')" style="flex: 1" @click="clear()" />
           <Button type="primary" class="btn" style="flex: 12" @click="createNote()"><i-icon-park-outline:plus /> {{ $t('Commons.button.text_e7yono', {}) }}</Button>
         </div>
       </div>
@@ -86,6 +86,7 @@ import type { Note } from '@/types/slides'
 import MoveablePanel from '@/components/MoveablePanel.vue'
 import TextArea from '@/components/TextArea.vue'
 import Button from '@/components/Button.vue'
+import { t } from '@/i18n';
 
 const slidesStore = useSlidesStore()
 const mainStore = useMainStore()
@@ -121,7 +122,7 @@ const createNote = () => {
     id: nanoid(),
     content: content.value,
     time: new Date().getTime(),
-    user: '测试用户',
+    user: t('Commons.text.text_edb2pl'),
   }
   if (handleElementId.value) newNote.elId = handleElementId.value
 
@@ -153,7 +154,7 @@ const createNoteReply = () => {
       id: nanoid(),
       content: replyContent.value,
       time: new Date().getTime(),
-      user: '测试用户',
+      user: t('Commons.text.text_edb2pl'),
     },
   ]
   const newNote: Note = {

@@ -141,7 +141,7 @@ const updateAllThemes = () => {
   let themeColors = themeStyles.value.themeColors.filter((item, index) => selectedIndex.value.themeColors.includes(index))
   if (themeColors.length > 6) {
     themeColors = themeColors.slice(0, 6)
-    message.warning('主题色超出数量限制，已自动选取前6个')
+    message.warning(t('Commons.text.6'))
   }
 
   const backgroundColor = themeStyles.value.backgroundColors[selectedIndex.value.backgroundColor]

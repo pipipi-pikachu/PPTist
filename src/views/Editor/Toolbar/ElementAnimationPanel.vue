@@ -43,12 +43,12 @@
           </template>
         </template>
         <Button class="element-animation-btn" @click="handleAnimationId = ''">
-          <i-icon-park-outline:effects /> 添加动画
+          <i-icon-park-outline:effects /> {{ $t('Commons.button.text_e7w1g8', {}) }}
         </Button>
       </Popover>
     </div>
 
-    <div class="tip" v-else><i-icon-park-outline:click style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
+    <div class="tip" v-else><i-icon-park-outline:click style="margin-right: 5px;" /> {{ $t('Commons.text.text_dxweyw', {}) }}</div>
     
     <Divider />
 
@@ -68,8 +68,8 @@
             <div class="index">{{element.index}}</div>
             <div class="text">「{{element.elType}}」{{element.animationEffect}}</div>
             <div class="handler">
-              <i-icon-park-outline:play-one class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
-              <i-icon-park-outline:close-small class="handler-btn" v-tooltip="'删除'" @click.stop="deleteAnimation(element.id)" />
+              <i-icon-park-outline:play-one class="handler-btn" v-tooltip="$t('Commons.text.text_qp50')" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
+              <i-icon-park-outline:close-small class="handler-btn" v-tooltip="$t('Commons.button.text_eslg')" @click.stop="deleteAnimation(element.id)" />
             </div>
           </div>
 
@@ -77,7 +77,7 @@
             <Divider :margin="16" />
 
             <div class="config-item">
-              <div style="width: 35%;">持续时长：</div>
+              <div style="width: 35%;">{{ $t('Commons.text.text_mmyrh7', {}) }}</div>
               <NumberInput 
                 :min="500"
                 :max="3000"
@@ -88,7 +88,7 @@
               />
             </div>
             <div class="config-item">
-              <div style="width: 35%;">触发方式：</div>
+              <div style="width: 35%;">{{ $t('Commons.text.text_i2gp47', {}) }}</div>
               <Select
                 :value="element.trigger"
                 @update:value="value => updateElementAnimationTrigger(element.id, value as AnimationTrigger)"
@@ -101,7 +101,7 @@
               />
             </div>
             <div class="config-item">
-              <Button style="width: 100%;" @click="openAnimationPool(element.id)"><i-icon-park-outline:switch /> 更换动画</Button>
+              <Button style="width: 100%;" @click="openAnimationPool(element.id)"><i-icon-park-outline:switch /> {{ $t('Commons.button.text_defp4x', {}) }}</Button>
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@
     <template v-if="animationSequence.length >= 2">
       <Divider />
       <Button @click="runAllAnimation()">
-        <i-icon-park-outline:pause v-if="animateIn" /><i-icon-park-outline:play-one v-else /> {{ animateIn ? '停止预览' : '预览全部'}}
+        <i-icon-park-outline:pause v-if="animateIn" /><i-icon-park-outline:play-one v-else /> {{ animateIn ? $t('Commons.button.text_alcngq') : '预览全部'}}
       </Button>
     </template>
   </div>

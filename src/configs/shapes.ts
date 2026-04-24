@@ -3,6 +3,7 @@
 // 非专业设计人士可以用该应用绘制基本形状：https://github.com/pipipi-pikachu/svgPathCreator
 
 import { ShapePathFormulasKeys } from '@/types/slides'
+import { t } from '@/i18n';
 
 export interface ShapePoolItem {
   viewBox: [number, number]
@@ -279,7 +280,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
 
 export const SHAPE_LIST: ShapeListItem[] = [
   {
-    type: '矩形',
+    type: t('Commons.button.text_kx3t'),
     children: [
       {
         viewBox: [200, 200],
@@ -338,7 +339,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '常用形状',
+    type: t('Commons.text.text_cdfts4'),
     children: [
       {
         viewBox: [200, 200],
@@ -644,7 +645,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
   
   {
-    type: '箭头',
+    type: t('Commons.label.text_lixz'),
     children: [
       {
         viewBox: [200, 200],
@@ -746,7 +747,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '其他形状',
+    type: t('Commons.text.text_alwcdw'),
     children: [
       {
         viewBox: [1024, 1024],
@@ -896,7 +897,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '线性',
+    type: t('Commons.text.text_m348'),
     children: [
       {
         viewBox: [1024, 1024],

@@ -19,10 +19,10 @@
             <i-icon-park-outline:more />
           </span>
         </Popover>
-        <span class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="'批注面板'" @click="toggleNotesPanel()">
+        <span class="handler-item" :class="{ 'active': showNotesPanel }" v-tooltip="$t('Commons.text.text_cvt54c')" @click="toggleNotesPanel()">
           <i-icon-park-outline:comment />
         </span>
-        <span class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="'选择窗格'" @click="toggleSelectPanel()">
+        <span class="handler-item" :class="{ 'active': showSelectPanel }" v-tooltip="$t('Commons.text.text_il3af9')" @click="toggleSelectPanel()">
           <i-icon-park-outline:move-one />
         </span>
         <span class="handler-item" :class="{ 'active': showSearchPanel }" v-tooltip="'查找/替换（Ctrl + F）'" @click="toggleSraechPanel()">
@@ -32,44 +32,44 @@
     </div>
 
     <div class="add-element-handler">
-      <div class="insert-handler-item group-btn" :class="{ 'active': creatingElement?.type === 'text' }" v-tooltip="'插入文字'">
-        <div class="group-btn-main" @click="drawText()"><i-icon-park-outline:font-size class="icon" /> <span class="text">文本框</span></div>
+      <div class="insert-handler-item group-btn" :class="{ 'active': creatingElement?.type === 'text' }" v-tooltip="$t('Commons.text.text_cxntfn')">
+        <div class="group-btn-main" @click="drawText()"><i-icon-park-outline:font-size class="icon" /> <span class="text">{{ $t('Commons.text.text_fdh0h', {}) }}</span></div>
         
         <Popover trigger="click" v-model:value="textTypeSelectVisible" style="height: 100%;" :offset="10">
           <template #content>
-            <PopoverMenuItem center @click="() => { drawText(); textTypeSelectVisible = false }"><i-icon-park-outline:text-rotation-none class="icon" /> 横向文本框</PopoverMenuItem>
-            <PopoverMenuItem center @click="() => { drawText(true); textTypeSelectVisible = false }"><i-icon-park-outline:text-rotation-down class="icon" /> 竖向文本框</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawText(); textTypeSelectVisible = false }"><i-icon-park-outline:text-rotation-none class="icon" /> {{ $t('Commons.text.text_20rom', {}) }}</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawText(true); textTypeSelectVisible = false }"><i-icon-park-outline:text-rotation-down class="icon" /> {{ $t('Commons.text.text_5wex6i', {}) }}</PopoverMenuItem>
           </template>
           <span class="arrow"><i-icon-park-outline:down /></span>
         </Popover>
       </div>
-      <div class="insert-handler-item group-btn" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" v-tooltip="'插入形状'" :offset="10">
+      <div class="insert-handler-item group-btn" :class="{ 'active': creatingCustomShape || creatingElement?.type === 'shape' }" v-tooltip="$t('Commons.text.text_cxmwfb')" :offset="10">
         <Popover trigger="click" style="height: 100%;" v-model:value="shapePoolVisible" :offset="10">
           <template #content>
             <ShapePool @select="shape => drawShape(shape)" />
           </template>
-          <div class="group-btn-main"><i-icon-park-outline:graphic-design class="icon" /> <span class="text">形状</span></div>
+          <div class="group-btn-main"><i-icon-park-outline:graphic-design class="icon" /> <span class="text">{{ $t('Commons.text.text_guqc', {}) }}</span></div>
         </Popover>
         
         <Popover trigger="click" v-model:value="shapeMenuVisible" style="height: 100%;" :offset="10">
           <template #content>
-            <PopoverMenuItem center @click="shapeMenuVisible = false; shapePoolVisible = true"><i-icon-park-outline:graphic-design class="icon" />预设形状</PopoverMenuItem>
-            <PopoverMenuItem center @click="() => { drawCustomShape(); shapeMenuVisible = false }"><i-icon-park-outline:writing-fluently class="icon" />自由绘制</PopoverMenuItem>
+            <PopoverMenuItem center @click="shapeMenuVisible = false; shapePoolVisible = true"><i-icon-park-outline:graphic-design class="icon" />{{ $t('Commons.text.text_jtg9fy', {}) }}</PopoverMenuItem>
+            <PopoverMenuItem center @click="() => { drawCustomShape(); shapeMenuVisible = false }"><i-icon-park-outline:writing-fluently class="icon" />{{ $t('Commons.text.text_gvo0th', {}) }}</PopoverMenuItem>
           </template>
           <span class="arrow"><i-icon-park-outline:down /></span>
         </Popover>
       </div>
-      <div class="insert-handler-item group-btn" v-tooltip="'插入图片'">
+      <div class="insert-handler-item group-btn" v-tooltip="$t('Commons.text.text_cxlgyk')">
         <FileInput style="height: 100%;" @change="files => insertImageElement(files)">
-          <div class="group-btn-main"><i-icon-park-outline:picture class="icon" /> <span class="text">图片</span></div>
+          <div class="group-btn-main"><i-icon-park-outline:picture class="icon" /> <span class="text">{{ $t('Commons.text.text_ff9l', {}) }}</span></div>
         </FileInput>
         
         <Popover trigger="click" v-model:value="imageMenuVisible" style="height: 100%;" :offset="10">
           <template #content>
             <FileInput @change="files => { insertImageElement(files); imageMenuVisible = false }">
-              <PopoverMenuItem center><i-icon-park-outline:upload class="icon" /> 上传图片</PopoverMenuItem>
+              <PopoverMenuItem center><i-icon-park-outline:upload class="icon" /> {{ $t('Commons.text.text_a6d3a7', {}) }}</PopoverMenuItem>
             </FileInput>
-            <PopoverMenuItem center @click="openImageLibPanel(); imageMenuVisible = false"><i-icon-park-outline:picture class="icon" /> 在线图库</PopoverMenuItem>
+            <PopoverMenuItem center @click="openImageLibPanel(); imageMenuVisible = false"><i-icon-park-outline:picture class="icon" /> {{ $t('Commons.text.text_biqejw', {}) }}</PopoverMenuItem>
           </template>
           <span class="arrow"><i-icon-park-outline:down /></span>
         </Popover>
@@ -78,16 +78,16 @@
         <template #content>
           <LinePool @select="line => drawLine(line)" />
         </template>
-        <div class="insert-handler-item" :class="{ 'active': creatingElement?.type === 'line' }" v-tooltip="'插入线条'">
-          <i-icon-park-outline:connection class="icon" /> <span class="text">线条</span>
+        <div class="insert-handler-item" :class="{ 'active': creatingElement?.type === 'line' }" v-tooltip="$t('Commons.text.text_cxs68l')">
+          <i-icon-park-outline:connection class="icon" /> <span class="text">{{ $t('Commons.text.text_m4jm', {}) }}</span>
         </div>
       </Popover>
       <Popover trigger="click" v-model:value="chartPoolVisible" :offset="10">
         <template #content>
           <ChartPool @select="chart => { createChartElement(chart); chartPoolVisible = false }" />
         </template>
-        <div class="insert-handler-item" v-tooltip="'插入图表'">
-          <i-icon-park-outline:chart-proportion class="icon" /> <span class="text">图表</span>
+        <div class="insert-handler-item" v-tooltip="$t('Commons.text.text_cxllbx')">
+          <i-icon-park-outline:chart-proportion class="icon" /> <span class="text">{{ $t('Commons.text.text_fjmy', {}) }}</span>
         </div>
       </Popover>
       <Popover trigger="click" v-model:value="tableGeneratorVisible" :offset="10">
@@ -97,12 +97,12 @@
             @insert="({ row, col }) => { createTableElement(row, col); tableGeneratorVisible = false }"
           />
         </template>
-        <div class="insert-handler-item" v-tooltip="'插入表格'">
-          <i-icon-park-outline:insert-table class="icon" /> <span class="text">表格</span>
+        <div class="insert-handler-item" v-tooltip="$t('Commons.text.text_cxttk7')">
+          <i-icon-park-outline:insert-table class="icon" /> <span class="text">{{ $t('Commons.text.text_nrv8', {}) }}</span>
         </div>
       </Popover>
-      <div class="insert-handler-item" v-tooltip="'插入公式'" @click="latexEditorVisible = true">
-        <i-icon-park-outline:formula class="icon" /> <span class="text">公式</span>
+      <div class="insert-handler-item" v-tooltip="$t('Commons.text.text_cxkf1y')" @click="latexEditorVisible = true">
+        <i-icon-park-outline:formula class="icon" /> <span class="text">{{ $t('Commons.text.text_edcz', {}) }}</span>
       </div>
       <Popover trigger="click" v-model:value="mediaInputVisible" :offset="10">
         <template #content>
@@ -112,12 +112,12 @@
             @insertAudio="({ src, ext }) => { createAudioElement(src, ext); mediaInputVisible = false }"
           />
         </template>
-        <div class="insert-handler-item" v-tooltip="'插入音视频'">
-          <i-icon-park-outline:video-two class="icon" /> <span class="text">音视频</span>
+        <div class="insert-handler-item" v-tooltip="$t('Commons.text.text_ozjdh1')">
+          <i-icon-park-outline:video-two class="icon" /> <span class="text">{{ $t('Commons.text.text_mxhvi', {}) }}</span>
         </div>
       </Popover>
-      <div class="insert-handler-item" :class="{ 'active': showSymbolPanel }" v-tooltip="'插入符号'" @click="toggleSymbolPanel()">
-        <i-icon-park-outline:symbol class="icon" /> <span class="text">符号</span>
+      <div class="insert-handler-item" :class="{ 'active': showSymbolPanel }" v-tooltip="$t('Commons.text.text_cxrgdg')" @click="toggleSymbolPanel()">
+        <i-icon-park-outline:symbol class="icon" /> <span class="text">{{ $t('Commons.text.text_leoh', {}) }}</span>
       </div>
     </div>
 
@@ -133,11 +133,11 @@
             :key="item" 
             @click="applyCanvasPresetScale(item)"
           >{{item}}%</PopoverMenuItem>
-          <PopoverMenuItem center @click="resetCanvas(); canvasScaleVisible = false">适应屏幕</PopoverMenuItem>
+          <PopoverMenuItem center @click="resetCanvas(); canvasScaleVisible = false">{{ $t('Commons.text.text_ik6rso', {}) }}</PopoverMenuItem>
         </template>
         <span class="text">{{ canvasScalePercentage }}</span>
       </Popover>
-      <span class="handler-item viewport-size" v-tooltip="'画布放大（Ctrl + =）'" @click="scaleCanvas('+')">
+      <span class="handler-item viewport-size" v-tooltip="$t('Views.Editor.CanvasTool.Index.text.ctrl')" @click="scaleCanvas('+')">
         <i-icon-park-outline:plus />
       </span>
       <span class="handler-item viewport-size-adaptation" v-tooltip="'适应屏幕（Ctrl + 0）'" @click="resetCanvas()">

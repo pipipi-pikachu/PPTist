@@ -1,4 +1,9 @@
 {
+  "Common": {
+    "text": {
+      "text_d9r8y0": "Initializing data, please wait..."
+    }
+  },
   "Commons": {
     "button": {
       "a2": "A²",
@@ -173,6 +178,7 @@
       "text_jedfe": "Bring to Front",
       "text_jputzi": "LXGW WenKai",
       "text_jydnp6": "Gauss Formula",
+      "text_k4g": "None",
       "text_kkz8bm": "FengGuang MingRui",
       "text_km5960": "Default Font",
       "text_l79p": "Move",
@@ -243,7 +249,9 @@
       "5g": "How 5G Changes Our Lives",
       "aa": "Text Aa",
       "ai": "AI Generate",
+      "ai_2": "AI Assist",
       "aigc": "AIGC Applications in Education",
+      "aippt": "AI Generate PPT",
       "all": "all",
       "api": "Model API concurrency too high; try another model",
       "arial": "Arial",
@@ -267,9 +275,12 @@
       "editable": "editable",
       "editor": "editor",
       "emoji": "Emoji",
+      "english": "English",
       "enter": "Enter",
       "escape": "Escape",
+      "f5": "Slideshow (F5)",
       "filters": "filters",
+      "francais": "Français",
       "inter": "Inter",
       "jetbrains_mono": "JetBrains Mono",
       "json": "Export JSON",
@@ -367,6 +378,7 @@
       "text_98oxg4": "Binomial Expansion",
       "text_9f4wxc": "Soft Morandi",
       "text_9f97mm": "Horizontal Shadow:",
+      "text_9fk06e": "Decrease Indent",
       "text_9mae46": "Enter from Top Right",
       "text_9maeuv": "Enter from Bottom Right",
       "text_9maf46": "Exit to Top Right",
@@ -395,6 +407,7 @@
       "text_aclf03": "Bring Forward",
       "text_acm1zm": "Send Backward",
       "text_acuohx": "Quadric Surface",
+      "text_ad9sea": "Justify",
       "text_afnx3b": "Inverted Triangle",
       "text_afzure": "Opacity",
       "text_ai7xwl": "Theme Color:",
@@ -405,6 +418,7 @@
       "text_amekbw": "Enable Border:",
       "text_anjfdh": "Global Theme",
       "text_aodcfb": "Formula Preview",
+      "text_ape1eo": "Decrease Font Size",
       "text_aqjv33": "Show Toolbar",
       "text_ar00nr": "Enable Filter:",
       "text_arsl64": "Element Operations",
@@ -413,6 +427,7 @@
       "text_avgqpf": "Exit to Top Left",
       "text_avgrg4": "Exit to Bottom Left",
       "text_aw9as8": "Close Dialog",
+      "text_awd1n7": "Close Pen",
       "text_ax4bai": "Double-Click to Edit",
       "text_axgg3q": "List Items",
       "text_axltt1": "Bounce Up In",
@@ -445,9 +460,12 @@
       "text_biqejw": "Online Gallery",
       "text_bj7l4q": "Center Vertically",
       "text_bjva": "Image Quality:",
+      "text_bjvnux": "Increase Font Size",
       "text_bjwox1": "Rounded Rectangle",
       "text_bl4pau": "Duplicate Page",
       "text_bs7ran": "Line Width:",
+      "text_bt704": "Previous",
+      "text_bt7qt": "Next",
       "text_btlof": "Previous Page",
       "text_btmf4": "Next Page",
       "text_bu1m74": "Line Style:",
@@ -501,18 +519,29 @@
       "text_cp2ijh": "Quick Copy",
       "text_cr2oj": "Delete Column",
       "text_cr6i2": "Align Right",
+      "text_crbi3": "Strikethrough",
       "text_crc8u": "Delete Section",
       "text_crde0": "Delete Row",
       "text_ctavzh": "Feedback",
       "text_cvt54c": "Comments Panel",
       "text_cw8di5": "By Shape:",
+      "text_cxkf1y": "Insert Formula",
       "text_cxkosz": "Insert All",
+      "text_cxlgyk": "Insert Image",
+      "text_cxllbx": "Insert Chart",
+      "text_cxmwfb": "Insert Shape",
+      "text_cxntfn": "Insert Text",
+      "text_cxrgdg": "Insert Symbol",
+      "text_cxs68l": "Insert Line",
+      "text_cxttk7": "Insert Table",
       "text_cycq3o": "(Click swatches to exclude unwanted colors)",
       "text_d5ao7x": "Zoom Slide In",
       "text_d5btzl": "Zoom In Canvas",
       "text_d5f45t": "End Style:",
       "text_d5gaj7": "Zoom Enter",
       "text_d6nass": "Directional Derivative",
+      "text_d74746": "Text Color",
+      "text_d74akm": "Text Highlight",
       "text_d7i1vq": "Extract from Current Page",
       "text_d8dn4n": "New Page",
       "text_d8qbgg": "Text Edit",
@@ -534,6 +563,8 @@
       "text_dmjoyd": "Current Text Type:",
       "text_dn0qqj": "Zhuque Fangsong",
       "text_dsiwu": "Font:",
+      "text_duf1": "Superscript",
+      "text_dufw": "Subscript",
       "text_dure": "Chinese",
       "text_dwhk": "Brightness",
       "text_dx8dt": "Width:",
@@ -555,6 +586,7 @@
       "text_e97vf2": "Invalid web URL",
       "text_e9gub": "Align:",
       "text_eae8": "Other",
+      "text_eb8wc": "Align Bottom",
       "text_ebn9": "Entrance",
       "text_ebvjr4": "Merge Cells",
       "text_ecpz": "Full Screen",
@@ -573,6 +605,8 @@
       "text_ehf95": "DingTalk JinBuTi",
       "text_ehtg": "Action",
       "text_ehx7": "Transition",
+      "text_ei0x3k": "Clear Ink",
+      "text_ei3atu": "Clear Formatting",
       "text_ekc8nk": "Click to Change",
       "text_emq9e5": "Position (Multi-Select)",
       "text_emxt": "Select All",
@@ -580,6 +614,7 @@
       "text_enn2vi": "Add Slide",
       "text_eny8rv": "Delete All Sections",
       "text_epar": "Animation",
+      "text_eqk7": "Bold",
       "text_eslg": "Delete",
       "text_ewqxxu": "Server returned non-stream response",
       "text_f07iad": "Per Page:",
@@ -599,6 +634,7 @@
       "text_fdy1t7": "Export Range:",
       "text_fe9e0": "Scatter Plot",
       "text_ff9l": "Image",
+      "text_ffx": "Medium",
       "text_fjmy": "Chart",
       "text_fljd": "Copy",
       "text_fltdp": "Bar Chart",
@@ -607,15 +643,21 @@
       "text_fqji7p": "Move Canvas",
       "text_fs18kw": "Video Preview Cover",
       "text_fs2ih": "Column Chart",
+      "text_fuk": "Value",
       "text_fz8jf": "Header Row",
       "text_fzwls": "Model:",
       "text_g2mj47": "Quick Copy-Paste",
+      "text_g37": "Off",
+      "text_g3ge": "Export",
       "text_g3xjfa": "Simple Green",
+      "text_g4g8": "Center",
+      "text_g5o9l": "Eraser",
       "text_g5sou": "Rubber Band",
       "text_g7l4bb": "New Slide",
       "text_gc0mz": "Horizontal:",
       "text_gc260": "Summary Row",
       "text_gcg3s7": "List Item Title",
+      "text_ged6bd": "Double-click for continuous use",
       "text_gekral": "Send to Back",
       "text_geulpo": "Bring to Front",
       "text_gfelzj": "Shrink Slide Out",
@@ -632,6 +674,7 @@
       "text_gp57zf": "Web Link",
       "text_gqho9s": "Auto Play",
       "text_grr8r": "Laser Pointer",
+      "text_gtdf": "Quote",
       "text_gubcw": "Start Style:",
       "text_guqc": "Shape",
       "text_gvo0th": "Free Draw",
@@ -650,10 +693,12 @@
       "text_hici": "Swing",
       "text_hj7bp3": "Inline Code",
       "text_hjnx": "Head Shake",
+      "text_hlz": "Large",
       "text_hn9b0v": "Table Edit",
       "text_hohd": "Play",
       "text_hpqe": "Search",
       "text_hpr5n1": "Audience View",
+      "text_hpvb": "Italic",
       "text_hsgw": "Bright",
       "text_htjmkl": "Line Spacing:",
       "text_htqh": "Square",
@@ -674,6 +719,7 @@
       "text_i4sy0q": "Edit Theme Color",
       "text_i5wedz": "Set Link",
       "text_i5y4": "Warm",
+      "text_i6n": "Small",
       "text_i783": "Ruler",
       "text_i7bc6a": "Light Blue Fresh",
       "text_i7nd": "Find",
@@ -684,6 +730,7 @@
       "text_if77n": "First Column",
       "text_ifl41": "First Page",
       "text_ifzhw3": "Annual Report & Outlook",
+      "text_ihihjl": "Enter Fullscreen",
       "text_ihzkvg": "Select Paragraph",
       "text_ii96jl": "Exit Full Screen",
       "text_iiciaz": "Exit Playback",
@@ -693,9 +740,11 @@
       "text_ij5d": "Title",
       "text_ik6rso": "Fit to Screen",
       "text_il3af9": "Selection Pane",
+      "text_in4ziw": "Cell Fill",
       "text_ior6ln": "Urban Blue",
       "text_iqix": "Blur",
       "text_iqtg11": "Rename Section",
+      "text_irk": "On",
       "text_itms": "Body",
       "text_ivx7v": "Thickness:",
       "text_j0cimf": "Finish Custom Shape Drawing",
@@ -716,10 +765,12 @@
       "text_jiju6x": "Aspect Ratio (Landscape)",
       "text_jlk5t0": "Aspect Ratio (Portrait)",
       "text_jn7a": "Grayscale",
+      "text_jndsi": "Highlighter",
       "text_jo1frx": "Background Fill:",
       "text_jputzi": "LXGW WenKai",
       "text_jq83i9": "Project Illustration",
       "text_jq8pv": "Section Number",
+      "text_jqc1ra": "Bullets",
       "text_jqcpva": "Item Number",
       "text_jqdp3o": "Use Smooth Curve",
       "text_jrkmnb": "Preset Themes",
@@ -734,6 +785,7 @@
       "text_jydnp6": "Gauss Formula",
       "text_jyemd4": "Zoom Right Enter",
       "text_jzvp9f": "Company Annual Event Plan",
+      "text_k4g": "None",
       "text_k564gf": "Please select a link target first",
       "text_k80vht": "Already on last page",
       "text_khcdy": "Rows:",
@@ -745,9 +797,11 @@
       "text_kn3dzn": "Server encountered an unknown error!",
       "text_kr3b": "Contents",
       "text_kx3t": "Rectangle",
+      "text_kxfv": "Straight Line",
       "text_ky2s3": "Timer",
       "text_l6p53": "Language:",
       "text_leoh": "Symbols",
+      "text_lg4a4": "Hyperlink",
       "text_li5mhp": "Current Page Type:",
       "text_lixz": "Arrow",
       "text_lkdn4r": "Next Page",
@@ -762,11 +816,14 @@
       "text_lyu4": "Paste",
       "text_m0ho": "Portrait",
       "text_m0uc": "Group",
+      "text_m2sh": "Numbering",
+      "text_m348": "Linear",
       "text_m4jm": "Line",
       "text_m50s": "End",
       "text_m5hk": "Beautify",
       "text_m6kav0": "View All Slides",
       "text_m6np": "Zoom",
+      "text_m9l": "Dot",
       "text_mafgg0": "No available properties",
       "text_mej254": "Untitled Presentation",
       "text_mekb": "Edit",
@@ -776,6 +833,7 @@
       "text_mmyrh7": "Duration:",
       "text_mp078z": "Formula cannot be empty",
       "text_mrgep": "Area Chart",
+      "text_msfvx": "Align Top",
       "text_msylz": "Radar Chart",
       "text_mu9y": "Hue",
       "text_mvzrf": "Saturation",
@@ -786,6 +844,8 @@
       "text_n0akk": "Color:",
       "text_n11p2": "Preview:",
       "text_n39a4y": "Cancel Auto Play",
+      "text_n3y34j": "Clear Page Comments",
+      "text_n4npvn": "Increase Indent",
       "text_n5zik": "Height:",
       "text_n8cxtg": "Shrink Right Slide Out",
       "text_n8il0l": "Shrink Right Exit",
@@ -810,6 +870,7 @@
       "text_oqqtxo": "Long Float Right Out",
       "text_oxvu": "Back",
       "text_oz0a": "Exit",
+      "text_ozjdh1": "Insert Audio/Video",
       "text_p1j4": "Select",
       "text_p262": "Transition",
       "text_p27zbc": "Confirm Crop",
@@ -829,14 +890,17 @@
       "text_qg5j": "Fly In",
       "text_qg9o": "Fly Out",
       "text_qjxd": "Landscape",
+      "text_ql1e": "Pie Chart",
       "text_ql2s": "Header",
       "text_qlv6dn": "Ruizi ZhenYan",
       "text_qmp6": "Food",
       "text_qn2d": "Footer",
       "text_qola": "Audio",
+      "text_qp50": "Preview",
       "text_qw4gwv": "Non-Homogeneous Equation",
       "text_qwya1i": "Slide Theme:",
       "text_rcrb": "Vivid",
+      "text_rky6": "Blackboard",
       "text_rnws": "Black & White",
       "text_rtw5pi": "YouShe Title Black",
       "text_shg7wb": "Current Swatch:",
@@ -865,6 +929,7 @@
       "text_wset0p": "Preset Chart Themes:",
       "text_wsy7m2": "Heartbeat (Fast)",
       "text_x0509h": "Insert Row Below",
+      "text_x7ozvm": "Format Painter (double-click for continuous use)",
       "text_xac2xv": "Exit Drawing Mode",
       "text_xeuxyi": "Paste as Plain Text",
       "text_xni0t2": "Style (Multi-Select)",
@@ -883,6 +948,7 @@
       "text_yx69xt": "Float Out to Top Right",
       "text_yx6akd": "Float In from Bottom Right",
       "text_yx6aoi": "Float Out to Bottom Right",
+      "text_zc7v0p": "Case Insensitive",
       "text_zhqtc9": "Color picker initialization failed",
       "update": "update",
       "update_height": "update:height",
@@ -998,6 +1064,15 @@
     }
   },
   "Views": {
+    "Components": {
+      "ThumbnailSlide": {
+        "Index": {
+          "text": {
+            "text_2j3pvm": "Loading..."
+          }
+        }
+      }
+    },
     "Editor": {
       "Canvas": {
         "Hooks": {
@@ -1014,6 +1089,11 @@
         }
       },
       "CanvasTool": {
+        "Index": {
+          "text": {
+            "ctrl": "Zoom In (Ctrl + =)"
+          }
+        },
         "placeholder": {
           "e_g_https_xxx": "Enter video URL, e.g. https://xxx.mp4",
           "e_g_https_xxx_2": "Enter audio URL, e.g. https://xxx.mp3"
@@ -1022,7 +1102,9 @@
       "EditorHeader": {
         "Index": {
           "text": {
-            "text_2sos0g": "Note: This site is for test/demo only; no services provided"
+            "copyright_2020_present_pipipi": "Copyright © 2020-PRESENT pipipi-pikachu",
+            "text_2sos0g": "Note: This site is for test/demo only; no services provided",
+            "text_qxuuqo": "Importing..."
           }
         }
       },
@@ -1038,9 +1120,13 @@
           "pptist": "Export PPTIST File"
         },
         "text": {
+          "1_avimp4movwmvmp3wav_2": "Note: 1. Supported export formats: avi, mp4, mov, wmv, mp3, wav; 2. Cross-origin resources cannot be exported.",
           "pptist": "Tip: .pptist is this app's proprietary format; files of this type can be re-imported.",
+          "pptx": "By default, audio/video is ignored during export. If your slides contain audio/video elements and you want to include them in the PPTX file, disable the 'Ignore Audio/Video' option — but note this will significantly increase export time.",
           "text_10i3c6": "Ignore Audio/Video:",
-          "text_ok82ly": "Tip: In the print dialog, check 'Background graphics' and set margins to 'Default'."
+          "text_ok82ly": "Tip: In the print dialog, check 'Background graphics' and set margins to 'Default'.",
+          "text_qv7pp1": "Exporting...",
+          "text_t6gc54": "By default, web fonts are ignored during export. If you've used web fonts in your slides and want to preserve the styles after export, disable the 'Ignore Web Fonts' option — but note this will increase export time."
         }
       },
       "Toolbar": {
@@ -1054,8 +1140,11 @@
         }
       },
       "text": {
+        "ai": "AI generating, please wait...",
         "ppt": "Enter your PPT topic below and add details like industry, role, subject, or purpose",
-        "text_6bca8z": "Confirm outline below (click to edit, right-click to add/remove items), then choose template"
+        "pptist": "Upload .pptist format template file",
+        "text_6bca8z": "Confirm outline below (click to edit, right-click to add/remove items), then choose template",
+        "text_lhg40j": "Generating presentation, please wait..."
       },
       "title": {
         "pexels_com": "Image Library (from pexels.com)"

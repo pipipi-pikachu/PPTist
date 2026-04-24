@@ -1,4 +1,9 @@
 {
+  "Common": {
+    "text": {
+      "text_d9r8y0": "数据初始化中，请稍等 ..."
+    }
+  },
   "Commons": {
     "button": {
       "a2": "A²",
@@ -173,6 +178,7 @@
       "text_jedfe": "置顶层",
       "text_jputzi": "霞鹜文楷",
       "text_jydnp6": "高斯公式",
+      "text_k4g": "无",
       "text_kkz8bm": "峰广明锐体",
       "text_km5960": "默认字体",
       "text_l79p": "移动",
@@ -243,7 +249,9 @@
       "5g": "5G技术如何改变我们的生活",
       "aa": "文字 Aa",
       "ai": "AI 生成",
+      "ai_2": "AI辅助",
       "aigc": "AIGC在教育领域的应用",
+      "aippt": "AI生成PPT",
       "all": "all",
       "api": "该模型API的并发数过高，请更换其他模型重试",
       "arial": "Arial",
@@ -267,9 +275,12 @@
       "editable": "editable",
       "editor": "editor",
       "emoji": "Emoji",
+      "english": "English",
       "enter": "Enter",
       "escape": "Escape",
+      "f5": "幻灯片放映（F5）",
       "filters": "filters",
+      "francais": "Français",
       "inter": "Inter",
       "jetbrains_mono": "JetBrains Mono",
       "json": "导出 JSON",
@@ -367,6 +378,7 @@
       "text_98oxg4": "和的展开式",
       "text_9f4wxc": "柔光莫兰迪",
       "text_9f97mm": "水平阴影：",
+      "text_9fk06e": "减小段落缩进",
       "text_9mae46": "绕右上进入",
       "text_9maeuv": "绕右下进入",
       "text_9maf46": "绕右上退出",
@@ -395,6 +407,7 @@
       "text_aclf03": "上移一层",
       "text_acm1zm": "下移一层",
       "text_acuohx": "二次曲面",
+      "text_ad9sea": "两端对齐",
       "text_afnx3b": "倒三角形",
       "text_afzure": "不透明度",
       "text_ai7xwl": "主题色：",
@@ -405,6 +418,7 @@
       "text_amekbw": "启用边框：",
       "text_anjfdh": "全局主题",
       "text_aodcfb": "公式预览",
+      "text_ape1eo": "减小字号",
       "text_aqjv33": "显示工具栏",
       "text_ar00nr": "启用滤镜：",
       "text_arsl64": "元素操作",
@@ -413,6 +427,7 @@
       "text_avgqpf": "绕左上退出",
       "text_avgrg4": "绕左下退出",
       "text_aw9as8": "关闭弹窗",
+      "text_awd1n7": "关闭画笔",
       "text_ax4bai": "双击编辑",
       "text_axgg3q": "列表项目",
       "text_axltt1": "向上弹入",
@@ -445,9 +460,12 @@
       "text_biqejw": "在线图库",
       "text_bj7l4q": "垂直居中",
       "text_bjva": "图片质量：",
+      "text_bjvnux": "增大字号",
       "text_bjwox1": "圆角矩形",
       "text_bl4pau": "复制页面",
       "text_bs7ran": "线条宽度：",
+      "text_bt704": "上一个",
+      "text_bt7qt": "下一个",
       "text_btlof": "上一页",
       "text_btmf4": "下一页",
       "text_bu1m74": "线条样式：",
@@ -501,18 +519,29 @@
       "text_cp2ijh": "快速复制",
       "text_cr2oj": "删除列",
       "text_cr6i2": "右对齐",
+      "text_crbi3": "删除线",
       "text_crc8u": "删除节",
       "text_crde0": "删除行",
       "text_ctavzh": "意见反馈",
       "text_cvt54c": "批注面板",
       "text_cw8di5": "按形状：",
+      "text_cxkf1y": "插入公式",
       "text_cxkosz": "插入全部",
+      "text_cxlgyk": "插入图片",
+      "text_cxllbx": "插入图表",
+      "text_cxmwfb": "插入形状",
+      "text_cxntfn": "插入文字",
+      "text_cxrgdg": "插入符号",
+      "text_cxs68l": "插入线条",
+      "text_cxttk7": "插入表格",
       "text_cycq3o": "（点击色块排除不要的颜色）",
       "text_d5ao7x": "放大滑入",
       "text_d5btzl": "放大画布",
       "text_d5f45t": "终点样式：",
       "text_d5gaj7": "放大进入",
       "text_d6nass": "方向导数",
+      "text_d74746": "文字颜色",
+      "text_d74akm": "文字高亮",
       "text_d7i1vq": "从当前页中提取",
       "text_d8dn4n": "新建页面",
       "text_d8qbgg": "文本编辑",
@@ -534,6 +563,8 @@
       "text_dmjoyd": "当前文本类型：",
       "text_dn0qqj": "朱雀仿宋",
       "text_dsiwu": "字体：",
+      "text_duf1": "上标",
+      "text_dufw": "下标",
       "text_dure": "中文",
       "text_dwhk": "亮度",
       "text_dx8dt": "宽度：",
@@ -555,6 +586,7 @@
       "text_e97vf2": "不是正确的网页链接地址",
       "text_e9gub": "对齐：",
       "text_eae8": "其他",
+      "text_eb8wc": "底对齐",
       "text_ebn9": "入场",
       "text_ebvjr4": "合并单元格",
       "text_ecpz": "全屏",
@@ -573,6 +605,8 @@
       "text_ehf95": "得意黑",
       "text_ehtg": "动作",
       "text_ehx7": "切换",
+      "text_ei0x3k": "清除墨迹",
+      "text_ei3atu": "清除格式",
       "text_ekc8nk": "点击更换",
       "text_emq9e5": "位置（多选）",
       "text_emxt": "全选",
@@ -580,6 +614,7 @@
       "text_enn2vi": "添加幻灯片",
       "text_eny8rv": "删除所有节",
       "text_epar": "动画",
+      "text_eqk7": "加粗",
       "text_eslg": "删除",
       "text_ewqxxu": "服务器返回了非流响应",
       "text_f07iad": "每页数量：",
@@ -599,6 +634,7 @@
       "text_fdy1t7": "导出范围：",
       "text_fe9e0": "散点图",
       "text_ff9l": "图片",
+      "text_ffx": "中",
       "text_fjmy": "图表",
       "text_fljd": "复制",
       "text_fltdp": "条形图",
@@ -607,15 +643,21 @@
       "text_fqji7p": "移动画布",
       "text_fs18kw": "视频预览封面",
       "text_fs2ih": "柱状图",
+      "text_fuk": "值",
       "text_fz8jf": "标题行",
       "text_fzwls": "模型：",
       "text_g2mj47": "快速复制粘贴",
+      "text_g37": "关",
+      "text_g3ge": "导出",
       "text_g3xjfa": "简约绿意",
+      "text_g4g8": "居中",
+      "text_g5o9l": "橡皮擦",
       "text_g5sou": "橡皮筋",
       "text_g7l4bb": "新建幻灯片",
       "text_gc0mz": "水平：",
       "text_gc260": "汇总行",
       "text_gcg3s7": "列表项标题",
+      "text_ged6bd": "双击连续使用",
       "text_gekral": "置于底层",
       "text_geulpo": "置于顶层",
       "text_gfelzj": "缩小滑出",
@@ -632,6 +674,7 @@
       "text_gp57zf": "网页链接",
       "text_gqho9s": "自动放映",
       "text_grr8r": "激光笔",
+      "text_gtdf": "引用",
       "text_gubcw": "起点样式：",
       "text_guqc": "形状",
       "text_gvo0th": "自由绘制",
@@ -650,10 +693,12 @@
       "text_hici": "摆动",
       "text_hj7bp3": "行内代码",
       "text_hjnx": "摇头",
+      "text_hlz": "大",
       "text_hn9b0v": "表格编辑",
       "text_hohd": "播放",
       "text_hpqe": "搜索",
       "text_hpr5n1": "观众视图",
+      "text_hpvb": "斜体",
       "text_hsgw": "明亮",
       "text_htjmkl": "行间距：",
       "text_htqh": "方形",
@@ -674,6 +719,7 @@
       "text_i4sy0q": "编辑主题色",
       "text_i5wedz": "设置链接",
       "text_i5y4": "暖色",
+      "text_i6n": "小",
       "text_i783": "标尺",
       "text_i7bc6a": "浅蓝小清新",
       "text_i7nd": "查找",
@@ -684,6 +730,7 @@
       "text_if77n": "第一列",
       "text_ifl41": "第一页",
       "text_ifzhw3": "年度工作总结与展望",
+      "text_ihihjl": "进入全屏",
       "text_ihzkvg": "选中段落",
       "text_ii96jl": "退出全屏",
       "text_iiciaz": "退出播放",
@@ -693,9 +740,11 @@
       "text_ij5d": "标题",
       "text_ik6rso": "适应屏幕",
       "text_il3af9": "选择窗格",
+      "text_in4ziw": "单元格填充",
       "text_ior6ln": "都市蓝调",
       "text_iqix": "模糊",
       "text_iqtg11": "重命名节",
+      "text_irk": "开",
       "text_itms": "正文",
       "text_ivx7v": "粗细：",
       "text_j0cimf": "完成自定义形状绘制",
@@ -716,10 +765,12 @@
       "text_jiju6x": "纵横比（横向）",
       "text_jlk5t0": "纵横比（纵向）",
       "text_jn7a": "灰度",
+      "text_jndsi": "荧光笔",
       "text_jo1frx": "背景填充：",
       "text_jputzi": "霞鹜文楷",
       "text_jq83i9": "项目插图",
       "text_jq8pv": "节编号",
+      "text_jqc1ra": "项目符号",
       "text_jqcpva": "项目编号",
       "text_jqdp3o": "使用平滑曲线",
       "text_jrkmnb": "预置主题",
@@ -734,6 +785,7 @@
       "text_jydnp6": "高斯公式",
       "text_jyemd4": "从右放大进入",
       "text_jzvp9f": "公司年会策划方案",
+      "text_k4g": "无",
       "text_k564gf": "请先选择链接目标",
       "text_k80vht": "已经是最后一页了",
       "text_khcdy": "行数：",
@@ -745,9 +797,11 @@
       "text_kn3dzn": "服务器遇到未知错误！",
       "text_kr3b": "目录",
       "text_kx3t": "矩形",
+      "text_kxfv": "直线",
       "text_ky2s3": "计时器",
       "text_l6p53": "语言：",
       "text_leoh": "符号",
+      "text_lg4a4": "超链接",
       "text_li5mhp": "当前页面类型：",
       "text_lixz": "箭头",
       "text_lkdn4r": "切换下一页",
@@ -762,11 +816,14 @@
       "text_lyu4": "粘贴",
       "text_m0ho": "纵向",
       "text_m0uc": "组合",
+      "text_m2sh": "编号",
+      "text_m348": "线性",
       "text_m4jm": "线条",
       "text_m50s": "结束",
       "text_m5hk": "美化",
       "text_m6kav0": "查看所有幻灯片",
       "text_m6np": "缩放",
+      "text_m9l": "点",
       "text_mafgg0": "暂无可用属性",
       "text_mej254": "未命名演示文稿",
       "text_mekb": "编辑",
@@ -776,6 +833,7 @@
       "text_mmyrh7": "持续时长：",
       "text_mp078z": "公式不能为空",
       "text_mrgep": "面积图",
+      "text_msfvx": "顶对齐",
       "text_msylz": "雷达图",
       "text_mu9y": "色相",
       "text_mvzrf": "饱和度",
@@ -786,6 +844,8 @@
       "text_n0akk": "颜色：",
       "text_n11p2": "预览：",
       "text_n39a4y": "取消自动放映",
+      "text_n3y34j": "清空本页批注",
+      "text_n4npvn": "增大段落缩进",
       "text_n5zik": "高度：",
       "text_n8cxtg": "从右缩小滑出",
       "text_n8il0l": "从右缩小退出",
@@ -810,6 +870,7 @@
       "text_oqqtxo": "向右长距浮出",
       "text_oxvu": "返回",
       "text_oz0a": "退场",
+      "text_ozjdh1": "插入音视频",
       "text_p1j4": "选择",
       "text_p262": "过渡",
       "text_p27zbc": "确认图片裁剪",
@@ -829,14 +890,17 @@
       "text_qg5j": "飞入",
       "text_qg9o": "飞出",
       "text_qjxd": "风景",
+      "text_ql1e": "饼图",
       "text_ql2s": "页眉",
       "text_qlv6dn": "锐字真言体",
       "text_qmp6": "食物",
       "text_qn2d": "页脚",
       "text_qola": "音频",
+      "text_qp50": "预览",
       "text_qw4gwv": "非齐次方程",
       "text_qwya1i": "幻灯片主题：",
       "text_rcrb": "鲜艳",
+      "text_rky6": "黑板",
       "text_rnws": "黑白",
       "text_rtw5pi": "优设标题黑",
       "text_shg7wb": "当前色块：",
@@ -865,6 +929,7 @@
       "text_wset0p": "预置图表主题：",
       "text_wsy7m2": "心跳（快）",
       "text_x0509h": "在下方插入一行",
+      "text_x7ozvm": "格式刷（双击连续使用）",
       "text_xac2xv": "退出绘制状态",
       "text_xeuxyi": "粘贴为纯文本",
       "text_xni0t2": "样式（多选）",
@@ -883,6 +948,7 @@
       "text_yx69xt": "从右上浮出",
       "text_yx6akd": "从右下浮入",
       "text_yx6aoi": "从右下浮出",
+      "text_zc7v0p": "忽略大小写",
       "text_zhqtc9": "取色吸管初始化失败",
       "update": "update",
       "update_height": "update:height",
@@ -998,6 +1064,15 @@
     }
   },
   "Views": {
+    "Components": {
+      "ThumbnailSlide": {
+        "Index": {
+          "text": {
+            "text_2j3pvm": "加载中 ..."
+          }
+        }
+      }
+    },
     "Editor": {
       "Canvas": {
         "Hooks": {
@@ -1014,6 +1089,11 @@
         }
       },
       "CanvasTool": {
+        "Index": {
+          "text": {
+            "ctrl": "画布放大（Ctrl + =）"
+          }
+        },
         "placeholder": {
           "e_g_https_xxx": "请输入视频地址，e.g. https://xxx.mp4",
           "e_g_https_xxx_2": "请输入音频地址，e.g. https://xxx.mp3"
@@ -1022,7 +1102,9 @@
       "EditorHeader": {
         "Index": {
           "text": {
-            "text_2sos0g": "注：本站仅作测试/演示，不提供任何形式的服务"
+            "copyright_2020_present_pipipi": "Copyright © 2020-PRESENT pipipi-pikachu",
+            "text_2sos0g": "注：本站仅作测试/演示，不提供任何形式的服务",
+            "text_qxuuqo": "正在导入..."
           }
         }
       },
@@ -1038,9 +1120,13 @@
           "pptist": "导出 PPTIST 文件"
         },
         "text": {
+          "1_avimp4movwmvmp3wav_2": "提示：1. 支持导出格式：avi、mp4、mov、wmv、mp3、wav；2. 跨域资源无法导出。",
           "pptist": "提示：.pptist 是本应用的特有文件后缀，支持将该类型的文件导入回应用中。",
+          "pptx": "导出时默认忽略音视频，若您的幻灯片中存在音视频元素，且希望将其导出到PPTX文件中，可选择关闭「忽略音视频」选项，但要注意这将会大幅增加导出用时。",
           "text_10i3c6": "忽略音频/视频：",
-          "text_ok82ly": "建议：请在弹出的打印窗口中勾选「背景图形」选项，边距选择「默认」。"
+          "text_ok82ly": "建议：请在弹出的打印窗口中勾选「背景图形」选项，边距选择「默认」。",
+          "text_qv7pp1": "正在导出...",
+          "text_t6gc54": "导出时默认忽略在线字体，若您在幻灯片中使用了在线字体，且希望导出后保留相关样式，可选择关闭「忽略在线字体」选项，但要注意这将会增加导出用时。"
         }
       },
       "Toolbar": {
@@ -1054,8 +1140,11 @@
         }
       },
       "text": {
+        "ai": "AI生成中，请耐心等待 ...",
         "ppt": "在下方输入您的PPT主题，并适当补充信息，如行业、岗位、学科、用途等",
-        "text_6bca8z": "确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板"
+        "pptist": "上传.pptist格式模板文件",
+        "text_6bca8z": "确认下方内容大纲（点击编辑内容，右键添加/删除大纲项），开始选择模板",
+        "text_lhg40j": "演示文稿生成中，请稍等 ..."
       },
       "title": {
         "pexels_com": "图片库（来自 pexels.com）"

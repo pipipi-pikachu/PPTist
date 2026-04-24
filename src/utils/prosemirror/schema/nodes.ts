@@ -1,6 +1,7 @@
 import { nodes } from 'prosemirror-schema-basic'
 import type { Node, NodeSpec } from 'prosemirror-model'
 import { listItem as _listItem } from 'prosemirror-schema-list'
+import { t } from '@/i18n';
 
 type Attr = Record<string, number | string>
 
@@ -94,7 +95,7 @@ const bulletList: NodeSpec = {
 
 const listItem: NodeSpec = {
   ..._listItem,
-  content: 'paragraph block*',
+  content: t('Commons.text.paragraph_block'),
   group: 'block',
 }
 
