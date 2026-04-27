@@ -469,8 +469,12 @@ export default () => {
       const height = json.size.height
 
       const aspectRatio = getAspectRatio(width, height)
+
+      // 追加导入时不能改全局 viewportSize，否则原幻灯片坐标系不变但缩放基准变大/变小，画面会整体缩小或放大
+      const appendToExisting = !cover && !isEmptySlide.value
       
       if (fixedViewport) ratio = 1000 / width
+      else if (appendToExisting) ratio = viewportSize.value / width
       else slidesStore.setViewportSize(width * ratio)
 
       slidesStore.setTheme({ themeColors: json.themeColors })
