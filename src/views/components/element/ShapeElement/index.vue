@@ -73,6 +73,7 @@
             lineHeight: text.lineHeight,
             letterSpacing: (text.wordSpace || 0) + 'px',
             '--paragraphSpace': `${text.paragraphSpace === undefined ? 5 : text.paragraphSpace}px`,
+            ...shapeTextInsetStyle,
           }"
         >
           <ProsemirrorEditor
@@ -104,6 +105,7 @@ import useElementShadow from '@/views/components/element/hooks/useElementShadow'
 import useElementFlip from '@/views/components/element/hooks/useElementFlip'
 import useElementFill from '@/views/components/element/hooks/useElementFill'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { pptTextBoxInsetToElementContentStyle } from '@/utils/pptxTextInset'
 
 import GradientDefs from './GradientDefs.vue'
 import PatternDefs from './PatternDefs.vue'
@@ -175,6 +177,8 @@ const text = computed<ShapeText>(() => {
   return props.elementInfo.text
 })
 
+const shapeTextInsetStyle = computed(() => pptTextBoxInsetToElementContentStyle(text.value.textInset))
+
 const updateText = (content: string, ignore = false) => {
   const _text = { ...text.value, content }
   slidesStore.updateElement({
@@ -239,11 +243,16 @@ const startEdit = () => {
 .shape-text {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 0;
   line-height: 1.5;
   word-break: break-word;
   pointer-events: none;
   @include absolute-0();
+
+  :deep(.prosemirror-editor) {
+    min-width: 0;
+    width: 100%;
+  }
 
   &.editable {
     pointer-events: all;

@@ -63,6 +63,7 @@
             lineHeight: text.lineHeight,
             letterSpacing: (text.wordSpace || 0) + 'px',
             '--paragraphSpace': `${text.paragraphSpace === undefined ? 5 : text.paragraphSpace}px`,
+            ...shapeTextInsetStyle,
           }"
         >
           <div class="ProseMirror-static" v-html="text.content"></div>
@@ -76,6 +77,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { PPTShapeElement, ShapeText } from '@/types/slides'
+import { pptTextBoxInsetToElementContentStyle } from '@/utils/pptxTextInset'
 import { useSlidesStore } from '@/store'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
@@ -116,6 +118,8 @@ const text = computed<ShapeText>(() => {
 
   return props.elementInfo.text
 })
+
+const shapeTextInsetStyle = computed(() => pptTextBoxInsetToElementContentStyle(text.value.textInset))
 </script>
 
 <style lang="scss" scoped>
@@ -141,10 +145,18 @@ const text = computed<ShapeText>(() => {
 .shape-text {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  box-sizing: border-box;
+  /* 与 ShapeElement/index 一致：仅由 textInset 内联 padding 控制，无默认 10px */
+  padding: 0;
   line-height: 1.5;
   word-break: break-word;
   @include absolute-0();
+
+  :deep(.ProseMirror-static) {
+    display: block;
+    min-width: 0;
+    width: 100%;
+  }
 
   &.top {
     justify-content: flex-start;

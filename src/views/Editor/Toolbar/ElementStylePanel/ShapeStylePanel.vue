@@ -147,6 +147,13 @@
           </template>
         </Select>
       </div>
+      <TextInsetBoxEditor
+        :t="insetT"
+        :r="insetR"
+        :b="insetB"
+        :l="insetL"
+        @patch="patchShapeTextInset"
+      />
 
       <Divider />
 
@@ -187,12 +194,13 @@
 import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { GradientType, PPTShapeElement, Gradient, ShapeText } from '@/types/slides'
+import type { GradientType, PPTShapeElement, Gradient, ShapeText, PptTextBoxInset } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { getImageDataURL } from '@/utils/image'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useShapeFormatPainter from '@/hooks/useShapeFormatPainter'
+import { insetQuadRoundedFromOptional, mergePptTextBoxInset } from '@/utils/pptxTextInset'
 
 import ElementOpacity from '../common/ElementOpacity.vue'
 import ElementOutline from '../common/ElementOutline.vue'
@@ -211,6 +219,7 @@ import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import GradientBar from '@/components/GradientBar.vue'
 import FileInput from '@/components/FileInput.vue'
+import TextInsetBoxEditor from '../common/TextInsetBoxEditor.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -233,6 +242,10 @@ const textAlign = ref('middle')
 const lineHeight = ref<number>()
 const wordSpace = ref<number>()
 const paragraphSpace = ref<number>()
+const insetT = ref(0)
+const insetR = ref(0)
+const insetB = ref(0)
+const insetL = ref(0)
 const currentGradientIndex = ref(0)
 const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
 const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
@@ -253,6 +266,11 @@ watch(handleElement, () => {
   lineHeight.value = handleElement.value?.text?.lineHeight || 1.5
   wordSpace.value = handleElement.value?.text?.wordSpace || 0
   paragraphSpace.value = handleElement.value?.text?.paragraphSpace === undefined ? 5 : handleElement.value?.text?.paragraphSpace
+  const q = insetQuadRoundedFromOptional(handleElement.value?.text?.textInset)
+  insetT.value = q.t
+  insetR.value = q.r
+  insetB.value = q.b
+  insetL.value = q.l
 
   if (handleElement.value.text?.content) {
     emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
@@ -353,6 +371,13 @@ const updateTextProps = (props: Partial<ShapeText>) => {
   }
   const _text = _handleElement.text || defaultText
   updateElement({ text: { ..._text, ...props } })
+}
+
+const patchShapeTextInset = (key: keyof PptTextBoxInset, v: number) => {
+  const el = handleElement.value as PPTShapeElement
+  const text = el?.text
+  if (!text?.content) return
+  updateTextProps({ textInset: mergePptTextBoxInset(text.textInset, { [key]: v }) })
 }
 </script>
 
