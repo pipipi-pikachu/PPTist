@@ -12,6 +12,7 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange } from '@/utils/svgPathParser'
+import { pptxTextInsetToCanvasProps } from '@/utils/pptxTextInset'
 import type {
   Slide,
   TableCellStyle,
@@ -469,8 +470,12 @@ export default () => {
       const height = json.size.height
 
       const aspectRatio = getAspectRatio(width, height)
+
+      // 追加导入时不能改全局 viewportSize，否则原幻灯片坐标系不变但缩放基准变大/变小，画面会整体缩小或放大
+      const appendToExisting = !cover && !isEmptySlide.value
       
       if (fixedViewport) ratio = 1000 / width
+      else if (appendToExisting) ratio = viewportSize.value / width
       else slidesStore.setViewportSize(width * ratio)
 
       slidesStore.setTheme({ themeColors: json.themeColors })
@@ -562,6 +567,7 @@ export default () => {
                     defaultColor: theme.value.fontColor,
                     align: vAlignMap[el.vAlign] || 'middle',
                     lineHeight: 1,
+                    ...pptxTextInsetToCanvasProps(el, ratio),
                   },
                 }
                 if (el.link) shapeEl.link = { type: 'web', target: el.link }
@@ -590,6 +596,7 @@ export default () => {
                   },
                   fill: el.fill?.type === 'color' ? el.fill.value : '',
                   vertical: el.isVertical,
+                  ...pptxTextInsetToCanvasProps(el, ratio),
                 }
                 if (el.shadow) {
                   textEl.shadow = {
@@ -763,6 +770,7 @@ export default () => {
                     defaultFontName: theme.value.fontName,
                     defaultColor: theme.value.fontColor,
                     align: vAlignMap[el.vAlign] || 'middle',
+                    ...pptxTextInsetToCanvasProps(el, ratio),
                   },
                   flipH: el.isFlipH,
                   flipV: el.isFlipV,

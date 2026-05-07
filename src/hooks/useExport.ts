@@ -11,6 +11,7 @@ import { type AST, toAST } from '@/utils/htmlParser'
 import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
+import { canvasTextInsetToPptxMargin } from '@/utils/pptxTextInset'
 import message from '@/utils/message'
 
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
@@ -551,7 +552,7 @@ export default () => {
             fontFace: '微软雅黑',
             color: '#000000',
             valign: 'top',
-            margin: 10 / ratioPx2Pt.value,
+            margin: canvasTextInsetToPptxMargin(el.textInset, ratioPx2Pt.value),
             paraSpaceBefore: 5 / ratioPx2Pt.value,
             lineSpacingMultiple: 1.5 / 1.25,
             autoFit: true,
@@ -695,6 +696,7 @@ export default () => {
               fontSize: defaultFontSize / ratioPx2Pt.value,
               fontFace: '微软雅黑',
               color: '#000000',
+              margin: canvasTextInsetToPptxMargin(el.text.textInset, ratioPx2Pt.value),
               paraSpaceBefore: 5 / ratioPx2Pt.value,
               valign: el.text.align,
             }

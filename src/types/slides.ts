@@ -147,6 +147,14 @@ interface PPTBaseElement {
 
 export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'itemTitle' | 'notes' | 'header' | 'footer' | 'partNumber' | 'itemNumber'
 
+/** PPTX a:bodyPr 四边距映射到画布后的 px（与 CSS padding 一致） */
+export interface PptTextBoxInset {
+  l: number
+  t: number
+  r: number
+  b: number
+}
+
 /**
  * 文本元素
  * 
@@ -175,6 +183,8 @@ export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'itemTitle' |
  * vertical?: 竖向文本
  * 
  * textType?: 文本类型
+ *
+ * textInset?: PPTX 文本框内边距（画布 px）
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
@@ -190,6 +200,7 @@ export interface PPTTextElement extends PPTBaseElement {
   paragraphSpace?: number
   vertical?: boolean
   textType?: TextType
+  textInset?: PptTextBoxInset
 }
 
 
@@ -313,6 +324,8 @@ export interface PPTImageElement extends PPTBaseElement {
  * paragraphSpace?: 段间距，默认 5px
  * 
  * type: 文本类型
+ *
+ * textInset?: 形状内文字框四边距（画布 px）
  */
 export interface ShapeText {
   content: string
@@ -323,6 +336,7 @@ export interface ShapeText {
   wordSpace?: number
   paragraphSpace?: number
   type?: TextType
+  textInset?: PptTextBoxInset
 }
 
 /**
