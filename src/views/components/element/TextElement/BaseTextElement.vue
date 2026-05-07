@@ -25,6 +25,7 @@
           color: elementInfo.defaultColor,
           fontFamily: elementInfo.defaultFontName,
           writingMode: elementInfo.vertical ? 'vertical-rl' : 'horizontal-tb',
+          padding: `${inset[0]}px ${inset[1]}px ${inset[2]}px ${inset[3]}px`,
           '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
         }"
       >
@@ -57,6 +58,7 @@ const props = defineProps<{
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)
+const inset = computed(() => props.elementInfo.inset || [10, 10, 10, 10])
 </script>
 
 <style lang="scss" scoped>
@@ -69,7 +71,6 @@ const { shadowStyle } = useElementShadow(shadow)
 }
 .element-content {
   position: relative;
-  padding: 10px;
   line-height: 1.5;
   word-break: break-word;
   font-family: $textElementFont;

@@ -62,6 +62,7 @@
           :style="{
             lineHeight: text.lineHeight,
             letterSpacing: (text.wordSpace || 0) + 'px',
+            padding: `${inset[0]}px ${inset[1]}px ${inset[2]}px ${inset[3]}px`,
             '--paragraphSpace': `${text.paragraphSpace === undefined ? 5 : text.paragraphSpace}px`,
           }"
         >
@@ -116,6 +117,8 @@ const text = computed<ShapeText>(() => {
 
   return props.elementInfo.text
 })
+
+const inset = computed(() => text.value.inset || [10, 10, 10, 10])
 </script>
 
 <style lang="scss" scoped>
@@ -141,7 +144,6 @@ const text = computed<ShapeText>(() => {
 .shape-text {
   display: flex;
   flex-direction: column;
-  padding: 10px;
   line-height: 1.5;
   word-break: break-word;
   @include absolute-0();

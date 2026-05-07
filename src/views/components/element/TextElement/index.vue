@@ -27,6 +27,7 @@
           color: elementInfo.defaultColor,
           fontFamily: elementInfo.defaultFontName,
           writingMode: elementInfo.vertical ? 'vertical-rl' : 'horizontal-tb',
+          padding: `${inset[0]}px ${inset[1]}px ${inset[2]}px ${inset[3]}px`,
           '--paragraphSpace': `${elementInfo.paragraphSpace === undefined ? 5 : elementInfo.paragraphSpace}px`,
         }"
         v-contextmenu="contextmenus"
@@ -58,7 +59,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { debounce } from 'lodash'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -86,6 +87,7 @@ const elementRef = useTemplateRef<HTMLElement>('elementRef')
 
 const shadow = computed(() => props.elementInfo.shadow)
 const { shadowStyle } = useElementShadow(shadow)
+const inset = computed(() => props.elementInfo.inset || [10, 10, 10, 10])
 
 const handleSelectElement = (e: MouseEvent | TouchEvent, canMove = true) => {
   if (props.elementInfo.lock) return
@@ -120,12 +122,31 @@ watch(isScaling, () => {
   }
 })
 
+watch(() => props.elementInfo.inset, () => {
+  nextTick(() => {
+    if (!elementRef.value) return
+
+    if (!props.elementInfo.vertical && props.elementInfo.height !== elementRef.value.offsetHeight) {
+      slidesStore.updateElement({
+        id: props.elementInfo.id,
+        props: { height: elementRef.value.offsetHeight },
+      })
+    }
+    if (props.elementInfo.vertical && props.elementInfo.width !== elementRef.value.offsetWidth) {
+      slidesStore.updateElement({
+        id: props.elementInfo.id,
+        props: { width: elementRef.value.offsetWidth },
+      })
+    }
+  })
+})
+
 const updateTextElementHeight = (entries: ResizeObserverEntry[]) => {
   const contentRect = entries[0].contentRect
   if (!elementRef.value) return
 
-  const realHeight = contentRect.height + 20
-  const realWidth = contentRect.width + 20
+  const realHeight = contentRect.height + inset.value[0] + inset.value[2]
+  const realWidth = contentRect.width + inset.value[1] + inset.value[3]
 
   if (!props.elementInfo.vertical && props.elementInfo.height !== realHeight) {
     if (!isScaling.value) {
@@ -189,7 +210,6 @@ watch(isHandleElement, () => {
 }
 .element-content {
   position: relative;
-  padding: 10px;
   line-height: 1.5;
   word-break: break-word;
   font-family: $textElementFont;

@@ -150,6 +150,51 @@
 
       <Divider />
 
+      <div class="row">
+        <NumberInput
+          :min="0"
+          :max="50"
+          :value="inset[0]"
+          @update:value="value => updateInset(0, value)"
+          style="width: 45%;"
+        >
+          <template #prefix>上边距：</template>
+        </NumberInput>
+        <div style="width: 10%;"></div>
+        <NumberInput
+          :min="0"
+          :max="50"
+          :value="inset[2]"
+          @update:value="value => updateInset(2, value)"
+          style="width: 45%;"
+        >
+          <template #prefix>下边距：</template>
+        </NumberInput>
+      </div>
+      <div class="row">
+        <NumberInput
+          :min="0"
+          :max="50"
+          :value="inset[3]"
+          @update:value="value => updateInset(3, value)"
+          style="width: 45%;"
+        >
+          <template #prefix>左边距：</template>
+        </NumberInput>
+        <div style="width: 10%;"></div>
+        <NumberInput
+          :min="0"
+          :max="50"
+          :value="inset[1]"
+          @update:value="value => updateInset(1, value)"
+          style="width: 45%;"
+        >
+          <template #prefix>右边距：</template>
+        </NumberInput>
+      </div>
+
+      <Divider />
+
       <RadioGroup 
         class="row" 
         button-style="solid" 
@@ -187,7 +232,7 @@
 import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { GradientType, PPTShapeElement, Gradient, ShapeText } from '@/types/slides'
+import type { GradientType, PPTShapeElement, Gradient, ShapeText, TextInset } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_LIST, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import { getImageDataURL } from '@/utils/image'
 import emitter, { EmitterEvents } from '@/utils/emitter'
@@ -204,6 +249,7 @@ import ColorButton from '@/components/ColorButton.vue'
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import NumberInput from '@/components/NumberInput.vue'
 import Slider from '@/components/Slider.vue'
 import RadioButton from '@/components/RadioButton.vue'
 import RadioGroup from '@/components/RadioGroup.vue'
@@ -233,6 +279,7 @@ const textAlign = ref('middle')
 const lineHeight = ref<number>()
 const wordSpace = ref<number>()
 const paragraphSpace = ref<number>()
+const inset = ref<TextInset>([10, 10, 10, 10])
 const currentGradientIndex = ref(0)
 const lineHeightOptions = [0.9, 1.0, 1.15, 1.2, 1.4, 1.5, 1.8, 2.0, 2.5, 3.0]
 const wordSpaceOptions = [0, 1, 2, 3, 4, 5, 6, 8, 10]
@@ -253,6 +300,7 @@ watch(handleElement, () => {
   lineHeight.value = handleElement.value?.text?.lineHeight || 1.5
   wordSpace.value = handleElement.value?.text?.wordSpace || 0
   paragraphSpace.value = handleElement.value?.text?.paragraphSpace === undefined ? 5 : handleElement.value?.text?.paragraphSpace
+  inset.value = handleElement.value?.text?.inset || [10, 10, 10, 10]
 
   if (handleElement.value.text?.content) {
     emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
@@ -353,6 +401,12 @@ const updateTextProps = (props: Partial<ShapeText>) => {
   }
   const _text = _handleElement.text || defaultText
   updateElement({ text: { ..._text, ...props } })
+}
+
+const updateInset = (index: number, value: number) => {
+  const _inset: TextInset = [...inset.value]
+  _inset[index] = value
+  updateTextProps({ inset: _inset })
 }
 </script>
 

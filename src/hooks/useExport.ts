@@ -541,6 +541,7 @@ export default () => {
       for (const el of slide.elements) {
         if (el.type === 'text') {
           const textProps = formatHTML(el.content)
+          const inset = el.inset || [10, 10, 10, 10]
 
           const options: pptxgen.TextPropsOptions = {
             x: el.left / ratioPx2Inch.value,
@@ -551,7 +552,7 @@ export default () => {
             fontFace: '微软雅黑',
             color: '#000000',
             valign: 'top',
-            margin: 10 / ratioPx2Pt.value,
+            margin: [inset[3], inset[1], inset[2], inset[0]].map(item => item / ratioPx2Pt.value) as [number, number, number, number],
             paraSpaceBefore: 5 / ratioPx2Pt.value,
             lineSpacingMultiple: 1.5 / 1.25,
             autoFit: true,
@@ -686,6 +687,7 @@ export default () => {
           }
           if (el.text) {
             const textProps = formatHTML(el.text.content)
+            const inset = el.text.inset || [10, 10, 10, 10]
 
             const options: pptxgen.TextPropsOptions = {
               x: el.left / ratioPx2Inch.value,
@@ -696,6 +698,7 @@ export default () => {
               fontFace: '微软雅黑',
               color: '#000000',
               paraSpaceBefore: 5 / ratioPx2Pt.value,
+              margin: [inset[3], inset[1], inset[2], inset[0]].map(item => item / ratioPx2Pt.value) as [number, number, number, number],
               valign: el.text.align,
             }
             if (el.rotate) options.rotate = el.rotate

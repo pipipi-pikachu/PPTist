@@ -70,6 +70,51 @@
     </div>
 
     <Divider />
+    
+    <div class="row">
+      <NumberInput
+        :min="0"
+        :max="50"
+        :value="inset[0]"
+        @update:value="value => updateInset(0, value)"
+        style="width: 45%;"
+      >
+        <template #prefix>上边距：</template>
+      </NumberInput>
+      <div style="width: 10%;"></div>
+      <NumberInput
+        :min="0"
+        :max="50"
+        :value="inset[2]"
+        @update:value="value => updateInset(2, value)"
+        style="width: 45%;"
+      >
+        <template #prefix>下边距：</template>
+      </NumberInput>
+    </div>
+    <div class="row">
+      <NumberInput
+        :min="0"
+        :max="50"
+        :value="inset[3]"
+        @update:value="value => updateInset(3, value)"
+        style="width: 45%;"
+      >
+        <template #prefix>左边距：</template>
+      </NumberInput>
+      <div style="width: 10%;"></div>
+      <NumberInput
+        :min="0"
+        :max="50"
+        :value="inset[1]"
+        @update:value="value => updateInset(1, value)"
+        style="width: 45%;"
+      >
+        <template #prefix>右边距：</template>
+      </NumberInput>
+    </div>
+
+    <Divider />
     <ElementOutline />
     <Divider />
     <ElementShadow />
@@ -82,7 +127,7 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTextElement } from '@/types/slides'
+import type { PPTTextElement, TextInset } from '@/types/slides'
 import emitter, { EmitterEvents, type RichTextAction } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
@@ -93,6 +138,7 @@ import RichTextBase from '../common/RichTextBase.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
+import NumberInput from '@/components/NumberInput.vue'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 
@@ -186,6 +232,7 @@ const fill = ref<string>('#000')
 const lineHeight = ref<number>()
 const wordSpace = ref<number>()
 const paragraphSpace = ref<number>()
+const inset = ref<TextInset>([10, 10, 10, 10])
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'text') return
@@ -194,6 +241,7 @@ watch(handleElement, () => {
   lineHeight.value = handleElement.value.lineHeight || 1.5
   wordSpace.value = handleElement.value.wordSpace || 0
   paragraphSpace.value = handleElement.value.paragraphSpace === undefined ? 5 : handleElement.value.paragraphSpace
+  inset.value = handleElement.value.inset || [10, 10, 10, 10]
   emitter.emit(EmitterEvents.SYNC_RICH_TEXT_ATTRS_TO_STORE)
 }, { deep: true, immediate: true })
 
@@ -204,6 +252,12 @@ const paragraphSpaceOptions = [0, 5, 10, 15, 20, 25, 30, 40, 50, 80]
 // 发送富文本设置命令（批量）
 const emitBatchRichTextCommand = (action: RichTextAction[]) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
+}
+
+const updateInset = (index: number, value: number) => {
+  const _inset: TextInset = [...inset.value]
+  _inset[index] = value
+  updateText({ inset: _inset })
 }
 </script>
 

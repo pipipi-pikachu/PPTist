@@ -141,9 +141,9 @@ export default () => {
     longestText?: string
     digitPadding?: boolean
   }): PPTTextElement | PPTShapeElement => {
-    const padding = 10
-    const width = el.width - padding * 2 - 2
-    const height = el.height - padding * 2 - 2
+    const inset = el.type === 'text' ? (el.inset || [10, 10, 10, 10]) : (el.text?.inset || [10, 10, 10, 10])
+    const width = el.width - inset[1] - inset[3] - 2
+    const height = el.height - inset[0] - inset[2] - 2
     const lineHeight = el.type === 'text' ? (el.lineHeight || 1.5) : 1.2
     let content = el.type === 'text' ? el.content : el.text!.content
   

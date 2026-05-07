@@ -146,6 +146,7 @@ interface PPTBaseElement {
 
 
 export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'itemTitle' | 'notes' | 'header' | 'footer' | 'partNumber' | 'itemNumber'
+export type TextInset = [number, number, number, number]
 
 /**
  * 文本元素
@@ -170,11 +171,13 @@ export type TextType = 'title' | 'subtitle' | 'content' | 'item' | 'itemTitle' |
  * 
  * shadow?: 阴影
  * 
- * paragraphSpace?: 段间距，默认 5px
+ * paragraphSpace?: 段间距，默认5px
  * 
  * vertical?: 竖向文本
  * 
  * textType?: 文本类型
+ * 
+ * inset?: 内边距（上、右、下、左），默认[10, 10, 10, 10]
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
@@ -190,6 +193,7 @@ export interface PPTTextElement extends PPTBaseElement {
   paragraphSpace?: number
   vertical?: boolean
   textType?: TextType
+  inset?: TextInset
 }
 
 
@@ -310,9 +314,11 @@ export interface PPTImageElement extends PPTBaseElement {
  * 
  * wordSpace?: 字间距，默认0
  * 
- * paragraphSpace?: 段间距，默认 5px
+ * paragraphSpace?: 段间距，默认5px
  * 
  * type: 文本类型
+ * 
+ * inset?: 文本内边距（上、右、下、左），默认[10, 10, 10, 10]
  */
 export interface ShapeText {
   content: string
@@ -322,6 +328,7 @@ export interface ShapeText {
   lineHeight?: number
   wordSpace?: number
   paragraphSpace?: number
+  inset?: TextInset
   type?: TextType
 }
 
