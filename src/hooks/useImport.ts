@@ -134,6 +134,7 @@ const promoteListTextStyle = (html: string) => {
 }
 
 const convertTextContent = (html: string, ratio: number) => {
+  if (!html) return ''
   const processedHtml = html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
     return `font-size: ${Math.floor(parseFloat(p1) * ratio)}px`
   }).replace(/&nbsp;/g, ' ').replace(/style="([^"]*)"/g, (match, styleStr: string) => {
@@ -656,6 +657,7 @@ export default () => {
                   },
                 }
                 if (el.link) shapeEl.link = { type: 'web', target: el.link }
+                if (el.textInset) shapeEl.text!.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
                 if (metrics.lineHeight) shapeEl.text!.lineHeight = metrics.lineHeight
                 if (metrics.margin) shapeEl.text!.paragraphSpace = metrics.margin
                 slide.elements.push(shapeEl)
@@ -691,6 +693,7 @@ export default () => {
                   }
                 }
                 if (el.link) textEl.link = { type: 'web', target: el.link }
+                if (el.textInset) textEl.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
                 if (metrics.lineHeight) textEl.lineHeight = metrics.lineHeight
                 if (metrics.margin) textEl.paragraphSpace = metrics.margin
                 slide.elements.push(textEl)
@@ -859,6 +862,7 @@ export default () => {
                   flipV: el.isFlipV,
                 }
                 if (el.link) element.link = { type: 'web', target: el.link }
+                if (el.textInset) element.text!.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
                 if (metrics.lineHeight) element.text!.lineHeight = metrics.lineHeight
                 if (metrics.margin) element.text!.paragraphSpace = metrics.margin
 
