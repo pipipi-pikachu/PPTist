@@ -291,11 +291,12 @@ export default () => {
     const reader = new FileReader()
     reader.addEventListener('load', () => {
       try {
-        const { slides, theme, width, height } = JSON.parse(reader.result as string)
+        const { title, slides, theme, width, height } = JSON.parse(reader.result as string)
         const aspectRatio = getAspectRatio(width, height)
 
         if (cover) {
           slidesStore.updateSlideIndex(0)
+          slidesStore.setTitle(title)
           slidesStore.setSlides(slides, (theme || {}))
           if (aspectRatio !== viewportRatio.value) slidesStore.setViewportRatio(aspectRatio)
           if (width && width !== viewportSize) slidesStore.setViewportSize(width)
