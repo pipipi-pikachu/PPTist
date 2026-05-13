@@ -50,10 +50,13 @@
           :isMultiSelect="activeElementIdList.length > 1"
           :rotateElement="rotateElement"
           :scaleElement="scaleElement"
-          :openLinkDialog="openLinkDialog"
           :dragLineElement="dragLineElement"
           :moveShapeKeypoint="moveShapeKeypoint"
           v-show="!hiddenElementIdList.includes(element.id)"
+        />
+        <ElementFloatLayer
+          :elementList="elementList"
+          :openLinkDialog="openLinkDialog"
         />
         <ViewportBackground />
       </div>
@@ -132,6 +135,7 @@ import useCreateElement from '@/hooks/useCreateElement'
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import ViewportBackground from './ViewportBackground.vue'
+import ElementFloatLayer from './ElementFloatLayer/index.vue'
 import AlignmentLine from './AlignmentLine.vue'
 import Ruler from './Ruler.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'

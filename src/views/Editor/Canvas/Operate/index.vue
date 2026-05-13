@@ -19,28 +19,13 @@
       :dragLineElement="dragLineElement"
       :moveShapeKeypoint="moveShapeKeypoint"
     ></component>
-
-    <div 
-      class="animation-index"
-      v-if="toolbarState === 'elAnimation' && elementIndexListInAnimation.length"
-    >
-      <div class="index-item" v-for="index in elementIndexListInAnimation" :key="index">{{index + 1}}</div>
-    </div>
-
-    <LinkHandler 
-      :elementInfo="elementInfo" 
-      :link="elementInfo.link"
-      :openLinkDialog="openLinkDialog" 
-      v-if="isActive && elementInfo.link" 
-      @mousedown.stop=""
-    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useMainStore } from '@/store'
 import {
   ElementTypes,
   type PPTElement,
@@ -58,7 +43,6 @@ import ShapeElementOperate from './ShapeElementOperate.vue'
 import LineElementOperate from './LineElementOperate.vue'
 import TableElementOperate from './TableElementOperate.vue'
 import CommonElementOperate from './CommonElementOperate.vue'
-import LinkHandler from './LinkHandler.vue'
 
 const props = defineProps<{
   elementInfo: PPTElement
@@ -70,11 +54,9 @@ const props = defineProps<{
   scaleElement: (e: MouseEvent, element: Exclude<PPTElement, PPTLineElement>, command: OperateResizeHandlers) => void
   dragLineElement: (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => void
   moveShapeKeypoint: (e: MouseEvent, element: PPTShapeElement, index: number) => void
-  openLinkDialog: () => void
 }>()
 
-const { canvasScale, toolbarState } = storeToRefs(useMainStore())
-const { formatedAnimations } = storeToRefs(useSlidesStore())
+const { canvasScale } = storeToRefs(useMainStore())
 
 const currentOperateComponent = computed<unknown>(() => {
   const elementTypeMap = {
@@ -91,15 +73,6 @@ const currentOperateComponent = computed<unknown>(() => {
   return elementTypeMap[props.elementInfo.type] || null
 })
 
-const elementIndexListInAnimation = computed(() => {
-  const indexList = []
-  for (let i = 0; i < formatedAnimations.value.length; i++) {
-    const elIds = formatedAnimations.value[i].animations.map(item => item.elId)
-    if (elIds.includes(props.elementInfo.id)) indexList.push(i)
-  }
-  return indexList
-})
-
 const rotate = computed(() => 'rotate' in props.elementInfo ? props.elementInfo.rotate : 0)
 const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.height : 0)
 </script>
@@ -112,27 +85,6 @@ const height = computed(() => 'height' in props.elementInfo ? props.elementInfo.
 
   &.multi-select {
     opacity: 0.2;
-  }
-}
-.animation-index {
-  position: absolute;
-  top: 0;
-  left: -24px;
-  font-size: 12px;
-
-  .index-item {
-    width: 18px;
-    height: 18px;
-    background-color: #fff;
-    color: $themeColor;
-    border: 1px solid $themeColor;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    & + .index-item {
-      margin-top: 5px;
-    }
   }
 }
 </style>
