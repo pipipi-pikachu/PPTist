@@ -19,6 +19,7 @@
                   :type="line.points[0]"
                   color="currentColor"
                   :baseSize="2"
+                  preview
                 />
                 <LinePointMarker
                   class="line-marker"
@@ -28,6 +29,7 @@
                   :type="line.points[1]"
                   color="currentColor"
                   :baseSize="2"
+                  preview
                 />
               </defs>
               <path

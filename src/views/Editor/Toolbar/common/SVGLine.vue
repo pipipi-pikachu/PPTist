@@ -8,6 +8,7 @@
         :type="markers[0]"
         :color="color"
         :baseSize="width"
+        preview
       />
       <LinePointMarker
         v-if="markers && markers[1]"
@@ -16,6 +17,7 @@
         :type="markers[1]"
         :color="color"
         :baseSize="width"
+        preview
       />
     </defs>
 

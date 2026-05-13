@@ -21,6 +21,7 @@
                   :type="handleLineElement.points[0]"
                   color="currentColor"
                   :baseSize="2"
+                  preview
                 />
                 <LinePointMarker
                   v-if="handleLineElement.points[1]"
@@ -29,6 +30,7 @@
                   :type="handleLineElement.points[1]"
                   color="currentColor"
                   :baseSize="2"
+                  preview
                 />
               </defs>
               <path

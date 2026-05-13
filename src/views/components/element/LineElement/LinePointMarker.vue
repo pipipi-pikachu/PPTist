@@ -28,6 +28,7 @@ const props = defineProps<{
   type: NonEmptyLinePoint
   baseSize: number
   color?: string
+  preview?: boolean
 }>()
 
 const pathMap = {
@@ -43,6 +44,7 @@ const path = computed(() => pathMap[props.type])
 const rotate = computed(() => rotateMap[`${props.type}-${props.position}`] || 0)
 const size = computed(() => props.baseSize < 2 ? 2 : props.baseSize)
 const refX = computed(() => {
+  if (props.preview) return size.value * 1.5
   if (props.position === 'start') return 0
   return size.value * 3
 })
