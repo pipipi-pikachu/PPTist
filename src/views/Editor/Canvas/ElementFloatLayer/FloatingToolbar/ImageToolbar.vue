@@ -25,7 +25,6 @@ import FileInput from '@/components/FileInput.vue'
 
 defineProps<{
   elementInfo: PPTImageElement
-  placement: 'top' | 'bottom'
 }>()
 
 const mainStore = useMainStore()

@@ -1,7 +1,6 @@
 <template>
   <Popover
     trigger="click"
-    :placement="placement === 'top' ? 'top' : 'bottom'"
     :contentStyle="{ width: '240px' }"
   >
     <template #content>
@@ -63,10 +62,6 @@ import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import NumberInput from '@/components/NumberInput.vue'
 import SelectCustom from '@/components/SelectCustom.vue'
-
-defineProps<{
-  placement: 'top' | 'bottom'
-}>()
 
 const slidesStore = useSlidesStore()
 const { theme } = storeToRefs(slidesStore)

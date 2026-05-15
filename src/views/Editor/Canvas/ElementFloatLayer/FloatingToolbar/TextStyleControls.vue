@@ -18,7 +18,7 @@
 
   <div class="divider"></div>
 
-  <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
+  <Popover trigger="click">
     <template #content>
       <ColorPicker :modelValue="richTextAttrs.color" @update:modelValue="value => emitRichTextCommand('color', value)" />
     </template>
@@ -81,10 +81,6 @@ import emitter, { EmitterEvents } from '@/utils/emitter'
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
-
-defineProps<{
-  placement: 'top' | 'bottom'
-}>()
 
 const { richTextAttrs } = storeToRefs(useMainStore())
 

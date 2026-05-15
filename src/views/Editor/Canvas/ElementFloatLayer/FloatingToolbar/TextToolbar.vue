@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar-content">
-    <TextStyleControls :placement="placement" />
+    <TextStyleControls />
   </div>
 </template>
 
@@ -10,7 +10,6 @@ import TextStyleControls from './TextStyleControls.vue'
 
 defineProps<{
   elementInfo: PPTTextElement
-  placement: 'top' | 'bottom'
 }>()
 </script>
 

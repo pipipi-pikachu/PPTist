@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar-content">
-    <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
+    <Popover trigger="click">
       <template #content>
         <ColorPicker :modelValue="cellBackcolor" @update:modelValue="value => updateCellBackcolor(value)" />
       </template>
@@ -9,7 +9,7 @@
         <span>填充</span>
       </button>
     </Popover>
-    <BorderPanel :placement="placement" />
+    <BorderPanel />
   </div>
 </template>
 
@@ -26,7 +26,6 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 
 defineProps<{
   elementInfo: PPTTableElement
-  placement: 'top' | 'bottom'
 }>()
 
 const slidesStore = useSlidesStore()

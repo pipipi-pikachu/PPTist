@@ -13,7 +13,6 @@
       :key="floatingToolbar.element.id"
       :elementInfo="floatingToolbar.element"
       :toolbarStyle="floatingToolbar.toolbarStyle"
-      :submenuPlacement="floatingToolbar.submenuPlacement"
       @measure="value => floatingToolbarWidth = value"
     />
 
@@ -134,7 +133,6 @@ const floatingToolbar = computed(() => {
   const toolbarLeft = canvasWidth ? (maxLeft < minLeft ? minLeft : Math.min(Math.max(left, minLeft), maxLeft)) : left
   const top = placement === 'bottom' ? bottomTop : range.minY * canvasScale.value - rotateHandlerGap - FLOATING_TOOLBAR_HEIGHT
   const toolbarTop = Math.max(availableTop + FLOAT_LAYER_GAP, top)
-  const submenuPlacement: 'top' | 'bottom' = canvasHeight && toolbarTop + FLOATING_TOOLBAR_HEIGHT / 2 > (availableTop + availableBottom) / 2 ? 'top' : 'bottom'
 
   return {
     element,
@@ -144,7 +142,6 @@ const floatingToolbar = computed(() => {
       left: toolbarLeft + 'px',
       top: toolbarTop + 'px',
     },
-    submenuPlacement,
   }
 })
 

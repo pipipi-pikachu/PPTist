@@ -3,7 +3,6 @@
     <component
       :is="currentToolbarComponent"
       :elementInfo="elementInfo"
-      :placement="submenuPlacement"
       @resize="measureToolbar()"
     />
   </div>
@@ -27,7 +26,6 @@ import ChartToolbar from './ChartToolbar.vue'
 const props = defineProps<{
   elementInfo: PPTElement
   toolbarStyle: Record<string, string>
-  submenuPlacement: 'top' | 'bottom'
 }>()
 
 const emit = defineEmits<{
