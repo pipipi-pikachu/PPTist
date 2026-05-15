@@ -2,7 +2,7 @@
   <div class="toolbar-content">
     <Popover
       trigger="click"
-      :placement="submenuPlacement === 'top' ? 'top' : 'bottom'"
+      :placement="placement === 'top' ? 'top' : 'bottom'"
       :contentStyle="{ width: '120px' }"
     >
       <template #content>
@@ -23,7 +23,7 @@
         <span>样式</span>
       </button>
     </Popover>
-    <Popover trigger="click" :placement="submenuPlacement === 'top' ? 'top' : 'bottom'">
+    <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
       <template #content>
         <ColorPicker :modelValue="handleLineElement.color" @update:modelValue="value => updateLine({ color: value })" />
       </template>
@@ -58,7 +58,7 @@ import Slider from '@/components/Slider.vue'
 
 defineProps<{
   elementInfo: PPTLineElement
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const slidesStore = useSlidesStore()

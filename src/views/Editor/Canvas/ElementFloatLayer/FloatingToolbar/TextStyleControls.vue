@@ -18,7 +18,7 @@
 
   <div class="divider"></div>
 
-  <Popover trigger="click" :placement="submenuPlacement === 'top' ? 'top' : 'bottom'">
+  <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
     <template #content>
       <ColorPicker :modelValue="richTextAttrs.color" @update:modelValue="value => emitRichTextCommand('color', value)" />
     </template>
@@ -83,7 +83,7 @@ import Popover from '@/components/Popover.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 
 defineProps<{
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const { richTextAttrs } = storeToRefs(useMainStore())

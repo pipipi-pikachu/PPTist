@@ -4,7 +4,7 @@
       <i-icon-park-outline:edit class="icon" />
       <span>编辑 LaTeX</span>
     </button>
-    <Popover trigger="click" :placement="submenuPlacement === 'top' ? 'top' : 'bottom'">
+    <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
       <template #content>
         <ColorPicker :modelValue="handleLatexElement.color" @update:modelValue="value => updateLatex({ color: value })" />
       </template>
@@ -29,7 +29,7 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 
 defineProps<{
   elementInfo: PPTLatexElement
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const slidesStore = useSlidesStore()

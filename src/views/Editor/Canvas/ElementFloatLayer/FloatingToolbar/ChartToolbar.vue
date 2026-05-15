@@ -4,7 +4,7 @@
       <i-icon-park-outline:edit class="icon" />
       <span>编辑数据</span>
     </button>
-    <Popover trigger="click" :placement="submenuPlacement === 'top' ? 'top' : 'bottom'">
+    <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
       <template #content>
         <div class="chart-type-list">
           <PopoverMenuItem
@@ -37,7 +37,7 @@ import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 defineProps<{
   elementInfo: PPTChartElement
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const slidesStore = useSlidesStore()

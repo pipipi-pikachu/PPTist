@@ -3,7 +3,7 @@
     <component
       :is="currentToolbarComponent"
       :elementInfo="elementInfo"
-      :submenuPlacement="submenuPlacement"
+      :placement="submenuPlacement"
       @resize="measureToolbar()"
     />
   </div>

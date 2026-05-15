@@ -1,7 +1,7 @@
 <template>
   <Popover
     trigger="click"
-    :placement="submenuPlacement === 'top' ? 'top' : 'bottom'"
+    :placement="placement === 'top' ? 'top' : 'bottom'"
     :contentStyle="{ width: '240px' }"
   >
     <template #content>
@@ -65,7 +65,7 @@ import NumberInput from '@/components/NumberInput.vue'
 import SelectCustom from '@/components/SelectCustom.vue'
 
 defineProps<{
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const slidesStore = useSlidesStore()

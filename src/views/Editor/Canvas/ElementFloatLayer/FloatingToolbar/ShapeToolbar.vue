@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar-content">
-    <Popover trigger="click" :placement="submenuPlacement === 'top' ? 'top' : 'bottom'">
+    <Popover trigger="click" :placement="placement === 'top' ? 'top' : 'bottom'">
       <template #content>
         <ColorPicker :modelValue="fill" @update:modelValue="value => updateFill(value)" />
       </template>
@@ -9,10 +9,10 @@
         <span>填充</span>
       </button>
     </Popover>
-    <BorderPanel :submenuPlacement="submenuPlacement" />
+    <BorderPanel :placement="placement" />
     <template v-if="showTextStyleControls">
       <div class="divider"></div>
-      <TextStyleControls :submenuPlacement="submenuPlacement" />
+      <TextStyleControls :placement="placement" />
     </template>
   </div>
 </template>
@@ -31,7 +31,7 @@ import ColorPicker from '@/components/ColorPicker/index.vue'
 
 defineProps<{
   elementInfo: PPTShapeElement
-  submenuPlacement: 'top' | 'bottom'
+  placement: 'top' | 'bottom'
 }>()
 
 const emit = defineEmits<{
