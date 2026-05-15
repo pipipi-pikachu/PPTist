@@ -220,12 +220,15 @@ const presetImageClip = (shape: string, ratio = 0) => {
 // 替换图片（保持当前的样式）
 const replaceImage = (files: FileList) => {
   const imageFile = files[0]
-  if (!imageFile) return
+  const imageElement = handleImageElement.value
+  const imageElementId = handleElementId.value
+  if (!imageFile || !imageElement || imageElement.type !== 'image' || !imageElementId) return
+
   getImageDataURL(imageFile).then(dataURL => {
-    const originWidth = handleImageElement.value.width
-    const originHeight = handleImageElement.value.height
-    const originLeft = handleImageElement.value.left
-    const originTop = handleImageElement.value.top
+    const originWidth = imageElement.width
+    const originHeight = imageElement.height
+    const originLeft = imageElement.left
+    const originTop = imageElement.top
     const centerX = originLeft + originWidth / 2
     const centerY = originTop + originHeight / 2
 
@@ -236,16 +239,14 @@ const replaceImage = (files: FileList) => {
       const t = centerY - h / 2
 
       slidesStore.removeElementProps({
-        id: handleElementId.value,
+        id: imageElementId,
         propName: 'clip',
       })
-      updateImage({
-        src: dataURL,
-        width: w,
-        height: h,
-        left: l,
-        top: t,
+      slidesStore.updateElement({
+        id: imageElementId,
+        props: { src: dataURL, width: w, height: h, left: l, top: t },
       })
+      addHistorySnapshot()
     })
   })
 }

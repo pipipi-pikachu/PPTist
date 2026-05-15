@@ -10,7 +10,7 @@
       </button>
     </Popover>
     <BorderPanel :submenuPlacement="submenuPlacement" />
-    <template v-if="handleShapeElement.text?.content">
+    <template v-if="showTextStyleControls">
       <div class="divider"></div>
       <TextStyleControls :submenuPlacement="submenuPlacement" />
     </template>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { type Ref, ref, watch } from 'vue'
+import { computed, nextTick, type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTShapeElement } from '@/types/slides'
@@ -34,17 +34,26 @@ defineProps<{
   submenuPlacement: 'top' | 'bottom'
 }>()
 
+const emit = defineEmits<{
+  (e: 'resize'): void
+}>()
+
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
 const fill = ref('#fff')
+const showTextStyleControls = computed(() => !!handleShapeElement.value?.text?.content)
 
 watch(handleShapeElement, () => {
   if (!handleShapeElement.value || handleShapeElement.value.type !== 'shape') return
   fill.value = handleShapeElement.value.fill || '#fff'
 }, { deep: true, immediate: true })
+
+watch(showTextStyleControls, () => {
+  nextTick(() => emit('resize'))
+})
 
 const { addHistorySnapshot } = useHistorySnapshot()
 

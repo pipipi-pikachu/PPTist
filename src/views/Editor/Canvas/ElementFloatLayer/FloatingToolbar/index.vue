@@ -4,6 +4,7 @@
       :is="currentToolbarComponent"
       :elementInfo="elementInfo"
       :submenuPlacement="submenuPlacement"
+      @resize="measureToolbar()"
     />
   </div>
 </template>
@@ -35,6 +36,12 @@ const emit = defineEmits<{
 
 const toolbarRef = ref<HTMLElement | null>(null)
 
+const measureToolbar = () => {
+  nextTick(() => {
+    if (toolbarRef.value) emit('measure', toolbarRef.value.clientWidth)
+  })
+}
+
 const currentToolbarComponent = computed<unknown>(() => {
   const toolbarComponentMap: Partial<Record<ElementTypes, Component>> = {
     [ElementTypes.TEXT]: TextToolbar,
@@ -48,11 +55,7 @@ const currentToolbarComponent = computed<unknown>(() => {
   return toolbarComponentMap[props.elementInfo.type]
 })
 
-onMounted(() => {
-  nextTick(() => {
-    if (toolbarRef.value) emit('measure', toolbarRef.value.clientWidth)
-  })
-})
+onMounted(measureToolbar)
 </script>
 
 <style lang="scss" scoped>
