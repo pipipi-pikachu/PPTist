@@ -67,7 +67,7 @@ const ROTATE_HANDLER_ELEMENT_TYPES: string[] = [
   ElementTypes.LATEX,
 ]
 
-const { activeElementIdList, activeGroupElementId, canvasScale, handleElementId, hiddenElementIdList, toolbarState } = storeToRefs(useMainStore())
+const { activeElementIdList, activeGroupElementId, canvasScale, handleElementId, hiddenElementIdList, showBubbleMenu, toolbarState } = storeToRefs(useMainStore())
 const { formatedAnimations } = storeToRefs(useSlidesStore())
 const floatingToolbarWidth = ref(100)
 
@@ -101,6 +101,8 @@ const animationIndexItems = computed(() => {
 })
 
 const floatingToolbarTarget = computed(() => {
+  if (!showBubbleMenu.value) return null
+
   const targetId = activeGroupElementId.value || (activeElementIdList.value.length === 1 ? activeElementIdList.value[0] : '')
   if (!targetId || hiddenElementIdList.value.includes(targetId)) return null
 

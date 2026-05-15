@@ -146,6 +146,7 @@ import MultiSelectOperate from './Operate/MultiSelectOperate.vue'
 import Operate from './Operate/index.vue'
 import LinkDialog from './LinkDialog.vue'
 import Modal from '@/components/Modal.vue'
+import message from '@/utils/message'
 
 const mainStore = useMainStore()
 const {
@@ -156,6 +157,7 @@ const {
   editorAreaFocus,
   gridLineSize,
   showRuler,
+  showBubbleMenu,
   creatingElement,
   creatingCustomShape,
   canvasScale,
@@ -274,6 +276,12 @@ const toggleRuler = () => {
   mainStore.setRulerState(!showRuler.value)
 }
 
+// 开关浮动菜单
+const toggleBubbleMenu = () => {
+  mainStore.setBubbleMenuState(!showBubbleMenu.value)
+  message.success(`元素气泡菜单已${showBubbleMenu.value ? '启用' : '禁用'}`)
+}
+
 // 在鼠标绘制的范围插入元素
 const { insertElementFromCreateSelection, formatCreateSelection } = useInsertFromCreateSelection(viewportRef)
 
@@ -342,6 +350,11 @@ const contextmenus = (): ContextmenuItem[] => {
     {
       text: '重置当前页',
       handler: deleteAllElements,
+    },
+    {
+      text: '气泡菜单',
+      subText: showBubbleMenu.value ? '√' : '',
+      handler: toggleBubbleMenu,
     },
     { divider: true },
     {

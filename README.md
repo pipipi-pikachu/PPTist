@@ -101,6 +101,7 @@ Browser access: http://127.0.0.1:5173/
 - Paste external images
 - Set element coordinates, size, and rotation
 - Element hyperlinks (link to webpage, link to other slide pages)
+- Element bubble menu (Floating toolbar)
 #### Text
 - Rich text editing (color, highlight, font, font size, bold, italic, underline, strikethrough, subscript, inline code, quote, hyperlink, alignment, numbering, bullet points, paragraph indent, clear formatting)
 - Line height

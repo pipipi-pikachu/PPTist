@@ -20,6 +20,7 @@ export interface MainState {
   disableHotkeys: boolean
   gridLineSize: number
   showRuler: boolean
+  showBubbleMenu: boolean
   creatingElement: CreatingElement | null
   creatingCustomShape: boolean
   toolbarState: ToolbarStates
@@ -58,6 +59,7 @@ export const useMainStore = defineStore('main', {
     disableHotkeys: false, // 禁用快捷键
     gridLineSize: 0, // 网格线尺寸（0表示不显示网格线）
     showRuler: false, // 显示标尺
+    showBubbleMenu: false, // 显示浮动菜单
     creatingElement: null, // 正在插入的元素信息，需要通过绘制插入的元素（文字、形状、线条）
     creatingCustomShape: false, // 正在绘制任意多边形
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
@@ -145,6 +147,10 @@ export const useMainStore = defineStore('main', {
   
     setRulerState(show: boolean) {
       this.showRuler = show
+    },
+
+    setBubbleMenuState(show: boolean) {
+      this.showBubbleMenu = show
     },
   
     setCreatingElement(element: CreatingElement | null) {
