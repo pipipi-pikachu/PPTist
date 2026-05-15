@@ -22,6 +22,8 @@
   <MarkupPanel v-if="showMarkupPanel" />
   <SymbolPanel v-if="showSymbolPanel" />
   <ImageLibPanel v-if="showImageLibPanel" />
+  <ChartDataEditorDialog />
+  <LatexEditorDialog />
 
   <Modal
     :visible="!!dialogForExport" 
@@ -57,6 +59,8 @@ import CanvasTool from './CanvasTool/index.vue'
 import Thumbnails from './Thumbnails/index.vue'
 import Toolbar from './Toolbar/index.vue'
 import Remark from './Remark/index.vue'
+import ChartDataEditorDialog from './ChartDataEditorDialog.vue'
+import LatexEditorDialog from './LatexEditorDialog.vue'
 import ExportDialog from './ExportDialog/index.vue'
 import SelectPanel from './SelectPanel.vue'
 import SearchPanel from './SearchPanel.vue'

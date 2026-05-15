@@ -1,6 +1,6 @@
 <template>
   <div class="chart-style-panel">
-    <Button class="full-width-btn" @click="chartDataEditorVisible = true">
+    <Button class="full-width-btn" @click="openDataEditor()">
       <i-icon-park-outline:edit /> 编辑图表
     </Button>
 
@@ -101,18 +101,6 @@
     <ElementOutline />
 
     <Modal
-      v-model:visible="chartDataEditorVisible" 
-      :width="640"
-    >
-      <ChartDataEditor 
-        :type="handleChartElement.chartType"
-        :data="handleChartElement.data"
-        @close="chartDataEditorVisible = false"
-        @save="value => updateData(value)"
-      />
-    </Modal>
-
-    <Modal
       v-model:visible="themeColorsSettingVisible" 
       :width="310"
       @closed="themeColorsSettingVisible = false"
@@ -123,16 +111,15 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { ChartData, ChartOptions, ChartType, PPTChartElement } from '@/types/slides'
+import type { ChartOptions, PPTChartElement } from '@/types/slides'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { CHART_PRESET_THEMES } from '@/configs/chart'
 
 import ElementOutline from '../../common/ElementOutline.vue'
-import ChartDataEditor from './ChartDataEditor.vue'
 import ThemeColorsSetting from './ThemeColorsSetting.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import ColorListButton from '@/components/ColorListButton.vue'
@@ -150,7 +137,6 @@ const { theme } = storeToRefs(slidesStore)
 
 const handleChartElement = handleElement as Ref<PPTChartElement>
 
-const chartDataEditorVisible = ref(false)
 const themesVisible = ref(false)
 const themeColorsSettingVisible = ref(false)
 
@@ -191,15 +177,6 @@ const updateElement = (props: Partial<PPTChartElement>) => {
   addHistorySnapshot()
 }
 
-// 设置图表数据
-const updateData = (payload: {
-  data: ChartData
-  type: ChartType
-}) => {
-  chartDataEditorVisible.value = false
-  updateElement({ data: payload.data, chartType: payload.type })
-}
-
 // 设置扩展选项
 const updateOptions = (optionProps: ChartOptions) => {
   const _handleElement = handleElement.value as PPTChartElement
@@ -215,12 +192,7 @@ const setThemeColors = (colors: string[]) => {
   themeColorsSettingVisible.value = false
 }
 
-const openDataEditor = () => chartDataEditorVisible.value = true
-
-emitter.on(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
-onUnmounted(() => {
-  emitter.off(EmitterEvents.OPEN_CHART_DATA_EDITOR, openDataEditor)
-})
+const openDataEditor = () => emitter.emit(EmitterEvents.OPEN_CHART_DATA_EDITOR)
 </script>
 
 <style lang="scss" scoped>
