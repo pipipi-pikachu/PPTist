@@ -116,6 +116,7 @@ declare module 'vue' {
     'IIconParkOutline:rowHeight': typeof import('~icons/icon-park-outline/row-height')['default']
     'IIconParkOutline:screenshotOne': typeof import('~icons/icon-park-outline/screenshot-one')['default']
     'IIconParkOutline:search': typeof import('~icons/icon-park-outline/search')['default']
+    'IIconParkOutline:selected': typeof import('~icons/icon-park-outline/selected')['default']
     'IIconParkOutline:send': typeof import('~icons/icon-park-outline/send')['default']
     'IIconParkOutline:sendToBack': typeof import('~icons/icon-park-outline/send-to-back')['default']
     'IIconParkOutline:sentToBack': typeof import('~icons/icon-park-outline/sent-to-back')['default']
@@ -152,11 +153,5 @@ declare module 'vue' {
     'IIconParkSolid:checkOne': typeof import('~icons/icon-park-solid/check-one')['default']
     'IIconParkSolid:closeOne': typeof import('~icons/icon-park-solid/close-one')['default']
     'IIconParkSolid:info': typeof import('~icons/icon-park-solid/info')['default']
-    'IIconParkTwotone:click': typeof import('~icons/icon-park-twotone/click')['default']
-    'IIconParkTwotone:fileJpg': typeof import('~icons/icon-park-twotone/file-jpg')['default']
-    'IIconParkTwotone:filePdf': typeof import('~icons/icon-park-twotone/file-pdf')['default']
-    'IIconParkTwotone:leftTwo': typeof import('~icons/icon-park-twotone/left-two')['default']
-    'IIconParkTwotone:notes': typeof import('~icons/icon-park-twotone/notes')['default']
-    'IIconParkTwotone:rightTwo': typeof import('~icons/icon-park-twotone/right-two')['default']
   }
 }

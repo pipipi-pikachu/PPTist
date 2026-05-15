@@ -1,5 +1,5 @@
 <template>
-  <div class="link-handler" :style="linkHandlerStyle">
+  <div class="link-handler" :style="handlerStyle">
     <a class="link" v-if="elementInfo.link?.type === 'web'" :href="elementInfo.link.target" target="_blank">{{elementInfo.link.target}}</a>
     <a class="link" v-else-if="elementInfo.link" @click="turnTarget(elementInfo.link.target)">幻灯片页面 {{elementInfo.link.target}}</a>
     <div class="btns">
@@ -11,33 +11,22 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
-import type { getElementRange } from '@/utils/element'
 import useLink from '@/hooks/useLink'
 import Divider from '@/components/Divider.vue'
 
-const props = defineProps<{
+defineProps<{
   elementInfo: PPTElement
-  range: ReturnType<typeof getElementRange>
+  handlerStyle: Record<string, string>
   openLinkDialog: () => void
 }>()
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { canvasScale } = storeToRefs(mainStore)
 const { slides } = storeToRefs(slidesStore)
 const { removeLink } = useLink()
-
-const linkHandlerStyle = computed(() => {
-  const { minX, maxY } = props.range
-  return {
-    left: minX * canvasScale.value + 'px',
-    top: maxY * canvasScale.value + 10 + 'px',
-  }
-})
 
 const turnTarget = (slideId: string) => {
   const targetIndex = slides.value.findIndex(item => item.id === slideId)
@@ -59,6 +48,7 @@ const turnTarget = (slideId: string) => {
   display: flex;
   align-items: center;
   color: $themeColor;
+  border-radius: $borderRadius;
 }
 .link {
   max-width: 300px;

@@ -56,6 +56,8 @@
         />
         <ElementFloatLayer
           :elementList="elementList"
+          :canvasRef="canvasRef"
+          :viewportStyles="viewportStyles"
           :openLinkDialog="openLinkDialog"
         />
         <ViewportBackground />
