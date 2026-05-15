@@ -6,10 +6,8 @@ import type { PPTElementOutline, TableCellStyle } from '@/types/slides'
  * @param style 单元格文本样式原数据
  */
 export const getCellStyle = (outline: PPTElementOutline, style?: TableCellStyle): CSSProperties => {
-  if (!style) return {}
-  
   return {
-    backgroundColor: style.backcolor || '',
+    backgroundColor: style?.backcolor || '',
     borderStyle: outline.style,
     borderColor: outline.color,
     borderWidth: outline.width + 'px',

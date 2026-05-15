@@ -355,8 +355,14 @@ const setTableRow = (value: number) => {
   const rowCount = _handleElement.data.length
 
   if (value > rowCount) {
-    const rowCells: TableCell[] = new Array(colCount.value).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
-    const newTableCells: TableCell[][] = new Array(value - rowCount).fill(rowCells)
+    const newTableCells: TableCell[][] = []
+    for (let i = 0; i < value - rowCount; i++) {
+      const rowCells: TableCell[] = []
+      for (let j = 0; j < colCount.value; j++) {
+        rowCells.push({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
+      }
+      newTableCells.push(rowCells)
+    }
   
     const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
     tableCells.push(...newTableCells)
@@ -379,7 +385,10 @@ const setTableCol = (value: number) => {
 
   if (value > colCount) {
     tableCells = tableCells.map(item => {
-      const cells: TableCell[] = new Array(value - colCount).fill({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
+      const cells: TableCell[] = []
+      for (let i = 0; i < value - colCount; i++) {
+        cells.push({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
+      }
       item.push(...cells)
       return item
     })
