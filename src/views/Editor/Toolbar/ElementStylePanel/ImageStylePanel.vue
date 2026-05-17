@@ -74,8 +74,8 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTImageElement, SlideBackground } from '@/types/slides'
 import { CLIPPATHS } from '@/configs/imageClip'
-import { getImageDataURL, getImageSize } from '@/utils/image'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import useImageHandler from '@/hooks/useImageHandler'
 
 import ElementOutline from '../common/ElementOutline.vue'
 import ElementShadow from '../common/ElementShadow.vue'
@@ -133,6 +133,7 @@ const handleImageElement = handleElement as Ref<PPTImageElement>
 const clipPanelVisible = ref(false)
 
 const { addHistorySnapshot } = useHistorySnapshot()
+const { replaceImage } = useImageHandler()
 
 // 打开自由裁剪
 const clipImage = () => {
@@ -215,40 +216,6 @@ const presetImageClip = (shape: string, ratio = 0) => {
     updateImage(props)
   }
   clipImage()
-}
-
-// 替换图片（保持当前的样式）
-const replaceImage = (files: FileList) => {
-  const imageFile = files[0]
-  const imageElement = handleImageElement.value
-  const imageElementId = handleElementId.value
-  if (!imageFile || !imageElement || imageElement.type !== 'image' || !imageElementId) return
-
-  getImageDataURL(imageFile).then(dataURL => {
-    const originWidth = imageElement.width
-    const originHeight = imageElement.height
-    const originLeft = imageElement.left
-    const originTop = imageElement.top
-    const centerX = originLeft + originWidth / 2
-    const centerY = originTop + originHeight / 2
-
-    getImageSize(dataURL).then(({ width, height }) => {
-      const h = originHeight
-      const w = width * (originHeight / height)
-      const l = centerX - w / 2
-      const t = centerY - h / 2
-
-      slidesStore.removeElementProps({
-        id: imageElementId,
-        propName: 'clip',
-      })
-      slidesStore.updateElement({
-        id: imageElementId,
-        props: { src: dataURL, width: w, height: h, left: l, top: t },
-      })
-      addHistorySnapshot()
-    })
-  })
 }
 
 // 重置图片：清除全部样式
