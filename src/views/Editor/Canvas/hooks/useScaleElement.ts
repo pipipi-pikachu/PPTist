@@ -92,6 +92,36 @@ const getOppositePoint = (direction: OperateResizeHandlers, points: ReturnType<t
   return oppositeMap[direction]
 }
 
+/**
+ * 判断是否为角点缩放
+ * @param direction 当前操作的缩放点
+ */
+const isCornerResizeHandler = (direction: OperateResizeHandlers) => {
+  return direction === OperateResizeHandlers.RIGHT_BOTTOM ||
+    direction === OperateResizeHandlers.LEFT_BOTTOM ||
+    direction === OperateResizeHandlers.LEFT_TOP ||
+    direction === OperateResizeHandlers.RIGHT_TOP
+}
+
+/**
+ * 获取当前操作缩放点的位置
+ * @param direction 当前操作的缩放点
+ * @param points 旋转后的元素八个缩放点的位置
+ */
+const getResizeHandlerPoint = (direction: OperateResizeHandlers, points: ReturnType<typeof getRotateElementPoints>): { left: number; top: number } => {
+  const pointMap = {
+    [OperateResizeHandlers.RIGHT_BOTTOM]: points.rightBottomPoint,
+    [OperateResizeHandlers.LEFT_BOTTOM]: points.leftBottomPoint,
+    [OperateResizeHandlers.LEFT_TOP]: points.leftTopPoint,
+    [OperateResizeHandlers.RIGHT_TOP]: points.rightTopPoint,
+    [OperateResizeHandlers.TOP]: points.topPoint,
+    [OperateResizeHandlers.BOTTOM]: points.bottomPoint,
+    [OperateResizeHandlers.LEFT]: points.leftPoint,
+    [OperateResizeHandlers.RIGHT]: points.rightPoint,
+  }
+  return pointMap[direction]
+}
+
 export default (
   elementList: Ref<PPTElement[]>,
   alignmentLines: Ref<AlignmentLineProps[]>,
@@ -149,6 +179,7 @@ export default (
     let baseTop = 0
     let horizontalLines: AlignLine[] = []
     let verticalLines: AlignLine[] = []
+    const isCornerScaling = elRotate ? isCornerResizeHandler(command) : false
 
     // 旋转后的元素进行缩放时，引入基点的概念，以当前操作的缩放点相对的点为基点
     // 例如拖动右下角缩放时，左上角为基点，需要保持左上角不变然后修改其他的点的位置来达到所放的效果
@@ -161,10 +192,10 @@ export default (
       baseTop = oppositePoint.top
     }
 
-    // 未旋转的元素具有缩放时的对齐吸附功能，在此处收集对齐对齐吸附线
+    // 未旋转的元素，以及旋转元素的角点缩放具有对齐吸附功能，在此处收集对齐吸附线
     // 包括页面内除目标元素外的其他元素在画布中的各个可吸附对齐位置：上下左右四边
     // 其中线条和被旋转过的元素不参与吸附对齐
-    else {
+    if (!elRotate || isCornerScaling) {
       const edgeWidth = viewportSize.value
       const edgeHeight = viewportSize.value * viewportRatio.value
       const isActiveGroupElement = element.id === activeGroupElementId.value
@@ -263,7 +294,7 @@ export default (
       
       // 元素被旋转的情况下，需要根据元素旋转的角度，重新计算需要缩放的距离（鼠标按下后移动的距离）
       if (elRotate) {
-        const revisedX = (Math.cos(rotateRadian) * x + Math.sin(rotateRadian) * y) / canvasScale.value
+        let revisedX = (Math.cos(rotateRadian) * x + Math.sin(rotateRadian) * y) / canvasScale.value
         let revisedY = (Math.cos(rotateRadian) * y - Math.sin(rotateRadian) * x) / canvasScale.value
 
         // 锁定宽高比例（仅四个角可能触发，四条边不会触发）
@@ -273,56 +304,99 @@ export default (
           if (command === OperateResizeHandlers.LEFT_BOTTOM || command === OperateResizeHandlers.RIGHT_TOP) revisedY = -revisedX / aspectRatio
         }
 
-        // 根据不同的操作点分别计算元素缩放后的大小和位置
-        // 需要注意：
-        // 此处计算的位置需要在后面重新进行校正，因为旋转后再缩放事实上会改变元素基点的位置（虽然视觉上基点保持不动，但这是【旋转】+【移动】共同作用的结果）
-        // 但此处计算的大小不需要重新校正，因为前面已经重新计算需要缩放的距离，相当于大小已经经过了校正
-        if (command === OperateResizeHandlers.RIGHT_BOTTOM) {
-          width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
-          height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
-        }
-        else if (command === OperateResizeHandlers.LEFT_BOTTOM) {
-          width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
-          height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
-          left = elOriginLeft - (width - elOriginWidth)
-        }
-        else if (command === OperateResizeHandlers.LEFT_TOP) {
-          width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
-          height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
-          left = elOriginLeft - (width - elOriginWidth)
-          top = elOriginTop - (height - elOriginHeight)
-        }
-        else if (command === OperateResizeHandlers.RIGHT_TOP) {
-          width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
-          height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
-          top = elOriginTop - (height - elOriginHeight)
-        }
-        else if (command === OperateResizeHandlers.TOP) {
-          height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
-          top = elOriginTop - (height - elOriginHeight)
-        }
-        else if (command === OperateResizeHandlers.BOTTOM) {
-          height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
-        }
-        else if (command === OperateResizeHandlers.LEFT) {
-          width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
-          left = elOriginLeft - (width - elOriginWidth)
-        }
-        else if (command === OperateResizeHandlers.RIGHT) {
-          width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
+        const updateRotatedElementSize = () => {
+          width = elOriginWidth
+          height = elOriginHeight
+          left = elOriginLeft
+          top = elOriginTop
+
+          // 根据不同的操作点分别计算元素缩放后的大小和位置
+          // 需要注意：
+          // 此处计算的位置需要在后面重新进行校正，因为旋转后再缩放事实上会改变元素基点的位置（虽然视觉上基点保持不动，但这是【旋转】+【移动】共同作用的结果）
+          // 但此处计算的大小不需要重新校正，因为前面已经重新计算需要缩放的距离，相当于大小已经经过了校正
+          if (command === OperateResizeHandlers.RIGHT_BOTTOM) {
+            width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
+            height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
+          }
+          else if (command === OperateResizeHandlers.LEFT_BOTTOM) {
+            width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
+            height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
+            left = elOriginLeft - (width - elOriginWidth)
+          }
+          else if (command === OperateResizeHandlers.LEFT_TOP) {
+            width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
+            height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
+            left = elOriginLeft - (width - elOriginWidth)
+            top = elOriginTop - (height - elOriginHeight)
+          }
+          else if (command === OperateResizeHandlers.RIGHT_TOP) {
+            width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
+            height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
+            top = elOriginTop - (height - elOriginHeight)
+          }
+          else if (command === OperateResizeHandlers.TOP) {
+            height = getSizeWithinRange(elOriginHeight - revisedY, 'height')
+            top = elOriginTop - (height - elOriginHeight)
+          }
+          else if (command === OperateResizeHandlers.BOTTOM) {
+            height = getSizeWithinRange(elOriginHeight + revisedY, 'height')
+          }
+          else if (command === OperateResizeHandlers.LEFT) {
+            width = getSizeWithinRange(elOriginWidth - revisedX, 'width')
+            left = elOriginLeft - (width - elOriginWidth)
+          }
+          else if (command === OperateResizeHandlers.RIGHT) {
+            width = getSizeWithinRange(elOriginWidth + revisedX, 'width')
+          }
         }
 
-        // 获取当前元素的基点坐标，与初始状态时的基点坐标进行对比，并计算差值进行元素位置的校正
-        const currentPoints = getRotateElementPoints({ width, height, left, top }, elRotate)
-        const currentOppositePoint = getOppositePoint(command, currentPoints)
-        const currentBaseLeft = currentOppositePoint.left
-        const currentBaseTop = currentOppositePoint.top
+        const correctRotatedElementPosition = () => {
+          // 获取当前元素的基点坐标，与初始状态时的基点坐标进行对比，并计算差值进行元素位置的校正
+          const currentPoints = getRotateElementPoints({ width, height, left, top }, elRotate)
+          const currentOppositePoint = getOppositePoint(command, currentPoints)
+          const currentBaseLeft = currentOppositePoint.left
+          const currentBaseTop = currentOppositePoint.top
 
-        const offsetX = currentBaseLeft - baseLeft
-        const offsetY = currentBaseTop - baseTop
+          const offsetX = currentBaseLeft - baseLeft
+          const offsetY = currentBaseTop - baseTop
 
-        left = left - offsetX
-        top = top - offsetY
+          left = left - offsetX
+          top = top - offsetY
+        }
+
+        updateRotatedElementSize()
+        correctRotatedElementPosition()
+
+        if (isCornerScaling) {
+          const currentPoints = getRotateElementPoints({ width, height, left, top }, elRotate)
+          const currentHandlerPoint = getResizeHandlerPoint(command, currentPoints)
+          const { offsetX, offsetY } = alignedAdsorption(currentHandlerPoint.left, currentHandlerPoint.top)
+
+          if (offsetX || offsetY) {
+            const worldCorrectionX = -offsetX
+            const worldCorrectionY = -offsetY
+
+            if (fixedRatio) {
+              const ratioDirection = command === OperateResizeHandlers.RIGHT_BOTTOM || command === OperateResizeHandlers.LEFT_TOP ? 1 : -1
+              const vectorX = Math.cos(rotateRadian) - Math.sin(rotateRadian) * ratioDirection / aspectRatio
+              const vectorY = Math.sin(rotateRadian) + Math.cos(rotateRadian) * ratioDirection / aspectRatio
+
+              if (offsetY && vectorY) revisedX = revisedX + worldCorrectionY / vectorY
+              else if (offsetX && vectorX) revisedX = revisedX + worldCorrectionX / vectorX
+              revisedY = ratioDirection * revisedX / aspectRatio
+            }
+            else {
+              const localCorrectionX = Math.cos(rotateRadian) * worldCorrectionX + Math.sin(rotateRadian) * worldCorrectionY
+              const localCorrectionY = Math.cos(rotateRadian) * worldCorrectionY - Math.sin(rotateRadian) * worldCorrectionX
+
+              revisedX = revisedX + localCorrectionX
+              revisedY = revisedY + localCorrectionY
+            }
+
+            updateRotatedElementSize()
+            correctRotatedElementPosition()
+          }
+        }
       }
 
       // 元素未被旋转的情况下，正常计算新的位置大小即可，无需复杂的校正等工作
