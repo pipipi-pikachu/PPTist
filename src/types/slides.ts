@@ -390,6 +390,7 @@ export interface PPTShapeElement extends PPTBaseElement {
 
 
 export type LinePoint = '' | 'arrow' | 'dot' 
+export type Broken2LineDirection = 'horizontal' | 'vertical'
 
 /**
  * 线条元素
@@ -412,6 +413,8 @@ export type LinePoint = '' | 'arrow' | 'dot'
  * 
  * broken2?: 双折线控制点位置（[x, y]）
  * 
+ * broken2Direction?: 双折线方向
+ * 
  * curve?: 二次曲线控制点位置（[x, y]）
  * 
  * cubic?: 三次曲线控制点位置（[[x1, y1], [x2, y2]]）
@@ -426,6 +429,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
   shadow?: PPTElementShadow
   broken?: [number, number]
   broken2?: [number, number]
+  broken2Direction?: Broken2LineDirection
   curve?: [number, number]
   cubic?: [[number, number], [number, number]]
 }

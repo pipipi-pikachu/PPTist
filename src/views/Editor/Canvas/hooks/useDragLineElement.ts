@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement, PPTLineElement } from '@/types/slides'
 import { OperateLineHandlers } from '@/types/edit'
+import { getBroken2LineDirection } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface AdsorptionPoint {
@@ -212,7 +213,8 @@ export default (elementList: Ref<PPTElement[]>) => {
             if (element.broken) newEl.broken = [midX - minX, midY - minY]
             if (element.curve) newEl.curve = [midX - minX, midY - minY]
             if (element.broken2) {
-              if (maxX - minX >= maxY - minY) newEl.broken2 = [midX - minX, newEl.broken2![1]]
+              const direction = getBroken2LineDirection(element)
+              if (direction === 'horizontal') newEl.broken2 = [midX - minX, newEl.broken2![1]]
               else newEl.broken2 = [newEl.broken2![0], midY - minY]
             }
           }

@@ -109,6 +109,16 @@
       </SelectCustom>
     </div>
 
+    <div class="row" v-if="handleLineElement.broken2">
+      <div style="width: 40%;">线条方向：</div>
+      <Select 
+        style="width: 60%;"
+        :value="handleLineElement.broken2Direction || 'auto'"
+        :options="lineBroken2DirectionOptions"
+        @update:value="value => updateBroken2Direction(value)"
+      />
+    </div>
+
     <Divider />
 
     <div class="row">
@@ -124,7 +134,7 @@
 import { type Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { LinePoint, LineStyleType, PPTLineElement } from '@/types/slides'
+import type { Broken2LineDirection, LinePoint, LineStyleType, PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementShadow from '../common/ElementShadow.vue'
@@ -135,6 +145,7 @@ import ColorButton from '@/components/ColorButton.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import Divider from '@/components/Divider.vue'
 import NumberInput from '@/components/NumberInput.vue'
+import Select from '@/components/Select.vue'
 import SelectCustom from '@/components/SelectCustom.vue'
 import Popover from '@/components/Popover.vue'
 
@@ -147,6 +158,12 @@ const { addHistorySnapshot } = useHistorySnapshot()
 
 const lineStyleOptions = ref<LineStyleType[]>(['solid', 'dashed', 'dotted'])
 const lineMarkerOptions = ref<LinePoint[]>(['', 'arrow', 'dot'])
+
+const lineBroken2DirectionOptions = ref<{ label: string; value: Broken2LineDirection | 'auto' }[]>([
+  { label: '自动', value: 'auto' },
+  { label: '水平', value: 'horizontal' },
+  { label: '垂直', value: 'vertical' },
+])
 interface LineTypeOption {
   key: string
   path: string
@@ -170,9 +187,11 @@ const changeLineType = (line: LineTypeOption) => {
   const { id, start, end } = handleElement.value as PPTLineElement
   const midpoint: [number, number] = [(start[0] + end[0]) / 2, (start[1] + end[1]) / 2]
 
+  const propName: Array<keyof PPTLineElement> = ['broken', 'broken2', 'curve', 'cubic']
+  if (!line.isBroken2) propName.push('broken2Direction')
   slidesStore.removeElementProps({
     id,
-    propName: ['broken', 'broken2', 'curve', 'cubic'],
+    propName,
   })
 
   const props: Partial<PPTLineElement> = {}
@@ -189,6 +208,19 @@ const updateLine = (props: Partial<PPTLineElement>) => {
   if (!handleElement.value) return
   slidesStore.updateElement({ id: handleElement.value.id, props })
   addHistorySnapshot()
+}
+
+const updateBroken2Direction = (value: string | number) => {
+  if (!handleElement.value) return
+
+  if (value === 'auto') {
+    slidesStore.removeElementProps({
+      id: handleElement.value.id,
+      propName: 'broken2Direction',
+    })
+    addHistorySnapshot()
+  }
+  else updateLine({ broken2Direction: value as Broken2LineDirection })
 }
 </script>
 

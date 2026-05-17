@@ -409,6 +409,13 @@ export const getLineElementLength = (element: PPTLineElement) => {
   return len
 }
 
+export const getBroken2LineDirection = (element: PPTLineElement) => {
+  if (element.broken2Direction) return element.broken2Direction
+
+  const { minX, maxX, minY, maxY } = getElementRange(element)
+  return maxX - minX >= maxY - minY ? 'horizontal' : 'vertical'
+}
+
 export interface AlignLine {
   value: number
   range: [number, number]
@@ -494,8 +501,8 @@ export const getLineElementPath = (element: PPTLineElement) => {
     return `M${start} L${mid} L${end}`
   }
   else if (element.broken2) {
-    const { minX, maxX, minY, maxY } = getElementRange(element)
-    if (maxX - minX >= maxY - minY) return `M${start} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${end}`
+    const direction = getBroken2LineDirection(element)
+    if (direction === 'horizontal') return `M${start} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${end}`
     return `M${start} L${element.start[0]},${element.broken2[1]} L${element.end[0]},${element.broken2[1]} ${end}`
   }
   else if (element.curve) {
@@ -563,8 +570,8 @@ const getLinePathTurningPoints = (element: PPTLineElement) => {
   if (element.broken) return [element.broken]
 
   if (element.broken2) {
-    const { minX, maxX, minY, maxY } = getElementRange(element)
-    if (maxX - minX >= maxY - minY) {
+    const direction = getBroken2LineDirection(element)
+    if (direction === 'horizontal') {
       return [
         [element.broken2[0], element.start[1]],
         [element.broken2[0], element.end[1]],
@@ -614,8 +621,8 @@ export const getLineElementRenderPath = (element: PPTLineElement) => {
     return `M${startPoint} L${mid} L${endPoint}`
   }
   else if (element.broken2) {
-    const { minX, maxX, minY, maxY } = getElementRange(element)
-    if (maxX - minX >= maxY - minY) return `M${startPoint} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${endPoint}`
+    const direction = getBroken2LineDirection(element)
+    if (direction === 'horizontal') return `M${startPoint} L${element.broken2[0]},${element.start[1]} L${element.broken2[0]},${element.end[1]} ${endPoint}`
     return `M${startPoint} L${element.start[0]},${element.broken2[1]} L${element.end[0]},${element.broken2[1]} ${endPoint}`
   }
   else if (element.curve) {
