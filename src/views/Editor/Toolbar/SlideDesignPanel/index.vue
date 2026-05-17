@@ -101,6 +101,7 @@
     <div class="row">
       <Select 
         style="width: 100%;" 
+        defaultLabel="自定义"
         :value="viewportRatio" 
         @update:value="value => updateViewportRatio(value as number)"
         :options="[

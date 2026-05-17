@@ -65,11 +65,13 @@ const props = withDefaults(defineProps<{
   options: SelectOption[]
   disabled?: boolean
   autofocus?: boolean
+  defaultLabel?: string
   search?: boolean
   searchLabel?: string
 }>(), {
   disabled: false,
   autofocus: false,
+  defaultLabel: '',
   search: false,
   searchLabel: '搜索',
 })
@@ -86,7 +88,7 @@ const optionsRef = useTemplateRef<HTMLElement>('optionsRef')
 const searchInputRef = useTemplateRef<InstanceType<typeof Input>>('searchInputRef')
 
 const showLabel = computed(() => {
-  return props.options.find(item => item.value === props.value)?.label || props.value
+  return props.options.find(item => item.value === props.value)?.label || props.defaultLabel || props.value
 })
 
 const showOptions = computed(() => {
