@@ -359,7 +359,7 @@ const contextmenus = (): ContextmenuItem[] => {
     { divider: true },
     {
       text: '幻灯片放映',
-      subText: 'F5',
+      subText: 'F6',
       handler: enterScreeningFromStart,
     },
   ]

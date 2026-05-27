@@ -1,7 +1,14 @@
 <template>
   <div class="editor-header">
     <div class="left">
-      <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
+      <!-- 在此处加一个返回按钮 和 中文 返回对话   然后触发 iframeBridge.ts 中的方法，给父级发送消息-->
+      <div class="back-button" v-if="isIframeBridgeParentMode" v-tooltip="'返回'" @click="handleBackToParent()">
+        <i-icon-park-outline:return class="icon" />
+        <span class="label">返回对话</span>
+      </div>
+
+      <!-- 菜单选项 -->
+      <Popover trigger="click" v-if="!isIframeBridgeParentMode" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
           <div class="main-menu">
             <div class="ai-menu" @click="openAIPPTDialog(); mainMenuVisible = false">
@@ -56,7 +63,8 @@
         <div class="menu-item"><i-icon-park-outline:hamburger-button class="icon" /></div>
       </Popover>
 
-      <div class="title">
+      <!-- 文件名 -->
+      <div class="title" v-if="!isIframeBridgeParentMode">
         <Input 
           class="title-input" 
           ref="titleInputRef"
@@ -74,8 +82,9 @@
     </div>
 
     <div class="right">
+      <!-- 幻灯片放映 -->
       <div class="group-menu-item">
-        <div class="menu-item" v-tooltip="'幻灯片放映（F5）'" @click="enterScreening()">
+        <div class="menu-item" v-tooltip="'幻灯片放映（F6）'" @click="enterScreening()">
           <i-icon-park-outline:ppt class="icon" />
         </div>
         <Popover trigger="click" center>
@@ -86,15 +95,17 @@
           <div class="arrow-btn"><i-icon-park-outline:down class="arrow" /></div>
         </Popover>
       </div>
-      <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+      <!-- AI生成PPT -->
+      <div class="menu-item" v-if="!isIframeBridgeParentMode" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
       </div>
       <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
         <i-icon-park-outline:download class="icon" />
       </div>
-      <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
+      <!-- github地址 -->
+      <!-- <a class="github-link" v-tooltip="'Copyright © 2020-PRESENT pipipi-pikachu'" href="https://github.com/pipipi-pikachu/PPTist" target="_blank">
         <div class="menu-item"><i-icon-park-outline:github class="icon" /></div>
-      </a>
+      </a> -->
     </div>
 
     <Drawer
@@ -127,6 +138,7 @@ import Input from '@/components/Input.vue'
 import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 import Divider from '@/components/Divider.vue'
+import { isIframeBridgeParentMode, notifyIframeBridgeClose } from '@/utils/iframeBridge'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -169,6 +181,18 @@ const openMarkupPanel = () => {
 const openAIPPTDialog = () => {
   mainStore.setAIPPTDialogState(true)
 }
+
+/**
+ * 点击编辑器头部返回按钮时通知父项目关闭当前 iframe。
+ *
+ * @remarks
+ * - 当前子项目无法可靠决定父项目关闭的是弹窗、抽屉、路由页还是动态 iframe 节点，因此这里只发送关闭消息。
+ * - 关闭行为由父项目在收到 AI_PPT_IFRAME_CLOSE 后统一处理，避免子项目直接调用 window.close() 在浏览器中失效。
+ * - 用户可能连续点击返回按钮，父项目应按自身弹窗状态做幂等处理；这里不阻止重复发送，保证每次点击都有明确反馈事件。
+ */
+const handleBackToParent = () => {
+  notifyIframeBridgeClose()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -209,6 +233,29 @@ const openAIPPTDialog = () => {
     background-clip: text;
     color: transparent;
     font-weight: 700;
+  }
+
+  &:hover {
+    background-color: #f1f1f1;
+  }
+}
+.back-button {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  margin-left: 4px;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  color: #666;
+  font-size: 13px;
+
+  .icon {
+    font-size: 18px;
+  }
+  .label {
+    line-height: 30px;
   }
 
   &:hover {

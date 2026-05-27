@@ -1,20 +1,13 @@
-import { createVNode, render, computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
+import { computed, ref } from 'vue'
 import { saveAs } from 'file-saver'
 import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
-import { useSlidesStore } from '@/store'
-import type { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/types/slides'
-import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
-import { type AST, toAST } from '@/utils/htmlParser'
-import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
-import { encrypt } from '@/utils/crypto'
-import { svg2Base64 } from '@/utils/svg2Base64'
-import message from '@/utils/message'
-
-import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
-import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
+import type { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide, SlideTheme } from './slides'
+import { getElementRange, getLineElementPath, getTableSubThemeColor } from './element'
+import { type AST, toAST } from './htmlParser'
+import { type SvgPoints, toPoints } from './svgPathParser'
+import { encrypt } from './crypto'
 
 interface ExportImageConfig {
   /** 导出图片质量；对 JPEG 更敏感，对 PNG 主要用于兼容 html-to-image 配置。 */
@@ -23,6 +16,41 @@ interface ExportImageConfig {
   width: number
   /** WebFont 内联 CSS；传空字符串可跳过字体嵌入以规避跨域或字体解析问题。 */
   fontEmbedCSS?: string
+}
+
+/**
+ * generatePPT 本地导出上下文。
+ *
+ * 设计说明：
+ * - 这是从原 `useExport()` 依赖 Pinia store 的导出逻辑中抽出来的最小运行上下文。
+ * - generatePPT 目录内生成的是临时 slides，不应该读取当前编辑器 store，避免测试页或 iframe 生成时污染现有文稿。
+ */
+export interface GeneratePPTExportContext {
+  /** 文稿标题，用于 JSON/PPTist 下载兜底；PPTX 可通过 options.fileName 单独指定。 */
+  title: string
+  /** 导出主题，主要用于母版背景覆盖和 JSON/PPTist 结构兼容。 */
+  theme: SlideTheme
+  /** 画布比例，高度 / 宽度；PPTist 默认 16:9 是 0.5625。 */
+  viewportRatio: number
+  /** 画布宽度，PPTist 模板常见值是 1000。 */
+  viewportSize: number
+}
+
+/**
+ * 创建一个最小响应式引用。
+ *
+ * @param value - 初始值。
+ * @returns 带 value 字段的对象。
+ */
+const createLocalRef = <T>(value: T) => {
+  /**
+   * 返回对象刻意只实现 value 字段。
+   *
+   * 说明：
+   * - 原导出代码大量使用 `theme.value` / `viewportSize.value`。
+   * - 这里用同形对象承接原代码，最大限度减少复制代码的结构性改动。
+   */
+  return { value }
 }
 
 /**
@@ -35,11 +63,51 @@ interface ExportImageConfig {
  * - 导出函数会复用当前 Pinia store 中的标题、主题、页面比例和页面数据。
  * - 大部分导出逻辑是浏览器端完成的，图片和 PPTX 导出可能受到跨域图片、字体和媒体资源限制。
  */
-export default () => {
-  // 获取幻灯片 store，导出时读取当前文稿数据和画布配置。
-  const slidesStore = useSlidesStore()
-  // 解构 store 中导出需要的响应式状态。
-  const { slides, theme, viewportRatio, title, viewportSize } = storeToRefs(slidesStore)
+export default (context: GeneratePPTExportContext) => {
+  /**
+   * slides 是本地导出上下文中的页面引用。
+   *
+   * 说明：
+   * - 原 useExport 会从 Pinia store 读取当前文稿 slides。
+   * - generatePPT 的 PPTX 导出会通过 exportPPTX(_slides) 显式传入页面，因此这里保留空数组只服务其他复制来的导出函数兜底。
+   */
+  const slides = createLocalRef<Slide[]>([])
+
+  /**
+   * theme 是本地主题引用。
+   *
+   * 说明：
+   * - 来自模板 JSON 的 theme 或默认 theme。
+   * - 不读取外部 store，保证 generatePPT 文件夹可独立迁移。
+   */
+  const theme = createLocalRef(context.theme)
+
+  /**
+   * viewportRatio 是本地画布比例引用。
+   *
+   * 边界说明：
+   * - public/mocks/template_x.json 中存在 width / height。
+   * - 调用方会把 height / width 传进来；缺失时使用 16:9。
+   */
+  const viewportRatio = createLocalRef(context.viewportRatio)
+
+  /**
+   * title 是本地标题引用。
+   *
+   * 用途说明：
+   * - 主要保留给复制来的 JSON/PPTist/图片导出函数。
+   * - PPTX 文件名优先使用 exportPPTX options.fileName。
+   */
+  const title = createLocalRef(context.title)
+
+  /**
+   * viewportSize 是本地画布宽度引用。
+   *
+   * 说明：
+   * - 原导出逻辑按 `viewportSize / 960` 计算像素到英寸的比例。
+   * - 使用模板 JSON 宽度能和模板元素坐标保持一致。
+   */
+  const viewportSize = createLocalRef(context.viewportSize)
 
   // pptxgenjs 文本默认字号，列表缩进缺失字号时使用该值兜底。
   const defaultFontSize = 16
@@ -105,7 +173,7 @@ export default () => {
         // 失败后也必须关闭导出状态，避免界面永久 loading。
         exporting.value = false
         // 提示用户导出失败。
-        message.error('导出图片失败')
+        console.error('[generatePPT exportPPTX] 导出图片失败')
       })
     }, 200)
   }
@@ -178,7 +246,7 @@ export default () => {
         // 截图或写文件失败时关闭导出状态。
         exporting.value = false
         // 提示用户导出失败。
-        message.error('导出失败')
+        console.error('[generatePPT exportPPTX] 导出失败')
       })
     }, 200)
   }
@@ -837,6 +905,14 @@ export default () => {
   const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean, options?: { download?: boolean; fileName?: string }) => {
     // 标记导出开始，避免用户重复点击导出。
     exporting.value = true
+    /**
+     * 将本次显式传入的导出页面写入本地 slides 引用。
+     *
+     * 这样做的原因：
+     * - 原导出代码的 `getLinkOption()` 会通过 `slides.value` 查找页面内跳转链接。
+     * - generatePPT 不读取外部 store，因此需要在每次导出时把临时页面列表同步到本地引用。
+     */
+    slides.value = _slides
     let resolveExport!: (value: File | void) => void
     let rejectExport!: (reason?: unknown) => void
     const exportPromise = new Promise<File | void>((resolve, reject) => {
@@ -1108,51 +1184,9 @@ export default () => {
         else if (el.type === 'shape') {
           // 特殊形状通常依赖 Vue 组件渲染，pptxgenjs 无法直接表达，导出为 SVG 图片。
           if (el.special) {
-            // 创建离屏容器用于挂载 Vue 形状组件。
-            const container = document.createElement('div')
-            // 构造基础形状组件虚拟节点。
-            const vm = createVNode(BaseShapeElement, { elementInfo: el }, null)
-            // 将组件渲染到离屏容器，生成真实 SVG。
-            render(vm, container)
-            // 获取渲染出来的 SVG 节点。
-            const svgRef = container.querySelector('svg')
-            // 将 SVG 节点转为 base64 图片。
-            const base64SVG = svgRef ? svg2Base64(svgRef) : ''
-            // 卸载组件，释放离屏 DOM 引用。
-            render(null, container)
-
-            // 如果组件没有生成 SVG，则跳过该形状，避免写入空图片。
-            if (!base64SVG) continue
-
-            // 特殊形状按图片写入 PPTX。
-            const options: pptxgen.ImageProps = {
-              // SVG 图片 dataURL。
-              data: base64SVG,
-              // 左坐标从 px 转英寸。
-              x: el.left / ratioPx2Inch.value,
-              // 上坐标从 px 转英寸。
-              y: el.top / ratioPx2Inch.value,
-              // 宽度从 px 转英寸。
-              w: el.width / ratioPx2Inch.value,
-              // 高度从 px 转英寸。
-              h: el.height / ratioPx2Inch.value,
-            }
-            // 保留旋转角。
-            if (el.rotate) options.rotate = el.rotate
-            // 保留水平翻转。
-            if (el.flipH) options.flipH = el.flipH
-            // 保留垂直翻转。
-            if (el.flipV) options.flipV = el.flipV
-            // 保留形状链接。
-            if (el.link) {
-              // 转换链接配置。
-              const linkOption = getLinkOption(el.link)
-              // 有效链接才写入 PPTX。
-              if (linkOption) options.hyperlink = linkOption
-            }
-
-            // 将图片化的特殊形状加入 PPTX。
-            pptxSlide.addImage(options)
+            // generatePPT 独立目录不再引用编辑器 Vue 元素组件，避免把整套组件树和 store 依赖带入新项目。
+            // 特殊形状无法由 pptxgenjs 原生表达时先跳过；普通形状仍按自定义几何导出。
+            continue
           }
           // 普通形状：将 SVG path 转成 pptxgenjs 自定义几何。
           else {
@@ -1646,45 +1680,9 @@ export default () => {
         
         // LaTeX 元素：通过 Vue 组件渲染成 SVG，再作为图片写入 PPTX。
         else if (el.type === 'latex') {
-          // 创建离屏容器。
-          const container = document.createElement('div')
-          // 构造 LaTeX 组件虚拟节点。
-          const vm = createVNode(BaseLatexElement, { elementInfo: el }, null)
-          // 渲染 LaTeX 组件。
-          render(vm, container)
-          // 读取渲染出的 SVG。
-          const svgRef = container.querySelector('svg')
-          // 将 SVG 转成 base64 图片。
-          const base64SVG = svgRef ? svg2Base64(svgRef) : ''
-          // 卸载离屏组件。
-          render(null, container)
-
-          // 未生成 SVG 时跳过该 LaTeX 元素。
-          if (!base64SVG) continue
-
-          // LaTeX 图片配置。
-          const options: pptxgen.ImageProps = {
-            // SVG 图片 dataURL。
-            data: base64SVG,
-            // 左坐标从 px 转英寸。
-            x: el.left / ratioPx2Inch.value,
-            // 上坐标从 px 转英寸。
-            y: el.top / ratioPx2Inch.value,
-            // 宽度从 px 转英寸。
-            w: el.width / ratioPx2Inch.value,
-            // 高度从 px 转英寸。
-            h: el.height / ratioPx2Inch.value,
-          }
-          // 保留 LaTeX 链接。
-          if (el.link) {
-            // 转换链接配置。
-            const linkOption = getLinkOption(el.link)
-            // 有效链接才写入 PPTX。
-            if (linkOption) options.hyperlink = linkOption
-          }
-
-          // 写入 PPTX 图片。
-          pptxSlide.addImage(options)
+          // generatePPT 独立目录不引用编辑器 LaTeX Vue 组件，避免迁移时额外复制公式渲染依赖。
+          // AI 套版模板通常不包含 LaTeX 元素，因此这里跳过不影响常规 AIPPT 生成。
+          continue
         }
         
         // 音视频媒体元素：在未忽略媒体时导出为 pptxgenjs media。
@@ -1742,7 +1740,7 @@ export default () => {
           }))
         }).catch(err => {
           exporting.value = false
-          message.error('导出失败')
+          console.error('[generatePPT exportPPTX] 导出失败', err)
           rejectExport(err)
         })
       }
@@ -1755,7 +1753,7 @@ export default () => {
           // 写文件失败时恢复导出状态。
           exporting.value = false
           // 提示用户导出失败。
-          message.error('导出失败')
+          console.error('[generatePPT exportPPTX] 导出失败', err)
           rejectExport(err)
         })
       }

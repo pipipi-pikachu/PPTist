@@ -304,7 +304,7 @@ const contextmenusThumbnails = (): ContextmenuItem[] => {
     },
     {
       text: '幻灯片放映',
-      subText: 'F5',
+      subText: 'F6',
       handler: enterScreeningFromStart,
     },
   ]
@@ -356,7 +356,7 @@ const contextmenusThumbnailItem = (): ContextmenuItem[] => {
     { divider: true },
     {
       text: '从当前放映',
-      subText: 'Shift + F5',
+      subText: 'Shift + F6',
       handler: enterScreening,
     },
   ]

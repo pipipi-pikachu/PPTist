@@ -6,6 +6,27 @@ import fetchRequest from './fetch'
 export const SERVER_URL = (import.meta.env.MODE === 'development') ? '/api' : 'https://server.pptist.cn'
 
 /**
+ * Service 层调试日志前缀。
+ *
+ * 功能描述：
+ * - 统一 services/index.ts 中业务接口封装的控制台输出。
+ * - 便于从浏览器控制台确认 AI 大纲、AI PPT 和 AI 写作接口的入参摘要。
+ *
+ * 入参：
+ * - 常量没有入参。
+ *
+ * 返回值：
+ * - 常量没有返回值。
+ *
+ * 异常：
+ * - 常量定义不会抛出异常。
+ *
+ * 注意事项：
+ * - 日志只输出 content 长度，不输出完整用户内容，避免敏感文案被控制台长期保留。
+ */
+const SERVICE_DEBUG_PREFIX = '[PPTist Services]'
+
+/**
  * 图片搜索接口的请求参数。
  *
  * @property query - 搜索关键词，通常由用户在图片素材面板中输入。
@@ -89,6 +110,11 @@ export default {
    * @remarks 路径使用相对地址 `./mocks`，适配 Vite public 静态资源访问规则。
    */
   getMockData(filename: string): Promise<any> {
+    // 打印 mock 数据读取动作，便于验证模板和测试图片是否被成功请求。
+    console.info(SERVICE_DEBUG_PREFIX, 'getMockData()', {
+      // mock 文件名。
+      filename,
+    })
     // 拼接 public 静态资源路径，按项目既有约定从 mocks 目录读取 JSON 文件。
     return axios.get(`./mocks/${filename}.json`)
   },
@@ -102,6 +128,17 @@ export default {
    * @remarks 该接口依赖 `SERVER_URL`，开发环境通常通过 Vite 代理转发到后端。
    */
   searchImage(body: ImageSearchPayload): Promise<any> {
+    // 打印图片搜索请求摘要。
+    console.info(SERVICE_DEBUG_PREFIX, 'searchImage()', {
+      // 搜索关键词长度。
+      queryLength: body.query.length,
+      // 图片方向筛选。
+      orientation: body.orientation,
+      // 页码。
+      page: body.page,
+      // 每页数量。
+      perPage: body.per_page,
+    })
     // 将调用方筛选条件原样提交给后端图片搜索接口，避免前端重复实现搜索规则。
     return axios.post(`${SERVER_URL}/tools/img_search`, body)
   },
@@ -121,6 +158,19 @@ export default {
     language,
     model,
   }: AIPPTOutlinePayload): Promise<any> {
+    // 打印 AI 大纲生成请求摘要，验证生成 PPT 前置链路是否发起。
+    console.info(SERVICE_DEBUG_PREFIX, 'AIPPT_Outline()', {
+      // 接口地址。
+      url: `${SERVER_URL}/tools/aippt_outline`,
+      // 用户输入长度。
+      contentLength: content.length,
+      // 输出语言。
+      language,
+      // 模型名称。
+      model,
+      // 固定流式输出。
+      stream: true,
+    })
     // 使用 fetch 封装而不是 axios，是为了保留流式响应的原始 Response 读取能力。
     return fetchRequest(`${SERVER_URL}/tools/aippt_outline`, {
       // AI 大纲生成需要提交 JSON 请求体，因此使用 POST。
@@ -153,6 +203,21 @@ export default {
     style,
     model,
   }: AIPPTPayload): Promise<any> {
+    // 打印完整 PPT 生成请求摘要，验证点击“生成”后是否进入最终生成接口。
+    console.info(SERVICE_DEBUG_PREFIX, 'AIPPT()', {
+      // 接口地址。
+      url: `${SERVER_URL}/tools/aippt`,
+      // 大纲内容长度。
+      contentLength: content.length,
+      // 输出语言。
+      language,
+      // 视觉风格。
+      style,
+      // 模型名称。
+      model,
+      // 固定流式输出。
+      stream: true,
+    })
     // 使用 fetch 封装发起流式生成请求，避免 axios 对响应体做默认缓冲处理。
     return fetchRequest(`${SERVER_URL}/tools/aippt`, {
       // 完整 PPT 生成是有请求体的写操作，按服务端约定使用 POST。
@@ -185,6 +250,15 @@ export default {
     content,
     command,
   }: AIWritingPayload): Promise<any> {
+    // 打印 AI 写作请求摘要，辅助区分写作流和 PPT 生成流。
+    console.info(SERVICE_DEBUG_PREFIX, 'AI_Writing()', {
+      // 文本长度。
+      contentLength: content.length,
+      // 写作指令。
+      command,
+      // 固定模型。
+      model: 'glm-4.7-flash',
+    })
     // 通过 fetch 封装发起流式写作请求，便于上层实时消费生成文本。
     return fetchRequest(`${SERVER_URL}/tools/ai_writing`, {
       // 写作任务需要提交文本和命令，按服务端约定使用 POST。

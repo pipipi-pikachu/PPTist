@@ -6,6 +6,7 @@ import { FileSystemIconLoader } from 'unplugin-icons/loaders'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
 
+const target = 'https://localhost:8802'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '',
@@ -38,6 +39,13 @@ export default defineConfig({
         target: 'https://server.pptist.cn',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/fileServer': {
+        target: target + '/fileServer',
+        changeOrigin: true,
+        secure: false,
+        rewrite: path => path.replace(/^\/fileServer\//, '/'),
+        ws: true
       }
     }
   },

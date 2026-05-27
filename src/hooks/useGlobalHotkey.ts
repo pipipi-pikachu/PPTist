@@ -328,8 +328,8 @@ export default () => {
       mainStore.setDialogForExport('pdf')
       return
     }
-    // Shift + F5 从当前页开始放映。
-    if (shiftKey && key === KEYS.F5) {
+    // Shift + F6 从当前页开始放映。
+    if (shiftKey && key === KEYS.F6) {
       // 阻止浏览器默认刷新或系统行为。
       e.preventDefault()
       // 从当前页开始放映。
@@ -338,8 +338,8 @@ export default () => {
       keyboardStore.setShiftKeyState(false)
       return
     }
-    // F5 从第一页开始放映。
-    if (key === KEYS.F5) {
+    // F6 从第一页开始放映。
+    if (key === KEYS.F6) {
       // 阻止浏览器刷新页面。
       e.preventDefault()
       // 从第一页开始放映。

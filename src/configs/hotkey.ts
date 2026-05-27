@@ -28,7 +28,7 @@ export const enum KEYS {
   ESC = 'ESCAPE',
   PAGEUP = 'PAGEUP',
   PAGEDOWN = 'PAGEDOWN',
-  F5 = 'F5',
+  F6 = 'F6',
 }
 
 interface HotkeyItem {
@@ -61,8 +61,8 @@ export const HOTKEY_DOC: HotkeyItem[] = [
   {
     type: '幻灯片放映',
     children: [
-      { label: '从头开始放映幻灯片', value: 'F5' },
-      { label: '从当前开始放映幻灯片', value: 'Shift + F5' },
+      { label: '从头开始放映幻灯片', value: 'F6' },
+      { label: '从当前开始放映幻灯片', value: 'Shift + F6' },
       { label: '切换上一页', value: '↑ / ← / PgUp' },
       { label: '切换下一页', value: '↓ / → / PgDown' },
       { label: '切换下一页', value: 'Enter / Space' },
