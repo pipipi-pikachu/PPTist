@@ -10,6 +10,44 @@ import type { ChartData, ChartType } from '@/types/slides'
 
 type EChartOption = ComposeOption<BarSeriesOption | LineSeriesOption | PieSeriesOption | ScatterSeriesOption | RadarSeriesOption>
 
+const RADAR_DEFAULT_SPLIT_NUMBER = 5
+const RADAR_SPLIT_NUMBERS = [4, 5, 6]
+
+const getRadarNiceMax = (max: number, splitNumber: number) => {
+  if (max <= 0) return 0
+
+  const rawInterval = max / splitNumber
+  const exponent = Math.floor(Math.log10(rawInterval))
+  const exp10 = Math.pow(10, exponent)
+  const ratio = rawInterval / exp10
+
+  let niceRatio = 10
+  if (ratio <= 1) niceRatio = 1
+  else if (ratio <= 2) niceRatio = 2
+  else if (ratio <= 3) niceRatio = 3
+  else if (ratio <= 5) niceRatio = 5
+
+  return niceRatio * exp10 * splitNumber
+}
+
+const getRadarScale = (max: number) => {
+  if (max <= 0) return { max: 0, splitNumber: RADAR_DEFAULT_SPLIT_NUMBER }
+
+  return RADAR_SPLIT_NUMBERS
+    .map(splitNumber => ({ max: getRadarNiceMax(max, splitNumber), splitNumber }))
+    .reduce((best, item) => {
+      const bestOverflow = best.max - max
+      const overflow = item.max - max
+      if (overflow < bestOverflow) return item
+
+      const bestSplitNumberOffset = Math.abs(best.splitNumber - RADAR_DEFAULT_SPLIT_NUMBER)
+      const splitNumberOffset = Math.abs(item.splitNumber - RADAR_DEFAULT_SPLIT_NUMBER)
+      if (overflow === bestOverflow && splitNumberOffset < bestSplitNumberOffset) return item
+
+      return best
+    })
+}
+
 export interface ChartOptionPayload {
   type: ChartType
   data: ChartData
@@ -252,19 +290,19 @@ export const getChartOption = ({
     }
   }
   if (type === 'radar') {
-    // indicator 中不设置max时显示异常，设置max后控制台警告，无解，等EChart官方修复此bug
-    // const values: number[] = []
-    // for (const item of data.series) {
-    //   values.push(...item)
-    // }
-    // const max = Math.max(...values)
+    const values: number[] = []
+    for (const item of data.series) {
+      values.push(...item)
+    }
+    const { max, splitNumber } = getRadarScale(Math.max(...values))
 
     return {
       color: themeColors,
       textStyle,
       legend,
       radar: {
-        indicator: data.labels.map(item => ({ name: item })),
+        splitNumber,
+        indicator: data.labels.map(item => ({ name: item, max })),
         splitLine,
         axisLine: lineColor ? {
           lineStyle: {
