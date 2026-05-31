@@ -232,12 +232,8 @@ const getTableData = () => {
   }
 
   // 一些特殊图表类型，数据需要单独处理
-  // 散点图有且只有两列数据
+  // 散点图至少有两列数据
   if (chartType.value === 'scatter') {
-    if (legends.length > 2) {
-      legends = legends.slice(0, 2)
-      series = series.slice(0, 2)
-    }
     if (legends.length < 2) {
       legends.push('Y')
       series.push(series[0])

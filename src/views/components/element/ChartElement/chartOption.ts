@@ -281,16 +281,22 @@ export const getChartOption = ({
     }
   }
   if (type === 'scatter') {
-    const formatedData = []
-    for (let i = 0; i < data.series[0].length; i++) {
-      const x = data.series[0][i]
-      const y = data.series[1] ? data.series[1][i] : x
-      formatedData.push([x, y])
-    }
+    const xData = data.series[0]
+    const ySeries = data.series.length > 1 ? data.series.slice(1) : [xData]
+    const formatedSeries: ScatterSeriesOption[] = ySeries.map((item, index) => ({
+      symbolSize: 12,
+      data: xData.map((x, dataIndex) => [x, item[dataIndex]]),
+      name: data.legends[index + 1],
+      type: 'scatter',
+    }))
 
     return {
       color: themeColors,
       textStyle,
+      legend: data.series.length > 2 ? {
+        top: 'bottom',
+        textStyle,
+      } : undefined,
       xAxis: {
         axisLine,
         axisLabel,
@@ -301,13 +307,7 @@ export const getChartOption = ({
         axisLabel,
         splitLine,
       },
-      series: [
-        {
-          symbolSize: 12,
-          data: formatedData,
-          type: 'scatter',
-        }
-      ],
+      series: formatedSeries,
     }
   }
 

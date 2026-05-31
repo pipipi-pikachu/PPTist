@@ -1121,7 +1121,11 @@ export default () => {
   
               if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
                 labels = el.data[0].map((item, index) => `坐标${index + 1}`)
-                legends = ['X', 'Y']
+                legends = el.data.map((item, index) => {
+                  if (index === 0) return 'X'
+                  if (index === 1) return 'Y'
+                  return `Y${index}`
+                })
                 series = el.data
               }
               else {
