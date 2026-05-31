@@ -133,34 +133,76 @@ const promoteListTextStyle = (html: string) => {
   return doc.body.innerHTML
 }
 
+const normalizeIndentValue = (indent: string, ratio: number) => {
+  const value = parseFloat(indent)
+  if (!value || value < 0) return 0
+
+  let indentValue = 0
+  if (indent.indexOf('em') !== -1) {
+    indentValue = parseInt(indent)
+  }
+  else if (indent.indexOf('px') !== -1) {
+    indentValue = Math.floor(parseInt(indent) / 16)
+    if (!indentValue) indentValue = 1
+  }
+  else if (indent.indexOf('pt') !== -1) {
+    indentValue = Math.floor(value * ratio / 16)
+    if (!indentValue) indentValue = 1
+  }
+
+  if (indentValue > 8) indentValue = 8
+
+  return indentValue
+}
+
 const convertTextContent = (html: string, ratio: number) => {
   if (!html) return ''
   const processedHtml = html.replace(/font-size:\s*([\d.]+)pt/g, (match, p1) => {
     return `font-size: ${Math.floor(parseFloat(p1) * ratio)}px`
   }).replace(/&nbsp;/g, ' ').replace(/style="([^"]*)"/g, (match, styleStr: string) => {
-    const gradientMatch = styleStr.match(/background:\s*(linear-gradient\([^)]+\))/)
-    if (!gradientMatch) return match
-
-    const colorMatches = gradientMatch[1].match(/#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}|rgba?\([^)]+\)/g)
-    if (!colorMatches || !colorMatches.length) return match
-
-    const colors = colorMatches.map(c => tinycolor(c))
-    const avgColor = colors.reduce((acc, c) => {
-      const rgb = c.toRgb()
-      return {
-        r: acc.r + rgb.r / colors.length,
-        g: acc.g + rgb.g / colors.length,
-        b: acc.b + rgb.b / colors.length,
-      }
-    }, { r: 0, g: 0, b: 0 })
-    const hexColor = tinycolor(avgColor).toHexString()
-
     let newStyle = styleStr
-      .replace(/background:\s*linear-gradient\([^)]+\)\s*;?/g, '')
-      .replace(/background-clip:\s*text\s*;?/g, '')
-      .replace(/color:\s*transparent\s*;?/g, '')
-    newStyle = `color: ${hexColor}; ${newStyle}`.replace(/;\s*;/g, ';').replace(/;\s*$/, ';')
-    return `style="${newStyle}"`
+    const gradientMatch = styleStr.match(/background:\s*(linear-gradient\([^)]+\))/)
+
+    if (gradientMatch) {
+      const colorMatches = gradientMatch[1].match(/#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3}|rgba?\([^)]+\)/g)
+      if (colorMatches && colorMatches.length) {
+        const colors = colorMatches.map(c => tinycolor(c))
+        const avgColor = colors.reduce((acc, c) => {
+          const rgb = c.toRgb()
+          return {
+            r: acc.r + rgb.r / colors.length,
+            g: acc.g + rgb.g / colors.length,
+            b: acc.b + rgb.b / colors.length,
+          }
+        }, { r: 0, g: 0, b: 0 })
+        const hexColor = tinycolor(avgColor).toHexString()
+
+        newStyle = newStyle
+          .replace(/background:\s*linear-gradient\([^)]+\)\s*;?/g, '')
+          .replace(/background-clip:\s*text\s*;?/g, '')
+          .replace(/color:\s*transparent\s*;?/g, '')
+        newStyle = `color: ${hexColor}; ${newStyle}`
+      }
+    }
+
+    const marginLeftMatch = newStyle.match(/margin-left\s*:\s*([^;]+);?/i)
+    const indentValue = marginLeftMatch ? normalizeIndentValue(marginLeftMatch[1], ratio) : 0
+
+    newStyle = newStyle
+      .replace(/margin-(top|bottom|left)\s*:\s*[^;]+;?/g, '')
+      .replace(/text-indent\s*:\s*([^;]+);?/g, (match, p1) => {
+        const textIndentValue = normalizeIndentValue(p1, ratio)
+        return textIndentValue ? `text-indent: ${textIndentValue}em;` : ''
+      })
+      .replace(/;\s*;/g, ';')
+      .replace(/^\s*;\s*/, '')
+      .replace(/;\s*$/, ';')
+      .trim()
+
+    return [
+      indentValue ? `data-indent="${indentValue}"` : '',
+      newStyle ? `style="${newStyle}"` : '',
+    ].filter(Boolean).join(' ')
   })
 
   return promoteListTextStyle(processedHtml)
@@ -180,7 +222,7 @@ const getMaxFontSize = (html: string, defaultFontSize: number = 18): number => {
 }
 
 const getParagraphMetrics = (html: string, ratio: number) => {
-  const tagRegex = /<(div|p|li)(?![a-z0-9])[^>]*>/gi
+  const tagRegex = /<(div|p)(?![a-z0-9])[^>]*>/gi
 
   const lineHeights = []
   const margins = []
