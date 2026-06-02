@@ -1,184 +1,337 @@
 [
-  {
-    "id": "test-slide-1",
-    "elements": [
-      {
-        "type": "shape",
-        "id": "4cbRxp",
-        "left": 0,
-        "top": 200,
-        "width": 546,
-        "height": 362.5,
-        "viewBox": [200, 200],
-        "path": "M 0 0 L 0 200 L 200 200 Z",
-        "fill": "#5b9bd5",
-        "fixedRatio": false,
-        "opacity": 0.7,
-        "rotate": 0
-      },
-      {
-        "type": "shape",
-        "id": "ookHrf",
-        "left": 0,
-        "top": 0,
-        "width": 300,
-        "height": 320,
-        "viewBox": [200, 200],
-        "path": "M 0 0 L 0 200 L 200 200 Z",
-        "fill": "#5b9bd5",
-        "fixedRatio": false,
-        "flipV": true,
-        "rotate": 0
-      },
-      {
-        "type": "text",
-        "id": "idn7Mx",
-        "left": 355,
-        "top": 65.25,
-        "width": 450,
-        "height": 188,
-        "lineHeight": 1.2,
-        "content": "<p><strong><span style=\"font-size: 112px;\">PPTist</span></strong></p>",
-        "rotate": 0,
-        "defaultFontName": "",
-        "defaultColor": "#333"
-      },
-      {
-        "type": "text",
-        "id": "7stmVP",
-        "left": 355,
-        "top": 253.25,
-        "width": 585,
-        "height": 56,
-        "content": "<p><span style=\"font-size: 24px;\">基于 Vue 3.x + TypeScript 的在线演示文稿应用</span></p>",
-        "rotate": 0,
-        "defaultFontName": "",
-        "defaultColor": "#333"
-      },
-      {
-        "type": "line",
-        "id": "FnpZs4",
-        "left": 361,
-        "top": 238,
-        "start": [0, 0],
-        "end": [549, 0],
-        "points": ["", ""],
-        "color": "#5b9bd5",
-        "style": "solid",
-        "width": 2
+    {
+      "id": "test-slide-1",
+      "elements": [
+        {
+          "type": "shape",
+          "id": "4cbRxp",
+          "left": 0,
+          "top": 200,
+          "width": 546,
+          "height": 362.5,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 0 0 L 0 200 L 200 200 Z",
+          "fill": "#5b9bd5",
+          "fixedRatio": false,
+          "opacity": 0.5,
+          "rotate": 0
+        },
+        {
+          "type": "shape",
+          "id": "ookHrf",
+          "left": 0,
+          "top": 0,
+          "width": 300,
+          "height": 320,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 0 0 L 0 200 L 200 200 Z",
+          "fill": "#5b9bd5",
+          "fixedRatio": false,
+          "flipV": true,
+          "rotate": 0
+        },
+        {
+          "type": "text",
+          "id": "idn7Mx",
+          "left": 355,
+          "top": 65,
+          "width": 585,
+          "height": 154.390625,
+          "lineHeight": 1.2,
+          "content": "<p><strong><span style=\"font-size: 112px;\">PPTist</span></strong></p>",
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333"
+        },
+        {
+          "type": "text",
+          "id": "7stmVP",
+          "left": 355,
+          "top": 238,
+          "width": 585,
+          "height": 86,
+          "content": "<p><strong><span style=\"font-size: 22px;\">PowerPoint-ist</span></strong><span style=\"font-size: 22px;\"> </span><em><span style=\"font-size: 22px;\">(/'pauəpɔintist/)</span></em><span style=\"font-size: 22px;\">，基于 Web 的开源演示文稿（幻灯片）应用，可以在浏览器中编辑/演示幻灯片。</span></p>",
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333"
+        },
+        {
+          "type": "line",
+          "id": "FnpZs4",
+          "left": 367,
+          "top": 220,
+          "start": [
+            0,
+            0
+          ],
+          "end": [
+            555.6725978647687,
+            0
+          ],
+          "points": [
+            "",
+            ""
+          ],
+          "color": "#5b9bd5",
+          "style": "solid",
+          "width": 2
+        }
+      ],
+      "background": {
+        "type": "solid",
+        "color": "#ffffff"
       }
-    ],
-    "background": {
-      "type": "solid",
-      "color": "#ffffff"
+    },
+    {
+      "id": "T2flB5Ms6N",
+      "elements": [
+        {
+          "type": "shape",
+          "id": "tgOHYFL9OJ",
+          "left": 0,
+          "top": 0,
+          "width": 1000,
+          "height": 281.25,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 0 0 L 200 0 L 200 200 L 0 200 Z",
+          "fill": "rgb(91, 155, 213)",
+          "fixedRatio": false,
+          "rotate": 0,
+          "lock": false
+        },
+        {
+          "type": "shape",
+          "id": "7GFmEv6oB_",
+          "left": 0,
+          "top": 281.25,
+          "width": 1000,
+          "height": 281.25,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 0 0 L 200 0 L 200 200 L 0 200 Z",
+          "fill": "rgb(242, 242, 242)",
+          "fixedRatio": false,
+          "rotate": 0,
+          "lock": false
+        },
+        {
+          "type": "shape",
+          "id": "rdxiACCJuV",
+          "left": 40,
+          "top": 39,
+          "width": 920,
+          "height": 482,
+          "viewBox": [
+            920,
+            482
+          ],
+          "path": "M 25.40421115065243 0 L 894.5957888493476 0 Q 920 0 920 25.40421115065243 L 920 456.59578884934757 Q 920 482 894.5957888493476 482 L 25.40421115065243 482 Q 0 482 0 456.59578884934757 L 0 25.40421115065243 Q 0 0 25.40421115065243 0 Z",
+          "fill": "#ffffff",
+          "fixedRatio": false,
+          "rotate": 0,
+          "shadow": {
+            "h": 4,
+            "v": 4,
+            "blur": 8,
+            "color": "rgba(128, 128, 128, 0.13)"
+          },
+          "lock": false,
+          "pathFormula": "roundRect",
+          "keypoints": [
+            0.052705832262764374
+          ]
+        },
+        {
+          "type": "text",
+          "id": "Tn6kkOFntr",
+          "left": 80,
+          "top": 71.5,
+          "width": 716.9,
+          "height": 74,
+          "content": "<p><span style=\"font-size: 36px;\">✨项目特点</span></p>",
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333",
+          "vertical": false,
+          "textType": "title"
+        },
+        {
+          "type": "text",
+          "id": "oU7uzQkPpO",
+          "left": 80,
+          "top": 160,
+          "width": 830,
+          "height": 213,
+          "content": "<ul style=\"font-size: 18px;color: rgb(51, 51, 51);\"><li><p style=\"text-align: justify;\"><strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">易开发：</span></span></strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">基于 </span><code><span style=\"color: rgb(51, 51, 51);\">Vue3.x</span></code><span style=\"color: rgb(51, 51, 51);\"> + </span><code><span style=\"color: rgb(51, 51, 51);\">TypeScript</span></code><span style=\"color: rgb(51, 51, 51);\"> 构建，不依赖UI组件库，尽量避免第三方组件，样式定制更轻松、功能扩展更方便。</span></span></p></li><li><p style=\"text-align: justify;\"><strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">易使用：</span></span></strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">随处可用的右键菜单、数十种快捷操作、无数次编辑细节打磨，力求还原桌面应用级的交互体验。</span></span></p></li><li><p style=\"text-align: justify;\"><strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">功能丰富：</span></span></strong><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">支持 </span></span><em><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\">Office PPT</span></span></em><span style=\"font-size: 18px;\"><span style=\"color: rgb(51, 51, 51);\"> 中的大部分常用元素和功能，支持模板式AI生成PPT、支持多种格式导出、支持移动端基础编辑和预览...</span></span></p></li></ul>",
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333",
+          "vertical": false,
+          "textType": "content",
+          "paragraphSpace": 10,
+          "lineHeight": 1.5
+        },
+        {
+          "type": "line",
+          "id": "0pCV4mHRO5",
+          "left": 140,
+          "top": 138,
+          "start": [
+            0,
+            0
+          ],
+          "end": [
+            140.12455516014234,
+            0
+          ],
+          "points": [
+            "",
+            ""
+          ],
+          "color": "rgb(91, 155, 213)",
+          "style": "solid",
+          "width": 2,
+          "lock": false
+        },
+        {
+          "type": "shape",
+          "id": "-5LJXtU4dt",
+          "left": 0,
+          "top": 450,
+          "width": 1000,
+          "height": 150,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 0 20 C 40 -40 60 60 100 20 C 140 -40 160 60 200 20 L 200 180 C 140 240 160 140 100 180 C 40 240 60 140 0 180 L 0 20 Z",
+          "fill": "rgb(91, 155, 213)",
+          "fixedRatio": false,
+          "rotate": 0,
+          "lock": false,
+          "opacity": 0.2
+        }
+      ],
+      "background": {
+        "type": "solid",
+        "color": "#fff"
+      },
+      "type": "cover"
+    },
+    {
+      "id": "iqg6iGnei-",
+      "elements": [
+        {
+          "type": "shape",
+          "id": "78IHuud1fL",
+          "left": 850,
+          "top": 412.5,
+          "width": 300,
+          "height": 300,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z",
+          "fill": "rgb(91, 155, 213)",
+          "fixedRatio": true,
+          "rotate": 0,
+          "lock": false,
+          "opacity": 0.2
+        },
+        {
+          "type": "shape",
+          "id": "qBDphekubT",
+          "left": -180,
+          "top": -180,
+          "width": 360,
+          "height": 360,
+          "viewBox": [
+            200,
+            200
+          ],
+          "path": "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 Z",
+          "fill": "rgb(91, 155, 213)",
+          "fixedRatio": true,
+          "rotate": 0,
+          "lock": false
+        },
+        {
+          "type": "text",
+          "id": "2y_IZ-pmfY",
+          "width": 500,
+          "height": 101,
+          "left": 250,
+          "top": 160,
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333",
+          "content": "<p style=\"text-align: center;\"><strong><span style=\"font-size: 54px;\"><span style=\"color: rgb(91, 155, 213);\">谢谢观看</span></span></strong></p>",
+          "vertical": false
+        },
+        {
+          "type": "text",
+          "id": "pOa5by-tWB",
+          "width": 500,
+          "height": 56,
+          "left": 250,
+          "top": 250,
+          "rotate": 0,
+          "defaultFontName": "",
+          "defaultColor": "#333",
+          "content": "<p style=\"text-align: center;\"><em><span style=\"font-size: 24px;\"><span style=\"color: rgb(36, 36, 36);\">-THANKS-</span></span></em></p>",
+          "vertical": false
+        },
+        {
+          "type": "shape",
+          "id": "dQo7Qrwmqd",
+          "width": 500,
+          "height": 44,
+          "left": 250,
+          "top": 316,
+          "viewBox": [
+            500,
+            44
+          ],
+          "path": "M 5.5 0 L 494.5 0 Q 500 0 500 5.5 L 500 38.5 Q 500 44 494.5 44 L 5.5 44 Q 0 44 0 38.5 L 0 5.5 Q 0 0 5.5 0 Z",
+          "fill": "rgb(91, 155, 213)",
+          "fixedRatio": false,
+          "rotate": 0,
+          "text": {
+            "content": "<p style=\"text-align: center;\"><span style=\"font-size: 16px;\"><span style=\"color: rgb(255, 255, 255);\">AGPL-3.0 License | Copyright © 2020-PRESENT pipipi-pikachu</span></span></p>",
+            "defaultFontName": "",
+            "defaultColor": "#333",
+            "align": "middle"
+          },
+          "flipH": false,
+          "flipV": false,
+          "pathFormula": "roundRect",
+          "keypoints": [
+            0.125
+          ],
+          "opacity": 0.5,
+          "link": {
+            "type": "web",
+            "target": "https://github.com/pipipi-pikachu"
+          }
+        }
+      ],
+      "background": {
+        "type": "solid",
+        "color": "#FFFFFF"
+      },
+      "remark": "",
+      "type": "end"
     }
-  },
-  {
-    "id": "test-slide-2",
-    "elements": [
-      {
-        "type": "text",
-        "id": "ptNnUJ",
-        "left": 145,
-        "top": 148,
-        "width": 711,
-        "height": 77,
-        "lineHeight": 1.2,
-        "content": "<p style=\"text-align: center;\"><strong><span style=\"font-size: 48px;\">在此处添加标题</span></strong></p>",
-        "rotate": 0,
-        "defaultFontName": "",
-        "defaultColor": "#333"
-      },
-      {
-        "type": "text",
-        "id": "mRHvQN",
-        "left": 207.50000000000003,
-        "top": 249.84259259259264,
-        "width": 585,
-        "height": 56,
-        "content": "<p style=\"text-align: center;\"><span style=\"font-size: 24px;\">在此处添加副标题</span></p>",
-        "rotate": 0,
-        "defaultFontName": "",
-        "defaultColor": "#333"
-      },
-      {
-        "type": "line",
-        "id": "7CQDwc",
-        "left": 323.09259259259267,
-        "top": 238.33333333333334,
-        "start": [0, 0],
-        "end": [354.8148148148148, 0],
-        "points": ["", ""],
-        "color": "#5b9bd5",
-        "style": "solid",
-        "width": 4
-      },
-      {
-        "type": "shape",
-        "id": "09wqWw",
-        "left": -27.648148148148138,
-        "top": 432.73148148148147,
-        "width": 1056.2962962962963,
-        "height": 162.96296296296296,
-        "viewBox": [200, 200],
-        "path": "M 0 20 C 40 -40 60 60 100 20 C 140 -40 160 60 200 20 L 200 180 C 140 240 160 140 100 180 C 40 240 60 140 0 180 L 0 20 Z",
-        "fill": "#5b9bd5",
-        "fixedRatio": false,
-        "rotate": 0
-      }
-    ],
-    "background": {
-      "type": "solid",
-      "color": "#fff"
-    }
-  },
-  {
-    "id": "test-slide-3",
-    "elements": [
-      {
-        "type": "shape",
-        "id": "vSheCJ",
-        "left": 183.5185185185185,
-        "top": 175.5092592592593,
-        "width": 605.1851851851851,
-        "height": 185.18518518518516,
-        "viewBox": [200, 200],
-        "path": "M 0 0 L 200 0 L 200 200 L 0 200 Z",
-        "fill": "#5b9bd5",
-        "fixedRatio": false,
-        "rotate": 0
-      },
-      {
-        "type": "shape",
-        "id": "Mpwv7x",
-        "left": 211.29629629629628,
-        "top": 201.80555555555557,
-        "width": 605.1851851851851,
-        "height": 185.18518518518516,
-        "viewBox": [200, 200],
-        "path": "M 0 0 L 200 0 L 200 200 L 0 200 Z",
-        "fill": "#5b9bd5",
-        "fixedRatio": false,
-        "rotate": 0,
-        "opacity": 0.7
-      },
-      {
-        "type": "text",
-        "id": "WQOTAp",
-        "left": 304.9074074074074,
-        "top": 198.10185185185182,
-        "width": 417.9629629629629,
-        "height": 140,
-        "content": "<p style=\"text-align: center;\"><strong><span style=\"font-size: 80px;\"><span style=\"color: rgb(255, 255, 255);\">感谢观看</span></span></strong></p>",
-        "rotate": 0,
-        "defaultFontName": "",
-        "defaultColor": "#333",
-        "wordSpace": 5
-      }
-    ],
-    "background": {
-      "type": "solid",
-      "color": "#fff"
-    }
-  }
-]
+  ]
