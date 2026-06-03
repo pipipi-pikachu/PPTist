@@ -290,7 +290,7 @@
           "rotate": 0,
           "defaultFontName": "",
           "defaultColor": "#333",
-          "content": "<p style=\"text-align: center;\"><em><span style=\"font-size: 24px;\"><span style=\"color: rgb(36, 36, 36);\">-THANKS-</span></span></em></p>",
+          "content": "<p style=\"text-align: center;\"><em><span style=\"font-size: 24px;\"><span style=\"color: rgb(51, 51, 51);\">-THANKS-</span></span></em></p>",
           "vertical": false
         },
         {

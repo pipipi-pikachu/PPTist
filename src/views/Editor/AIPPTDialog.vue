@@ -61,6 +61,7 @@
             :options="[
               { label: 'GLM-4.7-Flash', value: 'glm-4.7-flash' },
               { label: 'Doubao-Seed-1.6-Flash', value: 'doubao-seed-1.6-flash' },
+              { label: 'DeepSeek-v4-Flash', value: 'deepseek-v4-flash' },
             ]"
           />
         </div>
