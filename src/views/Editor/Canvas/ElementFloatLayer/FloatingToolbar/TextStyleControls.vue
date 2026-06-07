@@ -22,8 +22,11 @@
     <template #content>
       <ColorPicker :modelValue="richTextAttrs.color" @update:modelValue="value => emitRichTextCommand('color', value)" />
     </template>
-    <button class="toolbar-btn">
-      <i-icon-park-outline:platte />
+    <button class="toolbar-btn text-color-btn">
+      <i-icon-park-outline:text />
+      <span class="text-color-block" :class="{ white: isPureWhiteColor(richTextAttrs.color) }">
+        <span class="text-color-block-content" :style="{ backgroundColor: richTextAttrs.color }"></span>
+      </span>
     </button>
   </Popover>
   <button
@@ -73,6 +76,7 @@
 </template>
 
 <script lang="ts" setup>
+import tinycolor from 'tinycolor2'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { FONTS } from '@/configs/font'
@@ -92,6 +96,11 @@ const fontSizeOptions = [
 
 const emitRichTextCommand = (command: string, value?: string) => {
   emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
+}
+
+const isPureWhiteColor = (color?: string) => {
+  const rgba = tinycolor(color).toRgb()
+  return rgba.r === 255 && rgba.g === 255 && rgba.b === 255 && rgba.a === 1
 }
 </script>
 
@@ -121,9 +130,31 @@ const emitRichTextCommand = (command: string, value?: string) => {
     color: $themeColor;
   }
 }
+.text-color-btn {
+  flex-direction: column;
+  font-size: 13px;
+
+  .text-color-block {
+    width: 15px;
+    height: 4px;
+    margin-top: 1px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAAXNSR0IArs4c6QAAACdJREFUGFdjfPbs2X8GBgYGSUlJEMXAiCHw//9/sIrnz59DVKALAADNxxVfaiODNQAAAABJRU5ErkJggg==);
+
+    &.white {
+      height: 5px;
+      border: 1px solid #ddd;
+    }
+  }
+
+  .text-color-block-content {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
 .font-select {
   width: 110px;
-  margin-right: 4px;
+  margin-right: 1px;
 }
 .fontsize-select {
   width: 80px;
@@ -137,14 +168,16 @@ const emitRichTextCommand = (command: string, value?: string) => {
 }
 
 ::v-deep(.select) {
-  height: 28px;
+  height: 30px;
+  border: 0;
+  background-color: #f9f9f9;
 
   .selector {
-    height: 26px;
-    line-height: 26px;
+    height: 30px;
+    line-height: 30px;
   }
   .icon {
-    height: 26px;
+    height: 30px;
   }
 }
 </style>
