@@ -375,6 +375,7 @@ const emitTableCommand = (command: TableCommand['command'], position?: TableComm
   text-align: right;
 }
 .popover-btn {
+  width: 32px;
   padding: 0 3px;
 }
 </style>
