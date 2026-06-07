@@ -10,6 +10,35 @@
       </button>
     </Popover>
     <BorderPanel />
+
+    <div class="divider"></div>
+
+    <Popover trigger="click">
+      <template #content>
+        <div class="table-command-menu">
+          <PopoverMenuItem center @click="emitTableCommand('insert-row', 'before')">上方插入行</PopoverMenuItem>
+          <PopoverMenuItem center @click="emitTableCommand('insert-row', 'after')">下方插入行</PopoverMenuItem>
+          <PopoverMenuItem center @click="emitTableCommand('insert-col', 'before')">左侧插入列</PopoverMenuItem>
+          <PopoverMenuItem center @click="emitTableCommand('insert-col', 'after')">右侧插入列</PopoverMenuItem>
+        </div>
+      </template>
+      <button class="toolbar-btn">
+        <i-icon-park-outline:add class="icon" />
+        <span>添加</span>
+      </button>
+    </Popover>
+    <Popover trigger="click">
+      <template #content>
+        <div class="table-command-menu">
+          <PopoverMenuItem center @click="emitTableCommand('delete-row')">删除行</PopoverMenuItem>
+          <PopoverMenuItem center @click="emitTableCommand('delete-col')">删除列</PopoverMenuItem>
+        </div>
+      </template>
+      <button class="toolbar-btn">
+        <i-icon-park-outline:reduce class="icon" />
+        <span>删除</span>
+      </button>
+    </Popover>
   </div>
 </template>
 
@@ -18,13 +47,15 @@ import { computed, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement, TableCell, TableCellStyle } from '@/types/slides'
+import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import BorderPanel from './BorderPanel.vue'
 import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 
-defineProps<{
+const props = defineProps<{
   elementInfo: PPTTableElement
 }>()
 
@@ -48,6 +79,14 @@ const cellBackcolor = computed(() => {
 })
 
 const { addHistorySnapshot } = useHistorySnapshot()
+
+const emitTableCommand = (command: TableCommand['command'], position?: TableCommand['position']) => {
+  emitter.emit(EmitterEvents.TABLE_COMMAND, {
+    targetId: props.elementInfo.id,
+    command,
+    position,
+  })
+}
 
 const updateCellBackcolor = (backcolor: string) => {
   const el = handleTableElement.value
@@ -104,5 +143,15 @@ const updateCellBackcolor = (backcolor: string) => {
     font-size: 12px;
     margin-left: 5px;
   }
+}
+.divider {
+  width: 1px;
+  height: 18px;
+  background-color: $borderColor;
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+.table-command-menu {
+  width: 100px;
 }
 </style>

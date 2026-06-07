@@ -19,6 +19,7 @@
       >
         <EditableTable 
           @mousedown.stop
+          :elementId="elementInfo.id"
           :data="elementInfo.data"
           :width="elementInfo.width"
           :cellMinHeight="elementInfo.cellMinHeight"

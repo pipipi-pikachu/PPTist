@@ -70,6 +70,8 @@ import { useMainStore } from '@/store'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
+import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
+import message from '@/utils/message'
 import { getCellStyle, getTextStyle, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
@@ -77,6 +79,7 @@ import useSubThemeColor from './useSubThemeColor'
 import CustomTextarea from './CustomTextarea.vue'
 
 const props = withDefaults(defineProps<{
+  elementId: string
   data: TableCell[][]
   width: number
   cellMinHeight: number
@@ -658,6 +661,49 @@ const checkCanDeleteRowOrCol = () => {
 
   return { canDeleteRow, canDeleteCol }
 }
+
+const getCommandTargetCell = () => {
+  const selectedCell = selectedCells.value.find(cell => !hideCells.value.includes(cell))
+  if (!selectedCell) return null
+
+  const [rowIndex, colIndex] = selectedCell.split('_').map(Number)
+  return { rowIndex, colIndex }
+}
+
+const execTableCommand = (payload: TableCommand) => {
+  if (payload.targetId !== props.elementId) return
+
+  const targetCell = getCommandTargetCell()
+  const isBefore = payload.position === 'before'
+
+  if (payload.command === 'insert-row') {
+    const rowIndex = targetCell ? (isBefore ? targetCell.rowIndex : targetCell.rowIndex + 1) : (isBefore ? 0 : tableCells.value.length)
+    return insertRow(rowIndex)
+  }
+  if (payload.command === 'insert-col') {
+    const colCount = tableCells.value[0]?.length || 0
+    const colIndex = targetCell ? (isBefore ? targetCell.colIndex : targetCell.colIndex + 1) : (isBefore ? 0 : colCount)
+    return insertCol(colIndex)
+  }
+  const { canDeleteRow, canDeleteCol } = checkCanDeleteRowOrCol()
+
+  if (payload.command === 'delete-row') {
+    if (!canDeleteRow) return message.warning('表格至少保留一行')
+    return deleteRow(targetCell ? targetCell.rowIndex : tableCells.value.length - 1)
+  }
+  if (payload.command === 'delete-col') {
+    if (!canDeleteCol) return message.warning('表格至少保留一列')
+    const colCount = tableCells.value[0]?.length || 1
+    return deleteCol(targetCell ? targetCell.colIndex : colCount - 1)
+  }
+}
+
+onMounted(() => {
+  emitter.on(EmitterEvents.TABLE_COMMAND, execTableCommand)
+})
+onUnmounted(() => {
+  emitter.off(EmitterEvents.TABLE_COMMAND, execTableCommand)
+})
 
 // 检查是否可以合并或拆分
 // 必须多选才可以合并

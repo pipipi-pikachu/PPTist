@@ -113,20 +113,32 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">行数：</div>
-      <div class="set-count" style="width: 60%;">
-        <Button class="btn" :disabled="rowCount <= 1" @click="setTableRow(rowCount - 1)"><i-icon-park-outline:minus /></Button>
-        <div class="count-text">{{rowCount}}</div>
-        <Button class="btn" :disabled="rowCount >= 30" @click="setTableRow(rowCount + 1)"><i-icon-park-outline:plus /></Button>
-      </div>
+      <div style="width: 40%;">操作行：</div>
+      <ButtonGroup style="width: 60%;" passive>
+        <Button first style="flex: 1;" @click="emitTableCommand('insert-row', 'after')">添加行</Button>
+        <Popover trigger="click">
+          <template #content>
+            <PopoverMenuItem center @click="emitTableCommand('insert-row', 'before')">上方添加</PopoverMenuItem>
+            <PopoverMenuItem center @click="emitTableCommand('insert-row', 'after')">下方添加</PopoverMenuItem>
+            <PopoverMenuItem center @click="emitTableCommand('delete-row')">删除行</PopoverMenuItem>
+          </template>
+          <Button last class="popover-btn"><i-icon-park-outline:down /></Button>
+        </Popover>
+      </ButtonGroup>
     </div>
     <div class="row">
-      <div style="width: 40%;">列数：</div>
-      <div class="set-count" style="width: 60%;">
-        <Button class="btn" :disabled="colCount <= 1" @click="setTableCol(colCount - 1)"><i-icon-park-outline:minus /></Button>
-        <div class="count-text">{{colCount}}</div>
-        <Button class="btn" :disabled="colCount >= 30" @click="setTableCol(colCount + 1)"><i-icon-park-outline:plus /></Button>
-      </div>
+      <div style="width: 40%;">操作列：</div>
+      <ButtonGroup style="width: 60%;" passive>
+        <Button first style="flex: 1;" @click="emitTableCommand('insert-col', 'after')">添加列</Button>
+        <Popover trigger="click">
+          <template #content>
+            <PopoverMenuItem center @click="emitTableCommand('insert-col', 'before')">左侧添加</PopoverMenuItem>
+            <PopoverMenuItem center @click="emitTableCommand('insert-col', 'after')">右侧添加</PopoverMenuItem>
+            <PopoverMenuItem center @click="emitTableCommand('delete-col')">删除列</PopoverMenuItem>
+          </template>
+          <Button last class="popover-btn"><i-icon-park-outline:down /></Button>
+        </Popover>
+      </ButtonGroup>
     </div>
 
     <Divider />
@@ -185,10 +197,10 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign, TextAlignVertical } from '@/types/slides'
 import { FONTS } from '@/configs/font'
+import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import ElementOutline from '../common/ElementOutline.vue'
@@ -206,6 +218,7 @@ import RadioGroup from '@/components/RadioGroup.vue'
 import Select from '@/components/Select.vue'
 import SelectGroup from '@/components/SelectGroup.vue'
 import Popover from '@/components/Popover.vue'
+import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const slidesStore = useSlidesStore()
 const { handleElement, handleElementId, selectedTableCells: selectedCells } = storeToRefs(useMainStore())
@@ -230,22 +243,12 @@ const textAttrs = ref({
 
 const theme = ref<TableTheme>()
 const hasTheme = ref(false)
-const rowCount = ref(0)
-const colCount = ref(0)
-const minRowCount = ref(0)
-const minColCount = ref(0)
 
 watch(handleElement, () => {
   if (!handleElement.value || handleElement.value.type !== 'table') return
   
   theme.value = handleElement.value.theme
   hasTheme.value = !!theme.value
-
-  rowCount.value = handleElement.value.data.length
-  colCount.value = handleElement.value.data[0].length
-
-  minRowCount.value = handleElement.value.data.length
-  minColCount.value = handleElement.value.data[0].length
 }, { deep: true, immediate: true })
 
 const { addHistorySnapshot } = useHistorySnapshot()
@@ -349,67 +352,12 @@ const toggleTheme = (checked: boolean) => {
   }
 }
 
-// 设置表格行数
-const setTableRow = (value: number) => {
-  const _handleElement = handleElement.value as PPTTableElement
-  const rowCount = _handleElement.data.length
-
-  if (value > rowCount) {
-    const newTableCells: TableCell[][] = []
-    for (let i = 0; i < value - rowCount; i++) {
-      const rowCells: TableCell[] = []
-      for (let j = 0; j < colCount.value; j++) {
-        rowCells.push({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
-      }
-      newTableCells.push(rowCells)
-    }
-  
-    const tableCells: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
-    tableCells.push(...newTableCells)
-  
-    updateElement({ data: tableCells })
-  }
-  else {
-    const tableCells: TableCell[][] = _handleElement.data.slice(0, value)
-    updateElement({ data: tableCells })
-  }
-}
-
-// 设置表格列数
-const setTableCol = (value: number) => {
-  const _handleElement = handleElement.value as PPTTableElement
-  const colCount = _handleElement.data[0].length
-
-  let tableCells = _handleElement.data
-  let colSizeList = _handleElement.colWidths.map(item => item * _handleElement.width)
-
-  if (value > colCount) {
-    tableCells = tableCells.map(item => {
-      const cells: TableCell[] = []
-      for (let i = 0; i < value - colCount; i++) {
-        cells.push({ id: nanoid(10), colspan: 1, rowspan: 1, text: '' })
-      }
-      item.push(...cells)
-      return item
-    })
-  
-    const newColSizeList: number[] = new Array(value - colCount).fill(100)
-    colSizeList.push(...newColSizeList)
-  }
-  else {
-    tableCells = tableCells.map(item => item.slice(0, value))
-    colSizeList = colSizeList.slice(0, value)
-  }
-
-  const width = colSizeList.reduce((a, b) => a + b)
-  const colWidths = colSizeList.map(item => item / width)
-
-  const props = {
-    width,
-    data: tableCells,
-    colWidths,
-  }
-  updateElement(props)
+const emitTableCommand = (command: TableCommand['command'], position?: TableCommand['position']) => {
+  emitter.emit(EmitterEvents.TABLE_COMMAND, {
+    targetId: handleElementId.value,
+    command,
+    position,
+  })
 }
 </script>
 
@@ -426,19 +374,7 @@ const setTableCol = (value: number) => {
 .switch-wrapper {
   text-align: right;
 }
-.set-count {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .btn {
-    padding: 0 8px;
-  }
-
-  .count-text {
-    flex: 1;
-    text-align: center;
-    margin: 0 8px;
-  }
+.popover-btn {
+  padding: 0 3px;
 }
 </style>
