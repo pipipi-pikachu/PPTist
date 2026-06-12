@@ -29,7 +29,7 @@
 | `top` | `number` | 必须 | 元素未旋转时包围盒左上角的 `y` |
 | `width` | `number` | 必须 | 元素包围盒宽度 |
 | `height` | `number` | 必须 | 元素包围盒高度 |
-| `rotate` | `number` | 必须 | 顺时针旋转角度，单位度，通常填 `0` |
+| `rotate` | `number` | 必须 | 顺时针旋转角度，单位度，默认为 `0` |
 
 注：
 - 矩形元素的旋转中心是元素中心点
@@ -49,7 +49,7 @@
 
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| `style` | `"solid" \\| "dashed" \\| "dotted"` | 建议 | 边框样式 |
+| `style` | `"solid" \| "dashed" \| "dotted"` | 建议 | 边框样式 |
 | `width` | `number` | 建议 | 边框宽度 |
 | `color` | `string` | 建议 | 边框颜色 |
 
@@ -86,23 +86,23 @@
 
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| `type` | `"linear" \\| "radial"` | 必须 | 渐变类型 |
+| `type` | `"linear" \| "radial"` | 必须 | 渐变类型 |
 | `rotate` | `number` | 建议 | 线性渐变角度 |
-| `colors` | `{ pos: number; color: string }[]` | 必须 | 渐变色标，`pos` 为 0 到 100 |
+| `colors` | `{ pos: number; color: string }[]` | 必须 | 渐变色标，`pos` 为 0 到 100，表示 `0% ~ 100%` 的范围 |
 
 ### 富文本内容约束
 
-文本元素和形状内文本都使用 HTML 字符串。只有以下列出的 HTML 节点和内联样式会被识别，**严禁使用未列出的标签或样式**。
+文本元素和形状内文本都使用 HTML 字符串。只有以下列出的 HTML 节点和内联样式会被识别，**严禁使用未列出的标签或样式**
 
 - 块级标签：`p`、`ul`、`ol`、`li`、`blockquote`
-- 行内标签：`strong`、`em`、`u`、`strike`、`sup`、`sub`、`code`、`a`
+- 行内标签：`strong`、`em`、`u`、`strike`、`sup`、`sub`、`code`
 - 行内样式标签：`span`
 
 支持的样式：
 
 - `span`：`color`、`background-color`、`font-size`、`font-family`
 - `p`：`text-align`
-- `ul/ol`：`list-style-type`、`font-size`、`color`
+- `ul/ol`：`font-size`、`color`
 
 富文本示例：
 
@@ -128,53 +128,28 @@
 </ul>
 ```
 
-> **列表格式要求**：`<li>` 内部必须包裹 `<p>` 标签，如 `<li><p>内容</p></li>`。
-
-### 文本类型
-
-`title`: 标题
-`subtitle`: 副标题
-`content`: 正文
-`item`: 列表项目
-`itemTitle`: 列表项标题
-`notes`: 注释
-`header`: 页眉
-`footer`: 页脚
-`partNumber`: 节编号
-`itemNumber`: 项目编号
+> **列表格式要求**：`<li>` 内部必须包裹 `<p>` 标签，如 `<li><p>内容</p></li>`
 
 ### 可用字体
 
 > 字体仅允许从以下列表选择，缺省值（未填写时）为系统默认字体
 
-`SourceHanSans`： 思源黑体
-`SourceHanSerif`： 思源宋体
-`WenDingPLKaiTi`： 文鼎PL楷体
-`WenDingPLSongTi`： 文鼎PL宋体
-`ZhuqueFangSong`： 朱雀仿宋
-`LXGWWenKai`： 霞鹜文楷
-`AlibabaPuHuiTi`： 阿里巴巴普惠体
-`MiSans`： MiSans
-`DeYiHei`： 得意黑
-`CangerXiaowanzi`： 仓耳小丸子
-`YousheTitleBlack`： 优设标题黑
-`FengguangMingrui`： 峰广明锐体
-`ShetuModernSquare`： 摄图摩登小方体
-`ZcoolHappy`： 站酷快乐体
-`ZizhiQuXiMai`： 字制区喜脉体
-`SucaiJishiKangkang`： 素材集市康康体
-`SucaiJishiCoolSquare`： 素材集市酷方体
-`TuniuRounded`： 途牛类圆体
-`RuiziZhenyan`： 锐字真言体
-`SourceSerif4`： Source Serif 4
-`JetBrainsMono`： JetBrains Mono
-`Literata`： Literata
-`Inter`： Inter
-`Roboto`： Roboto
-`OpenSans`： Open Sans
-`Montserrat`： Montserrat
-`SourceSansPro`： Source Sans Pro
-`Merriweather`： Merriweather
+- `SourceHanSans`： 思源黑体
+- `SourceHanSerif`： 思源宋体
+- `WenDingPLKaiTi`： 文鼎PL楷体
+- `WenDingPLSongTi`： 文鼎PL宋体
+- `ZhuqueFangSong`： 朱雀仿宋
+- `LXGWWenKai`： 霞鹜文楷
+- `MiSans`： MiSans
+- `SourceSerif4`： Source Serif 4
+- `JetBrainsMono`： JetBrains Mono
+- `Literata`： Literata
+- `Inter`： Inter
+- `Roboto`： Roboto
+- `OpenSans`： Open Sans
+- `Montserrat`： Montserrat
+- `SourceSansPro`： Source Sans Pro
+- `Merriweather`： Merriweather
 
 ## 页面 Slide
 
@@ -196,8 +171,8 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `id` | `string` | 必须 | 页面唯一 ID |
-| `background` | `object` | 建议 | 页面背景，包含纯色背景和渐变背景 |
-| `elements` | `array` | 必须 | 本页元素数组 |
+| `background` | `object` | 建议 | 页面背景，支持纯色背景和渐变背景 |
+| `elements` | `array` | 必须 | 本页元素数组，数组顺序即层级顺序，后面的元素会盖在前面元素上 |
 
 #### 纯色背景
 
@@ -228,9 +203,9 @@
 
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| `type` | `"solid" \\| "gradient"` | 必须 | 背景类型 |
-| `color` | `string` | `solid` 时必须 | 背景纯色 |
-| `gradient` | `Gradient` | `gradient` 时必须 | 背景渐变 |
+| `type` | `"solid" \| "gradient"` | 必须 | 背景类型 |
+| `color` | `string` | `type` 为 `solid` 时必须 | 背景纯色 |
+| `gradient` | `object` | `type` 为 `gradient` 时必须 | 背景渐变，线性或径向 |
 
 ## 文本元素 `text`
 
@@ -256,16 +231,23 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `"text"` | 必须 | 元素类型 |
-| `content` | `string` | 必须 | 富文本 HTML |
+| `content` | `string` | 必须 | 富文本 HTML，参考共享样式结构 - 富文本内容约束 |
 | `defaultFontName` | `string` | 必须 | 默认字体，未被内联样式覆盖时生效 |
 | `defaultColor` | `string` | 必须 | 默认文字颜色，未被内联样式覆盖时生效 |
 | `fill` | `string` | 可选 | 文本框背景色 |
-| `outline` | `object` | 可选 | 文本框边框 |
-| `lineHeight` | `number` | 建议 | 行高倍数，默认约 `1.5` |
-| `wordSpace` | `number` | 可选 | 字间距，单位 px |
+| `outline` | `object` | 可选 | 文本框边框，参考共享样式结构 |
+| `lineHeight` | `number` | 建议 | 行高倍数，默认 `1.5` |
+| `wordSpace` | `number` | 可选 | 字间距，单位 `px`，默认无 |
 | `opacity` | `number` | 可选 | 透明度，`0~1` |
-| `shadow` | `object` | 可选 | 文本框阴影 |
-| `textType` | `string` | 可选 | 文本类型 |
+| `shadow` | `object` | 可选 | 文本框阴影，参考共享样式结构 |
+
+### 潜在排版规则
+
+计算文本框 `left / top / width / height` 时必须理解：
+
+- 文本内容距离文本框上下左右边缘各有 `10px` 内边距
+- 文本段落（`p`标签）之间存在 `5px` 的段间距
+- 设置文本框尺寸时，需考虑边距、行高、段间距、字号、字间距的影响
 
 ## 图片元素 `image`
 
@@ -290,14 +272,14 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `"image"` | 必须 | 元素类型 |
-| `src` | `string` | 必须 | 图片资源地址 |
-| `description` | `string` | 必须 | 用于后续调用生图模型 |
+| `src` | `string` | 必须 | 图片资源地址，留缺省值 `"https://images.pexels.com/photos/730670/pexels-photo-730670.jpeg"` |
+| `description` | `string` | 必须 | 图片描述，用于后续调用生图模型 |
 | `outline` | `object` | 可选 | 图片轮廓边框 |
 | `filters` | `object` | 可选 | 图片滤镜 |
 | `clip` | `object` | 可选 | 图片裁剪 |
-| `shadow` | `object` | 可选 | 阴影 |
-| `radius` | `number` | 可选 | 圆角半径，主要用于矩形裁剪 |
-| `colorMask` | `string` | 可选 | 颜色蒙版 |
+| `shadow` | `object` | 可选 | 阴影，参考共享样式结构 |
+| `radius` | `number` | 可选 | 圆角半径，主要用于矩形裁剪，如 `16` |
+| `colorMask` | `string` | 可选 | 颜色蒙版，带透明度的颜色值，如 `rgba(91, 155, 213, 0.5)` |
 
 ### 图片滤镜 `filters`
 
@@ -307,9 +289,15 @@
 {
   "brightness": "108%",
   "contrast": "105%",
-  "saturate": "92%",
+  "blur": "2px",
   "opacity": "92%"
 }
+```
+
+`filter` 本质上是一个 CSS filter 函数字典，上面的示例最终会实际渲染成：
+
+```css
+filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 ```
 
 支持字段：
@@ -342,11 +330,11 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `shape` | `string` | 建议 | 裁剪形状 key |
-| `range` | `[[number, number], [number, number]]` | 必须 | 以百分比描述原图裁剪区间 |
+| `range` | `[[number, number], [number, number]]` | 必须 | 以百分比描述原图裁剪区间，左上点到右下点 |
 
 `range` 说明：
 
-- `[[x1, y1], [x2, y2]]`
+- `[[x1, y1], [x2, y2]]` 表示左上点和右下点的坐标
 - 范围为原图百分比，`0` 到 `100`
 - `[[10, 10], [90, 90]]` 表示截取原图中间 80% 的区域
 
@@ -384,19 +372,52 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `"shape"` | 必须 | 元素类型 |
-| `viewBox` | `[number, number]` | 必须 | 路径坐标系大小，例如 `[1000, 1000]` |
+| `viewBox` | `[number, number]` | 必须 | SVG path 的绘制坐标系尺寸，格式为 `[width, height]` |
 | `path` | `string` | 必须 | SVG path `d` 字符串 |
 | `fill` | `string` | 必须 | 填充色；若同时有 `gradient`，则 `gradient` 优先 |
-| `gradient` | `object` | 可选 | 渐变填充 |
-| `outline` | `object` | 可选 | 形状边框 |
+| `gradient` | `object` | 可选 | 渐变填充，参考共享样式结构 |
+| `outline` | `object` | 可选 | 形状边框，参考共享样式结构 |
 | `opacity` | `number` | 可选 | 透明度，`0~1` |
-| `shadow` | `object` | 可选 | 阴影 |
+| `shadow` | `object` | 可选 | 阴影，参考共享样式结构 |
 | `text` | `object` | 可选 | 形状内文本 |
 
 ### `path` 绘制规范
 
 - 只能使用标准 SVG path 命令：`M`、`L`、`Q`、`C`、`A`、`Z`
-- 路径坐标全部写在 `viewBox` 坐标系内，推荐统一使用 `viewBox: [1000, 1000]`
+- 路径坐标全部写在 `viewBox` 坐标系内，推荐与元素 `width / height` 比例一致
+
+如宽高为 `200px` 的矩形：
+
+```json
+{
+  "width": 200,
+  "height": 200,
+  "svgSize": [200, 200],
+  "path": "M 0 0 L 200 0 L 200 200 L 0 200 L 0 0 Z"
+}
+```
+
+如宽高为 `200px` 的圆形：
+
+```json
+{
+  "width": 200,
+  "height": 200,
+  "svgSize": [200, 200],
+  "path": "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 "
+}
+```
+
+如 `300 x 200`、圆角半径为 `40px` 的圆角矩形：
+
+```json
+{
+  "width": 300,
+  "height": 200,
+  "svgSize": [300, 200],
+  "path": "M 40 0 L 260 0 Q 300 0 300 40 L 300 160 Q 300 200 260 200 L 40 200 Q 0 200 0 160 L 0 40 Q 0 0 40 0 Z"
+}
+```
 
 ### 形状内文本 `text`
 
@@ -408,7 +429,7 @@
   "defaultFontName": "SourceHanSans",
   "defaultColor": "#1D4ED8",
   "align": "middle",
-  "lineHeight": 1.4,
+  "lineHeight": 1.5,
   "wordSpace": 0,
 }
 ```
@@ -420,10 +441,9 @@
 | `content` | `string` | 必须 | 富文本 HTML |
 | `defaultFontName` | `string` | 必须 | 默认字体 |
 | `defaultColor` | `string` | 必须 | 默认文字颜色 |
-| `align` | `"top" \\| "middle" \\| "bottom"` | 必须 | 文本在形状内部的垂直对齐 |
-| `lineHeight` | `number` | 建议 | 行高倍数 |
-| `wordSpace` | `number` | 可选 | 字间距 |
-| `type` | `string` | 可选 | 文本类型 |
+| `align` | `"top" \| "middle" \| "bottom"` | 必须 | 文本在形状内部的垂直对齐方向 |
+| `lineHeight` | `number` | 建议 | 行高倍数，默认 `1.5` |
+| `wordSpace` | `number` | 可选 | 字间距，默认无 |
 
 ## 线条元素 `line`
 
@@ -455,10 +475,10 @@
 | `start` | `[number, number]` | 必须 | 起点，相对 `left/top` |
 | `end` | `[number, number]` | 必须 | 终点，相对 `left/top` |
 | `width` | `number` | 必须 | 线宽，不是包围盒宽度 |
-| `style` | `"solid" \\| "dashed" \\| "dotted"` | 必须 | 线型 |
+| `style` | `"solid" \| "dashed" \| "dotted"` | 必须 | 线型 |
 | `color` | `string` | 必须 | 线条颜色 |
-| `points` | `["" \\| "arrow" \\| "dot", "" \\| "arrow" \\| "dot"]` | 必须 | 起点和终点端点样式 |
-| `shadow` | `object` | 可选 | 阴影 |
+| `points` | `["" \| "arrow" \| "dot", "" \| "arrow" \| "dot"]` | 必须 | 起点和终点端点样式 |
+| `shadow` | `object` | 可选 | 阴影，参考共享样式结构 |
 
 ### 线条与其他元素的关键差异
 
@@ -508,7 +528,7 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `"table"` | 必须 | 元素类型 |
-| `outline` | `object` | 必须 | 表格边框 |
+| `outline` | `object` | 必须 | 表格边框，参考共享样式结构 |
 | `theme` | `object` | 可选 | 表格主题色和头尾行列标记 |
 | `colWidths` | `number[]` | 必须 | 每列宽度占比，总和应为 `1` |
 | `cellMinHeight` | `number` | 必须 | 每行最小高度 |
@@ -544,6 +564,30 @@
 | `text` | `string` | 必须 | 纯文本内容 |
 | `style` | `object` | 可选 | 单元格样式 |
 
+### 合并单元格说明
+
+表格合并单元格通过左上角主单元格的 `rowspan` / `colspan` 表达
+
+例如：
+
+```json
+[
+  { "colspan": 3, "rowspan": 1, "text": "合并行" },
+  { "colspan": 1, "rowspan": 1, "text": "" },
+  { "colspan": 1, "rowspan": 1, "text": "" }
+],
+[
+  { "colspan": 1, "rowspan": 2, "text": "合并列" },
+  { "colspan": 1, "rowspan": 1, "text": "" },
+  { "colspan": 1, "rowspan": 1, "text": "" }
+],
+[
+  { "colspan": 1, "rowspan": 1, "text": "" },
+  { "colspan": 1, "rowspan": 1, "text": "" },
+  { "colspan": 1, "rowspan": 1, "text": "" }
+]
+```
+
 ### 单元格样式 `style`
 
 | 字段 | 类型 | 必须 | 说明 |
@@ -556,8 +600,8 @@
 | `backcolor` | `string` | 可选 | 单元格背景色 |
 | `fontsize` | `string` | 可选 | 字号，如 `"14px"` |
 | `fontname` | `string` | 可选 | 字体名 |
-| `align` | `"left" \\| "center" \\| "right" \\| "justify"` | 可选 | 水平对齐 |
-| `vAlign` | `"top" \\| "middle" \\| "bottom"` | 可选 | 垂直对齐 |
+| `align` | `"left" \| "center" \| "right" \| "justify"` | 可选 | 水平对齐 |
+| `vAlign` | `"top" \| "middle" \| "bottom"` | 可选 | 垂直对齐 |
 
 ### 表格主题 `theme`
 
@@ -573,7 +617,7 @@
 
 说明：
 
-- `color` 是主题主色
+- `color` 主题色
 - `rowHeader` 表示首行视为表头
 - `rowFooter` 表示末行视为表尾
 - `colHeader` 表示首列视为表头列
@@ -610,7 +654,7 @@
 | --- | --- | --- | --- |
 | `type` | `"chart"` | 必须 | 元素类型 |
 | `fill` | `string` | 可选 | 图表容器背景色 |
-| `chartType` | `"bar" \\| "column" \\| "line" \\| "pie" \\| "ring" \\| "area" \\| "radar" \\| "scatter"` | 必须 | 图表类型 |
+| `chartType` | `"bar" \| "column" \| "line" \| "pie" \| "ring" \| "area" \| "radar" \| "scatter"` | 必须 | 图表类型 |
 | `data` | `object` | 必须 | 图表数据 |
 | `themeColors` | `string[]` | 必须 | 系列主题色，至少 1 个 |
 | `textColor` | `string` | 可选 | 坐标轴、标签、图例文字颜色 |
@@ -688,8 +732,7 @@
       "content": "<p><strong>2026 年第一季度营收结构分析</strong></p>",
       "defaultFontName": "SourceHanSans",
       "defaultColor": "#0F172A",
-      "lineHeight": 1.2,
-      "paragraphSpace": 5
+      "lineHeight": 1.2
     },
     {
       "type": "text",
@@ -702,8 +745,7 @@
       "content": "<p>本页展示 2026 年第一季度营收构成。整体上，<strong>企业服务</strong>仍是主要收入来源，教育培训与订阅服务形成稳定补充，其他业务占比相对较小。</p>",
       "defaultFontName": "SourceHanSans",
       "defaultColor": "#334155",
-      "lineHeight": 1.5,
-      "paragraphSpace": 8
+      "lineHeight": 1.5
     },
     {
       "type": "chart",
