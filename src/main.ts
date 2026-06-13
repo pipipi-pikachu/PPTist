@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 
 import 'prosemirror-view/style/prosemirror.css'
-import 'animate.css'
+import '@/assets/styles/animate.scss'
 import '@/assets/styles/prosemirror.scss'
 import '@/assets/styles/global.scss'
 import '@/assets/styles/font.scss'
