@@ -24,7 +24,7 @@
 
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
-| `id` | `string` | 必须 | 元素唯一 ID，全局唯一，如 `el_title_01` |
+| `id` | `string` | 必须 | 元素唯一 ID，全局唯一，如 `P01_el_title_01` |
 | `left` | `number` | 必须 | 元素未旋转时包围盒左上角的 `x` |
 | `top` | `number` | 必须 | 元素未旋转时包围盒左上角的 `y` |
 | `width` | `number` | 必须 | 元素包围盒宽度 |
@@ -157,7 +157,7 @@
 
 ```json
 {
-  "id": "slide_001",
+  "id": "slide_P01",
   "background": {
     "type": "solid",
     "color": "#FFFFFF"
@@ -214,7 +214,7 @@
 ```json
 {
   "type": "text",
-  "id": "el_title_01",
+  "id": "P01_el_title_01",
   "left": 72,
   "top": 54,
   "width": 856,
@@ -256,7 +256,7 @@
 ```json
 {
   "type": "image",
-  "id": "el_image_01",
+  "id": "P01_el_image_01",
   "left": 650,
   "top": 126,
   "width": 278,
@@ -272,8 +272,8 @@
 | 字段 | 类型 | 必须 | 说明 |
 | --- | --- | --- | --- |
 | `type` | `"image"` | 必须 | 元素类型 |
-| `src` | `string` | 必须 | 图片资源地址，留缺省值 `"https://images.pexels.com/photos/730670/pexels-photo-730670.jpeg"` |
-| `description` | `string` | 必须 | 图片描述，用于后续调用生图模型 |
+| `src` | `string` | 必须 | 图片资源地址，必须统一使用默认值 `"https://images.pexels.com/photos/730670/pexels-photo-730670.jpeg"` |
+| `description` | `string` | 必须 | 图片描述，用于后续生成图片，必须承载真实画面意图 |
 | `outline` | `object` | 可选 | 图片轮廓边框 |
 | `filters` | `object` | 可选 | 图片滤镜 |
 | `clip` | `object` | 可选 | 图片裁剪 |
@@ -355,7 +355,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 ```json
 {
   "type": "shape",
-  "id": "el_shape_01",
+  "id": "P01_el_shape_01",
   "left": 72,
   "top": 140,
   "width": 240,
@@ -392,7 +392,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 {
   "width": 200,
   "height": 200,
-  "svgSize": [200, 200],
+  "viewBox": [200, 200],
   "path": "M 0 0 L 200 0 L 200 200 L 0 200 L 0 0 Z"
 }
 ```
@@ -403,7 +403,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 {
   "width": 200,
   "height": 200,
-  "svgSize": [200, 200],
+  "viewBox": [200, 200],
   "path": "M 100 0 A 50 50 0 1 1 100 200 A 50 50 0 1 1 100 0 "
 }
 ```
@@ -414,7 +414,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 {
   "width": 300,
   "height": 200,
-  "svgSize": [300, 200],
+  "viewBox": [300, 200],
   "path": "M 40 0 L 260 0 Q 300 0 300 40 L 300 160 Q 300 200 260 200 L 40 200 Q 0 200 0 160 L 0 40 Q 0 0 40 0 Z"
 }
 ```
@@ -452,7 +452,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 ```json
 {
   "type": "line",
-  "id": "el_line_01",
+  "id": "P01_el_line_01",
   "left": 72,
   "top": 230,
   "start": [0, 0],
@@ -495,7 +495,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 ```json
 {
   "type": "table",
-  "id": "el_table_01",
+  "id": "P01_el_table_01",
   "left": 72,
   "top": 290,
   "width": 420,
@@ -510,14 +510,14 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
   "cellMinHeight": 45,
   "data": [
     [
-      { "id": "c_1_1", "colspan": 1, "rowspan": 1, "text": "区域" },
-      { "id": "c_1_2", "colspan": 1, "rowspan": 1, "text": "收入" },
-      { "id": "c_1_3", "colspan": 1, "rowspan": 1, "text": "同比" }
+      { "id": "P01_table_01_c_1_1", "colspan": 1, "rowspan": 1, "text": "区域" },
+      { "id": "P01_table_01_c_1_2", "colspan": 1, "rowspan": 1, "text": "收入" },
+      { "id": "P01_table_01_c_1_3", "colspan": 1, "rowspan": 1, "text": "同比" }
     ],
     [
-      { "id": "c_2_1", "colspan": 1, "rowspan": 1, "text": "华东" },
-      { "id": "c_2_2", "colspan": 1, "rowspan": 1, "text": "3200 万" },
-      { "id": "c_2_3", "colspan": 1, "rowspan": 1, "text": "+18%" }
+      { "id": "P01_table_01_c_2_1", "colspan": 1, "rowspan": 1, "text": "华东" },
+      { "id": "P01_table_01_c_2_2", "colspan": 1, "rowspan": 1, "text": "3200 万" },
+      { "id": "P01_table_01_c_2_3", "colspan": 1, "rowspan": 1, "text": "+18%" }
     ]
   ]
 }
@@ -538,7 +538,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 
 ```json
 {
-  "id": "c_1_1",
+  "id": "P01_table_01_c_1_1",
   "colspan": 1,
   "rowspan": 1,
   "text": "区域",
@@ -630,7 +630,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 ```json
 {
   "type": "chart",
-  "id": "el_chart_01",
+  "id": "P01_el_chart_01",
   "left": 528,
   "top": 290,
   "width": 400,
@@ -708,7 +708,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
 
 ```json
 {
-  "id": "slide_business_review_01",
+  "id": "slide_P01",
   "background": {
     "type": "gradient",
     "gradient": {
@@ -723,7 +723,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
   "elements": [
     {
       "type": "text",
-      "id": "el_title_01",
+      "id": "P01_el_title_01",
       "left": 72,
       "top": 56,
       "width": 856,
@@ -736,7 +736,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
     },
     {
       "type": "text",
-      "id": "el_summary_01",
+      "id": "P01_el_summary_01",
       "left": 72,
       "top": 142,
       "width": 856,
@@ -749,7 +749,7 @@ filter: brightness(108%) contrast(105%) blur(2px) opacity(92%);
     },
     {
       "type": "chart",
-      "id": "el_chart_01",
+      "id": "P01_el_chart_01",
       "left": 235,
       "top": 260,
       "width": 530,
