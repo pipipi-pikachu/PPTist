@@ -33,7 +33,7 @@
           <RadioButton style="width: 33.33%;" value="custom">自定义</RadioButton>
         </RadioGroup>
       </div>
-      <div class="row" v-if="rangeType === 'custom'">
+      <div class="row" style="margin-bottom: 32px" v-if="rangeType === 'custom'">
         <div class="title" :data-range="`（${range[0]} ~ ${range[1]}）`">自定义范围：</div>
         <Slider
           class="config-item"
