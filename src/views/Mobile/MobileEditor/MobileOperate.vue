@@ -63,9 +63,17 @@ const {
   borderLines,
   resizeHandlers: _resizeHandlers,
   textElementResizeHandlers,
+  verticalTextElementResizeHandlers,
 } = useCommonOperate(scaleWidth, scaleHeight)
 
-const resizeHandlers = props.elementInfo.type === 'text' || props.elementInfo.type === 'table' ? textElementResizeHandlers : _resizeHandlers
+const resizeHandlers = computed(() => {
+  if (props.elementInfo.type === 'text') {
+    if (props.elementInfo.fixedHeight) return _resizeHandlers.value
+    return props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value
+  }
+  if (props.elementInfo.type === 'table') return textElementResizeHandlers.value
+  return _resizeHandlers.value
+})
 
 const cannotRotate = computed(() => ['chart', 'video', 'audio'].includes(props.elementInfo.type))
 </script>

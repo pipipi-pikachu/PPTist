@@ -672,76 +672,48 @@ export default () => {
             el.top = el.top * ratio
   
             if (el.type === 'text') {
-              if (el.autoFit && el.autoFit.type === 'text') {
-                const fontScale = ratio * (el.autoFit.fontScale || 100) / 100
-                const metrics = getParagraphMetrics(el.content, fontScale)
-                const shapeEl: PPTShapeElement = {
-                  type: 'shape',
-                  id: nanoid(10),
-                  width: el.width,
-                  height: el.height,
-                  left: el.left,
-                  top: el.top,
-                  rotate: el.rotate,
-                  viewBox: [200, 200],
-                  path: 'M 0 0 L 200 0 L 200 200 L 0 200 Z',
-                  fill: el.fill?.type === 'color' ? el.fill.value : '',
-                  fixedRatio: false,
-                  outline: {
-                    color: el.borderColor,
-                    width: +(el.borderWidth * ratio).toFixed(2),
-                    style: el.borderType,
-                  },
-                  text: {
-                    content: convertTextContent(el.content, fontScale),
-                    defaultFontName: theme.value.fontName,
-                    defaultColor: theme.value.fontColor,
-                    align: vAlignMap[el.vAlign] || 'middle',
-                    lineHeight: 1,
-                  },
-                }
-                if (el.link) shapeEl.link = { type: 'web', target: el.link }
-                if (el.textInset) shapeEl.text!.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
-                if (metrics.lineHeight) shapeEl.text!.lineHeight = metrics.lineHeight
-                if (metrics.margin) shapeEl.text!.paragraphSpace = metrics.margin
-                slide.elements.push(shapeEl)
+              const autoFitType = el.autoFit?.type
+              const isSelfAdaptive = autoFitType === 'shape'
+              const fontScale = autoFitType === 'text' ? (el.autoFit!.fontScale || 100) / 100 : 1
+              const textRatio = ratio * fontScale
+              const metrics = getParagraphMetrics(el.content, textRatio)
+              const textEl: PPTTextElement = {
+                type: 'text',
+                id: nanoid(10),
+                width: el.width,
+                height: el.height,
+                left: el.left,
+                top: el.top,
+                rotate: el.rotate,
+                defaultFontName: theme.value.fontName,
+                defaultColor: theme.value.fontColor,
+                content: convertTextContent(el.content, textRatio),
+                lineHeight: 1,
+                outline: {
+                  color: el.borderColor,
+                  width: +(el.borderWidth * ratio).toFixed(2),
+                  style: el.borderType,
+                },
+                fill: el.fill?.type === 'color' ? el.fill.value : '',
+                vertical: el.isVertical,
               }
-              else {
-                const metrics = getParagraphMetrics(el.content, ratio)
-                const textEl: PPTTextElement = {
-                  type: 'text',
-                  id: nanoid(10),
-                  width: el.width,
-                  height: el.height,
-                  left: el.left,
-                  top: el.top,
-                  rotate: el.rotate,
-                  defaultFontName: theme.value.fontName,
-                  defaultColor: theme.value.fontColor,
-                  content: convertTextContent(el.content, ratio),
-                  lineHeight: 1,
-                  outline: {
-                    color: el.borderColor,
-                    width: +(el.borderWidth * ratio).toFixed(2),
-                    style: el.borderType,
-                  },
-                  fill: el.fill?.type === 'color' ? el.fill.value : '',
-                  vertical: el.isVertical,
-                }
-                if (el.shadow) {
-                  textEl.shadow = {
-                    h: el.shadow.h * ratio,
-                    v: el.shadow.v * ratio,
-                    blur: el.shadow.blur * ratio,
-                    color: el.shadow.color,
-                  }
-                }
-                if (el.link) textEl.link = { type: 'web', target: el.link }
-                if (el.textInset) textEl.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
-                if (metrics.lineHeight) textEl.lineHeight = metrics.lineHeight
-                if (metrics.margin) textEl.paragraphSpace = metrics.margin
-                slide.elements.push(textEl)
+              if (!isSelfAdaptive) {
+                textEl.fixedHeight = true
+                textEl.vAlign = vAlignMap[el.vAlign] || 'top'
               }
+              if (el.shadow) {
+                textEl.shadow = {
+                  h: el.shadow.h * ratio,
+                  v: el.shadow.v * ratio,
+                  blur: el.shadow.blur * ratio,
+                  color: el.shadow.color,
+                }
+              }
+              if (el.link) textEl.link = { type: 'web', target: el.link }
+              if (el.textInset) textEl.inset = [el.textInset.t, el.textInset.r, el.textInset.b, el.textInset.l]
+              if (metrics.lineHeight) textEl.lineHeight = metrics.lineHeight
+              if (metrics.margin) textEl.paragraphSpace = metrics.margin
+              slide.elements.push(textEl)
             }
             else if (el.type === 'image') {
               const element: PPTImageElement = {

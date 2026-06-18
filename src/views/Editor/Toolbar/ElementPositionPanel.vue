@@ -58,7 +58,7 @@
           :min="minSize"
           :max="1500"
           :step="5"
-          :disabled="isVerticalText"
+          :disabled="isAutoWidthText"
           :value="width"
           @update:value="value => updateWidth(value)"
           style="width: 45%;"
@@ -78,7 +78,7 @@
           :min="minSize"
           :max="800"
           :step="5"
-          :disabled="isHorizontalText || handleElement!.type === 'table'" 
+          :disabled="isAutoHeightText || handleElement!.type === 'table'"
           :value="height" 
           @update:value="value => updateHeight(value)"
           style="width: 45%;"
@@ -146,11 +146,11 @@ const minSize = computed(() => {
   return MIN_SIZE[handleElement.value.type] || 20
 })
 
-const isHorizontalText = computed(() => {
-  return handleElement.value?.type === 'text' && !handleElement.value.vertical
+const isAutoHeightText = computed(() => {
+  return handleElement.value?.type === 'text' && !handleElement.value.vertical && !handleElement.value.fixedHeight
 })
-const isVerticalText = computed(() => {
-  return handleElement.value?.type === 'text' && handleElement.value.vertical
+const isAutoWidthText = computed(() => {
+  return handleElement.value?.type === 'text' && handleElement.value.vertical && !handleElement.value.fixedHeight
 })
 
 watch(handleElement, () => {
@@ -205,7 +205,7 @@ const updateShapePathData = (width: number, height: number) => {
 
 const updateWidth = (value: number) => {
   if (!handleElement.value) return
-  if (handleElement.value.type === 'line' || isVerticalText.value) return
+  if (handleElement.value.type === 'line' || isAutoWidthText.value) return
 
   let h = height.value
 
@@ -230,7 +230,7 @@ const updateWidth = (value: number) => {
 
 const updateHeight = (value: number) => {
   if (!handleElement.value) return
-  if (handleElement.value.type === 'line' || handleElement.value.type === 'table' || isHorizontalText.value) return
+  if (handleElement.value.type === 'line' || handleElement.value.type === 'table' || isAutoHeightText.value) return
 
   let w = width.value
 

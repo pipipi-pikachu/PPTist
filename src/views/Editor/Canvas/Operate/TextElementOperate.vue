@@ -56,6 +56,9 @@ const { canvasScale } = storeToRefs(useMainStore())
 const scaleWidth = computed(() => props.elementInfo.width * canvasScale.value)
 const scaleHeight = computed(() => props.elementInfo.height * canvasScale.value)
 
-const { textElementResizeHandlers, verticalTextElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
-const resizeHandlers = computed(() => props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value)
+const { resizeHandlers: normalResizeHandlers, textElementResizeHandlers, verticalTextElementResizeHandlers, borderLines } = useCommonOperate(scaleWidth, scaleHeight)
+const resizeHandlers = computed(() => {
+  if (props.elementInfo.fixedHeight) return normalResizeHandlers.value
+  return props.elementInfo.vertical ? verticalTextElementResizeHandlers.value : textElementResizeHandlers.value
+})
 </script>

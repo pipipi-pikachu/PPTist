@@ -222,7 +222,9 @@
   "rotate": 0,
   "content": "<p><strong>年度经营分析</strong></p>",
   "defaultFontName": "SourceHanSans",
-  "defaultColor": "#1F2937"
+  "defaultColor": "#1F2937",
+  "fixedHeight": true,
+  "vAlign": "middle"
 }
 ```
 
@@ -240,6 +242,8 @@
 | `wordSpace` | `number` | 可选 | 字间距，单位 `px`，默认无 |
 | `opacity` | `number` | 可选 | 透明度，`0~1` |
 | `shadow` | `object` | 可选 | 文本框阴影，参考共享样式结构 |
+| `fixedHeight` | `boolean` | 建议 | 固定文本框高度，建议设为 `true`，以保证稳定布局约束，仅当需要根据内容自然向下展开时才省略 |
+| `vAlign` | `"top" \| "middle" \| "bottom"` | 可选 | 文本在固定文本框内的对齐方向，仅在 `fixedHeight: true` 时有稳定布局意义 |
 
 ### 潜在排版规则
 

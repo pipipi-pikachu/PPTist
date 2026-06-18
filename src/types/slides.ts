@@ -178,6 +178,10 @@ export type TextInset = [number, number, number, number]
  * textType?: 文本类型
  * 
  * inset?: 内边距（上、右、下、左），默认[10, 10, 10, 10]
+ *
+ * fixedHeight?: 固定文本框自适应轴尺寸，横排文本固定高度，竖排文本固定宽度
+ *
+ * vAlign?: 文本框内垂直对齐方向，仅fixedHeight为真时有效，默认top
  */
 export interface PPTTextElement extends PPTBaseElement {
   type: 'text'
@@ -194,6 +198,8 @@ export interface PPTTextElement extends PPTBaseElement {
   vertical?: boolean
   textType?: TextType
   inset?: TextInset
+  fixedHeight?: boolean
+  vAlign?: TextAlignVertical
 }
 
 
