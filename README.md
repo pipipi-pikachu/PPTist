@@ -21,9 +21,10 @@
 
 
 # ✨ Highlights
-1. **Easy Development**: Built with Vue 3.x and TypeScript, it does not rely on UI component libraries and avoids third-party components as much as possible. This makes styling customization easier and functionality extension more convenient.
-2. **User Friendly**: It offers a context menu available everywhere, dozens of keyboard shortcuts, and countless editing detail optimizations, striving to replicate a desktop application-level experience.
-3. **Feature Rich**: Supports most of the commonly used elements and functionalities found in PowerPoint, supports generate PPT by AI, supports exporting in various formats, and offers basic editing and previewing on mobile devices.
+1. **Easy Development**: Built with Vue 3.x and TypeScript, it does not rely on UI component libraries, making styling customization easier and functionality extension more convenient.
+2. **User Friendly**: It offers context menus everywhere, dozens of shortcut operations, and continuously refined editing details, striving to replicate a desktop application-level experience.
+3. **Feature Rich**: Supports most commonly used Office PPT elements and features, supports template-based AIPPT, supports exporting in various formats, and offers basic editing and previewing on mobile devices.
+4. **Controllable Code**: Not a temporary product of vibe coding. The code is robust, controllable, easy to maintain, and leaves no technical debt.
 
 
 # 👀 Front-Row Reminder
@@ -36,9 +37,9 @@
 > This project is strictly positioned as a Web Slide Editing/Presentation Application. It is not intended to be an ~~AI PPT generator, low-code platform, or image editor~~. The following are the recommendation levels for common use cases:
 
 - **Low-code Platforms / H5 Editors / Image Editors / Whiteboards** (Recommendation: Not Recommended): We suggest choosing open-source projects specifically designed for those purposes.
-- **PPT File Preview Tool** (Recommendation: ⭐): The ability to import .pptx files is limited (roughly 70%~80% fidelity). Unless your requirements for preview accuracy are low and you only need basic content display, this is not recommended.
-- **AI PPT Generation Tool** (Recommendation: ⭐⭐): While the project provides basic template-based AI generation, it is not the core focus. As AI technology evolves (moving from templates to HTML-based or image-based generation), this project will not necessarily follow those trends. However, if you wish to build a template-based AI generator and are willing to implement your own generation logic, PPTist’s robust editing capabilities make it a strong foundation.
-- **Office PPT Authoring Tool** (Recommendation: ⭐⭐): PPTist supports many common Office features and basic .pptx export. However, exports are not 100% identical to the original, and as mentioned, import capabilities are limited. Choose this only if you can accept these limitations.
+- **PPT File Preview Tool** (Recommendation: ⭐): The ability to import .pptx files is limited (roughly 80% fidelity). Unless your requirements for preview accuracy are low and you only need basic content display, this is not recommended.
+- **AI PPT Generation Tool** (Recommendation: ⭐⭐): While the project provides basic template-based AIPPT generation, it is not the core focus. As AI technology evolves, the form of AIPPT will continue to change (templates -> HTML webpages -> pure images -> SVG -> ...), and this project will not follow those trends. However, if you only want to build a template-based AIPPT generator, or are willing to extend better generation solutions yourself, PPTist's complete Schema and editing capabilities may be helpful.
+- **Office PPT Authoring Tool** (Recommendation: ⭐⭐): PPTist supports many common Office PPT features and basic local .pptx export. However, exports cannot be 100% faithful, and this scenario generally has high requirements for importing .pptx files, while the import capability mentioned above is limited. Choose cautiously unless you can accept imperfect import capabilities.
 - **Web Slide Editing/Presentation App** (Recommendation: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐): This is the primary use case. The core strengths of PPTist are its editing capabilities and user experience. You can build upon this project to customize or add unique nodes and features tailored to your specific needs, where Office compatibility is not the ultimate goal. **Summary: Our vision is for you to use PPTist to create a presentation product that is distinct from Microsoft Office, rather than just using it as a middleman for editing Office files.**
 
 
@@ -113,6 +114,8 @@ Browser access: http://127.0.0.1:5173/
 - Shadow
 - Transparency
 - Vertical text
+- Text box margins
+- Auto-fit/fixed height (vertical alignment can be selected when fixed)
 - AI Rewrite/Expand/Abbreviate
 #### Images
 - Crop (custom, shape, aspect ratio)
@@ -126,8 +129,9 @@ Browser access: http://127.0.0.1:5173/
 - Reset image
 - Set as background
 #### Shapes
-- Draw any polygon
-- Draw any line (unclosed shape simulation)
+- Freehand draw any polygon
+- Freehand draw any line (unclosed shape simulation)
+- Visual path creation method
 - Replace shape
 - Fill (solid color, gradient, image)
 - Border
@@ -136,6 +140,8 @@ Browser access: http://127.0.0.1:5173/
 - Flip
 - Shape format painter
 - Edit text (supports rich text, similar to text element’s rich text editing)
+- Text box margins
+- Text vertical alignment
 #### Lines
 - Straight lines, polylines, curves
 - Color
