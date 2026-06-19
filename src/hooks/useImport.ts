@@ -12,6 +12,7 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange } from '@/utils/svgPathParser'
+import { loadGoogleFonts } from '@/utils/font'
 import type {
   Slide,
   TableCellStyle,
@@ -599,6 +600,8 @@ export default () => {
         message.error('无法正确读取 / 解析该文件')
         return
       }
+
+      if (json.usedFonts && json.usedFonts.length) loadGoogleFonts(json.usedFonts)
 
       let ratio = 96 / 72
       const width = json.size.width
