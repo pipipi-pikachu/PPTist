@@ -59,10 +59,9 @@ Browser access: http://127.0.0.1:5173/
 - History (undo, redo)
 - Shortcuts
 - Right-click menu
-- Export local files (PPTX, JSON, images, PDF)
-- Import and export pptist files
-- Print
-- AI PPT
+- Import: PPTX (overall fidelity ~80%), JSON, pptist files
+- Export: PPTX (overall fidelity ~95%+), JSON, images, PDF (print), pptist files
+- Template-based AI PPT generation
 ### Slide Page Editing
 - Add/delete pages
 - Copy/paste pages

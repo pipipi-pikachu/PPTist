@@ -58,10 +58,9 @@ npm run dev
 - 历史记录（撤销、重做）
 - 快捷键
 - 右键菜单
-- 导出本地文件（PPTX、JSON、图片、PDF）
-- 导入导出特有 .pptist 文件
-- 打印
-- AI生成PPT
+- 导入：PPTX（综合还原度约80%）、JSON、特有 pptist 文件
+- 导出：PPTX（综合还原度约95%+）、JSON、图片、PDF（打印）、特有 pptist 文件
+- 模板式AI生成PPT
 ### 幻灯片页面编辑
 - 页面添加、删除
 - 页面顺序调整
