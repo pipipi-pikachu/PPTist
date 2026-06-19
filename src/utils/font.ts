@@ -56,7 +56,7 @@ export const loadGoogleFonts = (usedFonts: string[]) => {
   })
 
   const fontNames = Array.from(new Set(
-    usedFonts.map(font => font.replace(/^['"]|['"]$/g, '').trim()).filter(font => font && !presetFontNames.has(font.toLowerCase()))
+    usedFonts.map(font => font.replace(/^['"]|['"]$/g, '').trim()).filter(font => font && !presetFontNames.has(font.toLowerCase()) && !isSystemFont(font))
   ))
 
   fontNames.forEach(async fontName => {
