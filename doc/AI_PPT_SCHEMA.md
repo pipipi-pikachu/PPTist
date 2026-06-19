@@ -138,7 +138,7 @@
 - `SourceHanSerif`： 思源宋体
 - `WenDingPLKaiTi`： 文鼎PL楷体
 - `WenDingPLSongTi`： 文鼎PL宋体
-- `ZhuqueFangSong`： 朱雀仿宋
+- `ZhuQueFangSong`： 朱雀仿宋
 - `LXGWWenKai`： 霞鹜文楷
 - `MiSans`： MiSans
 - `SourceSerif4`： Source Serif 4
