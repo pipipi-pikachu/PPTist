@@ -11,7 +11,7 @@ import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
-import { getSvgPathRange } from '@/utils/svgPathParser'
+import { getSvgPathRange, toPoints } from '@/utils/svgPathParser'
 import { loadGoogleFonts } from '@/utils/font'
 import type {
   Slide,
@@ -445,6 +445,7 @@ export default () => {
   const parseLineElement = (el: Shape, ratio: number) => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
+    let rotateOffset: [number, number] = [0, 0]
 
     if (!el.isFlipV && !el.isFlipH) { // 右下
       start = [0, 0]
@@ -482,12 +483,81 @@ export default () => {
       data.end = end
       data.left = data.left + offset[0]
       data.top = data.top + offset[1]
+      rotateOffset = [offset[0], offset[1]]
     }
     if (/bentConnector/.test(el.shapType)) {
-      data.broken2 = [
-        Math.abs(data.start[0] - data.end[0]) / 2,
-        Math.abs(data.start[1] - data.end[1]) / 2,
-      ]
+      const setDefaultBroken2 = () => {
+        data.broken2 = [
+          Math.abs(data.start[0] - data.end[0]) / 2,
+          Math.abs(data.start[1] - data.end[1]) / 2,
+        ]
+      }
+
+      const getPathPoints = (maxLength: number) => {
+        if (!el.path) return []
+
+        return toPoints(el.path).map(point => {
+          if (!('x' in point) || !('y' in point)) return null
+          if (typeof point.x !== 'number' || typeof point.y !== 'number') return null
+
+          let x = point.x
+          let y = point.y
+
+          if (el.isFlipH) x = el.width - x
+          if (el.isFlipV) y = el.height - y
+
+          if (el.rotate) {
+            const angleRad = el.rotate * Math.PI / 180
+            const midX = (start[0] + end[0]) / 2
+            const midY = (start[1] + end[1]) / 2
+            const xTrans = x - midX
+            const yTrans = y - midY
+            const xRot = xTrans * Math.cos(angleRad) - yTrans * Math.sin(angleRad) + midX
+            const yRot = xTrans * Math.sin(angleRad) + yTrans * Math.cos(angleRad) + midY
+            const beforeMinX = Math.min(start[0], end[0])
+            const beforeMinY = Math.min(start[1], end[1])
+            x = xRot - beforeMinX - rotateOffset[0]
+            y = yRot - beforeMinY - rotateOffset[1]
+          }
+
+          return [x, y]
+        }).filter((point): point is [number, number] => !!point).slice(0, maxLength)
+      }
+
+      if (el.shapType === 'bentConnector2') {
+        const pathPoints = getPathPoints(3)
+
+        if (
+          pathPoints.length >= 3 &&
+          pathPoints.every(point => Number.isFinite(point[0]) && Number.isFinite(point[1]))
+        ) {
+          const deltaX = Math.abs(pathPoints[1][0] - pathPoints[0][0])
+          const deltaY = Math.abs(pathPoints[1][1] - pathPoints[0][1])
+          data.broken = deltaX >= deltaY ? [data.start[0], data.end[1]] : [data.end[0], data.start[1]]
+        }
+        else data.broken = [data.start[0], data.end[1]]
+      }
+      else if (el.shapType === 'bentConnector3') {
+        const pathPoints = getPathPoints(4)
+
+        if (
+          pathPoints.length >= 4 &&
+          pathPoints.every(point => Number.isFinite(point[0]) && Number.isFinite(point[1]))
+        ) {
+          const mid1 = pathPoints[1]
+          const mid2 = pathPoints[2]
+          const deltaX = Math.abs(pathPoints[1][0] - pathPoints[0][0])
+          const deltaY = Math.abs(pathPoints[1][1] - pathPoints[0][1])
+
+          data.broken2 = [
+            (mid1[0] + mid2[0]) / 2,
+            (mid1[1] + mid2[1]) / 2,
+          ]
+          data.broken2Direction = deltaX >= deltaY ? 'horizontal' : 'vertical'
+        }
+        else setDefaultBroken2()
+      }
+      else setDefaultBroken2()
     }
     if (/curvedConnector/.test(el.shapType)) {
       const cubic: [number, number] = [
