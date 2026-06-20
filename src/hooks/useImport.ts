@@ -500,8 +500,8 @@ export default () => {
           if (!('x' in point) || !('y' in point)) return null
           if (typeof point.x !== 'number' || typeof point.y !== 'number') return null
 
-          let x = point.x
-          let y = point.y
+          let x = point.x * ratio
+          let y = point.y * ratio
 
           if (el.isFlipH) x = el.width - x
           if (el.isFlipV) y = el.height - y
@@ -734,15 +734,23 @@ export default () => {
           const sortedElements = elements.sort((a, b) => a.order - b.order)
 
           for (const el of sortedElements) {
-            const originWidth = el.width || 1
-            const originHeight = el.height || 1
+            let backstopSize = 1
+
+            if (el.type === 'shape') {
+              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType)) {
+                backstopSize = 0
+              }
+            }
+
+            const originWidth = el.width || backstopSize
+            const originHeight = el.height || backstopSize
             const originLeft = el.left || 0
             const originTop = el.top || 0
 
-            el.width = (el.width || 1) * ratio
-            el.height = (el.height || 1) * ratio
-            el.left = (el.left || 0) * ratio
-            el.top = (el.top || 0) * ratio
+            el.width = originWidth * ratio
+            el.height = originHeight * ratio
+            el.left = originLeft * ratio
+            el.top = originTop * ratio
   
             if (el.type === 'text') {
               const autoFitType = el.autoFit?.type
