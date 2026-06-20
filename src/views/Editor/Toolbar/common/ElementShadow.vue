@@ -11,8 +11,8 @@
         <div style="width: 40%;">水平阴影：</div>
         <Slider 
           style="width: 60%;"
-          :min="-10" 
-          :max="10" 
+          :min="-20" 
+          :max="20" 
           :step="1" 
           :value="shadow.h" 
           @update:value="value => updateShadow({ h: value as number })"
@@ -22,8 +22,8 @@
         <div style="width: 40%;">垂直阴影：</div>
         <Slider
           style="width: 60%;"
-          :min="-10"
-          :max="10"
+          :min="-20"
+          :max="20"
           :step="1"
           :value="shadow.v"
           @update:value="value => updateShadow({ v: value as number })"
@@ -34,7 +34,7 @@
         <Slider
           style="width: 60%;"
           :min="1"
-          :max="20"
+          :max="30"
           :step="1"
           :value="shadow.blur"
           @update:value="value => updateShadow({ blur: value as number })"

@@ -47,6 +47,10 @@ const start = ref(0)
 const end = ref(0)
 const handler = ref<'start' | 'end'>('end')
 
+const clampPercentage = (percentage: number) => {
+  return Math.min(Math.max(percentage, 0), 100)
+}
+
 const getNewValue = (percentage: number) => {
   let diff = percentage / 100 * (props.max - props.min)
   if (props.step >= 1) diff = Math.fround(diff)
@@ -79,11 +83,11 @@ const tooltipRangeEndValue = computed(() => {
 watch(() => props.value, () => {
   if (props.max === props.min) return
   if (typeof props.value === 'number') {
-    percentage.value = (props.value - props.min) / (props.max - props.min) * 100
+    percentage.value = clampPercentage((props.value - props.min) / (props.max - props.min) * 100)
   }
   else {
-    start.value = (props.value[0] - props.min) / (props.max - props.min) * 100
-    end.value = (props.value[1] - props.min) / (props.max - props.min) * 100
+    start.value = clampPercentage((props.value[0] - props.min) / (props.max - props.min) * 100)
+    end.value = clampPercentage((props.value[1] - props.min) / (props.max - props.min) * 100)
   }
 }, {
   immediate: true,
