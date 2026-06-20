@@ -666,13 +666,13 @@ export default () => {
           for (const el of sortedElements) {
             const originWidth = el.width || 1
             const originHeight = el.height || 1
-            const originLeft = el.left
-            const originTop = el.top
+            const originLeft = el.left || 0
+            const originTop = el.top || 0
 
-            el.width = el.width * ratio
-            el.height = el.height * ratio
-            el.left = el.left * ratio
-            el.top = el.top * ratio
+            el.width = (el.width || 1) * ratio
+            el.height = (el.height || 1) * ratio
+            el.left = (el.left || 0) * ratio
+            el.top = (el.top || 0) * ratio
   
             if (el.type === 'text') {
               const autoFitType = el.autoFit?.type
