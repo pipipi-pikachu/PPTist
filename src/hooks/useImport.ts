@@ -926,7 +926,7 @@ export default () => {
 
                 const pattern: string | undefined = el.fill?.type === 'image' ? el.fill.value.base64 : undefined
 
-                const fill = el.fill?.type === 'color' ? el.fill.value : ''
+                const fill = (!el.strokeOnly && el.fill?.type === 'color') ? el.fill.value : ''
 
                 const metrics = getParagraphMetrics(el.content, ratio)
                 

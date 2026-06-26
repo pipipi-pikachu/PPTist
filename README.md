@@ -37,7 +37,7 @@
 > This project is strictly positioned as a Web Slide Editing/Presentation Application. It is not intended to be an ~~AI PPT generator, low-code platform, or image editor~~. The following are the recommendation levels for common use cases:
 
 - **Low-code Platforms / H5 Editors / Image Editors / Whiteboards** (Recommendation: Not Recommended): We suggest choosing open-source projects specifically designed for those purposes.
-- **PPT File Preview Tool** (Recommendation: ⭐): The ability to import .pptx files is limited (roughly 80% fidelity). Unless your requirements for preview accuracy are low and you only need basic content display, this is not recommended.
+- **PPT File Preview Tool** (Recommendation: ⭐): The ability to import .pptx files is limited (roughly 80%+ fidelity). Unless your requirements for preview accuracy are low and you only need basic content display, this is not recommended.
 - **AI PPT Generation Tool** (Recommendation: ⭐⭐): While the project provides basic template-based AIPPT generation, it is not the core focus. As AI technology evolves, the form of AIPPT will continue to change (templates -> HTML webpages -> pure images -> SVG -> ...), and this project will not follow those trends. However, if you only want to build a template-based AIPPT generator, or are willing to extend better generation solutions yourself, PPTist's complete Schema and editing capabilities may be helpful.
 - **Office PPT Authoring Tool** (Recommendation: ⭐⭐): PPTist supports many common Office PPT features and basic local .pptx export. However, exports cannot be 100% faithful, and this scenario generally has high requirements for importing .pptx files, while the import capability mentioned above is limited. Choose cautiously unless you can accept imperfect import capabilities.
 - **Web Slide Editing/Presentation App** (Recommendation: ⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐): This is the primary use case. The core strengths of PPTist are its editing capabilities and user experience. You can build upon this project to customize or add unique nodes and features tailored to your specific needs, where Office compatibility is not the ultimate goal. **Summary: Our vision is for you to use PPTist to create a presentation product that is distinct from Microsoft Office, rather than just using it as a middleman for editing Office files.**
@@ -59,7 +59,7 @@ Browser access: http://127.0.0.1:5173/
 - History (undo, redo)
 - Shortcuts
 - Right-click menu
-- Import: PPTX (overall fidelity ~80%), JSON, pptist files
+- Import: PPTX (overall fidelity ~80%+), JSON, pptist files
 - Export: PPTX (overall fidelity ~95%+), JSON, images, PDF (print), pptist files
 - Template-based AI PPT generation
 ### Slide Page Editing
