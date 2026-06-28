@@ -1058,13 +1058,32 @@ export default () => {
                   }
                 }
                 else if (el.path && el.path.indexOf('NaN') === -1) {
-                  const { maxX, maxY } = getSvgPathRange(el.path)
                   element.path = el.path
-                  if ((maxX / maxY) > (originWidth / originHeight)) {
-                    element.viewBox = [maxX, maxX * originHeight / originWidth]
+                  const fixedViewBoxPresetShapeTypes = [
+                    'blockArc',
+                    'pie',
+                    'pieWedge',
+                    'arc',
+                    'chord',
+                    'teardrop',
+                    'mathPlus',
+                    'mathMinus',
+                    'mathMultiply',
+                    'mathDivide',
+                    'mathEqual',
+                    'mathNotEqual',
+                  ]
+                  if (fixedViewBoxPresetShapeTypes.includes(el.shapType) && el.pathViewBox) {
+                    element.viewBox = [el.pathViewBox.width, el.pathViewBox.height]
                   }
                   else {
-                    element.viewBox = [maxY * originWidth / originHeight, maxY]
+                    const { maxX, maxY } = getSvgPathRange(el.path)
+                    if ((maxX / maxY) > (originWidth / originHeight)) {
+                      element.viewBox = [maxX, maxX * originHeight / originWidth]
+                    }
+                    else {
+                      element.viewBox = [maxY * originWidth / originHeight, maxY]
+                    }
                   }
                 }
                 if (el.shapType === 'custom') {

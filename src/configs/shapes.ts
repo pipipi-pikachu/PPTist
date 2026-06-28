@@ -506,32 +506,26 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 70 0 L 70 70 L 0 70 L 0 130 L 70 130 L 70 200 L 130 200 L 130 130 L 200 130 L 200 70 L 130 70 L 130 0 L 70 0 Z',
-        pptxShapeType: 'mathPlus',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 70 L 200 70 L 200 130 L 0 130 Z',
-        pptxShapeType: 'mathMinus',
       },
       {
         viewBox: [200, 200],
         path: 'M 40 0 L 0 40 L 60 100 L 0 160 L 40 200 L 100 140 L 160 200 L 200 160 L 140 100 L 200 40 L 160 0 L 100 60 L 40 0 Z',
-        pptxShapeType: 'mathMultiply',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 80 L 200 80 L 200 120 L 0 120 Z M 100 0 A 25 25 0 1 1 100 50 A 25 25 0 1 1 100 0 M 100 200 A 25 25 0 1 1 100 150 A 25 25 0 1 1 100 200',
-        pptxShapeType: 'mathDivide',
       },
       {
         viewBox: [200, 200],
         path: 'M 0 30 L 200 30 L 200 80 L 0 80 Z M 0 120 L 200 120 L 200 170 L 0 170 Z',
-        pptxShapeType: 'mathEqual',
       },
       {
         viewBox: [200, 200],
         path: 'M 120 0 L 170 0 L 150 40 L 200 40 L 200 80 L 130 80 L 110 120 L 200 120 L 200 160 L 90 160 L 70 200 L 20 200 L 40 160 L 0 160 L 0 120 L 60 120 L 80 80 L 0 80 L 0 40 L 100 40 Z',
-        pptxShapeType: 'mathNotEqual',
       },
       {
         viewBox: [200, 200],
