@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type ShallowRef } from 'vue'
+import { onMounted, onUnmounted, ref, watch, type ShallowRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 
@@ -39,6 +39,8 @@ export default (wrapRef?: ShallowRef<HTMLElement | null>) => {
   onUnmounted(() => {
     window.removeEventListener('resize', setSlideContentSize)
   })
+
+  watch(viewportRatio, setSlideContentSize)
 
   return {
     slideWidth,

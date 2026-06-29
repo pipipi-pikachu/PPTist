@@ -66,6 +66,8 @@ onMounted(() => {
       id?: string
       slideIndex?: number
       animationIndex?: number
+      viewportSize?: number
+      viewportRatio?: number
       slides?: Slide[]
       dataURL?: string
       blackboard?: boolean
@@ -78,6 +80,8 @@ onMounted(() => {
     else if (msg.type === 'TURN_TO_ID' && msg.id !== undefined) turnSlideToId(msg.id)
     else if (msg.type === 'INIT_STATE' && msg.slideIndex !== undefined) {
       // 先用演讲者的实际幻灯片数据覆盖 mock 数据，确保动画序列等编辑内容一致
+      if (msg.viewportSize !== undefined) slidesStore.setViewportSize(msg.viewportSize)
+      if (msg.viewportRatio !== undefined) slidesStore.setViewportRatio(msg.viewportRatio)
       if (msg.slides) slidesStore.setSlides(msg.slides)
       turnSlideToIndex(msg.slideIndex)
       if (msg.animationIndex !== undefined) {

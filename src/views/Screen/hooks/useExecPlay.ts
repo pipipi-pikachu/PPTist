@@ -15,7 +15,7 @@ type SyncMessage =
   | { type: 'TURN_TO_INDEX'; index: number }
   | { type: 'TURN_TO_ID'; id: string }
   | { type: 'REQUEST_STATE' }
-  | { type: 'INIT_STATE'; slideIndex: number; animationIndex: number; slides: Slide[] }
+  | { type: 'INIT_STATE'; slideIndex: number; animationIndex: number; slides: Slide[]; viewportSize: number; viewportRatio: number }
   | { type: 'REQUEST_WRITING_BOARD' }
   | { type: 'WRITING_BOARD_UPDATE'; dataURL: string; blackboard: boolean }
   | { type: 'WRITING_BOARD_CLOSE' }
@@ -25,7 +25,7 @@ type SyncMessage =
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, slideIndex, formatedAnimations } = storeToRefs(slidesStore)
+  const { slides, slideIndex, formatedAnimations, viewportSize, viewportRatio } = storeToRefs(slidesStore)
 
   const isAudienceMode = new URLSearchParams(window.location.search).get('mode') === 'audience'
 
@@ -39,6 +39,8 @@ export default () => {
           type: 'INIT_STATE',
           slideIndex: slideIndex.value,
           animationIndex: animationIndex.value,
+          viewportSize: viewportSize.value,
+          viewportRatio: viewportRatio.value,
           slides: JSON.parse(JSON.stringify(slides.value)),
         } as SyncMessage)
       }
