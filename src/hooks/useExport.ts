@@ -37,6 +37,20 @@ export default () => {
 
   const exporting = ref(false)
 
+  const setPPTXLayout = (pptx: pptxgen) => {
+    if (viewportRatio.value === 0.625) pptx.layout = 'LAYOUT_16x10'
+    else if (viewportRatio.value === 0.75) pptx.layout = 'LAYOUT_4x3'
+    else {
+      const layoutName = 'PPTIST_CUSTOM_LAYOUT'
+      pptx.defineLayout({
+        name: layoutName,
+        width: viewportSize.value / ratioPx2Inch.value,
+        height: viewportSize.value * viewportRatio.value / ratioPx2Inch.value,
+      })
+      pptx.layout = layoutName
+    }
+  }
+
   // 导出图片
   const exportImage = (domRef: HTMLElement, format: string, quality: number, ignoreWebfont = true) => {
     exporting.value = true
@@ -69,6 +83,7 @@ export default () => {
     
     setTimeout(() => {
       const pptx = new pptxgen()
+      setPPTXLayout(pptx)
 
       const config: ExportImageConfig = {
         quality: 1,
@@ -469,18 +484,7 @@ export default () => {
   const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
     exporting.value = true
     const pptx = new pptxgen()
-
-    if (viewportRatio.value === 0.625) pptx.layout = 'LAYOUT_16x10'
-    else if (viewportRatio.value === 0.75) pptx.layout = 'LAYOUT_4x3'
-    else if (viewportRatio.value === 0.70710678) {
-      pptx.defineLayout({ name: 'A3', width: 10, height: 7.0710678 })
-      pptx.layout = 'A3'
-    }
-    else if (viewportRatio.value === 1.41421356) {
-      pptx.defineLayout({ name: 'A3_V', width: 10, height: 14.1421356 })
-      pptx.layout = 'A3_V'
-    }
-    else pptx.layout = 'LAYOUT_16x9'
+    setPPTXLayout(pptx)
 
     if (masterOverwrite) {
       const { color: bgColor, alpha: bgAlpha } = formatColor(theme.value.backgroundColor)

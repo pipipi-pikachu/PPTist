@@ -37,3 +37,13 @@ export const htmlToText = (html: string) => {
 export const isFloatEqual = (a: number, b: number, epsilon = 1e-10) => {
   return Math.abs(a - b) < epsilon
 }
+
+/**
+ * 保留小数转换
+ */
+export const toFixed = (num: number, fractionDigits = 1) => {
+  if (num % 1 !== 0) {
+    return parseFloat(num.toFixed(fractionDigits))
+  } 
+  return Math.floor(num)
+}
