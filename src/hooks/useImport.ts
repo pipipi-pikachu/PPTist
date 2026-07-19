@@ -21,6 +21,7 @@ import type {
   SlideBackground,
   PPTShapeElement,
   PPTLineElement,
+  LinePoint,
   PPTImageElement,
   TextAlignVertical,
   PPTTextElement,
@@ -442,11 +443,17 @@ export default () => {
     }
   }
 
+  const parseLineEnd = (lineEnd?: { type?: string }): LinePoint => {
+    if (!lineEnd || !lineEnd.type || lineEnd.type === 'none') return ''
+    if (['triangle', 'stealth', 'arrow'].includes(lineEnd.type)) return 'arrow'
+    if (['diamond', 'oval'].includes(lineEnd.type)) return 'dot'
+    return ''
+  }
+
   const parseLineElement = (el: Shape, ratio: number) => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
     let rotateOffset: [number, number] = [0, 0]
-
     if (!el.isFlipV && !el.isFlipH) { // 右下
       start = [0, 0]
       end = [el.width, el.height]
@@ -474,7 +481,7 @@ export default () => {
       end,
       style: el.borderType,
       color: el.borderColor,
-      points: ['', /straightConnector/.test(el.shapType) ? 'arrow' : '']
+      points: [parseLineEnd(el.headEnd), parseLineEnd(el.tailEnd)]
     }
     if (el.rotate) {
       const { start, end, offset } = rotateLine(data, el.rotate)
@@ -500,8 +507,8 @@ export default () => {
           if (!('x' in point) || !('y' in point)) return null
           if (typeof point.x !== 'number' || typeof point.y !== 'number') return null
 
-          let x = point.x * ratio
-          let y = point.y * ratio
+          let x = el.pathViewBox?.width ? point.x / el.pathViewBox.width * el.width : point.x * ratio
+          let y = el.pathViewBox?.height ? point.y / el.pathViewBox.height * el.height : point.y * ratio
 
           if (el.isFlipH) x = el.width - x
           if (el.isFlipV) y = el.height - y
@@ -1130,6 +1137,12 @@ export default () => {
                   const fontsize = span?.style.fontSize ? (parseInt(span?.style.fontSize) * ratio).toFixed(1) + 'px' : ''
                   const fontname = span?.style.fontFamily || ''
                   const color = span?.style.color || cellData.fontColor
+                  const fontWeight = span?.style.fontWeight || ''
+                  const bold = fontWeight === 'bold' || +fontWeight >= 600 || cellData.fontBold
+                  const em = span?.style.fontStyle === 'italic'
+                  const textDecoration = span?.style.textDecoration || ''
+                  const underline = textDecoration.includes('underline')
+                  const strikethrough = textDecoration.includes('line-through')
 
                   rowCells.push({
                     id: nanoid(10),
@@ -1143,7 +1156,10 @@ export default () => {
                       fontsize,
                       fontname,
                       color,
-                      bold: cellData.fontBold,
+                      bold,
+                      em,
+                      underline,
+                      strikethrough,
                       backcolor: cellData.fillColor,
                     },
                   })
@@ -1155,15 +1171,29 @@ export default () => {
               const allWidth = el.colWidths.reduce((a, b) => a + b, 0)
               const colWidths: number[] = el.colWidths.map(item => item / allWidth)
 
-              const firstCell = el.data[0][0]
-              const border = firstCell.borders.top ||
-                firstCell.borders.bottom ||
-                el.borders.top ||
-                el.borders.bottom ||
-                firstCell.borders.left ||
-                firstCell.borders.right ||
-                el.borders.left ||
-                el.borders.right
+              const isVisibleBorder = (b?: { borderColor?: string; borderWidth?: number }) => {
+                if (!b || !b.borderWidth) return false
+                const c = b.borderColor || ''
+                if (/^#[0-9a-fA-F]{8}$/.test(c) && c.slice(-2).toLowerCase() === '00') return false
+                return true
+              }
+              const borderCounter = new Map<string, { border: any; count: number }>()
+              const collectBorders = (borders?: Record<string, any>) => {
+                if (!borders) return
+                for (const side of ['top', 'bottom', 'left', 'right'] as const) {
+                  const b = borders[side]
+                  if (!isVisibleBorder(b)) continue
+                  const key = `${b.borderColor}|${b.borderWidth}|${b.borderType}`
+                  const hit = borderCounter.get(key)
+                  if (hit) hit.count++
+                  else borderCounter.set(key, { border: b, count: 1 })
+                }
+              }
+              collectBorders(el.borders)
+              for (const rowCells of el.data) {
+                for (const cell of rowCells) collectBorders(cell.borders)
+              }
+              const border = [...borderCounter.values()].sort((a, b) => b.count - a.count)[0]?.border
               const borderWidth = border?.borderWidth || 0
               const borderStyle = border?.borderType || 'solid'
               const borderColor = border?.borderColor || '#eeece1'
