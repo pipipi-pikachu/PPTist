@@ -263,10 +263,10 @@ If you wish to use this project for commercial gain, I hope you will respect ope
 
 # ⭐ Star History
 
-<a href="https://www.star-history.com/?repos=pipipi-pikachu%2FPPTist&type=date&legend=top-left">
+<a href="https://star-history.dera.page/#pipipi-pikachu/PPTist&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=pipipi-pikachu/PPTist&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=pipipi-pikachu/PPTist&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=pipipi-pikachu/PPTist&type=date&legend=top-left" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=pipipi-pikachu/PPTist&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=pipipi-pikachu/PPTist&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=pipipi-pikachu/PPTist&type=date&legend=top-left" />
  </picture>
 </a>
