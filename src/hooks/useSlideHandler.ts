@@ -98,6 +98,15 @@ export default () => {
       element.id = elIdMap[element.id]
       if (element.groupId) element.groupId = groupIdMap[element.groupId]
     }
+    // 动画id替换：模板中的动画仍指向替换前的ID，若不同步替换会导致模板动画失效
+    if (slide.animations) {
+      for (const animation of slide.animations) {
+        animation.id = nanoid(10)
+        // 作用于组合的动画需要替换为新的组合ID，其余动画替换为新的元素ID
+        if (animation.target === 'group') animation.elId = groupIdMap[animation.elId]
+        else animation.elId = elIdMap[animation.elId]
+      }
+    }
     const newSlide = {
       ...slide,
       id: nanoid(10),
