@@ -23,7 +23,8 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import { ElementTypes, type PPTElement } from '@/types/slides'
+import { ElementTypes, type PPTAnimation, type PPTElement } from '@/types/slides'
+import { getAnimationElementIds } from '@/utils/animation'
 
 import BaseImageElement from '@/views/components/element/ImageElement/BaseImageElement.vue'
 import BaseTextElement from '@/views/components/element/TextElement/BaseTextElement.vue'
@@ -58,14 +59,18 @@ const currentElementComponent = computed<unknown>(() => {
   return elementTypeMap[props.elementInfo.type] || null
 })
 
-const { formatedAnimations, theme } = storeToRefs(useSlidesStore())
+const { currentSlide, formatedAnimations, theme } = storeToRefs(useSlidesStore())
 
 // 判断元素是否需要等待执行入场动画：等待执行入场的元素需要先隐藏
 const needWaitAnimation = computed(() => {
+  // 判断一个动画是否作用于当前元素（作用于组合的动画同样作用于其每一个成员）
+  const isAnimationOfCurrentElement = (animation: PPTAnimation) => {
+    return getAnimationElementIds(animation, currentSlide.value?.elements || []).includes(props.elementInfo.id)
+  }
+
   // 该元素在本页动画序列中的位置
   const elementIndexInAnimation = formatedAnimations.value.findIndex(item => {
-    const elIds = item.animations.map(item => item.elId)
-    return elIds.includes(props.elementInfo.id)
+    return item.animations.some(isAnimationOfCurrentElement)
   })
 
   // 该元素未设置过动画
@@ -77,7 +82,7 @@ const needWaitAnimation = computed(() => {
 
   // 若该元素未执行过动画，获取其将要执行的第一个动画
   // 若将要执行的第一个动画为入场，则需要隐藏，否则无须隐藏
-  const firstAnimation = formatedAnimations.value[elementIndexInAnimation].animations.find(item => item.elId === props.elementInfo.id)
+  const firstAnimation = formatedAnimations.value[elementIndexInAnimation].animations.find(isAnimationOfCurrentElement)
   if (firstAnimation?.type === 'in') return true
   return false
 })

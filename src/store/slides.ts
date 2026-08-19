@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { omit } from 'lodash'
 import type { Slide, SlideTheme, PPTElement, PPTAnimation, SlideTemplate } from '@/types/slides'
+import { getAnimationElementIds, getAnimationTargetKey } from '@/utils/animation'
 
 interface RemovePropData {
   id: string
@@ -74,8 +75,7 @@ export const useSlidesStore = defineStore('slides', {
       if (!currentSlide?.animations) return []
 
       const els = currentSlide.elements
-      const elIds = els.map(el => el.id)
-      return currentSlide.animations.filter(animation => elIds.includes(animation.elId))
+      return currentSlide.animations.filter(animation => getAnimationElementIds(animation, els).length)
     },
 
     // 格式化的当前页动画
@@ -86,8 +86,7 @@ export const useSlidesStore = defineStore('slides', {
       if (!currentSlide?.animations) return []
 
       const els = currentSlide.elements
-      const elIds = els.map(el => el.id)
-      const animations = currentSlide.animations.filter(animation => elIds.includes(animation.elId))
+      const animations = currentSlide.animations.filter(animation => getAnimationElementIds(animation, els).length)
 
       const formatedAnimations: FormatedAnimation[] = []
       for (const animation of animations) {
@@ -96,7 +95,7 @@ export const useSlidesStore = defineStore('slides', {
         }
         else if (animation.trigger === 'meantime') {
           const last = formatedAnimations[formatedAnimations.length - 1]
-          last.animations = last.animations.filter(item => item.elId !== animation.elId)
+          last.animations = last.animations.filter(item => getAnimationTargetKey(item) !== getAnimationTargetKey(animation))
           last.animations.push(animation)
           formatedAnimations[formatedAnimations.length - 1] = last
         }

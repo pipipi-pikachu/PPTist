@@ -2,7 +2,8 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTElement } from '@/types/slides'
+import type { PPTAnimation, PPTElement } from '@/types/slides'
+import { isGroupAnimation } from '@/utils/animation'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -68,12 +69,43 @@ export default () => {
     if (!activeElementList.value.length) return
     const hasElementInGroup = activeElementList.value.some(item => item.groupId)
     if (!hasElementInGroup) return
-    
+
+    // 收集本次被解散的组合ID
+    const uncombinedGroupIds: string[] = []
+    for (const element of activeElementList.value) {
+      if (element.groupId && !uncombinedGroupIds.includes(element.groupId)) uncombinedGroupIds.push(element.groupId)
+    }
+
     const newElementList: PPTElement[] = JSON.parse(JSON.stringify(currentSlide.value.elements))
     for (const element of newElementList) {
       if (activeElementIdList.value.includes(element.id) && element.groupId) delete element.groupId
     }
-    slidesStore.updateSlide({ elements: newElementList })
+
+    // 若被解散的组合设置过整体动画，将其转换为各个成员的独立动画，避免动画配置丢失
+    // 转换后的首个动画保持原有的触发方式，其余动画与之同时执行，从而保留原本的整体动画效果
+    const animations = currentSlide.value.animations
+    if (animations?.length) {
+      const newAnimations: PPTAnimation[] = []
+      for (const animation of animations) {
+        if (!isGroupAnimation(animation) || !uncombinedGroupIds.includes(animation.elId)) {
+          newAnimations.push(animation)
+          continue
+        }
+
+        const memberIds = currentSlide.value.elements.filter(el => el.groupId === animation.elId).map(el => el.id)
+        memberIds.forEach((elId, index) => {
+          newAnimations.push({
+            ...animation,
+            id: index === 0 ? animation.id : nanoid(10),
+            elId,
+            target: 'element',
+            trigger: index === 0 ? animation.trigger : 'meantime',
+          })
+        })
+      }
+      slidesStore.updateSlide({ elements: newElementList, animations: newAnimations })
+    }
+    else slidesStore.updateSlide({ elements: newElementList })
 
     // 取消组合后，需要重置激活元素状态
     // 默认重置为当前正在操作的元素,如果不存在则重置为空

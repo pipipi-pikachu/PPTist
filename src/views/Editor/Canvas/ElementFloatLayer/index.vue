@@ -32,7 +32,8 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import { ElementTypes, type PPTElement } from '@/types/slides'
 import type useViewportSize from '../hooks/useViewportSize'
-import { getElementRange } from '@/utils/element'
+import { getElementListRange, getElementRange } from '@/utils/element'
+import { getAnimationElementIds, isGroupAnimation } from '@/utils/animation'
 
 import AnimationIndex from './AnimationIndex.vue'
 import LinkHandler from './LinkHandler.vue'
@@ -70,28 +71,66 @@ const { activeElementIdList, activeGroupElementId, canvasScale, handleElementId,
 const { formatedAnimations } = storeToRefs(useSlidesStore())
 const floatingToolbarWidth = ref(100)
 
-const getAnimationIndexList = (element: PPTElement) => {
+const getAnimationIndexList = (elIds: string[]) => {
   const indexList = []
   for (let i = 0; i < formatedAnimations.value.length; i++) {
-    const elIds = formatedAnimations.value[i].animations.map(item => item.elId)
-    if (elIds.includes(element.id)) indexList.push(i)
+    const animationElIds = formatedAnimations.value[i].animations.flatMap(item => getAnimationElementIds(item, props.elementList))
+    if (elIds.some(elId => animationElIds.includes(elId))) indexList.push(i)
   }
   return indexList
 }
 
+// 获取作用于指定组合整体的动画序号集合
+const getGroupAnimationIndexList = (groupId: string) => {
+  const indexList = []
+  for (let i = 0; i < formatedAnimations.value.length; i++) {
+    const hasGroupAnimation = formatedAnimations.value[i].animations.some(item => isGroupAnimation(item) && item.elId === groupId)
+    if (hasGroupAnimation) indexList.push(i)
+  }
+  return indexList
+}
+
+interface AnimationIndexItem {
+  element: PPTElement
+  range: ReturnType<typeof getElementRange>
+  animationIndexList: number[]
+}
+
 const animationIndexItems = computed(() => {
-  const items = []
+  const items: AnimationIndexItem[] = []
+  if (toolbarState.value !== 'elAnimation') return items
 
-  for (const element of props.elementList) {
-    if (hiddenElementIdList.value.includes(element.id)) continue
+  const visibleElements = props.elementList.filter(element => !hiddenElementIdList.value.includes(element.id))
 
-    const animationIndexList = toolbarState.value === 'elAnimation' ? getAnimationIndexList(element) : []
+  // 组合动画只需在整个组合的范围上标注一次序号，无须在每个成员上重复标注
+  const handledGroupIds: string[] = []
+
+  for (const element of visibleElements) {
+    const groupId = element.groupId
+    if (groupId) {
+      if (handledGroupIds.includes(groupId)) continue
+
+      const groupElements = visibleElements.filter(el => el.groupId === groupId)
+      const groupAnimationIndexList = getGroupAnimationIndexList(groupId)
+
+      // 该组合存在整体动画时，以组合范围标注序号
+      if (groupAnimationIndexList.length) {
+        handledGroupIds.push(groupId)
+        items.push({
+          element,
+          range: getElementListRange(groupElements),
+          animationIndexList: groupAnimationIndexList,
+        })
+        continue
+      }
+    }
+
+    const animationIndexList = getAnimationIndexList([element.id])
     if (!animationIndexList.length) continue
-    const range = getElementRange(element)
 
     items.push({
       element,
-      range,
+      range: getElementRange(element),
       animationIndexList,
     })
   }
