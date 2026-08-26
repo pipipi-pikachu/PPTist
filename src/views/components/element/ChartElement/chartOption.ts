@@ -7,6 +7,7 @@ import type {
   RadarSeriesOption,
 } from 'echarts/charts'
 import type { ChartData, ChartType } from '@/types/slides'
+import { resolveScatterRenderMode, toSortedXyPoints } from './scatterSeriesMode'
 
 type EChartOption = ComposeOption<BarSeriesOption | LineSeriesOption | PieSeriesOption | ScatterSeriesOption | RadarSeriesOption>
 
@@ -319,14 +320,37 @@ export const getChartOption = ({
     }
   }
   if (type === 'scatter') {
-    const xData = data.series[0]
+    const xData = data.series[0] ?? []
     const ySeries = data.series.length > 1 ? data.series.slice(1) : [xData]
-    const formatedSeries: ScatterSeriesOption[] = ySeries.map((item, index) => ({
-      symbolSize: 12,
-      data: xData.map((x, dataIndex) => [x, item[dataIndex]]),
-      name: data.legends[index + 1],
-      type: 'scatter',
-    }))
+    const renderMode = resolveScatterRenderMode(xData.length)
+    const formatedSeries = ySeries.map((item, index) => {
+      const points = toSortedXyPoints(xData, item)
+      if (renderMode === 'connected-line') {
+        const seriesItem: LineSeriesOption = {
+          type: 'line',
+          showSymbol: false,
+          symbolSize: 0,
+          data: points,
+          name: data.legends[index + 1],
+          smooth: lineSmooth,
+          lineStyle: {
+            width: 1.5,
+          },
+          label: {
+            show: false,
+          },
+        }
+        return seriesItem
+      }
+
+      const seriesItem: ScatterSeriesOption = {
+        type: 'scatter',
+        symbolSize: 8,
+        data: points,
+        name: data.legends[index + 1],
+      }
+      return seriesItem
+    })
 
     return {
       color: themeColors,
@@ -336,11 +360,13 @@ export const getChartOption = ({
         textStyle,
       } : undefined,
       xAxis: {
+        type: 'value',
         axisLine,
         axisLabel,
         splitLine,
       },
       yAxis: {
+        type: 'value',
         axisLine,
         axisLabel,
         splitLine,
