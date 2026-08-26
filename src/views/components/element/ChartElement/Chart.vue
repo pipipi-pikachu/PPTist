@@ -10,7 +10,7 @@ import { getChartOption } from './chartOption'
 
 import * as echarts from 'echarts/core'
 import { BarChart, LineChart, PieChart, ScatterChart, RadarChart } from 'echarts/charts'
-import { LegendComponent } from 'echarts/components'
+import { LegendComponent, GridComponent } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
 echarts.use([
@@ -20,6 +20,7 @@ echarts.use([
   ScatterChart,
   RadarChart,
   LegendComponent,
+  GridComponent,
   SVGRenderer,
 ])
 
@@ -75,6 +76,7 @@ watch(() => props.type, updateOption)
 watch(() => props.data, updateOption)
 watch(() => props.themeColors, updateOption)
 watch(() => props.textColor, updateOption)
+watch(() => props.options, updateOption, { deep: true })
 </script>
 
 <style lang="scss" scoped>

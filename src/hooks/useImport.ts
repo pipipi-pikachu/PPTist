@@ -13,6 +13,7 @@ import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange, toPoints } from '@/utils/svgPathParser'
 import { loadGoogleFonts } from '@/utils/font'
+import { sanitizeImportedChartColors } from '@/views/components/element/ChartElement/scatterSeriesMode'
 import type {
   Slide,
   TableCellStyle,
@@ -1284,7 +1285,7 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                themeColors: el.colors.length ? el.colors : theme.value.themeColors,
+                themeColors: sanitizeImportedChartColors(el.colors, theme.value.themeColors),
                 textColor: theme.value.fontColor,
                 data: {
                   labels,
