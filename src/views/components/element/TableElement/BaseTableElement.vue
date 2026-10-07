@@ -16,6 +16,7 @@
           :data="elementInfo.data"
           :width="elementInfo.width"
           :cellMinHeight="elementInfo.cellMinHeight"
+          :rowHeights="elementInfo.rowHeights"
           :colWidths="elementInfo.colWidths"
           :outline="elementInfo.outline"
           :theme="elementInfo.theme"

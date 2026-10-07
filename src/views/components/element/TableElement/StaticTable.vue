@@ -17,7 +17,7 @@
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
-        <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
+        <tr v-for="(rowCells, rowIndex) in data" :key="rowIndex" :style="{ height: getRowHeight(rowIndex) + 'px' }">
           <td 
             class="cell"
             :style="getCellStyle(outline, cell.style)"
@@ -27,7 +27,7 @@
             :colspan="cell.colspan"
             v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
           >
-            <div class="cell-text" :style="getTextStyle(cellMinHeight, cell.style)" v-html="formatText(cell.text)" />
+            <div class="cell-text" :style="getTextStyle(getRowHeight(rowIndex), cell.style)" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
-import { getCellStyle, getTextStyle, formatText } from './utils'
+import { getCellStyle, getTextStyle, getTableRowHeight, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -46,6 +46,7 @@ const props = withDefaults(defineProps<{
   data: TableCell[][]
   width: number
   cellMinHeight: number
+  rowHeights?: number[]
   colWidths: number[]
   outline: PPTElementOutline
   theme?: TableTheme
@@ -56,6 +57,7 @@ const props = withDefaults(defineProps<{
 
 const colSizeList = ref<number[]>([])
 const totalWidth = computed(() => colSizeList.value.reduce((a, b) => a + b))
+const getRowHeight = (rowIndex: number) => getTableRowHeight(props.rowHeights, rowIndex, props.cellMinHeight)
 
 watch([
   () => props.colWidths,

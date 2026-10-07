@@ -1,6 +1,10 @@
 import type { CSSProperties } from 'vue'
 import type { PPTElementOutline, TableCellStyle } from '@/types/slides'
 
+export const getTableRowHeight = (rowHeights: number[] | undefined, rowIndex: number, cellMinHeight: number) => {
+  return Math.max(rowHeights?.[rowIndex] || cellMinHeight, cellMinHeight)
+}
+
 /**
  * 计算单元格样式
  * @param style 单元格文本样式原数据

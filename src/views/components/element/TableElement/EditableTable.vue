@@ -1,7 +1,10 @@
 <template>
   <div 
     class="editable-table"
-    :style="{ width: totalWidth + 'px' }"
+    :style="{
+      width: totalWidth + 'px',
+      height: draggingTableHeight === null ? '' : draggingTableHeight + 'px',
+    }"
   >
     <div class="handler" v-if="editable">
       <div 
@@ -11,8 +14,16 @@
         :style="{ left: pos + 'px' }"
         @mousedown="$event => handleMousedownColHandler($event, index)"
       ></div>
+      <div
+        class="row-drag-line"
+        v-for="(pos, index) in rowDragLinePosition"
+        :key="`row-${index}`"
+        :style="{ top: pos + 'px' }"
+        @mousedown="$event => handleMousedownRowHandler($event, index)"
+      ></div>
     </div>
-    <table 
+    <table
+      ref="tableRef"
       :class="{
         'theme': theme,
         'row-header': theme?.rowHeader,
@@ -26,7 +37,12 @@
         <col span="1" v-for="(width, index) in colSizeList" :key="index" :width="width">
       </colgroup>
       <tbody>
-        <tr v-for="(rowCells, rowIndex) in tableCells" :key="rowIndex" :style="{ height: cellMinHeight + 'px' }">
+        <tr
+          ref="rowRefs"
+          v-for="(rowCells, rowIndex) in tableCells"
+          :key="rowIndex"
+          :style="{ height: getRowHeight(rowIndex) + 'px' }"
+        >
           <td 
             class="cell"
             :class="{
@@ -48,12 +64,12 @@
               v-if="activedCell === `${rowIndex}_${colIndex}`"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
-              :style="getTextStyle(cellMinHeight, cell.style)"
+              :style="getTextStyle(getRowHeight(rowIndex), cell.style)"
               :value="cell.text"
               @updateValue="value => handleInput(value, rowIndex, colIndex)"
               @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
             />
-            <div v-else class="cell-text" :style="getTextStyle(cellMinHeight, cell.style)" v-html="formatText(cell.text)" />
+            <div v-else class="cell-text" :style="getTextStyle(getRowHeight(rowIndex), cell.style)" v-html="formatText(cell.text)" />
           </td>
         </tr>
       </tbody>
@@ -62,7 +78,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
 import { debounce, isEqual } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
@@ -72,7 +88,7 @@ import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
 import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
 import message from '@/utils/message'
-import { getCellStyle, getTextStyle, formatText } from './utils'
+import { getCellStyle, getTextStyle, getTableRowHeight, formatText } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -83,6 +99,7 @@ const props = withDefaults(defineProps<{
   data: TableCell[][]
   width: number
   cellMinHeight: number
+  rowHeights?: number[]
   colWidths: number[]
   outline: PPTElementOutline
   theme?: TableTheme
@@ -93,11 +110,15 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{
   (event: 'change', payload: TableCell[][]): void
+  (event: 'changeRowHeights', payload: number[]): void
   (event: 'changeColWidths', payload: number[]): void
   (event: 'changeSelectedCells', payload: string[]): void
 }>()
 
 const { canvasScale } = storeToRefs(useMainStore())
+
+const tableRef = useTemplateRef<HTMLTableElement>('tableRef')
+const draggingTableHeight = ref<number | null>(null)
     
 const isStartSelect = ref(false)
 const startCell = ref<number[]>([])
@@ -125,6 +146,30 @@ watch([
 ], () => {
   colSizeList.value = props.colWidths.map(item => item * props.width)
 }, { immediate: true })
+
+// 计算表格每一行的最小高度
+const rowSizeList = ref<number[]>([])
+const getRowHeight = (rowIndex: number) => getTableRowHeight(rowSizeList.value, rowIndex, props.cellMinHeight)
+watch([
+  () => props.rowHeights,
+  () => props.cellMinHeight,
+  () => props.data.length,
+], () => {
+  rowSizeList.value = props.data.map((_, rowIndex) => getTableRowHeight(props.rowHeights, rowIndex, props.cellMinHeight))
+}, { immediate: true })
+
+// 根据表格行实际渲染高度定位行高拖拽线
+const rowRefs = useTemplateRef<HTMLTableRowElement[]>('rowRefs')
+const rowDragLinePosition = ref<number[]>([])
+const updateRowDragLinePosition = () => {
+  rowDragLinePosition.value = (rowRefs.value || []).map(row => row.offsetTop + row.offsetHeight)
+}
+const tableResizeObserver = new ResizeObserver(updateRowDragLinePosition)
+onMounted(() => {
+  if (tableRef.value) tableResizeObserver.observe(tableRef.value)
+  updateRowDragLinePosition()
+})
+onUnmounted(() => tableResizeObserver.disconnect())
 
 // 清除全部单元格的选中状态
 // 表格处于不可编辑状态时也需要清除
@@ -257,6 +302,12 @@ const deleteRow = (rowIndex: number) => {
 
   _tableCells.splice(rowIndex, 1)
   tableCells.value = _tableCells
+  if (!props.rowHeights) return
+
+  const _rowHeights = [...rowSizeList.value]
+  _rowHeights.splice(rowIndex, 1)
+  rowSizeList.value = _rowHeights
+  emit('changeRowHeights', _rowHeights)
 }
 
 // 删除一列
@@ -301,6 +352,12 @@ const insertRow = (rowIndex: number) => {
 
   _tableCells.splice(rowIndex, 0, rowCells)
   tableCells.value = _tableCells
+  if (!props.rowHeights) return
+
+  const _rowHeights = [...rowSizeList.value]
+  _rowHeights.splice(rowIndex, 0, props.cellMinHeight)
+  rowSizeList.value = _rowHeights
+  emit('changeRowHeights', _rowHeights)
 }
 
 // 插入一列
@@ -322,6 +379,7 @@ const insertCol = (colIndex: number) => {
 // 填充指定的行/列数
 const fillTable = (rowCount: number, colCount: number) => {
   let _tableCells: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
+  const _rowHeights = props.rowHeights ? [...rowSizeList.value] : []
   const defaultCell = { colspan: 1, rowspan: 1, text: '' }
   
   if (rowCount) {
@@ -337,6 +395,7 @@ const fillTable = (rowCount: number, colCount: number) => {
       newRows.push(rowCells)
     }
     _tableCells = [..._tableCells, ...newRows]
+    if (props.rowHeights) _rowHeights.push(...new Array(rowCount).fill(props.cellMinHeight))
   }
   if (colCount) {
     _tableCells = _tableCells.map(item => {
@@ -354,6 +413,10 @@ const fillTable = (rowCount: number, colCount: number) => {
     emit('changeColWidths', colSizeList.value)
   }
 
+  if (rowCount && props.rowHeights) {
+    rowSizeList.value = _rowHeights
+    emit('changeRowHeights', _rowHeights)
+  }
   tableCells.value = _tableCells
 }
 
@@ -410,6 +473,35 @@ const handleMousedownColHandler = (e: MouseEvent, colIndex: number) => {
     document.onmouseup = null
 
     emit('changeColWidths', colSizeList.value)
+  }
+}
+
+// 鼠标拖拽调整行高
+const handleMousedownRowHandler = (e: MouseEvent, rowIndex: number) => {
+  removeSelectedCells()
+  let isMouseDown = true
+
+  const originHeight = rowRefs.value?.[rowIndex]?.offsetHeight || rowSizeList.value[rowIndex]
+  const startPageY = e.pageY
+  const minHeight = props.cellMinHeight
+  draggingTableHeight.value = tableRef.value?.offsetHeight || null
+
+  document.onmousemove = e => {
+    if (!isMouseDown) return
+
+    const moveY = (e.pageY - startPageY) / canvasScale.value
+    const height = originHeight + moveY < minHeight ? minHeight : Math.round(originHeight + moveY)
+    const _rowHeights = [...rowSizeList.value]
+    _rowHeights[rowIndex] = height
+    rowSizeList.value = _rowHeights
+  }
+  document.onmouseup = () => {
+    isMouseDown = false
+    document.onmousemove = null
+    document.onmouseup = null
+
+    draggingTableHeight.value = null
+    emit('changeRowHeights', rowSizeList.value)
   }
 }
 
@@ -880,5 +972,17 @@ table {
   opacity: 0;
   z-index: 2;
   cursor: col-resize;
+}
+
+.row-drag-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: $themeColor;
+  margin-top: -1px;
+  opacity: 0;
+  z-index: 2;
+  cursor: row-resize;
 }
 </style>

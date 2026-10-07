@@ -23,11 +23,13 @@
           :data="elementInfo.data"
           :width="elementInfo.width"
           :cellMinHeight="elementInfo.cellMinHeight"
+          :rowHeights="elementInfo.rowHeights"
           :colWidths="elementInfo.colWidths"
           :outline="elementInfo.outline"
           :theme="elementInfo.theme"
           :editable="editable"
           @change="data => updateTableCells(data)"
+          @changeRowHeights="heights => updateRowHeights(heights)"
           @changeColWidths="widths => updateColWidths(widths)"
           @changeSelectedCells="cells => updateSelectedCells(cells)"
         />
@@ -141,6 +143,15 @@ const updateTableCells = (data: TableCell[][]) => {
   slidesStore.updateElement({
     id: props.elementInfo.id, 
     props: { data },
+  })
+  addHistorySnapshot()
+}
+
+// 更新表格各行最小高度
+const updateRowHeights = (heights: number[]) => {
+  slidesStore.updateElement({
+    id: props.elementInfo.id,
+    props: { rowHeights: heights },
   })
   addHistorySnapshot()
 }

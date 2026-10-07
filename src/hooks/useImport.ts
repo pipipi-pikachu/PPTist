@@ -1171,6 +1171,8 @@ export default () => {
   
               const allWidth = el.colWidths.reduce((a, b) => a + b, 0)
               const colWidths: number[] = el.colWidths.map(item => item / allWidth)
+              const cellMinHeight = el.rowHeights[0] ? el.rowHeights[0] * ratio : 36
+              const rowHeights = el.rowHeights.slice(0, row).map(height => Math.max(height * ratio, cellMinHeight))
 
               const isVisibleBorder = (b?: { borderColor?: string; borderWidth?: number }) => {
                 if (!b || !b.borderWidth) return false
@@ -1209,12 +1211,13 @@ export default () => {
                 colWidths,
                 rotate: 0,
                 data,
+                rowHeights,
                 outline: {
                   width: +(borderWidth * ratio || 2).toFixed(2),
                   style: borderStyle,
                   color: borderColor,
                 },
-                cellMinHeight: el.rowHeights[0] ? el.rowHeights[0] * ratio : 36,
+                cellMinHeight,
               })
             }
             else if (el.type === 'chart') {

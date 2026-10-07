@@ -929,6 +929,10 @@ export default () => {
             h: el.height / ratioPx2Inch.value,
             colW: el.colWidths.map(item => el.width * item / ratioPx2Inch.value),
           }
+          if (el.rowHeights?.length && tableData.length === el.data.length) {
+            const rowHeights = el.rowHeights
+            options.rowH = el.data.map((_, rowIndex) => (rowHeights[rowIndex] || el.cellMinHeight) / ratioPx2Inch.value)
+          }
           if (el.theme) options.fill = { color: '#ffffff' }
           if (el.outline.width && el.outline.color) {
             options.border = {

@@ -149,6 +149,7 @@ export default (
     const elOriginHeight = element.height
 
     const originTableCellMinHeight = element.type === 'table' ? element.cellMinHeight : 0
+    const originTableRowHeights = element.type === 'table' ? element.rowHeights : undefined
     
     const elRotate = ('rotate' in element && element.rotate) ? element.rotate : 0
     const rotateRadian = Math.PI * elRotate / 180
@@ -499,6 +500,19 @@ export default (
           }
         }
         if (el.type === 'table') {
+          if (originTableRowHeights?.length) {
+            const heightRatio = height / elOriginHeight
+            const rowHeights = el.data.map((_, rowIndex) => {
+              const rowHeight = originTableRowHeights[rowIndex] || originTableCellMinHeight
+              return Math.max(originTableCellMinHeight, rowHeight * heightRatio)
+            })
+
+            return {
+              ...el, left, top, width, height,
+              rowHeights,
+            }
+          }
+
           let cellMinHeight = originTableCellMinHeight + (height - elOriginHeight) / el.data.length
           cellMinHeight = cellMinHeight < 36 ? 36 : cellMinHeight
 

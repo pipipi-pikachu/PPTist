@@ -577,6 +577,8 @@ export interface TableTheme {
  * colWidths: 列宽数组，如[0.3, 0.5, 0.2]表示三列宽度分别占总宽度的30%, 50%, 20%
  * 
  * cellMinHeight: 单元格最小高度
+ *
+ * rowHeights?: 各行最小高度
  * 
  * data: 表格数据
  */
@@ -586,6 +588,7 @@ export interface PPTTableElement extends PPTBaseElement {
   theme?: TableTheme
   colWidths: number[]
   cellMinHeight: number
+  rowHeights?: number[]
   data: TableCell[][]
 }
 
