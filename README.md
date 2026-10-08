@@ -211,6 +211,19 @@ Here are some auxiliary development tools/repositories:
 # 📄 License
 [AGPL-3.0 License](https://github.com/pipipi-pikachu/PPTist/blob/master/LICENSE) | Copyright © 2020-PRESENT [pipipi-pikachu](https://github.com/pipipi-pikachu)
 
+
+# 💕 Sponsorship & Support
+Thank you for your interest in and support for PPTist! Sponsorships from companies, organizations, and individuals are welcome.
+
+### Corporate/Organization Sponsorship
+- Price: RMB 2,399 per quarter;
+- Benefits: A sponsor showcase in [README.md](/README.md), including your logo, link, and brief introduction;
+- If you are interested in sponsoring the project, please [email the author](mailto:pipipi_pikachu@163.com) first to confirm the showcase content, sponsorship period, and other details.
+
+### Individual Sponsorship
+Individuals can support the project directly through [Afdian](https://afdian.com/a/pipipi-pikachu). Thank you for your support!
+
+
 # 🧮 Commercial
 If you wish to use this project for commercial gain, I hope you will respect open source and strictly adhere to the AGPL-3.0 license, giving back to the open source community. Or contact the author for an independent commercial license.
 
@@ -229,6 +242,7 @@ If you wish to use this project for commercial gain, I hope you will respect ope
     3. [邮件联系作者](mailto:pipipi_pikachu@163.com)付费获取独立的商业授权（违反协议后被作者找到的不适用此项）。独立授权价格：
         - 一年：2999元；
         - 永久：5999元（不含税）；
+    4. 一次性赞助本项目一年及以上（见[赞助与支持](#-赞助与支持)），可联系作者获取永久商业授权；
 - 请优先考虑执行AGPL-3.0协议，如需付费获取独立的商业授权，请务必在联系作者前阅读以下内容：
     - **独立商业授权表示**：
         - 作者单独出具商业授权协议文件（邮件联系作者获取），双方按流程签署协议；

@@ -62,7 +62,6 @@
               { label: 'Qwen3.7-Flash', value: 'qwen:qwen3.7-flash' },
               { label: 'Qwen3.8-Flash', value: 'qwen:qwen3.8-flash' },
               { label: 'Doubao-Seed-2.0-mini', value: 'doubao:doubao-seed-2.0-mini' },
-              { label: 'DeepSeek-v4-Flash', value: 'qwen:deepseek-v4-flash' },
               { label: 'DeepSeek-v4.1-Flash', value: 'qwen:deepseek-v4.1-flash' },
             ]"
           />
