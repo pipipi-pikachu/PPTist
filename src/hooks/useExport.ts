@@ -894,6 +894,7 @@ export default () => {
                 fontFace: cell.style?.fontname || '微软雅黑',
                 fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) / ratioPx2Pt.value,
               }
+              let fillColor: FormatColor | null = null
               if (theme && themeColor) {
                 let c: FormatColor
                 if (i % 2 === 0) c = subThemeColors[1]
@@ -904,11 +905,14 @@ export default () => {
                 else if (theme.colHeader && j === 0) c = themeColor
                 else if (theme.colFooter && j === row.length - 1) c = themeColor
 
-                cellOptions.fill = { color: c.color, transparency: (1 - c.alpha) * 100 }
+                fillColor = c
               }
-              if (cell.style?.backcolor) {
-                const c = formatColor(cell.style.backcolor)
-                cellOptions.fill = { color: c.color, transparency: (1 - c.alpha) * 100 }
+              if (cell.style?.backcolor) fillColor = formatColor(cell.style.backcolor)
+              if (fillColor) {
+                const { color, alpha } = fillColor
+                cellOptions.fill = theme && alpha < 1
+                  ? { color: tinycolor.mix('#ffffff', color, alpha * 100).toHexString() }
+                  : { color, transparency: (1 - alpha) * 100 }
               }
               if (cell.style?.color) cellOptions.color = formatColor(cell.style.color).color
 
