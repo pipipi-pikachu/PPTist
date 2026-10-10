@@ -17,6 +17,7 @@ import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
 import { ToolbarStates } from '@/types/toolbar'
+import { isSingleGroupSelection } from '@/utils/element'
 
 import ElementStylePanel from './ElementStylePanel/index.vue'
 import ElementPositionPanel from './ElementPositionPanel.vue'
@@ -44,6 +45,11 @@ const multiSelectTabs = [
   { label: '样式（多选）', key: ToolbarStates.MULTI_STYLE },
   { label: '位置（多选）', key: ToolbarStates.MULTI_POSITION },
 ]
+const groupTabs = [
+  { label: '样式（多选）', key: ToolbarStates.MULTI_STYLE },
+  { label: '位置（多选）', key: ToolbarStates.MULTI_POSITION },
+  { label: '动画', key: ToolbarStates.EL_ANIMATION },
+]
 
 const setToolbarState = (value: ToolbarStates) => {
   mainStore.setToolbarState(value)
@@ -52,7 +58,11 @@ const setToolbarState = (value: ToolbarStates) => {
 const currentTabs = computed(() => {
   if (!activeElementIdList.value.length) return slideTabs
   else if (activeElementIdList.value.length > 1) {
-    if (!activeGroupElementId.value) return multiSelectTabs
+    if (!activeGroupElementId.value) {
+      // 选中一个完整的组合时，允许为整个组合设置动画
+      if (isSingleGroupSelection(activeElementList.value)) return groupTabs
+      return multiSelectTabs
+    }
 
     const activeGroupElement = activeElementList.value.find(item => item.id === activeGroupElementId.value)
     if (activeGroupElement) return elementTabs

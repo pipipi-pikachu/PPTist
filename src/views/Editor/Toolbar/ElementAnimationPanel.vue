@@ -1,6 +1,6 @@
 <template>
   <div class="element-animation-panel">
-    <div class="element-animation" v-if="handleElement">
+    <div class="element-animation" v-if="animationTarget">
       <Popover 
         trigger="click" 
         v-model:value="animationPoolVisible" 
@@ -48,7 +48,7 @@
       </Popover>
     </div>
 
-    <div class="tip" v-else><i-icon-park-outline:click style="margin-right: 5px;" /> 选中画布中的元素添加动画</div>
+    <div class="tip" v-else><i-icon-park-outline:click style="margin-right: 5px;" /> 选中画布中的元素或组合添加动画</div>
     
     <Divider />
 
@@ -63,17 +63,17 @@
       @end="handleDragEnd"
     >
       <template #item="{ element }">
-        <div class="sequence-item" :class="[element.type, { 'active': handleElement?.id === element.elId }]" @click="selectElement(element.elId)">
+        <div class="sequence-item" :class="[element.type, { 'active': isAnimationOfCurrentTarget(element) }]" @click="selectAnimationTarget(element)">
           <div class="sequence-content">
             <div class="index">{{element.index}}</div>
             <div class="text">「{{element.elType}}」{{element.animationEffect}}</div>
             <div class="handler">
-              <i-icon-park-outline:play-one class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration)" />
+              <i-icon-park-outline:play-one class="handler-btn" v-tooltip="'预览'" @click.stop="runAnimation(element.elId, element.effect, element.duration, element.target)" />
               <i-icon-park-outline:close-small class="handler-btn" v-tooltip="'删除'" @click.stop="deleteAnimation(element.id)" />
             </div>
           </div>
 
-          <div class="configs" v-if="handleElementAnimation[0]?.elId === element.elId">
+          <div class="configs" v-if="isAnimationOfCurrentTarget(element)">
             <Divider :margin="16" />
 
             <div class="config-item">
@@ -122,8 +122,8 @@ import { computed, ref, watch } from 'vue'
 import { nanoid } from 'nanoid'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { AnimationTrigger, AnimationType, PPTAnimation } from '@/types/slides'
-import { 
+import type { AnimationTarget, AnimationTrigger, AnimationType, PPTAnimation } from '@/types/slides'
+import {
   ENTER_ANIMATIONS,
   EXIT_ANIMATIONS,
   ATTENTION_ANIMATIONS,
@@ -132,6 +132,8 @@ import {
   ANIMATION_CLASS_PREFIX,
 } from '@/configs/animation'
 import { ELEMENT_TYPE_ZH } from '@/configs/element'
+import { isSingleGroupSelection } from '@/utils/element'
+import { getAnimationElementIds, getAnimationTargetKey, isGroupAnimation } from '@/utils/animation'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import useSelectElement from '@/hooks/useSelectElement'
 
@@ -168,9 +170,28 @@ interface TabItem {
 
 const animationTypes: AnimationType[] = ['in', 'out', 'attention']
 
+const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const { handleElement, activeElementList, activeGroupElementId } = storeToRefs(mainStore)
 const { currentSlide, formatedAnimations, currentSlideAnimations } = storeToRefs(slidesStore)
+
+// 当前动画的作用目标
+// 选中一个完整的组合（且未进入组合内部选中单个成员）时，动画作用于整个组合，否则作用于当前操作的单个元素
+const animationTarget = computed(() => {
+  if (!activeGroupElementId.value && isSingleGroupSelection(activeElementList.value)) {
+    return { target: 'group' as AnimationTarget, id: activeElementList.value[0].groupId! }
+  }
+  if (handleElement.value) {
+    return { target: 'element' as AnimationTarget, id: handleElement.value.id }
+  }
+  return null
+})
+
+// 判断一个动画是否作用于当前的目标
+const isAnimationOfCurrentTarget = (animation: PPTAnimation) => {
+  if (!animationTarget.value) return false
+  return getAnimationTargetKey(animation) === `${animationTarget.value.target}:${animationTarget.value.id}`
+}
 
 const tabs: TabItem[] = [
   { key: 'in', label: '入场', color: '#68a490' },
@@ -179,7 +200,7 @@ const tabs: TabItem[] = [
 ]
 const activeTab = ref('in')
 const animateIn = ref(false)
-watch(() => handleElementId.value, () => {
+watch(animationTarget, () => {
   animationPoolVisible.value = false
 })
 
@@ -189,6 +210,20 @@ const animationPoolVisible = ref(false)
 const { addHistorySnapshot } = useHistorySnapshot()
 const { selectElement } = useSelectElement()
 
+// 点击动画序列项时，选中该动画的作用目标
+// 作用于组合的动画将选中该组合的全部成员，作用于元素的动画则选中该元素
+const selectAnimationTarget = (animation: PPTAnimation) => {
+  const elIds = getAnimationElementIds(animation, currentSlide.value.elements)
+  if (!elIds.length) return
+
+  if (isGroupAnimation(animation)) {
+    mainStore.setActiveElementIdList(elIds)
+    mainStore.setActiveGroupElementId('')
+    return
+  }
+  selectElement(elIds[0])
+}
+
 // 当前页面的动画列表
 const animationSequence = computed(() => {
   const animationSequence = []
@@ -196,10 +231,18 @@ const animationSequence = computed(() => {
     const item = formatedAnimations.value[i]
     for (let j = 0; j < item.animations.length; j++) {
       const animation = item.animations[j]
-      const el = currentSlide.value.elements.find(el => el.id === animation.elId)
-      if (!el) continue
+      const elIds = getAnimationElementIds(animation, currentSlide.value.elements)
+      if (!elIds.length) continue
 
-      const elType = ELEMENT_TYPE_ZH[el.type]
+      // 作用于组合的动画统一显示为“组合”，并标注其成员数量
+      let elType: string
+      if (isGroupAnimation(animation)) elType = `组合(${elIds.length})`
+      else {
+        const el = currentSlide.value.elements.find(el => el.id === animation.elId)
+        if (!el) continue
+        elType = ELEMENT_TYPE_ZH[el.type]
+      }
+
       const animationEffect = animationEffects[animation.effect]
       animationSequence.push({
         ...animation,
@@ -210,13 +253,6 @@ const animationSequence = computed(() => {
     }
   }
   return animationSequence
-})
-
-// 当前选中元素的入场动画信息
-const handleElementAnimation = computed(() => {
-  const animations = currentSlideAnimations.value
-  const animation = animations.filter(item => item.elId === handleElementId.value)
-  return animation || []
 })
 
 // 删除元素动画
@@ -241,10 +277,14 @@ const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
 }
 
 // 执行动画预览
-const runAnimation = (elId: string, effect: string, duration: number) => {
-  const elRef = document.querySelector(`#editable-element-${elId} [class^=editable-element-]`)
-  if (elRef) {
-    const animationName = `${ANIMATION_CLASS_PREFIX}${effect}`
+const runAnimation = (elId: string, effect: string, duration: number, target: AnimationTarget = 'element') => {
+  const elIds = getAnimationElementIds({ elId, target } as PPTAnimation, currentSlide.value.elements)
+  const animationName = `${ANIMATION_CLASS_PREFIX}${effect}`
+
+  for (const id of elIds) {
+    const elRef = document.querySelector(`#editable-element-${id} [class^=editable-element-]`)
+    if (!elRef) continue
+
     document.documentElement.style.setProperty('--animate-duration', `${duration}ms`)
     elRef.classList.add(`${ANIMATION_CLASS_PREFIX}animated`, animationName)
 
@@ -262,8 +302,8 @@ const runAllAnimation = async () => {
   for (let i = 0; i < animationSequence.value.length; i++) {
     if (!animateIn.value) break
     const item = animationSequence.value[i]
-    if (item.index !== 1 && item.trigger !== 'meantime') await new Promise(resolve => setTimeout(resolve, item.duration + 100)) 
-    runAnimation(item.elId, item.effect, item.duration)
+    if (item.index !== 1 && item.trigger !== 'meantime') await new Promise(resolve => setTimeout(resolve, item.duration + 100))
+    runAnimation(item.elId, item.effect, item.duration, item.target)
     if (i >= animationSequence.value.length - 1) animateIn.value = false
   }
 }
@@ -300,11 +340,12 @@ const updateElementAnimation = (type: AnimationType, effect: string) => {
   animationPoolVisible.value = false
   addHistorySnapshot()
 
-  const animationItem = currentSlideAnimations.value.find(item => item.elId === handleElementId.value)
-  const duration = animationItem?.duration || ANIMATION_DEFAULT_DURATION
+  const animationItem = animations.find(item => item.id === handleAnimationId.value)
+  if (!animationItem) return
+  const duration = animationItem.duration || ANIMATION_DEFAULT_DURATION
 
   setTimeout(() => {
-    runAnimation(handleElementId.value, effect, duration)
+    runAnimation(animationItem.elId, effect, duration, animationItem.target)
   }, 0)
 }
 
@@ -315,11 +356,14 @@ const addAnimation = (type: AnimationType, effect: string) => {
     updateElementAnimation(type, effect)
     return
   }
+  if (!animationTarget.value) return
 
+  const { target, id } = animationTarget.value
   const animations: PPTAnimation[] = JSON.parse(JSON.stringify(currentSlideAnimations.value))
   animations.push({
     id: nanoid(10),
-    elId: handleElementId.value,
+    elId: id,
+    target,
     type,
     effect,
     duration: ANIMATION_DEFAULT_DURATION,
@@ -330,7 +374,7 @@ const addAnimation = (type: AnimationType, effect: string) => {
   addHistorySnapshot()
 
   setTimeout(() => {
-    runAnimation(handleElementId.value, effect, ANIMATION_DEFAULT_DURATION)
+    runAnimation(id, effect, ANIMATION_DEFAULT_DURATION, target)
   }, 0)
 }
 

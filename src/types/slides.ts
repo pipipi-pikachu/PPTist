@@ -673,25 +673,29 @@ export type PPTElement = PPTTextElement | PPTImageElement | PPTShapeElement | PP
 
 export type AnimationType = 'in' | 'out' | 'attention'
 export type AnimationTrigger = 'click' | 'meantime' | 'auto'
+export type AnimationTarget = 'element' | 'group'
 
 /**
  * 元素动画
- * 
+ *
  * id: 动画id
- * 
- * elId: 元素ID
- * 
+ *
+ * elId: 元素ID（当 target 为 group 时，此处为组合ID）
+ *
+ * target?: 动画作用目标（element - 单个元素、group - 整个组合，默认为 element）
+ *
  * effect: 动画效果
- * 
+ *
  * type: 动画类型（入场、退场、强调）
- * 
+ *
  * duration: 动画持续时间
- * 
+ *
  * trigger: 动画触发方式(click - 单击时、meantime - 与上一动画同时、auto - 上一动画之后)
  */
 export interface PPTAnimation {
   id: string
   elId: string
+  target?: AnimationTarget
   effect: string
   type: AnimationType
   duration: number

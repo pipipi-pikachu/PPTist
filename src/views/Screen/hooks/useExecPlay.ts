@@ -4,8 +4,9 @@ import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ANIMATION_CLASS_PREFIX } from '@/configs/animation'
+import { getAnimationElementIds } from '@/utils/animation'
 import message from '@/utils/message'
-import type { Slide } from '@/types/slides'
+import type { PPTAnimation, Slide } from '@/types/slides'
 
 const AUDIENCE_SYNC_CHANNEL = 'pptist-audience-sync'
 
@@ -25,7 +26,7 @@ type SyncMessage =
 
 export default () => {
   const slidesStore = useSlidesStore()
-  const { slides, slideIndex, formatedAnimations, viewportSize, viewportRatio } = storeToRefs(slidesStore)
+  const { slides, slideIndex, currentSlide, formatedAnimations, viewportSize, viewportRatio } = storeToRefs(slidesStore)
 
   const isAudienceMode = new URLSearchParams(window.location.search).get('mode') === 'audience'
 
@@ -56,6 +57,18 @@ export default () => {
   // 最小已播放页面索引
   const playedSlidesMinIndex = ref(slideIndex.value)
 
+  // 获取一个动画实际作用的元素节点集合
+  // 作用于组合的动画将展开为该组合下的全部成员节点
+  const getAnimationElementRefs = (animation: PPTAnimation) => {
+    const elIds = getAnimationElementIds(animation, currentSlide.value?.elements || [])
+    const elRefs: HTMLElement[] = []
+    for (const elId of elIds) {
+      const elRef = document.querySelector<HTMLElement>(`#screen-element-${elId} [class^=base-element-]`)
+      if (elRef) elRefs.push(elRef)
+    }
+    return elRefs
+  }
+
   // 执行元素动画
   const runAnimation = () => {
     // 正在执行动画时，禁止其他新的动画开始
@@ -67,43 +80,54 @@ export default () => {
     // 标记开始执行动画
     inAnimation.value = true
 
+    // 收集该位置上全部动画实际作用的元素节点
+    // 作用于组合的动画会同时作用于该组合下的每一个成员，因此一个动画可能对应多个节点
+    const animationTargets = animations.map(animation => ({
+      animation,
+      elRefs: getAnimationElementRefs(animation),
+    }))
+
+    const totalAnimationCount = animationTargets.reduce((count, item) => count + Math.max(item.elRefs.length, 1), 0)
     let endAnimationCount = 0
 
+    const handleAnimationEnd = () => {
+      // 判断该位置上的全部动画都已经结束后，标记动画执行完成，并尝试继续向下执行（如果有需要）
+      endAnimationCount += 1
+      if (endAnimationCount === totalAnimationCount) {
+        inAnimation.value = false
+        if (autoNext) runAnimation()
+      }
+    }
+
     // 依次执行该位置中的全部动画
-    for (const animation of animations) {
-      const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-      if (!elRef) {
-        endAnimationCount += 1
+    for (const { animation, elRefs } of animationTargets) {
+      if (!elRefs.length) {
+        handleAnimationEnd()
         continue
       }
 
       const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
-      
-      // 执行动画前先清除原有的动画状态（如果有）
-      elRef.style.removeProperty('--animate-duration')
-      for (const classname of elRef.classList) {
-        if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
-      }
-      
-      // 执行动画
-      elRef.style.setProperty('--animate-duration', `${animation.duration}ms`)
-      elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
 
-      // 执行动画结束，将“退场”以外的动画状态清除
-      const handleAnimationEnd = () => {
-        if (animation.type !== 'out') {
-          elRef.style.removeProperty('--animate-duration')
-          elRef.classList.remove(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+      for (const elRef of elRefs) {
+        // 执行动画前先清除原有的动画状态（如果有）
+        elRef.style.removeProperty('--animate-duration')
+        for (const classname of elRef.classList) {
+          if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
         }
 
-        // 判断该位置上的全部动画都已经结束后，标记动画执行完成，并尝试继续向下执行（如果有需要）
-        endAnimationCount += 1
-        if (endAnimationCount === animations.length) {
-          inAnimation.value = false
-          if (autoNext) runAnimation()
-        }
+        // 执行动画
+        elRef.style.setProperty('--animate-duration', `${animation.duration}ms`)
+        elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+
+        // 执行动画结束，将“退场”以外的动画状态清除
+        elRef.addEventListener('animationend', () => {
+          if (animation.type !== 'out') {
+            elRef.style.removeProperty('--animate-duration')
+            elRef.classList.remove(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+          }
+          handleAnimationEnd()
+        }, { once: true })
       }
-      elRef.addEventListener('animationend', handleAnimationEnd, { once: true })
     }
   }
 
@@ -123,11 +147,11 @@ export default () => {
       const { animations } = formatedAnimations.value[i]
       for (const animation of animations) {
         if (animation.type !== 'out') continue
-        const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-        if (!elRef) continue
         const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
-        elRef.style.setProperty('--animate-duration', '0ms')
-        elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+        for (const elRef of getAnimationElementRefs(animation)) {
+          elRef.style.setProperty('--animate-duration', '0ms')
+          elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
+        }
       }
     }
   }
@@ -138,12 +162,11 @@ export default () => {
     const { animations } = formatedAnimations.value[animationIndex.value]
 
     for (const animation of animations) {
-      const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
-      if (!elRef) continue
-      
-      elRef.style.removeProperty('--animate-duration')
-      for (const classname of elRef.classList) {
-        if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
+      for (const elRef of getAnimationElementRefs(animation)) {
+        elRef.style.removeProperty('--animate-duration')
+        for (const classname of elRef.classList) {
+          if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
+        }
       }
     }
 

@@ -87,7 +87,9 @@ export default () => {
       if (slide.animations) {
         for (const animation of slide.animations) {
           animation.id = nanoid(10)
-          animation.elId = elIdMap[animation.elId]
+          // 作用于组合的动画需要替换为新的组合ID，其余动画替换为新的元素ID
+          if (animation.target === 'group') animation.elId = groupIdMap[animation.elId]
+          else animation.elId = elIdMap[animation.elId]
         }
       }
       return {
