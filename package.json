@@ -22,7 +22,6 @@
     "dexie": "^4.0.11",
     "echarts": "^6.0.0",
     "file-saver": "^2.0.5",
-    "hfmath": "^0.0.2",
     "html-to-image": "^1.11.13",
     "jsonrepair": "^3.13.2",
     "lodash": "^4.17.21",
