@@ -11,6 +11,7 @@
       @durationchange="handleDurationchange()"
       @timeupdate="handleTimeupdate()"
       @play="handlePlayed()"
+      @pause="paused = true"
       @ended="handleEnded()"
       @progress="handleProgress()"
       @error="handleError()"
