@@ -1,75 +1,469 @@
-export const FORMULA_LIST = [
+export interface FormulaPreset {
+  label: string
+  latex: string
+  category?: string
+}
+
+const MATH_FORMULAS = [
   {
-    label: '高斯公式',
-    latex: `\\int\\int\\int _ { \\Omega } \\left( \\frac { \\partial {P} } { \\partial {x} } + \\frac { \\partial {Q} } { \\partial {y} } + \\frac { \\partial {R} }{ \\partial {z} } \\right) \\mathrm { d } V = \\oint _ { \\partial \\Omega } ( P \\cos \\alpha + Q \\cos \\beta + R \\cos \\gamma ) \\mathrm{ d} S`
+    label: '代数',
+    children: [
+      {
+        label: '完全平方公式',
+        latex: '(a+b)^{2}=a^{2}+2ab+b^{2}',
+      },
+      {
+        label: '平方差公式',
+        latex: 'a^{2}-b^{2}=(a+b)(a-b)',
+      },
+      {
+        label: '一元二次方程求根（a≠0）',
+        latex: 'x=\\frac{-b\\pm\\sqrt{b^{2}-4ac}}{2a}',
+      },
+      {
+        label: '二项式定理',
+        latex: '(a+b)^{n}=\\sum_{k=0}^{n}\\binom{n}{k}a^{n-k}b^{k}',
+      },
+      {
+        label: '和的展开式',
+        latex: `( 1 + x ) ^ { n } = 1 + \\frac { n x } { 1 ! } + \\frac { n ( n - 1 ) x ^ { 2 } } { 2 ! } + ...`,
+      },
+      {
+        label: '二次曲面',
+        latex: `\\frac{{{x^2}}}{{{a^2}}} + \\frac{{{y^2}}}{{{b^2}}} - \\frac{{{z^2}}}{{{c^2}}} = 1`,
+      },
+    ],
   },
   {
-    label: '傅里叶级数',
-    latex: `f(x) = \\frac {a_0} 2 + \\sum_{n = 1}^\\infty {({a_n}\\cos {nx} + {b_n}\\sin {nx})}`,
+    label: '集合',
+    children: [
+      {
+        label: '并集交换律',
+        latex: 'A\\cup B=B\\cup A',
+      },
+      {
+        label: '集合分配律',
+        latex: 'A\\cap(B\\cup C)=(A\\cap B)\\cup(A\\cap C)',
+      },
+      {
+        label: '德摩根律',
+        latex: '(A\\cup B)^{c}=A^{c}\\cap B^{c}',
+      },
+      {
+        label: '容斥原理（有限集合）',
+        latex: '\\lvert A\\cup B\\rvert=\\lvert A\\rvert+\\lvert B\\rvert-\\lvert A\\cap B\\rvert',
+      },
+    ],
   },
   {
-    label: '泰勒展开式',
-    latex: `e ^ { x } = 1 + \\frac { x } { 1 ! } + \\frac { x ^ { 2 } } { 2 ! } + \\frac { x ^ { 3 } } { 3 ! } + ... , \\quad - \\infty < x < \\infty`,
+    label: '不等式',
+    children: [
+      {
+        label: '均值不等式（a,b≥0）',
+        latex: '\\frac{a+b}{2}\\geq\\sqrt{ab}',
+      },
+      {
+        label: '柯西–施瓦茨不等式（实数）',
+        latex: '\\left(\\sum_{i=1}^{n}a_i b_i\\right)^{2}\\leq\\left(\\sum_{i=1}^{n}a_i^{2}\\right)\\left(\\sum_{i=1}^{n}b_i^{2}\\right)',
+      },
+      {
+        label: '三角不等式',
+        latex: '\\lvert a+b\\rvert\\leq\\lvert a\\rvert+\\lvert b\\rvert',
+      },
+      {
+        label: '反三角不等式',
+        latex: '\\left\\lvert\\lvert a\\rvert-\\lvert b\\rvert\\right\\rvert\\leq\\lvert a-b\\rvert',
+      },
+    ],
   },
   {
-    label: '定积分',
-    latex: `\\lim_ { n \\rightarrow + \\infty } \\sum _ { i = 1 } ^ { n } f \\left[ a + \\frac { i } { n } ( b - a ) \\right] \\frac { b - a } { n } = \\int _ { a } ^ { b } f ( x ) dx`,
+    label: '微分与微分方程',
+    children: [
+      {
+        label: '导数公式',
+        latex: `(\\arcsin x)' = \\frac{1}{{\\sqrt {1 - x^2} }}`,
+      },
+      {
+        label: '拉格朗日中值定理',
+        latex: `f(b) - f(a) = f'(\\xi )(b - a)`,
+      },
+      {
+        label: '柯西中值定理',
+        latex: `\\frac{{f(b) - f(a)}}{{F(b) - F(a)}} = \\frac{{f'(\\xi )}}{{F'(\\xi )}}`,
+      },
+      {
+        label: '方向导数',
+        latex: `\\frac{{\\partial f}}{{\\partial l}} = \\frac{{\\partial f}}{{\\partial x}}\\cos \\phi + \\frac{{\\partial f}}{{\\partial y}}\\sin \\phi`,
+      },
+      {
+        label: '全微分方程',
+        latex: `du(x,y) = P(x,y)dx + Q(x,y)dy = 0`,
+      },
+      {
+        label: '贝努利方程',
+        latex: `\\frac {dy} {dx} + P(x)y = Q(x) y^n ({n} \\not= {0,1})`,
+      },
+      {
+        label: '非齐次方程',
+        latex: `y = (\\int Q(x) e^{\\int {P(x)dx}}dx + C)e^{-\\int {P(x)dx}}`,
+      },
+      {
+        label: '二阶微分',
+        latex: `\\frac {{d^2}y} {dx^2} + P(x) \\frac {dy} {dx} + Q(x)y = f(x)`,
+      },
+    ],
   },
   {
-    label: '三角恒等式1',
-    latex: `\\sin \\alpha \\pm \\sin \\beta = 2 \\sin \\frac { 1 } { 2 } ( \\alpha \\pm \\beta ) \\cos \\frac { 1 } { 2 } ( \\alpha \\mp \\beta )`,
+    label: '积分',
+    children: [
+      {
+        label: '定积分',
+        latex: `\\lim_ { n \\rightarrow + \\infty } \\sum _ { i = 1 } ^ { n } f \\left[ a + \\frac { i } { n } ( b - a ) \\right] \\frac { b - a } { n } = \\int _ { a } ^ { b } f ( x ) dx`,
+      },
+      {
+        label: '牛顿–莱布尼茨公式（F′=f）',
+        latex: '\\int_{a}^{b}f(x)\\,\\mathrm{d}x=F(b)-F(a)',
+      },
+      {
+        label: '幂函数积分（n≠−1）',
+        latex: '\\int x^{n}\\,\\mathrm{d}x=\\frac{x^{n+1}}{n+1}+C',
+      },
+      {
+        label: '分部积分公式',
+        latex: '\\int u\\,\\mathrm{d}v=uv-\\int v\\,\\mathrm{d}u',
+      },
+      {
+        label: '三角函数积分',
+        latex: '\\int\\tan x\\,\\mathrm{d}x=-\\ln\\left|\\cos x\\right|+C',
+      },
+      {
+        label: '高斯公式',
+        latex: `\\int\\int\\int _ { \\Omega } \\left( \\frac { \\partial {P} } { \\partial {x} } + \\frac { \\partial {Q} } { \\partial {y} } + \\frac { \\partial {R} }{ \\partial {z} } \\right) \\mathrm { d } V = \\oint _ { \\partial \\Omega } ( P \\cos \\alpha + Q \\cos \\beta + R \\cos \\gamma ) \\mathrm{ d} S`,
+      },
+    ],
   },
   {
-    label: '三角恒等式2',
-    latex: `\\cos \\alpha + \\cos \\beta = 2 \\cos \\frac { 1 } { 2 } ( \\alpha + \\beta ) \\cos \\frac { 1 } { 2 } ( \\alpha - \\beta )`,
+    label: '三角函数',
+    children: [
+      {
+        label: '三角函数基本恒等式',
+        latex: '\\sin^{2}x+\\cos^{2}x=1',
+      },
+      {
+        label: '正弦和角公式',
+        latex: '\\sin(\\alpha+\\beta)=\\sin\\alpha\\cos\\beta+\\cos\\alpha\\sin\\beta',
+      },
+      {
+        label: '正弦倍角公式',
+        latex: '\\sin2x=2\\sin x\\cos x',
+      },
+      {
+        label: '三角恒等式1',
+        latex: `\\sin \\alpha \\pm \\sin \\beta = 2 \\sin \\frac { 1 } { 2 } ( \\alpha \\pm \\beta ) \\cos \\frac { 1 } { 2 } ( \\alpha \\mp \\beta )`,
+      },
+      {
+        label: '三角恒等式2',
+        latex: `\\cos \\alpha + \\cos \\beta = 2 \\cos \\frac { 1 } { 2 } ( \\alpha + \\beta ) \\cos \\frac { 1 } { 2 } ( \\alpha - \\beta )`,
+      },
+      {
+        label: '欧拉公式',
+        latex: ` e^{ix} = \\cos {x} + i\\sin {x}`,
+      },
+    ],
   },
   {
-    label: '和的展开式',
-    latex: `( 1 + x ) ^ { n } = 1 + \\frac { n x } { 1 ! } + \\frac { n ( n - 1 ) x ^ { 2 } } { 2 ! } + ...`,
+    label: '数列与级数',
+    children: [
+      {
+        label: '等差数列通项',
+        latex: 'a_n=a_1+(n-1)d',
+      },
+      {
+        label: '等差数列求和',
+        latex: 'S_n=\\frac{n(a_1+a_n)}{2}',
+      },
+      {
+        label: '等比数列通项',
+        latex: 'a_n=a_1 q^{n-1}',
+      },
+      {
+        label: '等比数列求和（q≠1）',
+        latex: 'S_n=\\frac{a_1(1-q^{n})}{1-q}',
+      },
+      {
+        label: '泰勒展开式',
+        latex: `e ^ { x } = 1 + \\frac { x } { 1 ! } + \\frac { x ^ { 2 } } { 2 ! } + \\frac { x ^ { 3 } } { 3 ! } + ... , \\quad - \\infty < x < \\infty`,
+      },
+      {
+        label: '傅里叶级数',
+        latex: `f(x) = \\frac {a_0} 2 + \\sum_{n = 1}^\\infty {({a_n}\\cos {nx} + {b_n}\\sin {nx})}`,
+      },
+    ],
   },
   {
-    label: '欧拉公式',
-    latex: ` e^{ix} = \\cos {x} + i\\sin {x}`,
+    label: '统计',
+    children: [
+      {
+        label: '样本均值',
+        latex: '\\bar{x}=\\frac{1}{n}\\sum_{i=1}^{n}x_i',
+      },
+      {
+        label: '样本方差（n>1）',
+        latex: 's^{2}=\\frac{1}{n-1}\\sum_{i=1}^{n}(x_i-\\bar{x})^{2}',
+      },
+      {
+        label: '二项分布',
+        latex: 'P(X=k)=\\binom{n}{k}p^{k}(1-p)^{n-k}',
+      },
+      {
+        label: '正态分布密度（σ>0）',
+        latex: 'f(x)=\\frac{1}{\\sigma\\sqrt{2\\pi}}e^{-\\frac{(x-\\mu)^{2}}{2\\sigma^{2}}}',
+      },
+      {
+        label: '贝叶斯公式（P(B)>0）',
+        latex: 'P(A\\mid B)=\\frac{P(B\\mid A)P(A)}{P(B)}',
+      },
+    ],
+  },
+].flatMap(group => group.children.map(item => ({...item, category: group.label})))
+
+const MATRIX_FORMULAS = [
+  {
+    label: '二阶方阵',
+    latex: '\\begin{bmatrix}a & b \\\\ c & d\\end{bmatrix}',
   },
   {
-    label: '贝努利方程',
-    latex: `\\frac {dy} {dx} + P(x)y = Q(x) y^n ({n} \\not= {0,1})`,
+    label: '三阶方阵',
+    latex: '\\begin{bmatrix}a & b & c \\\\ d & e & f \\\\ g & h & i\\end{bmatrix}',
   },
   {
-    label: '全微分方程',
-    latex: `du(x,y) = P(x,y)dx + Q(x,y)dy = 0`,
+    label: '一般矩阵',
+    latex: '\\begin{bmatrix}a_{11} & \\cdots & a_{1n} \\\\ \\vdots & \\ddots & \\vdots \\\\ a_{m1} & \\cdots & a_{mn}\\end{bmatrix}',
   },
   {
-    label: '非齐次方程',
-    latex: `y = (\\int Q(x) e^{\\int {P(x)dx}}dx + C)e^{-\\int {P(x)dx}}`,
+    label: '行向量',
+    latex: '\\begin{bmatrix}x_1 & x_2 & \\cdots & x_n\\end{bmatrix}',
   },
   {
-    label: '柯西中值定理',
-    latex: `\\frac{{f(b) - f(a)}}{{F(b) - F(a)}} = \\frac{{f'(\\xi )}}{{F'(\\xi )}}`,
+    label: '列向量',
+    latex: '\\begin{pmatrix}x_1 \\\\ x_2 \\\\ x_3\\end{pmatrix}',
   },
   {
-    label: '拉格朗日中值定理',
-    latex: `f(b) - f(a) = f'(\\xi )(b - a)`,
+    label: '单位矩阵',
+    latex: 'I_3=\\begin{bmatrix}1 & 0 & 0 \\\\ 0 & 1 & 0 \\\\ 0 & 0 & 1\\end{bmatrix}',
   },
   {
-    label: '导数公式',
-    latex: `(\\arcsin x)' = \\frac{1}{{\\sqrt {1 - x^2} }}`,
+    label: '零矩阵',
+    latex: 'O=\\begin{bmatrix}0 & 0 & 0 \\\\ 0 & 0 & 0\\end{bmatrix}',
   },
   {
-    label: '三角函数积分',
-    latex: `\\int {tgxdx = - \\ln \\left| {\\cos x} \\right| + C}`,
+    label: '对角矩阵',
+    latex: 'D=\\begin{bmatrix}d_1 & 0 & 0 \\\\ 0 & d_2 & 0 \\\\ 0 & 0 & d_3\\end{bmatrix}',
   },
   {
-    label: '二次曲面',
-    latex: `\\frac{{{x^2}}}{{{a^2}}} + \\frac{{{y^2}}}{{{b^2}}} - \\frac{{{z^2}}}{{{c^2}}} = 1`,
+    label: '上三角矩阵',
+    latex: '\\begin{bmatrix}a & b & c \\\\ 0 & d & e \\\\ 0 & 0 & f\\end{bmatrix}',
   },
   {
-    label: '二阶微分',
-    latex: `\\frac {{d^2}y} {dx^2} + P(x) \\frac {dy} {dx} + Q(x)y = f(x)`,
+    label: '下三角矩阵',
+    latex: '\\begin{bmatrix}a & 0 & 0 \\\\ b & c & 0 \\\\ d & e & f\\end{bmatrix}',
   },
   {
-    label: '方向导数',
-    latex: `\\frac{{\\partial f}}{{\\partial l}} = \\frac{{\\partial f}}{{\\partial x}}\\cos \\phi + \\frac{{\\partial f}}{{\\partial y}}\\sin \\phi`,
+    label: '对称矩阵',
+    latex: '\\begin{bmatrix}a & b & c \\\\ b & d & e \\\\ c & e & f\\end{bmatrix}',
+  },
+  {
+    label: '平面旋转矩阵',
+    latex: 'R(\\theta)=\\begin{pmatrix}\\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta\\end{pmatrix}',
+  },
+  {
+    label: '矩阵转置',
+    latex: '\\begin{bmatrix}a & b \\\\ c & d\\end{bmatrix}^{\\mathrm{T}}=\\begin{bmatrix}a & c \\\\ b & d\\end{bmatrix}',
+  },
+  {
+    label: '二阶行列式',
+    latex: '\\det\\begin{pmatrix}a & b \\\\ c & d\\end{pmatrix}=ad-bc',
+  },
+  {
+    label: '矩阵乘法元素公式',
+    latex: '(AB)_{ij}=\\sum_{k=1}^{n}a_{ik}b_{kj}',
+  },
+]
+
+export const FORMULA_LIST: {type: string; label: string; children: FormulaPreset[]}[] = [
+  {
+    type: 'math',
+    label: '数学',
+    children: MATH_FORMULAS,
+  },
+  {
+    type: 'matrix',
+    label: '矩阵',
+    children: MATRIX_FORMULAS,
+  },
+  {
+    type: 'physics',
+    label: '物理',
+    children: [
+      {
+        label: '牛顿第二定律',
+        latex: '\\vec{F}=m\\vec{a}',
+      },
+      {
+        label: '匀变速直线运动位移',
+        latex: 's=v_{0}t+\\frac{1}{2}at^{2}',
+      },
+      {
+        label: '万有引力定律',
+        latex: 'F=G\\frac{m_{1}m_{2}}{r^{2}}',
+      },
+      {
+        label: '动能公式',
+        latex: 'E_{\\mathrm{k}}=\\frac{1}{2}mv^{2}',
+      },
+      {
+        label: '动量定理',
+        latex: '\\vec{I}=\\Delta\\vec{p}',
+      },
+      {
+        label: '简谐振动',
+        latex: 'x=A\\cos(\\omega t+\\varphi)',
+      },
+      {
+        label: '单摆周期（小角度）',
+        latex: 'T=2\\pi\\sqrt{\\frac{l}{g}}',
+      },
+      {
+        label: '波速公式',
+        latex: 'v=\\lambda f',
+      },
+      {
+        label: '折射定律',
+        latex: 'n_{1}\\sin\\theta_{1}=n_{2}\\sin\\theta_{2}',
+      },
+      {
+        label: '欧姆定律',
+        latex: 'U=IR',
+      },
+      {
+        label: '焦耳定律',
+        latex: 'Q=I^{2}Rt',
+      },
+      {
+        label: '电功率',
+        latex: 'P=UI',
+      },
+      {
+        label: '库仑定律',
+        latex: 'F=k\\frac{\\left|q_{1}q_{2}\\right|}{r^{2}}',
+      },
+      {
+        label: '洛伦兹力',
+        latex: '\\vec{F}=q(\\vec{E}+\\vec{v}\\times\\vec{B})',
+      },
+      {
+        label: '法拉第电磁感应定律',
+        latex: '\\mathcal{E}=-\\frac{\\mathrm{d}\\Phi_{\\mathrm{B}}}{\\mathrm{d}t}',
+      },
+      {
+        label: '理想气体状态方程',
+        latex: 'pV=nRT',
+      },
+      {
+        label: '热力学第一定律（对外做功为正）',
+        latex: '\\Delta U=Q-W',
+      },
+      {
+        label: '质能关系',
+        latex: 'E=mc^{2}',
+      },
+      {
+        label: '光子能量',
+        latex: 'E=h\\nu=\\frac{hc}{\\lambda}',
+      },
+      {
+        label: '德布罗意波长',
+        latex: '\\lambda=\\frac{h}{p}',
+      },
+    ],
+  },
+  {
+    type: 'chemistry',
+    label: '化学',
+    children: [
+      {
+        label: '物质的量',
+        latex: 'n=\\frac{m}{M}',
+      },
+      {
+        label: '物质的量浓度',
+        latex: 'c=\\frac{n}{V}',
+      },
+      {
+        label: '稀释定律',
+        latex: 'c_{1}V_{1}=c_{2}V_{2}',
+      },
+      {
+        label: '粒子数与物质的量',
+        latex: 'N=nN_{\\mathrm{A}}',
+      },
+      {
+        label: 'pH 定义',
+        latex: '\\mathrm{pH}=-\\log_{10}a_{\\mathrm{H}^{+}}',
+      },
+      {
+        label: '水的离子积（稀溶液）',
+        latex: 'K_{\\mathrm{w}}=\\left[\\mathrm{H}^{+}\\right]\\left[\\mathrm{OH}^{-}\\right]',
+      },
+      {
+        label: '亨德森–哈塞尔巴尔赫方程',
+        latex: '\\mathrm{pH}=\\mathrm{p}K_{\\mathrm{a}}+\\log_{10}\\frac{[\\mathrm{A}^{-}]}{[\\mathrm{HA}]}',
+      },
+      {
+        label: '阿伦尼乌斯方程',
+        latex: 'k=Ae^{-\\frac{E_{\\mathrm{a}}}{RT}}',
+      },
+      {
+        label: '吉布斯自由能',
+        latex: '\\Delta G=\\Delta H-T\\Delta S',
+      },
+      {
+        label: '标准自由能与平衡常数',
+        latex: '\\Delta G^{\\circ}=-RT\\ln K^{\\circ}',
+      },
+      {
+        label: '能斯特方程',
+        latex: 'E=E^{\\circ}-\\frac{RT}{nF}\\ln Q',
+      },
+      {
+        label: '法拉第电解定律',
+        latex: 'm=\\frac{MIt}{zF}',
+      },
+      {
+        label: '水的生成',
+        latex: '2\\mathrm{H}_{2}+\\mathrm{O}_{2}\\rightarrow2\\mathrm{H}_{2}\\mathrm{O}',
+      },
+      {
+        label: '甲烷燃烧',
+        latex: '\\mathrm{CH}_{4}+2\\mathrm{O}_{2}\\rightarrow\\mathrm{CO}_{2}+2\\mathrm{H}_{2}\\mathrm{O}',
+      },
+      {
+        label: '酸碱中和',
+        latex: '\\mathrm{H}^{+}+\\mathrm{OH}^{-}\\rightarrow\\mathrm{H}_{2}\\mathrm{O}',
+      },
+      {
+        label: '氯化银沉淀',
+        latex: '\\mathrm{Ag}^{+}+\\mathrm{Cl}^{-}\\rightarrow\\mathrm{AgCl}',
+      },
+      {
+        label: '碳酸钙热分解',
+        latex: '\\mathrm{CaCO}_{3}\\overset{\\Delta}{\\rightarrow}\\mathrm{CaO}+\\mathrm{CO}_{2}',
+      },
+      {
+        label: '溶解度积（氯化银）',
+        latex: 'K_{\\mathrm{sp}}=\\left[\\mathrm{Ag}^{+}\\right]\\left[\\mathrm{Cl}^{-}\\right]',
+      },
+    ],
   },
 ]
 
