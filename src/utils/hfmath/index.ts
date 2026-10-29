@@ -1,6 +1,7 @@
+// Fork https://github.com/LingDong-/hfmath 并进行大量扩展
 
-import {HERSHEY} from './hershey'
-import {SYMB, asciiMap, type Symb} from './symbols'
+import { HERSHEY } from './hershey'
+import { SYMB, asciiMap } from './symbols'
 
 const CONFIG : Record<string, number> = {
   SUB_SUP_SCALE: 0.75,
@@ -11,54 +12,14 @@ const CONFIG : Record<string, number> = {
 }
 
 function tokenize(str:string):string[] {
-  str = str.replace(/\n/g, ' ')
-  let i:number = 0
-  const tokens:string[] = []
-  let curr:string = ''
-  while (i < str.length) {
-    if (str[i] === ' ') {
-      if (curr.length) {
-        tokens.push(curr)
-        curr = ''
-      }
-    }
-    else if (str[i] === '\\') {
-      if (curr.length === 1 && curr[0] === '\\') {
-        curr += str[i]
-        tokens.push(curr)
-        curr = ''
-      }
-      else {
-        if (curr.length) {
-          tokens.push(curr)
-        }
-        curr = str[i]
-      }
-    }
-    else if (/[A-Za-z0-9\.]/.test(str[i])) {
-      curr += str[i]
-    
-    }
-    else {
-      if (curr.length && curr !== '\\') {
-        tokens.push(curr)
-        curr = ''
-      }
-      curr += str[i]
-      tokens.push(curr)
-      curr = ''
-    }
-    i++
-  }
-  if (curr.length) tokens.push(curr)
-  // console.log(tokens);
-  return tokens
+  // TeX control words contain letters only; a following digit is an argument.
+  return str.match(/\\[A-Za-z]+|\\[^\r\n]|[A-Za-z0-9.]+|[^\s]/g) ?? []
 }
-interface Bbox{
+interface Bbox {
   x:number, y:number, w:number, h:number
 }
 
-interface ParsedExpr{
+interface ParsedExpr {
   type:string;
   text:string;
   mode:string;
@@ -73,125 +34,79 @@ function parseAtom(x:string):ParsedExpr {
   return {type: SYMB[x] ? 'symb' : 'char', mode: 'math', text: x, chld: [], bbox: null}
 }
 function parse(tokens:string[]):ParsedExpr {
-  let i:number = 0
-  let expr:ParsedExpr = {
-    type: 'node', text: '', mode: 'math', chld: [], bbox: null
+  const input = tokens.slice()
+  let i = 0
+  function empty():ParsedExpr {
+    return {type: 'node', text: '', mode: 'math', chld: [], bbox: null}
   }
-  function takeOpt() : ParsedExpr | null {
-    if (tokens[i] !== '[') {
-      return null
+  function delimited(open:string, close:string):ParsedExpr {
+    const start = ++i
+    let depth = 1
+    let braces = 0
+    while (i < input.length) {
+      const token = input[i]
+      // Braces protect a closing bracket inside an optional root index.
+      if (open === '[' && token === '{') braces++
+      if (open === '[' && token === '}') braces--
+      if (!braces && token === open) depth++
+      if (!braces && token === close && --depth === 0) break
+      i++
     }
-    let lvl : number = 0
-    let j = i
-    while (j < tokens.length) {
-      if (tokens[j] === '[') {
-        lvl++
-      }
-      else if (tokens[j] === ']') {
-        lvl--
-        if (!lvl) {
-          break
-        }
-      }
-      j++
-    }
-    const ret = parse(tokens.slice(i + 1, j))
-    i = j
-    return ret
+    const result = parse(input.slice(start, i))
+    if (i < input.length) i++
+    return result
   }
-  function takeN(n:number) : ParsedExpr[] {
-    let j : number = i
-    let j0 : number = j
-    let lvl : number = 0
-    let cnt : number = 0
-    const ret : ParsedExpr[] = []
-    while (j < tokens.length) {
-      if (tokens[j] === '{') {
-        if (!lvl) {
-          j0 = j
-        }
-        lvl ++
-      }
-      else if (tokens[j] === '}') {
-        lvl --
-        if (!lvl) {
-          ret.push(parse(tokens.slice(j0 + 1, j)))
-          cnt ++
-          if (cnt === n) {
-            break
-          }
-        }
-      }
-      else {
-        if (lvl === 0) {
-          ret.push(parseAtom(tokens[j]))
-          cnt ++
-          if (cnt === n) {
-            break
-          }
-        }
-      }
-      j ++
+  function atom(argument = false):ParsedExpr {
+    if (i >= input.length || (argument && input[i] === '}')) return empty()
+    if (input[i] === '{') {
+      const child = delimited('{', '}')
+      if (argument) return child
+      return {...empty(), chld: [child]}
     }
-    i = j
-    return ret
+    let token = input[i++]
+    if (argument && /^[A-Za-z0-9.]{2,}$/.test(token)) {
+      input.splice(i, 0, token.slice(1))
+      token = token[0]
+    }
+    if (token === '\\operatorname' && input[i] === '*') {
+      token += input[i++]
+    }
+    const expr = parseAtom(token)
+    const symbol = SYMB[token]
+    if (symbol?.arity) {
+      expr.type = 'func'
+      const optional = symbol.flags.opt && input[i] === '[' ? delimited('[', ']') : null
+      for (let n = 0; n < symbol.arity; n++) expr.chld.push(atom(true))
+      if (optional) expr.chld.push(optional)
+    }
+    return expr
   }
-  for (i = 0 ; i < tokens.length; i++) {
-    const s : Symb = SYMB[tokens[i]]
-    const e : ParsedExpr = {
-      type: '', text: tokens[i], mode: 'math', chld: [], bbox: null
-    }
-    if (s) {
-      if (s.arity) {
-        i++
-        e.type = 'func'
-        let opt : ParsedExpr | null = null
-        if (s.flags.opt) {
-          opt = takeOpt()
-          if (opt) i++
-        }
-        const chld : ParsedExpr[] = takeN(s.arity)
-        e.chld = chld
-        if (opt) {
-          e.chld.push(opt)
-        }
-      }
-      else {
-        e.type = 'symb'
-      }
-    }
-    else {
-      if (tokens[i] === '{') {
-        e.type = 'node'
-        e.text = ''
-        e.chld = takeN(1)
-      }
-      else {
-        e.type = 'char'
-      }
-    }
-    expr.chld.push(e)
-  }
-  if (expr.chld.length === 1) {
-    expr = expr.chld[0]
-  }
-  return expr
+  const expr = empty()
+  while (i < input.length) expr.chld.push(atom())
+  return expr.chld.length === 1 ? expr.chld[0] : expr
 }
 function environments(exprs:ParsedExpr[]) {
   let i = 0
   while (i < exprs.length) {
     if (exprs[i].text === '\\begin') {
-      let j : number
-      for (j = i; j < exprs.length; j++) {
-        if (exprs[j].text === '\\end') {
-          break
-        }
+      let j = i + 1
+      let depth = 1
+      for (; j < exprs.length; j++) {
+        if (exprs[j].text === '\\begin') depth++
+        if (exprs[j].text === '\\end' && --depth === 0) break
+      }
+      if (j === exprs.length) {
+        i++
+        continue
       }
       const es : ParsedExpr[] = exprs.splice(i + 1, j - (i + 1))
       environments(es)
       exprs[i].text = exprs[i].chld[0].text
       exprs[i].chld = es
       exprs.splice(i + 1, 1)
+    }
+    else {
+      environments(exprs[i].chld)
     }
     i++
   }
@@ -228,7 +143,7 @@ function computeBbox(exprs:Expr[]) :Bbox {
     xmax = Math.max(xmax, exprs[i].bbox.x + exprs[i].bbox.w)
     ymax = Math.max(ymax, exprs[i].bbox.y + exprs[i].bbox.h)
   }
-  return {x: xmin, y: ymin, w: xmax - xmin, h: ymax - ymin}
+  return xmin === Infinity ? {x: 0, y: 0, w: 0, h: 0} : {x: xmin, y: ymin, w: xmax - xmin, h: ymax - ymin}
 }
 
 function group(exprs:Expr[]): Expr | null {
@@ -270,7 +185,7 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
         if (SYMB[exprs[j].text] && SYMB[exprs[j].text].flags.big) {
           exprs[i].bbox.y = h - exprs[i].bbox.h
         }
-        else if (exprs[j].text === '\\int') {
+        else if (SYMB[exprs[j].text]?.flags.integral) {
           exprs[i].bbox.y = h
         }
         else {
@@ -290,7 +205,7 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
       if (SYMB[exprs[j].text] && SYMB[exprs[j].text].flags.big) {
         exprs[i].bbox.y = h
       }
-      else if (exprs[j].text === '\\int') {
+      else if (SYMB[exprs[j].text]?.flags.integral) {
         exprs[i].bbox.y = h - exprs[i].bbox.h
       }
       else {
@@ -477,6 +392,8 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
   const expr = source as Expr
   const tmd : string = {
     '\\text': 'text',
+    '\\operatorname': 'rm',
+    '\\operatorname*': 'rm',
     '\\mathnormal': 'math',
     '\\mathrm': 'rm',
     '\\mathit': 'it',
@@ -502,28 +419,22 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
 
   if (!expr.chld.length) {
     if (SYMB[expr.text]) {
-      if (SYMB[expr.text].flags.big) {
-        if (expr.text === '\\lim') {
-          expr.bbox = {x: 0, y: 0, w: 3.5, h: 2}
-        }
-        else {
-          expr.bbox = {x: 0, y: -0.5, w: 3, h: 3}
-        }
-        
-      }
-      else if (SYMB[expr.text].flags.txt) {
+      if (SYMB[expr.text].flags.txt) {
         let w = 0
-        for (let i = 1; i < expr.text.length; i++) {
-          
-          w += HERSHEY(asciiMap(expr.text[i], 'text'))!.w
+        const text = SYMB[expr.text].text ?? expr.text.slice(1)
+        for (const char of text) {
+          w += char === ' ' ? 8 : HERSHEY(asciiMap(char, 'text'))!.w
         }
         w /= 16
-        expr.bbox = {x: 0, y: 0, w: w, h: 2}
+        expr.bbox = {x: 0, y: 0, w: expr.text === '\\lim' ? 3.5 : w, h: 2}
+      }
+      else if (SYMB[expr.text].flags.big) {
+        expr.bbox = {x: 0, y: -0.5, w: 3, h: 3}
       }
       else if (SYMB[expr.text].glyph) {
         let w = HERSHEY(SYMB[expr.text].glyph)!.w
         w /= 16
-        if (expr.text === '\\int' || expr.text === '\\oint') {
+        if (SYMB[expr.text].flags.integral) {
           expr.bbox = {x: 0, y: -1.5, w: w, h: 5}
         }
         else {
@@ -558,12 +469,12 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
     
     return
   }
-  if (expr.text === '\\frac') {
+  if (SYMB[expr.text]?.flags.frac) {
     const a :Expr = expr.chld[0]
     const b :Expr = expr.chld[1]
-    const s :number = CONFIG.FRAC_SCALE
-    plan(a)
-    plan(b)
+    const s = expr.text === '\\dfrac' ? 1 : expr.text === '\\tfrac' ? 0.65 : CONFIG.FRAC_SCALE
+    plan(a, tmd)
+    plan(b, tmd)
     a.bbox.x = 0
     a.bbox.y = 0
     b.bbox.x = 0
@@ -573,23 +484,59 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
     transform(b, s, null, (mw - b.bbox.w * s) / 2, a.bbox.h + CONFIG.FRAC_SPACING)
     expr.bbox = {x: 0, y: -a.bbox.h + 1 - CONFIG.FRAC_SPACING / 2, w: mw, h: a.bbox.h + b.bbox.h + CONFIG.FRAC_SPACING}
   }
-  else if (expr.text === '\\binom') {
+  else if (SYMB[expr.text]?.flags.binom) {
     const a :Expr = expr.chld[0]
     const b :Expr = expr.chld[1]
-    plan(a)
-    plan(b)
+    const s = expr.text === '\\tbinom' ? 0.7 : 1
+    plan(a, tmd)
+    plan(b, tmd)
     a.bbox.x = 0
     a.bbox.y = 0
     b.bbox.x = 0
     b.bbox.y = 0
-    const mw :number = Math.max(a.bbox.w, b.bbox.w)
-    transform(a, 1, null, (mw - a.bbox.w) / 2 + 1, 0)
-    transform(b, 1, null, (mw - b.bbox.w) / 2 + 1, a.bbox.h)
-    expr.bbox = {x: 0, y: -a.bbox.h + 1, w: mw + 2, h: a.bbox.h + b.bbox.h}
+    const mw = Math.max(a.bbox.w, b.bbox.w) * s
+    transform(a, s, null, (mw - a.bbox.w * s) / 2 + s, 0)
+    transform(b, s, null, (mw - b.bbox.w * s) / 2 + s, a.bbox.h)
+    expr.bbox = {x: 0, y: -a.bbox.h + 1, w: mw + 2 * s, h: a.bbox.h + b.bbox.h}
+  }
+  else if (SYMB[expr.text]?.flags.above || SYMB[expr.text]?.flags.below) {
+    const [label, base] = expr.chld
+    plan(label, tmd)
+    plan(base, tmd)
+    transform(label, CONFIG.SUB_SUP_SCALE, null, 0, 0)
+    const above = SYMB[expr.text].flags.above
+    const gap = 0.2
+    const width = Math.max(label.bbox.w, base.bbox.w)
+    const baseY = base.bbox.y
+    label.bbox.x = (width - label.bbox.w) / 2
+    base.bbox.x = (width - base.bbox.w) / 2
+    label.bbox.y = above ? 0 : base.bbox.h + gap
+    base.bbox.y = above ? label.bbox.h + gap : 0
+    expr.bbox = {x: 0, y: baseY - base.bbox.y, w: width, h: base.bbox.h + label.bbox.h + gap}
+    expr.type = 'node'
+  }
+  else if (SYMB[expr.text]?.size) {
+    const child = expr.chld[0]
+    const size = SYMB[expr.text].size!
+    plan(child, tmd)
+    // Delimiter variants change height around the math axis without widening the glyph.
+    transform(child, 1, size, 0, 0)
+    child.bbox.y = 0
+    expr.bbox = {x: 0, y: 1 - child.bbox.h / 2, w: child.bbox.w, h: child.bbox.h}
+    expr.type = 'node'
+  }
+  else if (expr.text === '\\boxed') {
+    const child = expr.chld[0]
+    plan(child, tmd)
+    const padding = 0.3
+    const childY = child.bbox.y
+    child.bbox.x = padding
+    child.bbox.y = padding
+    expr.bbox = {x: 0, y: childY - padding, w: child.bbox.w + 2 * padding, h: child.bbox.h + 2 * padding}
   }
   else if (expr.text === '\\sqrt') {
     const e :Expr = expr.chld[0]
-    plan(e)
+    plan(e, tmd)
     const f :Expr = expr.chld[1]
     let pl:number = 0
     if (f) {
@@ -603,7 +550,8 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
   }
   else if (SYMB[expr.text] && SYMB[expr.text].flags.hat) {
     const e :Expr = expr.chld[0]
-    plan(e)
+    const localAccent = ['\\dot', '\\ddot', '\\check', '\\mathring', '\\widetilde', '\\overleftrightarrow'].includes(expr.text)
+    plan(e, localAccent ? tmd : 'math')
     const y0 = e.bbox.y - 0.5
     e.bbox.y = 0.5
     expr.bbox = {x: 0, y: y0, w: e.bbox.w, h: e.bbox.h + 0.5}
@@ -616,6 +564,7 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
 
   }
   else {
+    if (expr.text === '\\operatorname' || expr.text === '\\operatorname*') expr.type = 'node'
     let dx :number = 0
     let dy :number = 0
     let mh :number = 1
@@ -644,6 +593,12 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
         continue
       }
       else {
+        if (c.text === '\\dots') {
+          const before = expr.chld[i - 1]?.text ?? ''
+          const after = expr.chld[i + 1]?.text ?? ''
+          const centered = /^(?:[+*=<>-]|\\(?:cdot|times|div|pm|mp|otimes|oplus|odot|ominus|oslash|cup|cap|uplus|land|lor|wedge|vee|leq?|geq?|neq?|approx|sim|simeq|equiv|cong|ll|gg|prec|succ|preceq|succeq|subset|supset|subseteq|supseteq))$/
+          c.text = before === ',' || after === ',' ? '\\ldots' : centered.test(before) || centered.test(after) ? '\\cdots' : '\\ldots'
+        }
         plan(c, tmd)
         transform(c, 1, null, dx, dy)
         if (c.text === '^' || c.text === '_' || c.text === "'") {
@@ -746,7 +701,7 @@ function flatten(expr:Expr) {
     if (expr.bbox) {
       dx += expr.bbox.x
       dy += expr.bbox.y
-      if (expr.text === '\\frac') {
+      if (SYMB[expr.text]?.flags.frac) {
         const h : number = expr.chld[1].bbox.y - (expr.chld[0].bbox.y + expr.chld[0].bbox.h)
         const e : Expr = {
           type: 'symb',
@@ -788,7 +743,7 @@ function flatten(expr:Expr) {
           }, chld: [],
         })
       }
-      else if (expr.text === '\\binom') {
+      else if (SYMB[expr.text]?.flags.binom) {
         const w = Math.min(expr.chld[0].bbox.x, expr.chld[1].bbox.x)
         const e : Expr = {
           type: 'symb',
@@ -925,11 +880,16 @@ function render(expr:Expr):number[][][] {
     else if ((SYMB[e.text] && SYMB[e.text].flags.txt) || ( e.type === 'char' )) {
       let x0 = e.bbox.x
       const isVerb = !!(SYMB[e.text] && SYMB[e.text].flags.txt)
-      for (let n = Number(isVerb); n < e.text.length; n++) {
-        const d = HERSHEY(asciiMap(e.text[n], isVerb ? 'text' : e.mode))
+      const text = isVerb ? SYMB[e.text].text ?? e.text.slice(1) : e.text
+      for (let n = 0; n < text.length; n++) {
+        if (isVerb && text[n] === ' ') {
+          x0 += 0.5 * s
+          continue
+        }
+        const d = HERSHEY(asciiMap(text[n], isVerb ? 'text' : e.mode))
         if (!d) {
           // eslint-disable-next-line no-console -- Preserve upstream diagnostics for unsupported glyphs.
-          console.warn('unmapped character: ' + e.text[n])
+          console.warn('unmapped character: ' + text[n])
           continue
         }
         for (let j = 0; j < d.polylines.length; j++) {
@@ -971,7 +931,7 @@ function render(expr:Expr):number[][][] {
   return o
 }
 
-interface ExportOpt{
+interface ExportOpt {
   MIN_CHAR_H?:number;
   MAX_W?:number;
   MAX_H?:number;

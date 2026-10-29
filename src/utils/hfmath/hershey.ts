@@ -13,9 +13,99 @@ const ordR = 'R'.charCodeAt(0)
 export function HERSHEY(i:number | undefined):HersheyEntry | undefined {
   if (i === undefined) return
   if ((data[i] === null || data[i] === undefined)) {
-    compile(i)
+    const extended = extensions[i]?.()
+    if (extended) {
+      const points = extended.polylines.flat()
+      data[i] = {
+        ...extended,
+        xmin: Math.min(...points.map(([x]) => x)),
+        xmax: Math.max(...points.map(([x]) => x)),
+        ymin: Math.min(...points.map(([, y]) => y)),
+        ymax: Math.max(...points.map(([, y]) => y)),
+      }
+    }
+    else {
+      compile(i)
+    }
   }
   return data[i]
+}
+
+// Additional symbols reuse the original strokes and are compiled only when requested.
+function strokes(id:number, dx = 0, dy = 0, sx = 1, sy = 1):number[][][] {
+  return HERSHEY(id)!.polylines.map(line => line.map(([x, y]) => [x * sx + dx, y * sy + dy]))
+}
+function negated(id:number):Pick<HersheyEntry, 'w' | 'polylines'> {
+  const glyph = HERSHEY(id)!
+  return {w: glyph.w, polylines: [...strokes(id), [[glyph.w * 0.25, 12], [glyph.w * 0.75, -14]]]}
+}
+function multipleIntegral(count:number):Pick<HersheyEntry, 'w' | 'polylines'> {
+  return {w: 30 + (count - 1) * 16, polylines: Array.from({length: count}, (_, i) => strokes(2412, i * 16)).flat()}
+}
+function ellipsis(offsets:number[][], width:number):Pick<HersheyEntry, 'w' | 'polylines'> {
+  return {w: width, polylines: offsets.flatMap(([x, y]) => strokes(2236, x, y))}
+}
+function circled(lines:number[][][]):Pick<HersheyEntry, 'w' | 'polylines'> {
+  return {w: 20, polylines: [strokes(1284)[0], ...lines]}
+}
+const doubleArrow = [
+  [[4, -2], [20, -2]], [[4, 2], [20, 2]], [[14, -8], [22, 0], [14, 8]],
+]
+const extensions:Record<number, () => Pick<HersheyEntry, 'w' | 'polylines'>> = {
+  5000: () => ({w: 20, polylines: strokes(2027, 0, -3, 1, -1)}), // forall
+  5001: () => negated(2279), // nexists
+  5002: () => negated(2260), // notin
+  5003: () => ({w: 24, polylines: strokes(2260, 24, 0, -1)}), // ni
+  5004: () => negated(2015), // emptyset
+  5005: () => ({w: 24, polylines: [...strokes(2256), [[4, 12], [20, 12]]]}), // subseteq
+  5006: () => ({w: 24, polylines: [...strokes(2258), [[4, 12], [20, 12]]]}), // supseteq
+  5007: () => negated(5005), // nsubseteq
+  5008: () => negated(5006), // nsupseteq
+  5009: () => ({w: 24, polylines: [[[4, 8], [12, -9], [20, 8]]]}), // land
+  5010: () => ({w: 24, polylines: [[[4, -9], [12, 8], [20, -9]]]}), // lor
+  5011: () => ({w: 24, polylines: [...strokes(2246, 0, -4), ...strokes(2246, 0, 4)]}), // approx
+  5012: () => ({w: 24, polylines: [...strokes(2246, 0, -4), [[3, 6], [21, 6]]]}), // simeq
+  5013: () => ({w: 24, polylines: [[[3, -3], [21, -3], [21, 6]]]}), // neg
+  5014: () => ({w: 18, polylines: [[[5, -10], [13, 10]]]}), // setminus
+  5015: () => ({w: 26, polylines: [...strokes(2261), ...strokes(2263)]}), // leftrightarrow
+  5016: () => ({w: 26, polylines: doubleArrow}), // Rightarrow
+  5017: () => ({w: 26, polylines: doubleArrow.map(line => line.map(([x, y]) => [26 - x, y]))}), // Leftarrow
+  5018: () => ({w: 26, polylines: [...doubleArrow, [[12, -8], [4, 0], [12, 8]]]}), // Leftrightarrow
+  5019: () => ({w: 26, polylines: [...strokes(2261), [[4, -8], [4, 8]]]}), // mapsto
+  5020: () => multipleIntegral(2),
+  5021: () => multipleIntegral(3),
+  5022: () => multipleIntegral(4),
+  5030: () => ellipsis([[0, 8], [10, 8], [20, 8]], 30), // ldots
+  5031: () => ellipsis([[0, 0], [10, 0], [20, 0]], 30), // cdots
+  5032: () => ellipsis([[0, -8], [0, 0], [0, 8]], 10), // vdots
+  5033: () => ellipsis([[0, -8], [10, 0], [20, 8]], 30), // ddots
+  5034: () => ellipsis([[-1, 0], [7, 0]], 16), // ddot
+  5035: () => circled([[[5, -5], [15, 5]], [[5, 5], [15, -5]]]), // otimes
+  5036: () => circled([[[3, 0], [17, 0]]]), // ominus
+  5037: () => circled([[[5, 5], [15, -5]]]), // oslash
+  5038: () => ({w: 24, polylines: [...strokes(2257), [[12, -6], [12, 2]], [[8, -2], [16, -2]]]}), // uplus
+  5039: () => ({w: 18, polylines: [[[8, -10], [4, 10]], [[14, -10], [10, 10]]]}), // parallel
+  5040: () => ({w: 18, polylines: [...strokes(5039), [[1, 9], [17, -9]]]}), // nparallel
+  5041: () => ({w: 16, polylines: [...strokes(2229, 4), [[2, 9], [14, -9]]]}), // nmid
+  5042: () => ({w: 32, polylines: [...strokes(2241, 0, 0, 0.75), ...strokes(2241, 12, 0, 0.75)]}), // ll
+  5043: () => ({w: 32, polylines: [...strokes(2242, 0, 0, 0.75), ...strokes(2242, 12, 0, 0.75)]}), // gg
+  5044: () => ({w: 24, polylines: [...strokes(2246, 0, -6), [[3, 3], [21, 3]], [[3, 9], [21, 9]]]}), // cong
+  5045: () => ({w: 24, polylines: [strokes(2257, 0, -5, 1, 0.3)[0].slice(1, -1), strokes(2259, 0, 5, 1, 0.3)[0].slice(1, -1)]}), // asymp
+  5046: () => ({w: 24, polylines: [[[20, -9], [16, -8], [11, -6], [7, -3], [4, 0], [7, 3], [11, 6], [16, 8], [20, 9]]]}), // prec
+  5047: () => ({w: 24, polylines: strokes(5046, 24, 0, -1)}), // succ
+  5048: () => ({w: 24, polylines: [...strokes(5046, 0, -2, 1, 0.8), [[4, 10], [20, 10]]]}), // preceq
+  5049: () => ({w: 24, polylines: strokes(5048, 24, 0, -1)}), // succeq
+  5050: () => ({w: 16, polylines: [[[0, -16], [16, -16], [16, 16], [0, 16], [0, -16]]]}), // boxed
+  5051: () => ({w: 14, polylines: [[[4, -16], [4, 16], [12, 16]]]}), // lfloor
+  5052: () => ({w: 14, polylines: [[[10, -16], [10, 16], [2, 16]]]}), // rfloor
+  5053: () => ({w: 14, polylines: [[[4, 16], [4, -16], [12, -16]]]}), // lceil
+  5054: () => ({w: 14, polylines: [[[10, 16], [10, -16], [2, -16]]]}), // rceil
+  5055: () => ({w: 22, polylines: strokes(2220, 22, 0, -1)}), // backslash
+  5056: () => ({w: 24, polylines: [[[4, -10], [4, 10]], [[4, 0], [21, 0]]]}), // vdash
+  5057: () => ({w: 24, polylines: strokes(5056, 24, 0, -1)}), // dashv
+  5058: () => ({w: 24, polylines: [[[4, -10], [4, 10]], [[4, -3], [21, -3]], [[4, 3], [21, 3]]]}), // models
+  5059: () => ({w: 22, polylines: strokes(2247, 0, 0, 1, -1)}), // check
+  5060: () => ({w: 12, polylines: strokes(902, 3.5, 0, 0.5, 0.5)}), // mathring
 }
 
 function compile(i:number) : void {
