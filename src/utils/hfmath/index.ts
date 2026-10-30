@@ -2,6 +2,7 @@
 
 import { HERSHEY } from './hershey'
 import { SYMB, asciiMap } from './symbols'
+import { stretch } from './stretch'
 
 const CONFIG : Record<string, number> = {
   SUB_SUP_SCALE: 0.75,
@@ -10,6 +11,16 @@ const CONFIG : Record<string, number> = {
   LINE_SPACING: 0.5,
   FRAC_SPACING: 0.4,
 }
+
+const MATRIX_DELIMITERS = new Map<string, string[]>([
+  ['matrix', []],
+  ['bmatrix', ['[', ']']],
+  ['pmatrix', ['(', ')']],
+  ['Bmatrix', ['\\{', '\\}']],
+  ['vmatrix', ['\\lvert', '\\rvert']],
+  ['Vmatrix', ['\\lVert', '\\rVert']],
+  ['cases', ['\\{']],
+])
 
 function tokenize(str:string):string[] {
   // TeX control words contain letters only; a following digit is an argument.
@@ -25,6 +36,7 @@ interface ParsedExpr {
   mode:string;
   chld:ParsedExpr[];
   bbox:Bbox | null;
+  columns?:string;
 }
 interface Expr extends ParsedExpr {
   chld:Expr[];
@@ -78,6 +90,18 @@ function parse(tokens:string[]):ParsedExpr {
       const optional = symbol.flags.opt && input[i] === '[' ? delimited('[', ']') : null
       for (let n = 0; n < symbol.arity; n++) expr.chld.push(atom(true))
       if (optional) expr.chld.push(optional)
+    }
+    if (token === '\\begin' && expr.chld[0]?.text === 'array' && input[i] === '{') {
+      let end = i + 1
+      while (end < input.length && /^[lcr]+$/.test(input[end])) end++
+      if (end > i + 1 && input[end] === '}') {
+        expr.columns = input.slice(i + 1, end).join('')
+        i = end + 1
+      }
+    }
+    // Brace annotations are limits of the whole group, not scripts of its last character.
+    if (symbol?.flags.brace) {
+      while (input[i] === '^' || input[i] === '_') expr.chld.push(atom())
     }
     return expr
   }
@@ -284,10 +308,8 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
       cell = []
     }
     else if (exprs[i].text === '\\\\') {
-      if (cell.length) {
-        row.push(cell)
-        cell = []
-      }
+      row.push(cell)
+      cell = []
       rows.push(row)
       row = []
     }
@@ -295,7 +317,7 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
       cell.push(exprs[i])
     }
   }
-  if (cell.length) {
+  if (cell.length || row.length) {
     row.push(cell)
   }
   if (row.length) {
@@ -304,16 +326,18 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
 
 
   const colws : number[] = []
-  const erows : (Expr | null)[][] = []
+  const erows : Expr[][] = []
   for (let i = 0; i < rows.length; i++) {
-    const erow : (Expr | null)[] = []
-    for (let j = 0; j < rows[i].length; j++) {
-      const e = group(rows[i][j])
-
-      if (e) {
-        colws[j] = colws[j] || 0
-        colws[j] = Math.max(e.bbox.w + 1, colws[j])
+    const erow : Expr[] = []
+    const cells = rows[i].map(group)
+    const rowY = cells.reduce((y, cell) => cell ? Math.min(y, cell.bbox.y) : y, Infinity)
+    for (let j = 0; j < cells.length; j++) {
+      // Empty cells still occupy a row and column, without drawing a placeholder.
+      const e = cells[j] ?? {
+        type: 'node', text: '', mode: 'math', chld: [],
+        bbox: {x: 0, y: Number.isFinite(rowY) ? rowY : 0, w: 0, h: 2},
       }
+      colws[j] = Math.max(e.bbox.w + 1, colws[j] ?? 0)
       erow[j] = e
     }
     erows.push(erow)
@@ -326,9 +350,6 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
     let ymax = -Infinity
     for (let j = 0; j < erows[i].length; j++) {
       const e = erows[i][j]
-      if (!e) {
-        continue
-      }
       ymin = Math.min(ymin, e.bbox.y)
       ymax = Math.max(ymax, e.bbox.y + e.bbox.h)
     }
@@ -336,7 +357,7 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
   }
 
   for (let i = 0; i < ybds.length; i++) {
-    if (ybds[i][0] === Infinity || ybds[i][1] === Infinity) {
+    if (!Number.isFinite(ybds[i][0]) || !Number.isFinite(ybds[i][1])) {
       ybds[i][0] = i === 0 ? 0 : ybds[i - 1][1]
       ybds[i][1] = ybds[i][0] + 2
     }
@@ -346,9 +367,7 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
     const shft = ybds[i - 1][1] - ybds[i][0] + CONFIG.LINE_SPACING
     for (let j = 0; j < erows[i].length; j++) {
       const e = erows[i][j]
-      if (e) {
-        e.bbox.y += shft
-      }
+      e.bbox.y += shft
     }
     ybds[i][0] += shft
     ybds[i][1] += shft
@@ -360,10 +379,6 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
     let dx :number = 0
     for (let j = 0; j < erows[i].length; j++) {
       const e = erows[i][j]
-      if (!e) {
-        dx += (colws[j])
-        continue
-      }
       e.bbox.x += dx
       dx += (colws[j] - e.bbox.w)
       // e.bbox.w = colws[j];
@@ -387,7 +402,149 @@ function align(exprs:Expr[], alignment:string = 'center'):void {
   
 }
 
-function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
+function planLabel(label:Expr | undefined, mode:string) {
+  if (!label) return
+  plan(label, mode)
+  transform(label, CONFIG.SUB_SUP_SCALE, null, 0, 0)
+  if (!label.bbox.w) label.bbox.h = 0
+}
+
+function planGroup(expr:Expr, mode:string) {
+  const body = expr.chld[0]
+  const upper = expr.chld.slice(1).find(child => child.text === '^')
+  const lower = expr.chld.slice(1).find(child => child.text === '_')
+  plan(body, mode)
+  planLabel(upper, mode)
+  planLabel(lower, mode)
+  const bodyY = body.bbox.y
+  const gap = 0.2
+  const height = SYMB[expr.text].flags.brace ? 0.65 : 0.45
+  const decorationWidth = Math.max(body.bbox.w, 1.2)
+  const width = Math.max(decorationWidth, upper?.bbox.w ?? 0, lower?.bbox.w ?? 0)
+  const above = !SYMB[expr.text].flags.under
+  const top = upper?.bbox.h ? upper.bbox.h + gap : 0
+  const bottom = lower?.bbox.h ? lower.bbox.h + gap : 0
+  const blockHeight = body.bbox.h + height + gap
+  const decoration:Expr = {
+    type: 'stretch', text: expr.text, mode, chld: [],
+    bbox: {
+      x: (width - decorationWidth) / 2, y: top + (above ? 0 : body.bbox.h + gap),
+      w: decorationWidth, h: height,
+    },
+  }
+  body.bbox.x = (width - body.bbox.w) / 2
+  body.bbox.y = top + (above ? height + gap : 0)
+  if (upper) {
+    upper.bbox.x = (width - upper.bbox.w) / 2
+    upper.bbox.y = 0
+  }
+  if (lower) {
+    lower.bbox.x = (width - lower.bbox.w) / 2
+    lower.bbox.y = top + blockHeight + gap
+  }
+  expr.bbox = {x: 0, y: bodyY - body.bbox.y, w: width, h: top + blockHeight + bottom}
+  expr.type = 'node'
+  expr.chld = [decoration, body, ...[upper, lower].filter((label):label is Expr => !!label)]
+}
+
+function planArrow(expr:Expr, mode:string) {
+  const [upper, lower] = expr.chld
+  planLabel(upper, mode)
+  planLabel(lower, mode)
+  const gap = 0.2
+  const side = 0.25
+  const height = 0.6
+  const arrowTop = 1 - height / 2
+  const width = Math.max(3, Math.max(upper?.bbox.w ?? 0, lower?.bbox.w ?? 0) + 1)
+  const top = Math.min(0, upper?.bbox.h ? arrowTop - gap - upper.bbox.h : 0)
+  const bottom = Math.max(2, lower?.bbox.h ? arrowTop + height + gap + lower.bbox.h : 2)
+  const arrow:Expr = {
+    type: 'stretch', text: expr.text, mode, chld: [],
+    bbox: {x: side, y: arrowTop - top, w: width, h: height},
+  }
+  if (upper) {
+    upper.bbox.x = side + (width - upper.bbox.w) / 2
+    upper.bbox.y = arrowTop - gap - upper.bbox.h - top
+  }
+  if (lower) {
+    lower.bbox.x = side + (width - lower.bbox.w) / 2
+    lower.bbox.y = arrowTop + height + gap - top
+  }
+  expr.bbox = {x: 0, y: top, w: width + 2 * side, h: bottom - top}
+  expr.type = 'node'
+  expr.chld = [arrow, ...[upper, lower].filter((label):label is Expr => !!label)]
+}
+
+function isGrid(expr:ParsedExpr):boolean {
+  return (expr.text === 'gathered' && expr.type !== 'char') || (expr.text === 'array' && !!expr.columns)
+}
+
+function planGrid(expr:Expr, mode:string) {
+  const gathered = expr.text === 'gathered'
+  const rows:ParsedExpr[][][] = []
+  let row:ParsedExpr[][] = [[]]
+  let pending = false
+  for (const child of expr.chld) {
+    if (child.text === '\\\\') {
+      rows.push(row)
+      row = [[]]
+      pending = false
+    }
+    else if (child.text === '&') {
+      if (!gathered) {
+        row.push([])
+        pending = true
+      }
+    }
+    else {
+      row[row.length - 1].push(child)
+      pending = true
+    }
+  }
+  if (pending || !rows.length) rows.push(row)
+
+  const columnCount = rows.reduce((count, cells) => Math.max(count, cells.length), expr.columns?.length ?? 1)
+  const widths:number[] = Array(columnCount).fill(0)
+  const cells = rows.map(contents => Array.from({length: columnCount}, (_, column) => {
+    const cell:ParsedExpr = {type: 'node', text: '', mode, chld: contents[column] ?? [], bbox: null}
+    // Keep each cell's offset from the math baseline when normalizing its children.
+    plan(cell, mode, true)
+    widths[column] = Math.max(widths[column], cell.bbox.w)
+    return cell
+  }))
+
+  const columnGap = 1
+  const width = widths.reduce((sum, value) => sum + value, 0) + columnGap * (columnCount - 1)
+  let y = 0
+  for (const cellsInRow of cells) {
+    let top = 0
+    let bottom = 2
+    for (const cell of cellsInRow) {
+      top = Math.min(top, cell.bbox.y)
+      bottom = Math.max(bottom, cell.bbox.y + cell.bbox.h)
+    }
+    let x = 0
+    for (let column = 0; column < columnCount; column++) {
+      const cell = cellsInRow[column]
+      const alignment = gathered ? 'c' : expr.columns?.[column] ?? 'l'
+      const remaining = widths[column] - cell.bbox.w
+      cell.bbox.x = x + (alignment === 'r' ? remaining : alignment === 'c' ? remaining / 2 : 0)
+      cell.bbox.y += y - top
+      x += widths[column] + columnGap
+    }
+    y += bottom - top + CONFIG.LINE_SPACING
+  }
+  const height = y - CONFIG.LINE_SPACING
+  expr.bbox = {x: 0, y: (2 - height) / 2, w: width, h: height}
+  expr.type = 'node'
+  expr.chld = cells.flat()
+}
+
+function plan(source:ParsedExpr, mode:string = 'math', preserveBaseline = false):asserts source is Expr {
+  const delimiters = MATRIX_DELIMITERS.get(source.text)
+  if (delimiters && !source.chld.length) {
+    source.chld.push({type: 'node', text: '', mode: 'math', chld: [], bbox: null})
+  }
   // Layout fills bounding boxes in place and plans children before reading their bounds.
   const expr = source as Expr
   const tmd : string = {
@@ -415,7 +572,10 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
     '\\scr': 'scr',
   }[expr.text] ?? mode
 
-
+  if (isGrid(expr)) {
+    planGrid(expr, tmd)
+    return
+  }
 
   if (!expr.chld.length) {
     if (SYMB[expr.text]) {
@@ -469,7 +629,13 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
     
     return
   }
-  if (SYMB[expr.text]?.flags.frac) {
+  if (SYMB[expr.text]?.flags.group) {
+    planGroup(expr, tmd)
+  }
+  else if (SYMB[expr.text]?.flags.xarrow) {
+    planArrow(expr, tmd)
+  }
+  else if (SYMB[expr.text]?.flags.frac) {
     const a :Expr = expr.chld[0]
     const b :Expr = expr.chld[1]
     const s = expr.text === '\\dfrac' ? 1 : expr.text === '\\tfrac' ? 0.65 : CONFIG.FRAC_SCALE
@@ -544,6 +710,8 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
       pl = Math.max(f.bbox.w * CONFIG.SQRT_MAG_SCALE - 0.5, 0)
       transform(f, CONFIG.SQRT_MAG_SCALE, null, 0, 0.5) 
     }
+    // Place the full box of a new composite below the radical, including upper annotations.
+    if (SYMB[e.text]?.flags.group || SYMB[e.text]?.flags.xarrow || isGrid(e)) e.bbox.y = 0
     transform(e, 1, null, 1 + pl, 0.5)
     expr.bbox = {x: 0, y: 2 - e.bbox.h - 0.5, w: e.bbox.w + 1 + pl, h: e.bbox.h + 0.5}
 
@@ -573,10 +741,17 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
       
       const spac : number | null = {
         '\\quad': 2,
+        '\\qquad': 4,
+        '\\enspace': 1,
+        '\\enskip': 1,
         '\\,': 2 * 3 / 18,
+        '\\thinspace': 2 * 3 / 18,
         '\\:': 2 * 4 / 18,
+        '\\medspace': 2 * 4 / 18,
         '\\;': 2 * 5 / 18,
+        '\\thickspace': 2 * 5 / 18,
         '\\!': 2 * (-3) / 18,
+        '\\negthinspace': 2 * (-3) / 18,
       }[c.text] ?? null
 
       if (c.text === '\\\\') {
@@ -647,23 +822,19 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
       }
     }
     dy += mh
-    const m2s :Record<string, string[]> = {
-      'bmatrix': ['[', ']'],
-      'pmatrix': ['(', ')'],
-      'Bmatrix': ['\\{', '\\}'],
-      'cases': ['\\{']
-    }
     const alt : string = {
       'bmatrix': 'center',
       'pmatrix': 'center',
       'Bmatrix': 'center',
+      'vmatrix': 'center',
+      'Vmatrix': 'center',
       'cases': 'left',
       'matrix': 'center',
       'aligned': 'equation',
     }[expr.text] ?? 'left'
 
-    const hasLp = !!m2s[expr.text]
-    const hasRp = !!m2s[expr.text] && m2s[expr.text].length > 1
+    const hasLp = !!delimiters?.length
+    const hasRp = !!delimiters && delimiters.length > 1
 
     align(expr.chld, alt)
     const bb = computeBbox(expr.chld)
@@ -675,16 +846,16 @@ function plan(source:ParsedExpr, mode:string = 'math'):asserts source is Expr {
     for (let i = 0; i < expr.chld.length; i++) {
       transform(expr.chld[i], 1, null, -bb.x + (hasLp ? 1.5 : 0), -bb.y)
     }
-    expr.bbox = {x: 0, y: 0, w: bb.w + 1.5 * Number(hasLp) + 1.5 * Number(hasRp), h: bb.h}
+    expr.bbox = {x: 0, y: preserveBaseline ? bb.y : 0, w: bb.w + 1.5 * Number(hasLp) + 1.5 * Number(hasRp), h: bb.h}
 
     if (hasLp) {
       expr.chld.unshift({
-        type: 'symb', text: m2s[expr.text][0], mode: expr.mode, chld: [], bbox: {x: 0, y: 0, w: 1, h: bb.h}
+        type: 'symb', text: delimiters![0], mode: expr.mode, chld: [], bbox: {x: 0, y: 0, w: 1, h: bb.h}
       })
     }
     if (hasRp) {
       expr.chld.push({
-        type: 'symb', text: m2s[expr.text][1], mode: expr.mode, chld: [], bbox: {x: bb.w + 2, y: 0, w: 1, h: bb.h}
+        type: 'symb', text: delimiters![1], mode: expr.mode, chld: [], bbox: {x: bb.w + 2, y: 0, w: 1, h: bb.h}
       })
     }
     if (hasLp || hasRp || expr.text === 'matrix') {
@@ -830,6 +1001,13 @@ function render(expr:Expr):number[][][] {
   const o : number[][][] = []
   for (let i = 0; i < expr.chld.length; i++) {
     const e : Expr = expr.chld[i]
+    if (e.type === 'stretch') {
+      const flags = SYMB[e.text].flags
+      const kind = flags.xarrow ? 'arrow' : flags.brace ? 'brace' : 'paren'
+      const lines = stretch(kind, e.bbox.w, e.bbox.h, flags.xarrow ? flags.left : flags.under)
+      for (const line of lines) o.push(line.map(([x, y]) => [x + e.bbox.x, y + e.bbox.y]))
+      continue
+    }
     let s = e.bbox.h / 2
     let isSmallHat : boolean = false
     if (SYMB[e.text] && SYMB[e.text].flags.hat && 
@@ -973,25 +1151,27 @@ export class hfmath {
     let scly : number = opt.SCALE_Y ?? 16
 
     if ((opt.MIN_CHAR_H !== null && opt.MIN_CHAR_H !== undefined)) {
-      let mh = 0
+      let mh = Infinity
       for (let i = 0; i < this._tree.chld.length; i++) {
         const c : Expr = this._tree.chld[i]
         if (c.type === 'char' || 
           (SYMB[c.text] && 
             (SYMB[c.text].flags.txt || !Object.keys(SYMB[c.text].flags).length))) {
-          mh = Math.min(c.bbox.h, mh)
+          if (c.bbox.h > 0) mh = Math.min(c.bbox.h, mh)
         }
       }
-      const s : number = Math.max(1, opt.MIN_CHAR_H / mh)
-      sclx *= s
-      scly *= s
+      if (Number.isFinite(mh) && scly !== 0) {
+        const s : number = Math.max(1, opt.MIN_CHAR_H / (mh * Math.abs(scly)))
+        sclx *= s
+        scly *= s
+      }
     }
-    if ((opt.MAX_W !== null && opt.MAX_W !== undefined)) {
+    if ((opt.MAX_W !== null && opt.MAX_W !== undefined) && this._tree.bbox.w > 0 && sclx !== 0) {
       const s0 = sclx
       sclx = Math.min(sclx, opt.MAX_W / this._tree.bbox.w)
       scly *= (sclx / s0)
     }
-    if ((opt.MAX_H !== null && opt.MAX_H !== undefined)) {
+    if ((opt.MAX_H !== null && opt.MAX_H !== undefined) && this._tree.bbox.h > 0 && scly !== 0) {
       const s0 = scly
       scly = Math.min(scly, opt.MAX_H / this._tree.bbox.h)
       sclx *= (scly / s0)
@@ -1105,8 +1285,6 @@ export class hfmath {
     }
   }
 }
-
-
 
 const _impl = {tokenize, parse, environments, plan, flatten, render}
 export {CONFIG, _impl}

@@ -15,6 +15,8 @@ const SYMB : Record<string, Symb> = {
   '\\overset': {glyph: 0, arity: 2, flags: {above: true}},
   '\\stackrel': {glyph: 0, arity: 2, flags: {above: true}},
   '\\underset': {glyph: 0, arity: 2, flags: {below: true}},
+  '\\xrightarrow': {glyph: 0, arity: 1, flags: {xarrow: true, opt: true}},
+  '\\xleftarrow': {glyph: 0, arity: 1, flags: {xarrow: true, opt: true, left: true}},
   '\\operatorname': {glyph: 0, arity: 1, flags: {}},
   '\\operatorname*': {glyph: 0, arity: 1, flags: {big: true}},
   '\\sqrt': {glyph: 2267, arity: 1, flags: {opt: true, xfl: true, yfl: true}},
@@ -140,6 +142,10 @@ const SYMB : Record<string, Symb> = {
   '\\widetilde': {glyph: 2246, arity: 1, flags: {hat: true, xfl: true, yfl: true}},
   '\\overleftrightarrow': {glyph: 5015, arity: 1, flags: {hat: true, xfl: true, yfl: true}},
   '\\boxed': {glyph: 5050, arity: 1, flags: {xfl: true, yfl: true}},
+  '\\overbrace': {glyph: 0, arity: 1, flags: {group: true, brace: true}},
+  '\\underbrace': {glyph: 0, arity: 1, flags: {group: true, brace: true, under: true}},
+  '\\overparen': {glyph: 0, arity: 1, flags: {group: true}},
+  '\\underparen': {glyph: 0, arity: 1, flags: {group: true, under: true}},
   
 
   '\\not': {glyph: 2220, arity: 1, flags: {}},
@@ -286,6 +292,13 @@ const SYMB : Record<string, Symb> = {
   '\\scr': {glyph: 0, arity: 1, flags: {}},
 
   '\\quad': {glyph: 0, arity: 0, flags: {}},
+  '\\qquad': {glyph: 0, flags: {}},
+  '\\enspace': {glyph: 0, flags: {}},
+  '\\enskip': {glyph: 0, flags: {}},
+  '\\thinspace': {glyph: 0, flags: {}},
+  '\\medspace': {glyph: 0, flags: {}},
+  '\\thickspace': {glyph: 0, flags: {}},
+  '\\negthinspace': {glyph: 0, flags: {}},
   '\\,': {glyph: 0, arity: 0, flags: {}},
   '\\.': {glyph: 0, arity: 0, flags: {}},
   '\\;': {glyph: 0, arity: 0, flags: {}},
