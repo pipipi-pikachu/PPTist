@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import { ElementAlignCommands } from '@/types/edit'
-import { getElementListRange, getRectRotatedOffset } from '@/utils/element'
+import { getElementListRange, getRectRotatedOffset, detachMovedLineConnections } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
 interface RangeMap {
@@ -167,7 +167,7 @@ export default () => {
       })
     }
 
-    slidesStore.updateSlide({ elements: elementList })
+    slidesStore.updateSlide({ elements: detachMovedLineConnections(elementList, currentSlide.value.elements) })
     addHistorySnapshot()
   }
 

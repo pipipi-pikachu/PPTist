@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useSlidesStore, useMainStore } from '@/store'
 import type { PPTElement, Slide } from '@/types/slides'
-import { createSlideIdMap, createElementIdMap, getElementRange } from '@/utils/element'
+import { createSlideIdMap, createElementIdMap, getElementRange, remapLineConnections } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default () => {
@@ -47,6 +47,7 @@ export default () => {
     } while (lastSameElement)
     
     for (const element of elements) {
+      remapLineConnections(element, elIdMap)
       element.id = elIdMap[element.id]
 
       element.left = element.left + offset
@@ -69,6 +70,7 @@ export default () => {
       const { groupIdMap, elIdMap } = createElementIdMap(slide.elements)
 
       for (const element of slide.elements) {
+        remapLineConnections(element, elIdMap)
         element.id = elIdMap[element.id]
         if (element.groupId) element.groupId = groupIdMap[element.groupId]
 		

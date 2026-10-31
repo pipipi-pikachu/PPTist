@@ -41,7 +41,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watchEffect, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import useCanvasElementList from '@/hooks/useCanvasElementList'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
@@ -96,11 +97,7 @@ const viewportStyles = computed(() => ({
   height: viewportSize.value * viewportRatio.value * canvasScale.value + 'px',
 }))
 
-const elementList = ref<PPTElement[]>([])
-const setLocalElementList = () => {
-  elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
-}
-watchEffect(setLocalElementList)
+const { elementList } = useCanvasElementList(currentSlide)
 
 const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
 const { scaleElement } = useScaleElement(elementList, alignmentLines, canvasScale)

@@ -1,6 +1,6 @@
 import tinycolor from 'tinycolor2'
 import { nanoid } from 'nanoid'
-import type { LinePoint, PPTElement, PPTLineElement, Slide } from '@/types/slides'
+import type { LineBinding, LineConnectionAnchor, LinePoint, PPTElement, PPTLineElement, PPTShapeElement, Slide } from '@/types/slides'
 
 interface RotatedElementData {
   left: number
@@ -13,6 +13,10 @@ interface RotatedElementData {
 interface Point {
   x: number
   y: number
+}
+
+export interface LineConnectionPoint extends Point {
+  binding: LineBinding
 }
 
 interface AbsoluteLinePoints {
@@ -352,14 +356,9 @@ const rotateAbsoluteLinePoints = (points: AbsoluteLinePoints, center: Point, ang
  * @param points 旋转后的绝对点位
  */
 const rebuildLineElement = (element: PPTLineElement, points: AbsoluteLinePoints): PPTLineElement => {
-  const allPoints = [points.start, points.end]
-  if (points.broken) allPoints.push(points.broken)
-  if (points.broken2) allPoints.push(points.broken2)
-  if (points.curve) allPoints.push(points.curve)
-  if (points.cubic) allPoints.push(...points.cubic)
-
-  const left = Math.min(...allPoints.map(point => point.x))
-  const top = Math.min(...allPoints.map(point => point.y))
+  // 与创建、端点编辑和范围计算一致，原点只取两个端点的最小坐标。
+  const left = Math.min(points.start.x, points.end.x)
+  const top = Math.min(points.start.y, points.end.y)
   const toRelativePoint = (point: Point): [number, number] => [point.x - left, point.y - top]
 
   const nextElement: PPTLineElement = {
@@ -409,11 +408,173 @@ export const getLineElementLength = (element: PPTLineElement) => {
   return len
 }
 
+export const hasLineConnectionChanges = (element: PPTElement, propNames: string[]) => {
+  if (propNames.includes('id') || propNames.includes('type')) return true
+  if (element.type === 'shape') {
+    return ['left', 'top', 'width', 'height', 'rotate'].some(prop => propNames.includes(prop))
+  }
+  if (element.type === 'line') {
+    return ['left', 'top', 'start', 'end', 'startBinding', 'endBinding'].some(prop => propNames.includes(prop))
+  }
+  return false
+}
+
+export const isSameLineConnection = (element: PPTLineElement, target: PPTLineElement) => {
+  for (const key of ['start', 'end'] as const) {
+    if (Math.abs(element.left + element[key][0] - target.left - target[key][0]) > 1e-8 ||
+      Math.abs(element.top + element[key][1] - target.top - target[key][1]) > 1e-8) return false
+  }
+  for (const key of ['startBinding', 'endBinding'] as const) {
+    if (element[key]?.elementId !== target[key]?.elementId || element[key]?.anchor !== target[key]?.anchor) return false
+  }
+  return true
+}
+
 export const getBroken2LineDirection = (element: PPTLineElement) => {
   if (element.broken2Direction) return element.broken2Direction
 
   const { minX, maxX, minY, maxY } = getElementRange(element)
   return maxX - minX >= maxY - minY ? 'horizontal' : 'vertical'
+}
+
+const anchors: LineConnectionAnchor[] = ['top', 'right', 'bottom', 'left']
+
+// 锚点位于形状自身外框的四边中点，跟随外框旋转，不受内部图形翻转影响。
+export const getShapeConnectionPoint = (element: PPTShapeElement, anchor: LineConnectionAnchor): Point => {
+  const center = { x: element.left + element.width / 2, y: element.top + element.height / 2 }
+  let point = center
+  if (anchor === 'top') point = { x: center.x, y: element.top }
+  else if (anchor === 'right') point = { x: element.left + element.width, y: center.y }
+  else if (anchor === 'bottom') point = { x: center.x, y: element.top + element.height }
+  else if (anchor === 'left') point = { x: element.left, y: center.y }
+  return element.rotate ? rotatePoint(point, center, element.rotate) : point
+}
+
+export const getLineConnectionPoints = (elements: PPTElement[], hiddenElementIds: string[] = []) => {
+  const points: LineConnectionPoint[] = []
+  const hiddenIds = new Set(hiddenElementIds)
+  // 上层形状的锚点排在前面，查询距离相同时优先匹配。
+  for (let i = elements.length - 1; i >= 0; i--) {
+    const element = elements[i]
+    if (element.type !== 'shape' || hiddenIds.has(element.id)) continue
+    for (const anchor of anchors) {
+      const target = getShapeConnectionPoint(element, anchor)
+      points.push({ ...target, binding: { elementId: element.id, anchor } })
+    }
+  }
+  return points
+}
+
+export const findLineConnectionPoint = (
+  points: LineConnectionPoint[], point: Point, range: number, direction?: 'horizontal' | 'vertical',
+): LineConnectionPoint | undefined => {
+  let nearest: LineConnectionPoint | undefined
+  let distance = range * range
+  for (const target of points) {
+    if (direction === 'horizontal' && Math.abs(target.y - point.y) > 1e-8) continue
+    if (direction === 'vertical' && Math.abs(target.x - point.x) > 1e-8) continue
+    const value = (target.x - point.x) ** 2 + (target.y - point.y) ** 2
+    if (value >= distance) continue
+    distance = value
+    nearest = target
+  }
+  return nearest
+}
+
+// 一次处理整个批次，先读取所有形状的最终几何，避免多选移动时重复偏移。
+export const resolveLineConnections = (elements: PPTElement[]): PPTElement[] => {
+  if (!elements.some(el => el.type === 'line' && (el.startBinding || el.endBinding))) return elements
+  const shapeMap = new Map<string, PPTShapeElement>()
+  for (const element of elements) {
+    if (element.type === 'shape') shapeMap.set(element.id, element)
+  }
+
+  const getTarget = (binding?: LineBinding) => {
+    if (!binding || !anchors.includes(binding.anchor)) return undefined
+    const shape = shapeMap.get(binding.elementId)
+    if (!shape) return undefined
+    const point = getShapeConnectionPoint(shape, binding.anchor)
+    return Number.isFinite(point.x) && Number.isFinite(point.y) ? point : undefined
+  }
+
+  let changed = false
+  const result = elements.map(element => {
+    if (element.type !== 'line' || (!element.startBinding && !element.endBinding)) return element
+    const start = getTarget(element.startBinding)
+    const end = getTarget(element.endBinding)
+    const points = getAbsoluteLinePoints(element)
+    const delta = (target: Point | undefined, origin: Point) => ({
+      x: target && Math.abs(target.x - origin.x) > 1e-8 ? target.x - origin.x : 0,
+      y: target && Math.abs(target.y - origin.y) > 1e-8 ? target.y - origin.y : 0,
+    })
+    const startMove = delta(start, points.start)
+    const endMove = delta(end, points.end)
+    const moved = startMove.x || startMove.y || endMove.x || endMove.y
+    const invalid = (element.startBinding && !start) || (element.endBinding && !end)
+    if (!moved && !invalid) return element
+
+    changed = true
+    const line = { ...element }
+    if (!start) delete line.startBinding
+    if (!end) delete line.endBinding
+    if (!moved) return line
+
+    if (start) points.start = start
+    if (end) points.end = end
+    const movePoint = (point: Point, movement: Point) => ({ x: point.x + movement.x, y: point.y + movement.y })
+    const middleMove = { x: (startMove.x + endMove.x) / 2, y: (startMove.y + endMove.y) / 2 }
+    if (points.broken) points.broken = movePoint(points.broken, middleMove)
+    if (points.broken2) points.broken2 = movePoint(points.broken2, middleMove)
+    if (points.curve) points.curve = movePoint(points.curve, middleMove)
+    if (points.cubic) points.cubic = [movePoint(points.cubic[0], startMove), movePoint(points.cubic[1], endMove)]
+    return rebuildLineElement(line, points)
+  })
+  return changed ? result : elements
+}
+
+// 主动移动线条时，仅保留连接到本批次一起变换的形状的绑定。
+const detachLineConnections = (element: PPTElement, movingElementIds: ReadonlySet<string>): PPTElement => {
+  if (element.type !== 'line') return element
+  const detachStart = element.startBinding && !movingElementIds.has(element.startBinding.elementId)
+  const detachEnd = element.endBinding && !movingElementIds.has(element.endBinding.elementId)
+  if (!detachStart && !detachEnd) return element
+  const line = { ...element }
+  if (detachStart) delete line.startBinding
+  if (detachEnd) delete line.endBinding
+  return line
+}
+
+// 仅用于主动平移/旋转整条线的操作，控制点和端点编辑不调用此函数。
+export const detachMovedLineConnections = (elements: PPTElement[], previousElements: PPTElement[]): PPTElement[] => {
+  if (!elements.some(el => el.type === 'line' && (el.startBinding || el.endBinding))) return elements
+  const previousMap = new Map(previousElements.map(el => [el.id, el]))
+  const movingIds = new Set<string>()
+  for (const element of elements) {
+    const previous = previousMap.get(element.id)
+    if (element.type !== 'shape' || previous?.type !== 'shape') continue
+    if (element.left !== previous.left || element.top !== previous.top || element.width !== previous.width ||
+      element.height !== previous.height || element.rotate !== previous.rotate) movingIds.add(element.id)
+  }
+  return elements.map(element => {
+    const previous = previousMap.get(element.id)
+    if (element.type !== 'line' || previous?.type !== 'line') return element
+    const moved = element.left !== previous.left || element.top !== previous.top ||
+      element.start.some((value, index) => value !== previous.start[index]) ||
+      element.end.some((value, index) => value !== previous.end[index])
+    return moved ? detachLineConnections(element, movingIds) : element
+  })
+}
+
+// 与现有复制流程一致，只修改传入的副本；未一起复制的目标不再绑定。
+export const remapLineConnections = (element: PPTElement, elementIdMap: Record<string, string>) => {
+  if (element.type !== 'line') return
+  for (const key of ['startBinding', 'endBinding'] as const) {
+    const binding = element[key]
+    if (!binding) continue
+    const elementId = elementIdMap[binding.elementId]
+    if (elementId) element[key] = { ...binding, elementId }
+    else delete element[key]
+  }
 }
 
 export interface AlignLine {

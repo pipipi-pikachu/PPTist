@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import type { AlignmentLineProps } from '@/types/edit'
-import { createElementIdMap, getRectRotatedRange, uniqAlignLines, type AlignLine } from '@/utils/element'
+import { createElementIdMap, getRectRotatedRange, uniqAlignLines, detachMovedLineConnections, remapLineConnections, isSameLineConnection, type AlignLine } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 export default (
@@ -125,6 +125,7 @@ export default (
       const { groupIdMap, elIdMap } = createElementIdMap(sourceElements)
 
       const duplicatedElements = sourceElements.map(item => {
+        remapLineConnections(item, elIdMap)
         item.id = elIdMap[item.id]
         if (isActiveGroupElement && item.groupId) delete item.groupId
         else if (item.groupId) item.groupId = groupIdMap[item.groupId]
@@ -310,9 +311,10 @@ export default (
       }
       alignmentLines.value = _alignmentLines
       
+      let nextElements: PPTElement[]
       // 单选状态下，或者当前选中的多个元素中存在正在操作的元素时，仅修改正在操作的元素的位置
       if (dragSingleElement) {
-        elementList.value = elementList.value.map(el => {
+        nextElements = elementList.value.map(el => {
           return el.id === dragTargetElement.id ? { ...el, left: targetLeft, top: targetTop } : el
         })
       }
@@ -323,7 +325,7 @@ export default (
         const handleElement = elementList.value.find(el => el.id === dragTargetElement.id)
         if (!handleElement) return
 
-        elementList.value = elementList.value.map(el => {
+        nextElements = elementList.value.map(el => {
           if (activeElementIdList.value.includes(el.id)) {
             if (el.id === dragTargetElement.id) {
               return {
@@ -341,9 +343,11 @@ export default (
           return el
         })
       }
+      elementList.value = detachMovedLineConnections(nextElements, elementList.value)
     }
 
     const handleMouseup = (e: MouseEvent | TouchEvent) => {
+      handleMousemove(e)
       isMouseDown = false
       
       document.ontouchmove = null
@@ -356,7 +360,17 @@ export default (
       const currentPageX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX
       const currentPageY = e instanceof MouseEvent ? e.pageY : e.changedTouches[0].pageY
 
-      if (startPageX === currentPageX && startPageY === currentPageY) return
+      if (!duplicateTriggered && startPageX === currentPageX && startPageY === currentPageY) {
+        elementList.value = originElementList
+        return
+      }
+      const originElementMap = new Map(originElementList.map(el => [el.id, el]))
+      const elementsChanged = duplicateTriggered || elementList.value.length !== originElementList.length || elementList.value.some(el => {
+        const origin = originElementMap.get(el.id)
+        if (!origin || el.type !== origin.type || el.left !== origin.left || el.top !== origin.top) return true
+        return el.type === 'line' && origin.type === 'line' && !isSameLineConnection(el, origin)
+      })
+      if (!elementsChanged) return
 
       slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()

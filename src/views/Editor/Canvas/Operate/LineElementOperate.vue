@@ -5,6 +5,7 @@
         class="operate-resize-handler" 
         v-for="point in resizeHandlers"
         :key="point.handler"
+        :class="{ connected: point.connected }"
         :style="point.style"
         @mousedown.stop="($event: MouseEvent) => dragLineElement($event, elementInfo, point.handler)"
       />
@@ -63,6 +64,7 @@ const resizeHandlers = computed(() => {
   const handlers = [
     {
       handler: OperateLineHandlers.START,
+      connected: !!props.elementInfo.startBinding,
       style: {
         left: props.elementInfo.start[0] * canvasScale.value + 'px',
         top: props.elementInfo.start[1] * canvasScale.value + 'px',
@@ -70,6 +72,7 @@ const resizeHandlers = computed(() => {
     },
     {
       handler: OperateLineHandlers.END,
+      connected: !!props.elementInfo.endBinding,
       style: {
         left: props.elementInfo.end[0] * canvasScale.value + 'px',
         top: props.elementInfo.end[1] * canvasScale.value + 'px',
@@ -82,6 +85,7 @@ const resizeHandlers = computed(() => {
 
     handlers.push({
       handler: OperateLineHandlers.C,
+      connected: false,
       style: {
         left: ctrlHandler[0] * canvasScale.value + 'px',
         top: ctrlHandler[1] * canvasScale.value + 'px',
@@ -92,6 +96,7 @@ const resizeHandlers = computed(() => {
     const [ctrlHandler1, ctrlHandler2] = props.elementInfo.cubic
     handlers.push({
       handler: OperateLineHandlers.C1,
+      connected: false,
       style: {
         left: ctrlHandler1[0] * canvasScale.value + 'px',
         top: ctrlHandler1[1] * canvasScale.value + 'px',
@@ -99,6 +104,7 @@ const resizeHandlers = computed(() => {
     })
     handlers.push({
       handler: OperateLineHandlers.C2,
+      connected: false,
       style: {
         left: ctrlHandler2[0] * canvasScale.value + 'px',
         top: ctrlHandler2[1] * canvasScale.value + 'px',
@@ -111,6 +117,10 @@ const resizeHandlers = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+.operate-resize-handler.connected {
+  background-color: $themeColor;
+  border-radius: 50%;
+}
 svg {
   position: absolute;
   left: 0;

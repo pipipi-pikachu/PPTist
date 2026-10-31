@@ -2,7 +2,7 @@ import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
 import { getImageSize } from '@/utils/image'
-import type { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, ChartType, PPTVideoElement, PPTAudioElement } from '@/types/slides'
+import type { PPTLineElement, PPTElement, TableCell, TableCellStyle, PPTShapeElement, ChartType, PPTVideoElement, PPTAudioElement, LineBinding } from '@/types/slides'
 import { type ShapePoolItem, SHAPE_PATH_FORMULAS } from '@/configs/shapes'
 import type { LinePoolItem } from '@/configs/lines'
 import { CHART_DEFAULT_DATA } from '@/configs/chart'
@@ -20,6 +20,8 @@ interface LineElementPosition {
   left: number
   start: [number, number]
   end: [number, number]
+  startBinding?: LineBinding
+  endBinding?: LineBinding
 }
 
 interface CreateTextData {
@@ -229,7 +231,7 @@ export default () => {
    * @param data 线条的路径和样式
    */
   const createLineElement = (position: LineElementPosition, data: LinePoolItem) => {
-    const { left, top, start, end } = position
+    const { left, top, start, end, startBinding, endBinding } = position
 
     const newElement: PPTLineElement = {
       type: 'line',
@@ -238,6 +240,8 @@ export default () => {
       top, 
       start,
       end,
+      startBinding,
+      endBinding,
       points: data.points,
       color: theme.value.themeColors[0],
       style: data.style,

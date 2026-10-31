@@ -63,6 +63,8 @@ export default (viewportRef: ShallowRef<HTMLElement | null>) => {
       top,
       start: _start,
       end: _end,
+      startBinding: selectionData.startBinding,
+      endBinding: selectionData.endBinding,
     }
   }
 

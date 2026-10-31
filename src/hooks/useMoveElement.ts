@@ -3,6 +3,7 @@ import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
 import { KEYS } from '@/configs/hotkey'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { detachMovedLineConnections } from '@/utils/element'
 
 export default () => {
   const slidesStore = useSlidesStore()
@@ -51,7 +52,7 @@ export default () => {
       })
     }
 
-    slidesStore.updateSlide({ elements: newElementList })
+    slidesStore.updateSlide({ elements: detachMovedLineConnections(newElementList, currentSlide.value.elements) })
     addHistorySnapshot()
   }
 

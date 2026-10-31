@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { omit } from 'lodash'
 import type { Slide, SlideTheme, PPTElement, PPTAnimation, SlideTemplate } from '@/types/slides'
+import { detachMovedLineConnections, hasLineConnectionChanges, resolveLineConnections } from '@/utils/element'
 
 interface RemovePropData {
   id: string
@@ -130,7 +131,7 @@ export const useSlidesStore = defineStore('slides', {
     },
   
     setSlides(slides: Slide[], themeProps?: Partial<SlideTheme>) {
-      this.slides = slides
+      this.slides = slides.map(slide => ({ ...slide, elements: resolveLineConnections(slide.elements) }))
       if (themeProps) this.setTheme(themeProps)
     },
   
@@ -142,6 +143,7 @@ export const useSlidesStore = defineStore('slides', {
       const slides = Array.isArray(slide) ? slide : [slide]
       for (const slide of slides) {
         if (slide.sectionTag) delete slide.sectionTag
+        slide.elements = resolveLineConnections(slide.elements)
       }
 
       const addIndex = this.slideIndex + 1
@@ -151,7 +153,8 @@ export const useSlidesStore = defineStore('slides', {
   
     updateSlide(props: Partial<Slide>, slideId?: string) {
       const slideIndex = slideId ? this.slides.findIndex(item => item.id === slideId) : this.slideIndex
-      this.slides[slideIndex] = { ...this.slides[slideIndex], ...props }
+      const newProps = props.elements ? { ...props, elements: resolveLineConnections(props.elements) } : props
+      this.slides[slideIndex] = { ...this.slides[slideIndex], ...newProps }
     },
   
     removeSlideProps(data: RemovePropData) {
@@ -200,14 +203,14 @@ export const useSlidesStore = defineStore('slides', {
       const elements = Array.isArray(element) ? element : [element]
       const currentSlideEls = this.slides[this.slideIndex].elements
       const newEls = [...currentSlideEls, ...elements]
-      this.slides[this.slideIndex].elements = newEls
+      this.slides[this.slideIndex].elements = resolveLineConnections(newEls)
     },
 
     deleteElement(elementId: string | string[]) {
       const elementIdList = Array.isArray(elementId) ? elementId : [elementId]
       const currentSlideEls = this.slides[this.slideIndex].elements
       const newEls = currentSlideEls.filter(item => !elementIdList.includes(item.id))
-      this.slides[this.slideIndex].elements = newEls
+      this.slides[this.slideIndex].elements = resolveLineConnections(newEls)
     },
   
     updateElement(data: UpdateElementData) {
@@ -216,10 +219,17 @@ export const useSlidesStore = defineStore('slides', {
 
       const slideIndex = slideId ? this.slides.findIndex(item => item.id === slideId) : this.slideIndex
       const slide = this.slides[slideIndex]
+      const propNames = Object.keys(props)
+      let connectionsChanged = false
       const elements = slide.elements.map(el => {
-        return elIdList.includes(el.id) ? { ...el, ...props } : el
+        if (!elIdList.includes(el.id)) return el
+        if (hasLineConnectionChanges(el, propNames)) connectionsChanged = true
+        return { ...el, ...props }
       })
-      this.slides[slideIndex].elements = (elements as PPTElement[])
+      // 面板主动改变线条位置时解除外部绑定；随动产生的坐标由整批提交入口处理。
+      const nextElements = 'left' in props || 'top' in props
+        ? detachMovedLineConnections(elements as PPTElement[], slide.elements) : elements as PPTElement[]
+      this.slides[slideIndex].elements = connectionsChanged ? resolveLineConnections(nextElements) : nextElements
     },
   
     removeElementProps(data: RemovePropData) {
@@ -228,10 +238,13 @@ export const useSlidesStore = defineStore('slides', {
   
       const slideIndex = this.slideIndex
       const slide = this.slides[slideIndex]
+      let connectionsChanged = false
       const elements = slide.elements.map(el => {
-        return el.id === id ? omit(el, propsNames) : el
+        if (el.id !== id) return el
+        if (hasLineConnectionChanges(el, propsNames)) connectionsChanged = true
+        return omit(el, propsNames)
       })
-      this.slides[slideIndex].elements = (elements as PPTElement[])
+      this.slides[slideIndex].elements = connectionsChanged ? resolveLineConnections(elements as PPTElement[]) : elements as PPTElement[]
     },
   },
 })

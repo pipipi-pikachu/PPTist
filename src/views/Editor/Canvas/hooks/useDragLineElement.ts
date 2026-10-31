@@ -1,9 +1,9 @@
-import type { Ref } from 'vue'
+import { computed, ref, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useKeyboardStore, useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement, PPTLineElement } from '@/types/slides'
 import { OperateLineHandlers } from '@/types/edit'
-import { getBroken2LineDirection } from '@/utils/element'
+import { getBroken2LineDirection, getLineConnectionPoints, findLineConnectionPoint, isSameLineConnection, type LineConnectionPoint } from '@/utils/element'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 interface AdsorptionPoint {
@@ -13,19 +13,23 @@ interface AdsorptionPoint {
 
 export default (elementList: Ref<PPTElement[]>) => {
   const slidesStore = useSlidesStore()
-  const { canvasScale } = storeToRefs(useMainStore())
-  const { viewportSize, viewportRatio } = storeToRefs(slidesStore)
+  const { canvasScale, hiddenElementIdList } = storeToRefs(useMainStore())
+  const { currentSlide, viewportSize, viewportRatio } = storeToRefs(slidesStore)
   const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
   const { addHistorySnapshot } = useHistorySnapshot()
+  const lineConnectionPoint = ref<LineConnectionPoint>()
 
   // 拖拽线条端点
   const dragLineElement = (e: MouseEvent, element: PPTLineElement, command: OperateLineHandlers) => {
     let isMouseDown = true
+    const isEndpoint = command === OperateLineHandlers.START || command === OperateLineHandlers.END
 
-    const sorptionRange = 8
+    const sorptionRange = 8 / canvasScale.value
 
     const startPageX = e.pageX
     const startPageY = e.pageY
+    // 预览只改变本地线条，从 store 读取目标形状可避免每帧重算锚点。
+    const connectionPoints = computed(() => getLineConnectionPoints(currentSlide.value.elements, hiddenElementIdList.value))
 
     const adsorptionPoints: AdsorptionPoint[] = []
     const canvasWidth = viewportSize.value
@@ -45,7 +49,7 @@ export default (elementList: Ref<PPTElement[]>) => {
     // 获取所有线条以外的未旋转的元素的8个缩放点作为吸附位置
     for (let i = 0; i < elementList.value.length; i++) {
       const _element = elementList.value[i]
-      if (_element.type === 'line' || _element.rotate) continue
+      if (_element.type === 'line' || _element.rotate || hiddenElementIdList.value.includes(_element.id)) continue
 
       const left = _element.left
       const top = _element.top
@@ -68,10 +72,7 @@ export default (elementList: Ref<PPTElement[]>) => {
       const rightBottomPoint = { x: right, y: bottom }
 
       adsorptionPoints.push(
-        topPoint,
-        bottomPoint,
-        leftPoint,
-        rightPoint,
+        ...(_element.type === 'shape' ? [] : [topPoint, bottomPoint, leftPoint, rightPoint]),
         leftTopPoint,
         rightTopPoint,
         leftBottomPoint,
@@ -79,8 +80,11 @@ export default (elementList: Ref<PPTElement[]>) => {
       )
     }
 
-    document.onmousemove = e => {
+    let hasMoved = false
+    const handleMousemove = (e: MouseEvent) => {
       if (!isMouseDown) return
+      if (e.pageX === startPageX && e.pageY === startPageY && !hasMoved) return
+      hasMoved = true
 
       const currentPageX = e.pageX
       const currentPageY = e.pageY
@@ -103,12 +107,14 @@ export default (elementList: Ref<PPTElement[]>) => {
       let c1Y = element.top + c1[1]
       let c2X = element.left + c2[0]
       let c2Y = element.top + c2[1]
+      let connection: LineConnectionPoint | undefined
 
       // 拖拽起点或终点的位置
       // 水平和垂直方向上有吸附
       if (command === OperateLineHandlers.START) {
         startX = startX + moveX
         startY = startY + moveY
+        connection = findLineConnectionPoint(connectionPoints.value, { x: startX, y: startY }, sorptionRange)
 
         if (Math.abs(startX - endX) < sorptionRange) startX = endX
         if (Math.abs(startY - endY) < sorptionRange) startY = endY
@@ -121,10 +127,15 @@ export default (elementList: Ref<PPTElement[]>) => {
             break
           }
         }
+        if (connection) {
+          startX = connection.x
+          startY = connection.y
+        }
       }
       else if (command === OperateLineHandlers.END) {
         endX = endX + moveX
         endY = endY + moveY
+        connection = findLineConnectionPoint(connectionPoints.value, { x: endX, y: endY }, sorptionRange)
 
         if (Math.abs(startX - endX) < sorptionRange) endX = startX
         if (Math.abs(startY - endY) < sorptionRange) endY = startY
@@ -136,6 +147,10 @@ export default (elementList: Ref<PPTElement[]>) => {
             endY = y
             break
           }
+        }
+        if (connection) {
+          endX = connection.x
+          endY = connection.y
         }
       }
       else if (command === OperateLineHandlers.C) {
@@ -170,6 +185,8 @@ export default (elementList: Ref<PPTElement[]>) => {
         if (Math.abs(c2Y - endY) < sorptionRange) c2Y = endY
       }
 
+      lineConnectionPoint.value = connection
+
       // 计算更新起点和终点基于自身元素位置的坐标
       const minX = Math.min(startX, endX)
       const minY = Math.min(startY, endY)
@@ -196,7 +213,15 @@ export default (elementList: Ref<PPTElement[]>) => {
             start: start,
             end: end,
           }
-          if (command === OperateLineHandlers.START || command === OperateLineHandlers.END) {
+          if (command === OperateLineHandlers.START) {
+            if (connection) newEl.startBinding = connection.binding
+            else delete newEl.startBinding
+          }
+          if (command === OperateLineHandlers.END) {
+            if (connection) newEl.endBinding = connection.binding
+            else delete newEl.endBinding
+          }
+          if (isEndpoint) {
             if (ctrlOrShiftKeyActive.value) {
               if (element.broken) newEl.broken = [midX - minX, midY - minY]
               if (element.curve) newEl.curve = [midX - minX, midY - minY]
@@ -227,15 +252,28 @@ export default (elementList: Ref<PPTElement[]>) => {
       })
     }
 
+    document.onmousemove = handleMousemove
     document.onmouseup = e => {
+      const isAtStart = e.pageX === startPageX && e.pageY === startPageY
+      if (!isAtStart) handleMousemove(e)
       isMouseDown = false
       document.onmousemove = null
       document.onmouseup = null
+      lineConnectionPoint.value = undefined
 
-      const currentPageX = e.pageX
-      const currentPageY = e.pageY
-
-      if (startPageX === currentPageX && startPageY === currentPageY) return
+      if (!hasMoved) return
+      // 回到按下位置时直接取消，避免重新吸附改变原始端点和控制点。
+      if (isAtStart) {
+        elementList.value = elementList.value.map(el => el.id === element.id ? element : el)
+        return
+      }
+      const current = elementList.value.find(el => el.id === element.id)
+      if (!current || current.type !== 'line') return
+      if (isEndpoint && isSameLineConnection(current, element)) {
+        elementList.value = elementList.value.map(el => el.id === element.id ? element : el)
+        return
+      }
+      if (JSON.stringify(current) === JSON.stringify(element)) return
 
       slidesStore.updateSlide({ elements: elementList.value })
       addHistorySnapshot()
@@ -244,5 +282,6 @@ export default (elementList: Ref<PPTElement[]>) => {
 
   return {
     dragLineElement,
+    lineConnectionPoint,
   }
 }

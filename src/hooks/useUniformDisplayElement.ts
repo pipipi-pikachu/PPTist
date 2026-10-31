@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement } from '@/types/slides'
-import { getElementRange, getElementListRange, getRectRotatedOffset } from '@/utils/element'
+import { getElementRange, getElementListRange, getRectRotatedOffset, detachMovedLineConnections } from '@/utils/element'
 import useHistorySnapshot from './useHistorySnapshot'
 
 interface ElementItem {
@@ -154,7 +154,7 @@ export default () => {
       }
     }
 
-    slidesStore.updateSlide({ elements: newElementList })
+    slidesStore.updateSlide({ elements: detachMovedLineConnections(newElementList, currentSlide.value.elements) })
     addHistorySnapshot()
   }
 
@@ -249,7 +249,7 @@ export default () => {
       }
     }
 
-    slidesStore.updateSlide({ elements: newElementList })
+    slidesStore.updateSlide({ elements: detachMovedLineConnections(newElementList, currentSlide.value.elements) })
     addHistorySnapshot()
   }
 

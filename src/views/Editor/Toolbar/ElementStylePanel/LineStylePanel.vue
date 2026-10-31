@@ -122,7 +122,7 @@
     <Divider />
 
     <div class="row">
-      <Button style="flex: 1;" @click="updateLine({ start: handleLineElement.end, end: handleLineElement.start })"><i-icon-park-outline:switch /> 交换方向</Button>
+      <Button style="flex: 1;" @click="swapLineDirection()"><i-icon-park-outline:switch /> 交换方向</Button>
     </div>
 
     <Divider />
@@ -179,7 +179,7 @@ const lineTypeOptions: LineTypeOption[] = [
   { key: 'broken2', path: 'M 2 2 L 12 2 L 12 22 L 22 22', isBroken2: true },
   { key: 'curve', path: 'M 2 2 Q 2 22 22 22', isCurve: true },
   { key: 'cubic', path: 'M 2 2 C 22 2 2 22 22 22', isCubic: true },
-] 
+]
 
 const changeLineType = (line: LineTypeOption) => {
   if (!handleElement.value) return
@@ -221,6 +221,18 @@ const updateBroken2Direction = (value: string | number) => {
     addHistorySnapshot()
   }
   else updateLine({ broken2Direction: value as Broken2LineDirection })
+}
+
+const swapLineDirection = () => {
+  const line = handleLineElement.value
+  const props: Partial<PPTLineElement> = {
+    start: line.end,
+    end: line.start,
+    startBinding: line.endBinding,
+    endBinding: line.startBinding,
+  }
+  if (line.cubic) props.cubic = [line.cubic[1], line.cubic[0]]
+  updateLine(props)
 }
 </script>
 

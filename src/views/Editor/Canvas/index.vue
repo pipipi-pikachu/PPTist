@@ -10,6 +10,7 @@
   >
     <ElementCreateSelection
       v-if="creatingElement"
+      :viewport="viewportRef"
       @created="data => insertElementFromCreateSelection(data)"
     />
     <ShapeCreateCanvas
@@ -26,6 +27,11 @@
       }"
     >
       <div class="operates">
+        <LineConnectionPoint
+          v-if="lineConnectionPoint"
+          :x="lineConnectionPoint.x * canvasScale"
+          :y="lineConnectionPoint.y * canvasScale"
+        />
         <AlignmentLine 
           v-for="(line, index) in alignmentLines" 
           :key="index" 
@@ -103,12 +109,12 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, onMounted, onUnmounted, provide, ref, watch, watchEffect, useTemplateRef } from 'vue'
+import { nextTick, onMounted, onUnmounted, provide, ref, watch, useTemplateRef } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
-import type { PPTElement, PPTShapeElement } from '@/types/slides'
+import type { PPTShapeElement } from '@/types/slides'
 import type { AlignmentLineProps, CreateCustomShapeData } from '@/types/edit'
 import { injectKeySlideScale } from '@/types/injectKey'
 import { removeAllRanges } from '@/utils/selection'
@@ -133,12 +139,14 @@ import useScaleCanvas from '@/hooks/useScaleCanvas'
 import useScreening from '@/hooks/useScreening'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useCreateElement from '@/hooks/useCreateElement'
+import useCanvasElementList from '@/hooks/useCanvasElementList'
 
 import EditableElement from './EditableElement.vue'
 import MouseSelection from './MouseSelection.vue'
 import ViewportBackground from './ViewportBackground.vue'
 import ElementFloatLayer from './ElementFloatLayer/index.vue'
 import AlignmentLine from './AlignmentLine.vue'
+import LineConnectionPoint from './LineConnectionPoint.vue'
 import Ruler from './Ruler.vue'
 import ElementCreateSelection from './ElementCreateSelection.vue'
 import ShapeCreateCanvas from './ShapeCreateCanvas.vue'
@@ -176,11 +184,7 @@ watch(handleElementId, () => {
   mainStore.setActiveGroupElementId('')
 })
 
-const elementList = ref<PPTElement[]>([])
-const setLocalElementList = () => {
-  elementList.value = currentSlide.value ? JSON.parse(JSON.stringify(currentSlide.value.elements)) : []
-}
-watchEffect(setLocalElementList)
+const { elementList } = useCanvasElementList(currentSlide)
 
 const canvasRef = useTemplateRef<HTMLElement>('canvasRef')
 const { dragViewport, viewportStyles } = useViewportSize(canvasRef)
@@ -190,7 +194,7 @@ useDrop(canvasRef)
 const { mouseSelection, mouseSelectionVisible, mouseSelectionQuadrant, updateMouseSelection } = useMouseSelection(elementList, viewportRef)
 
 const { dragElement } = useDragElement(elementList, alignmentLines, canvasScale)
-const { dragLineElement } = useDragLineElement(elementList)
+const { dragLineElement, lineConnectionPoint } = useDragLineElement(elementList)
 const { selectElement } = useSelectAndMoveElement(elementList, dragElement)
 const { scaleElement, scaleMultiElement } = useScaleElement(elementList, alignmentLines, canvasScale)
 const { rotateElement } = useRotateElement(elementList, viewportRef, canvasScale)

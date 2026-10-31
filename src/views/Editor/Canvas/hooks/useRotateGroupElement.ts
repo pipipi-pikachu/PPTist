@@ -2,7 +2,7 @@ import type { Ref, ShallowRef } from 'vue'
 import { useSlidesStore } from '@/store'
 import type { PPTElement, PPTLineElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
-import { canRotateGroupElements, getGroupElementCenter, normalizeAngle, rotateLineElement, rotateRectLikeElement } from '@/utils/element'
+import { canRotateGroupElements, getGroupElementCenter, normalizeAngle, rotateLineElement, rotateRectLikeElement, detachMovedLineConnections } from '@/utils/element'
 
 const getAngleFromCoordinate = (x: number, y: number) => {
   const radian = Math.atan2(x, y)
@@ -79,7 +79,7 @@ export default (
         deltaAngle = normalizeAngle(snappedTargetRotate - groupRotationReference)
       }
 
-      elementList.value = originElementList.map(element => {
+      const nextElements = originElementList.map(element => {
         if (!selectedElementIdList.includes(element.id)) return element
 
         const originElement = originElementMap.get(element.id)
@@ -88,6 +88,7 @@ export default (
         if (originElement.type === 'line') return rotateLineElement(originElement, center, deltaAngle)
         return rotateRectLikeElement(originElement, center, deltaAngle)
       })
+      elementList.value = detachMovedLineConnections(nextElements, originElementList)
     }
 
     const handleMouseup = () => {

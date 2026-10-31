@@ -1,6 +1,6 @@
 import type { ShapePoolItem } from '@/configs/shapes'
 import type { LinePoolItem } from '@/configs/lines'
-import type { ImageClipDataRange, PPTElementOutline, PPTElementShadow, Gradient } from './slides'
+import type { ImageClipDataRange, PPTElementOutline, PPTElementShadow, Gradient, LineBinding } from './slides'
 
 export enum ElementOrderCommands {
   UP = 'up',
@@ -76,6 +76,8 @@ export interface ImageClipedEmitData {
 export interface CreateElementSelectionData {
   start: [number, number]
   end: [number, number]
+  startBinding?: LineBinding
+  endBinding?: LineBinding
 }
 
 export interface CreateCustomShapeData {

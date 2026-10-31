@@ -22,25 +22,53 @@
         ></path>
 			</svg>
     </div>
+    <LineConnectionPoint
+      v-if="connectionPoint"
+      :x="connectionPoint.x - offset.x"
+      :y="connectionPoint.y - offset.y"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useKeyboardStore } from '@/store'
+import { useMainStore, useKeyboardStore, useSlidesStore } from '@/store'
 import type { CreateElementSelectionData } from '@/types/edit'
+import type { LineBinding } from '@/types/slides'
+import { getLineConnectionPoints, findLineConnectionPoint } from '@/utils/element'
+import LineConnectionPoint from './LineConnectionPoint.vue'
+
+const props = defineProps<{
+  viewport: HTMLElement | null
+}>()
 
 const emit = defineEmits<{
   (event: 'created', payload: CreateElementSelectionData): void
 }>()
 
 const mainStore = useMainStore()
-const { creatingElement } = storeToRefs(mainStore)
+const { creatingElement, canvasScale, hiddenElementIdList } = storeToRefs(mainStore)
+const { currentSlide } = storeToRefs(useSlidesStore())
 const { ctrlOrShiftKeyActive } = storeToRefs(useKeyboardStore())
 
 const start = ref<[number, number]>()
 const end = ref<[number, number]>()
+const startBinding = ref<LineBinding>()
+const endBinding = ref<LineBinding>()
+const connectionPoint = ref<{ x: number; y: number }>()
+const connectionPoints = computed(() => getLineConnectionPoints(currentSlide.value.elements, hiddenElementIdList.value))
+
+const getConnection = (pageX: number, pageY: number, direction?: 'horizontal' | 'vertical') => {
+  if (!props.viewport) return undefined
+  const { left, top } = props.viewport.getBoundingClientRect()
+  const point = findLineConnectionPoint(connectionPoints.value, {
+    x: (pageX - left) / canvasScale.value,
+    y: (pageY - top) / canvasScale.value,
+  }, 8 / canvasScale.value, direction)
+  if (!point) return undefined
+  return { x: left + point.x * canvasScale.value, y: top + point.y * canvasScale.value, binding: point.binding }
+}
 
 const selectionRef = useTemplateRef<HTMLElement>('selectionRef')
 const offset = ref({
@@ -58,15 +86,19 @@ onMounted(() => {
 const createSelection = (e: MouseEvent) => {
   let isMouseDown = true
 
-  const startPageX = e.pageX
-  const startPageY = e.pageY
+  const initialConnection = creatingElement.value?.type === 'line' ? getConnection(e.pageX, e.pageY) : undefined
+  const startPageX = initialConnection?.x ?? e.pageX
+  const startPageY = initialConnection?.y ?? e.pageY
   start.value = [startPageX, startPageY]
+  startBinding.value = initialConnection?.binding
+  connectionPoint.value = initialConnection
 
-  document.onmousemove = e => {
+  const handleMousemove = (e: MouseEvent) => {
     if (!creatingElement.value || !isMouseDown) return
 
     let currentPageX = e.pageX
     let currentPageY = e.pageY
+    let lockedDirection: 'horizontal' | 'vertical' | undefined
 
     // 按住Ctrl键或者Shift键时：
     // 对于非线条元素需要锁定宽高比例，对于线条元素需要锁定水平或垂直方向
@@ -92,14 +124,19 @@ const createSelection = (e: MouseEvent) => {
       }
 
       else if (creatingElement.value.type === 'line') {
-        if (absX > absY) currentPageY = startPageY
+        lockedDirection = absX > absY ? 'horizontal' : 'vertical'
+        if (lockedDirection === 'horizontal') currentPageY = startPageY
         else currentPageX = startPageX
       }
     }
 
-    end.value = [currentPageX, currentPageY]
+    const target = creatingElement.value.type === 'line' ? getConnection(currentPageX, currentPageY, lockedDirection) : undefined
+    endBinding.value = target?.binding
+    connectionPoint.value = target
+    end.value = [target?.x ?? currentPageX, target?.y ?? currentPageY]
   }
 
+  document.onmousemove = handleMousemove
   document.onmouseup = e => {
     document.onmousemove = null
     document.onmouseup = null
@@ -109,20 +146,30 @@ const createSelection = (e: MouseEvent) => {
       return
     }
 
+    handleMousemove(e)
     isMouseDown = false
 
     const endPageX = e.pageX
     const endPageY = e.pageY
 
     const minSize = 30
+    const isLine = creatingElement.value?.type === 'line'
+    const hasLineBinding = isLine && !!(startBinding.value || endBinding.value)
+
+    if (hasLineBinding && Math.hypot(end.value![0] - start.value![0], end.value![1] - start.value![1]) < 1e-8) {
+      mainStore.setCreatingElement(null)
+      return
+    }
 
     if (
-      creatingElement.value?.type === 'line' &&
-      (Math.abs(endPageX - startPageX) >= minSize || Math.abs(endPageY - startPageY) >= minSize)
+      isLine &&
+      (hasLineBinding || Math.abs(endPageX - startPageX) >= minSize || Math.abs(endPageY - startPageY) >= minSize)
     ) {
       emit('created', {
         start: start.value!,
         end: end.value!,
+        startBinding: startBinding.value,
+        endBinding: endBinding.value,
       })
     }
     else if (
@@ -213,7 +260,7 @@ const position = computed(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 200;
   cursor: crosshair;
 
   svg {

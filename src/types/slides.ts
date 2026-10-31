@@ -398,6 +398,13 @@ export interface PPTShapeElement extends PPTBaseElement {
 export type LinePoint = '' | 'arrow' | 'dot' 
 export type Broken2LineDirection = 'horizontal' | 'vertical'
 
+export type LineConnectionAnchor = 'top' | 'right' | 'bottom' | 'left'
+
+export interface LineBinding {
+  elementId: string
+  anchor: LineConnectionAnchor
+}
+
 /**
  * 线条元素
  * 
@@ -429,6 +436,8 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
   type: 'line'
   start: [number, number]
   end: [number, number]
+  startBinding?: LineBinding
+  endBinding?: LineBinding
   style: LineStyleType
   color: string
   points: [LinePoint, LinePoint]
