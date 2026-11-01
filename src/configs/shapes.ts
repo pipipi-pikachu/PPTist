@@ -1,7 +1,5 @@
 /* eslint-disable max-lines */
 
-// 非专业设计人士可以用该应用绘制基本形状：https://github.com/pipipi-pikachu/svgPathCreator
-
 import { ShapePathFormulasKeys } from '@/types/slides'
 
 export interface ShapePoolItem {
@@ -27,6 +25,18 @@ export interface ShapePathFormula {
   relative?: string[]
   getBaseSize?: ((width: number, height: number) => number)[]
   formula: (width: number, height: number, values?: number[]) => string
+}
+
+// 固定外顶点，按比例移动凹点，保留各星形预置的默认轮廓。
+const getStarPath = (width: number, height: number, points: [number, number][], innerScale: number, viewBoxSize = 200) => {
+  const center = viewBoxSize / 2
+  const path = points.map(([x, y], index) => {
+    const scale = index % 2 === 0 ? 1 : innerScale
+    const pointX = (center + (x - center) * scale) * width / viewBoxSize
+    const pointY = (center + (y - center) * scale) * height / viewBoxSize
+    return `${index === 0 ? 'M' : 'L'} ${pointX} ${pointY}`
+  }).join(' ')
+  return `${path} Z`
 }
 
 export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
@@ -135,11 +145,20 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
     }
   },
   [ShapePathFormulasKeys.ROUND_MESSAGE]: {
-    formula: (width, height) => {
+    editable: true,
+    defaultValue: [0.5, 0.2],
+    range: [[0.21, 1], [0.05, 0.4]],
+    relative: ['left_bottom', 'bottom'],
+    getBaseSize: [
+      (width, height) => width - Math.min(width, height) * 0.4,
+      (width, height) => Math.min(width, height),
+    ],
+    formula: (width, height, values = [0.5, 0.2]) => {
       const radius = Math.min(width, height) * 0.125
       const arrowWidth = Math.min(width, height) * 0.2
-      const arrowheight = Math.min(width, height) * 0.2
-      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${width / 2} ${height - arrowheight} L ${width / 2 - arrowWidth} ${height} L ${width / 2 - arrowWidth} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`
+      const arrowheight = Math.min(width, height) * values[1]
+      const point = (width - arrowWidth * 2) * values[0]
+      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius - arrowheight} Q ${width} ${height - arrowheight} ${width - radius} ${height - arrowheight} L ${point + arrowWidth} ${height - arrowheight} L ${point} ${height} L ${point} ${height - arrowheight} L ${radius} ${height - arrowheight} Q 0 ${height - arrowheight} 0 ${height - radius - arrowheight} L 0 ${radius} Z`
     }
   },
   [ShapePathFormulasKeys.L]: {
@@ -273,6 +292,231 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
     formula: (width, height, values) => {
       const point = width * values![0]
       return `M ${width} ${height / 2} L ${width - point} 0 L 0 0 L ${point} ${height / 2} L 0 ${height} L ${width - point} ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_UP]: {
+    editable: true,
+    defaultValue: [0.5, 0.25],
+    range: [[0.05, 0.95], [0.025, 0.475]],
+    relative: ['top', 'left_bottom'],
+    getBaseSize: [(width, height) => height, width => width],
+    formula: (width, height, values) => {
+      const headSize = height * values![0]
+      const shaftInset = width * values![1]
+      return `M ${width / 2} 0 L 0 ${headSize} L ${shaftInset} ${headSize} L ${shaftInset} ${height} L ${width - shaftInset} ${height} L ${width - shaftInset} ${headSize} L ${width} ${headSize} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_DOWN]: {
+    editable: true,
+    defaultValue: [0.5, 0.25],
+    range: [[0.05, 0.95], [0.025, 0.475]],
+    relative: ['bottom', 'left'],
+    getBaseSize: [(width, height) => height, width => width],
+    formula: (width, height, values) => {
+      const headPos = height * (1 - values![0])
+      const shaftInset = width * values![1]
+      return `M ${width / 2} ${height} L ${width} ${headPos} L ${width - shaftInset} ${headPos} L ${width - shaftInset} 0 L ${shaftInset} 0 L ${shaftInset} ${headPos} L 0 ${headPos} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_LEFT]: {
+    editable: true,
+    defaultValue: [0.5, 0.25],
+    range: [[0.05, 0.95], [0.025, 0.475]],
+    relative: ['left', 'top_right'],
+    getBaseSize: [width => width, (width, height) => height],
+    formula: (width, height, values) => {
+      const headSize = width * values![0]
+      const shaftInset = height * values![1]
+      return `M 0 ${height / 2} L ${headSize} 0 L ${headSize} ${shaftInset} L ${width} ${shaftInset} L ${width} ${height - shaftInset} L ${headSize} ${height - shaftInset} L ${headSize} ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_RIGHT]: {
+    editable: true,
+    defaultValue: [0.5, 0.25],
+    range: [[0.05, 0.95], [0.025, 0.475]],
+    relative: ['right', 'top'],
+    getBaseSize: [width => width, (width, height) => height],
+    formula: (width, height, values) => {
+      const headPos = width * (1 - values![0])
+      const shaftInset = height * values![1]
+      return `M ${width} ${height / 2} L ${headPos} 0 L ${headPos} ${shaftInset} L 0 ${shaftInset} L 0 ${height - shaftInset} L ${headPos} ${height - shaftInset} L ${headPos} ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_UP_DOWN]: {
+    editable: true,
+    defaultValue: [0.3, 0.3],
+    range: [[0.05, 0.45], [0.025, 0.475]],
+    relative: ['top_right', 'left'],
+    getBaseSize: [(width, height) => height, width => width],
+    formula: (width, height, values) => {
+      const headSize = height * values![0]
+      const shaftInset = width * values![1]
+      return `M ${width / 2} 0 L 0 ${headSize} L ${shaftInset} ${headSize} L ${shaftInset} ${height - headSize} L 0 ${height - headSize} L ${width / 2} ${height} L ${width} ${height - headSize} L ${width - shaftInset} ${height - headSize} L ${width - shaftInset} ${headSize} L ${width} ${headSize} Z`
+    }
+  },
+  [ShapePathFormulasKeys.ARROW_LEFT_RIGHT]: {
+    editable: true,
+    defaultValue: [0.3, 0.3],
+    range: [[0.05, 0.45], [0.025, 0.475]],
+    relative: ['left', 'top_right'],
+    getBaseSize: [width => width, (width, height) => height],
+    formula: (width, height, values) => {
+      const headSize = width * values![0]
+      const shaftInset = height * values![1]
+      return `M 0 ${height / 2} L ${headSize} 0 L ${headSize} ${shaftInset} L ${width - headSize} ${shaftInset} L ${width - headSize} 0 L ${width} ${height / 2} L ${width - headSize} ${height} L ${width - headSize} ${height - shaftInset} L ${headSize} ${height - shaftInset} L ${headSize} ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.CHEVRON_RIGHT]: {
+    editable: true,
+    defaultValue: [0.4],
+    range: [[0.05, 0.95]],
+    relative: ['right'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M 0 0 L ${width - point} 0 L ${width} ${height / 2} L ${width - point} ${height} L 0 ${height} L ${point} ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.CHEVRON_LEFT]: {
+    editable: true,
+    defaultValue: [0.4],
+    range: [[0.05, 0.95]],
+    relative: ['left'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M ${point} 0 L ${width} 0 L ${width - point} ${height / 2} L ${width} ${height} L ${point} ${height} L 0 ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.PENTAGON_RIGHT]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.05, 0.95]],
+    relative: ['right'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M 0 0 L ${width - point} 0 L ${width} ${height / 2} L ${width - point} ${height} L 0 ${height} Z`
+    }
+  },
+  [ShapePathFormulasKeys.PENTAGON_LEFT]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.05, 0.95]],
+    relative: ['left'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M ${point} 0 L ${width} 0 L ${width} ${height} L ${point} ${height} L 0 ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.DART_RIGHT]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.05, 0.95]],
+    relative: ['left'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M 0 0 L ${width} ${height / 2} L 0 ${height} L ${point} ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.DART_LEFT]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.05, 0.95]],
+    relative: ['right'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M ${width} 0 L 0 ${height / 2} L ${width} ${height} L ${width - point} ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.STAR_4]: {
+    editable: true,
+    defaultValue: [1],
+    range: [[0.1, 2.4]],
+    relative: ['center'],
+    getBaseSize: [width => width * 0.2],
+    formula: (width, height, values) => getStarPath(width, height, [
+      [100, 0], [120, 80], [200, 100], [120, 120],
+      [100, 200], [80, 120], [0, 100], [80, 80],
+    ], values![0])
+  },
+  [ShapePathFormulasKeys.STAR_5]: {
+    editable: true,
+    defaultValue: [1],
+    range: [[0.1, 1.5]],
+    relative: ['center'],
+    getBaseSize: [width => width * 0.4],
+    formula: (width, height, values) => getStarPath(width, height, [
+      [1018.67652554, 400.05983681], [635.72333775, 394.16825023],
+      [512, 34.78141155], [388.27666225, 394.16825023],
+      [5.32347446, 400.05983681], [311.68602415, 629.83174977],
+      [193.85427437, 995.11017642], [506.10841203, 771.22985005],
+      [818.36255107, 995.11017642], [700.53079991, 629.83174977],
+    ], values![0], 1024)
+  },
+  [ShapePathFormulasKeys.STAR_6]: {
+    editable: true,
+    defaultValue: [1],
+    range: [[0.1, 1.49]],
+    relative: ['center'],
+    getBaseSize: [width => width / Math.sqrt(3)],
+    formula: (width, height, values) => {
+      const outerOffset = 50 * Math.sqrt(3)
+      const innerOffset = 50 / Math.sqrt(3)
+      return getStarPath(width, height, [
+        [100, 0], [100 + innerOffset, 50], [100 + outerOffset, 50], [100 + innerOffset * 2, 100],
+        [100 + outerOffset, 150], [100 + innerOffset, 150], [100, 200], [100 - innerOffset, 150],
+        [100 - outerOffset, 150], [100 - innerOffset * 2, 100], [100 - outerOffset, 50], [100 - innerOffset, 50],
+      ], values![0])
+    }
+  },
+  [ShapePathFormulasKeys.STAR_8]: {
+    editable: true,
+    defaultValue: [1],
+    range: [[0.1, 1.2]],
+    relative: ['center'],
+    getBaseSize: [width => width * 0.7],
+    formula: (width, height, values) => getStarPath(width, height, [
+      [100, 0], [130, 30], [170, 30], [170, 70],
+      [200, 100], [170, 130], [170, 170], [130, 170],
+      [100, 200], [70, 170], [30, 170], [30, 130],
+      [0, 100], [30, 70], [30, 30], [70, 30],
+    ], values![0])
+  },
+  [ShapePathFormulasKeys.HEXAGON]: {
+    editable: true,
+    defaultValue: [0.2],
+    range: [[0.05, 0.45]],
+    relative: ['left'],
+    getBaseSize: [width => width],
+    formula: (width, height, values) => {
+      const point = width * values![0]
+      return `M ${point} 0 L ${width - point} 0 L ${width} ${height / 2} L ${width - point} ${height} L ${point} ${height} L 0 ${height / 2} Z`
+    }
+  },
+  [ShapePathFormulasKeys.HEXAGON_VERTICAL]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.05, 0.45]],
+    relative: ['top'],
+    getBaseSize: [(width, height) => height],
+    formula: (width, height, values) => {
+      const point = height * values![0]
+      return `M ${width / 2} 0 L 0 ${point} L 0 ${height - point} L ${width / 2} ${height} L ${width} ${height - point} L ${width} ${point} Z`
+    }
+  },
+  [ShapePathFormulasKeys.OCTAGON]: {
+    editable: true,
+    defaultValue: [0.3],
+    range: [[0.025, 0.475]],
+    relative: ['left'],
+    getBaseSize: [(width, height) => Math.min(width, height)],
+    formula: (width, height, values) => {
+      const point = Math.min(width, height) * values![0]
+      return `M ${point} 0 L ${width - point} 0 L ${width} ${point} L ${width} ${height - point} L ${width - point} ${height} L ${point} ${height} L 0 ${height - point} L 0 ${point} Z`
     }
   },
 }
@@ -432,10 +676,12 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 40 0 L 160 0 L 200 100 L 160 200 L 40 200 L 0 100 Z',
+        pathFormula: ShapePathFormulasKeys.HEXAGON,
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 0 60 L 0 140 L 100 200 L 200 140 L 200 60 L 100 0 Z'
+        path: 'M 100 0 L 0 60 L 0 140 L 100 200 L 200 140 L 200 60 L 100 0 Z',
+        pathFormula: ShapePathFormulasKeys.HEXAGON_VERTICAL,
       },
       {
         viewBox: [200, 200],
@@ -444,6 +690,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 60 0 L 140 0 L 200 60 L 200 140 L 140 200 L 60 200 L 0 140 L 0 60 L 60 0 Z',
+        pathFormula: ShapePathFormulasKeys.OCTAGON,
       },
       {
         viewBox: [200, 200],
@@ -534,7 +781,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 40 Q 0 0 40 0 L 160 0 Q 200 0 200 40 L 200 120 Q 200 160 160 160 L 100 160 L 60 200 L 60 160 L 40 160 Q 0 160 0 120 L 0 40 Z',
+        path: 'M 0 25 Q 0 0 25 0 L 175 0 Q 200 0 200 25 L 200 135 Q 200 160 175 160 L 100 160 L 60 200 L 60 160 L 25 160 Q 0 160 0 135 L 0 25 Z',
         pathFormula: ShapePathFormulasKeys.ROUND_MESSAGE,
       },
       {
@@ -564,22 +811,22 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 120 80 L 200 100 L 120 120 L 100 200 L 80 120 L 0 100 L 80 80 L 100 0 Z',
+        pathFormula: ShapePathFormulasKeys.STAR_4,
       },
       {
         viewBox: [1024, 1024],
         path: 'M1018.67652554 400.05983681l-382.95318779-5.89158658L512 34.78141155 388.27666225 394.16825023l-382.95318779 5.89158658L311.68602415 629.83174977l-117.83174978 365.27842665 312.25413766-223.88032637 312.25413904 223.88032637-117.83175116-365.27842665 318.14572563-229.77191296z',
+        pathFormula: ShapePathFormulasKeys.STAR_5,
       },
       {
         viewBox: [200, 200],
-        path: 'M 100 0 L 60 60 L 0 100 L 60 140 L 100 200 L 140 140 L 200 100 L 140 60 L 100 0 Z',
-      },
-      {
-        viewBox: [200, 200],
-        path: 'M 100 0 L 140 60 L 200 60 L 160 100 L 200 140 L 140 140 L 100 200 L 60 140 L 0 140 L 40 100 L 0 60 L 60 60 L 100 0 Z',
+        path: SHAPE_PATH_FORMULAS[ShapePathFormulasKeys.STAR_6].formula(200, 200, [1]),
+        pathFormula: ShapePathFormulasKeys.STAR_6,
       },
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 130 30 L 170 30 L 170 70 L 200 100 L 170 130 L 170 170 L 130 170 L 100 200 L 70 170 L 30 170 L 30 130 L 0 100 L 30 70 L 30 30 L 70 30 L 100 0',
+        pathFormula: ShapePathFormulasKeys.STAR_8,
       },
       {
         viewBox: [200, 200],
@@ -643,26 +890,32 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 0 100 L 50 100 L 50 200 L 150 200 L 150 100 L 200 100 L 100 0 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_UP,
       },
       {
         viewBox: [200, 200],
         path: 'M 100 200 L 200 100 L 150 100 L 150 0 L 50 0 L 50 100 L 0 100 L 100 200 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_DOWN,
       },
       {
         viewBox: [200, 200],
         path: 'M 0 100 L 100 0 L 100 50 L 200 50 L 200 150 L 100 150 L 100 200 L 0 100 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_LEFT,
       },
       {
         viewBox: [200, 200],
         path: 'M 200 100 L 100 0 L 100 50 L 0 50 L 0 150 L 100 150 L 100 200 L 200 100 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_RIGHT,
       },
       {
         viewBox: [200, 200],
         path: 'M 100 0 L 0 60 L 60 60 L 60 140 L 0 140 L 100 200 L 200 140 L 140 140 L 140 60 L 200 60 L 100 0 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_UP_DOWN,
       },
       {
         viewBox: [200, 200],
         path: 'M 0 100 L 60 0 L 60 60 L 140 60 L 140 0 L 200 100 L 140 200 L 140 140 L 60 140 L 60 200 L 0 100 Z',
+        pathFormula: ShapePathFormulasKeys.ARROW_LEFT_RIGHT,
       },
       {
         viewBox: [200, 200],
@@ -687,34 +940,32 @@ export const SHAPE_LIST: ShapeListItem[] = [
       {
         viewBox: [200, 200],
         path: 'M 0 0 L 120 0 L 200 100 L 120 200 L 0 200 L 80 100 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.CHEVRON_RIGHT,
       },
       {
         viewBox: [200, 200],
         path: 'M 80 0 L 200 0 L 120 100 L 200 200 L 80 200 L 0 100 L 80 0 Z',
+        pathFormula: ShapePathFormulasKeys.CHEVRON_LEFT,
       },
       {
         viewBox: [200, 200],
         path: 'M 0 0 L 140 0 L 200 100 L 140 200 L 0 200 L 0 100 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.PENTAGON_RIGHT,
       },
       {
         viewBox: [200, 200],
-        path: 'M 60 0 L 200 0 L 200 100 L 200 200 L 60 200 L 0 100 L 60 0 Z'
+        path: 'M 60 0 L 200 0 L 200 100 L 200 200 L 60 200 L 0 100 L 60 0 Z',
+        pathFormula: ShapePathFormulasKeys.PENTAGON_LEFT,
       },
       {
         viewBox: [200, 200],
-        path: 'M 0 0 L 200 100 L 0 200 L 60 100 L 0 0 Z'
+        path: 'M 0 0 L 200 100 L 0 200 L 60 100 L 0 0 Z',
+        pathFormula: ShapePathFormulasKeys.DART_RIGHT,
       },
       {
         viewBox: [200, 200],
-        path: 'M 200 0 L 0 100 L 200 200 L 140 100 L 200 0 Z'
-      },
-      {
-        viewBox: [200, 200],
-        path: 'M 0 0 L 80 0 L 200 100 L 80 200 L 0 200 L 120 100 L 0 0 Z'
-      },
-      {
-        viewBox: [200, 200],
-        path: 'M 200 0 L 120 0 L 0 100 L 120 200 L 200 200 L 80 100 L 200 0 Z'
+        path: 'M 200 0 L 0 100 L 200 200 L 140 100 L 200 0 Z',
+        pathFormula: ShapePathFormulasKeys.DART_LEFT,
       },
       {
         viewBox: [200, 200],

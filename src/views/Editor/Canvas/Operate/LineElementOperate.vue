@@ -118,7 +118,7 @@ const resizeHandlers = computed(() => {
 
 <style lang="scss" scoped>
 .operate-resize-handler.connected {
-  background-color: $themeColor;
+  border: 2px solid $themeColor;
   border-radius: 50%;
 }
 svg {
