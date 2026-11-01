@@ -1,0 +1,221 @@
+@mixin slide-animation() {
+  &.turning-mode-no {
+    &.before {
+      transform: translateY(-100%);
+    }
+    &.after {
+      transform: translateY(100%);
+    }
+  }
+  &.turning-mode-fade {
+    transition: opacity .75s;
+    &.before {
+      pointer-events: none;
+      opacity: 0;
+    }
+    &.after {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+  &.turning-mode-slideX {
+    transition: transform .35s;
+    &.before {
+      transform: translateX(-100%);
+    }
+    &.after {
+      transform: translateX(100%);
+    }
+  }
+  &.turning-mode-slideY {
+    transition: transform .35s;
+    &.before {
+      transform: translateY(-100%);
+    }
+    &.after {
+      transform: translateY(100%);
+    }
+  }
+  &.turning-mode-slideX3D {
+    transition: transform .5s;
+    &.before {
+      transform: translateX(-100%) scale(.5);
+    }
+    &.after {
+      transform: translateX(100%) scale(.5);
+    }
+  }
+  &.turning-mode-slideY3D {
+    transition: transform .5s;
+    &.before {
+      transform: translateY(-100%) scale(.5);
+    }
+    &.after {
+      transform: translateY(100%) scale(.5);
+    }
+  }
+  &.turning-mode-rotate {
+    transition: transform .5s;
+    transform-origin: 0 0;
+    &.before {
+      transform: rotate(90deg);
+    }
+    &.after {
+      transform: rotate(-90deg);
+    }
+  }
+  &.turning-mode-scaleY {
+    transition: transform .5s;
+    &.before {
+      transform: scaleY(.1);
+    }
+    &.after {
+      transform: scaleY(.1);
+    }
+  }
+  &.turning-mode-scaleX {
+    transition: transform .5s;
+    &.before {
+      transform: scaleX(.1);
+    }
+    &.after {
+      transform: scaleX(.1);
+    }
+  }
+  &.turning-mode-scale {
+    transition: transform .5s;
+    &.before {
+      transform: scale(.25);
+    }
+    &.after {
+      transform: scale(.25);
+    }
+  }
+  &.turning-mode-scaleReverse {
+    transition: transform .5s;
+    &.before {
+      transform: scale(2);
+    }
+    &.after {
+      transform: scale(2);
+    }
+  }
+  &.turning-mode-wipeX {
+    clip-path: inset(0);
+    transition: clip-path .5s;
+    &.before {
+      clip-path: inset(0 100% 0 0);
+    }
+    &.after {
+      clip-path: inset(0 0 0 100%);
+    }
+  }
+  &.turning-mode-wipeY {
+    clip-path: inset(0);
+    transition: clip-path .5s;
+    &.before {
+      clip-path: inset(0 0 100% 0);
+    }
+    &.after {
+      clip-path: inset(100% 0 0 0);
+    }
+  }
+
+  // 揭幕时保留退场页，动画结束后隐藏，避免提前露出下一页。
+  @each $mode in circle, diamond, revealX, revealY {
+    &.turning-mode-#{$mode} {
+      visibility: hidden;
+      transition: visibility 0s .5s;
+      &.current {
+        visibility: visible;
+        transition: none;
+        animation: #{$mode} .5s;
+      }
+      &.before, &.after {
+        pointer-events: none;
+      }
+    }
+  }
+
+  &.turning-mode-slideDiagonal {
+    transition: transform .5s;
+    &.before {
+      transform: translate(-100%, -100%);
+    }
+    &.after {
+      transform: translate(100%, 100%);
+    }
+  }
+  &.turning-mode-slideDiagonalReverse {
+    transition: transform .5s;
+    &.before {
+      transform: translate(100%, -100%);
+    }
+    &.after {
+      transform: translate(-100%, 100%);
+    }
+  }
+  &.turning-mode-flipY {
+    transform: perspective(200vmax) rotateY(0deg);
+    transition: transform .5s, opacity .5s;
+    backface-visibility: hidden;
+    &.before {
+      transform: perspective(200vmax) rotateY(-90deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    &.after {
+      transform: perspective(200vmax) rotateY(90deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  &.turning-mode-flipX {
+    transform: perspective(200vmax) rotateX(0deg);
+    transition: transform .5s, opacity .5s;
+    backface-visibility: hidden;
+    &.before {
+      transform: perspective(200vmax) rotateX(90deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+    &.after {
+      transform: perspective(200vmax) rotateX(-90deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+@keyframes circle {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+@keyframes diamond {
+  from {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
+  to {
+    clip-path: polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%);
+  }
+}
+@keyframes revealX {
+  from {
+    clip-path: inset(0 50%);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes revealY {
+  from {
+    clip-path: inset(50% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}

@@ -403,21 +403,36 @@ $attentionColor: #e8b76a;
     @include absolute-0();
   }
 
-  &.in .type-title {
-    border-left-color: $inColor;
-    background-color: rgba($color: $inColor, $alpha: .15);
+  &.in {
+    --animation-color: #{$inColor};
+    --animation-background: #{rgba($color: $inColor, $alpha: .08)};
+
+    .type-title {
+      border-left-color: $inColor;
+      background-color: rgba($color: $inColor, $alpha: .15);
+    }
   }
-  &.out .type-title {
-    border-left-color: $outColor;
-    background-color: rgba($color: $outColor, $alpha: .15);
+  &.out {
+    --animation-color: #{$outColor};
+    --animation-background: #{rgba($color: $outColor, $alpha: .08)};
+
+    .type-title {
+      border-left-color: $outColor;
+      background-color: rgba($color: $outColor, $alpha: .15);
+    }
   }
-  &.attention .type-title {
-    border-left-color: $attentionColor;
-    background-color: rgba($color: $attentionColor, $alpha: .15);
+  &.attention {
+    --animation-color: #{$attentionColor};
+    --animation-background: #{rgba($color: $attentionColor, $alpha: .08)};
+
+    .type-title {
+      border-left-color: $attentionColor;
+      background-color: rgba($color: $attentionColor, $alpha: .15);
+    }
   }
 }
 .pool-type:not(:last-child) {
-  margin-bottom: 5px;
+  margin-bottom: 12px;
 }
 .type-title {
   width: 100%;
@@ -428,20 +443,42 @@ $attentionColor: #e8b76a;
   padding: 4px 0 4px 10px;
 }
 .pool-item-wrapper {
-  @include flex-grid-layout();
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
 }
 .pool-item {
-  @include flex-grid-layout-children(4, 24%);
-
-  margin-bottom: 5px;
-  height: 40px;
-  line-height: 40px;
+  min-width: 0;
+  height: 48px;
+  padding: 3px;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  background-color: #fff;
+  display: flex;
+  line-height: 1.4;
   text-align: center;
   cursor: pointer;
+  user-select: none;
+  transition: border-color $transitionDelayFast;
+
+  &:hover {
+    border-color: var(--animation-color);
+
+    .animation-box {
+      background-color: var(--animation-background);
+    }
+  }
 }
 .animation-box {
+  width: 100%;
+  height: 100%;
+  padding: 3px;
   background-color: $lightGray;
   border-radius: $borderRadius;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color $transitionDelayFast;
 }
 
 .animation-sequence {

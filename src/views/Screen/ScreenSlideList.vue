@@ -62,6 +62,8 @@ provide(injectKeySlideScale, scale)
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/slideAnimation.scss';
+
 .screen-slide-list {
   background: #1d1d1d;
   position: relative;
@@ -87,107 +89,7 @@ provide(injectKeySlideScale, scale)
     opacity: 0;
   }
 
-  &.turning-mode-no {
-    &.before {
-      transform: translateY(-100%);
-    }
-    &.after {
-      transform: translateY(100%);
-    }
-  }
-  &.turning-mode-fade {
-    transition: opacity .75s;
-    &.before {
-      pointer-events: none;
-      opacity: 0;
-    }
-    &.after {
-      pointer-events: none;
-      opacity: 0;
-    }
-  }
-  &.turning-mode-slideX {
-    transition: transform .35s;
-    &.before {
-      transform: translateX(-100%);
-    }
-    &.after {
-      transform: translateX(100%);
-    }
-  }
-  &.turning-mode-slideY {
-    transition: transform .35s;
-    &.before {
-      transform: translateY(-100%);
-    }
-    &.after {
-      transform: translateY(100%);
-    }
-  }
-  &.turning-mode-slideX3D {
-    transition: transform .5s;
-    &.before {
-      transform: translateX(-100%) scale(.5);
-    }
-    &.after {
-      transform: translateX(100%) scale(.5);
-    }
-  }
-  &.turning-mode-slideY3D {
-    transition: transform .5s;
-    &.before {
-      transform: translateY(-100%) scale(.5);
-    }
-    &.after {
-      transform: translateY(100%) scale(.5);
-    }
-  }
-  &.turning-mode-rotate {
-    transition: transform .5s;
-    transform-origin: 0 0;
-    &.before {
-      transform: rotate(90deg);
-    }
-    &.after {
-      transform: rotate(-90deg);
-    }
-  }
-  &.turning-mode-scaleY {
-    transition: transform .5s;
-    &.before {
-      transform: scaleY(.1);
-    }
-    &.after {
-      transform: scaleY(.1);
-    }
-  }
-  &.turning-mode-scaleX {
-    transition: transform .5s;
-    &.before {
-      transform: scaleX(.1);
-    }
-    &.after {
-      transform: scaleX(.1);
-    }
-  }
-  &.turning-mode-scale {
-    transition: transform .5s;
-    &.before {
-      transform: scale(.25);
-    }
-    &.after {
-      transform: scale(.25);
-    }
-  }
-  &.turning-mode-scaleReverse {
-    transition: transform .5s;
-    &.before {
-      transform: scale(2);
-    }
-    &.after {
-      transform: scale(2);
-    }
-  }
+  @include slide-animation();
 }
 .slide-content {
   background-color: #fff;

@@ -134,6 +134,8 @@ const touchEndListener = (e: TouchEvent) => {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/slideAnimation.scss';
+
 .mobile-player {
   transform-origin: 0 0;
   background-color: #1d1d1d;
@@ -163,43 +165,7 @@ const touchEndListener = (e: TouchEvent) => {
     opacity: 0;
   }
 
-  &.turning-mode-no {
-    &.before {
-      transform: translateY(-100%);
-    }
-    &.after {
-      transform: translateY(100%);
-    }
-  }
-  &.turning-mode-fade {
-    transition: opacity .75s;
-    &.before {
-      pointer-events: none;
-      opacity: 0;
-    }
-    &.after {
-      pointer-events: none;
-      opacity: 0;
-    }
-  }
-  &.turning-mode-slideX {
-    transition: transform .35s;
-    &.before {
-      transform: translateX(-100%);
-    }
-    &.after {
-      transform: translateX(100%);
-    }
-  }
-  &.turning-mode-slideY {
-    transition: transform .35s;
-    &.before {
-      transform: translateY(-100%);
-    }
-    &.after {
-      transform: translateY(100%);
-    }
-  }
+  @include slide-animation();
 }
 .slide-content {
   background-color: #fff;

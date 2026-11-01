@@ -753,6 +753,7 @@ export interface SlideBackground {
 
 
 export type TurningMode = 'no' | 'fade' | 'slideX' | 'slideY' | 'random' | 'slideX3D' | 'slideY3D' | 'rotate' | 'scaleY' | 'scaleX' | 'scale' | 'scaleReverse'
+  | 'wipeX' | 'wipeY' | 'circle' | 'diamond' | 'slideDiagonal' | 'slideDiagonalReverse' | 'revealX' | 'revealY' | 'flipY' | 'flipX'
 
 export interface NoteReply {
   id: string

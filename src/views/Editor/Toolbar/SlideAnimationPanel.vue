@@ -1,16 +1,20 @@
 <template>
   <div class="slide-animation-panel">
     <div class="animation-pool">
-      <div 
+      <button
+        type="button"
         class="animation-item" 
         :class="{ 'active': currentTurningMode === item.value }" 
         v-for="item in animations" 
-        :key="item.label"
+        :key="item.value"
+        :aria-pressed="currentTurningMode === item.value"
         @click="updateTurningMode(item.value)"
+        @keydown.enter.stop
+        @keydown.space.stop
+        @keydown.tab.stop
       >
-        <div :class="['animation-block', item.value]">P</div>
-        <div class="animation-text">{{item.label}}</div>
-      </div>
+        <span :class="['animation-block', item.value]" :data-label="item.label">{{item.label}}</span>
+      </button>
     </div>
     <Button style="width: 100%;" @click="applyAllSlide()"><i-icon-park-outline:check /> 应用到全部</Button>
   </div>
@@ -58,51 +62,67 @@ const applyAllSlide = () => {
 
 <style lang="scss" scoped>
 .animation-pool {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 10px;
 }
 .animation-item {
-  width: 50%;
-  height: 100px;
-  border: solid 1px #d6d6d6;
+  min-width: 0;
+  height: 56px;
+  padding: 4px;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  background-color: #fff;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0 15px 0;
   position: relative;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  color: $textColor;
+  text-align: center;
+  outline: 0;
   cursor: pointer;
+  user-select: none;
+  transition: border-color $transitionDelayFast, box-shadow $transitionDelayFast;
+
+  &:hover, &:focus-visible {
+    border-color: rgba($color: $themeColor, $alpha: .5);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($color: $themeColor, $alpha: .3);
+    outline-offset: 2px;
+  }
 
   &.active {
     border-color: $themeColor;
-    background-color: rgba($color: $themeColor, $alpha: .05);
-    z-index: 1;
-  }
+    box-shadow: inset 0 0 0 1px $themeColor;
 
-  &:nth-child(2n) {
-    margin-left: -1px;
-  }
-  &:nth-child(n+3) {
-    margin-top: -1px;
+    .animation-block {
+      background-color: rgba($color: $themeColor, $alpha: .08);
+      color: $themeColor;
+    }
   }
 }
 .animation-block {
-  width: 64px;
-  height: 36px;
-  background: #666;
+  width: 100%;
+  height: 100%;
+  padding: 4px;
+  border-radius: $borderRadius;
+  background-color: $lightGray;
   position: relative;
   overflow: hidden;
-  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
 
   @mixin elAnimation($animationType) {
-    content: 'PPTist';
+    content: attr(data-label);
     width: 100%;
     height: 100%;
+    padding: 4px;
     position: absolute;
     left: 0;
     top: 0;
@@ -111,65 +131,21 @@ const applyAllSlide = () => {
     display: flex;
     justify-content: center;
     align-items: center;
+    pointer-events: none;
     animation: $animationType $transitionDelaySlow linear;
   }
 
-  &.fade:hover {
-    &::after {
-      @include elAnimation(fade);
+  @each $mode in fade, slideX, slideY, slideX3D, slideY3D, rotate, scaleY, scaleX, scale, scaleReverse, wipeX, wipeY, circle, diamond, slideDiagonal, slideDiagonalReverse, revealX, revealY, flipY, flipX {
+    &.#{$mode}::after {
+      .animation-item:hover &, .animation-item:focus-visible & {
+        @include elAnimation($mode);
+      }
     }
   }
-  &.slideX:hover {
-    &::after {
-      @include elAnimation(slideX);
-    }
+
+  &.rotate::after {
+    transform-origin: 0 0;
   }
-  &.slideY:hover {
-    &::after {
-      @include elAnimation(slideY);
-    }
-  }
-  &.slideX3D:hover {
-    &::after {
-      @include elAnimation(slideX3D);
-    }
-  }
-  &.slideY3D:hover {
-    &::after {
-      @include elAnimation(slideY3D);
-    }
-  }
-  &.rotate:hover {
-    &::after {
-      transform-origin: 0 0;
-      @include elAnimation(rotate);
-    }
-  }
-  &.scaleY:hover {
-    &::after {
-      @include elAnimation(scaleY);
-    }
-  }
-  &.scaleX:hover {
-    &::after {
-      @include elAnimation(scaleX);
-    }
-  }
-  &.scale:hover {
-    &::after {
-      @include elAnimation(scale);
-    }
-  }
-  &.scaleReverse:hover {
-    &::after {
-      @include elAnimation(scaleReverse);
-    }
-  }
-}
-.animation-text {
-  font-size: 12px;
-  color: #333;
-  text-align: center;
 }
 
 @keyframes fade {
@@ -250,6 +226,90 @@ const applyAllSlide = () => {
   }
   100% {
     transform: scale(1);
+  }
+}
+@keyframes wipeX {
+  from {
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes wipeY {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes circle {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+@keyframes diamond {
+  from {
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+  }
+  to {
+    clip-path: polygon(50% -50%, 150% 50%, 50% 150%, -50% 50%);
+  }
+}
+@keyframes slideDiagonal {
+  from {
+    transform: translate(100%, 100%);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+@keyframes slideDiagonalReverse {
+  from {
+    transform: translate(-100%, 100%);
+  }
+  to {
+    transform: translate(0, 0);
+  }
+}
+@keyframes revealX {
+  from {
+    clip-path: inset(0 50%);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes revealY {
+  from {
+    clip-path: inset(50% 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@keyframes flipY {
+  from {
+    transform: perspective(128px) rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(128px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+@keyframes flipX {
+  from {
+    transform: perspective(128px) rotateX(-90deg);
+    opacity: 0;
+  }
+  to {
+    transform: perspective(128px) rotateX(0deg);
+    opacity: 1;
   }
 }
 </style>
