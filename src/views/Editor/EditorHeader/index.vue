@@ -3,7 +3,7 @@
     <div class="left">
       <Popover trigger="click" placement="bottom-start" v-model:value="mainMenuVisible">
         <template #content>
-          <div class="main-menu">
+          <div class="main-menu" v-if="ENABLE_AI">
             <div class="ai-menu" @click="openAIPPTDialog(); mainMenuVisible = false">
               <div class="icon"><i-custom:click /></div>
               <div class="aippt-content">
@@ -44,6 +44,7 @@
           </div>
           <Divider :margin="10" />
           <PopoverMenuItem class="popover-menu-item" @click="setDialogForExport('pptx')"><i-icon-park-outline:download class="icon" /> 导出文件</PopoverMenuItem>
+          <PopoverMenuItem class="popover-menu-item" v-if="viewUrl" @click="copyViewLink()"><i-icon-park-outline:link class="icon" /> 复制只读链接</PopoverMenuItem>
           <Divider :margin="10" />
           <PopoverMenuItem class="popover-menu-item" @click="resetSlides(); mainMenuVisible = false"><i-icon-park-outline:refresh class="icon" /> 重置幻灯片</PopoverMenuItem>
           <PopoverMenuItem class="popover-menu-item" @click="openMarkupPanel(); mainMenuVisible = false"><i-icon-park-outline:mark class="icon" /> 幻灯片类型标注</PopoverMenuItem>
@@ -71,6 +72,7 @@
           v-else
         >{{ title }}</div>
       </div>
+      <div class="save-status" :class="saveStatus" v-if="docId">{{ saveStatusText }}</div>
     </div>
 
     <div class="right">
@@ -86,7 +88,7 @@
           <div class="arrow-btn"><i-icon-park-outline:down class="arrow" /></div>
         </Popover>
       </div>
-      <div class="menu-item" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
+      <div class="menu-item" v-if="ENABLE_AI" v-tooltip="'AI生成PPT'" @click="openAIPPTDialog(); mainMenuVisible = false">
         <span class="text ai">AI</span>
       </div>
       <div class="menu-item" v-tooltip="'导出'" @click="setDialogForExport('pptx')">
@@ -111,12 +113,14 @@
 </template>
 
 <script lang="ts" setup>
-import { nextTick, ref, useTemplateRef } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore, useDocumentStore } from '@/store'
+import { ENABLE_AI } from '@/configs/collab'
 import useScreening from '@/hooks/useScreening'
 import useImport from '@/hooks/useImport'
 import useSlideHandler from '@/hooks/useSlideHandler'
+import message from '@/utils/message'
 import type { DialogForExportTypes } from '@/types/export'
 
 import HotkeyDoc from './HotkeyDoc.vue'
@@ -130,7 +134,9 @@ import Divider from '@/components/Divider.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
+const documentStore = useDocumentStore()
 const { title } = storeToRefs(slidesStore)
+const { docId, viewUrl, saveStatus, lastRemoteSummary } = storeToRefs(documentStore)
 const { enterScreening, enterScreeningFromStart } = useScreening()
 const { importSpecificFile, importPPTXFile, importJSON, exporting } = useImport()
 const { resetSlides } = useSlideHandler()
@@ -150,6 +156,31 @@ const startEditTitle = () => {
 const handleUpdateTitle = () => {
   slidesStore.setTitle(titleValue.value)
   editingTitle.value = false
+}
+
+const saveStatusText = computed(() => ({
+  saved: '已保存',
+  saving: '保存中 ...',
+  dirty: '未保存',
+  offline: '离线',
+  conflict: '冲突',
+})[saveStatus.value])
+
+// 收到 Agent 更新时弹出简短提示，内容为摘要的前 3 条
+watch(lastRemoteSummary, summary => {
+  if (!summary.length) return
+  message.info(summary.slice(0, 3).join('；'), { title: 'Agent 更新了文档' })
+})
+
+const copyViewLink = async () => {
+  try {
+    await navigator.clipboard.writeText(viewUrl.value)
+    message.success('只读链接已复制')
+  }
+  catch {
+    message.error('复制失败')
+  }
+  mainMenuVisible.value = false
 }
 
 const goLink = (url: string) => {
@@ -360,6 +391,19 @@ const openAIPPTDialog = () => {
     &:hover {
       background-color: #f1f1f1;
     }
+  }
+}
+.save-status {
+  font-size: 12px;
+  color: #999;
+  margin-left: 8px;
+  flex-shrink: 0;
+
+  &.saving {
+    color: $themeColor;
+  }
+  &.dirty, &.offline, &.conflict {
+    color: #faad14;
   }
 }
 .github-link {

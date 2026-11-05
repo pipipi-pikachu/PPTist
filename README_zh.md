@@ -11,6 +11,8 @@
 
 简体中文 | [English](README.md)
 
+> **本 Fork 说明**：在 PPTist 上游基础上新增自托管服务端 `server/`——多用户 Key 鉴权、文档服务、面向 Agent 的远程 MCP 端点、服务端导出与 Docker 部署，详见 [server/README.md](server/README.md)。许可证沿用上游 AGPL-3.0；上游源码：[pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)。
+
 
 # 🎨 PPTist
 **PowerPoint-ist（/'pauəpɔintist/）**，一个基于 Web 的在线演示文稿（幻灯片）应用，还原了大部分 Office PowerPoint 常用功能，支持 文字、图片、形状、线条、图表、表格、视频、音频、公式 几种最常用的元素类型，可以在 Web 浏览器中编辑/演示幻灯片。

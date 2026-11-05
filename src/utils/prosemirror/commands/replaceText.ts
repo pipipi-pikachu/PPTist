@@ -1,5 +1,5 @@
-import { EditorView } from 'prosemirror-view'
-import { Mark, NodeType, Node } from 'prosemirror-model'
+import type { EditorView } from 'prosemirror-view'
+import type { Mark, NodeType, Node } from 'prosemirror-model'
 
 export const replaceText = (view: EditorView, newText: string) => {
   const { state } = view

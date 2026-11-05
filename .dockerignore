@@ -1,0 +1,22 @@
+.git
+.husky
+.github
+.vscode
+
+node_modules
+dist
+server/node_modules
+server/dist
+server/data
+data
+
+coverage
+logs
+*.log
+*.tsbuildinfo
+
+# 本地秘密文件不进构建上下文
+.env
+.env.*
+*.local
+*.pem

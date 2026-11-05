@@ -480,9 +480,8 @@ export default () => {
     return isSVGBase64 || isSVGUrl
   }
 
-  // 导出PPTX文件
-  const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
-    exporting.value = true
+  // 构建PPTX对象（不写文件），供 exportPPTX 和服务端无头导出复用
+  const buildPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean): pptxgen => {
     const pptx = new pptxgen()
     setPPTXLayout(pptx)
 
@@ -988,7 +987,7 @@ export default () => {
           const extMatch = el.src.match(/\.([a-zA-Z0-9]+)(?:[\?#]|$)/)
           if (extMatch && extMatch[1]) options.extn = extMatch[1]
           else if (el.ext) options.extn = el.ext
-          
+
           const videoExts = ['avi', 'mp4', 'm4v', 'mov', 'wmv']
           const audioExts = ['mp3', 'm4a', 'mp4', 'wav', 'wma']
           if (options.extn && [...videoExts, ...audioExts].includes(options.extn)) {
@@ -997,6 +996,14 @@ export default () => {
         }
       }
     }
+
+    return pptx
+  }
+
+  // 导出PPTX文件
+  const exportPPTX = (_slides: Slide[], masterOverwrite: boolean, ignoreMedia: boolean) => {
+    exporting.value = true
+    const pptx = buildPPTX(_slides, masterOverwrite, ignoreMedia)
 
     setTimeout(() => {
       pptx.writeFile({ fileName: `${title.value}.pptx` }).then(() => exporting.value = false).catch(() => {
@@ -1013,5 +1020,6 @@ export default () => {
     exportJSON,
     exportSpecificFile,
     exportPPTX,
+    buildPPTX,
   }
 }

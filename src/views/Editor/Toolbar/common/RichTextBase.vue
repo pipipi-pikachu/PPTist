@@ -124,7 +124,7 @@
     </ButtonGroup>
 
     <ButtonGroup class="row" passive>
-      <Popover trigger="click" v-model:value="AIPopoverVisible" style="width: 25%;">
+      <Popover trigger="click" v-model:value="AIPopoverVisible" style="width: 25%;" v-if="ENABLE_AI">
         <template #content>
           <PopoverMenuItem center @click="execAI('美化改写')">美化</PopoverMenuItem>
           <PopoverMenuItem center @click="execAI('扩写丰富')">扩写</PopoverMenuItem>
@@ -264,6 +264,7 @@ import api from '@/services'
 import { useMainStore } from '@/store'
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { FONTS } from '@/configs/font'
+import { ENABLE_AI } from '@/configs/collab'
 import useTextFormatPainter from '@/hooks/useTextFormatPainter'
 import message from '@/utils/message'
 import { htmlToText } from '@/utils/common'

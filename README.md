@@ -11,6 +11,8 @@
 
 [简体中文](README_zh.md) | English
 
+> **About this fork**: adds a self-hosted backend under `server/` — multi-user API keys, a document service, a remote MCP endpoint for agents, server-side export, and Docker deployment. See [server/README.md](server/README.md). The license remains AGPL-3.0; upstream source: [pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist).
+
 
 # 🎨 PPTist
 **PowerPoint-ist（/'pauəpɔintist/）**, A web-based presentation (slideshow) application. This application replicates most of the commonly used features of Microsoft Office PowerPoint. It supports various essential element types such as text, images, shapes, lines, charts, tables, videos, audio, and formulas. You can edit and present slides directly in a web browser.

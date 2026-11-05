@@ -1,0 +1,43 @@
+name: pptist
+
+services:
+  app:
+    build: .
+    image: pptist-app:local
+    environment:
+      DATA_DIR: /data
+      PORT: 3100
+      HOST: 0.0.0.0
+      # 拼编辑/只读链接用。本地演练用 127.0.0.1；生产改为 https://YOUR_DOMAIN
+      PUBLIC_BASE_URL: http://127.0.0.1:3100
+      # 无头浏览器与 server 在同一容器内，直接自指即可
+      RENDER_BASE_URL: http://127.0.0.1:3100
+    volumes:
+      - ./data:/data
+    ports:
+      # 宿主端口避开 3000/3030/4000
+      - "3100:3100"
+    restart: unless-stopped
+    # compose v2 非 swarm 模式生效；swarm 模式请改用 deploy.resources.limits.memory
+    mem_limit: 3g
+
+  # HTTPS 反代（自动签发/续期证书）。默认 profile 不启动：
+  # 本地验收 `docker compose up -d` 只起 app（宿主 3100）；
+  # 生产部署 `docker compose --profile https up -d`（需要宿主 80/443 可用）
+  caddy:
+    image: caddy:2
+    profiles: ["https"]
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:
+  caddy_config:

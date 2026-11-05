@@ -34,6 +34,7 @@
   </Modal>
 
   <Modal
+    v-if="ENABLE_AI"
     :visible="!!showAIPPTDialog" 
     :width="720"
     :closeOnClickMask="false"
@@ -50,6 +51,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
+import { ENABLE_AI } from '@/configs/collab'
 import useGlobalHotkey from '@/hooks/useGlobalHotkey'
 import usePasteEvent from '@/hooks/usePasteEvent'
 

@@ -15,12 +15,12 @@
   >
     <div class="container">
       <div class="notes" ref="notesRef">
-        <div class="note" :class="{ 'active': activeNoteId === note.id }" v-for="note in notes" :key="note.id" @click="handleClickNote(note)">
+        <div class="note" :class="{ 'active': activeNoteId === note.id, 'agent': note.user === AGENT_NAME }" v-for="note in notes" :key="note.id" @click="handleClickNote(note)">
           <div class="header note-header">
             <div class="user">
-              <div class="avatar"><i-icon-park-outline:user /></div>
+              <div class="avatar"><i-icon-park-outline:robot v-if="note.user === AGENT_NAME" /><i-icon-park-outline:user v-else /></div>
               <div class="user-info">
-                <div class="username">{{ note.user }}</div>
+                <div class="username">{{ note.user }}<span class="agent-badge" v-if="note.user === AGENT_NAME">Agent</span></div>
                 <div class="time">{{ new Date(note.time).toLocaleString() }}</div>
               </div>
             </div>
@@ -31,12 +31,12 @@
           </div>
           <div class="content">{{ note.content }}</div>
           <div class="replies" v-if="note.replies?.length">
-            <div class="reply-item" v-for="reply in note.replies" :key="reply.id">
+            <div class="reply-item" :class="{ 'agent': reply.user === AGENT_NAME }" v-for="reply in note.replies" :key="reply.id">
               <div class="header reply-header">
                 <div class="user">
-                  <div class="avatar"><i-icon-park-outline:user /></div>
+                  <div class="avatar"><i-icon-park-outline:robot v-if="reply.user === AGENT_NAME" /><i-icon-park-outline:user v-else /></div>
                   <div class="user-info">
-                    <div class="username">{{ reply.user }}</div>
+                    <div class="username">{{ reply.user }}<span class="agent-badge" v-if="reply.user === AGENT_NAME">Agent</span></div>
                     <div class="time">{{ new Date(reply.time).toLocaleString() }}</div>
                   </div>
                 </div>
@@ -81,6 +81,7 @@ import { ref, computed, watch, nextTick, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useMainStore, useSlidesStore } from '@/store'
+import { AGENT_NAME, USER_NAME } from '@/configs/collab'
 import type { Note } from '@/types/slides'
 
 import MoveablePanel from '@/components/MoveablePanel.vue'
@@ -121,7 +122,7 @@ const createNote = () => {
     id: nanoid(),
     content: content.value,
     time: new Date().getTime(),
-    user: '测试用户',
+    user: USER_NAME,
   }
   if (handleElementId.value) newNote.elId = handleElementId.value
 
@@ -153,7 +154,7 @@ const createNoteReply = () => {
       id: nanoid(),
       content: replyContent.value,
       time: new Date().getTime(),
-      user: '测试用户',
+      user: USER_NAME,
     },
   ]
   const newNote: Note = {
@@ -230,6 +231,21 @@ const close = () => {
   justify-content: center;
   align-items: center;
 }
+.agent-badge {
+  font-size: 10px;
+  line-height: 1;
+  color: #7c6cf0;
+  border: 1px solid #7c6cf0;
+  border-radius: 3px;
+  padding: 2px 4px;
+  margin-left: 6px;
+  vertical-align: 1px;
+}
+.agent {
+  .avatar {
+    background-color: #7c6cf0 !important;
+  }
+}
 .note {
   border: 1px solid #eee;
   border-radius: 4px;
@@ -240,6 +256,10 @@ const close = () => {
   }
   &.active {
     background-color: #f7f7f7;
+  }
+  &.agent {
+    border-color: #cdc5f5;
+    background-color: #faf9ff;
   }
 
   .header {

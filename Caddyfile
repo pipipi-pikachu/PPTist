@@ -1,0 +1,7 @@
+# 部署时把 pptist.example.com 换成真实域名（需已解析到本机，Caddy 自动签发证书）
+pptist.example.com {
+	reverse_proxy app:3100 {
+		# SSE（GET /api/docs/:id/events）需要实时推送，关闭响应缓冲
+		flush_interval -1
+	}
+}
