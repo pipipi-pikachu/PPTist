@@ -1,6 +1,7 @@
 <template>
   <ExportRuntime v-if="isExportMode" />
   <div class="invalid-link" v-else-if="loadFailed">链接无效或已失效</div>
+  <McpHome v-else-if="isMcpHome" />
   <template v-else-if="slides.length">
     <Screen v-if="screening" />
     <Viewer v-else-if="isViewMode" />
@@ -21,11 +22,13 @@ import { isPC } from '@/utils/common'
 import useDocumentSync from '@/hooks/useDocumentSync'
 import api from '@/services'
 
+import { isMcpHomeEntry } from '@/utils/entry'
 import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
 import Mobile from './views/Mobile/index.vue'
 import Viewer from './views/Viewer/index.vue'
 import ExportRuntime from './views/ExportRuntime/index.vue'
+import McpHome from './views/McpHome/index.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 
 const _isPC = isPC()
@@ -47,6 +50,7 @@ const tokenMatch = window.location.hash.match(/^#t=(.*)$/)
 
 const isAudienceMode = mode === 'audience'
 const isExportMode = mode === 'export'
+const isMcpHome = isMcpHomeEntry(window.location.search)
 const isViewMode = computed(() => mode === 'view' || role.value === 'view')
 
 const loadFailed = ref(false)
@@ -90,13 +94,14 @@ onMounted(async () => {
     await deleteDiscardedDB()
     snapshotStore.initSnapshotDatabase()
   }
-  else {
+  else if (!isMcpHome) {
     const slides = await api.getMockData('slides')
     slidesStore.setSlides(slides)
 
     await deleteDiscardedDB()
     snapshotStore.initSnapshotDatabase()
   }
+  // isMcpHome 只渲染说明页：不初始化编辑器、不加载 mocks、不建快照库
 })
 
 // 应用注销时向 localStorage 中记录下本次 indexedDB 的数据库ID，用于之后清除数据库
