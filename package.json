@@ -27,6 +27,7 @@
     "jsonrepair": "^3.13.2",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
+    "naive-ui": "2.45.3",
     "nanoid": "^5.0.7",
     "number-precision": "^1.6.0",
     "pinia": "^3.0.2",

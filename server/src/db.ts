@@ -21,9 +21,21 @@ export interface ApiKeyRow {
   label: string | null
   prefix: string
   hash: string
+  request_id: string | null
   created_at: number
   last_used_at: number | null
   revoked_at: number | null
+}
+
+export interface AdminSessionRow {
+  id: string
+  token_hash: string
+  csrf_token: string
+  created_at: number
+  expires_at: number
+  last_seen_at: number | null
+  ip: string | null
+  user_agent: string | null
 }
 
 export interface DocumentRow {
@@ -103,6 +115,16 @@ const MIGRATIONS: string[] = [
     version INTEGER NOT NULL, format TEXT NOT NULL, status TEXT NOT NULL,
     file TEXT, error TEXT, created_at INTEGER NOT NULL, finished_at INTEGER);
   CREATE INDEX export_jobs_owner ON export_jobs(owner_id, created_at);
+  `,
+  // v3：管理台——管理员会话、管理员元数据（密码散列等）、Key 幂等创建
+  `
+  ALTER TABLE api_keys ADD COLUMN request_id TEXT;
+  CREATE UNIQUE INDEX api_keys_request_id ON api_keys(request_id) WHERE request_id IS NOT NULL;
+  CREATE TABLE admin_sessions (id TEXT PRIMARY KEY, token_hash TEXT UNIQUE NOT NULL,
+    csrf_token TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL,
+    last_seen_at INTEGER, ip TEXT, user_agent TEXT);
+  CREATE INDEX admin_sessions_expiry ON admin_sessions(expires_at);
+  CREATE TABLE admin_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
   `,
 ]
 

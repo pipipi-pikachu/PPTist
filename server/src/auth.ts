@@ -26,13 +26,14 @@ export function hashKey(key: string): string {
   return createHash('sha256').update(key).digest('hex')
 }
 
-// 创建 Key 并入库，明文 Key 只在这里返回一次
-export function createApiKey(db: Db, userId: string, label?: string): { id: string, key: string, prefix: string } {
+// 创建 Key 并入库，明文 Key 只在这里返回一次。
+// requestId：调用方幂等令牌（管理台防重试重复创建），有值时受唯一索引约束
+export function createApiKey(db: Db, userId: string, label?: string, requestId?: string): { id: string, key: string, prefix: string } {
   const { key, prefix, hash } = generateKey()
   const id = nanoid(12)
   db.prepare(
-    'INSERT INTO api_keys (id, user_id, label, prefix, hash, created_at) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(id, userId, label ?? null, prefix, hash, Date.now())
+    'INSERT INTO api_keys (id, user_id, label, prefix, hash, request_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(id, userId, label ?? null, prefix, hash, requestId ?? null, Date.now())
   return { id, key, prefix }
 }
 

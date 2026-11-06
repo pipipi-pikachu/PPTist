@@ -8,6 +8,7 @@ export type ErrorCode =
   | 'doc_too_large'
   | 'rate_limited'
   | 'export_failed'
+  | 'unavailable'
 
 export interface ValidationIssue {
   path: string
@@ -61,5 +62,9 @@ export class AppError extends Error {
 
   static exportFailed(message: string) {
     return new AppError(500, 'export_failed', message)
+  }
+
+  static unavailable(message: string) {
+    return new AppError(503, 'unavailable', message)
   }
 }

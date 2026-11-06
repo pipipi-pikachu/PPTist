@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="same-origin">
+    <meta name="description" content="PPTist 管理后台" />
+    <title>PPTist Admin · 用户与访问权限</title>
+    <style>
+      .admin-boot {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #F7F8FA;
+      }
+      .admin-boot-spinner {
+        width: 34px;
+        height: 34px;
+        border: 3px solid #E8752A;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: admin-spin .8s linear infinite;
+      }
+      @keyframes admin-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="admin-boot"><div class="admin-boot-spinner"></div></div>
+    </div>
+    <script type="module" src="/src/admin/main.ts"></script>
+  </body>
+</html>

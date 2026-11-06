@@ -3,6 +3,7 @@
 import { parseArgs } from 'node:util'
 import { nanoid } from 'nanoid'
 
+import { ADMIN_PASSWORD_MIN_LEN, setAdminPassword } from './adminAuth'
 import { createApiKey } from './auth'
 import { loadConfig } from './config'
 import { openDb, type ApiKeyRow, type Db, type UserRow } from './db'
@@ -15,6 +16,7 @@ const USAGE = `用法：
   pptist-admin key list <name>
   pptist-admin key revoke <keyId>
   pptist-admin quota set <name> [--docs N] [--doc-mb N] [--exports-per-day N]
+  pptist-admin passwd
   pptist-admin backup <目标文件>`
 
 function fail(message: string): never {
@@ -146,10 +148,59 @@ function quotaSet(db: Db, args: string[]): void {
   console.log(`已更新用户 ${name} 的配额`)
 }
 
+// 新密码来源：ADMIN_NEW_PASSWORD 环境变量 > 管道 stdin > TTY 不回显输入
+async function readNewPassword(): Promise<string> {
+  if (process.env.ADMIN_NEW_PASSWORD) return process.env.ADMIN_NEW_PASSWORD
+
+  if (!process.stdin.isTTY) {
+    const chunks: Buffer[] = []
+    for await (const chunk of process.stdin) chunks.push(chunk as Buffer)
+    return Buffer.concat(chunks).toString('utf8').split('\n')[0].trim()
+  }
+
+  return await new Promise<string>((resolve, reject) => {
+    process.stdout.write(`新管理员密码（至少 ${ADMIN_PASSWORD_MIN_LEN} 字符，输入不回显）：`)
+    const stdin = process.stdin
+    stdin.setRawMode(true)
+    stdin.resume()
+    let raw = Buffer.alloc(0)
+    const finish = (err?: Error, value?: string) => {
+      stdin.setRawMode(false)
+      stdin.pause()
+      stdin.off('data', onData)
+      process.stdout.write('\n')
+      if (err) reject(err)
+      else resolve(value!)
+    }
+    const onData = (chunk: Buffer) => {
+      if (chunk.includes(3)) return finish(new Error('已取消'))
+      const nl = chunk.findIndex(b => b === 13 || b === 10)
+      if (nl >= 0) {
+        raw = Buffer.concat([raw, chunk.subarray(0, nl)])
+        return finish(undefined, raw.toString('utf8'))
+      }
+      // 退格：删掉最后一个 UTF-8 字符（近似处理，丢弃残缺的结尾字节）
+      if (chunk.includes(127) || chunk.includes(8)) {
+        const text = (raw.toString('utf8') + chunk.toString('utf8').replace(/\p{Cc}/gu, '')).slice(0, -1)
+        raw = Buffer.from(text, 'utf8')
+        return
+      }
+      raw = Buffer.concat([raw, chunk])
+    }
+    stdin.on('data', onData)
+  })
+}
+
+async function passwd(db: Db): Promise<void> {
+  const password = await readNewPassword()
+  setAdminPassword(db, password)
+  console.log('管理员密码已更新，旧的登录会话不受影响（可要求重新登录验证）')
+}
+
 async function main(): Promise<void> {
   const [resource, action, ...rest] = process.argv.slice(2)
-  // backup 只有一个参数（目标文件），会落在 action 上，其余命令都是 <resource> <action> [...args]
-  if (!resource || (resource !== 'backup' && !action)) {
+  // backup 只有一个参数（目标文件），passwd 无参数，其余命令都是 <resource> <action> [...args]
+  if (!resource || (resource !== 'backup' && resource !== 'passwd' && !action)) {
     console.log(USAGE)
     process.exit(resource ? 1 : 0)
   }
@@ -165,6 +216,10 @@ async function main(): Promise<void> {
     else if (resource === 'key' && action === 'list') keyList(db, rest)
     else if (resource === 'key' && action === 'revoke') keyRevoke(db, rest)
     else if (resource === 'quota' && action === 'set') quotaSet(db, rest)
+    else if (resource === 'passwd') {
+      if (action) fail('passwd 不接受参数（新密码从 ADMIN_NEW_PASSWORD 环境变量、stdin 或交互输入读取）')
+      await passwd(db)
+    }
     else if (resource === 'backup') {
       const target = action ?? fail('缺少目标文件路径')
       if (rest.length) fail('backup 只接受一个目标文件参数')

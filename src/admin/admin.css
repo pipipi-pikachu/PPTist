@@ -1,0 +1,106 @@
+/* PPTist Admin 设计 Token —— 与 ADMIN-USERS-KEYS-MOCK 原型一致 */
+:root {
+  --adm-bg: #F7F8FA;
+  --adm-surface: #FFFFFF;
+  --adm-surface-muted: #F1F2F5;
+  --adm-ink: #1A1D21;
+  --adm-ink-2: #3C4149;
+  --adm-ink-3: #6B7280;
+  --adm-ink-4: #9AA1AB;
+  --adm-line: #E6E8EC;
+  --adm-line-strong: #D5D9E0;
+  --adm-orange: #E8752A;
+  --adm-orange-soft: #FFF4EB;
+  --adm-orange-hover: #D4651F;
+  --adm-green: #18A058;
+  --adm-green-soft: #E8F8EF;
+  --adm-red: #D03050;
+  --adm-red-soft: #FDECEF;
+  --adm-shadow-sm: 0 1px 2px rgba(26, 29, 33, 0.04);
+  --adm-shadow-md: 0 8px 24px rgba(26, 29, 33, 0.06), 0 1px 2px rgba(26, 29, 33, 0.04);
+  --adm-shadow-lg: 0 18px 48px rgba(26, 29, 33, 0.14), 0 4px 12px rgba(26, 29, 33, 0.06);
+  --adm-radius: 12px;
+  --adm-radius-sm: 8px;
+  --adm-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --adm-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--adm-bg);
+  color: var(--adm-ink);
+  font-family: var(--adm-font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  height: 100vh;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* 通用小组件：状态 pill / 等宽密钥 / 头像 / 卡片 */
+.adm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.adm-pill--ok { background: var(--adm-green-soft); color: var(--adm-green); }
+.adm-pill--off { background: var(--adm-surface-muted); color: var(--adm-ink-3); }
+.adm-pill--revoked { background: var(--adm-red-soft); color: var(--adm-red); }
+.adm-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.adm-mono {
+  font-family: var(--adm-mono);
+  font-size: 12.5px;
+  color: var(--adm-ink-2);
+  background: var(--adm-surface-muted);
+  padding: 3px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.adm-avatar {
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.adm-card {
+  background: var(--adm-surface);
+  border: 1px solid var(--adm-line);
+  border-radius: var(--adm-radius);
+  box-shadow: var(--adm-shadow-sm);
+}
+
+/* 焦点可见性：键盘可达 */
+:focus-visible {
+  outline: 2px solid var(--adm-orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

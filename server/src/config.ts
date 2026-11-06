@@ -18,6 +18,11 @@ export interface AppConfig {
   maxAssetBytes: number
   exportConcurrency: number
   exportSyncWaitMs: number
+  adminInitialPassword: string | undefined
+  adminSessionTtlMs: number
+  adminLoginRatePerMin: number
+  adminCookieSecure: boolean
+  trustProxy: boolean
 }
 
 function intEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
@@ -57,17 +62,22 @@ function loadOrCreateSecret(dataDir: string): Buffer {
   }
 }
 
+function boolEnv(env: NodeJS.ProcessEnv, name: string): boolean {
+  return env[name] === '1' || env[name] === 'true'
+}
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
   const port = intEnv(env, 'PORT', 3100)
   const dataDir = resolve(env.DATA_DIR ?? './data')
   mkdirSync(dataDir, { recursive: true })
+  const publicBaseUrl = env.PUBLIC_BASE_URL ?? 'http://localhost:5173'
 
   return {
     port,
     host: env.HOST ?? '0.0.0.0',
     dataDir,
     secret: loadOrCreateSecret(dataDir),
-    publicBaseUrl: env.PUBLIC_BASE_URL ?? 'http://localhost:5173',
+    publicBaseUrl,
     renderBaseUrl: env.RENDER_BASE_URL ?? `http://127.0.0.1:${port}`,
     // 生产模式下前端构建产物目录；目录里没有 index.html 就不启用静态托管（开发模式走 vite）
     staticDir: resolve(env.STATIC_DIR ?? './dist'),
@@ -79,5 +89,14 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     maxAssetBytes: intEnv(env, 'MAX_ASSET_MB', 10) * 1024 * 1024,
     exportConcurrency: intEnv(env, 'EXPORT_CONCURRENCY', 2),
     exportSyncWaitMs: intEnv(env, 'EXPORT_SYNC_WAIT_MS', 45000),
+    // 管理台：首次启动用 ADMIN_INITIAL_PASSWORD 初始化管理员密码（仅在库里还没有密码时生效；
+    // 之后改密码用 pptist-admin passwd）。不要写进配置文件或默认值。
+    adminInitialPassword: env.ADMIN_INITIAL_PASSWORD || undefined,
+    adminSessionTtlMs: positiveIntEnv(env, 'ADMIN_SESSION_TTL_HOURS', 12) * 60 * 60 * 1000,
+    adminLoginRatePerMin: positiveIntEnv(env, 'ADMIN_LOGIN_RATE_PER_MIN', 5),
+    // HTTPS 部署下自动加 Secure；HTTP 反代/隧道等场景可用 ADMIN_SECURE_COOKIES=1 强制
+    adminCookieSecure: boolEnv(env, 'ADMIN_SECURE_COOKIES') || publicBaseUrl.startsWith('https://'),
+    // 位于可信反代（Caddy/nginx）之后时置 1，限流与审计按 X-Forwarded-For 取客户端 IP
+    trustProxy: boolEnv(env, 'TRUST_PROXY'),
   }
 }

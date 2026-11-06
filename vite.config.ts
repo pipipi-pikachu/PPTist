@@ -12,6 +12,12 @@ export default defineConfig({
   build: {
     // 打包产物放 /static/，把 /assets 前缀留给服务端用户资产路由（GET /assets/:file）
     assetsDir: 'static',
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        admin: fileURLToPath(new URL('./admin.html', import.meta.url)),
+      },
+    },
   },
   plugins: [
     vue(),

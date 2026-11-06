@@ -35,6 +35,11 @@ npm start            # node dist/index.js
 | `DEFAULT_QUOTA_DOCS` / `DEFAULT_QUOTA_DOC_MB` / `DEFAULT_QUOTA_EXPORTS_PER_DAY` | 100 / 10 / 200 | 默认配额 |
 | `RATE_LIMIT_PER_MIN` | 120 | 全局限流：每 Key/令牌（无凭证按 IP）每分钟 |
 | `MCP_RATE_LIMIT_PER_MIN` | 60 | `/mcp` 按 Key 固定窗口限流（单进程内存计数，不跨副本共享），须为正整数 |
+| `ADMIN_INITIAL_PASSWORD` | 无 | 首次启动初始化管理台密码（≥10 字符）；仅在库里尚无密码时生效，之后用 `pptist-admin passwd` 轮换 |
+| `ADMIN_SESSION_TTL_HOURS` | 12 | 管理台会话有效期（滑动续期），须为正整数 |
+| `ADMIN_LOGIN_RATE_PER_MIN` | 5 | 管理台登录按 IP 每分钟限速，须为正整数 |
+| `ADMIN_SECURE_COOKIES` | 按 `PUBLIC_BASE_URL` | `PUBLIC_BASE_URL` 为 https 时自动加 `Secure`；http 部署勿开（浏览器会拒存） |
+| `TRUST_PROXY` | 关 | 位于可信反代后设 `1`：限流/审计按 `X-Forwarded-For` 取客户端 IP |
 | `MAX_ASSET_MB` | 10 | 单张图片上限 |
 | `EXPORT_CONCURRENCY` / `EXPORT_SYNC_WAIT_MS` | 2 / 45000 | 导出并发 / 同步等待（M4） |
 
@@ -51,8 +56,36 @@ node dist/admin.js key create alice --label hermes  # 追加 Key（建议每个 
 node dist/admin.js key list alice                   # 只显示前缀
 node dist/admin.js key revoke <keyId>
 node dist/admin.js quota set alice --docs 100 --doc-mb 10 --exports-per-day 200
+node dist/admin.js passwd                           # 设置/轮换管理台密码（stdin、ADMIN_NEW_PASSWORD 或不回显输入）
 node dist/admin.js backup <目标文件>                 # SQLite 在线备份（db.backup()）
 ```
+
+## 管理台（/admin 页面 + /api/admin/*）
+
+独立的管理界面（`admin.html`，Vite 多页构建，Vue 3 + Naive UI），覆盖登录、用户与 Key、配额；与 `pptist-admin` CLI 走同一套底层存储，管理动作真正落库。
+
+- **入口**：生产模式 `GET /admin`（或 `/admin.html`）；开发模式 vite dev 下 `http://localhost:5173/admin.html`，`/api` 已代理。
+- **首次启动设置管理员密码**：任选其一——
+  - 启动时带 `ADMIN_INITIAL_PASSWORD=<强密码>` 环境变量（仅当库里还没有密码时播种，≥10 字符，不会覆盖已有密码）
+  - `pptist-admin passwd`（stdin / `ADMIN_NEW_PASSWORD` / 交互式不回显输入）
+  - 未配置密码时登录接口返回 503，管理 API 一律 401。
+- **鉴权模型**：密码经 scrypt 散列存 `admin_meta`；登录成功下发 `pptist_admin` Cookie（HttpOnly、SameSite=Strict、Path=/api/admin、HTTPS 部署自动 Secure），服务端会话存 `admin_sessions`（令牌只存散列，滑动续期）。普通 MCP `Bearer pk_…` 不能访问管理 API。
+- **写操作防护**：会话外还需 `X-CSRF-Token` 头（登录/`GET /api/admin/session` 返回的随机会话令牌，等长比较）；`Origin`/`Referer` 存在时必须与 Host 或 `PUBLIC_BASE_URL` 同源。登录按 IP 限速（默认 5 次/分钟），错误统一返回「密码错误」不做信息枚举。登出即删会话。
+- **接口**：
+
+| 方法和路径 | 说明 |
+| --- | --- |
+| `POST /api/admin/login` `{password}` | 建会话，Set-Cookie + 返回 `{csrfToken, expiresAt}` |
+| `POST /api/admin/logout` | 销毁会话并清 Cookie |
+| `GET /api/admin/session` | `{authenticated, csrfToken, expiresAt}` |
+| `GET /api/admin/overview` | 活跃/总用户、有效/总 Key、文档数、今日导出（真实数据） |
+| `GET /api/admin/users?q=&status=` | 用户列表（文档数、有效 Key 数、最近使用、配额） |
+| `POST /api/admin/users` `{name, note?}` | 创建用户；重名 409 |
+| `PATCH /api/admin/users/:id` `{quotaDocs?, quotaDocMb?, quotaExportsPerDay?}` | 改配额；`null` = 恢复继承默认 |
+| `POST /api/admin/users/:id/status` `{status}` | `active`/`disabled` 停用/启用；停用即全部 Key 与文档链接失效，启用恢复未吊销 Key |
+| `GET /api/admin/users/:id/keys` | Key 列表（只露前缀，永不返回 hash/完整 Key） |
+| `POST /api/admin/users/:id/keys` `{label?, requestId?}` | 创建 Key，明文只在本次响应出现；带 `requestId` 重试返回 `{duplicated:true}` |
+| `POST /api/admin/keys/:id/revoke` | 吊销；重复吊销返回 `{alreadyRevoked:true}` |
 
 Docker 部署时 `pptist-admin` 已在容器 PATH 上，用 `docker compose exec app pptist-admin ...` 执行（见下文「部署」）。
 
