@@ -11,7 +11,7 @@
 
 简体中文 | [English](README.md)
 
-> **本 Fork 说明**：在 PPTist 上游基础上新增自托管服务端 `server/`——多用户 Key 鉴权、文档服务、面向 Agent 的远程 MCP 端点、服务端导出与 Docker 部署，详见 [server/README.md](server/README.md)。许可证沿用上游 AGPL-3.0；上游源码：[pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)。
+> **本 Fork 说明**：在 PPTist 上游基础上新增自托管服务端 `server/`——多用户 Key 鉴权、文档服务、面向 Agent 的远程 MCP 端点、服务端导出与 Docker 部署，详见 [server/README.md](server/README.md)。部署后访问根路径 `/`（不带 `doc` 参数）显示 MCP 接入说明页而非编辑器。许可证沿用上游 AGPL-3.0；上游源码：[pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist)。
 
 
 # 🎨 PPTist

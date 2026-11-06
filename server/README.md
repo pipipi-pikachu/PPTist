@@ -33,7 +33,8 @@ npm start            # node dist/index.js
 | `RENDER_BASE_URL` | `http://127.0.0.1:$PORT` | 无头浏览器地址（M4）；容器内自指 `http://127.0.0.1:3100` |
 | `STATIC_DIR` | `./dist` | 前端构建产物目录；目录里有 `index.html` 才启用静态托管（开发模式自动跳过） |
 | `DEFAULT_QUOTA_DOCS` / `DEFAULT_QUOTA_DOC_MB` / `DEFAULT_QUOTA_EXPORTS_PER_DAY` | 100 / 10 / 200 | 默认配额 |
-| `RATE_LIMIT_PER_MIN` | 120 | 每 Key/令牌每分钟限流 |
+| `RATE_LIMIT_PER_MIN` | 120 | 全局限流：每 Key/令牌（无凭证按 IP）每分钟 |
+| `MCP_RATE_LIMIT_PER_MIN` | 60 | `/mcp` 按 Key 固定窗口限流（单进程内存计数，不跨副本共享），须为正整数 |
 | `MAX_ASSET_MB` | 10 | 单张图片上限 |
 | `EXPORT_CONCURRENCY` / `EXPORT_SYNC_WAIT_MS` | 2 / 45000 | 导出并发 / 同步等待（M4） |
 
@@ -106,6 +107,10 @@ Docker 部署时 `pptist-admin` 已在容器 PATH 上，用 `docker compose exec
 ## MCP（远程 Agent 接入）
 
 `POST /mcp`：Streamable HTTP、无状态（每个请求独立鉴权），凭证为 `Authorization: Bearer pk_…`；GET/DELETE 返回 405，不带 Key 返回 401。连接后服务端通过 `instructions` 注入精简编写规范，`get_authoring_guide` 工具可分段取 `doc/AI_PPT_SCHEMA.md` 全文。
+
+限流：在全局限流（`RATE_LIMIT_PER_MIN`，默认 120 次/分）之外，`POST /mcp` 对鉴权通过的 Key 再按固定窗口限流（`MCP_RATE_LIMIT_PER_MIN`，默认 60 次/分，须为正整数）。计数为单进程内存实现，多副本部署不共享计数；超限返回 429 `{ "error": "rate_limited", "message": "…" }`，不进入工具调用。
+
+部署后访问根路径 `/`（不带 `doc` 参数）显示面向 Agent 的 MCP 接入说明页（端点、鉴权、工作流、工具清单、Key 申请方式）；带 `doc` 的编辑/查看链接行为不变。
 
 工具：
 

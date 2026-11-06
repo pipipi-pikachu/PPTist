@@ -11,7 +11,7 @@
 
 [简体中文](README_zh.md) | English
 
-> **About this fork**: adds a self-hosted backend under `server/` — multi-user API keys, a document service, a remote MCP endpoint for agents, server-side export, and Docker deployment. See [server/README.md](server/README.md). The license remains AGPL-3.0; upstream source: [pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist).
+> **About this fork**: adds a self-hosted backend under `server/` — multi-user API keys, a document service, a remote MCP endpoint for agents, server-side export, and Docker deployment. See [server/README.md](server/README.md). Visiting `/` without a `doc` parameter shows an MCP integration page for agents instead of the editor. The license remains AGPL-3.0; upstream source: [pipipi-pikachu/PPTist](https://github.com/pipipi-pikachu/PPTist).
 
 
 # 🎨 PPTist

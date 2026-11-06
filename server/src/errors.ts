@@ -55,6 +55,10 @@ export class AppError extends Error {
     return new AppError(413, 'doc_too_large', message)
   }
 
+  static rateLimited(message = '请求过于频繁，请稍后重试') {
+    return new AppError(429, 'rate_limited', message)
+  }
+
   static exportFailed(message: string) {
     return new AppError(500, 'export_failed', message)
   }
