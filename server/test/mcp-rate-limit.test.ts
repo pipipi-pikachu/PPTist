@@ -72,6 +72,20 @@ describe('FixedWindowRateLimiter', () => {
     limiter.check('new', t0 + 60_000)
     expect(limiter.size).toBe(1)
   })
+
+  it('上次请求距窗口边界不足一个窗口时，新窗口首个请求仍立即清理旧计数', () => {
+    const limiter = new FixedWindowRateLimiter(5)
+    const windowStart = Math.floor(1_700_000_000_000 / 60_000) * 60_000
+    // 旧窗口末尾（59,xxx）多个键各请求一次，距下一边界不足一个 windowMs
+    const late = windowStart + 59_000
+    limiter.check('k1', late)
+    limiter.check('k2', late)
+    limiter.check('k3', late)
+    expect(limiter.size).toBe(3)
+    // 新窗口（60,xxx）首个请求：旧键应被立即清除，只余当前键
+    limiter.check('new', windowStart + 60_000)
+    expect(limiter.size).toBe(1)
+  })
 })
 
 // POST /mcp 走 reply.hijack()，与 mcp.test.ts 一样用真实监听端口而不是 inject

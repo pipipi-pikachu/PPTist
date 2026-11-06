@@ -8,7 +8,7 @@ interface WindowCounter {
 // 避免长期多 Key 下 Map 无界增长。
 export class FixedWindowRateLimiter {
   private readonly counters = new Map<string, WindowCounter>()
-  private lastSweep = 0
+  private lastSweepWindow = Number.NEGATIVE_INFINITY
 
   constructor(
     private readonly maxPerWindow: number,
@@ -18,11 +18,11 @@ export class FixedWindowRateLimiter {
   // 本窗口未超限返回 true 并计数；已超限返回 false
   check(key: string, now = Date.now()): boolean {
     const windowStart = Math.floor(now / this.windowMs) * this.windowMs
-    if (now - this.lastSweep >= this.windowMs) {
+    if (windowStart !== this.lastSweepWindow) {
       for (const [k, counter] of this.counters) {
         if (counter.windowStart !== windowStart) this.counters.delete(k)
       }
-      this.lastSweep = now
+      this.lastSweepWindow = windowStart
     }
 
     const counter = this.counters.get(key)
