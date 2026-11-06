@@ -12,14 +12,14 @@
         <tbody>
           <tr><td>端点</td><td><code>POST /mcp</code>（Streamable HTTP，无状态）</td></tr>
           <tr><td>鉴权</td><td><code>Authorization: Bearer pk_…</code></td></tr>
-          <tr><td>限流</td><td>每个 Key 60 次/分钟（另有全局 120 次/分钟）</td></tr>
+          <tr><td>限流</td><td>服务端对每个 Key 实施按分钟频率限制（阈值随部署环境配置，见 <code>MCP_RATE_LIMIT_PER_MIN</code>）</td></tr>
         </tbody>
       </table>
 
       <h2>客户端配置示例</h2>
       <pre>mcp_servers:
   pptist:
-    url: https://pptist.example.com/mcp
+    url: {{ mcpEndpoint }}
     headers:
       Authorization: Bearer pk_...</pre>
 
@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts" setup>
+const mcpEndpoint = `${window.location.origin}/mcp`
 </script>
 
 <style lang="scss" scoped>
