@@ -14,6 +14,7 @@ export interface AppConfig {
   defaultQuotaDocBytes: number
   defaultQuotaExportsPerDay: number
   rateLimitPerMin: number
+  mcpRateLimitPerMin: number
   maxAssetBytes: number
   exportConcurrency: number
   exportSyncWaitMs: number
@@ -25,6 +26,17 @@ function intEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number 
   const value = Number.parseInt(raw, 10)
   if (!Number.isFinite(value) || value < 0) {
     throw new Error(`环境变量 ${name} 不是有效数字: ${raw}`)
+  }
+  return value
+}
+
+// 限流类配置必须为正整数：0/负数/非数字直接拒绝启动，避免意外禁用或绕过
+function positiveIntEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
+  const raw = env[name]
+  if (raw === undefined || raw === '') return fallback
+  const value = Number.parseInt(raw, 10)
+  if (!Number.isInteger(value) || value < 1) {
+    throw new Error(`环境变量 ${name} 必须是正整数: ${raw}`)
   }
   return value
 }
@@ -63,6 +75,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     defaultQuotaDocBytes: intEnv(env, 'DEFAULT_QUOTA_DOC_MB', 10) * 1024 * 1024,
     defaultQuotaExportsPerDay: intEnv(env, 'DEFAULT_QUOTA_EXPORTS_PER_DAY', 200),
     rateLimitPerMin: intEnv(env, 'RATE_LIMIT_PER_MIN', 120),
+    mcpRateLimitPerMin: positiveIntEnv(env, 'MCP_RATE_LIMIT_PER_MIN', 60),
     maxAssetBytes: intEnv(env, 'MAX_ASSET_MB', 10) * 1024 * 1024,
     exportConcurrency: intEnv(env, 'EXPORT_CONCURRENCY', 2),
     exportSyncWaitMs: intEnv(env, 'EXPORT_SYNC_WAIT_MS', 45000),
