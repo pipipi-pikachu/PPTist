@@ -23,8 +23,8 @@ export interface AppConfig {
 function intEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
   const raw = env[name]
   if (raw === undefined || raw === '') return fallback
-  const value = Number.parseInt(raw, 10)
-  if (!Number.isFinite(value) || value < 0) {
+  const value = /^\d+$/.test(raw) ? Number(raw) : NaN
+  if (!Number.isSafeInteger(value)) {
     throw new Error(`环境变量 ${name} 不是有效数字: ${raw}`)
   }
   return value
@@ -34,8 +34,8 @@ function intEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number 
 function positiveIntEnv(env: NodeJS.ProcessEnv, name: string, fallback: number): number {
   const raw = env[name]
   if (raw === undefined || raw === '') return fallback
-  const value = Number.parseInt(raw, 10)
-  if (!Number.isInteger(value) || value < 1) {
+  const value = /^\d+$/.test(raw) ? Number(raw) : NaN
+  if (!Number.isSafeInteger(value) || value < 1) {
     throw new Error(`环境变量 ${name} 必须是正整数: ${raw}`)
   }
   return value

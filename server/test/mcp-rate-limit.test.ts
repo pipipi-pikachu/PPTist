@@ -24,6 +24,26 @@ describe('MCP_RATE_LIMIT_PER_MIN 配置', () => {
       expect(() => loadConfig(tmpEnv({ MCP_RATE_LIMIT_PER_MIN: bad }))).toThrow(/MCP_RATE_LIMIT_PER_MIN/)
     }
   })
+
+  it('小数 / 后缀等畸形值整体拒绝，不做前缀截断', () => {
+    for (const bad of ['5.5', '60oops', '1e2', ' 60', '60 ', '+60', '0x10', '9'.repeat(30)]) {
+      expect(() => loadConfig(tmpEnv({ MCP_RATE_LIMIT_PER_MIN: bad }))).toThrow(/MCP_RATE_LIMIT_PER_MIN/)
+    }
+  })
+})
+
+describe('intEnv 通用整数配置', () => {
+  it('0 仍是合法值，合法整数可配置', () => {
+    expect(loadConfig(tmpEnv({ RATE_LIMIT_PER_MIN: '0' })).rateLimitPerMin).toBe(0)
+    expect(loadConfig(tmpEnv({ RATE_LIMIT_PER_MIN: '150' })).rateLimitPerMin).toBe(150)
+    expect(loadConfig(tmpEnv({ PORT: '0' })).port).toBe(0)
+  })
+
+  it('小数 / 负数 / 后缀等畸形值整体拒绝', () => {
+    for (const bad of ['5.5', '120oops', '-1', 'abc', '1e2', ' 150']) {
+      expect(() => loadConfig(tmpEnv({ RATE_LIMIT_PER_MIN: bad }))).toThrow(/RATE_LIMIT_PER_MIN/)
+    }
+  })
 })
 
 describe('FixedWindowRateLimiter', () => {
