@@ -60,16 +60,23 @@
             @mouseenter="handleCellMouseenter(rowIndex, colIndex)"
             v-contextmenu="(el: HTMLElement) => contextmenus(el)"
           >
-            <CustomTextarea 
+            <TableCellEditor
               v-if="activedCell === `${rowIndex}_${colIndex}`"
+              ref="cellEditorRef"
               class="cell-text" 
               :class="{ 'active': activedCell === `${rowIndex}_${colIndex}` }"
               :style="getTextStyle(getRowHeight(rowIndex), cell.style)"
               :value="cell.text"
-              @updateValue="value => handleInput(value, rowIndex, colIndex)"
+              :cellStyle="cell.style"
+              :cachedState="cellEditorStates.get(cell.id)?.state"
+              @update="({ value, ignore }) => handleInput(value, rowIndex, colIndex, ignore)"
+              @updateState="payload => cacheCellEditorState(cell, payload)"
               @insertExcelData="value => insertExcelData(value, rowIndex, colIndex)"
+              @changeTextAttrs="attrs => syncTextAttrs(attrs)"
             />
-            <div v-else class="cell-text" :style="getTextStyle(getRowHeight(rowIndex), cell.style)" v-html="formatText(cell.text)" />
+            <div v-else class="cell-text cell-text-static" :style="getTextStyle(getRowHeight(rowIndex), cell.style)">
+              <div class="cell-text-content" v-html="cell.text" />
+            </div>
           </td>
         </tr>
       </tbody>
@@ -78,21 +85,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
-import { debounce, isEqual } from 'lodash'
+import { computed, nextTick, onMounted, onUnmounted, ref, shallowReactive, toRaw, watch, useTemplateRef } from 'vue'
+import { isEqual, pick } from 'lodash'
 import { storeToRefs } from 'pinia'
+import { EditorState } from 'prosemirror-state'
+import { closeHistory } from 'prosemirror-history'
 import { nanoid } from 'nanoid'
-import { useMainStore } from '@/store'
+import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import { KEYS } from '@/configs/hotkey'
-import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
+import emitter, { EmitterEvents, type TableCommand, type TableTextCommand } from '@/utils/emitter'
 import message from '@/utils/message'
-import { getCellStyle, getTextStyle, getTableRowHeight, formatText } from './utils'
+import { defaultTableTextAttrs, getTableTextAttrs, parseTableText, serializeTableText, replaceTableText, plainTextToTableHTML, updateTableCellTextAttrs, type TableTextAttrs } from '@/utils/prosemirror/table'
+import { getCellStyle, getTextStyle, getTableRowHeight } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
-import CustomTextarea from './CustomTextarea.vue'
+import TableCellEditor from './TableCellEditor.vue'
 
 const props = withDefaults(defineProps<{
   elementId: string
@@ -109,15 +119,57 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  (event: 'change', payload: TableCell[][]): void
+  (event: 'change', payload: TableCell[][], options?: { ignore?: boolean }): void
   (event: 'changeRowHeights', payload: number[]): void
   (event: 'changeColWidths', payload: number[]): void
   (event: 'changeSelectedCells', payload: string[]): void
+  (event: 'undo'): void
+  (event: 'redo'): void
 }>()
 
-const { canvasScale } = storeToRefs(useMainStore())
+const mainStore = useMainStore()
+const { canvasScale, handleElementId } = storeToRefs(mainStore)
+const slidesStore = useSlidesStore()
 
 const tableRef = useTemplateRef<HTMLTableElement>('tableRef')
+const cellEditorRef = useTemplateRef<InstanceType<typeof TableCellEditor>[]>('cellEditorRef')
+// 仅缓存状态，不保留编辑器 DOM；切格后仍能撤销该单元格的文字编辑。
+const cellEditorStates = shallowReactive(new Map<string, { state: EditorState; value: string; defaults: Partial<TableTextAttrs> }>())
+const cacheCellEditorState = (cell: TableCell, payload: { state: EditorState; value: string }) => {
+  cellEditorStates.set(cell.id, { ...payload, defaults: pick(cell.style, Object.keys(defaultTableTextAttrs)) })
+}
+
+let localTextData: TableCell[][] | null = null
+const emitTextChange = (data: TableCell[][], ignore = false) => {
+  localTextData = toRaw(data)
+  emit('change', data, { ignore })
+}
+
+watch(() => props.data, data => {
+  // 画布会复制元素数据，以 Store 中的提交值识别本地回写，避免逐字检查全部缓存。
+  const element = localTextData ? slidesStore.currentSlide.elements.find(item => item.id === props.elementId) : null
+  const localChange = element?.type === 'table' && toRaw(element.data) === localTextData
+  localTextData = null
+  if (localChange) return
+
+  const cellsById = new Map(data.flat().map(cell => [cell.id, cell]))
+  for (const [id, cached] of cellEditorStates) {
+    const cell = cellsById.get(id)
+    if (!cell) {
+      cellEditorStates.delete(id)
+      continue
+    }
+    const textChanged = cell.text !== cached.value && !cached.state.doc.eq(parseTableText(cell.text))
+    const defaultsChanged = !isEqual(cached.defaults, pick(cell.style, Object.keys(defaultTableTextAttrs)))
+    if (textChanged || defaultsChanged) {
+      cellEditorStates.delete(id)
+    }
+  }
+})
+
+// 全局快照会整体替换幻灯片，即使文字相同，也不能继续使用回滚前的历史。
+watch(() => slidesStore.slides, () => cellEditorStates.clear())
+
 const draggingTableHeight = ref<number | null>(null)
     
 const isStartSelect = ref(false)
@@ -233,6 +285,54 @@ const activedCell = computed(() => {
   return selectedCells.value[0]
 })
 
+const syncTextAttrs = (attrs: TableTextAttrs) => {
+  if (handleElementId.value === props.elementId) mainStore.setTableTextAttrs(attrs)
+}
+
+watch([selectedCells, handleElementId, () => props.data], () => {
+  if (handleElementId.value !== props.elementId) return
+  const editor = activedCell.value ? cellEditorRef.value?.[0] : null
+  if (editor) {
+    editor.syncTextAttrs()
+    return
+  }
+  // 未进入单格编辑时，使用首个选中单元格的文字样式；未选格时使用左上角。
+  const [row, col] = (selectedCells.value[0] || '0_0').split('_').map(Number)
+  const cell = tableCells.value[row]?.[col]
+  if (cell) syncTextAttrs(getTableTextAttrs(EditorState.create({ doc: parseTableText(cell.text) }), cell.style))
+}, { immediate: true, flush: 'post' })
+
+const updateTextAttrs = ({ targetId, attrs }: TableTextCommand) => {
+  if (targetId !== props.elementId || handleElementId.value !== props.elementId) return
+  const data: TableCell[][] = JSON.parse(JSON.stringify(tableCells.value))
+  const editor = cellEditorRef.value?.[0]
+  if (editor && activedCell.value) {
+    const result = editor.applyTextAttrs(attrs)
+    if (!result) return
+    const [row, col] = activedCell.value.split('_').map(Number)
+    data[row][col].text = result.text
+    // 非空内容只修改文档里的格式，避免内部撤销后仍被外层默认样式覆盖。
+    if (result.wholeCell && result.empty) {
+      data[row][col].style = { ...data[row][col].style, ...attrs }
+      const cached = cellEditorStates.get(data[row][col].id)
+      if (cached) cacheCellEditorState(data[row][col], cached)
+    }
+    emitTextChange(data)
+    return
+  }
+  for (let i = 0; i < data.length; i++) {
+    for (let j = 0; j < data[i].length; j++) {
+      if (!selectedCells.value.length || selectedCells.value.includes(`${i}_${j}`)) {
+        updateTableCellTextAttrs(data[i][j], attrs)
+      }
+    }
+  }
+  tableCells.value = data
+}
+
+emitter.on(EmitterEvents.TABLE_TEXT_COMMAND, updateTextAttrs)
+onUnmounted(() => emitter.off(EmitterEvents.TABLE_TEXT_COMMAND, updateTextAttrs))
+
 // 设置选中单元格状态（鼠标点击或拖选）
 const handleMouseup = () => isStartSelect.value = false
 
@@ -241,6 +341,11 @@ const handleCellMousedown = (e: MouseEvent, rowIndex: number, colIndex: number) 
     endCell.value = []
     isStartSelect.value = true
     startCell.value = [rowIndex, colIndex]
+    if (!(e.target as HTMLElement).closest('.ProseMirror')) {
+      // 静态节点被替换后，按本次点击坐标恢复光标，而不是只恢复旧选区。
+      e.preventDefault()
+      focusActiveCell({ left: e.clientX, top: e.clientY })
+    }
   }
 }
 
@@ -519,10 +624,10 @@ const clearSelectedCellText = () => {
   tableCells.value = _tableCells
 }
 
-const focusActiveCell = () => {
+const focusActiveCell = (coords?: { left: number; top: number }) => {
+  const targetCell = activedCell.value
   nextTick(() => {
-    const textRef = document.querySelector('.cell-text.active') as HTMLInputElement
-    if (textRef) textRef.focus()
+    if (activedCell.value === targetCell) cellEditorRef.value?.[0]?.focus(coords)
   })
 }
 
@@ -612,32 +717,22 @@ const moveActiveCell = (dir: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => {
   focusActiveCell()
 }
 
-// 获取光标位置
-const getCaretPosition = (element: HTMLDivElement) => {
-  const selection = window.getSelection()
-  if (selection && selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0)
-
-    const preCaretRange = range.cloneRange()
-    preCaretRange.selectNodeContents(element)
-
-    preCaretRange.setEnd(range.startContainer, range.startOffset)
-    const start = preCaretRange.toString().length
-    preCaretRange.setEnd(range.endContainer, range.endOffset)
-    const end = preCaretRange.toString().length
-
-    const len = element.textContent?.length || 0
-
-    return { start, end, len }
-  }
-  return null
-}
-
 // 表格快捷键监听
 const keydownListener = (e: KeyboardEvent) => {
-  if (!props.editable || !selectedCells.value.length) return
+  if (!props.editable || !selectedCells.value.length || e.defaultPrevented || e.isComposing) return
+  const target = e.target as HTMLElement
+  if (!tableRef.value?.contains(target)) {
+    if (selectedCells.value.length === 1 || target.closest('input, textarea, [contenteditable="true"]')) return
+  }
 
   const key = e.key.toUpperCase()
+  if ((e.ctrlKey || e.metaKey) && (key === KEYS.Z || key === KEYS.Y)) {
+    if (selectedCells.value.length === 1) return
+    e.preventDefault()
+    if (key === KEYS.Y || e.shiftKey) emit('redo')
+    else emit('undo')
+    return
+  }
   if (selectedCells.value.length < 2) {
     if (key === KEYS.TAB) {
       e.preventDefault()
@@ -664,26 +759,26 @@ const keydownListener = (e: KeyboardEvent) => {
       insertCol(colIndex + 1)
     }
     else if (key === KEYS.UP) {
-      const range = getCaretPosition(e.target as HTMLDivElement)
-      if (range && range.start === range.end && range.start === 0) {
+      if (cellEditorRef.value?.[0]?.isAtBoundary('start')) {
+        e.preventDefault()
         moveActiveCell('UP')
       }
     }
     else if (key === KEYS.DOWN) {
-      const range = getCaretPosition(e.target as HTMLDivElement)
-      if (range && range.start === range.end && range.start === range.len) {
+      if (cellEditorRef.value?.[0]?.isAtBoundary('end')) {
+        e.preventDefault()
         moveActiveCell('DOWN')
       }
     }
     else if (key === KEYS.LEFT) {
-      const range = getCaretPosition(e.target as HTMLDivElement)
-      if (range && range.start === range.end && range.start === 0) {
+      if (cellEditorRef.value?.[0]?.isAtBoundary('start')) {
+        e.preventDefault()
         moveActiveCell('LEFT')
       }
     }
     else if (key === KEYS.RIGHT) {
-      const range = getCaretPosition(e.target as HTMLDivElement)
-      if (range && range.start === range.end && range.start === range.len) {
+      if (cellEditorRef.value?.[0]?.isAtBoundary('end')) {
+        e.preventDefault()
         moveActiveCell('RIGHT')
       }
     }
@@ -701,13 +796,18 @@ onUnmounted(() => {
 })
 
 // 单元格文字输入时更新表格数据
-const handleInput = debounce(function(value, rowIndex, colIndex) {
-  tableCells.value[rowIndex][colIndex].text = value
-  emit('change', tableCells.value)
-}, 300, { trailing: true })
+const handleInput = (value: string, rowIndex: number, colIndex: number, ignore: boolean) => {
+  // 内容立即提交，历史快照仍由父组件防抖，切格时不会遗留待提交的输入。
+  const data = [...tableCells.value]
+  data[rowIndex] = [...data[rowIndex]]
+  data[rowIndex][colIndex] = { ...data[rowIndex][colIndex], text: value }
+  emitTextChange(data, ignore)
+}
 
 // 插入来自Excel的数据，表格的行/列数不够时自动补足
-const insertExcelData = (data: string[][], rowIndex: number, colIndex: number) => {
+const insertExcelData = async (data: string[][], rowIndex: number, colIndex: number) => {
+  // 输入和粘贴可能发生在同一轮更新中，扩表前先接收最新的单元格内容。
+  await nextTick()
   const maxRow = data.length
   const maxCol = data[0].length
 
@@ -718,14 +818,31 @@ const insertExcelData = (data: string[][], rowIndex: number, colIndex: number) =
   if (fillRowCount || fillColCount) fillTable(fillRowCount, fillColCount)
 
   nextTick(() => {
+    const cells = [...tableCells.value]
     for (let i = 0; i < maxRow; i++) {
+      const row = rowIndex + i
+      cells[row] = [...cells[row]]
       for (let j = 0; j < maxCol; j++) {
-        if (tableCells.value[rowIndex + i][colIndex + j]) {
-          tableCells.value[rowIndex + i][colIndex + j].text = data[i][j]
+        const col = colIndex + j
+        const cell = cells[row][col]
+        if (!cell) continue
+
+        let value = plainTextToTableHTML(data[i][j])
+        const editor = activedCell.value === `${row}_${col}` ? cellEditorRef.value?.[0] : null
+        if (editor) value = editor.replaceText(value)
+        else {
+          const cached = cellEditorStates.get(cell.id)
+          if (cached) {
+            let state = cached.state.apply(replaceTableText(cached.state, value))
+            state = state.apply(closeHistory(state.tr))
+            value = serializeTableText(state.doc)
+            cacheCellEditorState(cell, { state, value })
+          }
         }
+        cells[row][col] = { ...cell, text: value }
       }
     }
-    emit('change', tableCells.value)
+    tableCells.value = cells
   })
 }
 
@@ -958,6 +1075,22 @@ table {
 
     &.active {
       user-select: text;
+    }
+  }
+
+  .cell-text-content {
+    min-width: 0;
+  }
+
+  .cell-text-static {
+    white-space: pre-wrap;
+
+    :deep(p) {
+      margin: 0;
+    }
+    // 仅补渲染占位，不将编辑器的辅助节点写入单元格内容。
+    :deep(p)::after {
+      content: '\200b';
     }
   }
 }

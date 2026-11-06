@@ -138,6 +138,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { AllSelection, EditorState } from 'prosemirror-state'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTElement, TableCell } from '@/types/slides'
 import { ElementAlignCommands, ElementOrderCommands } from '@/types/edit'
@@ -147,6 +148,7 @@ import useAlignElementToCanvas from '@/hooks/useAlignElementToCanvas'
 import useDeleteElement from '@/hooks/useDeleteElement'
 import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { getTableTextAttrs, parseTableText, updateTableCellTextAttrs } from '@/utils/prosemirror/table'
 
 import CheckboxButton from '@/components/CheckboxButton.vue'
 import Tabs from '@/components/Tabs.vue'
@@ -237,8 +239,10 @@ const fontColor = computed(() => {
     return richTextAttrs.value.color
   }
   if (handleElement.value.type === 'table') {
-    const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
-    return data[0][0].style?.color
+    const cell = handleElement.value.data[0][0]
+    const doc = parseTableText(cell.text)
+    const state = EditorState.create({ doc, selection: new AllSelection(doc) })
+    return getTableTextAttrs(state, cell.style).color
   }
   if (handleElement.value.type === 'latex') {
     return handleElement.value.color
@@ -255,8 +259,7 @@ const updateFontColor = (color: string) => {
     const data: TableCell[][] = JSON.parse(JSON.stringify(handleElement.value.data))
     for (let i = 0; i < data.length; i++) {
       for (let j = 0; j < data[i].length; j++) {
-        const style = data[i][j].style || {}
-        data[i][j].style = { ...style, color }
+        updateTableCellTextAttrs(data[i][j], { color })
       }
     }
     updateElement(handleElementId.value, { data })

@@ -27,7 +27,9 @@
             :colspan="cell.colspan"
             v-show="!hideCells.includes(`${rowIndex}_${colIndex}`)"
           >
-            <div class="cell-text" :style="getTextStyle(getRowHeight(rowIndex), cell.style)" v-html="formatText(cell.text)" />
+            <div class="cell-text" :style="getTextStyle(getRowHeight(rowIndex), cell.style)">
+              <div class="cell-text-content" v-html="cell.text" />
+            </div>
           </td>
         </tr>
       </tbody>
@@ -38,7 +40,7 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import type { PPTElementOutline, TableCell, TableTheme } from '@/types/slides'
-import { getCellStyle, getTextStyle, getTableRowHeight, formatText } from './utils'
+import { getCellStyle, getTextStyle, getTableRowHeight } from './utils'
 import useHideCells from './useHideCells'
 import useSubThemeColor from './useSubThemeColor'
 
@@ -133,11 +135,24 @@ table {
   }
 
   .cell-text {
+    white-space: pre-wrap;
     padding: 5px;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+
+    :deep(p) {
+      margin: 0;
+    }
+    // 段末补占位，使末尾硬换行与编辑态的 trailingBreak 保持一致。
+    :deep(p)::after {
+      content: '\200b';
+    }
+  }
+
+  .cell-text-content {
+    min-width: 0;
   }
 }
 </style>

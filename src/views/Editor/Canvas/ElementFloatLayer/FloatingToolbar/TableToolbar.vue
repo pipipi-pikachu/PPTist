@@ -2,7 +2,7 @@
   <div class="toolbar-content">
     <Popover trigger="click">
       <template #content>
-        <ColorPicker :modelValue="cellBackcolor" @update:modelValue="value => updateCellBackcolor(value)" />
+        <ColorPicker :modelValue="cellStyle.backcolor || ''" @update:modelValue="value => updateCellStyle({ backcolor: value })" />
       </template>
       <button class="toolbar-btn">
         <i-icon-park-outline:fill class="icon" />
@@ -39,18 +39,28 @@
         <span>删除</span>
       </button>
     </Popover>
+    <template v-if="showTextStyleControls">
+      <div class="divider"></div>
+      <TextStyleControls
+        :textAttrs="textAttrs"
+        :showClear="false"
+        @command="emitTextCommand"
+      />
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, type Ref } from 'vue'
+import { computed, nextTick, type Ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
-import type { PPTTableElement, TableCell, TableCellStyle } from '@/types/slides'
-import emitter, { EmitterEvents, type TableCommand } from '@/utils/emitter'
+import type { PPTTableElement, TableCell, TableCellStyle, TextAlign } from '@/types/slides'
+import emitter, { EmitterEvents, type RichTextAction, type TableCommand } from '@/utils/emitter'
+import type { TableTextAttrs } from '@/utils/prosemirror/table'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 
 import BorderPanel from './BorderPanel.vue'
+import TextStyleControls from './TextStyleControls.vue'
 import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
@@ -59,14 +69,18 @@ const props = defineProps<{
   elementInfo: PPTTableElement
 }>()
 
+const emit = defineEmits<{
+  (e: 'resize'): void
+}>()
+
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, selectedTableCells } = storeToRefs(useMainStore())
+const { handleElement, handleElementId, selectedTableCells, tableTextAttrs } = storeToRefs(useMainStore())
 
 const handleTableElement = handleElement as Ref<PPTTableElement>
 
-const cellBackcolor = computed(() => {
+const cellStyle = computed(() => {
   const el = handleTableElement.value
-  if (!el || el.type !== 'table') return ''
+  if (!el || el.type !== 'table') return {}
 
   let rowIndex = 0
   let colIndex = 0
@@ -75,10 +89,41 @@ const cellBackcolor = computed(() => {
     rowIndex = +selected.split('_')[0]
     colIndex = +selected.split('_')[1]
   }
-  return el.data[rowIndex]?.[colIndex]?.style?.backcolor || ''
+  return el.data[rowIndex]?.[colIndex]?.style || {}
+})
+
+const textAttrs = computed(() => ({
+  ...tableTextAttrs.value,
+  align: cellStyle.value.align || 'left',
+}))
+
+const showTextStyleControls = computed(() => {
+  return handleElementId.value === props.elementInfo.id && !props.elementInfo.lock && selectedTableCells.value.length === 1
+})
+
+watch(showTextStyleControls, () => {
+  nextTick(() => emit('resize'))
 })
 
 const { addHistorySnapshot } = useHistorySnapshot()
+
+const emitTextCommand = ({ command, value }: RichTextAction) => {
+  if (!showTextStyleControls.value) return
+  if (command === 'align' && value) {
+    updateCellStyle({ align: value as TextAlign })
+    return
+  }
+  const attrs: Partial<TableTextAttrs> = {}
+  if (command === 'bold' || command === 'em' || command === 'underline') {
+    attrs[command] = !tableTextAttrs.value[command]
+  }
+  else if ((command === 'fontname' || command === 'fontsize' || command === 'color') && value !== undefined) {
+    attrs[command] = value
+  }
+  else return
+
+  emitter.emit(EmitterEvents.TABLE_TEXT_COMMAND, { targetId: props.elementInfo.id, attrs })
+}
 
 const emitTableCommand = (command: TableCommand['command'], position?: TableCommand['position']) => {
   emitter.emit(EmitterEvents.TABLE_COMMAND, {
@@ -88,7 +133,7 @@ const emitTableCommand = (command: TableCommand['command'], position?: TableComm
   })
 }
 
-const updateCellBackcolor = (backcolor: string) => {
+const updateCellStyle = (attrs: Partial<TableCellStyle>) => {
   const el = handleTableElement.value
   if (!el || el.type !== 'table') return
 
@@ -98,7 +143,7 @@ const updateCellBackcolor = (backcolor: string) => {
     for (let j = 0; j < data[i].length; j++) {
       if (!selected.length || selected.includes(`${i}_${j}`)) {
         const style: TableCellStyle = data[i][j].style || {}
-        data[i][j].style = { ...style, backcolor }
+        data[i][j].style = { ...style, ...attrs }
       }
     }
   }

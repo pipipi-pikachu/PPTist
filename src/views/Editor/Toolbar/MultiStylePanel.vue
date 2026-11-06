@@ -140,6 +140,7 @@ import type { LineStyleType, PPTElement, PPTElementOutline, TableCell } from '@/
 import emitter, { EmitterEvents } from '@/utils/emitter'
 import { FONTS } from '@/configs/font'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import { updateTableCellTextAttrs } from '@/utils/prosemirror/table'
 
 import SVGLine from './common/SVGLine.vue'
 import ColorButton from '@/components/ColorButton.vue'
@@ -236,8 +237,13 @@ const updateFontStyle = (command: string, value: string) => {
       const data: TableCell[][] = JSON.parse(JSON.stringify(el.data))
       for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].length; j++) {
-          const style = data[i][j].style || {}
-          data[i][j].style = { ...style, [command]: value }
+          if (command === 'fontname' || command === 'fontsize' || command === 'color') {
+            updateTableCellTextAttrs(data[i][j], { [command]: value })
+          }
+          else {
+            const style = data[i][j].style || {}
+            data[i][j].style = { ...style, [command]: value }
+          }
         }
       }
       updateElement(el.id, { data })

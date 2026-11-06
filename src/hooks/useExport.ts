@@ -12,6 +12,7 @@ import { type SvgPoints, toPoints } from '@/utils/svgPathParser'
 import { encrypt } from '@/utils/crypto'
 import { svg2Base64 } from '@/utils/svg2Base64'
 import message from '@/utils/message'
+import { parseTableText, serializeTableText } from '@/utils/prosemirror/table'
 
 import BaseLatexElement from '@/views/components/element/LatexElement/BaseLatexElement.vue'
 import BaseShapeElement from '@/views/components/element/ShapeElement/BaseShapeElement.vue'
@@ -886,11 +887,11 @@ export default () => {
               const cellOptions: pptxgen.TableCellProps = {
                 colspan: cell.colspan,
                 rowspan: cell.rowspan,
-                bold: cell.style?.bold || false,
-                italic: cell.style?.em || false,
-                underline: { style: cell.style?.underline ? 'sng' : 'none' },
+                bold: false,
+                italic: false,
+                underline: { style: 'none' },
                 align: cell.style?.align || 'left',
-                valign: 'middle',
+                valign: cell.style?.vAlign || 'top',
                 fontFace: cell.style?.fontname || '微软雅黑',
                 fontSize: (cell.style?.fontsize ? parseInt(cell.style?.fontsize) : 14) / ratioPx2Pt.value,
               }
@@ -917,8 +918,9 @@ export default () => {
               if (cell.style?.color) cellOptions.color = formatColor(cell.style.color).color
 
               if (!hiddenCells.includes(`${i}_${j}`)) {
+                const text = formatHTML(serializeTableText(parseTableText(cell.text)).replace(/<p><\/p>/g, '<p><br></p>'))
                 _row.push({
-                  text: cell.text,
+                  text: text.length ? text : '',
                   options: cellOptions,
                 })
               }

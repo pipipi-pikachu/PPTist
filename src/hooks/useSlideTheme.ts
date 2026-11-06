@@ -5,6 +5,7 @@ import type { Slide } from '@/types/slides'
 import type { PresetTheme } from '@/configs/theme'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
 import { getLineElementLength } from '@/utils/element'
+import { parseTableText, tableSchema, updateTableCellTextAttrs } from '@/utils/prosemirror/table'
 
 interface ThemeValueWithArea {
   area: number
@@ -132,13 +133,22 @@ export default () => {
                 themeColorValues.push({ area: area / cellCount, value: cell.style?.backcolor })
               }
               if (cell.text) {
-                const percent = (cell.text.length >= 10) ? 1 : (cell.text.length / 10)
-                if (cell.style?.color) {
-                  fontColorValues.push({ area: area / cellCount * percent, value: cell.style?.color })
-                }
-                if (cell.style?.fontname) {
-                  fontColorValues.push({ area: area / cellCount * percent, value: cell.style?.fontname })
-                }
+                const doc = parseTableText(cell.text)
+                const textLength = doc.textContent.replace(/\s/g, '').length
+                if (!textLength) continue
+
+                const textArea = area / cellCount * Math.min(textLength / 10, 1)
+                doc.descendants(node => {
+                  if (!node.isText) return
+                  const length = node.text!.replace(/\s/g, '').length
+                  if (!length) return
+
+                  const color = tableSchema.marks.forecolor.isInSet(node.marks)?.attrs.color || cell.style?.color
+                  const fontname = tableSchema.marks.fontname.isInSet(node.marks)?.attrs.fontname || cell.style?.fontname
+                  const area = textArea * length / textLength
+                  if (color) fontColorValues.push({ area, value: color })
+                  if (fontname) fontNameValues.push({ area, value: fontname })
+                })
               }
             }
           }
@@ -314,10 +324,7 @@ export default () => {
         if (el.theme) el.theme.color = getColor(el.theme.color)
         for (const rowCells of el.data) {
           for (const cell of rowCells) {
-            if (cell.style) {
-              cell.style.color = theme.fontColor
-              cell.style.fontname = theme.fontname
-            }
+            updateTableCellTextAttrs(cell, { color: theme.fontColor, fontname: theme.fontname })
           }
         }
       }
@@ -403,9 +410,7 @@ export default () => {
         if (el.type === 'table') {
           for (const rowCells of el.data) {
             for (const cell of rowCells) {
-              if (cell.style) {
-                cell.style.fontname = fontname
-              }
+              updateTableCellTextAttrs(cell, { fontname })
             }
           }
         }

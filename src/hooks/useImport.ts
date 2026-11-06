@@ -13,6 +13,7 @@ import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
 import { getSvgPathRange, toPoints } from '@/utils/svgPathParser'
 import { loadGoogleFonts } from '@/utils/font'
+import { parseTableText, serializeTableText } from '@/utils/prosemirror/table'
 import type {
   Slide,
   TableCellStyle,
@@ -1145,11 +1146,14 @@ export default () => {
                   const underline = textDecoration.includes('underline')
                   const strikethrough = textDecoration.includes('line-through')
 
+                  textDiv.innerHTML = convertTextContent(cellData.text, ratio)
+                  if (cellData.fontBold) textDiv.style.fontWeight = 'bold'
+
                   rowCells.push({
                     id: nanoid(10),
                     colspan: cellData.colSpan || 1,
                     rowspan: cellData.rowSpan || 1,
-                    text: textDiv.innerText,
+                    text: serializeTableText(parseTableText(textDiv.outerHTML)),
                     style: {
                       ...style,
                       vAlign: vAlignMap[cellData.vAlign] || 'middle',

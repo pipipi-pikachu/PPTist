@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement } from '@/types/slides'
 import message from '@/utils/message'
+import { htmlToText } from '@/utils/common'
 
 interface SearchTextResult {
   elType: 'text' | 'shape'
@@ -64,7 +65,7 @@ export default () => {
             for (let j = 0; j < row.length; j++) {
               const cell = row[j]
               if (!cell.text) continue
-              const text = cell.text.replace(textRegex, '')
+              const text = htmlToText(cell.text)
               const rets = text.match(matchRegex)
               rets && textList.push(...new Array(rets.length).fill({
                 slideId: slide.id,
@@ -94,7 +95,7 @@ export default () => {
     while (nodeList.length) {
       const node = nodeList.shift()!
       if (node.nodeType === node.TEXT_NODE) {
-        (node as Text).wholeText && textNodes.push(node as Text)
+        (node as Text).data && textNodes.push(node as Text)
       } 
       else {
         nodeList.unshift(...node.childNodes)
@@ -106,10 +107,10 @@ export default () => {
   const getTextInfoList = (textNodes: Text[]) => {
     let length = 0
     const textList = textNodes.map(node => {
-      const startIdx = length, endIdx = length + node.wholeText.length
+      const startIdx = length, endIdx = length + node.length
       length = endIdx
       return {
-        text: node.wholeText,
+        text: node.data,
         startIdx,
         endIdx
       }
@@ -138,7 +139,7 @@ export default () => {
   
       for (let textIdx = 0; textIdx < textList.length; textIdx++) {
         const { text, startIdx, endIdx } = textList[textIdx]
-        if (endIdx < matchStart) continue
+        if (endIdx <= matchStart) continue
         if (startIdx >= matchEnd) break
   
         let textNode = textNodes[textIdx]
@@ -146,7 +147,7 @@ export default () => {
         const nodeMatchLength = Math.min(endIdx, matchEnd) - startIdx - nodeMatchStartIdx
   
         if (nodeMatchStartIdx > 0) textNode = textNode.splitText(nodeMatchStartIdx)
-        if (nodeMatchLength < textNode.wholeText.length) textNode.splitText(nodeMatchLength)
+        if (nodeMatchLength < textNode.length) textNode.splitText(nodeMatchLength)
   
         const mark = document.createElement('mark')
         mark.dataset.index = index + i + ''
@@ -158,9 +159,12 @@ export default () => {
   
   const highlightTableText = (nodes: NodeListOf<Element>, index: number) => {
     for (const node of nodes) {
-      node.innerHTML = node.innerHTML.replace(new RegExp(searchWord.value, modifiers.value), () => {
-        return `<mark data-index=${index++}>${searchWord.value}</mark>`
-      })
+      const textNodes = getTextNodeList(node)
+      const textList = getTextInfoList(textNodes)
+      const content = textList.map(({ text }) => text).join('')
+      const matchList = getMatchList(content, searchWord.value)
+      highlight(textNodes, textList, matchList, index)
+      index += matchList.length
     }
   }
   
@@ -257,7 +261,9 @@ export default () => {
     let targetElement = null
     if (target.elType === 'table') {
       const [i, j] = target.cellIndex
-      targetElement = document.querySelector(`#editable-element-${target.elId} .cell[data-cell-index="${i}_${j}"] .cell-text`)
+      const cell = document.querySelector(`#editable-element-${target.elId} .cell[data-cell-index="${i}_${j}"]`)
+      // 只读取正文，避免将静态布局容器或编辑器外壳写回单元格数据。
+      targetElement = cell?.querySelector('.cell-text-content, .ProseMirror') || null
     }
     else targetElement = document.querySelector(`#editable-element-${target.elId} .ProseMirror`)
     if (!targetElement) return
@@ -355,7 +361,7 @@ export default () => {
             if (!cell.text) return cell
             return {
               ...cell,
-              text: cell.text.replace(new RegExp(searchWord.value, 'g'), replaceWord.value),
+              text: replaceAllText(cell.text),
             }
           })
         })
@@ -363,32 +369,16 @@ export default () => {
         slidesStore.updateElement({ id: target.elId, slideId: target.slideId, props })
       }
       else {
-        const textNodes = getTextNodeList(fakeElement)
-        const textList = getTextInfoList(textNodes)
-        const content = textList.map(({ text }) => text).join('')
-        const matchList = getMatchList(content, searchWord.value)
-        highlight(textNodes, textList, matchList, i)
-  
-        const marks = fakeElement.querySelectorAll('mark[data-index]')
-        let lastMarkIndex = -1
-        for (const mark of marks) {
-          const markIndex = +(mark as HTMLElement).dataset.index!
-          const parentNode = mark.parentNode!
-          if (markIndex === lastMarkIndex) parentNode.removeChild(mark)
-          else {
-            parentNode.replaceChild(document.createTextNode(replaceWord.value), mark)
-            lastMarkIndex = markIndex
-          }
-        }
+        const content = replaceAllText(fakeElement.innerHTML)
   
         if (target.elType === 'text') {
-          const props = { content: fakeElement.innerHTML }
+          const props = { content }
           slidesStore.updateElement({ id: target.elId, slideId: target.slideId, props })
         }
         else if (target.elType === 'shape') {
           const el = currentSlide.value.elements.find(item => item.id === target.elId)
           if (el && el.type === 'shape' && el.text) {
-            const props = { text: { ...el.text, content: fakeElement.innerHTML } }
+            const props = { text: { ...el.text, content } }
             slidesStore.updateElement({ id: target.elId, slideId: target.slideId, props })
           }
         }
@@ -396,6 +386,27 @@ export default () => {
     }
     searchResults.value = []
     searchIndex.value = -1
+  }
+
+  const replaceAllText = (html: string) => {
+    const element = document.createElement('div')
+    element.innerHTML = html
+    const textNodes = getTextNodeList(element)
+    const textList = getTextInfoList(textNodes)
+    const content = textList.map(({ text }) => text).join('')
+    highlight(textNodes, textList, getMatchList(content, searchWord.value), 0)
+    const marks = element.querySelectorAll('mark[data-index]')
+    let lastMarkIndex = -1
+    for (const mark of marks) {
+      const markIndex = +(mark as HTMLElement).dataset.index!
+      const parentNode = mark.parentNode!
+      if (markIndex === lastMarkIndex) parentNode.removeChild(mark)
+      else {
+        parentNode.replaceChild(document.createTextNode(replaceWord.value), mark)
+        lastMarkIndex = markIndex
+      }
+    }
+    return element.innerHTML
   }
 
   const reset = () => {

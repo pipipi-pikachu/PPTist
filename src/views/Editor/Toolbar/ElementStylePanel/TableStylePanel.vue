@@ -3,7 +3,7 @@
     <SelectGroup class="row">
       <Select
         style="width: 50%;"
-        :value="textAttrs.fontname"
+        :value="tableTextAttrs.fontname"
         search
         searchLabel="搜索字体"
         autofocus
@@ -16,7 +16,7 @@
       </Select>
       <Select
         style="width: 50%;"
-        :value="textAttrs.fontsize"
+        :value="tableTextAttrs.fontsize"
         search
         searchLabel="搜索字号"
         autofocus
@@ -35,22 +35,22 @@
       <Popover trigger="click" style="width: 50%;">
         <template #content>
           <ColorPicker
-            :modelValue="textAttrs.color"
+            :modelValue="tableTextAttrs.color"
             @update:modelValue="value => updateTextAttrs({ color: value })"
           />
         </template>
-        <TextColorButton first v-tooltip="'文字颜色'" :color="textAttrs.color">
+        <TextColorButton first v-tooltip="'文字颜色'" :color="tableTextAttrs.color">
           <i-icon-park-outline:text />
         </TextColorButton>
       </Popover>
       <Popover trigger="click" style="width: 50%;">
         <template #content>
           <ColorPicker
-            :modelValue="textAttrs.backcolor"
+            :modelValue="cellAttrs.backcolor"
             @update:modelValue="value => updateTextAttrs({ backcolor: value })"
           />
         </template>
-        <TextColorButton last v-tooltip="'单元格填充'" :color="textAttrs.backcolor">
+        <TextColorButton last v-tooltip="'单元格填充'" :color="cellAttrs.backcolor">
           <i-icon-park-outline:fill />
         </TextColorButton>
       </Popover>
@@ -59,34 +59,34 @@
     <ButtonGroup class="row">
       <CheckboxButton 
         style="flex: 1;"
-        :checked="textAttrs.bold"
+        :checked="tableTextAttrs.bold"
         v-tooltip="'加粗'"
-        @click="updateTextAttrs({ bold: !textAttrs.bold })"
+        @click="updateTextAttrs({ bold: !tableTextAttrs.bold })"
       ><i-icon-park-outline:text-bold /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
-        :checked="textAttrs.em"
+        :checked="tableTextAttrs.em"
         v-tooltip="'斜体'"
-        @click="updateTextAttrs({ em: !textAttrs.em })"
+        @click="updateTextAttrs({ em: !tableTextAttrs.em })"
       ><i-icon-park-outline:text-italic /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
-        :checked="textAttrs.underline"
+        :checked="tableTextAttrs.underline"
         v-tooltip="'下划线'"
-        @click="updateTextAttrs({ underline: !textAttrs.underline })"
+        @click="updateTextAttrs({ underline: !tableTextAttrs.underline })"
       ><i-icon-park-outline:text-underline /></CheckboxButton>
       <CheckboxButton 
         style="flex: 1;"
-        :checked="textAttrs.strikethrough"
+        :checked="tableTextAttrs.strikethrough"
         v-tooltip="'删除线'"
-        @click="updateTextAttrs({ strikethrough: !textAttrs.strikethrough })"
+        @click="updateTextAttrs({ strikethrough: !tableTextAttrs.strikethrough })"
       ><i-icon-park-outline:strikethrough /></CheckboxButton>
     </ButtonGroup>
 
     <RadioGroup 
       class="row" 
       button-style="solid" 
-      :value="textAttrs.align"
+      :value="cellAttrs.align"
       @update:value="value => updateTextAttrs({ align: value as TextAlign })"
     >
       <RadioButton value="left" v-tooltip="'左对齐'" style="flex: 1;"><i-icon-park-outline:align-text-left /></RadioButton>
@@ -98,7 +98,7 @@
     <RadioGroup 
       class="row" 
       button-style="solid" 
-      :value="textAttrs.vAlign"
+      :value="cellAttrs.vAlign"
       @update:value="value => updateTextAttrs({ vAlign: value as TextAlignVertical })"
     >
       <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
@@ -195,7 +195,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTTableElement, TableCell, TableCellStyle, TableTheme, TextAlign, TextAlignVertical } from '@/types/slides'
@@ -221,24 +221,21 @@ import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId, selectedTableCells: selectedCells } = storeToRefs(useMainStore())
+const { handleElement, handleElementId, tableTextAttrs, selectedTableCells: selectedCells } = storeToRefs(useMainStore())
 const themeColor = computed(() => slidesStore.theme.themeColors[0])
 
 const fontSizeOptions = [
   '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
 ]
 
-const textAttrs = ref({
-  bold: false,
-  em: false,
-  underline: false,
-  strikethrough: false,
-  color: '#000',
-  backcolor: '',
-  fontsize: '12px',
-  fontname: '',
-  align: 'left',
-  vAlign: 'top',
+const cellAttrs = computed(() => {
+  const [row, col] = (selectedCells.value[0] || '0_0').split('_').map(Number)
+  const style = handleElement.value?.type === 'table' ? handleElement.value.data[row]?.[col]?.style : undefined
+  return {
+    backcolor: style?.backcolor || '',
+    align: style?.align || 'left',
+    vAlign: style?.vAlign || 'top',
+  }
 })
 
 const theme = ref<TableTheme>()
@@ -253,55 +250,6 @@ watch(handleElement, () => {
 
 const { addHistorySnapshot } = useHistorySnapshot()
 
-// 更新当前选中单元格的文本样式状态
-const updateTextAttrState = () => {
-  if (!handleElement.value || handleElement.value.type !== 'table') return
-
-  let rowIndex = 0
-  let colIndex = 0
-  if (selectedCells.value.length) {
-    const selectedCell = selectedCells.value[0]
-    rowIndex = +selectedCell.split('_')[0]
-    colIndex = +selectedCell.split('_')[1]
-  }
-  const style = handleElement.value.data[rowIndex][colIndex].style
-
-  if (!style) {
-    textAttrs.value = {
-      bold: false,
-      em: false,
-      underline: false,
-      strikethrough: false,
-      color: '#000',
-      backcolor: '',
-      fontsize: '12px',
-      fontname: '',
-      align: 'left',
-      vAlign: 'top',
-    }
-  }
-  else {
-    textAttrs.value = {
-      bold: !!style.bold,
-      em: !!style.em,
-      underline: !!style.underline,
-      strikethrough: !!style.strikethrough,
-      color: style.color || '#000',
-      backcolor: style.backcolor || '',
-      fontsize: style.fontsize || '12px',
-      fontname: style.fontname || '',
-      align: style.align || 'left',
-      vAlign: style.vAlign || 'top',
-    }
-  }
-}
-
-onMounted(() => {
-  updateTextAttrState()
-})
-
-watch(selectedCells, updateTextAttrState)
-
 const updateElement = (props: Partial<PPTTableElement>) => {
   slidesStore.updateElement({ id: handleElementId.value, props })
   addHistorySnapshot()
@@ -309,6 +257,10 @@ const updateElement = (props: Partial<PPTTableElement>) => {
 
 // 设置单元格内容文本样式
 const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
+  if (!('backcolor' in textAttrProp || 'align' in textAttrProp || 'vAlign' in textAttrProp)) {
+    emitter.emit(EmitterEvents.TABLE_TEXT_COMMAND, { targetId: handleElementId.value, attrs: textAttrProp })
+    return
+  }
   const _handleElement = handleElement.value as PPTTableElement
 
   const data: TableCell[][] = JSON.parse(JSON.stringify(_handleElement.data))
@@ -322,7 +274,6 @@ const updateTextAttrs = (textAttrProp: Partial<TableCellStyle>) => {
     }
   }
   updateElement({ data })
-  updateTextAttrState()
 }
 
 // 更新表格主题：主题色、标题行、汇总行、第一列、最后一列

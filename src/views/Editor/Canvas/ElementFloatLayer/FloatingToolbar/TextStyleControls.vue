@@ -1,18 +1,18 @@
 <template>
   <Select
     class="font-select"
-    :value="richTextAttrs.fontname"
+    :value="textAttrs.fontname"
     search
     searchLabel="搜索字体"
-    @update:value="value => emitRichTextCommand('fontname', value as string)"
+    @update:value="value => emitTextCommand('fontname', value as string)"
     :options="FONTS"
   />
   <Select
     class="fontsize-select"
-    :value="richTextAttrs.fontsize"
+    :value="textAttrs.fontsize"
     search
     searchLabel="搜索字号"
-    @update:value="value => emitRichTextCommand('fontsize', value as string)"
+    @update:value="value => emitTextCommand('fontsize', value as string)"
     :options="fontSizeOptions.map(item => ({ label: item, value: item }))"
   />
 
@@ -20,73 +20,90 @@
 
   <Popover trigger="click">
     <template #content>
-      <ColorPicker :modelValue="richTextAttrs.color" @update:modelValue="value => emitRichTextCommand('color', value)" />
+      <ColorPicker :modelValue="textAttrs.color" @update:modelValue="value => emitTextCommand('color', value)" />
     </template>
-    <button class="toolbar-btn text-color-btn">
+    <button class="toolbar-btn text-color-btn" @mousedown.prevent>
       <i-icon-park-outline:text />
-      <span class="text-color-block" :class="{ white: isPureWhiteColor(richTextAttrs.color) }">
-        <span class="text-color-block-content" :style="{ backgroundColor: richTextAttrs.color }"></span>
+      <span class="text-color-block" :class="{ white: isPureWhiteColor(textAttrs.color) }">
+        <span class="text-color-block-content" :style="{ backgroundColor: textAttrs.color }"></span>
       </span>
     </button>
   </Popover>
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.bold }"
-    @click="emitRichTextCommand('bold')"
+    :class="{ active: textAttrs.bold }"
+    @mousedown.prevent
+    @click="emitTextCommand('bold')"
   ><i-icon-park-outline:text-bold /></button>
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.em }"
-    @click="emitRichTextCommand('em')"
+    :class="{ active: textAttrs.em }"
+    @mousedown.prevent
+    @click="emitTextCommand('em')"
   ><i-icon-park-outline:text-italic /></button>
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.underline }"
-    @click="emitRichTextCommand('underline')"
+    :class="{ active: textAttrs.underline }"
+    @mousedown.prevent
+    @click="emitTextCommand('underline')"
   ><i-icon-park-outline:text-underline /></button>
 
   <div class="divider"></div>
 
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.align === 'left' }"
-    @click="emitRichTextCommand('align', 'left')"
+    :class="{ active: textAttrs.align === 'left' }"
+    @mousedown.prevent
+    @click="emitTextCommand('align', 'left')"
   ><i-icon-park-outline:align-text-left /></button>
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.align === 'center' }"
-    @click="emitRichTextCommand('align', 'center')"
+    :class="{ active: textAttrs.align === 'center' }"
+    @mousedown.prevent
+    @click="emitTextCommand('align', 'center')"
   ><i-icon-park-outline:align-text-center /></button>
   <button
     class="toolbar-btn"
-    :class="{ active: richTextAttrs.align === 'right' }"
-    @click="emitRichTextCommand('align', 'right')"
+    :class="{ active: textAttrs.align === 'right' }"
+    @mousedown.prevent
+    @click="emitTextCommand('align', 'right')"
   ><i-icon-park-outline:align-text-right /></button>
   <button
     class="toolbar-btn"
-    :class="{ active: (richTextAttrs.align as string) === 'justify' }"
-    @click="emitRichTextCommand('align', 'justify')"
+    :class="{ active: textAttrs.align === 'justify' }"
+    @mousedown.prevent
+    @click="emitTextCommand('align', 'justify')"
   ><i-icon-park-outline:align-text-both /></button>
 
-  <div class="divider"></div>
-
-  <button class="toolbar-btn" @click="emitRichTextCommand('clear')">
-    <i-icon-park-outline:format />
-  </button>
+  <template v-if="showClear">
+    <div class="divider"></div>
+    <button class="toolbar-btn" @mousedown.prevent @click="emitTextCommand('clear')">
+      <i-icon-park-outline:format />
+    </button>
+  </template>
 </template>
 
 <script lang="ts" setup>
 import tinycolor from 'tinycolor2'
-import { storeToRefs } from 'pinia'
-import { useMainStore } from '@/store'
 import { FONTS } from '@/configs/font'
-import emitter, { EmitterEvents } from '@/utils/emitter'
+import type { RichTextAction } from '@/utils/emitter'
+import type { TextAttrs } from '@/utils/prosemirror/utils'
+import type { TextAlign } from '@/types/slides'
 
 import Select from '@/components/Select.vue'
 import Popover from '@/components/Popover.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 
-const { richTextAttrs } = storeToRefs(useMainStore())
+withDefaults(defineProps<{
+  textAttrs: Pick<TextAttrs, 'fontname' | 'fontsize' | 'color' | 'bold' | 'em' | 'underline'> & { align: TextAlign }
+  showClear?: boolean
+}>(), {
+  showClear: true,
+})
+
+const emit = defineEmits<{
+  (event: 'command', payload: RichTextAction): void
+}>()
 
 const fontSizeOptions = [
   '12px', '14px', '16px', '18px', '20px', '22px', '24px', '28px', '32px',
@@ -94,8 +111,8 @@ const fontSizeOptions = [
   '80px', '88px', '96px', '104px', '112px', '120px',
 ]
 
-const emitRichTextCommand = (command: string, value?: string) => {
-  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action: { command, value } })
+const emitTextCommand = (command: string, value?: string) => {
+  emit('command', { command, value })
 }
 
 const isPureWhiteColor = (color?: string) => {

@@ -4,6 +4,7 @@ import { ToolbarStates } from '@/types/toolbar'
 import type { CreatingElement, ShapeFormatPainter, TextFormatPainter } from '@/types/edit'
 import type { DialogForExportTypes } from '@/types/export'
 import { type TextAttrs, defaultRichTextAttrs } from '@/utils/prosemirror/utils'
+import { type TableTextAttrs, defaultTableTextAttrs } from '@/utils/prosemirror/table'
 
 import { useSlidesStore } from './slides'
 
@@ -27,6 +28,7 @@ export interface MainState {
   clipingImageElementId: string
   isScaling: boolean
   richTextAttrs: TextAttrs
+  tableTextAttrs: TableTextAttrs
   selectedTableCells: string[]
   selectedSlidesIndex: number[]
   dialogForExport: DialogForExportTypes
@@ -65,6 +67,7 @@ export const useMainStore = defineStore('main', {
     toolbarState: ToolbarStates.SLIDE_DESIGN, // 右侧工具栏状态
     clipingImageElementId: '', // 当前正在裁剪的图片ID  
     richTextAttrs: defaultRichTextAttrs, // 富文本状态
+    tableTextAttrs: defaultTableTextAttrs, // 表格文字状态
     selectedTableCells: [], // 选中的表格单元格
     isScaling: false, // 正在进行元素缩放
     selectedSlidesIndex: [], // 当前被选中的页面索引集合
@@ -171,6 +174,10 @@ export const useMainStore = defineStore('main', {
   
     setRichtextAttrs(attrs: TextAttrs) {
       this.richTextAttrs = attrs
+    },
+
+    setTableTextAttrs(attrs: TableTextAttrs) {
+      this.tableTextAttrs = attrs
     },
   
     setSelectedTableCells(cells: string[]) {

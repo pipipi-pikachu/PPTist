@@ -560,7 +560,7 @@ export interface TableCellStyle {
  * 
  * rowspan: 合并行数
  * 
- * text: 文字内容
+ * text: 单元格富文本HTML
  * 
  * style?: 单元格样式
  */

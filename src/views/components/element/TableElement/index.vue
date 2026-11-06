@@ -28,10 +28,12 @@
           :outline="elementInfo.outline"
           :theme="elementInfo.theme"
           :editable="editable"
-          @change="data => updateTableCells(data)"
+          @change="(data, options) => updateTableCells(data, options)"
           @changeRowHeights="heights => updateRowHeights(heights)"
           @changeColWidths="widths => updateColWidths(widths)"
           @changeSelectedCells="cells => updateSelectedCells(cells)"
+          @undo="undoTable()"
+          @redo="redoTable()"
         />
         <div 
           class="table-mask" 
@@ -50,8 +52,9 @@
 
 <script lang="ts" setup>
 import { nextTick, onMounted, onUnmounted, ref, watch, useTemplateRef } from 'vue'
+import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore, useSnapshotStore } from '@/store'
 import type { PPTTableElement, TableCell } from '@/types/slides'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
@@ -70,7 +73,23 @@ const { canvasScale, handleElementId, isScaling } = storeToRefs(mainStore)
 
 const elementRef = useTemplateRef<HTMLElement>('elementRef')
 
-const { addHistorySnapshot } = useHistorySnapshot()
+const { undo, redo } = useHistorySnapshot()
+const snapshotStore = useSnapshotStore()
+const addHistorySnapshot = debounce(() => snapshotStore.addSnapshot(), 300, { trailing: true })
+
+// 全局回滚会替换 slides，取消旧编辑的待保存快照，避免覆盖重做记录。
+watch(() => slidesStore.slides, () => {
+  addHistorySnapshot.cancel()
+}, { flush: 'sync' })
+
+const undoTable = async () => {
+  await addHistorySnapshot.flush()
+  undo()
+}
+const redoTable = async () => {
+  await addHistorySnapshot.flush()
+  redo()
+}
 
 const handleSelectElement = (e: MouseEvent | TouchEvent) => {
   if (props.elementInfo.lock) return
@@ -84,7 +103,8 @@ const editable = ref(false)
 
 watch(handleElementId, () => {
   if (handleElementId.value !== props.elementInfo.id) editable.value = false
-})
+  else mainStore.setSelectedTableCells([])
+}, { immediate: true })
 
 watch(editable, () => {
   mainStore.setDisableHotkeysState(editable.value)
@@ -135,16 +155,18 @@ onMounted(() => {
   if (elementRef.value) resizeObserver.observe(elementRef.value)
 })
 onUnmounted(() => {
+  addHistorySnapshot.flush()
   if (elementRef.value) resizeObserver.unobserve(elementRef.value)
 })
 
 // 更新表格内容数据
-const updateTableCells = (data: TableCell[][]) => {
+const updateTableCells = (data: TableCell[][], options: { ignore?: boolean } = {}) => {
   slidesStore.updateElement({
     id: props.elementInfo.id, 
     props: { data },
   })
-  addHistorySnapshot()
+  // 与普通文本一致：内部撤销不新增快照，但保留其他单元格的待保存任务。
+  if (!options.ignore) addHistorySnapshot()
 }
 
 // 更新表格各行最小高度
@@ -170,7 +192,9 @@ const updateColWidths = (widths: number[]) => {
 
 // 更新表格当前选中的单元格
 const updateSelectedCells = (cells: string[]) => {
-  nextTick(() => mainStore.setSelectedTableCells(cells))
+  nextTick(() => {
+    if (handleElementId.value === props.elementInfo.id) mainStore.setSelectedTableCells(cells)
+  })
 }
 </script>
 

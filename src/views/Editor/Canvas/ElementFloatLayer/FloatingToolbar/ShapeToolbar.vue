@@ -12,7 +12,7 @@
     <BorderPanel />
     <template v-if="showTextStyleControls">
       <div class="divider"></div>
-      <TextStyleControls />
+      <TextStyleControls :textAttrs="richTextAttrs" @command="emitRichTextCommand" />
     </template>
   </div>
 </template>
@@ -23,6 +23,7 @@ import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
 import type { PPTShapeElement } from '@/types/slides'
 import useHistorySnapshot from '@/hooks/useHistorySnapshot'
+import emitter, { EmitterEvents, type RichTextAction } from '@/utils/emitter'
 
 import BorderPanel from './BorderPanel.vue'
 import TextStyleControls from './TextStyleControls.vue'
@@ -38,7 +39,7 @@ const emit = defineEmits<{
 }>()
 
 const slidesStore = useSlidesStore()
-const { handleElement, handleElementId } = storeToRefs(useMainStore())
+const { handleElement, handleElementId, richTextAttrs } = storeToRefs(useMainStore())
 
 const handleShapeElement = handleElement as Ref<PPTShapeElement>
 
@@ -55,6 +56,10 @@ watch(showTextStyleControls, () => {
 })
 
 const { addHistorySnapshot } = useHistorySnapshot()
+
+const emitRichTextCommand = (action: RichTextAction) => {
+  emitter.emit(EmitterEvents.RICH_TEXT_COMMAND, { action })
+}
 
 const updateFill = (value: string) => {
   slidesStore.removeElementProps({ id: handleElementId.value, propName: ['gradient', 'pattern'] })
