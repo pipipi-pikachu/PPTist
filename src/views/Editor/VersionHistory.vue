@@ -68,9 +68,10 @@ const save = async () => {
 const retry = async () => {
   try {
     await store.refresh()
+    await store.save()
   }
   catch {
-    message.error('无法读取版本历史，请检查浏览器存储权限')
+    message.error('版本保存失败，请检查浏览器存储权限后重试')
   }
 }
 const restore = async (version: PresentationVersion) => {

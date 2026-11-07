@@ -47,7 +47,7 @@ export const useVersionsStore = defineStore('versions', () => {
     const fingerprint = JSON.stringify(presentation)
     const operation = pending.then(async () => {
       if (!ready) throw new Error('无法读取版本历史，请重试后保存')
-      if (!presentation.slides.length || (reason !== 'manual' && reason !== 'restore' && fingerprint === lastSaved)) return
+      if (!presentation.slides.length || (reason === 'automatic' && fingerprint === lastSaved)) return
       await storage.save({ id: nanoid(), documentId, createdAt: Date.now(), reason, presentation })
       lastSaved = fingerprint
       versions.value = await storage.list(documentId)
@@ -78,9 +78,17 @@ export const useVersionsStore = defineStore('versions', () => {
     const backgroundSave = (reason: PresentationVersion['reason']) => {
       void save(reason).catch(() => {})
     }
+    let changePending = false
+    let stopped = false
     const stop = useSlidesStore().$onAction(({ name }) => {
-      if (!restoring.value && ['setSlides', 'deleteSlide', 'setTheme', 'setViewportSize', 'setViewportRatio'].includes(name)) {
+      if (!restoring.value && !changePending && ['setSlides', 'deleteSlide', 'setTheme', 'setViewportSize', 'setViewportRatio'].includes(name)) {
+        changePending = true
         backgroundSave('before-change')
+        // Imports update slides, theme, title and dimensions in the same synchronous turn.
+        queueMicrotask(() => {
+          changePending = false
+          if (!stopped) backgroundSave('automatic')
+        })
       }
     })
     const timer = window.setInterval(() => backgroundSave('automatic'), 60_000)
@@ -90,6 +98,7 @@ export const useVersionsStore = defineStore('versions', () => {
     document.addEventListener('visibilitychange', onHidden)
     backgroundSave('automatic')
     return () => {
+      stopped = true
       stop()
       clearInterval(timer)
       document.removeEventListener('visibilitychange', onHidden)
