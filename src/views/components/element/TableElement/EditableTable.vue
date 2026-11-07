@@ -85,6 +85,7 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
 import { computed, nextTick, onMounted, onUnmounted, ref, shallowReactive, toRaw, watch, useTemplateRef } from 'vue'
 import { isEqual, pick } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -897,11 +898,11 @@ const execTableCommand = (payload: TableCommand) => {
   const { canDeleteRow, canDeleteCol } = checkCanDeleteRowOrCol()
 
   if (payload.command === 'delete-row') {
-    if (!canDeleteRow) return message.warning('表格至少保留一行')
+    if (!canDeleteRow) return message.warning(t('表格至少保留一行'))
     return deleteRow(targetCell ? targetCell.rowIndex : tableCells.value.length - 1)
   }
   if (payload.command === 'delete-col') {
-    if (!canDeleteCol) return message.warning('表格至少保留一列')
+    if (!canDeleteCol) return message.warning(t('表格至少保留一列'))
     const colCount = tableCells.value[0]?.length || 1
     return deleteCol(targetCell ? targetCell.colIndex : colCount - 1)
   }
@@ -942,51 +943,51 @@ const contextmenus = (el: HTMLElement): ContextmenuItem[] => {
 
   return [
     {
-      text: '插入列',
+      text: t('插入列'),
       children: [
-        { text: '到左侧', handler: () => insertCol(colIndex) },
-        { text: '到右侧', handler: () => insertCol(colIndex + 1) },
+        { text: t('到左侧'), handler: () => insertCol(colIndex) },
+        { text: t('到右侧'), handler: () => insertCol(colIndex + 1) },
       ],
     },
     {
-      text: '插入行',
+      text: t('插入行'),
       children: [
-        { text: '到上方', handler: () => insertRow(rowIndex) },
-        { text: '到下方', handler: () => insertRow(rowIndex + 1) },
+        { text: t('到上方'), handler: () => insertRow(rowIndex) },
+        { text: t('到下方'), handler: () => insertRow(rowIndex + 1) },
       ],
     },
     {
-      text: '删除列',
+      text: t('删除列'),
       disable: !canDeleteCol,
       handler: () => deleteCol(colIndex),
     },
     {
-      text: '删除行',
+      text: t('删除行'),
       disable: !canDeleteRow,
       handler: () => deleteRow(rowIndex),
     },
     { divider: true },
     {
-      text: '合并单元格',
+      text: t('合并单元格'),
       disable: !canMerge,
       handler: mergeCells,
     },
     {
-      text: '取消合并单元格',
+      text: t('取消合并单元格'),
       disable: !canSplit,
       handler: () => splitCells(rowIndex, colIndex),
     },
     { divider: true },
     {
-      text: '选中当前列',
+      text: t('选中当前列'),
       handler: () => selectCol(colIndex),
     },
     {
-      text: '选中当前行',
+      text: t('选中当前行'),
       handler: () => selectRow(rowIndex),
     },
     {
-      text: '选中全部单元格',
+      text: t('选中全部单元格'),
       handler: selectAll,
     },
   ]

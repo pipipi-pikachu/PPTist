@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 export const enum ClipPathTypes {
   RECT = 'rect',
   ELLIPSE = 'ellipse',
@@ -26,13 +27,13 @@ interface ClipPath {
 
 export const CLIPPATHS: ClipPath = {
   rect: {
-    name: '矩形',
+    name: t('矩形'),
     type: ClipPathTypes.RECT,
     radius: '0',
     style: '',
   },
   snip1Rect: {
-    name: '矩形2',
+    name: t('矩形2'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 0 100%)',
     createPath: (width: number, height: number) => {
@@ -40,7 +41,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   snip2DiagRect: {
-    name: '矩形3',
+    name: t('矩形3'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 0%, 80% 0%, 100% 20%, 100% 100%, 20% 100%, 0% 80%)',
     createPath: (width: number, height: number) => {
@@ -48,18 +49,18 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   roundRect: {
-    name: '圆角矩形',
+    name: t('圆角矩形'),
     type: ClipPathTypes.RECT,
     radius: '10px',
     style: 'inset(0 round 10px)',
   },
   ellipse: {
-    name: '圆形',
+    name: t('圆形'),
     type: ClipPathTypes.ELLIPSE,
     style: 'ellipse(50% 50% at 50% 50%)',
   },
   triangle: {
-    name: '三角形',
+    name: t('三角形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(50% 0%, 0% 100%, 100% 100%)',
     createPath: (width: number, height: number) => {
@@ -67,7 +68,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   rtTriangle: {
-    name: '直角三角形',
+    name: t('直角三角形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 0%, 0% 100%, 100% 100%)',
     createPath: (width: number, height: number) => {
@@ -75,7 +76,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   triangleReverse: {
-    name: '倒三角形',
+    name: t('倒三角形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(50% 100%, 0% 0%, 100% 0%)',
     createPath: (width: number, height: number) => {
@@ -83,7 +84,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   diamond: {
-    name: '菱形',
+    name: t('菱形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)',
     createPath: (width: number, height: number) => {
@@ -91,7 +92,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   pentagon: {
-    name: '五边形',
+    name: t('五边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)',
     createPath: (width: number, height: number) => {
@@ -99,7 +100,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   hexagon: {
-    name: '六边形',
+    name: t('六边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)',
     createPath: (width: number, height: number) => {
@@ -107,7 +108,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   heptagon: {
-    name: '七边形',
+    name: t('七边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%)',
     createPath: (width: number, height: number) => {
@@ -115,7 +116,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   octagon: {
-    name: '八边形',
+    name: t('八边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
     createPath: (width: number, height: number) => {
@@ -123,7 +124,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   chevron: {
-    name: '人字形',
+    name: t('人字形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 25% 50%, 0% 0%)',
     createPath: (width: number, height: number) => {
@@ -131,7 +132,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   homePlate: {
-    name: '点',
+    name: t('点'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%)',
     createPath: (width: number, height: number) => {
@@ -139,7 +140,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   rightArrow: {
-    name: '箭头',
+    name: t('箭头'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)',
     createPath: (width: number, height: number) => {
@@ -147,7 +148,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   parallelogram: {
-    name: '平行四边形',
+    name: t('平行四边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(30% 0%, 100% 0%, 70% 100%, 0% 100%)',
     createPath: (width: number, height: number) => {
@@ -155,7 +156,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   parallelogramReverse: {
-    name: '反平行四边形',
+    name: t('反平行四边形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(30% 100%, 100% 100%, 70% 0%, 0% 0%)',
     createPath: (width: number, height: number) => {
@@ -163,7 +164,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   trapezoid: {
-    name: '梯形',
+    name: t('梯形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(25% 0%, 75% 0%, 100% 100%, 0% 100%)',
     createPath: (width: number, height: number) => {
@@ -171,7 +172,7 @@ export const CLIPPATHS: ClipPath = {
     },
   },
   trapezoidReverse: {
-    name: '倒梯形',
+    name: t('倒梯形'),
     type: ClipPathTypes.POLYGON,
     style: 'polygon(0% 0%, 100% 0%, 75% 100%, 25% 100%)',
     createPath: (width: number, height: number) => {

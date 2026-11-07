@@ -47,11 +47,13 @@ const handleClick = () => {
 
 <style lang="scss" scoped>
 .button {
-  height: 32px;
-  line-height: 32px;
+  min-height: 32px;
+  height: auto;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
   outline: 0;
   font-size: 13px;
-  padding: 0 15px;
+  padding: 6px 15px;
   text-align: center;
   color: $textColor;
   border-radius: $borderRadius;
@@ -60,9 +62,8 @@ const handleClick = () => {
   cursor: pointer;
 
   &.small {
-    height: 24px;
-    line-height: 24px;
-    padding: 0 7px;
+    min-height: 24px;
+    padding: 3px 7px;
     letter-spacing: 0;
     font-size: 12px;
   }

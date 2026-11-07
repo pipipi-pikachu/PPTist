@@ -1,8 +1,8 @@
 <template>
   <div class="viewport-size-setting">
-    <div class="title">自定义画布尺寸</div>
+    <div class="title">{{ t('自定义画布尺寸') }}</div>
     <div class="row">
-      <div class="label">宽度：</div>
+      <div class="label">{{ t('宽度：') }}</div>
       <NumberInput 
         v-model:value="customViewportWidth"
         :min="VIEWPORT_SIZE_MIN"
@@ -12,7 +12,7 @@
       />
     </div>
     <div class="row">
-      <div class="label">高度：</div>
+      <div class="label">{{ t('高度：') }}</div>
       <NumberInput 
         v-model:value="customViewportHeight"
         :min="VIEWPORT_SIZE_MIN"
@@ -21,15 +21,16 @@
         @enter="applyCustomViewportSize()"
       />
     </div>
-    <div class="tip">宽高范围：500 ~ 2000</div>
+    <div class="tip">{{ t('宽高范围：500 ~ 2000') }}</div>
     <div class="btns">
-      <Button type="primary" @click="applyCustomViewportSize()">确认</Button>
-      <Button style="margin-left: 10px;" @click="emit('close')">取消</Button>
+      <Button type="primary" @click="applyCustomViewportSize()">{{ t('确认') }}</Button>
+      <Button style="margin-left: 10px;" @click="emit('close')">{{ t('取消') }}</Button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
@@ -60,7 +61,7 @@ const applyCustomViewportSize = () => {
     width > VIEWPORT_SIZE_MAX ||
     height < VIEWPORT_SIZE_MIN ||
     height > VIEWPORT_SIZE_MAX
-  ) return message.warning(`画布宽高需在 ${VIEWPORT_SIZE_MIN} ~ ${VIEWPORT_SIZE_MAX} 之间`)
+  ) return message.warning(t('Canvas width and height must each be between {p0} and {p1}.', { p0: VIEWPORT_SIZE_MIN, p1: VIEWPORT_SIZE_MAX }))
 
   slidesStore.setViewportSize(width)
   slidesStore.setViewportRatio(height / width)

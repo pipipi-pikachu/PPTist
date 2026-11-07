@@ -54,7 +54,13 @@ const emit = defineEmits<{
 .tabs {
   display: flex;
   user-select: none;
-  line-height: 1;
+  line-height: 1.3;
+  min-width: 0;
+
+  .tab {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
 
   &:not(.card) {
     font-size: 13px;
@@ -86,12 +92,14 @@ const emit = defineEmits<{
   }
 
   &.card {
-    height: 40px;
+    min-height: 40px;
     font-size: 12px;
     flex-shrink: 0;
 
     .tab {
       flex: 1;
+      padding: 6px;
+      text-align: center;
       display: flex;
       justify-content: center;
       align-items: center;

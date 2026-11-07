@@ -8,7 +8,7 @@
         @click="changeCatalog(item.id)"
       >{{ item.name }}</div>
     </div>
-    <div class="content" v-loading="{ state: loading, text: '加载中...' }">
+    <div class="content" v-loading="{ state: loading, text: t('加载中...') }">
       <div class="header">
         <div class="types">
           <div class="type" 
@@ -18,7 +18,7 @@
             @click="activeType = item.value"
           >{{ item.label }}</div>
         </div>
-        <div class="insert-all" @click="insertTemplates({ slides, theme })">插入全部</div>
+        <div class="insert-all" @click="insertTemplates({ slides, theme })">{{ t('插入全部') }}</div>
       </div>
       <div class="list" ref="listRef">
         <template v-for="slide in slides" :key="slide.id">
@@ -29,7 +29,7 @@
             <ThumbnailSlide class="thumbnail" :slide="slide" :size="180" />
     
             <div class="btns">
-              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">插入模板</Button>
+              <Button class="btn" type="primary" size="small" @click="insertTemplate(slide)">{{ t('插入模板') }}</Button>
             </div>
           </div>
         </template>
@@ -39,6 +39,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { ref, onMounted, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
@@ -63,12 +65,12 @@ const types = ref<{
   label: string
   value: string
 }[]>([
-  { label: '全部', value: 'all' },
-  { label: '封面', value: 'cover' },
-  { label: '目录', value: 'contents' },
-  { label: '过渡', value: 'transition' },
-  { label: '内容', value: 'content' },
-  { label: '结束', value: 'end' },
+  { label: t('全部'), value: 'all' },
+  { label: t('封面'), value: 'cover' },
+  { label: t('目录'), value: 'contents' },
+  { label: t('过渡'), value: 'transition' },
+  { label: t('内容'), value: 'content' },
+  { label: t('结束'), value: 'end' },
 ])
 const activeType = ref('all')
 

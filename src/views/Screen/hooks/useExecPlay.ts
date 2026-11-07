@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -190,7 +191,7 @@ export default () => {
     }
     else {
       if (loopPlay.value) turnSlideToIndex(slides.value.length - 1)
-      else throttleMassage('已经是第一页了')
+      else throttleMassage(t('已经是第一页了'))
     }
     inAnimation.value = false
   }
@@ -207,7 +208,7 @@ export default () => {
     else {
       if (loopPlay.value) turnSlideToIndex(0)
       else {
-        throttleMassage('已经是最后一页了')
+        throttleMassage(t('已经是最后一页了'))
         closeAutoPlay()
       }
       inAnimation.value = false
@@ -218,7 +219,7 @@ export default () => {
   const autoPlayInterval = ref(2500)
   const autoPlay = () => {
     closeAutoPlay()
-    message.success('开始自动放映')
+    message.success(t('开始自动放映'))
     autoPlayTimer.value = setInterval(execNext, autoPlayInterval.value)
   }
 

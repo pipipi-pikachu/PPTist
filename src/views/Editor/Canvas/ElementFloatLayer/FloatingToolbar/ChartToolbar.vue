@@ -2,7 +2,7 @@
   <div class="toolbar-content">
     <button class="toolbar-btn" @click="openDataEditor()">
       <i-icon-park-outline:edit class="icon" />
-      <span>编辑数据</span>
+      <span>{{ t('编辑数据') }}</span>
     </button>
     <Popover trigger="click">
       <template #content>
@@ -17,7 +17,7 @@
       </template>
       <button class="toolbar-btn">
         <i-icon-park-outline:chart-histogram class="icon" />
-        <span>类型</span>
+        <span>{{ t('类型') }}</span>
       </button>
     </Popover>
   </div>

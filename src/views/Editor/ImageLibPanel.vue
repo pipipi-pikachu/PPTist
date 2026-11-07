@@ -10,12 +10,12 @@
       display: 'flex',
       flexDirection: 'column',
     }"
-    title="图片库（来自 pexels.com）" 
+    :title="t('图片库（来自 pexels.com）')"
     @close="close()"
   >
-    <div class="container" v-loading="{ state: loading, text: '加载中...' }">
+    <div class="container" v-loading="{ state: loading, text: t('加载中...') }">
       <div class="tools">
-        <Input class="input" v-model:value="searchWord" placeholder="搜索图片" @enter="search()">
+        <Input class="input" v-model:value="searchWord" :placeholder="t('搜索图片')" @enter="search()">
           <template #prefix>
             <Popover class="more-icon" trigger="click" v-model:value="orientationVisible">
               <template #content>
@@ -48,7 +48,7 @@
           <div class="img-item">
             <img :src="props.src">
             <div class="mask">
-              <Button type="primary" size="small" @click="createImageElement(props.src)">插入</Button>
+              <Button type="primary" size="small" @click="createImageElement(props.src)">{{ t('插入') }}</Button>
             </div>
           </div>
         </template>
@@ -58,6 +58,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { onMounted, ref } from 'vue'
 import api from '@/services'
 import { useMainStore } from '@/store/main'
@@ -96,16 +98,16 @@ const orientationOptions: {
   key: Orientation
   label: string
 }[] = [
-  { key: 'all', label: '全部' },
-  { key: 'landscape', label: '横向' },
-  { key: 'portrait', label: '纵向' },
-  { key: 'square', label: '方形' },
+  { key: 'all', label: t('全部') },
+  { key: 'landscape', label: t('横向') },
+  { key: 'portrait', label: t('纵向') },
+  { key: 'square', label: t('方形') },
 ]
 const orientationMap: Record<string, string> = {
-  'all': '全部',
-  'landscape': '横向',
-  'portrait': '纵向',
-  'square': '方形',
+  'all': t('全部'),
+  'landscape': t('横向'),
+  'portrait': t('纵向'),
+  'square': t('方形'),
 }
 
 const close = () => {
@@ -118,7 +120,7 @@ onMounted(() => {
 
 const search = (q?: string) => {  
   const query = q || searchWord.value
-  if (!query) return message.error('请输入搜索关键词')
+  if (!query) return message.error(t('请输入搜索关键词'))
 
   loading.value = true
   page.value = 1

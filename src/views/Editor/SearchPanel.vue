@@ -13,30 +13,32 @@
     />
 
     <div class="content" :class="type" @mousedown.stop>
-      <Input class="input" v-model:value="searchWord" placeholder="输入查找内容" @enter="searchNext()" ref="searchInpRef">
+      <Input class="input" v-model:value="searchWord" :placeholder="t('输入查找内容')" @enter="searchNext()" ref="searchInpRef">
         <template #suffix>
           <span class="count">{{searchIndex + 1}}/{{searchResults.length}}</span>
           <Divider type="vertical" />
           <span class="ignore-case"
             :class="{ 'active': modifiers === 'g' }"
-            v-tooltip="'忽略大小写'"
+            v-tooltip="t('忽略大小写')"
             @click="toggleModifiers()"
           >Aa</span>
           <Divider type="vertical" />
-          <span class="next-btn left" @click="searchPrev()" v-tooltip="'上一个'"><i-icon-park-outline:left /></span>
-          <span class="next-btn right" @click="searchNext()" v-tooltip="'下一个'"><i-icon-park-outline:right /></span>
+          <span class="next-btn left" @click="searchPrev()" v-tooltip="t('上一个')"><i-icon-park-outline:left /></span>
+          <span class="next-btn right" @click="searchNext()" v-tooltip="t('下一个')"><i-icon-park-outline:right /></span>
         </template>
       </Input>
-      <Input class="input" v-model:value="replaceWord" placeholder="输入替换内容" @enter="replace()" v-if="type === 'replace'"></Input>
+      <Input class="input" v-model:value="replaceWord" :placeholder="t('输入替换内容')" @enter="replace()" v-if="type === 'replace'"></Input>
       <div class="footer" v-if="type === 'replace'">
-        <Button :disabled="!searchWord" style="margin-left: 5px;" @click="replace()">替换</Button>
-        <Button :disabled="!searchWord" type="primary" style="margin-left: 5px;" @click="replaceAll()">全部替换</Button>
+        <Button :disabled="!searchWord" style="margin-left: 5px;" @click="replace()">{{ t('替换') }}</Button>
+        <Button :disabled="!searchWord" type="primary" style="margin-left: 5px;" @click="replaceAll()">{{ t('全部替换') }}</Button>
       </div>
     </div>
   </MoveablePanel>
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { nextTick, onMounted, ref, watch, useTemplateRef } from 'vue'
 import { useMainStore } from '@/store'
 import useSearch from '@/hooks/useSearch'
@@ -69,8 +71,8 @@ const {
 
 const type = ref<TypeKey>('search')
 const tabs: TabItem[] = [
-  { key: 'search', label: '查找' },
-  { key: 'replace', label: '替换' },
+  { key: 'search', label: t('查找') },
+  { key: 'replace', label: t('替换') },
 ]
 
 const close = () => {

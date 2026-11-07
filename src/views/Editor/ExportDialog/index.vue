@@ -13,6 +13,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store'
@@ -36,11 +38,11 @@ const { dialogForExport } = storeToRefs(mainStore)
 const setDialogForExport = mainStore.setDialogForExport
 
 const tabs: TabItem[] = [
-  { key: 'pptist', label: '导出 PPTIST 文件' },
-  { key: 'pptx', label: '导出 PPTX' },
-  { key: 'image', label: '导出图片' },
-  { key: 'json', label: '导出 JSON' },
-  { key: 'pdf', label: '打印 / 导出 PDF' },
+  { key: 'pptist', label: t('导出 PPTIST 文件') },
+  { key: 'pptx', label: t('导出 PPTX') },
+  { key: 'image', label: t('导出图片') },
+  { key: 'json', label: t('导出 JSON') },
+  { key: 'pdf', label: t('打印 / 导出 PDF') },
 ]
 
 const currentDialogComponent = computed<unknown>(() => {
@@ -59,6 +61,20 @@ const currentDialogComponent = computed<unknown>(() => {
 <style lang="scss" scoped>
 .export-dialog {
   margin: -20px;
+
+  :deep(.configs) {
+    width: 100%;
+    max-width: 560px;
+
+    .title {
+      flex: 0 0 140px;
+      padding-inline-end: 12px;
+      box-sizing: border-box;
+    }
+    .radio-group {
+      align-items: stretch;
+    }
+  }
 }
 .content {
   height: 460px;

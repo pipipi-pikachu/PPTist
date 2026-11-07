@@ -62,7 +62,7 @@
       ></div>
     </div>
 
-    <div class="recent-colors-title" v-if="recentColors.length">最近使用：</div>
+    <div class="recent-colors-title" v-if="recentColors.length">{{ t('最近使用：') }}</div>
     <div class="picker-presets">
       <div
         class="picker-presets-color alpha"
@@ -78,6 +78,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import tinycolor, { type ColorFormats } from 'tinycolor2'
 import { debounce } from 'lodash'
@@ -217,7 +219,7 @@ const openEyeDropper = () => {
 
 // 原生取色吸管
 const browserEyeDropper = () => {
-  message.success('按 ESC 键关闭取色吸管', { duration: 0 })
+  message.success(t('按 ESC 键关闭取色吸管'), { duration: 0 })
 
   // eslint-disable-next-line
   const eyeDropper = new (window as any).EyeDropper()
@@ -302,7 +304,7 @@ const customEyeDropper = () => {
     canvasRef.addEventListener('mouseleave', handleMouseleave)
     window.addEventListener('mousedown', handleMousedown)
   }).catch(() => {
-    message.error('取色吸管初始化失败')
+    message.error(t('取色吸管初始化失败'))
     document.body.removeChild(maskRef)
   })
 }

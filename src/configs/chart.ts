@@ -1,14 +1,15 @@
+import { t } from '@/i18n'
 import type { ChartData } from '@/types/slides'
 
 export const CHART_TYPE_MAP: Record<string, string> = {
-  'bar': '柱状图',
-  'column': '条形图',
-  'line': '折线图',
-  'area': '面积图',
-  'scatter': '散点图',
-  'pie': '饼图',
-  'ring': '环形图',
-  'radar': '雷达图',
+  'bar': t('柱状图'),
+  'column': t('条形图'),
+  'line': t('折线图'),
+  'area': t('面积图'),
+  'scatter': t('散点图'),
+  'pie': t('饼图'),
+  'ring': t('环形图'),
+  'radar': t('雷达图'),
 }
 
 export const CHART_DEFAULT_DATA: Record<string, ChartData> = {
