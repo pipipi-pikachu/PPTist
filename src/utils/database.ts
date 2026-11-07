@@ -1,6 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
 import { databaseId } from '@/store/main'
-import type { Slide } from '@/types/slides'
+import type { Presentation } from '@/types/version'
 import { LOCALSTORAGE_KEY_DISCARDED_DB } from '@/configs/storage'
 
 export interface writingBoardImg {
@@ -8,10 +8,9 @@ export interface writingBoardImg {
   dataURL: string
 }
 
-export interface Snapshot {
+export interface Snapshot extends Presentation {
   id: number
   index: number
-  slides: Slide[]
 }
 
 const databaseNamePrefix = 'PPTist'

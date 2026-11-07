@@ -1,3 +1,4 @@
+import type { SlideTheme } from './slides'
 import type { InjectionKey, Ref } from 'vue'
 
 export type SlideScale = Ref<number>
@@ -10,3 +11,4 @@ export type RadioGroupValue = {
 export const injectKeySlideScale: InjectionKey<SlideScale> = Symbol()
 export const injectKeySlideId: InjectionKey<SlideId> = Symbol()
 export const injectKeyRadioGroupValue: InjectionKey<RadioGroupValue> = Symbol()
+export const injectKeySlideTheme: InjectionKey<Ref<SlideTheme>> = Symbol()

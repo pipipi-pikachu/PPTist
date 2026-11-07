@@ -30,8 +30,8 @@
 import { computed, provide } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
-import type { Slide } from '@/types/slides'
-import { injectKeySlideScale } from '@/types/injectKey'
+import type { Slide, SlideTheme } from '@/types/slides'
+import { injectKeySlideScale, injectKeySlideTheme } from '@/types/injectKey'
 import useSlideBackgroundStyle from '@/hooks/useSlideBackgroundStyle'
 
 import ThumbnailElement from './ThumbnailElement.vue'
@@ -40,11 +40,17 @@ const props = withDefaults(defineProps<{
   slide: Slide
   size: number
   visible?: boolean
+  viewportSize?: number
+  viewportRatio?: number
+  theme?: SlideTheme
 }>(), {
   visible: true,
 })
 
-const { viewportRatio, viewportSize } = storeToRefs(useSlidesStore())
+const live = storeToRefs(useSlidesStore())
+const viewportSize = computed(() => props.viewportSize ?? live.viewportSize.value)
+const viewportRatio = computed(() => props.viewportRatio ?? live.viewportRatio.value)
+provide(injectKeySlideTheme, computed(() => props.theme ?? live.theme.value))
 
 const background = computed(() => props.slide.background)
 const { backgroundStyle } = useSlideBackgroundStyle(background)

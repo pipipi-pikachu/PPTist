@@ -74,9 +74,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { inject, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { PPTShapeElement, ShapeText } from '@/types/slides'
+import { injectKeySlideTheme } from '@/types/injectKey'
 import { useSlidesStore } from '@/store'
 import useElementOutline from '@/views/components/element/hooks/useElementOutline'
 import useElementShadow from '@/views/components/element/hooks/useElementShadow'
@@ -91,7 +92,8 @@ const props = defineProps<{
 }>()
 
 
-const { theme } = storeToRefs(useSlidesStore())
+const liveTheme = storeToRefs(useSlidesStore()).theme
+const theme = inject(injectKeySlideTheme, liveTheme)
 
 const element = computed(() => props.elementInfo)
 const { fill } = useElementFill(element, 'base')

@@ -5,10 +5,12 @@
     <Mobile v-else />
   </template>
   <FullscreenSpin tip="数据初始化中，请稍等 ..." v-else  loading :mask="false" />
+  <FullscreenSpin v-if="versionsStore.restoring" tip="正在恢复版本 ..." loading />
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
+import { useVersionsStore } from '@/store/versions'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
 import { useScreenStore, useMainStore, useSnapshotStore, useSlidesStore } from '@/store'
@@ -21,6 +23,10 @@ import Editor from './views/Editor/index.vue'
 import Screen from './views/Screen/index.vue'
 import Mobile from './views/Mobile/index.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
+
+const versionsStore = useVersionsStore()
+let stopVersions: (() => void) | undefined
+onUnmounted(() => stopVersions?.())
 
 const _isPC = isPC()
 
@@ -47,11 +53,14 @@ onMounted(async () => {
     screenStore.setScreening(true)
   }
   else {
-    const slides = await api.getMockData('slides')
-    slidesStore.setSlides(slides)
+    if (!await versionsStore.initialize()) {
+      const slides = await api.getMockData('slides')
+      slidesStore.setSlides(slides)
+    }
 
     await deleteDiscardedDB()
-    snapshotStore.initSnapshotDatabase()
+    await snapshotStore.initSnapshotDatabase()
+    stopVersions = versionsStore.start()
   }
 })
 
