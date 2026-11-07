@@ -74,6 +74,9 @@
     </div>
 
     <div class="right">
+      <button class="menu-item history-button" @click="historyVisible = true" :aria-label="versionsStore.error ? '版本历史保存失败' : '版本历史'">
+        {{ versionsStore.error ? '版本历史（保存失败）' : '版本历史' }}
+      </button>
       <div class="group-menu-item">
         <div class="menu-item" v-tooltip="'幻灯片放映（F5）'" @click="enterScreening()">
           <i-icon-park-outline:ppt class="icon" />
@@ -106,6 +109,10 @@
       <template v-slot:title>快捷操作</template>
     </Drawer>
 
+    <Drawer :width="320" v-model:visible="historyVisible" placement="right">
+      <template #title>版本历史</template>
+      <VersionHistory />
+    </Drawer>
     <FullscreenSpin :loading="exporting" tip="正在导入..." />
   </div>
 </template>
@@ -120,6 +127,8 @@ import useSlideHandler from '@/hooks/useSlideHandler'
 import type { DialogForExportTypes } from '@/types/export'
 
 import HotkeyDoc from './HotkeyDoc.vue'
+import VersionHistory from '../VersionHistory.vue'
+import { useVersionsStore } from '@/store/versions'
 import FileInput from '@/components/FileInput.vue'
 import FullscreenSpin from '@/components/FullscreenSpin.vue'
 import Drawer from '@/components/Drawer.vue'
@@ -128,6 +137,8 @@ import Popover from '@/components/Popover.vue'
 import PopoverMenuItem from '@/components/PopoverMenuItem.vue'
 import Divider from '@/components/Divider.vue'
 
+const historyVisible = ref(false)
+const versionsStore = useVersionsStore()
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
 const { title } = storeToRefs(slidesStore)
@@ -172,6 +183,7 @@ const openAIPPTDialog = () => {
 </script>
 
 <style lang="scss" scoped>
+.history-button { border: 0; background: transparent; }
 .editor-header {
   background-color: #fff;
   user-select: none;

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { capturePresentation, applyPresentation } from '@/utils/presentation'
 import type { IndexableTypeArray } from 'dexie'
 import { db, type Snapshot } from '@/utils/database'
 
@@ -38,7 +39,7 @@ export const useSnapshotStore = defineStore('snapshot', {
   
       const newFirstSnapshot = {
         index: slidesStore.slideIndex,
-        slides: JSON.parse(JSON.stringify(slidesStore.slides)),
+        ...capturePresentation(),
       }
       await db.snapshots.add(newFirstSnapshot)
       this.setSnapshotCursor(0)
@@ -49,7 +50,20 @@ export const useSnapshotStore = defineStore('snapshot', {
       const slidesStore = useSlidesStore()
 
       // 获取当前indexeddb中全部快照的ID
+      const presentation = capturePresentation()
       const allKeys = await db.snapshots.orderBy('id').keys()
+      const currentKey = allKeys[this.snapshotCursor]
+      const current = currentKey === undefined ? undefined : await db.snapshots.get(currentKey as number)
+      if (current && JSON.stringify({
+        title: current.title,
+        slides: current.slides,
+        theme: current.theme,
+        viewportSize: current.viewportSize,
+        viewportRatio: current.viewportRatio,
+      }) === JSON.stringify(presentation)) {
+        await db.snapshots.update(current.id, { index: slidesStore.slideIndex })
+        return
+      }
   
       let needDeleteKeys: IndexableTypeArray = []
   
@@ -63,7 +77,7 @@ export const useSnapshotStore = defineStore('snapshot', {
       // 添加新快照
       const snapshot = {
         index: slidesStore.slideIndex,
-        slides: JSON.parse(JSON.stringify(slidesStore.slides)),
+        ...presentation,
       }
       await db.snapshots.add(snapshot)
   
@@ -102,7 +116,7 @@ export const useSnapshotStore = defineStore('snapshot', {
   
       const slideIndex = index > slides.length - 1 ? slides.length - 1 : index
   
-      slidesStore.setSlides(slides)
+      applyPresentation(snapshot)
       slidesStore.updateSlideIndex(slideIndex)
       this.setSnapshotCursor(snapshotCursor)
       mainStore.setActiveElementIdList([])
@@ -121,7 +135,7 @@ export const useSnapshotStore = defineStore('snapshot', {
   
       const slideIndex = index > slides.length - 1 ? slides.length - 1 : index
   
-      slidesStore.setSlides(slides)
+      applyPresentation(snapshot)
       slidesStore.updateSlideIndex(slideIndex)
       this.setSnapshotCursor(snapshotCursor)
       mainStore.setActiveElementIdList([])
