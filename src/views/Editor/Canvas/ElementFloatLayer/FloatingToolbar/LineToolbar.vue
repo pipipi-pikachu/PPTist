@@ -19,7 +19,7 @@
       </template>
       <button class="toolbar-btn">
         <i-icon-park-outline:connection class="icon" />
-        <span>样式</span>
+        <span>{{ t('样式') }}</span>
       </button>
     </Popover>
     <Popover trigger="click">
@@ -28,7 +28,7 @@
       </template>
       <button class="toolbar-btn">
         <i-icon-park-outline:platte class="icon" />
-        <span>颜色</span>
+        <span>{{ t('颜色') }}</span>
       </button>
     </Popover>
     <div class="width-slider">

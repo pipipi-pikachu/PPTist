@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import { defineStore } from 'pinia'
 import { omit } from 'lodash'
 import type { Slide, SlideTheme, PPTElement, PPTAnimation, SlideTemplate } from '@/types/slides'
@@ -31,7 +32,7 @@ export interface SlidesState {
 
 export const useSlidesStore = defineStore('slides', {
   state: (): SlidesState => ({
-    title: '未命名演示文稿', // 幻灯片标题
+    title: t('未命名演示文稿'), // 幻灯片标题
     theme: {
       themeColors: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#4472c4', '#70ad47'],
       fontColor: '#333',
@@ -54,14 +55,14 @@ export const useSlidesStore = defineStore('slides', {
     viewportSize: 1000, // 可视区域宽度基数
     viewportRatio: 0.5625, // 可视区域比例，默认16:9
     templates: [
-      { name: '山河映红', id: 'template_1', cover: './imgs/template_1.webp', origin: '官方制作' },
-      { name: '都市蓝调', id: 'template_2', cover: './imgs/template_2.webp', origin: '官方制作' },
-      { name: '智感几何', id: 'template_3', cover: './imgs/template_3.webp', origin: '官方制作' },
-      { name: '柔光莫兰迪', id: 'template_4', cover: './imgs/template_4.webp', origin: '官方制作' },
-      { name: '简约绿意', id: 'template_5', cover: './imgs/template_5.webp', origin: '社区贡献+官方深度完善优化' },
-      { name: '暖色复古', id: 'template_6', cover: './imgs/template_6.webp', origin: '社区贡献+官方深度完善优化' },
-      { name: '深邃沉稳', id: 'template_7', cover: './imgs/template_7.webp', origin: '社区贡献+官方深度完善优化' },
-      { name: '浅蓝小清新', id: 'template_8', cover: './imgs/template_8.webp', origin: '社区贡献+官方深度完善优化' },
+      { name: t('山河映红'), id: 'template_1', cover: './imgs/template_1.webp', origin: t('官方制作') },
+      { name: t('都市蓝调'), id: 'template_2', cover: './imgs/template_2.webp', origin: t('官方制作') },
+      { name: t('智感几何'), id: 'template_3', cover: './imgs/template_3.webp', origin: t('官方制作') },
+      { name: t('柔光莫兰迪'), id: 'template_4', cover: './imgs/template_4.webp', origin: t('官方制作') },
+      { name: t('简约绿意'), id: 'template_5', cover: './imgs/template_5.webp', origin: t('社区贡献+官方深度完善优化') },
+      { name: t('暖色复古'), id: 'template_6', cover: './imgs/template_6.webp', origin: t('社区贡献+官方深度完善优化') },
+      { name: t('深邃沉稳'), id: 'template_7', cover: './imgs/template_7.webp', origin: t('社区贡献+官方深度完善优化') },
+      { name: t('浅蓝小清新'), id: 'template_8', cover: './imgs/template_8.webp', origin: t('社区贡献+官方深度完善优化') },
     ], // 模板
   }),
 
@@ -114,7 +115,7 @@ export const useSlidesStore = defineStore('slides', {
 
   actions: {
     setTitle(title: string) {
-      if (!title) this.title = '未命名演示文稿'
+      if (!title) this.title = t('未命名演示文稿')
       else this.title = title
     },
 

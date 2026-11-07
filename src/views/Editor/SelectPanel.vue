@@ -1,17 +1,18 @@
 <template>
-  <MoveablePanel 
+  <MoveablePanel
+    :dir="direction"
     class="select-panel" 
     :width="200" 
     :height="360" 
-    :title="`选择（${activeElementIdList.length}/${currentSlide.elements.length}）`" 
+    :title="t('Selection ({p0}/{p1})', { p0: activeElementIdList.length, p1: currentSlide.elements.length })"
     :left="-270" 
     :top="90"
     @close="close()"
   >
     <div class="handler" v-if="elements.length">
       <div class="btns">
-        <Button size="small" style="margin-right: 5px;" @click="showAllElements()">全部显示</Button>
-        <Button size="small" @click="hideAllElements()">全部隐藏</Button>
+        <Button size="small" style="margin-right: 5px;" @click="showAllElements()">{{ t('全部显示') }}</Button>
+        <Button size="small" @click="hideAllElements()">{{ t('全部隐藏') }}</Button>
       </div>
       <div class="icon-btns" v-if="handleElement">
         <span class="icon-btn" @click="orderElement(handleElement!, ElementOrderCommands.UP)"><i-icon-park-outline:down /></span>
@@ -21,7 +22,7 @@
     <div class="element-list" v-if="elements.length">
       <template v-for="item in elements" :key="item.id">
         <div class="group-els" v-if="item.type === 'group'">
-          <div class="group-title">组合</div>
+          <div class="group-title">{{ t('组合') }}</div>
           <div 
             class="item" 
             :class="{
@@ -81,11 +82,12 @@
         </div>
       </template>
     </div>
-    <div class="empty" v-if="!elements.length">本页无内容</div>
+    <div class="empty" v-if="!elements.length">{{ t('本页无内容') }}</div>
   </MoveablePanel>
 </template>
 
 <script lang="ts" setup>
+import { direction } from '@/i18n'
 import { computed, nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore, useMainStore } from '@/store'

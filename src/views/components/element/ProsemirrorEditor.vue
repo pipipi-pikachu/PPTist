@@ -8,6 +8,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed, onMounted, onUnmounted, useTemplateRef, watch } from 'vue'
 import { debounce } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -130,7 +132,7 @@ const execCommand = ({ target, action }: RichTextCommand) => {
       addMark(editorView, mark)
 
       if (item.value && !document.fonts.check(`16px ${item.value}`)) {
-        message.warning('字体需要等待加载下载后生效，请稍等')
+        message.warning(t('字体需要等待加载下载后生效，请稍等'))
       }
     }
     else if (item.command === 'fontsize' && item.value) {

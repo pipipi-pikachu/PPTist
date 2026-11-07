@@ -1,18 +1,18 @@
 <template>
   <div class="presenter-view">
     <div class="toolbar">
-      <div class="tool-btn" @click="changeViewMode('base')"><i-icon-park-outline:list-view class="tool-icon" /><span>普通视图</span></div>
-      <div class="tool-btn" @click="openAudienceView()"><i-icon-park-outline:peoples-two class="tool-icon" /><span>观众视图</span></div>
-      <div class="tool-btn" :class="{ 'active': writingBoardToolVisible }" @click="writingBoardToolVisible = !writingBoardToolVisible"><i-icon-park-outline:write class="tool-icon" /><span>画笔</span></div>
-      <div class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen"><i-icon-park-outline:magic class="tool-icon" /><span>激光笔</span></div>
-      <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><i-icon-park-outline:stopwatch-start class="tool-icon" /><span>计时器</span></div>
+      <div class="tool-btn" @click="changeViewMode('base')"><i-icon-park-outline:list-view class="tool-icon" /><span>{{ t('普通视图') }}</span></div>
+      <div class="tool-btn" @click="openAudienceView()"><i-icon-park-outline:peoples-two class="tool-icon" /><span>{{ t('观众视图') }}</span></div>
+      <div class="tool-btn" :class="{ 'active': writingBoardToolVisible }" @click="writingBoardToolVisible = !writingBoardToolVisible"><i-icon-park-outline:write class="tool-icon" /><span>{{ t('画笔') }}</span></div>
+      <div class="tool-btn" :class="{ 'active': laserPen }" @click="laserPen = !laserPen"><i-icon-park-outline:magic class="tool-icon" /><span>{{ t('激光笔') }}</span></div>
+      <div class="tool-btn" :class="{ 'active': timerlVisible }" @click="timerlVisible = !timerlVisible"><i-icon-park-outline:stopwatch-start class="tool-icon" /><span>{{ t('计时器') }}</span></div>
       <div class="tool-btn" @click="() => fullscreenState ? manualExitFullscreen() : enterFullscreen()">
         <i-icon-park-outline:off-screen-one class="tool-icon" v-if="fullscreenState" />
         <i-icon-park-outline:full-screen-one class="tool-icon" v-else />
-        <span>{{ fullscreenState ? '退出全屏' : '全屏' }}</span>
+        <span>{{ fullscreenState ? t('退出全屏') : t('全屏') }}</span>
       </div>
       <Divider class="divider" />
-      <div class="tool-btn" @click="exitScreening()"><i-icon-park-outline:power class="tool-icon" /><span>结束放映</span></div>
+      <div class="tool-btn" @click="exitScreening()"><i-icon-park-outline:power class="tool-icon" /><span>{{ t('结束放映') }}</span></div>
     </div>
 
     <div class="content">
@@ -65,10 +65,10 @@
 
     <div class="remark">
       <div class="header">
-        <span>演讲者备注</span>
+        <span>{{ t('演讲者备注') }}</span>
         <span>P {{slideIndex + 1}} / {{slides.length}}</span>
       </div>
-      <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || '无备注'"></div>
+      <div class="remark-content ProseMirror-static" :class="{ 'empty': !currentSlideRemark }" :style="{ fontSize: remarkFontSize + 'px' }" v-html="currentSlideRemark || t('无备注')"></div>
       <div class="remark-scale">
         <div :class="['scale-btn', { 'disable': remarkFontSize === 12 }]" @click="setRemarkFontSize(remarkFontSize - 2)"><i-icon-park-outline:minus class="icon" /></div>
         <div :class="['scale-btn', { 'disable': remarkFontSize === 40 }]" @click="setRemarkFontSize(remarkFontSize + 2)"><i-icon-park-outline:plus class="icon" /></div>
@@ -78,6 +78,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed, nextTick, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSlidesStore } from '@/store'
@@ -167,39 +169,39 @@ watch(slideIndex, () => {
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '上一页',
+      text: t('上一页'),
       subText: '↑ ←',
       disable: slideIndex.value <= 0,
       handler: () => turnPrevSlide(),
     },
     {
-      text: '下一页',
+      text: t('下一页'),
       subText: '↓ →',
       disable: slideIndex.value >= slides.value.length - 1,
       handler: () => turnNextSlide(),
     },
     {
-      text: '第一页',
+      text: t('第一页'),
       disable: slideIndex.value === 0,
       handler: () => turnSlideToIndex(0),
     },
     {
-      text: '最后一页',
+      text: t('最后一页'),
       disable: slideIndex.value === slides.value.length - 1,
       handler: () => turnSlideToIndex(slides.value.length - 1),
     },
     { divider: true },
     {
-      text: '画笔工具',
+      text: t('画笔工具'),
       handler: () => writingBoardToolVisible.value = true,
     },
     {
-      text: '普通视图',
+      text: t('普通视图'),
       handler: () => props.changeViewMode('base'),
     },
     { divider: true },
     {
-      text: '结束放映',
+      text: t('结束放映'),
       subText: 'ESC',
       handler: exitScreening,
     },

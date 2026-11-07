@@ -6,7 +6,7 @@
     <template #content>
       <div class="border-popover">
         <div class="row">
-          <div class="label">边框样式：</div>
+          <div class="label">{{ t('边框样式：') }}</div>
           <SelectCustom class="control">
             <template #options>
               <div
@@ -24,7 +24,7 @@
           </SelectCustom>
         </div>
         <div class="row">
-          <div class="label">边框颜色：</div>
+          <div class="label">{{ t('边框颜色：') }}</div>
           <Popover trigger="click" class="control">
             <template #content>
               <ColorPicker :modelValue="outline?.color || '#000'" @update:modelValue="value => updateOutline({ color: value })" />
@@ -33,7 +33,7 @@
           </Popover>
         </div>
         <div class="row">
-          <div class="label">边框粗细：</div>
+          <div class="label">{{ t('边框粗细：') }}</div>
           <NumberInput
             class="control"
             :value="outline?.width || 0"
@@ -44,7 +44,7 @@
     </template>
     <div class="toolbar-btn">
       <i-icon-park-outline:selected class="icon" />
-      <span>边框</span>
+      <span>{{ t('边框') }}</span>
     </div>
   </Popover>
 </template>

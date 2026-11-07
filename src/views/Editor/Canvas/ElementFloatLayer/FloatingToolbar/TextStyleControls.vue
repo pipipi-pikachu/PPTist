@@ -3,7 +3,7 @@
     class="font-select"
     :value="textAttrs.fontname"
     search
-    searchLabel="搜索字体"
+    :searchLabel="t('搜索字体')"
     @update:value="value => emitTextCommand('fontname', value as string)"
     :options="FONTS"
   />
@@ -11,7 +11,7 @@
     class="fontsize-select"
     :value="textAttrs.fontsize"
     search
-    searchLabel="搜索字号"
+    :searchLabel="t('搜索字号')"
     @update:value="value => emitTextCommand('fontsize', value as string)"
     :options="fontSizeOptions.map(item => ({ label: item, value: item }))"
   />
@@ -84,6 +84,7 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
 import tinycolor from 'tinycolor2'
 import { FONTS } from '@/configs/font'
 import type { RichTextAction } from '@/utils/emitter'

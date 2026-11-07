@@ -15,12 +15,12 @@
     <Divider />
 
     <div class="row">
-      <div style="width: 40%;">行间距：</div>
+      <div style="width: 40%;">{{ t('行间距：') }}</div>
       <Select style="width: 60%;"
         :value="lineHeight || 1"
         @update:value="value => updateText({ lineHeight: value as number })"
         :options="lineHeightOptions.map(item => ({
-          label: item + '倍', value: item
+          label: item + t('倍'), value: item
         }))"
       >
         <template #icon>
@@ -29,7 +29,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">段间距：</div>
+      <div style="width: 40%;">{{ t('段间距：') }}</div>
       <Select style="width: 60%;"
         :value="paragraphSpace || 0"
         @update:value="value => updateText({ paragraphSpace: value as number })"
@@ -43,7 +43,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">字间距：</div>
+      <div style="width: 40%;">{{ t('字间距：') }}</div>
       <Select style="width: 60%;"
         :value="wordSpace || 0"
         @update:value="value => updateText({ wordSpace: value as number })"
@@ -57,7 +57,7 @@
       </Select>
     </div>
     <div class="row">
-      <div style="width: 40%;">文本框填充：</div>
+      <div style="width: 40%;">{{ t('文本框填充：') }}</div>
       <Popover trigger="click" style="width: 60%;">
         <template #content>
           <ColorPicker
@@ -79,7 +79,7 @@
         @update:value="value => updateInset(0, value)"
         style="width: 45%;"
       >
-        <template #prefix>上边距：</template>
+        <template #prefix>{{ t('上边距：') }}</template>
       </NumberInput>
       <div style="width: 10%;"></div>
       <NumberInput
@@ -89,7 +89,7 @@
         @update:value="value => updateInset(2, value)"
         style="width: 45%;"
       >
-        <template #prefix>下边距：</template>
+        <template #prefix>{{ t('下边距：') }}</template>
       </NumberInput>
     </div>
     <div class="row">
@@ -100,7 +100,7 @@
         @update:value="value => updateInset(3, value)"
         style="width: 45%;"
       >
-        <template #prefix>左边距：</template>
+        <template #prefix>{{ t('左边距：') }}</template>
       </NumberInput>
       <div style="width: 10%;"></div>
       <NumberInput
@@ -110,13 +110,13 @@
         @update:value="value => updateInset(1, value)"
         style="width: 45%;"
       >
-        <template #prefix>右边距：</template>
+        <template #prefix>{{ t('右边距：') }}</template>
       </NumberInput>
     </div>
 
     <Divider />
     <div class="row">
-      <div style="width: 40%;">固定高度：</div>
+      <div style="width: 40%;">{{ t('固定高度：') }}</div>
       <div class="switch-wrapper" style="width: 60%;">
         <Switch
           :value="fixedHeight"
@@ -145,6 +145,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -170,7 +172,7 @@ import Popover from '@/components/Popover.vue'
 // 因此在执行预置样式命令时，将加粗命令放在尽可能靠前的位置，避免字号增大后再加粗
 const presetStyles = [
   {
-    label: '大标题',
+    label: t('大标题'),
     style: {
       fontSize: '26px',
       fontWeight: 700,
@@ -183,7 +185,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '小标题',
+    label: t('小标题'),
     style: {
       fontSize: '22px',
       fontWeight: 700,
@@ -196,7 +198,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文',
+    label: t('正文'),
     style: {
       fontSize: '20px',
     },
@@ -206,7 +208,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '正文[小]',
+    label: t('正文[小]'),
     style: {
       fontSize: '18px',
     },
@@ -216,7 +218,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 1',
+    label: t('注释 1'),
     style: {
       fontSize: '16px',
       fontStyle: 'italic',
@@ -228,7 +230,7 @@ const presetStyles = [
     ],
   },
   {
-    label: '注释 2',
+    label: t('注释 2'),
     style: {
       fontSize: '16px',
       textDecoration: 'underline',

@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 import type { LinePoint, LineStyleType } from '@/types/slides'
 
 
@@ -18,7 +19,7 @@ interface PresetLine {
 
 export const LINE_LIST: PresetLine[] = [
   {
-    type: '直线',
+    type: t('直线'),
     children: [
       { path: 'M 0 0 L 20 20', style: 'solid', points: ['', ''] },
       { path: 'M 0 0 L 20 20', style: 'dashed', points: ['', ''] },
@@ -28,7 +29,7 @@ export const LINE_LIST: PresetLine[] = [
     ],
   },
   {
-    type: '折线、曲线',
+    type: t('折线、曲线'),
     children: [
       { path: 'M 0 0 L 0 20 L 20 20', style: 'solid', points: ['', 'arrow'], isBroken: true },
       { path: 'M 0 0 L 10 0 L 10 20 L 20 20', style: 'solid', points: ['', 'arrow'], isBroken2: true },

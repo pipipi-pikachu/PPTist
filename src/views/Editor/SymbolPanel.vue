@@ -38,6 +38,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store/main'
@@ -54,7 +56,7 @@ const { createTextElement } = useCreateElement()
 
 const poolRef = useTemplateRef<HTMLElement>('poolRef')
 const selectedSymbolKey = ref(SYMBOL_LIST[0].key)
-const emojiTypeList = ref(['表情', '动作', '动植物', '食物', '旅行', '活动', '物品', '符号'])
+const emojiTypeList = ref([t('表情'), t('动作'), t('动植物'), t('食物'), t('旅行'), t('活动'), t('物品'), t('符号')])
 const selectedEmojiTypeIndex = ref(0)
 const symbolPool = computed(() => {
   const selectedSymbol = SYMBOL_LIST.find(item => item.key === selectedSymbolKey.value)

@@ -1,7 +1,7 @@
 <template>
   <div class="shape-style-panel">
     <div class="title">
-      <span>点击替换形状</span>
+      <span>{{ t('点击替换形状') }}</span>
       <i-icon-park-outline:down />
     </div>
     <div class="shape-pool">
@@ -24,9 +24,9 @@
         :value="fillType" 
         @update:value="value => updateFillType(value as 'fill' | 'gradient' | 'pattern')"
         :options="[
-          { label: '纯色填充', value: 'fill' },
-          { label: '渐变填充', value: 'gradient' },
-          { label: '图片填充', value: 'pattern' },
+          { label: t('纯色填充'), value: 'fill' },
+          { label: t('渐变填充'), value: 'gradient' },
+          { label: t('图片填充'), value: 'pattern' },
         ]"
       />
       <div style="width: 10px;" v-if="fillType !== 'pattern'"></div>
@@ -45,8 +45,8 @@
         @update:value="value => updateGradient({ type: value as GradientType })"
         v-else-if="fillType === 'gradient'"
         :options="[
-          { label: '线性渐变', value: 'linear' },
-          { label: '径向渐变', value: 'radial' },
+          { label: t('线性渐变'), value: 'linear' },
+          { label: t('径向渐变'), value: 'radial' },
         ]"
       />
     </div>
@@ -61,7 +61,7 @@
         />
       </div>
       <div class="row">
-        <div style="width: 40%;">当前色块：</div>
+        <div style="width: 40%;">{{ t('当前色块：') }}</div>
         <Popover trigger="click" style="width: 60%;">
           <template #content>
             <ColorPicker
@@ -73,7 +73,7 @@
         </Popover>
       </div>
       <div class="row" v-if="gradient.type === 'linear'">
-        <div style="width: 40%;">渐变角度：</div>
+        <div style="width: 40%;">{{ t('渐变角度：') }}</div>
         <Slider
           style="width: 60%;"
           :min="0"
@@ -106,12 +106,12 @@
       <Divider />
 
       <div class="row">
-        <div style="width: 40%;">行间距：</div>
+        <div style="width: 40%;">{{ t('行间距：') }}</div>
         <Select style="width: 60%;"
           :value="lineHeight || 1"
           @update:value="value => updateTextProps({ lineHeight: value as number })"
           :options="lineHeightOptions.map(item => ({
-            label: item + '倍', value: item
+            label: item + t('倍'), value: item
           }))"
         >
           <template #icon>
@@ -120,7 +120,7 @@
         </Select>
       </div>
       <div class="row">
-        <div style="width: 40%;">段间距：</div>
+        <div style="width: 40%;">{{ t('段间距：') }}</div>
         <Select style="width: 60%;"
           :value="paragraphSpace || 0"
           @update:value="value => updateTextProps({ paragraphSpace: value as number })"
@@ -134,7 +134,7 @@
         </Select>
       </div>
       <div class="row">
-        <div style="width: 40%;">字间距：</div>
+        <div style="width: 40%;">{{ t('字间距：') }}</div>
         <Select style="width: 60%;"
           :value="wordSpace || 0"
           @update:value="value => updateTextProps({ wordSpace: value as number })"
@@ -158,7 +158,7 @@
           @update:value="value => updateInset(0, value)"
           style="width: 45%;"
         >
-          <template #prefix>上边距：</template>
+          <template #prefix>{{ t('上边距：') }}</template>
         </NumberInput>
         <div style="width: 10%;"></div>
         <NumberInput
@@ -168,7 +168,7 @@
           @update:value="value => updateInset(2, value)"
           style="width: 45%;"
         >
-          <template #prefix>下边距：</template>
+          <template #prefix>{{ t('下边距：') }}</template>
         </NumberInput>
       </div>
       <div class="row">
@@ -179,7 +179,7 @@
           @update:value="value => updateInset(3, value)"
           style="width: 45%;"
         >
-          <template #prefix>左边距：</template>
+          <template #prefix>{{ t('左边距：') }}</template>
         </NumberInput>
         <div style="width: 10%;"></div>
         <NumberInput
@@ -189,7 +189,7 @@
           @update:value="value => updateInset(1, value)"
           style="width: 45%;"
         >
-          <template #prefix>右边距：</template>
+          <template #prefix>{{ t('右边距：') }}</template>
         </NumberInput>
       </div>
 
@@ -201,9 +201,9 @@
         :value="textAlign"
         @update:value="value => updateTextProps({ align: value as 'top' | 'middle' | 'bottom' })"
       >
-        <RadioButton value="top" v-tooltip="'顶对齐'" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
-        <RadioButton value="middle" v-tooltip="'垂直居中'" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
-        <RadioButton value="bottom" v-tooltip="'底对齐'" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
+        <RadioButton value="top" v-tooltip="t('顶对齐')" style="flex: 1;"><i-icon-park-outline:align-text-top-one /></RadioButton>
+        <RadioButton value="middle" v-tooltip="t('垂直居中')" style="flex: 1;"><i-icon-park-outline:align-text-middle-one /></RadioButton>
+        <RadioButton value="bottom" v-tooltip="t('底对齐')" style="flex: 1;"><i-icon-park-outline:align-text-bottom-one /></RadioButton>
       </RadioGroup>
 
       <Divider />
@@ -218,17 +218,18 @@
 
     <div class="row">
       <CheckboxButton
-        v-tooltip="'双击连续使用'"
+        v-tooltip="t('双击连续使用')"
         style="flex: 1;"
         :checked="!!shapeFormatPainter"
         @click="toggleShapeFormatPainter()"
         @dblclick="toggleShapeFormatPainter(true)"
-      ><i-icon-park-outline:format-brush /> 形状格式刷</CheckboxButton>
+      ><i-icon-park-outline:format-brush /> {{ t('形状格式刷') }}</CheckboxButton>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
 import { type Ref, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'

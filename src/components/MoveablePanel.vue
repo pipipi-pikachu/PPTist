@@ -272,7 +272,7 @@ const startResize = (e: MouseEvent) => {
 .title {
   flex: 1;
   font-size: 13px;
-  padding-left: 10px;
+  padding-inline-start: 10px;
 }
 .close-btn {
   width: 40px;

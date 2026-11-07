@@ -109,6 +109,7 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
 import { nextTick, onMounted, onUnmounted, provide, ref, watch, useTemplateRef } from 'vue'
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
@@ -283,7 +284,7 @@ const toggleRuler = () => {
 // 开关浮动菜单
 const toggleBubbleMenu = () => {
   mainStore.setBubbleMenuState(!showBubbleMenu.value)
-  message.success(`元素气泡菜单已${showBubbleMenu.value ? '启用' : '禁用'}`)
+  message.success(showBubbleMenu.value ? t('Element toolbar enabled') : t('Element toolbar disabled'))
 }
 
 // 在鼠标绘制的范围插入元素
@@ -311,58 +312,58 @@ const insertCustomShape = (data: CreateCustomShapeData) => {
 const contextmenus = (): ContextmenuItem[] => {
   return [
     {
-      text: '粘贴',
+      text: t('粘贴'),
       subText: 'Ctrl + V',
       handler: pasteElement,
     },
     {
-      text: '全选',
+      text: t('全选'),
       subText: 'Ctrl + A',
       handler: selectAllElements,
     },
     {
-      text: '标尺',
+      text: t('标尺'),
       subText: showRuler.value ? '√' : '',
       handler: toggleRuler,
     },
     {
-      text: '网格线',
+      text: t('网格线'),
       handler: () => mainStore.setGridLineSize(gridLineSize.value ? 0 : 50),
       children: [
         {
-          text: '无',
+          text: t('无'),
           subText: gridLineSize.value === 0 ? '√' : '',
           handler: () => mainStore.setGridLineSize(0),
         },
         {
-          text: '小',
+          text: t('小'),
           subText: gridLineSize.value === 25 ? '√' : '',
           handler: () => mainStore.setGridLineSize(25),
         },
         {
-          text: '中',
+          text: t('中'),
           subText: gridLineSize.value === 50 ? '√' : '',
           handler: () => mainStore.setGridLineSize(50),
         },
         {
-          text: '大',
+          text: t('大'),
           subText: gridLineSize.value === 100 ? '√' : '',
           handler: () => mainStore.setGridLineSize(100),
         },
       ],
     },
     {
-      text: '重置当前页',
+      text: t('重置当前页'),
       handler: deleteAllElements,
     },
     {
-      text: '气泡菜单',
+      text: t('气泡菜单'),
       subText: showBubbleMenu.value ? '√' : '',
       handler: toggleBubbleMenu,
     },
     { divider: true },
     {
-      text: '幻灯片放映',
+      text: t('幻灯片放映'),
       subText: 'F5',
       handler: enterScreeningFromStart,
     },

@@ -68,7 +68,7 @@
 
     <div class="btns">
       <div class="left">
-        图表类型：{{ CHART_TYPE_MAP[chartType] }}
+        {{ t('图表类型：') }}{{ CHART_TYPE_MAP[chartType] }}
         <Popover trigger="click" placement="top" v-model:value="chartTypeSelectVisible">
           <template #content>
             <PopoverMenuItem
@@ -78,13 +78,13 @@
               @click="chartType = item; chartTypeSelectVisible = false"
             >{{CHART_TYPE_MAP[item]}}</PopoverMenuItem>
           </template>
-          <span class="change">点击更换</span>
+          <span class="change">{{ t('点击更换') }}</span>
         </Popover>
       </div>
       <div class="right">
-        <Button class="btn" @click="closeEditor()">取消</Button>
-        <Button class="btn" @click="clear()">清空数据</Button>
-        <Button type="primary" class="btn" @click="getTableData()">确认</Button>
+        <Button class="btn" @click="closeEditor()">{{ t('取消') }}</Button>
+        <Button class="btn" @click="clear()">{{ t('清空数据') }}</Button>
+        <Button type="primary" class="btn" @click="getTableData()">{{ t('确认') }}</Button>
       </div>
     </div>
   </div>

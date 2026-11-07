@@ -30,6 +30,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { onMounted, onUnmounted, ref, useTemplateRef } from 'vue'
 import { debounce } from 'lodash'
 import { useMainStore } from '@/store'
@@ -177,7 +179,7 @@ onMounted(() => {
       input: handleInput,
     },
   }, {
-    placeholder: '点击输入演讲者备注',
+    placeholder: t('点击输入演讲者备注'),
   })
 
   menuInstance.value = tippy(editorViewRef.value!, {

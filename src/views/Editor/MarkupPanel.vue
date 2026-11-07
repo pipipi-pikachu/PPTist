@@ -3,14 +3,14 @@
     class="notes-panel" 
     :width="300" 
     :height="130" 
-    title="幻灯片类型标注" 
+    :title="t('幻灯片类型标注')"
     :left="-270" 
     :top="90"
     @close="close()"
   >
     <div class="container">
       <div class="row">
-        <div style="width: 40%;">当前页面类型：</div>
+        <div style="width: 40%;">{{ t('当前页面类型：') }}</div>
         <Select
           style="width: 60%;"
           :value="slideType"
@@ -19,7 +19,7 @@
         />
       </div>
       <div class="row" v-if="handleElement && (handleElement.type === 'text' || (handleElement.type === 'shape' && handleElement.text))">
-        <div style="width: 40%;">当前文本类型：</div>
+        <div style="width: 40%;">{{ t('当前文本类型：') }}</div>
         <Select
           style="width: 60%;"
           :value="textType"
@@ -28,7 +28,7 @@
         />
       </div>
       <div class="row" v-else-if="handleElement && handleElement.type === 'image'">
-        <div style="width: 40%;">当前图片类型：</div>
+        <div style="width: 40%;">{{ t('当前图片类型：') }}</div>
         <Select
           style="width: 60%;"
           :value="imageType"
@@ -36,12 +36,14 @@
           :options="imageTypeOptions"
         />
       </div>
-      <div class="placeholder" v-else>选中图片、文字、带文字的形状，标记类型</div>
+      <div class="placeholder" v-else>{{ t('选中图片、文字、带文字的形状，标记类型') }}</div>
     </div>
   </MoveablePanel>
 </template>
 
 <script lang="ts" setup>
+import { t } from '@/i18n'
+
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore } from '@/store'
@@ -56,33 +58,33 @@ const { currentSlide } = storeToRefs(slidesStore)
 const { handleElement, handleElementId } = storeToRefs(mainStore)
 
 const slideTypeOptions = ref<{ label: string; value: SlideType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '封面页', value: 'cover' },
-  { label: '目录页', value: 'contents' },
-  { label: '过渡页', value: 'transition' },
-  { label: '内容页', value: 'content' },
-  { label: '结束页', value: 'end' },
+  { label: t('未标记类型'), value: '' },
+  { label: t('封面页'), value: 'cover' },
+  { label: t('目录页'), value: 'contents' },
+  { label: t('过渡页'), value: 'transition' },
+  { label: t('内容页'), value: 'content' },
+  { label: t('结束页'), value: 'end' },
 ])
 
 const textTypeOptions = ref<{ label: string; value: TextType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '标题', value: 'title' },
-  { label: '副标题', value: 'subtitle' },
-  { label: '正文', value: 'content' },
-  { label: '列表项目', value: 'item' },
-  { label: '列表项标题', value: 'itemTitle' },
-  { label: '注释', value: 'notes' },
-  { label: '页眉', value: 'header' },
-  { label: '页脚', value: 'footer' },
-  { label: '节编号', value: 'partNumber' },
-  { label: '项目编号', value: 'itemNumber' },
+  { label: t('未标记类型'), value: '' },
+  { label: t('标题'), value: 'title' },
+  { label: t('副标题'), value: 'subtitle' },
+  { label: t('正文'), value: 'content' },
+  { label: t('列表项目'), value: 'item' },
+  { label: t('列表项标题'), value: 'itemTitle' },
+  { label: t('注释'), value: 'notes' },
+  { label: t('页眉'), value: 'header' },
+  { label: t('页脚'), value: 'footer' },
+  { label: t('节编号'), value: 'partNumber' },
+  { label: t('项目编号'), value: 'itemNumber' },
 ])
 
 const imageTypeOptions = ref<{ label: string; value: ImageType | '' }[]>([
-  { label: '未标记类型', value: '' },
-  { label: '页面插图', value: 'pageFigure' },
-  { label: '项目插图', value: 'itemFigure' },
-  { label: '背景图', value: 'background' },
+  { label: t('未标记类型'), value: '' },
+  { label: t('页面插图'), value: 'pageFigure' },
+  { label: t('项目插图'), value: 'itemFigure' },
+  { label: t('背景图'), value: 'background' },
 ])
 
 const slideType = computed(() => currentSlide.value?.type || '')

@@ -1,5 +1,5 @@
 <template>
-  <div class="select-wrap" v-if="disabled">
+  <div class="select-wrap" :dir="direction" v-if="disabled">
     <div class="select disabled" ref="selectRef">
       <div class="selector">{{ value }}</div>
       <div class="icon">
@@ -9,7 +9,8 @@
       </div>
     </div>
   </div>
-  <Popover 
+  <Popover
+    :dir="direction"
     class="select-wrap"
     trigger="click" 
     v-model:value="popoverVisible" 
@@ -25,7 +26,7 @@
         <Input ref="searchInputRef" simple :placeholder="searchLabel" v-model:value="searchKey" :style="{ width: width + 2 + 'px' }" />
         <Divider :margin="0" />
       </template>
-      <div class="options" ref="optionsRef" :style="{ width: width + 2 + 'px' }">
+      <div class="options" :dir="direction" ref="optionsRef" :style="{ width: width + 2 + 'px' }">
         <div class="option" 
           :class="{
             'disabled': option.disabled,
@@ -49,6 +50,8 @@
 </template>
 
 <script lang="ts" setup>
+import { t, direction } from '@/i18n'
+
 import { computed, onMounted, onUnmounted, ref, watch, nextTick, onBeforeUnmount, useTemplateRef } from 'vue'
 import Popover from './Popover.vue'
 import Input from './Input.vue'
@@ -73,7 +76,7 @@ const props = withDefaults(defineProps<{
   autofocus: false,
   defaultLabel: '',
   search: false,
-  searchLabel: '搜索',
+  searchLabel: t('搜索'),
 })
 
 const emit = defineEmits<{
@@ -141,7 +144,7 @@ const handleSelect = (option: SelectOption) => {
 .select {
   width: 100%;
   height: 32px;
-  padding-right: 32px;
+  padding-inline-end: 32px;
   border-radius: $borderRadius;
   transition: border-color .25s;
   font-size: 13px;
@@ -166,7 +169,7 @@ const handleSelect = (option: SelectOption) => {
     min-width: 50px;
     height: 30px;
     line-height: 30px;
-    padding-left: 10px;
+    padding-inline-start: 10px;
     @include ellipsis-oneline();
   }
 }
@@ -174,16 +177,17 @@ const handleSelect = (option: SelectOption) => {
   max-height: 260px;
   padding: 5px;
   overflow: auto;
-  text-align: left;
+  text-align: start;
   font-size: 13px;
   user-select: none;
 }
 .option {
-  height: 32px;
-  line-height: 32px;
-  padding: 0 5px;
+  min-height: 32px;
+  line-height: 1.4;
+  padding: 7px 5px;
   border-radius: $borderRadius;
-  @include ellipsis-oneline();
+  white-space: normal;
+  overflow-wrap: anywhere;
 
   &.disabled {
     color: #b7b7b7;
@@ -204,7 +208,7 @@ const handleSelect = (option: SelectOption) => {
   color: #bfbfbf;
   position: absolute;
   top: 0;
-  right: 0;
+  inset-inline-end: 0;
   display: flex;
   justify-content: center;
   align-items: center;

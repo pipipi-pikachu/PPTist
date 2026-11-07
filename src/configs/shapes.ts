@@ -1,3 +1,4 @@
+import { t } from '@/i18n'
 /* eslint-disable max-lines */
 
 import { ShapePathFormulasKeys } from '@/types/slides'
@@ -523,7 +524,7 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
 
 export const SHAPE_LIST: ShapeListItem[] = [
   {
-    type: '矩形',
+    type: t('矩形'),
     children: [
       {
         viewBox: [200, 200],
@@ -582,7 +583,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '常用形状',
+    type: t('常用形状'),
     children: [
       {
         viewBox: [200, 200],
@@ -885,7 +886,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
   
   {
-    type: '箭头',
+    type: t('箭头'),
     children: [
       {
         viewBox: [200, 200],
@@ -991,7 +992,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '其他形状',
+    type: t('其他形状'),
     children: [
       {
         viewBox: [1024, 1024],
@@ -1141,7 +1142,7 @@ export const SHAPE_LIST: ShapeListItem[] = [
   },
 
   {
-    type: '线性',
+    type: t('线性'),
     children: [
       {
         viewBox: [1024, 1024],
