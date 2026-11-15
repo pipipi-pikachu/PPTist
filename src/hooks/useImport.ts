@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { parse, type Shape, type Element, type ChartItem, type BaseElement } from 'pptxtojson'
+import { parse, type Shape, type BaseElement, type Chart, type ChartItem, type Element, type ScatterSeries } from 'pptxtojson'
 import { nanoid } from 'nanoid'
 import tinycolor from 'tinycolor2'
 import { useSlidesStore } from '@/store'
@@ -27,8 +27,55 @@ import type {
   TextAlignVertical,
   PPTTextElement,
   ChartOptions,
+  ChartData,
   Gradient,
 } from '@/types/slides'
+
+const isPointChart = (chart: Pick<Chart, 'chartType'>) => chart.chartType === 'scatterChart' || chart.chartType === 'bubbleChart'
+
+const convertImportedChart = (input: Chart) => {
+  const groups = (input.chartType === 'comboChart' ? input.groups : [input]).filter(group => group.data.length)
+  if (!groups.length) return null
+  const first = groups[0]
+  const compatible = groups.filter(group => isPointChart(group) === isPointChart(first))
+  const chart = { ...first, colors: compatible.flatMap(group => group.colors) }
+  let data: ChartData
+
+  if (isPointChart(first)) {
+    const series = compatible.flatMap<ScatterSeries>(group => group.chartType === 'scatterChart' || group.chartType === 'bubbleChart' ? group.data : []).map(item => ({
+      key: item.key,
+      values: item.values.filter(point => Number.isFinite(point.x) && Number.isFinite(point.y)),
+    })).filter(item => item.values.length)
+    if (!series.length) return null
+    const xValues = series[0].values.map(point => point.x)
+    const sharedX = series.every(item => item.values.length === xValues.length && item.values.every((point, index) => point.x === xValues[index]))
+    if (sharedX) {
+      data = {
+        labels: xValues.map((_, index) => `坐标${index + 1}`),
+        legends: ['X', ...series.map((item, index) => item.key || `Y${index + 1}`)],
+        series: [xValues, ...series.map(item => item.values.map(point => point.y))],
+      }
+    }
+    else {
+      const points = series.flatMap(item => item.values)
+      data = {
+        labels: points.map((_, index) => `坐标${index + 1}`),
+        legends: ['X', series.map(item => item.key).filter(Boolean).join(' / ') || 'Y'],
+        series: [points.map(point => point.x), points.map(point => point.y)],
+      }
+    }
+  }
+  else {
+    const series = compatible.flatMap<ChartItem>(group => group.chartType !== 'scatterChart' && group.chartType !== 'bubbleChart' ? group.data : [])
+    data = {
+      labels: Object.values(series[0].xlabels),
+      legends: series.map(item => String(item.key)),
+      series: series.map(item => item.values.map(point => point.y)),
+    }
+  }
+  if (!data.series.length || !data.series[0]?.length) return null
+  return { chart, data }
+}
 
 const vAlignMap: Record<string, TextAlignVertical> = {
   'mid': 'middle',
@@ -197,7 +244,6 @@ const convertTextContent = (html: string, ratio: number) => {
         const textIndentValue = normalizeIndentValue(p1, ratio)
         return textIndentValue ? `text-indent: ${textIndentValue}em;` : ''
       })
-      .replace(/;\s*;/g, ';')
       .replace(/^\s*;\s*/, '')
       .replace(/;\s*$/, ';')
       .trim()
@@ -665,7 +711,7 @@ export default () => {
     
     const reader = new FileReader()
     reader.onload = async e => {
-      let json = null
+      let json: Awaited<ReturnType<typeof parse>>
       try {
         json = await parse(e.target!.result as ArrayBuffer, {
           imageMode: 'base64',
@@ -740,7 +786,7 @@ export default () => {
         }
 
         const parseElements = (elements: Element[]) => {
-          const sortedElements = elements.sort((a, b) => a.order - b.order)
+          const sortedElements = elements.map(element => ({ ...element })).sort((a, b) => a.order - b.order)
 
           for (const el of sortedElements) {
             let backstopSize = 1
@@ -785,7 +831,7 @@ export default () => {
                   style: el.borderType,
                 },
                 fill: el.fill?.type === 'color' ? el.fill.value : '',
-                vertical: el.isVertical,
+                vertical: el.textDirection ? el.textDirection === 'eaVert' : el.isVertical,
               }
               if (!isSelfAdaptive) {
                 textEl.fixedHeight = true
@@ -1225,45 +1271,29 @@ export default () => {
               })
             }
             else if (el.type === 'chart') {
-              let labels: string[]
-              let legends: string[]
-              let series: number[][]
-  
-              if (el.chartType === 'scatterChart' || el.chartType === 'bubbleChart') {
-                labels = el.data[0].map((item, index) => `坐标${index + 1}`)
-                legends = el.data.map((item, index) => {
-                  if (index === 0) return 'X'
-                  if (index === 1) return 'Y'
-                  return `Y${index}`
-                })
-                series = el.data
-              }
-              else {
-                const data = el.data as ChartItem[]
-                labels = Object.values(data[0].xlabels)
-                legends = data.map(item => item.key)
-                series = data.map(item => item.values.map(v => v.y))
-              }
-
+              const imported = convertImportedChart(el)
+              if (!imported) continue
+              const { chart, data } = imported
+              const { labels, legends, series } = data
               const options: ChartOptions = {}
   
               let chartType: ChartType = 'bar'
 
-              switch (el.chartType) {
+              switch (chart.chartType) {
                 case 'barChart':
                 case 'bar3DChart':
                   chartType = 'bar'
-                  if (el.barDir === 'bar') chartType = 'column'
-                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
+                  if (chart.barDir === 'bar') chartType = 'column'
+                  if (chart.grouping === 'stacked' || chart.grouping === 'percentStacked') options.stack = true
                   break
                 case 'lineChart':
                 case 'line3DChart':
-                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
+                  if (chart.grouping === 'stacked' || chart.grouping === 'percentStacked') options.stack = true
                   chartType = 'line'
                   break
                 case 'areaChart':
                 case 'area3DChart':
-                  if (el.grouping === 'stacked' || el.grouping === 'percentStacked') options.stack = true
+                  if (chart.grouping === 'stacked' || chart.grouping === 'percentStacked') options.stack = true
                   chartType = 'area'
                   break
                 case 'scatterChart':
@@ -1292,7 +1322,7 @@ export default () => {
                 left: el.left,
                 top: el.top,
                 rotate: 0,
-                themeColors: el.colors.length ? el.colors : theme.value.themeColors,
+                themeColors: chart.colors.length ? chart.colors : theme.value.themeColors,
                 textColor: theme.value.fontColor,
                 data: {
                   labels,
