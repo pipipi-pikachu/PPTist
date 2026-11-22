@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { parse, type Shape, type BaseElement, type Chart, type ChartItem, type Element, type ScatterSeries } from 'pptxtojson'
 import { nanoid } from 'nanoid'
 import tinycolor from 'tinycolor2'
+import { SVGPathData } from 'svg-pathdata'
 import { useSlidesStore } from '@/store'
 import { decrypt } from '@/utils/crypto'
 import { isFloatEqual } from '@/utils/common'
@@ -11,7 +12,7 @@ import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import useSlideHandler from '@/hooks/useSlideHandler'
 import useHistorySnapshot from './useHistorySnapshot'
 import message from '@/utils/message'
-import { getSvgPathRange, toPoints } from '@/utils/svgPathParser'
+import { toPoints } from '@/utils/svgPathParser'
 import { loadGoogleFonts } from '@/utils/font'
 import { parseTableText, serializeTableText } from '@/utils/prosemirror/table'
 import type {
@@ -75,6 +76,89 @@ const convertImportedChart = (input: Chart) => {
   }
   if (!data.series.length || !data.series[0]?.length) return null
   return { chart, data }
+}
+
+const hasImportedText = (content: string) => {
+  if (!content) return false
+  const doc = new DOMParser().parseFromString(content, 'text/html')
+  return !!doc.body.textContent?.trim()
+}
+
+const getCustomLinePoints = (shape: Shape): [[number, number], [number, number]] | null => {
+  if (shape.shapType !== 'custom' || !shape.path) return null
+
+  try {
+    const parsed = new SVGPathData(shape.path)
+    const [move, segment] = parsed.commands
+    if (parsed.commands.length === 2 && move.type === SVGPathData.MOVE_TO &&
+      (segment.type === SVGPathData.LINE_TO || segment.type === SVGPathData.HORIZ_LINE_TO || segment.type === SVGPathData.VERT_LINE_TO)) {
+      const [start, end] = parsed.toAbs().normalizeHVZ().commands
+      if ('x' in start && 'y' in start && 'x' in end && 'y' in end &&
+        [start.x, start.y, end.x, end.y].every(Number.isFinite) && (start.x !== end.x || start.y !== end.y)) {
+        return [[start.x, start.y], [end.x, end.y]]
+      }
+    }
+  }
+  catch {
+    // Some zero-axis custom paths from the parser contain NaN on that axis only.
+  }
+
+  if (!shape.strokeOnly) return null
+  const axis = shape.width === 0 && shape.height > 0 ? 0 : shape.height === 0 && shape.width > 0 ? 1 : -1
+  if (axis === -1) return null
+  const match = /^\s*M\s*([^ML]+)\s*L\s*([^ML]+)\s*$/.exec(shape.path)
+  if (!match) return null
+  const points = match.slice(1).map(point => point.trim().split(/[\s,]+/))
+  if (!points.every(point => point.length === 2 &&
+    (point[axis] === 'NaN' || Number(point[axis]) === 0) && Number.isFinite(Number(point[1 - axis]))) ||
+    Number(points[0][1 - axis]) === Number(points[1][1 - axis])) return null
+
+  return points.map(point => axis === 0 ? [0, Number(point[1])] : [Number(point[0]), 0]) as [[number, number], [number, number]]
+}
+
+const getImportedShapeGeometry = (shape: Shape, linePoints?: [[number, number], [number, number]] | null): Pick<PPTShapeElement, 'path' | 'viewBox'> | null => {
+  if (!shape.path) return null
+
+  if (linePoints) {
+    const minX = Math.min(linePoints[0][0], linePoints[1][0])
+    const minY = Math.min(linePoints[0][1], linePoints[1][1])
+    const width = Math.abs(linePoints[1][0] - linePoints[0][0])
+    const height = Math.abs(linePoints[1][1] - linePoints[0][1])
+    const box = shape.pathViewBox
+    const hasViewBox = box && [box.x, box.y, box.width, box.height].every(Number.isFinite) && box.width > 0 && box.height > 0
+    if (!hasViewBox && (width === 0 || height === 0)) {
+      const x = box && Number.isFinite(box.x) ? box.x : minX
+      const y = box && Number.isFinite(box.y) ? box.y : minY
+      return {
+        path: `M ${linePoints[0][0] - x} ${linePoints[0][1] - y} L ${linePoints[1][0] - x} ${linePoints[1][1] - y}`,
+        viewBox: [box && box.width > 0 ? box.width : width || 1, box && box.height > 0 ? box.height : height || 1],
+      }
+    }
+  }
+
+  try {
+    const parsed = new SVGPathData(shape.path)
+    if (!parsed.commands.some(command => command.type !== SVGPathData.MOVE_TO && command.type !== SVGPathData.CLOSE_PATH)) return null
+    if (parsed.commands.some(command => Object.values(command).some(value => typeof value === 'number' && !Number.isFinite(value)))) return null
+
+    const viewBox = shape.pathViewBox
+    if (viewBox && [viewBox.x, viewBox.y, viewBox.width, viewBox.height].every(Number.isFinite) && viewBox.width > 0 && viewBox.height > 0) {
+      const path = viewBox.x || viewBox.y ? parsed.toAbs().translate(-viewBox.x, -viewBox.y).encode() : shape.path
+      return { path, viewBox: [viewBox.width, viewBox.height] }
+    }
+
+    const { minX, minY, maxX, maxY } = parsed.getBounds()
+    const width = maxX - minX
+    const height = maxY - minY
+    if (![minX, minY, width, height].every(Number.isFinite) || width <= 0 || height <= 0) return null
+    return {
+      path: minX || minY ? parsed.toAbs().translate(-minX, -minY).encode() : shape.path,
+      viewBox: [width, height],
+    }
+  }
+  catch {
+    return null
+  }
 }
 
 const vAlignMap: Record<string, TextAlignVertical> = {
@@ -497,11 +581,43 @@ export default () => {
     return ''
   }
 
-  const parseLineElement = (el: Shape, ratio: number) => {
+  const parseLineElement = (el: Shape, ratio: number, customPoints?: [[number, number], [number, number]] | null) => {
     let start: [number, number] = [0, 0]
     let end: [number, number] = [0, 0]
     let rotateOffset: [number, number] = [0, 0]
-    if (!el.isFlipV && !el.isFlipH) { // 右下
+    let left = el.left
+    let top = el.top
+    if (customPoints) {
+      const minX = Math.min(customPoints[0][0], customPoints[1][0])
+      const minY = Math.min(customPoints[0][1], customPoints[1][1])
+      const spanX = Math.abs(customPoints[1][0] - customPoints[0][0])
+      const spanY = Math.abs(customPoints[1][1] - customPoints[0][1])
+      const box = el.pathViewBox
+      const angle = (el.rotate || 0) * Math.PI / 180
+      const mapped = customPoints.map(point => {
+        let x = box && Number.isFinite(box.width) && box.width > 0
+          ? (point[0] - box.x) / box.width * el.width
+          : spanX ? (point[0] - minX) / spanX * el.width : 0
+        let y = box && Number.isFinite(box.height) && box.height > 0
+          ? (point[1] - box.y) / box.height * el.height
+          : spanY ? (point[1] - minY) / spanY * el.height : 0
+        if (el.isFlipH) x = el.width - x
+        if (el.isFlipV) y = el.height - y
+        const dx = x - el.width / 2
+        const dy = y - el.height / 2
+        return [
+          dx * Math.cos(angle) - dy * Math.sin(angle) + el.width / 2,
+          dx * Math.sin(angle) + dy * Math.cos(angle) + el.height / 2,
+        ] as [number, number]
+      })
+      const offsetX = Math.min(mapped[0][0], mapped[1][0])
+      const offsetY = Math.min(mapped[0][1], mapped[1][1])
+      left += offsetX
+      top += offsetY
+      start = [mapped[0][0] - offsetX, mapped[0][1] - offsetY]
+      end = [mapped[1][0] - offsetX, mapped[1][1] - offsetY]
+    }
+    else if (!el.isFlipV && !el.isFlipH) { // 右下
       start = [0, 0]
       end = [el.width, el.height]
     }
@@ -521,16 +637,25 @@ export default () => {
     const data: PPTLineElement = {
       type: 'line',
       id: nanoid(10),
-      width: +((el.borderWidth || 1) * ratio).toFixed(2),
-      left: el.left,
-      top: el.top,
+      width: +((el.borderWidth ?? 1) * ratio).toFixed(2),
+      left,
+      top,
       start,
       end,
       style: el.borderType,
       color: el.borderColor,
       points: [parseLineEnd(el.headEnd), parseLineEnd(el.tailEnd)]
     }
-    if (el.rotate) {
+    if (el.link) data.link = { type: 'web', target: el.link }
+    if (el.shadow) {
+      data.shadow = {
+        h: el.shadow.h * ratio,
+        v: el.shadow.v * ratio,
+        blur: el.shadow.blur * ratio,
+        color: el.shadow.color,
+      }
+    }
+    if (el.rotate && !customPoints) {
       const { start, end, offset } = rotateLine(data, el.rotate)
 
       data.start = start
@@ -554,8 +679,8 @@ export default () => {
           if (!('x' in point) || !('y' in point)) return null
           if (typeof point.x !== 'number' || typeof point.y !== 'number') return null
 
-          let x = el.pathViewBox?.width ? point.x / el.pathViewBox.width * el.width : point.x * ratio
-          let y = el.pathViewBox?.height ? point.y / el.pathViewBox.height * el.height : point.y * ratio
+          let x = el.pathViewBox?.width ? (point.x - el.pathViewBox.x) / el.pathViewBox.width * el.width : point.x * ratio
+          let y = el.pathViewBox?.height ? (point.y - el.pathViewBox.y) / el.pathViewBox.height * el.height : point.y * ratio
 
           if (el.isFlipH) x = el.width - x
           if (el.isFlipV) y = el.height - y
@@ -789,10 +914,12 @@ export default () => {
           const sortedElements = elements.map(element => ({ ...element })).sort((a, b) => a.order - b.order)
 
           for (const el of sortedElements) {
+            const customShapeLinePoints = el.type === 'shape' ? getCustomLinePoints(el) : null
+            const customLinePoints = el.type === 'shape' && customShapeLinePoints && !hasImportedText(el.content) ? customShapeLinePoints : null
             let backstopSize = 1
 
             if (el.type === 'shape') {
-              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType)) {
+              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType) || customLinePoints) {
                 backstopSize = 0
               }
             }
@@ -963,8 +1090,8 @@ export default () => {
               })
             }
             else if (el.type === 'shape') {
-              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType)) {
-                const lineElement = parseLineElement(el, ratio)
+              if (el.shapType === 'line' || /straightConnector/.test(el.shapType) || /bentConnector/.test(el.shapType) || /curvedConnector/.test(el.shapType) || customLinePoints) {
+                const lineElement = parseLineElement(el, ratio, customLinePoints)
                 slide.elements.push(lineElement)
               }
               else {
@@ -1027,6 +1154,8 @@ export default () => {
                   }
                 }
     
+                const importedGeometry = !shape ? getImportedShapeGeometry(el, customShapeLinePoints) : null
+                if (!shape && !importedGeometry) continue
                 if (shape) {
                   element.path = shape.path
                   element.viewBox = shape.viewBox
@@ -1040,45 +1169,8 @@ export default () => {
                       let keypointValues = pathFormula.defaultValue
                       if (el.keypoints) {
                         let keypoint = 0
-                        if (el.shapType === 'roundRect') {
-                          const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'snip1Rect') {
-                          const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'snip2SameRect') {
-                          const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'snip2DiagRect') {
-                          const val = el.keypoints.adj2 === undefined ? 0.334 : el.keypoints.adj2
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'snipRoundRect') {
-                          const val1 = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          const val2 = el.keypoints.adj2 === undefined ? 0.334 : el.keypoints.adj2
-                          keypoint = ((val1 + val2) / 2) * 0.5
-                        }
-                        if (el.shapType === 'round1Rect') {
-                          const val = el.keypoints.adj === undefined ? 0.334 : el.keypoints.adj
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'round2SameRect') {
-                          const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'round2DiagRect') {
-                          const val = el.keypoints.adj1 === undefined ? 0.334 : el.keypoints.adj1
-                          keypoint = val * 0.5
-                        }
                         if (el.shapType === 'triangle') {
                           const val = el.keypoints.adj === undefined ? 1 : el.keypoints.adj
-                          keypoint = val * 0.5
-                        }
-                        if (el.shapType === 'trapezoid') {
-                          const val = el.keypoints.adj === undefined ? 0.5 : el.keypoints.adj
                           keypoint = val * 0.5
                         }
                         if (el.shapType === 'frame') {
@@ -1106,59 +1198,48 @@ export default () => {
                         if (pathFormula.range && keypoint > pathFormula.range[0][1]) keypoint = pathFormula.range[0][1]
                         keypointValues = [keypoint]
                       }
+                      const cornerPresets = ['roundRect', 'round1Rect', 'round2SameRect', 'round2DiagRect', 'snip1Rect', 'snip2SameRect', 'snip2DiagRect', 'snipRoundRect']
+                      if (cornerPresets.includes(el.shapType) || el.shapType === 'trapezoid') {
+                        const adjustment = (name: string, fallback: number) => {
+                          const value = el.keypoints?.[name]
+                          return Number.isFinite(value) ? value! * 0.5 : fallback
+                        }
+                        let values: number[]
+                        if (el.shapType === 'trapezoid') {
+                          const sourceWidth = el.pathViewBox?.width || originWidth
+                          const sourceHeight = el.pathViewBox?.height || originHeight
+                          const normalized = adjustment('adj', 0.25)
+                          values = [Math.max(0, Math.min(0.5, normalized * Math.min(sourceWidth, sourceHeight) / sourceWidth))]
+                        }
+                        else if (['roundRect', 'round1Rect', 'snip1Rect'].includes(el.shapType)) values = [adjustment('adj', 0.16667)]
+                        else if (el.shapType === 'snip2DiagRect') values = [adjustment('adj2', 0.16667), adjustment('adj1', 0)]
+                        else if (el.shapType === 'snipRoundRect') values = [adjustment('adj1', 0.16667), adjustment('adj2', 0.16667)]
+                        else values = [adjustment('adj1', 0.16667), adjustment('adj2', 0)]
+
+                        keypointValues = values.map(value => Math.max(0, Math.min(value, 0.5)))
+                      }
                       element.path = pathFormula.formula(el.width, el.height, keypointValues)
                       element.keypoints = keypointValues
                     }
                     else element.path = pathFormula.formula(el.width, el.height)
-                  }
-                }
-                else if (el.path && el.path.indexOf('NaN') === -1) {
-                  element.path = el.path
-                  const fixedViewBoxPresetShapeTypes = [
-                    'blockArc',
-                    'pie',
-                    'pieWedge',
-                    'arc',
-                    'chord',
-                    'teardrop',
-                    'mathPlus',
-                    'mathMinus',
-                    'mathMultiply',
-                    'mathDivide',
-                    'mathEqual',
-                    'mathNotEqual',
-                  ]
-                  if (fixedViewBoxPresetShapeTypes.includes(el.shapType) && el.pathViewBox) {
-                    element.viewBox = [el.pathViewBox.width, el.pathViewBox.height]
-                  }
-                  else {
-                    const { maxX, maxY } = getSvgPathRange(el.path)
-                    if ((maxX / maxY) > (originWidth / originHeight)) {
-                      element.viewBox = [maxX, maxX * originHeight / originWidth]
-                    }
-                    else {
-                      element.viewBox = [maxY * originWidth / originHeight, maxY]
+
+                    const sourceBox = el.pathViewBox
+                    if (sourceBox && sourceBox.width > 0 && sourceBox.height > 0 &&
+                      Number.isFinite(sourceBox.width) && Number.isFinite(sourceBox.height) &&
+                      Math.abs(sourceBox.width / sourceBox.height - originWidth / originHeight) > 0.000001) {
+
+                      element.path = pathFormula.formula(sourceBox.width, sourceBox.height, element.keypoints)
+                      element.viewBox = [sourceBox.width, sourceBox.height]
+                      delete element.pathFormula
+                      delete element.keypoints
                     }
                   }
                 }
-                if (el.shapType === 'custom') {
-                  if (el.path!.indexOf('NaN') !== -1) {
-                    if (element.width === 0) element.width = 0.1
-                    if (element.height === 0) element.height = 0.1
-                    element.path = el.path!.replace(/NaN/g, '0')
-                  }
-                  else {
-                    element.path = el.path!
-                  }
-                  const { maxX, maxY } = getSvgPathRange(element.path)
-                  if ((maxX / maxY) > (originWidth / originHeight)) {
-                    element.viewBox = [maxX, maxX * originHeight / originWidth]
-                  }
-                  else {
-                    element.viewBox = [maxY * originWidth / originHeight, maxY]
-                  }
+                else if (importedGeometry) {
+                  element.path = importedGeometry.path
+                  element.viewBox = importedGeometry.viewBox
                 }
-    
+
                 if (element.path && element.viewBox[0] && element.viewBox[1]) slide.elements.push(element)
               }
             }
@@ -1263,7 +1344,7 @@ export default () => {
                 data,
                 rowHeights,
                 outline: {
-                  width: +(borderWidth * ratio || 2).toFixed(2),
+                  width: +(borderWidth * ratio).toFixed(2),
                   style: borderStyle,
                   color: borderColor,
                 },
@@ -1363,8 +1444,8 @@ export default () => {
                   left,
                   top,
                 }
-                if (el.isFlipH && 'isFlipH' in element) element.isFlipH = true
-                if (el.isFlipV && 'isFlipV' in element) element.isFlipV = true
+                if (el.isFlipH && 'isFlipH' in element) element.isFlipH = !element.isFlipH
+                if (el.isFlipV && 'isFlipV' in element) element.isFlipV = !element.isFlipV
                 if ('rotate' in element && el.rotate) element.rotate = rotate
 
                 return element

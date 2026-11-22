@@ -5,6 +5,7 @@ import pptxgen from 'pptxgenjs'
 import tinycolor from 'tinycolor2'
 import { toPng, toJpeg } from 'html-to-image'
 import { useSlidesStore } from '@/store'
+import { CLIPPATHS, ClipPathTypes } from '@/configs/imageClip'
 import type { PPTElementOutline, PPTElementShadow, PPTElementLink, Slide } from '@/types/slides'
 import { getElementRange, getLineElementPath, getTableSubThemeColor } from '@/utils/element'
 import { type AST, toAST } from '@/utils/htmlParser'
@@ -622,6 +623,47 @@ export default () => {
           }
 
           pptxSlide.addImage(options)
+
+          if (el.outline && (el.outline.width || 0) > 0) {
+            // 描边使用裁切后的元素外框，不能复用裁切时放大的图片尺寸。
+            const outlineOptions: pptxgen.ShapeProps = {
+              x: el.left / ratioPx2Inch.value,
+              y: el.top / ratioPx2Inch.value,
+              w: el.width / ratioPx2Inch.value,
+              h: el.height / ratioPx2Inch.value,
+              fill: { color: 'FFFFFF', transparency: 100 },
+              line: getOutlineOption(el.outline),
+              rotate: el.rotate,
+              flipH: el.flipH,
+              flipV: el.flipV,
+            }
+            const clipShape = CLIPPATHS[el.clip?.shape || ClipPathTypes.RECT] || CLIPPATHS.rect
+            let outlineType = pptx.ShapeType.rect
+
+            if (clipShape.type === ClipPathTypes.ELLIPSE) outlineType = pptx.ShapeType.ellipse
+            else if (clipShape.type === ClipPathTypes.POLYGON && clipShape.createPath) {
+              outlineType = 'custGeom' as pptxgen.ShapeType
+              outlineOptions.points = formatPoints(toPoints(clipShape.createPath(el.width, el.height)))
+            }
+            else if (clipShape.type === ClipPathTypes.RECT) {
+              const radius = Math.max(0, el.radius || parseFloat(clipShape.radius || '0'))
+              if (radius) {
+                // SVG 的 rx/ry 分别受宽高的一半约束，保留非正方形图片的圆角边界。
+                const rx = Math.min(radius, el.width / 2)
+                const ry = Math.min(radius, el.height / 2)
+                const { width: w, height: h } = el
+                const path = `M ${rx} 0 L ${w - rx} 0 A ${rx} ${ry} 0 0 1 ${w} ${ry}
+                  L ${w} ${h - ry} A ${rx} ${ry} 0 0 1 ${w - rx} ${h}
+                  L ${rx} ${h} A ${rx} ${ry} 0 0 1 0 ${h - ry}
+                  L 0 ${ry} A ${rx} ${ry} 0 0 1 ${rx} 0 Z`
+                outlineType = 'custGeom' as pptxgen.ShapeType
+                outlineOptions.points = formatPoints(toPoints(path))
+              }
+            }
+
+            if (outlineOptions.points) outlineOptions.points.push({ close: true })
+            pptxSlide.addShape(outlineType, outlineOptions)
+          }
         }
 
         else if (el.type === 'shape') {
@@ -756,6 +798,10 @@ export default () => {
             points,
           }
           if (el.shadow) options.shadow = getShadowOption(el.shadow)
+          if (el.link) {
+            const linkOption = getLinkOption(el.link)
+            if (linkOption) options.hyperlink = linkOption
+          }
 
           pptxSlide.addShape('custGeom' as pptxgen.ShapeType, options)
         }

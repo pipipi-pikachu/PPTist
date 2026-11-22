@@ -39,6 +39,17 @@ const getStarPath = (width: number, height: number, points: [number, number][], 
   return `${path} Z`
 }
 
+const getCornerRectPath = (width: number, height: number, values: number[], rounded: boolean[]) => {
+  const base = Math.min(width, height)
+  const corners = values.map(value => base * Math.max(0, value))
+  const [tl, tr, br, bl] = corners
+  const corner = (index: number, x: number, y: number) => {
+    const radius = corners[index]
+    return rounded[index] && radius > 0 ? `A ${radius} ${radius} 0 0 1 ${x} ${y}` : `L ${x} ${y}`
+  }
+  return `M ${tl} 0 L ${width - tr} 0 ${corner(1, width, tr)} L ${width} ${height - br} ${corner(2, width - br, height)} L ${bl} ${height} ${corner(3, 0, height - bl)} L 0 ${tl} ${corner(0, tl, 0)} Z`
+}
+
 export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.ROUND_RECT]: {
     editable: true,
@@ -47,19 +58,17 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L ${radius} ${height} Q 0 ${height} 0 ${height - radius} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      return getCornerRectPath(width, height, Array(4).fill(values![0]), [true, true, true, true])
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_DIAGONAL]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.95]],
-    relative: ['right'],
-    getBaseSize: [(width, height) => Math.min(width, height)],
+    range: [[0, 0.95], [0, 0.5]],
+    relative: ['right', 'left'],
+    getBaseSize: [(width, height) => Math.min(width, height), (width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M 0 ${height - radius} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L ${radius} ${height} Z`
+      return getCornerRectPath(width, height, [values![1] ?? 0, values![0], values![1] ?? 0, values![0]], [false, false, false, false])
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_SINGLE]: {
@@ -69,30 +78,27 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
     relative: ['right'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M 0 ${height} L 0 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} Z`
+      return getCornerRectPath(width, height, [0, values![0], 0, 0], [false, false, false, false])
     }
   },
   [ShapePathFormulasKeys.CUT_RECT_SAMESIDE]: {
     editable: true,
     defaultValue: [0.2],
-    range: [[0, 0.5]],
-    relative: ['left'],
-    getBaseSize: [(width, height) => Math.min(width, height)],
+    range: [[0, 0.5], [0, 0.5]],
+    relative: ['left', 'left_bottom'],
+    getBaseSize: [(width, height) => Math.min(width, height), (width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M 0 ${radius} L ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+      return getCornerRectPath(width, height, [values![0], values![0], values![1] ?? 0, values![1] ?? 0], [false, false, false, false])
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_DIAGONAL]: {
     editable: true,
     defaultValue: [0.125],
-    range: [[0, 1]],
-    relative: ['left'],
-    getBaseSize: [(width, height) => Math.min(width, height)],
+    range: [[0, 1], [0, 0.5]],
+    relative: ['left', 'right'],
+    getBaseSize: [(width, height) => Math.min(width, height), (width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M ${radius} 0 L ${width} 0 L ${width} ${height - radius} Q ${width} ${height} ${width - radius} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      return getCornerRectPath(width, height, [values![0], values![1] ?? 0, values![0], values![1] ?? 0], [true, true, true, true])
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_SINGLE]: {
@@ -102,30 +108,27 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
     relative: ['right'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M 0 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 0 Z`
+      return getCornerRectPath(width, height, [0, values![0], 0, 0], [false, true, false, false])
     }
   },
   [ShapePathFormulasKeys.ROUND_RECT_SAMESIDE]: {
     editable: true,
     defaultValue: [0.125],
-    range: [[0, 0.5]],
-    relative: ['left'],
-    getBaseSize: [(width, height) => Math.min(width, height)],
+    range: [[0, 0.5], [0, 0.5]],
+    relative: ['left', 'left_bottom'],
+    getBaseSize: [(width, height) => Math.min(width, height), (width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M 0 ${radius} Q 0 0 ${radius} 0 L ${width - radius} 0 Q ${width} 0 ${width} ${radius} L ${width} ${height} L 0 ${height} Z`
+      return getCornerRectPath(width, height, [values![0], values![0], values![1] ?? 0, values![1] ?? 0], [true, true, true, true])
     }
   },
   [ShapePathFormulasKeys.CUT_ROUND_RECT]: {
     editable: true,
     defaultValue: [0.125],
-    range: [[0, 0.5]],
-    relative: ['left'],
-    getBaseSize: [(width, height) => Math.min(width, height)],
+    range: [[0, 0.5], [0, 0.5]],
+    relative: ['left', 'right'],
+    getBaseSize: [(width, height) => Math.min(width, height), (width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const radius = Math.min(width, height) * values![0]
-      return `M ${radius} 0 L ${width - radius} 0 L ${width} ${radius} L ${width} ${height} L 0 ${height} L 0 ${radius} Q 0 0 ${radius} 0 Z`
+      return getCornerRectPath(width, height, [values![0], values![1] ?? values![0], 0, 0], [true, false, false, false])
     }
   },
   [ShapePathFormulasKeys.MESSAGE]: {
@@ -186,19 +189,22 @@ export const SHAPE_PATH_FORMULAS: Record<string, ShapePathFormula> = {
   [ShapePathFormulasKeys.DONUT]: {
     editable: true,
     defaultValue: [0.25],
-    range: [[0.05, 0.5]],
+    range: [[0, 0.5]],
     relative: ['left'],
     getBaseSize: [(width, height) => Math.min(width, height)],
     formula: (width, height, values) => {
-      const lineWidth = Math.min(width, height) * values![0]
+      const lineWidth = Math.min(width, height) * Math.max(0, Math.min(0.5, values![0]))
       const cx = width / 2
       const cy = height / 2
       const rxOuter = width / 2
       const ryOuter = height / 2
       const rxInner = rxOuter - lineWidth
       const ryInner = ryOuter - lineWidth
-
-      return `M ${cx - rxOuter} ${cy} A ${rxOuter} ${ryOuter} 0 1 1 ${cx - rxOuter} ${cy + 1} Z M ${cx + rxInner} ${cy} A ${rxInner} ${ryInner} 0 1 0 ${cx + rxInner} ${cy + 1} Z`
+      const outer = `M 0 ${cy} A ${rxOuter} ${ryOuter} 0 1 1 ${width} ${cy} A ${rxOuter} ${ryOuter} 0 1 1 0 ${cy} Z`
+      const inner = rxInner > 0 && ryInner > 0
+        ? ` M ${cx + rxInner} ${cy} A ${rxInner} ${ryInner} 0 1 0 ${cx - rxInner} ${cy} A ${rxInner} ${ryInner} 0 1 0 ${cx + rxInner} ${cy} Z`
+        : ''
+      return outer + inner
     }
   },
   [ShapePathFormulasKeys.DIAGSTRIPE]: {
