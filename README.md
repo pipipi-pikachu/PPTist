@@ -147,7 +147,7 @@ Browser access: http://127.0.0.1:5173/
 - Width
 - Style (solid, dashed, dotted)
 - Endpoint style
-#### Charts (bar, column, line, area, scatter, pie, donut, radar)
+#### Charts (bar, column, line, area, scatter, pie, donut, radar, funnel)
 - Chart type conversion
 - Data editing
 - Background fill

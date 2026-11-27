@@ -9,10 +9,10 @@
         <div class="chart-type-list">
           <PopoverMenuItem
             center
-            v-for="item in chartList"
+            v-for="(name, item) in CHART_TYPE_MAP"
             :key="item"
             @click="changeChartType(item)"
-          >{{ CHART_TYPE_MAP[item] }}</PopoverMenuItem>
+          >{{ name }}</PopoverMenuItem>
         </div>
       </template>
       <button class="toolbar-btn">
@@ -43,8 +43,6 @@ const slidesStore = useSlidesStore()
 const { handleElement, handleElementId } = storeToRefs(useMainStore())
 
 const handleChartElement = handleElement as Ref<PPTChartElement>
-
-const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring', 'radar']
 
 const { addHistorySnapshot } = useHistorySnapshot()
 

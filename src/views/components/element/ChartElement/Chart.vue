@@ -9,7 +9,7 @@ import type { ChartData, ChartOptions, ChartType } from '@/types/slides'
 import { getChartOption } from './chartOption'
 
 import * as echarts from 'echarts/core'
-import { BarChart, LineChart, PieChart, ScatterChart, RadarChart } from 'echarts/charts'
+import { BarChart, LineChart, PieChart, ScatterChart, RadarChart, FunnelChart } from 'echarts/charts'
 import { LegendComponent } from 'echarts/components'
 import { SVGRenderer } from 'echarts/renderers'
 
@@ -19,6 +19,7 @@ echarts.use([
   PieChart,
   ScatterChart,
   RadarChart,
+  FunnelChart,
   LegendComponent,
   SVGRenderer,
 ])

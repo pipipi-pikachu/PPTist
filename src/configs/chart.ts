@@ -1,6 +1,6 @@
-import type { ChartData } from '@/types/slides'
+import type { ChartData, ChartType } from '@/types/slides'
 
-export const CHART_TYPE_MAP: Record<string, string> = {
+export const CHART_TYPE_MAP: Record<ChartType, string> = {
   'bar': '柱状图',
   'column': '条形图',
   'line': '折线图',
@@ -9,9 +9,10 @@ export const CHART_TYPE_MAP: Record<string, string> = {
   'pie': '饼图',
   'ring': '环形图',
   'radar': '雷达图',
+  'funnel': '漏斗图',
 }
 
-export const CHART_DEFAULT_DATA: Record<string, ChartData> = {
+export const CHART_DEFAULT_DATA: Record<ChartType, ChartData> = {
   'bar': {
     labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
     legends: ['系列1', '系列2'],
@@ -51,6 +52,11 @@ export const CHART_DEFAULT_DATA: Record<string, ChartData> = {
     labels: ['坐标1', '坐标2', '坐标3', '坐标4', '坐标5'],
     legends: ['X', 'Y'],
     series: [[12, 19, 5, 2, 18], [7, 11, 13, 21, 9]],
+  },
+  'funnel': {
+    labels: ['类别1', '类别2', '类别3', '类别4', '类别5'],
+    legends: ['值'],
+    series: [[1000, 600, 300, 120, 40]],
   },
 }
 

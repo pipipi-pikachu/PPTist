@@ -469,7 +469,7 @@ export interface PPTLineElement extends Omit<PPTBaseElement, 'height' | 'rotate'
 }
 
 
-export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'radar' | 'scatter'
+export type ChartType = 'bar' | 'column' | 'line' | 'pie' | 'ring' | 'area' | 'radar' | 'scatter' | 'funnel'
 
 export interface ChartOptions {
   lineSmooth?: boolean
@@ -489,7 +489,7 @@ export interface ChartData {
  * 
  * fill?: 填充色
  * 
- * chartType: 图表基础类型（bar/line/pie），所有图表类型都是由这三种基本类型衍生而来
+ * chartType: 图表类型
  * 
  * data: 图表数据
  * 

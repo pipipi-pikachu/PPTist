@@ -5,10 +5,11 @@ import type {
   PieSeriesOption,
   ScatterSeriesOption,
   RadarSeriesOption,
+  FunnelSeriesOption,
 } from 'echarts/charts'
 import type { ChartData, ChartType } from '@/types/slides'
 
-type EChartOption = ComposeOption<BarSeriesOption | LineSeriesOption | PieSeriesOption | ScatterSeriesOption | RadarSeriesOption>
+type EChartOption = ComposeOption<BarSeriesOption | LineSeriesOption | PieSeriesOption | ScatterSeriesOption | RadarSeriesOption | FunnelSeriesOption>
 
 const RADAR_DEFAULT_SPLIT_NUMBER = 5
 const RADAR_SPLIT_NUMBERS = [4, 5, 6]
@@ -251,6 +252,32 @@ export const getChartOption = ({
               fontSize: 14,
               fontWeight: 'bold'
             },
+          },
+        }
+      ],
+    }
+  }
+  if (type === 'funnel') {
+    return {
+      color: themeColors,
+      textStyle,
+      legend: {
+        top: 'bottom',
+        textStyle,
+      },
+      series: [
+        {
+          type: 'funnel',
+          sort: 'none',
+          left: '6%',
+          right: '34%',
+          top: '6%',
+          bottom: '17%',
+          gap: 2,
+          data: (data.series[0] ?? []).map((value, index) => ({ name: data.labels[index], value })),
+          label: {
+            color: textColor,
+            formatter: '{b} {c}',
           },
         }
       ],

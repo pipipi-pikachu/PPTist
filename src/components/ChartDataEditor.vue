@@ -73,10 +73,10 @@
           <template #content>
             <PopoverMenuItem
               center
-              v-for="item in chartList" 
+              v-for="(name, item) in CHART_TYPE_MAP"
               :key="item" 
               @click="chartType = item; chartTypeSelectVisible = false"
-            >{{CHART_TYPE_MAP[item]}}</PopoverMenuItem>
+            >{{ name }}</PopoverMenuItem>
           </template>
           <span class="change">点击更换</span>
         </Popover>
@@ -117,7 +117,6 @@ const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const CELL_WIDTH = 100
 const CELL_HEIGHT = 32
 
-const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring', 'radar']
 const chartTypeSelectVisible = ref(false)
 const selectedRange = ref([0, 0])
 const tempRangeSize = ref({ width: 0, height: 0 })
@@ -239,8 +238,8 @@ const getTableData = () => {
       series.push(series[0])
     }
   }
-  // 饼图和环形图只有一列数据
-  if (chartType.value === 'ring' || chartType.value === 'pie') {
+  // 饼图、环形图和漏斗图只有一列数据
+  if (chartType.value === 'ring' || chartType.value === 'pie' || chartType.value === 'funnel') {
     if (legends.length > 1) {
       legends = legends.slice(0, 1)
       series = series.slice(0, 1)

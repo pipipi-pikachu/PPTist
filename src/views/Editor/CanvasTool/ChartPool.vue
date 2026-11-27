@@ -1,6 +1,6 @@
 <template>
   <ul class="chart-pool">
-    <li class="chart-item" v-for="(chart, index) in chartList" :key="index">
+    <li class="chart-item" v-for="(name, chart) in CHART_TYPE_MAP" :key="chart">
       <div class="chart-content" @click="selectChart(chart)">
         <i-icon-park-outline:chart-line style="font-size: 24px" v-if="chart === 'line'" />
         <i-icon-park-outline:chart-histogram style="font-size: 24px" v-else-if="chart === 'bar'" />
@@ -10,8 +10,9 @@
         <i-icon-park-outline:chart-ring style="font-size: 24px" v-else-if="chart === 'ring'" />
         <i-icon-park-outline:chart-scatter style="font-size: 24px" v-else-if="chart === 'scatter'" />
         <i-icon-park-outline:radar-chart style="font-size: 23px" v-else-if="chart === 'radar'" />
+        <i-icon-park-outline:maslow-pyramids style="font-size: 24px" v-else-if="chart === 'funnel'" />
 
-        <div class="name">{{ CHART_TYPE_MAP[chart] }}</div>
+        <div class="name">{{ name }}</div>
       </div>
     </li>
   </ul>
@@ -25,8 +26,6 @@ const emit = defineEmits<{
   (event: 'select', payload: ChartType): void
 }>()
 
-const chartList: ChartType[] = ['bar', 'column', 'line', 'area', 'scatter', 'pie', 'ring', 'radar']
-
 const selectChart = (chart: ChartType) => {
   emit('select', chart)
 }
@@ -34,16 +33,16 @@ const selectChart = (chart: ChartType) => {
 
 <style lang="scss" scoped>
 .chart-pool {
-  width: 240px;
+  width: 210px;
   margin-bottom: -5px;
 
   @include flex-grid-layout();
 }
 .chart-item {
-  @include flex-grid-layout-children(4, 24%);
+  @include flex-grid-layout-children(3, 32%);
 
   height: 0;
-  padding-bottom: 25%;
+  padding-bottom: 32%;
   flex-shrink: 0;
   position: relative;
   cursor: pointer;

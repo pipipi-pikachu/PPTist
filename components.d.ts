@@ -91,6 +91,7 @@ declare module 'vue' {
     'IIconParkOutline:logout': typeof import('~icons/icon-park-outline/logout')['default']
     'IIconParkOutline:magic': typeof import('~icons/icon-park-outline/magic')['default']
     'IIconParkOutline:mark': typeof import('~icons/icon-park-outline/mark')['default']
+    'IIconParkOutline:maslowPyramids': typeof import('~icons/icon-park-outline/maslow-pyramids')['default']
     'IIconParkOutline:minus': typeof import('~icons/icon-park-outline/minus')['default']
     'IIconParkOutline:more': typeof import('~icons/icon-park-outline/more')['default']
     'IIconParkOutline:moveOne': typeof import('~icons/icon-park-outline/move-one')['default']
