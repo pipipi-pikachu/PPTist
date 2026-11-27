@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { nanoid } from 'nanoid'
-import { useMainStore, useSlidesStore } from '@/store'
+import { useMainStore, useSlidesStore, useSnapshotStore } from '@/store'
 import type { Slide } from '@/types/slides'
 import { copyText, readClipboard } from '@/utils/clipboard'
 import { encrypt } from '@/utils/crypto'
@@ -24,7 +24,7 @@ export default () => {
 
   const { pasteTextClipboardData } = usePasteTextClipboardData()
   const { addSlidesFromData } = useAddSlidesOrElements()
-  const { addHistorySnapshot } = useHistorySnapshot()
+  const { addHistorySnapshot, flushHistorySnapshots } = useHistorySnapshot()
 
   // 重置幻灯片
   const resetSlides = () => {
@@ -140,33 +140,46 @@ export default () => {
   }
 
   // 拖拽调整幻灯片顺序同步数据
-  const sortSlides = (newIndex: number, oldIndex: number) => {
-    if (oldIndex === newIndex) return
-  
+  const sortSlides = (newIndex: number, oldIndex: number, oldIndices = [oldIndex], newIndices = [newIndex]) => {
+    if (oldIndices.length === newIndices.length && oldIndices.every((index, i) => index === newIndices[i])) return
+    const movingIndices = new Set(oldIndices)
+    const insertIndex = Math.min(...newIndices)
+    const movingSlides = slides.value.filter((_, index) => movingIndices.has(index))
+    const remainingSlides = slides.value.filter((_, index) => !movingIndices.has(index))
+    remainingSlides.splice(insertIndex, 0, ...movingSlides)
+    if (remainingSlides.every((slide, index) => slide.id === slides.value[index].id)) return
+
+    flushHistorySnapshots()
+    const currentSlideId = currentSlide.value.id
+    const previousSlideIndex = slideIndex.value
     const _slides: Slide[] = JSON.parse(JSON.stringify(slides.value))
 
-    const movingSlide = _slides[oldIndex]
-    const movingSlideSection = movingSlide.sectionTag
-    if (movingSlideSection) {
-      const movingSlideSectionNext = _slides[oldIndex + 1]
-      delete movingSlide.sectionTag
-      if (movingSlideSectionNext && !movingSlideSectionNext.sectionTag) {
-        movingSlideSectionNext.sectionTag = movingSlideSection
-      }
-    }
-    if (newIndex === 0) {
-      const firstSection = _slides[0].sectionTag
-      if (firstSection) {
-        delete _slides[0].sectionTag
-        movingSlide.sectionTag = firstSection
+    // 移动节首页时，将节标记交给该节第一张未移动的页面；该节被移空则移除。
+    for (let i = 0; i < _slides.length; i++) {
+      const section = _slides[i].sectionTag
+      if (!section || !movingIndices.has(i)) continue
+      delete _slides[i].sectionTag
+      for (let j = i + 1; j < _slides.length && !_slides[j].sectionTag; j++) {
+        if (!movingIndices.has(j)) {
+          _slides[j].sectionTag = section
+          break
+        }
       }
     }
 
-    const _slide = _slides[oldIndex]
-    _slides.splice(oldIndex, 1)
-    _slides.splice(newIndex, 0, _slide)
-    slidesStore.setSlides(_slides)
-    slidesStore.updateSlideIndex(newIndex)
+    const moving = _slides.filter((_, index) => movingIndices.has(index))
+    const remaining = _slides.filter((_, index) => !movingIndices.has(index))
+    if (insertIndex === 0 && remaining[0]?.sectionTag) {
+      moving[0].sectionTag = remaining[0].sectionTag
+      delete remaining[0].sectionTag
+    }
+    remaining.splice(insertIndex, 0, ...moving)
+
+    slidesStore.setSlides(remaining)
+    slidesStore.updateSlideIndex(oldIndices.length > 1 ? remaining.findIndex(slide => slide.id === currentSlideId) : newIndex)
+    // 排序会改变页面索引，上一份快照需要保留排序前的索引。
+    const snapshotStore = useSnapshotStore()
+    snapshotStore.addSnapshot(previousSlideIndex)
   }
 
   const isEmptySlide = computed(() => {

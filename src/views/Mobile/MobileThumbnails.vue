@@ -29,7 +29,7 @@ import { useSlidesStore } from '@/store'
 import useLoadSlides from '@/hooks/useLoadSlides'
 import useSlideHandler from '@/hooks/useSlideHandler'
 
-import Draggable from 'vuedraggable'
+import Draggable from '@/components/Draggable.vue'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 
 const slidesStore = useSlidesStore()

@@ -24,7 +24,11 @@
       :animation="200"
       :scroll="true"
       :scrollSensitivity="50"
-      :disabled="editingSectionId"
+      :disabled="!!editingSectionId"
+      :selectedKeys="selectedSlidesIndex.map(index => slides[index].id)"
+      handle=".thumbnail-item"
+      multiDrag
+      @start="handleDragStart"
       @end="handleDragEnd"
       itemKey="id"
       v-contextmenu="contextmenusThumbnails"
@@ -57,6 +61,7 @@
               'selected': selectedSlidesIndex.includes(index),
             }"
             @mousedown="$event => handleClickSlideThumbnail($event, index)"
+            @click="$event => handleThumbnailClick($event, index)"
             @dblclick="enterScreening()"
             v-contextmenu="contextmenusThumbnailItem"
           >
@@ -78,6 +83,7 @@ import { computed, nextTick, ref, watch, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMainStore, useSlidesStore, useKeyboardStore } from '@/store'
 import type { Slide, SlideTheme } from '@/types/slides'
+import type { DraggableEvent } from '@/types/draggable'
 import { fillDigit } from '@/utils/common'
 import { isElementInViewport } from '@/utils/element'
 import type { ContextmenuItem } from '@/components/Contextmenu/types'
@@ -90,7 +96,7 @@ import useAddSlidesOrElements from '@/hooks/useAddSlidesOrElements'
 import ThumbnailSlide from '@/views/components/ThumbnailSlide/index.vue'
 import Templates from './Templates.vue'
 import Popover from '@/components/Popover.vue'
-import Draggable from 'vuedraggable'
+import Draggable from '@/components/Draggable.vue'
 
 const mainStore = useMainStore()
 const slidesStore = useSlidesStore()
@@ -101,7 +107,8 @@ const { ctrlKeyState, shiftKeyState } = storeToRefs(keyboardStore)
 
 const { slidesLoadLimit } = useLoadSlides()
 
-const selectedSlidesIndex = computed(() => [..._selectedSlidesIndex.value, slideIndex.value])
+const selectedSlidesIndex = computed(() => [...new Set([..._selectedSlidesIndex.value, slideIndex.value])]
+  .filter(index => index >= 0 && index < slides.value.length).sort((a, b) => a - b))
 
 const presetLayoutPopoverVisible = ref(false)
 
@@ -134,6 +141,17 @@ const {
 
 // 页面被切换时
 const thumbnailsRef = useTemplateRef<InstanceType<typeof Draggable>>('thumbnailsRef')
+const dragging = ref(false)
+let pendingClickIndex: number | null = null
+let pendingDeselect = false
+
+// 按下后发生撤销、切页或选择变化，本次点击不能继续使用旧的选择上下文。
+watch([slides, slideIndex, _selectedSlidesIndex], () => {
+  pendingClickIndex = null
+  pendingDeselect = false
+}, { flush: 'sync' })
+
+watch(slides, () => mainStore.updateSelectedSlidesIndex([]), { flush: 'sync' })
 watch(() => slideIndex.value, () => {
 
   // 清除多选状态的幻灯片
@@ -150,10 +168,11 @@ watch(() => slideIndex.value, () => {
       }, 100)
     }
   })
-}, { immediate: true })
+}, { immediate: true, flush: 'sync' })
 
 // 切换页面
 const changeSlideIndex = (index: number) => {
+  if (!slides.value[index]) return
   mainStore.setActiveElementIdList([])
 
   if (slideIndex.value === index) return
@@ -163,6 +182,9 @@ const changeSlideIndex = (index: number) => {
 // 点击缩略图
 const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
   if (editingSectionId.value) return
+  dragging.value = false
+  pendingClickIndex = null
+  pendingDeselect = false
 
   const isMultiSelected = selectedSlidesIndex.value.length > 1
 
@@ -171,22 +193,15 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
   // 按住Ctrl键，点选幻灯片，再次点击已选中的页面则取消选中
   // 如果被取消选中的页面刚好是当前激活页面，则需要从其他被选中的页面中选择第一个作为当前激活页面
   if (ctrlKeyState.value) {
-    if (slideIndex.value === index) {
-      if (!isMultiSelected) return
-
-      const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-      mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      changeSlideIndex(selectedSlidesIndex.value[0])
+    if (selectedSlidesIndex.value.includes(index)) {
+      // Ctrl 取消选择只在确认是点击后执行，拖拽起点始终留在移动集合中。
+      if (slideIndex.value === index && !isMultiSelected) return
+      pendingClickIndex = index
+      pendingDeselect = true
     }
     else {
-      if (selectedSlidesIndex.value.includes(index)) {
-        const newSelectedSlidesIndex = selectedSlidesIndex.value.filter(item => item !== index)
-        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      }
-      else {
-        const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
-        mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
-      }
+      const newSelectedSlidesIndex = [...selectedSlidesIndex.value, index]
+      mainStore.updateSelectedSlidesIndex(newSelectedSlidesIndex)
     }
   }
   // 按住Shift键，选择范围内的全部幻灯片
@@ -207,24 +222,60 @@ const handleClickSlideThumbnail = (e: MouseEvent, index: number) => {
   }
   // 正常切换页面
   else {
+    // 已选项按下时保留多选用于拖拽，只有最终产生点击才收起多选。
+    if (isMultiSelected && selectedSlidesIndex.value.includes(index)) {
+      pendingClickIndex = index
+      return
+    }
     mainStore.updateSelectedSlidesIndex([])
     changeSlideIndex(index)
   }
 }
 
+const handleThumbnailClick = (event: MouseEvent, index: number) => {
+  if (dragging.value || event.button !== 0 || pendingClickIndex !== index) return
+  pendingClickIndex = null
+  if (pendingDeselect) {
+    pendingDeselect = false
+    const indices = selectedSlidesIndex.value.filter(item => item !== index)
+    if (!selectedSlidesIndex.value.includes(index) || !indices.length) return
+    if (slideIndex.value === index) changeSlideIndex(indices[0])
+    mainStore.updateSelectedSlidesIndex(indices)
+    return
+  }
+  mainStore.updateSelectedSlidesIndex([])
+  changeSlideIndex(index)
+}
+
+const handleDragStart = () => {
+  dragging.value = true
+  pendingClickIndex = null
+  pendingDeselect = false
+}
+
 // 设置缩略图工具栏聚焦状态（只有聚焦状态下，该部分的快捷键才能生效）
 const setThumbnailsFocus = (focus: boolean) => {
+  if (dragging.value) return
   if (thumbnailsFocus.value === focus) return
   mainStore.setThumbnailsFocus(focus)
 
-  if (!focus) mainStore.updateSelectedSlidesIndex([])
+  if (!focus) {
+    pendingClickIndex = null
+    pendingDeselect = false
+    mainStore.updateSelectedSlidesIndex([])
+  }
 }
 
 // 拖拽调整顺序后进行数据的同步
-const handleDragEnd = (eventData: { newIndex: number; oldIndex: number }) => {
-  const { newIndex, oldIndex } = eventData
-  if (newIndex === undefined || oldIndex === undefined || newIndex === oldIndex) return
-  sortSlides(newIndex, oldIndex)
+const handleDragEnd = ({ newIndex, oldIndex, oldIndices, newIndices, keys, cancelled }: DraggableEvent) => {
+  if (!cancelled) {
+    sortSlides(newIndex, oldIndex, oldIndices, newIndices)
+    const selectedIds = new Set(keys)
+    const indices = slides.value.flatMap((slide, index) => selectedIds.has(slide.id) ? [index] : [])
+    mainStore.updateSelectedSlidesIndex(indices.length > 1 ? indices : [])
+  }
+  // 原生拖拽后的 click 不应收起刚恢复的多选。
+  setTimeout(() => dragging.value = false, 0)
 }
 
 // 打开批注面板

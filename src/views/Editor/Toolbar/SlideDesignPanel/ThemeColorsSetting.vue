@@ -40,7 +40,7 @@ import Popover from '@/components/Popover.vue'
 import ColorPicker from '@/components/ColorPicker/index.vue'
 import ColorButton from '@/components/ColorButton.vue'
 import Button from '@/components/Button.vue'
-import Draggable from 'vuedraggable'
+import Draggable from '@/components/Draggable.vue'
 
 const emit = defineEmits<{
   (event: 'close'): void 
