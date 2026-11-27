@@ -270,9 +270,9 @@ export const getChartOption = ({
           type: 'funnel',
           sort: 'none',
           left: '6%',
-          right: '34%',
+          right: '30%',
           top: '6%',
-          bottom: '17%',
+          bottom: '10%',
           gap: 2,
           data: (data.series[0] ?? []).map((value, index) => ({ name: data.labels[index], value })),
           label: {
