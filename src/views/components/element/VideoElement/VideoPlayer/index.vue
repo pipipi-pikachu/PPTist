@@ -28,7 +28,7 @@
         @ended="handleEnded()"
         @progress="handleProgress()"
         @play="autoHideController(); paused = false"
-        @pause="autoHideController()"
+        @pause="autoHideController(); paused = true"
         @error="handleError()"
       ></video>
       <div class="bezel">

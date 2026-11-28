@@ -5,7 +5,7 @@ import { useSlidesStore } from '@/store'
 import { KEYS } from '@/configs/hotkey'
 import { ANIMATION_CLASS_PREFIX } from '@/configs/animation'
 import message from '@/utils/message'
-import type { Slide } from '@/types/slides'
+import { ElementTypes, type Slide } from '@/types/slides'
 
 const AUDIENCE_SYNC_CHANNEL = 'pptist-audience-sync'
 
@@ -77,14 +77,17 @@ export default () => {
         continue
       }
 
+      // 退场动画执行时，关闭正在播放的音视频
+      if (animation.type === 'out') closePlayMedia(elRef)
+
       const animationName = `${ANIMATION_CLASS_PREFIX}${animation.effect}`
-      
+
       // 执行动画前先清除原有的动画状态（如果有）
       elRef.style.removeProperty('--animate-duration')
       for (const classname of elRef.classList) {
         if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
       }
-      
+
       // 执行动画
       elRef.style.setProperty('--animate-duration', `${animation.duration}ms`)
       elRef.classList.add(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
@@ -95,6 +98,9 @@ export default () => {
           elRef.style.removeProperty('--animate-duration')
           elRef.classList.remove(animationName, `${ANIMATION_CLASS_PREFIX}animated`)
         }
+
+        // 入场动画结束后，播放设置了自动播放的音视频
+        if (animation.type === 'in' && isAutoPlayMedia(animation.elId)) playMedia(elRef)
 
         // 判断该位置上的全部动画都已经结束后，标记动画执行完成，并尝试继续向下执行（如果有需要）
         endAnimationCount += 1
@@ -140,7 +146,10 @@ export default () => {
     for (const animation of animations) {
       const elRef: HTMLElement | null = document.querySelector(`#screen-element-${animation.elId} [class^=base-element-]`)
       if (!elRef) continue
-      
+
+      // 撤回动画时，关闭正在播放的音视频
+      closePlayMedia(elRef)
+
       elRef.style.removeProperty('--animate-duration')
       for (const classname of elRef.classList) {
         if (classname.indexOf(ANIMATION_CLASS_PREFIX) !== -1) elRef.classList.remove(classname, `${ANIMATION_CLASS_PREFIX}animated`)
@@ -278,6 +287,34 @@ export default () => {
     if (!isAudienceMode) document.removeEventListener('keydown', keydownListener)
     syncChannel?.close()
   })
+
+  // 撤回动画 || 退场动画 关闭正在播放的音视频
+  const closePlayMedia = (el: HTMLElement | null) => {
+    if (!el) return
+    const audio = el.querySelector('audio')
+    if (audio) audio.pause()
+    const video = el.querySelector('video')
+    if (video) video.pause()
+  }
+
+  // 播放动画结束后需要自动播放的音视频
+  const playMedia = (el: HTMLElement | null) => {
+    if (!el) return
+    const audio = el.querySelector('audio')
+    if (audio) audio.play()
+    const video = el.querySelector('video')
+    if (video) video.play()
+  }
+
+  // 判断该元素是否为设置了自动播放的音视频
+  const isAutoPlayMedia = (elId: string) => {
+    const currentSlideEls = slides.value[slideIndex.value]?.elements || []
+    const el = currentSlideEls.find(item => item.id === elId)
+    if (!el) return false
+    if (el.type === ElementTypes.AUDIO) return el.autoplay
+    if (el.type === ElementTypes.VIDEO) return el.autoplay
+    return false
+  }
 
   // 切换到上一张/上一张幻灯片（无视元素的入场动画）
   const turnPrevSlide = () => {
